@@ -589,7 +589,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public FunctionCallable<NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
+  public FunctionCallable<? extends NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
     return delegate.withRequestConfig(requestConfig);
   }
 

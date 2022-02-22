@@ -15,8 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
@@ -39,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class LeaderElector<C extends Namespaceable<C> & KubernetesClient> {
+public class LeaderElector<C extends NamespacedKubernetesClient> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LeaderElector.class);
 

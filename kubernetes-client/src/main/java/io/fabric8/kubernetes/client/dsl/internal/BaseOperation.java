@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.OperationInfo;
@@ -244,8 +243,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> inAnyNamespace() {
-    Config updated = new ConfigBuilder(config).withNamespace(null).build();
-    return newInstance(context.withConfig(updated).withNamespace(null));
+    return inNamespace(null);
   }
 
   @Override
@@ -477,13 +475,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         updateApiVersion(toDelete);
 
         try {
-          if (toDelete.getMetadata() != null
-            && toDelete.getMetadata().getName() != null
-            && !toDelete.getMetadata().getName().isEmpty()) {
-            deleted &= inNamespace(checkNamespace(toDelete)).withName(toDelete.getMetadata().getName()).delete();
-          } else {
-            deleted &= withItem(toDelete).delete();
-          }
+          deleted &= withItem(toDelete).delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
@@ -515,9 +507,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R withItem(T item) {
-    // set both the item and the name - not all operations are looking at the item for the name
+    // set the name, namespace, and item - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example
-    return newResource(context.withItem(item).withName(KubernetesResourceUtil.getName(item)));
+    item = correctNamespace(item);
+    String itemNs = KubernetesResourceUtil.getNamespace(item);
+    OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item)).withItem(item);
+    if (Utils.isNotNullOrEmpty(itemNs)) {
+      ctx = ctx.withNamespace(itemNs); 
+    }
+    return newResource(ctx);
   }
 
   void deleteThis() {
@@ -702,7 +700,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private URL getCompleteResourceUrl() throws MalformedURLException {
     URL requestUrl = null;
     if (item != null) {
-      requestUrl = getNamespacedUrl(item);
+      requestUrl = getNamespacedUrl(checkNamespace(item));
     } else {
       requestUrl = getNamespacedUrl();
     }
@@ -917,10 +915,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public void setListType(Class<L> listType) {
     this.listType = listType;
-  }
-
-  public void setNamespace(String namespace) {
-    this.namespace = namespace;
   }
 
   @Override

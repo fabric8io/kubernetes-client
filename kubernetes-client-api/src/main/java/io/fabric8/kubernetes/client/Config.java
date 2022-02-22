@@ -155,6 +155,7 @@ public class Config {
   private String masterUrl = DEFAULT_MASTER_URL;
   private String apiVersion = "v1";
   private String namespace;
+  private boolean defaultNamespace = true;
   private String caCertFile;
   private String caCertData;
   private String clientCertFile;
@@ -1165,6 +1166,15 @@ public class Config {
 
   public void setNamespace(String namespace) {
     this.namespace = namespace;
+  }
+
+  @JsonProperty("defaultNamespace")
+  public boolean isDefaultNamespace() {
+    return defaultNamespace;
+  }
+
+  public void setDefaultNamespace(boolean defaultNamespace) {
+    this.defaultNamespace = defaultNamespace;
   }
 
   @JsonProperty("userAgent")

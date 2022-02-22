@@ -18,16 +18,15 @@ package io.fabric8.kubernetes.client.extended.run;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 
 public class RunOperations {
 
   private final KubernetesClient client;
-  private final String namespace;
   private final RunConfigBuilder runConfigBuilder;
 
-  public RunOperations(KubernetesClient client, String namespace, RunConfigBuilder runConfigBuilder) {
+  public RunOperations(KubernetesClient client, RunConfigBuilder runConfigBuilder) {
     this.client = client;
-    this.namespace = namespace;
     this.runConfigBuilder = runConfigBuilder;
   }
 
@@ -38,7 +37,7 @@ public class RunOperations {
    * @return {@link RunOperations} with injected namespace
    */
   public RunOperations inNamespace(String namespace) {
-    return new RunOperations(client, namespace, runConfigBuilder);
+    return new RunOperations(client.adapt(NamespacedKubernetesClient.class).inNamespace(namespace), runConfigBuilder);
   }
 
   /**
@@ -48,7 +47,7 @@ public class RunOperations {
    * @return {@link RunOperations} with image injected into {@link RunConfig}
    */
   public RunOperations withImage(String image) {
-    return new RunOperations(client, namespace, runConfigBuilder.withImage(image));
+    return new RunOperations(client, runConfigBuilder.withImage(image));
   }
 
   /**
@@ -58,7 +57,7 @@ public class RunOperations {
    * @return {@link RunOperations} with name injected into {@link RunConfig}
    */
   public RunOperations withName(String name) {
-    return new RunOperations(client, namespace, runConfigBuilder.withName(name));
+    return new RunOperations(client, runConfigBuilder.withName(name));
   }
 
   /**
@@ -68,7 +67,7 @@ public class RunOperations {
    * @return {@link RunOperations} with specified configuration
    */
   public RunOperations withRunConfig(RunConfig generatorRunConfig) {
-    return new RunOperations(client, namespace, new RunConfigBuilder(generatorRunConfig));
+    return new RunOperations(client, new RunConfigBuilder(generatorRunConfig));
   }
 
   /**
@@ -77,7 +76,7 @@ public class RunOperations {
    * @return Pod which got created from the operation
    */
   public Pod done() {
-    return client.pods().inNamespace(namespace).create(convertRunConfigIntoPod());
+    return client.pods().create(convertRunConfigIntoPod());
   }
 
   Pod convertRunConfigIntoPod() {

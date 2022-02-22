@@ -36,12 +36,8 @@ public class HasMetadataOperationsImpl<T extends HasMetadata, L extends Kubernet
     this(defaultContext(clientContext), rdc, type, listType);
   }
   
-  public static OperationContext defaultContext(OperationContext context, ClientContext clientContext) {
-    return context.withHttpClient(clientContext.getHttpClient()).withConfig(clientContext.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
-  }
-    
   public static OperationContext defaultContext(ClientContext clientContext) {
-    return defaultContext(new OperationContext(), clientContext);
+    return new OperationContext().withHttpClient(clientContext.getHttpClient()).withConfig(clientContext.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
   }
 
   public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {

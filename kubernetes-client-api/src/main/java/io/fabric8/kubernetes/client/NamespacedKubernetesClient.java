@@ -15,6 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
-public interface NamespacedKubernetesClient extends GenericKubernetesClient<NamespacedKubernetesClient> {
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
+
+public interface NamespacedKubernetesClient extends KubernetesClient {
+
+  NamespacedKubernetesClient inAnyNamespace();
+  NamespacedKubernetesClient inNamespace(String namespace);
+
+  FunctionCallable<? extends NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig);
 
 }

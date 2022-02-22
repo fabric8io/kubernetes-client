@@ -170,7 +170,7 @@ class NetworkingV1IngressTest {
       .v1()
       .ingresses().inNamespace("test1");
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> ingressOp.delete(ingress1));
+    assertFalse(ingressOp.delete(ingress1));
   }
 
   @Test

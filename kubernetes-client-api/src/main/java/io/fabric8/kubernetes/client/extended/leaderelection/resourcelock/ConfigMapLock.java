@@ -21,8 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,7 @@ public class ConfigMapLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends Namespaceable<C> & KubernetesClient> LeaderElectionRecord get(C client) {
+  public <C extends NamespacedKubernetesClient> LeaderElectionRecord get(C client) {
     final ConfigMap configMap = client
       .inNamespace(configMapNamespace).configMaps().withName(configMapName).get();
     return Optional.ofNullable(configMap)
@@ -76,7 +75,7 @@ public class ConfigMapLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends Namespaceable<C> & KubernetesClient> void create(
+  public <C extends NamespacedKubernetesClient> void create(
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
@@ -94,7 +93,7 @@ public class ConfigMapLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends Namespaceable<C> & KubernetesClient> void update(
+  public <C extends NamespacedKubernetesClient> void update(
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {

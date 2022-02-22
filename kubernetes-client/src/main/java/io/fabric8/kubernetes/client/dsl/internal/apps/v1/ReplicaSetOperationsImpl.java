@@ -44,14 +44,10 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   implements TimeoutImageEditReplacePatchable<ReplicaSet> {
 
   public ReplicaSetOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
-  public ReplicaSetOperationsImpl(ClientContext clientContext, String namespace) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
-  }
-
-  public ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+  ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);

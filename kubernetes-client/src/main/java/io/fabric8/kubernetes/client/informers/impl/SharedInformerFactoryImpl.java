@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
@@ -63,9 +63,9 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
   private String name;
   private String namespace;
 
-  private BaseKubernetesClient<?> client;
+  private DefaultKubernetesClient client;
 
-  public SharedInformerFactoryImpl(BaseKubernetesClient<?> client) {
+  public SharedInformerFactoryImpl(DefaultKubernetesClient client) {
     // ideally this should be bounded.  The current implication is that there
     // can be 1 thread used (not dedicated to) per informer - which
     // could be problematic for a large number of informers.  however
@@ -77,7 +77,7 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
    * Constructor with thread pool specified.
    * @param threadPool specified thread pool.
    */
-  public SharedInformerFactoryImpl(BaseKubernetesClient<?> client, ExecutorService threadPool) {
+  public SharedInformerFactoryImpl(DefaultKubernetesClient client, ExecutorService threadPool) {
     this.informerExecutor = threadPool;
     this.client = client;
   }

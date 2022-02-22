@@ -53,7 +53,7 @@ class RunOperationsTest {
       .withPort(5701)
       .withLimits(limits)
       .withRequests(requests);
-    RunOperations deploymentGenerator = new RunOperations(Mockito.mock(KubernetesClient.class), "ns1", generatorRunConfig);
+    RunOperations deploymentGenerator = new RunOperations(Mockito.mock(KubernetesClient.class), generatorRunConfig);
 
     // When
     Pod pod = deploymentGenerator.convertRunConfigIntoPod();

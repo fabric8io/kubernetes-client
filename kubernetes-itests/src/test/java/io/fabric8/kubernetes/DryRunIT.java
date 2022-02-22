@@ -26,6 +26,7 @@ import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -55,6 +56,11 @@ public class DryRunIT {
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(CronJobIT.class.getResourceAsStream("/dryrun-it.yml"));
+  }
+
+  @Before
+  public void before() {
+    currentNamespace = ClusterEntity.getArquillianNamespace();
   }
 
   @Test

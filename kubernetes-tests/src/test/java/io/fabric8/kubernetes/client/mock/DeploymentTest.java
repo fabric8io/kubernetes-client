@@ -284,7 +284,8 @@ class DeploymentTest {
       .build();
     NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp =
       client.apps().deployments().inNamespace("test1");
-    assertThrows(KubernetesClientException.class, () -> deployOp.delete(deployment1));
+
+    assertFalse(deployOp.delete(deployment1));
   }
 
   @Test

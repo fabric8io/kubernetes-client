@@ -223,12 +223,10 @@ public class JobTest {
 
   @Test
   void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
+    Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
 
-      Boolean deleted = client.batch().v1().jobs().inNamespace("test1").delete(job1);
-      assertTrue(deleted);
-    });
+    Boolean deleted = client.batch().v1().jobs().inNamespace("test1").delete(job1);
+    assertFalse(deleted);
   }
 
   @Test

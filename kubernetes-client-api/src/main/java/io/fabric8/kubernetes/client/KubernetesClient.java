@@ -72,7 +72,6 @@ import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -555,7 +554,7 @@ public interface KubernetesClient extends Client {
    * @param <C> type parameter for the Namespaceable KubernetesClient
    * @return LeaderElectorBuilder to build LeaderElector instances
    */
-  <C extends Namespaceable<C> & KubernetesClient> LeaderElectorBuilder<C> leaderElector();
+  <C extends NamespacedKubernetesClient> LeaderElectorBuilder<C> leaderElector();
 
   /**
    * API entrypoint for {@link Lease} related operations. Lease (coordination.k8s.io/v1)

@@ -335,7 +335,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {
-    return new ReplicaSetOperationsImpl(context, getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
+    return new ReplicaSetOperationsImpl(context).inNamespace(getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
   }
 
   static Map<String, String> getDeploymentSelectorLabels(Deployment deployment) {

@@ -210,7 +210,7 @@ class PodTest {
 
     // When + Then
     NonNamespaceOperation<Pod, PodList, PodResource<Pod>> podOp = client.pods().inNamespace("test1");
-    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.delete(pod1));
+    assertFalse(podOp.delete(pod1));
   }
 
   @Test

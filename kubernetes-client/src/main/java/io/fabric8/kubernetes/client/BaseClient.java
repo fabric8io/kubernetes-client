@@ -99,6 +99,9 @@ public class BaseClient extends SimpleClientContext implements Client {
 
   @Override
   public <C> Boolean isAdaptable(Class<C> type) {
+    if (type.isAssignableFrom(this.getClass())) {
+      return true;
+    }
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.isAdaptable(this);
@@ -109,6 +112,9 @@ public class BaseClient extends SimpleClientContext implements Client {
 
   @Override
   public <C> C adapt(Class<C> type) {
+    if (type.isAssignableFrom(this.getClass())) {
+      return (C) this;
+    }
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.adapt(this);

@@ -132,13 +132,10 @@ public class PodDisruptionBudgetTest {
 
   @Test
   public void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
+    PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
 
-      Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
-      assertFalse(deleted);
-    });
-
+    Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
+    assertFalse(deleted);
   }
 
   @Test

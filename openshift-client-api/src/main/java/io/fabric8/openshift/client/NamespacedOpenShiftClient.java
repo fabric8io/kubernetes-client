@@ -15,9 +15,18 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.GenericKubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 
-public interface NamespacedOpenShiftClient extends OpenShiftClient,
-  GenericKubernetesClient<NamespacedOpenShiftClient> {
+public interface NamespacedOpenShiftClient extends OpenShiftClient, NamespacedKubernetesClient {
+
+  @Override
+  NamespacedOpenShiftClient inAnyNamespace();
+  @Override
+  NamespacedOpenShiftClient inNamespace(String namespace);
+
+  @Override
+  FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig);
 
 }

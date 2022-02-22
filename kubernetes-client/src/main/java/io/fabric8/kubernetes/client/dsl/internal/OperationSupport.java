@@ -165,10 +165,6 @@ public class OperationSupport {
     return getNamespacedUrl(getNamespace());
   }
 
-  public <T> URL getNamespacedUrl(T item) throws MalformedURLException {
-    return getNamespacedUrl(checkNamespace(item));
-  }
-
   public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
     return getResourceUrl(namespace, name, false);
   }
@@ -216,24 +212,33 @@ public class OperationSupport {
     }
     return resourceUrl;
   }
+  
+  protected <T> T correctNamespace(T item) {
+    if (!isResourceNamespaced() || this.context.isDefaultNamespace() || !(item instanceof HasMetadata)) {
+      return item;
+    }
+    String itemNs = KubernetesResourceUtil.getNamespace((HasMetadata)item);
+    
+    if (Utils.isNotNullOrEmpty(namespace) && Utils.isNotNullOrEmpty(itemNs) && !namespace.equals(itemNs)) {
+      item = Serialization.clone(item);
+      KubernetesResourceUtil.setNamespace((HasMetadata)item, namespace);
+    }
+    return item;
+  }
 
   protected <T> String checkNamespace(T item) {
+    if (!isResourceNamespaced()) {
+      return null;
+    }
     String operationNs = getNamespace();
     String itemNs = (item instanceof HasMetadata) ? KubernetesResourceUtil.getNamespace((HasMetadata)item) : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
-      if (!isResourceNamespaced()) {
-        return null;
-      } else {
-        throw new KubernetesClientException("namespace not specified for an operation requiring one.");
-      }
-    } else if (Utils.isNullOrEmpty(itemNs)) {
-      return operationNs;
-    } else if (Utils.isNullOrEmpty(operationNs)) {
-      return itemNs;
-    } else if (itemNs.equals(operationNs)) {
+      throw new KubernetesClientException("namespace not specified for an operation requiring one.");
+    } else if (!Utils.isNullOrEmpty(itemNs) && (Utils.isNullOrEmpty(operationNs)
+        || this.context.isDefaultNamespace())) {
       return itemNs;
     }
-    throw new KubernetesClientException("Namespace mismatch. Item namespace:" + itemNs + ". Operation namespace:" + operationNs + ".");
+    return operationNs;
   }
 
   protected <T> String checkName(T item) {
@@ -301,6 +306,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws InterruptedException, IOException {
+    resource = correctNamespace(resource);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .post(JSON, JSON_MAPPER.writeValueAsString(resource))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
@@ -338,6 +344,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws InterruptedException, IOException {
+    updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));

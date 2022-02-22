@@ -45,6 +45,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+/**
+ * To be used as a base for overriding or adding Resource methods
+ *
+ * @param <T> the resource type
+ */
 public class ResourceAdapter<T> implements Resource<T> {
 
   protected ExtensibleResource<T> resource;

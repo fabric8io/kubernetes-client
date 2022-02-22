@@ -1,13 +1,53 @@
 # Migration from 5.x to 6.x
 
 ## Contents:
+- [Namespace Changes](#namespace-changes)
 - [API/Impl split](#api-impl-split)
 - [Deprecation Removals](#deprecation-removals)
 - [Resource Changes](#resource-changes)
 - [lists Removal](#lists-removal)
-- [IntOrString changes](#intorstring-changes)
-- [ServiceCatalog changes](#service-catalog-changes)
+- [GenericKubernetesClient Removal](#generickubernetesclient-removal)
+- [IntOrString Changes](#intorstring-changes)
+- [ServiceCatalog Changes](#service-catalog-changes)
+- [Adapt Changes](#adapt-changes)
 - [Deprecations](#deprecations)
+
+## Namespace Changes
+
+To match the behavior of kubectl the client will now consider any call to inNamespace as the namespace to use regardless of what is on a passed in item.  
+Only if the client is left at the default namespace or a call has been made to inAnyNamespace will the item namespace be used.  
+This applies to all calls to inNamespace - at the Client, Operation, or Resource level, and for all operations (load, create, delete, withItem, etc.)
+
+The end result is that exceptions refering to mismatched namespaces will no longer be thrown.
+
+Consider the following examples:
+
+// inNamespace called at the client level with load
+// Prior behavior - exception if item has a namespace that is not monitoring.  
+// New behavior - the item namespace is monitoring
+this.kubernetesClient.inNamespace("monitoring").configMaps().load(item)...
+
+// inNamespace called at an operation level with load
+// Prior behavior - exception if item has a namespace that is not monitoring.  
+// New behavior - the item namespace is monitoring
+this.kubernetesClient.configMaps().inNamespace("monitoring").load(item)...
+
+// inNamespace called at the client level with resource
+// Prior behavior - context namespace is changed to match the item.  
+// New behavior - the item namespace is monitoring
+this.kubernetesClient.inNamespace("monitoring").resource(item)...
+
+// default namespace call to create
+// Prior behavior - exception if item has a namespace that does not match the context.  
+// New behavior - item will be created with its namespace, or the default if missing
+this.kubernetesClient.configMaps().create(item); 
+
+// default namespace call to load
+// Prior behavior - exception if item has a namespace that does not match the context.  
+// New behavior - item will be loaded with its namespace, or the default if missing
+this.kubernetesClient.configMaps().load(item)...
+
+To track the namespace handling at the client level the Config has an additional boolean field defaultNamespace, you may set that to false to have the Client treat subsequent calls as if inNamespace had been called explicitly.
 
 ## API/Impl split
 
@@ -58,6 +98,10 @@ Instead of KubernetesClient.lists().load, use KubernetesClient.resourceList or l
 Instead of KubernetesClient.lists().create(list), use KubernetesClient.resourceList(list.getItems()).create()
 Instead of KubernetesClient.lists().delete(list), use KubernetesClient.resourceList(list.getItems()).delete()
 
+## GenericKubernetesClient Removal
+
+GenericKubernetesClient has been removed.  Instead the relevant methods are on NamespacedKubernetesClient and NamespacedOpenShiftClient directly.
+
 ## IntOrString changes
 
 We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class. You'd need to rely on constructors or builders for creating `IntOrString` object. Here are some examples:
@@ -90,6 +134,10 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
 ## Service Catalog Changes
 
 io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+
+## Adapt Changes
+
+Client.isAdaptable and Client.adapt will check first if the existing instance is compatible with the desired type.
 
 ## Deprecations
 
