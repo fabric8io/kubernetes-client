@@ -18,8 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
-import io.fabric8.kubernetes.client.dsl.base.CreateOnlyResourceOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 
 public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O extends KubernetesResource> extends CreateOnlyResourceOperation<I, O> implements NamespacedInOutCreateable<I, O> {

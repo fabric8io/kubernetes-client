@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.GroupVersionForDiscovery;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

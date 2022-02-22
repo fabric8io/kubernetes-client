@@ -33,4 +33,5 @@ public interface ListVisitFromServerGetDeleteRecreateWaitApplicable<T> extends V
    * @return the resources
    */
   List<Resource<T>> getResources();
+
 }

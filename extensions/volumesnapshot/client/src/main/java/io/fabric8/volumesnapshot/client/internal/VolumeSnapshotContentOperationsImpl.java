@@ -17,9 +17,9 @@ package io.fabric8.volumesnapshot.client.internal;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;

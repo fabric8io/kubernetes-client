@@ -1,5 +1,7 @@
 package io.fabric8.openshift.examples;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -26,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.List;
 
 public class TemplateExample {
   private static final Logger logger = LoggerFactory.getLogger(TemplateExample.class);
@@ -77,12 +80,12 @@ public class TemplateExample {
           processedTemplateWithCustomParameters.getItems().size(),
           processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
 
-        KubernetesList l = client.lists().load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
-        logger.info("{}", l.getItems().size());
+        List<HasMetadata> l = client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
+        logger.info("{}", l.size());
 
         final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete();
         logger.info("Template {} was {}deleted", DEFAULT_NAME_OF_TEMPLATE, templateDeleted ? "" : "**NOT** ");
-        client.lists().inNamespace(NAMESPACE).load(TemplateExample.class.getResourceAsStream("/test-list.yml")).create();
+        client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).inNamespace(NAMESPACE).create();
       } finally {
         // And finally clean up the namespace
         client.projects().withName(NAMESPACE).delete();

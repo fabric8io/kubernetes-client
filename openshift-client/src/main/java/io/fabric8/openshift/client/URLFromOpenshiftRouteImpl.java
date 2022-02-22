@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ServiceToURLProvider;
-import io.fabric8.kubernetes.client.utils.URLFromServiceUtil;
+import io.fabric8.kubernetes.client.utils.internal.URLFromServiceUtil;
 import io.fabric8.openshift.api.model.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

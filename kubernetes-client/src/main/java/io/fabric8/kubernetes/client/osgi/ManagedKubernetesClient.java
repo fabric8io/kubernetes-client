@@ -83,7 +83,6 @@ import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -102,9 +101,7 @@ import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
-import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
-import io.fabric8.kubernetes.client.extended.run.RunOperationsImpl;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -342,11 +339,6 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
     return delegate.resourceQuotas();
-  }
-
-  @Override
-  public KubernetesListMixedOperation lists() {
-    return delegate.lists();
   }
 
   @Override
@@ -603,7 +595,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public RunOperations run() {
-    return new RunOperationsImpl(this, getNamespace(), new RunConfigBuilder());
+    return delegate.run();
   }
 
   @Override

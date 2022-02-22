@@ -24,4 +24,6 @@ public interface ListVisitFromServerWritable<T> extends RecreateApplicable<List<
   CascadingDeletable<List<T>>,
   GracePeriodConfigurable<CascadingDeletable<List<T>>>,
   PropagationPolicyConfigurable<CascadingDeletable<List<T>>> {
+
+  List<T> create();
 }

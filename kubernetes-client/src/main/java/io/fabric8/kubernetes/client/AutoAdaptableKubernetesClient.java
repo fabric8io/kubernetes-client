@@ -230,11 +230,6 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
-  public KubernetesListMixedOperation lists() {
-    return delegate.lists();
-  }
-
-  @Override
   public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
     return delegate.configMaps();
   }

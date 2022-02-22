@@ -74,7 +74,6 @@ import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -92,10 +91,9 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
@@ -110,10 +108,9 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOp
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
-import io.fabric8.kubernetes.client.extended.run.RunOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.informers.SharedInformerFactoryImpl;
+import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
@@ -380,14 +377,6 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    * {@inheritDoc}
    */
   @Override
-  public KubernetesListMixedOperation lists() {
-    return new KubernetesListOperationsImpl(this);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
     return Handlers.getOperation(ConfigMap.class, ConfigMapList.class, this);
   }
@@ -613,7 +602,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public RunOperations run() {
-    return new RunOperationsImpl(this, getNamespace(), new RunConfigBuilder());
+    return new RunOperations(this, getNamespace(), new RunConfigBuilder());
   }
 
   /**

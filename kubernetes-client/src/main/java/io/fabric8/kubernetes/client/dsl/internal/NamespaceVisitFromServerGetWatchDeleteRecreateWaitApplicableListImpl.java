@@ -43,7 +43,6 @@ import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGet
 import io.fabric8.kubernetes.client.dsl.Readiable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -332,6 +331,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, OperationContext context) {
     return Handlers.get(item, new BaseClient(context));
+  }
+
+  @Override
+  public List<HasMetadata> create() {
+    return getResources().stream().map(Resource::create).collect(Collectors.toList());
   }
 
 }

@@ -78,7 +78,6 @@ import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -202,8 +201,8 @@ import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
@@ -682,11 +681,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
     return delegate.apiServices();
-  }
-
-  @Override
-  public KubernetesListMixedOperation lists() {
-    return delegate.lists();
   }
 
   @Override

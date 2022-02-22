@@ -4,6 +4,7 @@
 - [API/Impl split](#api-impl-split)
 - [Deprecation Removals](#deprecation-removals)
 - [Resource Changes](#resource-changes)
+- [lists Removal](#lists-removal)
 - [IntOrString changes](#intorstring-changes)
 - [ServiceCatalog changes](#service-catalog-changes)
 - [Deprecations](#deprecations)
@@ -46,6 +47,16 @@ var resource = client.resource(deployment).inNamespace(session.getNamespace());
 resource.delete();
 resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
 resource.create();
+
+## lists Removal
+
+KuberentesClient.lists was removed.  This entry point is effectively the same as KubernetesClient.resourceList or load.  Please use one of those methods instead.
+
+For example:
+
+Instead of KubernetesClient.lists().load, use KubernetesClient.resourceList or load
+Instead of KubernetesClient.lists().create(list), use KubernetesClient.resourceList(list.getItems()).create()
+Instead of KubernetesClient.lists().delete(list), use KubernetesClient.resourceList(list.getItems()).delete()
 
 ## IntOrString changes
 

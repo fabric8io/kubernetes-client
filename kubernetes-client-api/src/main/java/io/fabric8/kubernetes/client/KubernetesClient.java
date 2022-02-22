@@ -69,7 +69,6 @@ import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -502,13 +501,6 @@ public interface KubernetesClient extends Client {
    * @return MixedOperation object for APIService related operations
    */
   NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
-
-  /**
-   * List related operations.
-   *
-   * @return KubernetesListMixedOperations object for Kubernetes List
-   */
-  KubernetesListMixedOperation lists();
 
   /**
    * API entrypoint for ConfigMap related operations. ConfigMap (core/v1)

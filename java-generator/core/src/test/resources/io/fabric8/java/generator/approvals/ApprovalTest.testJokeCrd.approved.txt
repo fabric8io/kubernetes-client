@@ -30,13 +30,26 @@ public class JokeRequestSpec implements io.fabric8.kubernetes.api.model.Kubernet
 
     public enum Category {
 
-        Pun,
-        Christmas,
-        Spooky,
-        Any,
-        Misc,
-        Programming,
-        Dark
+        @com.fasterxml.jackson.annotation.JsonProperty("Pun")
+        PUN("Pun"),
+        @com.fasterxml.jackson.annotation.JsonProperty("Christmas")
+        CHRISTMAS("Christmas"),
+        @com.fasterxml.jackson.annotation.JsonProperty("Spooky")
+        SPOOKY("Spooky"),
+        @com.fasterxml.jackson.annotation.JsonProperty("Any")
+        ANY("Any"),
+        @com.fasterxml.jackson.annotation.JsonProperty("Misc")
+        MISC("Misc"),
+        @com.fasterxml.jackson.annotation.JsonProperty("Programming")
+        PROGRAMMING("Programming"),
+        @com.fasterxml.jackson.annotation.JsonProperty("Dark")
+        DARK("Dark");
+
+        java.lang.String value;
+
+        Category(java.lang.String value) {
+            this.value = value;
+        }
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("category")
@@ -52,12 +65,24 @@ public class JokeRequestSpec implements io.fabric8.kubernetes.api.model.Kubernet
 
     public enum Excluded {
 
-        sexist,
-        nsfw,
-        religious,
-        explicit,
-        racist,
-        political
+        @com.fasterxml.jackson.annotation.JsonProperty("sexist")
+        SEXIST("sexist"),
+        @com.fasterxml.jackson.annotation.JsonProperty("nsfw")
+        NSFW("nsfw"),
+        @com.fasterxml.jackson.annotation.JsonProperty("religious")
+        RELIGIOUS("religious"),
+        @com.fasterxml.jackson.annotation.JsonProperty("explicit")
+        EXPLICIT("explicit"),
+        @com.fasterxml.jackson.annotation.JsonProperty("racist")
+        RACIST("racist"),
+        @com.fasterxml.jackson.annotation.JsonProperty("political")
+        POLITICAL("political");
+
+        java.lang.String value;
+
+        Excluded(java.lang.String value) {
+            this.value = value;
+        }
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("excluded")
@@ -130,7 +155,18 @@ public class JokeRequestStatus implements io.fabric8.kubernetes.api.model.Kubern
 
     public enum State {
 
-        PROCESSING, CREATED, UNKNOWN, ERROR, ALREADY_PRESENT
+        @com.fasterxml.jackson.annotation.JsonProperty("PROCESSING")
+        PROCESSING("PROCESSING"), @com.fasterxml.jackson.annotation.JsonProperty("CREATED")
+        CREATED("CREATED"), @com.fasterxml.jackson.annotation.JsonProperty("UNKNOWN")
+        UNKNOWN("UNKNOWN"), @com.fasterxml.jackson.annotation.JsonProperty("ERROR")
+        ERROR("ERROR"), @com.fasterxml.jackson.annotation.JsonProperty("ALREADY_PRESENT")
+        ALREADY_PRESENT("ALREADY_PRESENT");
+
+        java.lang.String value;
+
+        State(java.lang.String value) {
+            this.value = value;
+        }
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("state")

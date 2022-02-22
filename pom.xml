@@ -1011,7 +1011,7 @@
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
-            <exclude>**/java-generator/it/**/expected/**/*</exclude>
+            <exclude>**/it/**/expected/**/*.expected</exclude>
             <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>
