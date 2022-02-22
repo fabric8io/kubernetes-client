@@ -15,6 +15,7 @@
  */
 package io.fabric8.java.generator;
 
+import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.GeneratorResult;
 import java.io.File;
@@ -48,7 +49,7 @@ public class WritableCRCompilationUnit {
                 String pkg =
                         cr.getCompilationUnit()
                                 .getPackageDeclaration()
-                                .map(pd -> pd.getNameAsString())
+                                .map(NodeWithName::getNameAsString)
                                 .orElse(null);
                 File path = createFolders(pkg, basePath);
 
@@ -63,7 +64,7 @@ public class WritableCRCompilationUnit {
 
     private void writeToFile(File file, String str) throws IOException {
         if (file.exists()) {
-            LOGGER.warn("File " + file.getAbsolutePath() + "already exists, overwriting");
+            LOGGER.warn("File {} already exists, overwriting", file.getAbsolutePath());
         }
         try (FileWriter fileWriter = new FileWriter(file);
                 PrintWriter printWriter = new PrintWriter(fileWriter)) {
