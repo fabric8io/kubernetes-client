@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -191,17 +191,17 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           status = removeStatus(source);
         }
 
-        MediaType mergeType;
+        PatchType mergeType;
         if (contentType == null) {
-          mergeType = OkHttpClientImpl.JSON_PATCH;
+          mergeType = PatchType.JSON;
         } else {
           MediaType mediaType = MediaType.parse(contentType);
           String subtype = mediaType.subtype();
 
-          if (subtype.equals(OkHttpClientImpl.JSON_PATCH.subtype())) {
-            mergeType = OkHttpClientImpl.JSON_PATCH;
-          } else if (subtype.equals(OkHttpClientImpl.JSON_MERGE_PATCH.subtype())) {
-            mergeType = OkHttpClientImpl.JSON_MERGE_PATCH;
+          if (subtype.equals(MediaType.get(PatchType.JSON.getContentType()).subtype())) {
+            mergeType = PatchType.JSON;
+          } else if (subtype.equals(MediaType.get(PatchType.JSON_MERGE.getContentType()).subtype())) {
+            mergeType = PatchType.JSON_MERGE;
           } else {
             response.setResponseCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
             return response;
@@ -209,7 +209,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         }
 
         JsonNode updated;
-        if (mergeType == OkHttpClientImpl.JSON_PATCH)  {
+        if (mergeType == PatchType.JSON)  {
           updated = JsonPatch.apply(patch, source);
         } else {
           ObjectReader objectReader = context.getMapper().readerForUpdating(source);

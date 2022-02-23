@@ -62,14 +62,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>${okhttp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>logging-interceptor</artifactId>
-      <version>${okhttp.version}</version>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-okhttp</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -240,6 +235,9 @@
               <goal>bundle</goal>
             </goals>
             <configuration>
+              <excludeDependencies>
+                kubernetes-httpclient-okhttp
+              </excludeDependencies>
               <instructions>
                 <Bundle-Name>${project.name}</Bundle-Name>
                 <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>

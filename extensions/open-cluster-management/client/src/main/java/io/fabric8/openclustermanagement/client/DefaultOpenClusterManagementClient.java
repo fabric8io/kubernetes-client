@@ -29,7 +29,6 @@ import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementDiscover
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementOperatorAPIGroupDSL;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAPIGroupDSL;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementSearchAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class DefaultOpenClusterManagementClient extends BaseClient implements NamespacedOpenClusterManagementClient {
   public DefaultOpenClusterManagementClient() {

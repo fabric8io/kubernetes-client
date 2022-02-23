@@ -111,9 +111,7 @@ import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
-import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -153,15 +151,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   public DefaultKubernetesClient(Config config) {
     super(config);
-  }
-  
-  /**
-   * @deprecated use {@link DefaultKubernetesClient#DefaultKubernetesClient(HttpClient, Config)} instead.
-   * use {@link OkHttpClientImpl#OkHttpClientImpl(OkHttpClient)} to wrap the client.
-   */
-  @Deprecated
-  public DefaultKubernetesClient(OkHttpClient httpClient, Config config) {
-    super(new OkHttpClientImpl(httpClient), config);
   }
   
   public DefaultKubernetesClient(HttpClient httpClient, Config config) {
