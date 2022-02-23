@@ -30,6 +30,14 @@
 
   <properties>
     <clone-kube>true</clone-kube>
+    <osgi.include.resources>
+      ${osgi.include.resources.default},
+      /networking.properties=target/classes/networking.properties,
+    </osgi.include.resources>
+    <osgi.import>*</osgi.import>
+    <osgi.export>
+      io.fabric8.kubernetes.api.model.networking**
+    </osgi.export>
   </properties>
 
   <dependencies>
@@ -56,26 +64,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>${maven.bundle.plugin.version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-            <Import-Package>*</Import-Package>
-            <Export-Package>
-              io.fabric8.kubernetes.api.model.networking**
-            </Export-Package>
-            <Include-Resource>
-              {maven-resources},
-              /META-INF/jandex.idx=target/classes/META-INF/jandex.idx,
-              /networking.properties=target/classes/networking.properties,
-            </Include-Resource>
-          </instructions>
-        </configuration>
       </plugin>
     </plugins>
   </build>

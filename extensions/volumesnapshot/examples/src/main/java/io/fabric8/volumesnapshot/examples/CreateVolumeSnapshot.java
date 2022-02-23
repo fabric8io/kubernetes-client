@@ -30,7 +30,7 @@ public class CreateVolumeSnapshot {
         .endMetadata()
         .withNewSpec()
         .withNewSource()
-        .withNewPersistentVolumeClaimName("my-pvc")
+        .withPersistentVolumeClaimName("my-pvc")
         .endSource()
         .endSpec()
         .build());

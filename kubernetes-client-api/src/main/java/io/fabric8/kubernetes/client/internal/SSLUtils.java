@@ -16,15 +16,11 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -36,6 +32,7 @@ import javax.net.ssl.X509ExtendedTrustManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -58,22 +55,25 @@ public final class SSLUtils {
     }
 
     public static boolean isHttpsAvailable(Config config) {
-        Config sslConfig = new ConfigBuilder(config)
-                .withMasterUrl(Config.HTTPS_PROTOCOL_PREFIX + config.getMasterUrl())
-                .withRequestTimeout(1000)
-                .withConnectionTimeout(1000)
-                .build();
+      HttpsURLConnection conn = null;
+      try {
+        URL url = new URL(Config.HTTPS_PROTOCOL_PREFIX + config.getMasterUrl());
+        conn = (HttpsURLConnection) url.openConnection();
 
-        try (HttpClient client = HttpClientUtils.createHttpClient(config)) {
-            HttpRequest request = client.newHttpRequestBuilder().uri(sslConfig.getMasterUrl())
-                    .build();
-            HttpResponse<InputStream> response = client.send(request, InputStream.class);
-            response.body().close();
-            return response.isSuccessful();
-        } catch (Throwable t) {
-            LOG.warn("SSL handshake failed. Falling back to insecure connection.");
+        SSLContext sslContext = SSLUtils.sslContext(config);
+        conn.setSSLSocketFactory(sslContext.getSocketFactory());
+        conn.setConnectTimeout(1000);
+        conn.setReadTimeout(1000);
+        conn.connect();
+        return true;
+      } catch (Throwable t) {
+        LOG.warn("SSL handshake failed. Falling back to insecure connection.");
+      } finally {
+        if (conn != null) {
+          conn.disconnect();
         }
-        return false;
+      }
+      return false;
     }
 
     public static SSLContext sslContext(Config config) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException, KeyManagementException {

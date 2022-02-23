@@ -118,7 +118,7 @@ class RuntimeClassTest {
   private RuntimeClass getMockRuntimeClass() {
     return new RuntimeClassBuilder()
       .withNewMetadata().withName("test-class").endMetadata()
-      .withNewHandler("handler2")
+      .withHandler("handler2")
       .build();
   }
 }

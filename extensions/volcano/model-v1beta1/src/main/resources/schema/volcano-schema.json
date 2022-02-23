@@ -168,8 +168,7 @@
       },
       "javaType": "io.fabric8.volcano.scheduling.v1beta1.Queue",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueList": {

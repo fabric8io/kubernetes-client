@@ -38,10 +38,10 @@ class QueueTest {
   @Test
   @DisplayName("Should get a queue")
   void testGet() {
-    server.expect().get().withPath("/apis/scheduling.volcano.sh/v1beta1/namespaces/ns1/queues/q1")
+    server.expect().get().withPath("/apis/scheduling.volcano.sh/v1beta1/queues/q1")
       .andReturn(HttpURLConnection.HTTP_OK, createQueue()).once();
 
-    Queue queue = client.v1beta1().queues().inNamespace("ns1").withName("q1").get();
+    Queue queue = client.v1beta1().queues().withName("q1").get();
     assertNotNull(queue);
   }
 
@@ -49,9 +49,9 @@ class QueueTest {
   @DisplayName("Should create a queue")
   void testCreate() {
     Queue queue = createQueue();
-    server.expect().post().withPath("/apis/scheduling.volcano.sh/v1beta1/namespaces/ns1/queues")
+    server.expect().post().withPath("/apis/scheduling.volcano.sh/v1beta1/queues")
       .andReturn(HttpURLConnection.HTTP_CREATED, queue).once();
-    queue = client.v1beta1().queues().inNamespace("ns1").create(queue);
+    queue = client.v1beta1().queues().create(queue);
     assertNotNull(queue);
     assertEquals("q1", queue.getMetadata().getName());
   }

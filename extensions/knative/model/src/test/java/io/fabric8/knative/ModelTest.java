@@ -30,7 +30,7 @@ class ModelTest {
       .withNewTemplate()
       .withNewSpec()
       .addNewContainer()
-      .withNewImage("my-image")
+      .withImage("my-image")
       .endContainer()
       .endSpec()
       .endTemplate()

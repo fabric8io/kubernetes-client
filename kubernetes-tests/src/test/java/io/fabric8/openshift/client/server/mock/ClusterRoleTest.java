@@ -84,7 +84,7 @@ class ClusterRoleTest {
     return new ClusterRoleBuilder()
       .withNewMetadata().withName(name).endMetadata()
       .addNewRule()
-      .addNewApiGroup("template.openshift.io")
+      .addToApiGroups("template.openshift.io")
       .addToResources("templates", "processedtemplates", "templateauthorizations", "templateinstances")
       .withVerbs("*")
       .endRule()

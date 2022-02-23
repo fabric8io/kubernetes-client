@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 
 // TODO: This should be modified to test against the current extension sources
 assertEquals(
-  new File(basedir, "/expected/AuthSpec.java").getText("UTF-8").replace("\r\n", "\n"),
+  new File(basedir, "/expected/AuthSpec.expected").getText("UTF-8").replace("\r\n", "\n"),
   new File(basedir, "/target/generated-sources/java/io/cert_manager/v1/AuthSpec.java").getText("UTF-8").replace("\r\n", "\n")
 )
 

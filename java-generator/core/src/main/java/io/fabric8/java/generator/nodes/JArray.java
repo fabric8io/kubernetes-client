@@ -19,13 +19,15 @@ import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_LIST;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import io.fabric8.java.generator.Config;
 
 public class JArray extends AbstractJSONSchema2Pojo {
 
     private final String type;
     private final AbstractJSONSchema2Pojo nested;
 
-    public JArray(AbstractJSONSchema2Pojo nested) {
+    public JArray(AbstractJSONSchema2Pojo nested, Config config, String description) {
+        super(config, description);
         this.type =
                 new ClassOrInterfaceType()
                         .setName(JAVA_UTIL_LIST)

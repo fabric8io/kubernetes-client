@@ -16,6 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 import com.github.javaparser.ast.CompilationUnit;
+import io.fabric8.java.generator.Config;
 import java.util.ArrayList;
 
 public class JPrimitive extends AbstractJSONSchema2Pojo {
@@ -24,7 +25,8 @@ public class JPrimitive extends AbstractJSONSchema2Pojo {
     private static final GeneratorResult empty =
             new GeneratorResult(new ArrayList<>(), new ArrayList<>());
 
-    public JPrimitive(String type) {
+    public JPrimitive(String type, Config config, String description) {
+        super(config, description);
         this.type = type;
     }
 

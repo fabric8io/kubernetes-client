@@ -23,15 +23,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class URLUtils {
-  
+
   public static class URLBuilder {
-    
-    private StringBuilder url;
-    
+
+    private final StringBuilder url;
+
     public URLBuilder(String url) {
       this.url = new StringBuilder(url);
     }
-    
+
     public URLBuilder(URL url) {
       this(url.toString());
     }
@@ -53,14 +53,14 @@ public class URLUtils {
         throw new IllegalArgumentException(e.getMessage(), e);
       }
     }
-    
+
     @Override
     public String toString() {
       return build().toString();
     }
-    
+
   }
-  
+
   private URLUtils() {
     throw new IllegalStateException("Utility class");
   }

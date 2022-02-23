@@ -22,6 +22,7 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import io.fabric8.java.generator.Config;
 import java.util.Collections;
 
 public class JCRObject extends AbstractJSONSchema2Pojo {
@@ -42,7 +43,9 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
             boolean withSpec,
             boolean withStatus,
             boolean storage,
-            boolean served) {
+            boolean served,
+            Config config) {
+        super(config, null);
         this.type = type;
         this.group = group;
         this.version = version;

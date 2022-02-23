@@ -92,8 +92,8 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
@@ -111,10 +111,9 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
-import io.fabric8.kubernetes.client.extended.run.RunOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.informers.SharedInformerFactoryImpl;
+import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
@@ -593,7 +592,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public RunOperations run() {
-    return new RunOperationsImpl(this, getNamespace(), new RunConfigBuilder());
+    return new RunOperations(this, getNamespace(), new RunConfigBuilder());
   }
 
   /**

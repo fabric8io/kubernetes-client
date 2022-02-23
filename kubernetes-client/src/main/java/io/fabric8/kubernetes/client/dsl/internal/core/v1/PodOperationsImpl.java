@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
+
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -62,14 +64,12 @@ import io.fabric8.kubernetes.client.dsl.TtyExecErrorChannelable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
+import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.utils.Base64;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -78,9 +78,9 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
+import io.fabric8.kubernetes.client.utils.internal.Base64;
+import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.kubernetes.client.lib.FilenameUtils;
-
-import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource<Pod>> implements PodResource<Pod>,CopyOrReadable<Boolean,InputStream, Boolean> {
 
@@ -436,7 +436,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             out.flush();
             out.close();
           } catch (IOException e) {
-            KubernetesClientException.launderThrowable(e);
+            throw KubernetesClientException.launderThrowable(e);
           }
         }
       ).exec("sh", "-c", String.format("cat %s | base64", shellQuote(source)));
@@ -484,7 +484,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             out.flush();
             out.close();
           } catch (IOException e) {
-            KubernetesClientException.launderThrowable(e);
+            throw KubernetesClientException.launderThrowable(e);
           }
         }
       ).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");

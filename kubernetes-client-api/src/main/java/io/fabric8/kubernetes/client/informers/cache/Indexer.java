@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 public interface Indexer<T> extends Store<T> {
   /**
-   * Retrieve list of obejcts that match on the named indexing function.
+   * Retrieve list of objects that match on the named indexing function.
    *
    * @param indexName specific indexing function
    * @param obj object

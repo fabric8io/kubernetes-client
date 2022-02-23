@@ -26,7 +26,7 @@ public class CreateVolumeSnapshotClass {
         .withNewMetadata()
         .withName("my-snapshot-class")
         .endMetadata()
-        .withNewDriver("my-csi-driver")
+        .withDriver("my-csi-driver")
         .withDeletionPolicy("Delete")
         .build());
     }

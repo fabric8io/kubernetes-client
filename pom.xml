@@ -80,7 +80,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.50.3</sundrio.version>
+    <sundrio.version>0.80.1</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
@@ -88,7 +88,7 @@
     <jackson.version>2.13.1</jackson.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.4</maven-core.version>
-    <maven-plugin-annotations.version>3.6.0</maven-plugin-annotations.version>
+    <maven-plugin-annotations.version>3.6.4</maven-plugin-annotations.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -97,7 +97,7 @@
     <assertj.core.version>3.22.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.1.1</awaitility.version>
-    <approvaltests.version>13.3.0</approvaltests.version>
+    <approvaltests.version>13.4.0</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -113,7 +113,7 @@
     <junit.compatible-with-arquillian.version>4.13.2</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
-    <slf4j.version>1.7.35</slf4j.version>
+    <slf4j.version>1.7.36</slf4j.version>
     <mockito.version>4.3.1</mockito.version>
     <lombok.version>1.18.22</lombok.version>
     <snakeyaml.version>1.28</snakeyaml.version>
@@ -125,7 +125,7 @@
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.0.0</buildnumber.plugin.version>
-    <maven.compiler.plugin.version>3.9.0</maven.compiler.plugin.version>
+    <maven.compiler.plugin.version>3.10.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.3.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
@@ -143,12 +143,12 @@
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.2.2</maven.invoker.plugin.version>
-    <maven.plugin.plugin.version>3.6.0</maven.plugin.plugin.version>
+    <maven.plugin.plugin.version>3.6.4</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.2</jandex.plugin.version>
     <jandex.version>2.4.2.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-    <nexus-staging-maven-plugin>1.6.10</nexus-staging-maven-plugin>
+    <nexus-staging-maven-plugin>1.6.11</nexus-staging-maven-plugin>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -1027,7 +1027,7 @@
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
-            <exclude>**/java-generator/it/**/expected/**/*</exclude>
+            <exclude>**/it/**/expected/**/*.expected</exclude>
             <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>
