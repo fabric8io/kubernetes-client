@@ -151,10 +151,10 @@ public class HttpClientUtils {
       HttpClient.Factory possible = iter.next();
       if (factory != null && WARNED.compareAndSet(false, true)) {
         LOGGER.warn("There are multiple httpclient implementation in the classpath, "
-            + "choosing the first non-okhttp implementation. "
+            + "choosing the first non-default implementation. "
             + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.");
       }
-      if (factory == null || !possible.getClass().getName().equals("io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory")) {
+      if (factory == null || (factory.isDefault() && !possible.isDefault())) {
         factory = possible;
       }
     }

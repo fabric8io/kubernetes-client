@@ -31,6 +31,11 @@ import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientFactory implements HttpClient.Factory {
 
+  @Override
+  public boolean isDefault() {
+    return true;
+  }
+
   /**
    * Subclasses may use this to apply a base configuration to the builder
    */
