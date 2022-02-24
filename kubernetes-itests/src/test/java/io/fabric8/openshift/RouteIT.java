@@ -26,7 +26,7 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,8 +37,8 @@ import java.util.concurrent.TimeUnit;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift
@@ -56,6 +56,11 @@ public class RouteIT {
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(RouteIT.class.getResourceAsStream("/route-it.yml"));
+  }
+
+  @Before
+  public void before() {
+    currentNamespace = ClusterEntity.getArquillianNamespace();
   }
 
   @Test

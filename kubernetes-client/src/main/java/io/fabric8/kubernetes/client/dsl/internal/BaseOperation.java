@@ -303,9 +303,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
     }
     T finalItemToCreateOrReplace = itemToCreateOrReplace;
+    // use the Resource in case create or replace is overriden
+    Resource<T> resource = newResource(context);
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
-      this::create,
-      this::replace,
+      resource::create,
+      resource::replace,
       m -> waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
       m -> fromServer().get()
     );
@@ -510,6 +512,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     // set the name, namespace, and item - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example
     item = correctNamespace(item);
+    updateApiVersion(item);
     String itemNs = KubernetesResourceUtil.getNamespace(item);
     OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item)).withItem(item);
     if (Utils.isNotNullOrEmpty(itemNs)) {
