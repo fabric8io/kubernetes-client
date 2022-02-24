@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer.TypeKey;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ class KubernetesDeserializerTest {
     // given
     String version = "version1";
     String kind = "kind1";
-    String key = mapping.createKey(version, kind);
+    TypeKey key = mapping.createKey(version, kind);
     assertThat(mapping.getForKey(key)).isNull();
     // when
     mapping.registerKind(version, kind, SmurfResource.class);
@@ -67,7 +68,7 @@ class KubernetesDeserializerTest {
     // given
     String version = null;
     String kind = "kind1";
-    String key = mapping.createKey(version, kind);
+    TypeKey key = mapping.createKey(version, kind);
     // when
     mapping.registerKind(version, kind, SmurfResource.class);
     // then
@@ -78,10 +79,10 @@ class KubernetesDeserializerTest {
   @Test
   void shouldRegisterProvider() {
     // given
-    String key = mapping.createKey("42", "Hitchhiker");
+    TypeKey key = mapping.createKey("42", "Hitchhiker");
     assertThat(mapping.getForKey(key)).isNull();
     KubernetesResourceMappingProvider provider = createProvider(
-      Pair.of(key, SmurfResource.class));
+      Pair.of("42#Hitchhiker", SmurfResource.class));
     // when
     mapping.registerProvider(provider);
     // then
@@ -94,8 +95,8 @@ class KubernetesDeserializerTest {
     // given
     String version = "version1";
     String kind = SmurfResource.class.getSimpleName();
-    String key = mapping.createKey(version, kind);
-    assertThat(mapping.getForKey(key)).isNull();;
+    TypeKey key = mapping.createKey(version, kind);
+    assertThat(mapping.getForKey(key)).isNull();
     mapping.registerKind(version, kind, SmurfResource.class);
     // when
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
@@ -115,7 +116,7 @@ class KubernetesDeserializerTest {
   @Test
   void shouldLoadClassInPackage() {
     // given
-    String key = mapping.createKey("42", Pod.class.getSimpleName());
+    TypeKey key = mapping.createKey("42", Pod.class.getSimpleName());
     // when
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     // then
@@ -123,19 +124,29 @@ class KubernetesDeserializerTest {
   }
 
   @Test
-  void shouldNotLoadClassInPackageIfNotKubernetesResource() {
-    // given Quantity is not a KubernetesResource
-    String key = mapping.createKey("42", Quantity.class.getSimpleName());
+  void shouldNotLoadClassInPackage() {
+    // given
+    TypeKey key = mapping.createKey("other/v1", Pod.class.getSimpleName());
     // when
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     // then
-    assertThat(clazz).isNull();;
+    assertThat(clazz).isNull();
+  }
+
+  @Test
+  void shouldNotLoadClassInPackageIfNotKubernetesResource() {
+    // given Quantity is not a KubernetesResource
+    TypeKey key = mapping.createKey("42", Quantity.class.getSimpleName());
+    // when
+    Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
+    // then
+    assertThat(clazz).isNull();
   }
 
   @Test
   void shouldLoadClassIfKeyOnlyHasKind() {
     // given Quantity is not a KubernetesResource
-    String key = mapping.createKey(null, Pod.class.getSimpleName());
+    TypeKey key = mapping.createKey(null, Pod.class.getSimpleName());
     // when
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     // then
@@ -160,11 +171,6 @@ class KubernetesDeserializerTest {
       return Stream.of(provider);
     }
 
-
-    @Override
-    protected String createKey(String apiVersion, String kind) {
-      return super.createKey(apiVersion, kind);
-    }
   }
 
   private static final class SmurfResource implements KubernetesResource {

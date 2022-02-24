@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -43,6 +43,37 @@ import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.util.Helper;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
+
+    static class TypeKey {
+        final String kind;
+        final String apiGroup;
+        final String version;
+
+        TypeKey(String kind, String apiGroup, String version) {
+            this.kind = kind;
+            this.apiGroup = apiGroup;
+            this.version = version;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(kind, apiGroup, version);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof TypeKey)) {
+                return false;
+            }
+            TypeKey o = (TypeKey) obj;
+            return Objects.equals(kind, o.kind) && Objects.equals(apiGroup, o.apiGroup)
+                    && Objects.equals(version, o.version);
+        }
+
+    }
 
     private static final String TEMPLATE_CLASS_NAME = "io.fabric8.openshift.api.model.Template";
     private static final String KIND = "kind";
@@ -84,7 +115,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     }
 
     private static KubernetesResource fromObjectNode(JsonParser jp, JsonNode node) throws IOException {
-        String key = getKey(node);
+        TypeKey key = getKey(node);
         if (key != null) {
             Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
             if (resourceType == null) {
@@ -110,7 +141,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     /**
      * Return a string representation of the key of the type: <version>#<kind>.
      */
-    private static String getKey(JsonNode node) {
+    private static TypeKey getKey(JsonNode node) {
         JsonNode apiVersion = node.get(API_VERSION);
         JsonNode kind = node.get(KIND);
 
@@ -216,25 +247,54 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.kubernetes.api.model.extensions."
         };
 
-        private Map<String, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
+        private Map<TypeKey, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
+        private Map<String, List<TypeKey>> internalMappings = new ConcurrentHashMap<>();
 
         Mapping() {
         	registerAllProviders();
         }
 
-        public Class<? extends KubernetesResource> getForKey(String key) {
+        public Class<? extends KubernetesResource> getForKey(TypeKey key) {
             if (key == null) {
                 return null;
             }
+            // check for an exact match
             Class<? extends KubernetesResource> clazz = mappings.get(key);
             if (clazz != null) {
                 return clazz;
             }
-            clazz = getInternalTypeForName(key);
-            if (clazz != null) {
-                mappings.put(key, clazz);
+            // check if it's a lazily-loaded internal type
+            List<TypeKey> defaults = internalMappings.get(key.kind);
+            if (defaults == null) {
+                defaults = loadInternalTypes(key.kind);
+                clazz = mappings.get(key); // check again after load for an exact match
+                if (clazz != null) {
+                    return clazz;
+                }
             }
-            return clazz;
+            // if there are internal types matching kind, look for matching groups and versions
+            // but use first version seen (in PACKAGES order)
+            TypeKey bestMatch = null;
+            for (TypeKey typeKey : defaults) {
+                if (key.apiGroup != null) {
+                    if (!key.apiGroup.equals(typeKey.apiGroup)) {
+                        continue;
+                    }
+                    bestMatch = typeKey;
+                    break;
+                }
+                if (key.version != null && key.version.equals(typeKey.apiGroup)) {
+                    bestMatch = typeKey;
+                    break;
+                }
+                if (bestMatch == null) {
+                    bestMatch = typeKey;
+                }
+            }
+            if (bestMatch != null) {
+                return mappings.get(bestMatch);
+            }
+            return null;
         }
 
         public void registerKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
@@ -245,25 +305,37 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
             if (provider == null) {
                 return;
             }
-            Map<String, Class<? extends KubernetesResource>> providerMappings = provider.getMappings().entrySet().stream()
+            provider.getMappings().entrySet().stream()
                     //If the model is shaded (which is as part of kubernetes-client uberjar) this is going to cause conflicts.
                     //This is why we NEED TO filter out incompatible resources.
                     .filter(entry -> KubernetesResource.class.isAssignableFrom(entry.getValue()))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            mappings.putAll(providerMappings);
+                    .forEach(e -> mappings.put(createKey(e.getKey()), e.getValue()));
         }
 
         /**
          * Returns a composite key for apiVersion and kind.
          */
-        String createKey(String apiVersion, String kind) {
+        TypeKey createKey(String apiVersion, String kind) {
             if (kind == null) {
                 return null;
             } else if (apiVersion == null) {
-                return kind;
+                return new TypeKey(kind, null, null);
             } else {
-                return apiVersion + KEY_SEPARATOR + kind;
+                String[] versionParts = new String[] {null, apiVersion};
+                if (apiVersion.contains("/")) {
+                    versionParts = apiVersion.split("/", 2);
+                }
+                return new TypeKey(kind, versionParts[0], versionParts[1]);
             }
+        }
+
+        TypeKey createKey(String key) {
+            // null is not allowed
+            if (key.contains(KEY_SEPARATOR)) {
+                String[] parts = key.split(KEY_SEPARATOR, 2);
+                return createKey(parts[0], parts[1]);
+            }
+            return createKey(null, key);
         }
 
         private void registerAllProviders() {
@@ -284,52 +356,31 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                     .filter(distinctByClassName(KubernetesResourceMappingProvider::getClass));
         }
 
-        private String getClassName(String key) {
-            if (key != null && key.contains(KEY_SEPARATOR)) {
-                return key.substring(key.indexOf(KEY_SEPARATOR) + 1);
-            } else {
-                return key;
+        private List<TypeKey> loadInternalTypes(String kind) {
+            List<TypeKey> ordering = new ArrayList<>();
+            for (int i = 0; i < PACKAGES.length; i++) {
+                Class<? extends KubernetesResource> result = loadClassIfExists(PACKAGES[i] + kind);
+                if (result == null) {
+                    continue;
+                }
+                TypeKey defaultKeyFromClass = getKeyFromClass(result);
+                mappings.put(defaultKeyFromClass, result);
+                ordering.add(defaultKeyFromClass);
             }
+
+            internalMappings.put(kind, ordering);
+            return ordering;
         }
 
-        private Class<? extends KubernetesResource> getInternalTypeForName(String key) {
-            String name = getClassName(key);
-            List<Class<? extends KubernetesResource>> possibleResults = new ArrayList<>();
-
-            // First pass, check if there are more than one class of same name
-            for (String aPackage : PACKAGES) {
-                Class<? extends KubernetesResource> result = loadClassIfExists(aPackage + name);
-                if (result != null) {
-                    possibleResults.add(result);
-                }
-            }
-
-            // If only one class found, return it
-            if (possibleResults.size() == 1) {
-                return possibleResults.get(0);
-            } else if (possibleResults.size() > 1) {
-              // Compare with apiVersions being compared for set of classes found
-              for (Class<? extends KubernetesResource> result : possibleResults) {
-                String defaultKeyFromClass = getKeyFromClass(result);
-                if (key.equals(defaultKeyFromClass)) {
-                  return result;
-                }
-              }
-              return possibleResults.get(0);
-            } else {
-              return null;
-            }
-        }
-
-        private String getKeyFromClass(Class<? extends KubernetesResource> clazz) {
+        private TypeKey getKeyFromClass(Class<? extends KubernetesResource> clazz) {
           String apiGroup = Helper.getAnnotationValue(clazz, Group.class);
           String apiVersion = Helper.getAnnotationValue(clazz, Version.class);
           if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {
-            return createKey(apiGroup + "/" + apiVersion, clazz.getSimpleName());
+            return new TypeKey(clazz.getSimpleName(), apiGroup, apiVersion);
           } else if (apiVersion != null && !apiVersion.isEmpty()) {
             return createKey(apiVersion, clazz.getSimpleName());
           }
-          return clazz.getSimpleName();
+          return new TypeKey(clazz.getSimpleName(), null, null);
         }
 
         private Class<? extends KubernetesResource> loadClassIfExists(String className) {
