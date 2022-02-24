@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
@@ -51,8 +54,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Utils {
 
@@ -63,7 +64,7 @@ public class Utils {
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
   private static final Random random = new Random();
-  
+
   private static final ExecutorService SHARED_POOL = Executors.newCachedThreadPool();
   private static final CachedSingleThreadScheduler SHARED_SCHEDULER = new CachedSingleThreadScheduler();
 
@@ -166,12 +167,12 @@ public class Utils {
         t = e.getCause();
       }
       t.addSuppressed(new Throwable("waiting here"));
-      throw KubernetesClientException.launderThrowable(t);      
+      throw KubernetesClientException.launderThrowable(t);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   /**
    * Similar to {@link #waitUntilReady(Future, long, TimeUnit)}, but will always throw an exception if not ready
    */
@@ -222,15 +223,6 @@ public class Utils {
   public static String randomString(int length) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < length; i++) {
-      int index = random.nextInt(ALL_CHARS.length());
-      sb.append(ALL_CHARS.charAt(index));
-    }
-    return sb.toString();
-  }
-
-  public static String randomString(String prefix, int length) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < length - prefix.length(); i++) {
       int index = random.nextInt(ALL_CHARS.length());
       sb.append(ALL_CHARS.charAt(index));
     }
@@ -431,7 +423,7 @@ public class Utils {
   private static String getOperatingSystemFromSystemProperty() {
     return System.getProperty(OS_NAME);
   }
-  
+
   /**
    * Create a {@link ThreadFactory} with daemon threads and a thread
    * name based upon the object passed in.
@@ -444,17 +436,17 @@ public class Utils {
   static ThreadFactory daemonThreadFactory(String name) {
     return new ThreadFactory() {
       ThreadFactory threadFactory = Executors.defaultThreadFactory();
-      
+
       @Override
       public Thread newThread(Runnable r) {
-        Thread ret = threadFactory.newThread(r); 
+        Thread ret = threadFactory.newThread(r);
         ret.setName(name + "-" + ret.getName());
         ret.setDaemon(true);
         return ret;
       }
     };
   }
-  
+
   /**
    * Schedule a task to run in the given {@link Executor} - which should run the task in a different thread as to not
    * hold the scheduling thread
@@ -471,12 +463,12 @@ public class Utils {
     // because of the hand-off to the other executor, there's no difference between rate and delay
     return SHARED_SCHEDULER.scheduleWithFixedDelay(() -> executor.execute(command), initialDelay, delay, unit);
   }
-  
+
   /**
    * Get the common executor service - callers should not shutdown this service
    */
   public static ExecutorService getCommonExecutorSerive() {
     return SHARED_POOL;
   }
-    
+
 }
