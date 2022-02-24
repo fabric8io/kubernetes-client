@@ -233,7 +233,7 @@ public class TemplateOperationsImpl
 
   @Override
   public TemplateResource<Template, KubernetesList> load(InputStream is) {
-    String generatedName = Utils.randomString("template-", 10);
+    String generatedName = "template-" + Utils.randomString(5);
     Template template = null;
     Object item = Serialization.unmarshal(is, parameters);
     if (item instanceof Template) {
