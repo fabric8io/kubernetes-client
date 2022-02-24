@@ -53,7 +53,7 @@ public class ObjectMeta implements KubernetesResource
 {
 
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    private Map<String, String> annotations = new HashMap<>();
     @JsonProperty("clusterName")
     private java.lang.String clusterName;
     @JsonProperty("creationTimestamp")
@@ -70,7 +70,7 @@ public class ObjectMeta implements KubernetesResource
     @JsonProperty("generation")
     private Long generation;
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    private Map<String, String> labels = new HashMap<>();
     @JsonProperty("managedFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ManagedFieldsEntry> managedFields = new ArrayList<ManagedFieldsEntry>();
