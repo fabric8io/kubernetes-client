@@ -15,7 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,6 +36,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
@@ -427,23 +431,19 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
   }
 
+  private Future<?> readFileTo(String source, OutputStream out) {
+    return readTo(new Base64.OutputStream(out, Base64.DECODE), "sh", "-c", String.format("cat %s | base64", shellQuote(source)));
+  }
+
   private InputStream readFile(String source) {
     try {
       PipedOutputStream out = new PipedOutputStream();
       PipedInputStream in = new PipedInputStream(out, 1024);
-      ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
-          try {
-            out.flush();
-            out.close();
-          } catch (IOException e) {
-            throw KubernetesClientException.launderThrowable(e);
-          }
-        }
-      ).exec("sh", "-c", String.format("cat %s | base64", shellQuote(source)));
-      return new Base64.InputStream(in) {
+      final Future<?> future = readFileTo(source, out);
+      return new FilterInputStream(in) {
         @Override
         public void close() throws IOException {
-          watch.close();
+          future.cancel(false);
           super.close();
         }
       };
@@ -468,33 +468,71 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
         String filename = parts[parts.length - 1];
         destination = destination.toPath().resolve(filename).toFile();
     }
-    try (InputStream is = readFile(source);) {
-      Files.copy(is, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+    try (OutputStream out = new BufferedOutputStream(new FileOutputStream(destination))) {
+      readFileTo(source, out).get();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  private Future<?> readTarTo(String source, OutputStream out) {
+    return readTo(new Base64.OutputStream(out, Base64.DECODE), "sh", "-c", "tar -cf - " + source + "|" + "base64");
   }
 
   public InputStream readTar(String source) {
     try {
       PipedOutputStream out = new PipedOutputStream();
       PipedInputStream in = new PipedInputStream(out, 1024);
-      ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
-          try {
-            out.flush();
-            out.close();
-          } catch (IOException e) {
-            throw KubernetesClientException.launderThrowable(e);
-          }
-        }
-      ).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
-      return new Base64.InputStream(in) {
+      final Future<?> future = readTarTo(source, out);
+      return new FilterInputStream(in) {
         @Override
         public void close() throws IOException {
-          watch.close();
+          future.cancel(false);
           super.close();
         }
       };
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  private Future<?> readTo(OutputStream out, String... cmd) {
+    try {
+      CompletableFuture<Void> cp = new CompletableFuture<>();
+      ExecWatch w = writingOutput(out).usingListener(new ExecListener() {
+        @Override
+        public void onClose(int code, String reason) {
+          try {
+            out.flush();
+            out.close();
+            cp.complete(null);
+          } catch (IOException e) {
+            cp.completeExceptionally(e);
+            throw KubernetesClientException.launderThrowable(e);
+          }
+        }
+
+        @Override
+        public void onFailure(Throwable t, Response failureResponse) {
+          try {
+            out.flush();
+            out.close();
+            cp.completeExceptionally(t);
+          } catch (IOException e) {
+            e.addSuppressed(t);
+            cp.completeExceptionally(e);
+            throw KubernetesClientException.launderThrowable(e);
+          }
+        }
+      }).exec(cmd);
+
+      cp.whenComplete((o, t) -> {
+        if (cp.isCancelled()) {
+          w.close();
+        }
+      });
+      return cp;
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
