@@ -11,6 +11,7 @@
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
 * Fix #3889 : remove piped stream for file download
+* Fix #1285: removed references to manually calling registerCustomKind
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0

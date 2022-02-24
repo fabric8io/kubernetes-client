@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -34,7 +34,6 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 import io.fabric8.kubernetes.examples.crds.DummySpec;
-import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +92,7 @@ public class CRDExample {
         }
       }
 
-      CustomResourceDefinitionList crds = client.apiextensions().v1beta1().customResourceDefinitions().list();
+      CustomResourceDefinitionList crds = client.apiextensions().v1().customResourceDefinitions().list();
       List<CustomResourceDefinition> crdsItems = crds.getItems();
       System.out.println("Found " + crdsItems.size() + " CRD(s)");
       CustomResourceDefinition dummyCRD = null;
@@ -111,15 +110,34 @@ public class CRDExample {
       if (dummyCRD != null) {
         System.out.println("Found CRD: " + dummyCRD.getMetadata().getSelfLink());
       } else {
-        dummyCRD = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(Dummy.class).build();
-        client.apiextensions().v1beta1().customResourceDefinitions().create(dummyCRD);
+        dummyCRD = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(Dummy.class)
+          .editSpec()
+          .editVersion(0)
+          .withNewSchema()
+          .withNewOpenAPIV3Schema()
+          .withTitle("dummy")
+          .withType("object")
+          .addToRequired("spec")
+          .addToProperties("spec", new JSONSchemaPropsBuilder()
+            .withType("object")
+            .addToProperties("foo", new JSONSchemaPropsBuilder().withType("string").build())
+            .addToProperties("bar", new JSONSchemaPropsBuilder().withType("string").build())
+            .build())
+          .endOpenAPIV3Schema()
+          .endSchema()
+          .endVersion()
+          .endSpec()
+          .build();
+
+        client.apiextensions().v1().customResourceDefinitions().create(dummyCRD);
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }
 
-      KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(Dummy.class), dummyCRD.getKind(), Dummy.class);
+      // wait a beat for the endpoints to be ready
+      Thread.sleep(5000);
 
       // lets create a client for the CRD
-      NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.customResources(Dummy.class, DummyList.class);
+      NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.resources(Dummy.class, DummyList.class);
       if (resourceNamespaced) {
         dummyClient = ((MixedOperation<Dummy, DummyList, Resource<Dummy>>) dummyClient).inNamespace(namespace);
       }
