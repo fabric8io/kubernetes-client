@@ -201,6 +201,30 @@ The CRD generator will substitute the default type inferred from the field and r
             type: object
 ```
 
+### io.fabric8.crd.generator.annotation.SchemaSwap
+
+If a class is annotated with `io.fabric8.crd.generator.annotation.SchemaSwap`
+
+```java
+@SchemaSwap(originalType = ExampleSpec.class, fieldName = "someValue", targetType = ExampleStatus.class)
+public class Example extends CustomResource<ExampleSpec, ExampleStatus> implements Namespaced {}
+```
+
+The CRD generator will perform the same substitution as a `SchemaFrom` annotation with `value` equal to `targetType` was placed on the field named `fieldName` in the `originalType` class:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                type: object
+            type: object
+```
+
 ### Generating `x-kubernetes-preserve-unknown-fields: true`
 
 If a field or one of its accessors is annotated with
@@ -246,5 +270,6 @@ Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in 
 | `com.fasterxml.jackson.annotation.JsonAnySetter`          | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
 | `javax.validation.constraints.NotNull`                    | The field is marked as `required`                                                     |
 | `io.fabric8.crd.generator.annotation.SchemaFrom`          | The field type for the generation is the one coming from the annotation               |
+| `io.fabric8.crd.generator.annotation.SchemaSwap`          | Same as SchemaFrom, but can be applied at any point in the class hierarchy            |
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
