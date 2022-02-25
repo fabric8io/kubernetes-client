@@ -15,44 +15,22 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TemplateTest {
 
-  private static ObjectMapper objectMapper;
-
-  @BeforeAll
-  static void beforeAll() {
-    objectMapper = new ObjectMapper();
-  }
-
   @Test
-  @DisplayName("getObjects, with objects member field null, should return empty List")
-  void getObjectsWithNullFieldShouldReturnEmptyList() {
-    // Given
-    final Template template = new Template();
-    template.setObjects(null);
-    // When
-    final List<HasMetadata> result = template.getObjects();
-    // Then
-    assertThat(result).isNotNull().isEmpty();
-  }
-
-  @Test
-  @DisplayName("getObjects, with objects, should return sorted List")
-  void getObjectsWithObjectsShouldReturnSortedList() {
+  @DisplayName("getObjects, with objects, should return List")
+  void getObjectsWithObjectsShouldReturnList() {
     // Given
     final Template template = new TemplateBuilder()
       .addToObjects(new SecretBuilder().build())
@@ -64,18 +42,7 @@ class TemplateTest {
     // Then
     assertThat(result)
       .extracting("class")
-      .containsExactly(Project.class, Secret.class, Service.class);
+      .containsExactly(Secret.class, Service.class, Project.class);
   }
 
-  @Test
-  @DisplayName("serialize from deserialized, with null objects, should serialize")
-  void serializeFromDeserializedWithNullObjectsShouldSerialize() throws IOException {
-    // Given
-    final Template template = objectMapper.readValue(
-      TemplateTest.class.getResource("/template-with-null-objects.json").openStream(), Template.class);
-    // When
-    final String result = objectMapper.writeValueAsString(template);
-    // Then
-    assertThat(result).contains("\"objects\":[]");
-  }
 }

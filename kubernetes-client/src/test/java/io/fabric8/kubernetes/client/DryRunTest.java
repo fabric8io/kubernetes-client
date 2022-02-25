@@ -182,8 +182,8 @@ class DryRunTest {
 
     // Then
     verify(mockClient, times(2)).send(any(), any());
-    assertRequest("POST", "/api/v1/namespaces/ns1/services", "dryRun=All");
-    assertRequest(1, "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    assertRequest("POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    assertRequest(1, "POST", "/api/v1/namespaces/ns1/services", "dryRun=All");
   }
 
   @Test
@@ -197,8 +197,8 @@ class DryRunTest {
 
     // Then
     verify(mockClient, times(2)).send(any(), any());
-    assertRequest("DELETE", "/api/v1/namespaces/ns1/services/svc1", "dryRun=All");
-    assertRequest(1, "DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    assertRequest("DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    assertRequest(1, "DELETE", "/api/v1/namespaces/ns1/services/svc1", "dryRun=All");
   }
 
   private Pod getPod(String name) {
