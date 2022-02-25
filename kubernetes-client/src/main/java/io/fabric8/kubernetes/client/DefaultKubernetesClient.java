@@ -225,7 +225,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items) {
     return resourceList(new KubernetesListBuilder().withItems(new ArrayList<>(items)).build());
   }
 

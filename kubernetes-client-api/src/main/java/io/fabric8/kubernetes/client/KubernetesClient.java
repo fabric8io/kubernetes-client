@@ -389,7 +389,7 @@ public interface KubernetesClient extends Client {
    * @param items a collection containing HasMetadata values
    * @return operations object for Kubernetes list
    */
-  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as a HasMetadata object and do
