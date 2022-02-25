@@ -4,6 +4,7 @@
 - [API/Impl split](#api-impl-split)
 - [Deprecation Removals](#deprecation-removals)
 - [IntOrString changes](#intorstring-changes)
+- [Object sorting](#object-sorting)
 
 ## API/Impl split
 
@@ -64,3 +65,7 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
   IntOrString i2 = new IntOrString("3000");
   String strValue = i2.getStrVal();
   ```
+  
+## Object Sorting
+
+KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.

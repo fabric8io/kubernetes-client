@@ -39,7 +39,7 @@ class OpenShiftLoadTest {
     // then
     assertNotNull(result);
     assertEquals(5, result.size());
-    HasMetadata deploymentResource = result.get(1);
+    HasMetadata deploymentResource = result.get(2);
     assertEquals("v1", deploymentResource.getApiVersion());
     assertEquals("ImageStream", deploymentResource.getKind());
     assertEquals("eap-app", deploymentResource.getMetadata().getName());
