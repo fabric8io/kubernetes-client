@@ -328,7 +328,7 @@ public class ConfigTest {
   }
 
   @Test
-  void testFromKubeconfigContent() throws IOException {
+  void testFromKubeconfigContent() throws IOException, AuthException {
     File configFile = new File(TEST_KUBECONFIG_FILE);
     final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
     final Config config = Config.fromKubeconfig(configYAML);
@@ -336,7 +336,7 @@ public class ConfigTest {
   }
 
   @Test
-  void testFromKubeconfigKeyAlgo() throws IOException {
+  void testFromKubeconfigKeyAlgo() throws IOException, AuthException {
     File configFile = new File(TEST_EC_KUBECONFIG_FILE);
     final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
     final Config config = Config.fromKubeconfig(configYAML);

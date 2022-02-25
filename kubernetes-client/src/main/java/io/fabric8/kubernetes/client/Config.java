@@ -274,7 +274,13 @@ public class Config {
   }
 
   private static Config autoConfigure(Config config, String context) {
-    if (!tryKubeConfig(config, context)) {
+    boolean fromKubeconfig = false;
+    try {
+      fromKubeconfig = tryKubeConfig(config, context);
+    } catch (AuthException e) {
+      LOGGER.warn(e.getMessage());
+    }
+    if (!fromKubeconfig) {
       tryServiceAccount(config);
       tryNamespaceFromPath(config);
     }
@@ -522,12 +528,12 @@ public class Config {
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
   }
 
-  public static Config fromKubeconfig(String kubeconfigContents) {
+  public static Config fromKubeconfig(String kubeconfigContents) throws AuthException {
     return fromKubeconfig(null, kubeconfigContents, null);
   }
 
   // Note: kubeconfigPath is optional (see note on loadFromKubeConfig)
-  public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
+  public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) throws AuthException {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config();
     if(kubeconfigPath != null)
@@ -536,7 +542,7 @@ public class Config {
     return config;
   }
 
-  private static boolean tryKubeConfig(Config config, String context) {
+  private static boolean tryKubeConfig(Config config, String context) throws AuthException {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       return false;
@@ -570,7 +576,7 @@ public class Config {
     return fileName;
   }
 
-  private static String getKubeconfigContents(File kubeConfigFile) {
+  public static String getKubeconfigContents(File kubeConfigFile) {
     String kubeconfigContents = null;
     try (FileReader reader = new FileReader(kubeConfigFile)){
       kubeconfigContents = IOHelpers.readFully(reader);
@@ -584,7 +590,7 @@ public class Config {
   // Note: kubeconfigPath is optional
   // It is only used to rewrite relative tls asset paths inside kubeconfig when a file is passed, and in the case that
   // the kubeconfig references some assets via relative paths.
-  private static boolean loadFromKubeconfig(Config config, String context, String kubeconfigContents) {
+  private static boolean loadFromKubeconfig(Config config, String context, String kubeconfigContents) throws AuthException {
     try {
       io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
       config.setContexts(kubeConfig.getContexts());
@@ -634,11 +640,16 @@ public class Config {
           } else if (config.getOauthTokenProvider() == null) {  // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
             ExecConfig exec = currentAuthInfo.getExec();
             if (exec != null) {
-              ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
-              if (ec != null && ec.status != null && ec.status.token != null) {
-                config.setOauthToken(ec.status.token);
-              } else {
-                LOGGER.warn("No token returned");
+              try {
+                ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
+                if (ec != null && ec.status != null && ec.status.token != null) {
+                  config.setOauthToken(ec.status.token);
+                } else {
+                  LOGGER.warn("No token returned");
+                }
+              } catch (AuthException e) {
+                config.getErrorMessages().put(406, "An error occurred while authorizing");
+                throw e; // this exception will be logged and handled outside
               }
             }
           }
@@ -648,6 +659,8 @@ public class Config {
         }
         return true;
       }
+    } catch (AuthException e) {
+      throw e; // just rethrow
     } catch (Exception e) {
       LOGGER.error("Failed to parse the kubeconfig.", e);
     }
@@ -655,12 +668,13 @@ public class Config {
     return false;
   }
 
-  protected static ExecCredential getExecCredentialFromExecConfig(ExecConfig exec, File configFile) throws IOException, InterruptedException {
+  protected static ExecCredential getExecCredentialFromExecConfig(ExecConfig exec, File configFile) throws IOException, InterruptedException, AuthException {
     String apiVersion = exec.getApiVersion();
     if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion) || "client.authentication.k8s.io/v1beta1".equals(apiVersion)) {
       List<ExecEnvVar> env = exec.getEnv();
       // TODO check behavior of tty & stdin
-      ProcessBuilder pb = new ProcessBuilder(getAuthenticatorCommandFromExecConfig(exec, configFile, Utils.getSystemPathVariable()));
+      List<String> authCommand = getAuthenticatorCommandFromExecConfig(exec, configFile, Utils.getSystemPathVariable());
+      ProcessBuilder pb = new ProcessBuilder(authCommand);
       pb.redirectErrorStream(true);
       if (env != null) {
         Map<String, String> environment = pb.environment();
@@ -671,8 +685,10 @@ public class Config {
       try (InputStream is = p.getInputStream()) {
         output = IOHelpers.readFully(is);
       }
-      if (p.waitFor() != 0) {
-        LOGGER.warn(output);
+      int returnCode = p.waitFor();
+      if (returnCode != 0) {
+        String message = String.format("An error occurred while executing auth command ('%s'). Return code: %d", String.join(" ", authCommand), p.waitFor());
+        throw new AuthException(message, output);
       }
       ExecCredential ec = Serialization.unmarshal(output, ExecCredential.class);
       if (!apiVersion.equals(ec.apiVersion)) {
