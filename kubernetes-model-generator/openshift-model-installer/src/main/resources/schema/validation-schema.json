@@ -2657,48 +2657,16 @@
     },
     "platform": {
       "properties": {
-        "apiVIP": {
-          "type": "string"
-        },
-        "cluster": {
-          "type": "string"
-        },
-        "clusterOSImage": {
-          "type": "string"
-        },
-        "datacenter": {
-          "type": "string"
-        },
-        "defaultDatastore": {
+        "URI": {
           "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
-        },
-        "diskType": {
-          "type": "string"
-        },
-        "folder": {
-          "type": "string"
-        },
-        "ingressVIP": {
-          "type": "string"
+          "$ref": "#/definitions/os_installer_libvirt_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool"
         },
         "network": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "resourcePool": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "vCenter": {
-          "type": "string"
+          "$ref": "#/definitions/os_installer_libvirt_v1_Network",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.Network"
         }
       },
       "additionalProperties": true

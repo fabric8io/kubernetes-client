@@ -2954,8 +2954,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_TokenRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.TokenRequest"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest"
           }
         },
         "volumeLifecycleModes": {

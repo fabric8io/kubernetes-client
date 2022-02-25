@@ -16394,10 +16394,10 @@
     },
     "clusternetworkentry": {
       "properties": {
-        "CIDR": {
+        "cidr": {
           "type": "string"
         },
-        "hostSubnetLength": {
+        "hostPrefix": {
           "type": "integer"
         }
       },
@@ -21851,7 +21851,13 @@
     },
     "objectreference": {
       "properties": {
-        "group": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "kind": {
           "type": "string"
         },
         "name": {
@@ -21860,7 +21866,10 @@
         "namespace": {
           "type": "string"
         },
-        "resource": {
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
           "type": "string"
         }
       },
