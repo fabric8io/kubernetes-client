@@ -42,20 +42,20 @@ public class JavaGeneratorMojo extends AbstractMojo {
     @Parameter(property = "fabric8.java-generator.enum-uppercase", required = false)
     Boolean enumUppercase = null;
 
-    @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false)
+    @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false, readonly = true)
     Config.Prefix prefixStrategy = null;
 
     @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
     Config.Suffix suffixStrategy = null;
 
-    @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false)
+    @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false, readonly = true)
     Boolean alwaysPreserveUnknown = null;
 
     @Parameter(property = "fabric8.java-generator.extra-annotations", required = false)
     Boolean extraAnnotations = null;
 
-    @Parameter(property = "fabric8.java-generator.code-structure", required = false)
-    Config.CodeStructure codeStructure = null;
+    @Parameter(property = "fabric8.java-generator.code-structure", required = false, readonly = true)
+    protected Config.CodeStructure codeStructure = null;
 
     @Override
     public void execute() {
