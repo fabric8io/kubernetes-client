@@ -229,6 +229,13 @@ public class JObject extends AbstractJSONSchema2Pojo {
 
         if (Utils.isNotNullOrEmpty(prop.getDescription())) {
           objField.setJavadocComment(prop.getDescription());
+
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name(
+                      "com.fasterxml.jackson.annotation.JsonPropertyDescription"),
+                  new StringLiteralExpr(
+                      prop.getDescription().replace("\"", "\\\""))));
         }
       } catch (Exception cause) {
         throw new JavaGeneratorException(

@@ -26,6 +26,7 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
      * AppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("appRole")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("AppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.")
     private io.cert_manager.v1.AppRole appRole;
 
     public io.cert_manager.v1.AppRole getAppRole() {
@@ -40,6 +41,7 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
      * Kubernetes authenticates with Vault by passing the ServiceAccount token stored in the named Secret resource to the Vault server.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("kubernetes")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Kubernetes authenticates with Vault by passing the ServiceAccount token stored in the named Secret resource to the Vault server.")
     private io.cert_manager.v1.Kubernetes kubernetes;
 
     public io.cert_manager.v1.Kubernetes getKubernetes() {
@@ -54,6 +56,7 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
      * TokenSecretRef authenticates with Vault by presenting a token.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("tokenSecretRef")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("TokenSecretRef authenticates with Vault by presenting a token.")
     private io.cert_manager.v1.TokenSecretRef tokenSecretRef;
 
     public io.cert_manager.v1.TokenSecretRef getTokenSecretRef() {
