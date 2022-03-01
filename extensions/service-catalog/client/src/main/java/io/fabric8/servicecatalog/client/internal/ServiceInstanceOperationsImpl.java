@@ -17,14 +17,14 @@ package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
-import io.fabric8.kubernetes.client.extension.ResourceAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.api.model.ServiceBindingBuilder;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
-public class ServiceInstanceOperationsImpl extends ResourceAdapter<ServiceInstance> implements ServiceInstanceResource {
+public class ServiceInstanceOperationsImpl extends ExtensibleResourceAdapter<ServiceInstance> implements ServiceInstanceResource {
 
     public ServiceInstanceOperationsImpl(ExtensibleResource<ServiceInstance> resource, Client client) {
         super(resource, client);

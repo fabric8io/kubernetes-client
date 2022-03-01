@@ -238,12 +238,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> inNamespace(String namespace) {
+    if (namespace == null) {
+      throw new KubernetesClientException("namespace cannot be null");
+    }
     return newInstance(context.withNamespace(namespace));
   }
 
   @Override
   public BaseOperation<T, L, R> inAnyNamespace() {
-    return inNamespace(null);
+    return newInstance(context.withNamespace(null));
   }
 
   @Override

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
- * Provides an interface that is usable by the {@link ResourceAdapter} that returns
+ * Provides an interface that is usable by the {@link ExtensibleResourceAdapter} that returns
  * a non-specialized value
  */
 public interface ExtensibleResource<T> extends Resource<T> {

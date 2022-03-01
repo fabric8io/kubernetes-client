@@ -17,7 +17,7 @@ package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
-import io.fabric8.kubernetes.client.extension.ResourceAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ClusterServiceBrokerOperationsImpl extends ResourceAdapter<ClusterServiceBroker> implements ClusterServiceBrokerResource {
+public class ClusterServiceBrokerOperationsImpl extends ExtensibleResourceAdapter<ClusterServiceBroker> implements ClusterServiceBrokerResource {
 
     public ClusterServiceBrokerOperationsImpl(ExtensibleResource<ClusterServiceBroker> resource, Client client) {
         super(resource, client);

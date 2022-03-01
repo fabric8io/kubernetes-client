@@ -18,11 +18,16 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableOpenShiftMockClient(crud = true)
 class NamespacedItemTest {
@@ -97,6 +102,18 @@ class NamespacedItemTest {
         .create();
 
     assertEquals("explicit", created.getMetadata().getNamespace());
+  }
+
+  @Test
+  void testClientNullNamespace() {
+    NamespacedKubernetesClient nsclient = this.client.adapt(NamespacedKubernetesClient.class);
+    assertThrows(KubernetesClientException.class, () -> nsclient.inNamespace(null));
+  }
+
+  @Test
+  void testOperationNullNamespace() {
+    MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = this.client.configMaps();
+    assertThrows(KubernetesClientException.class, () -> configMaps.inNamespace(null));
   }
 
 }

@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -46,18 +45,16 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
- * To be used as a base for overriding or adding Resource methods
+ * Base for overriding a Resource
  *
  * @param <T> the resource type
  */
 public class ResourceAdapter<T> implements Resource<T> {
 
-  protected ExtensibleResource<T> resource;
-  protected Client client;
+  protected Resource<T> resource;
 
-  public ResourceAdapter(ExtensibleResource<T> resource, Client client) {
+  public ResourceAdapter(Resource<T> resource) {
     this.resource = resource;
-    this.client = client;
   }
 
   @Override
@@ -77,12 +74,17 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public ReplaceDeletable<T> lockResourceVersion(String resourceVersion) {
-    return new ResourceAdapter<>(resource.lockResourceVersion(resourceVersion), client);
+    return resource.lockResourceVersion(resourceVersion);
   }
 
   @Override
   public EditReplacePatchDeletable<T> cascading(boolean enabled) {
-    return new ResourceAdapter<>(resource.cascading(enabled), client);
+    return resource.cascading(enabled);
+  }
+
+  @Override
+  public WritableOperation<T> dryRun() {
+    return resource.dryRun();
   }
 
   @Override
@@ -97,12 +99,12 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public WatchAndWaitable<T> withResourceVersion(String resourceVersion) {
-    return new ResourceAdapter<>(resource.withResourceVersion(resourceVersion), client);
+    return resource.withResourceVersion(resourceVersion);
   }
 
   @Override
   public Gettable<T> fromServer() {
-    return new ResourceAdapter<>(resource.fromServer(), client);
+    return resource.fromServer();
   }
 
   @Override
@@ -117,7 +119,7 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public Deletable withGracePeriod(long gracePeriodSeconds) {
-    return new ResourceAdapter<>(resource.withGracePeriod(gracePeriodSeconds), client);
+    return resource.withGracePeriod(gracePeriodSeconds);
   }
 
   @Override
@@ -142,7 +144,7 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public EditReplacePatchDeletable<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return new ResourceAdapter<>(resource.withPropagationPolicy(propagationPolicy), client);
+    return resource.withPropagationPolicy(propagationPolicy);
   }
 
   @Override
@@ -182,17 +184,17 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public Waitable<T, T> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return new ResourceAdapter<>(resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier), client);
+    return resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier);
   }
 
   @Override
   public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
-    return new ResourceAdapter<>(resource.withIndexers(indexers), client);
+    return resource.withIndexers(indexers);
   }
 
   @Override
   public WritableOperation<T> dryRun(boolean isDryRun) {
-    return new ResourceAdapter<>(resource.dryRun(isDryRun), client);
+    return resource.dryRun(isDryRun);
   }
 
   @Override
@@ -207,7 +209,7 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public Informable<T> withLimit(Long limit) {
-    return new ResourceAdapter<>(resource.withLimit(limit), client);
+    return resource.withLimit(limit);
   }
 
   @Override

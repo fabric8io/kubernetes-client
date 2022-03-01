@@ -171,8 +171,21 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
-    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(name).withDefaultNamespace(false).build();
-    return new DefaultKubernetesClient(newState(updated));
+    return new DefaultKubernetesClient(createInNamespaceContext(name, false));
+  }
+
+  protected ClientContext createInNamespaceContext(String name, boolean any) {
+    if (!any && name == null) {
+      throw new KubernetesClientException("namespace cannot be null");
+    }
+    Config copy = configCopy();
+    copy.setNamespace(name);
+    copy.setDefaultNamespace(false);
+    return newState(copy);
+  }
+  
+  protected Config configCopy() {
+    return new ConfigBuilder(getConfiguration()).build();
   }
 
   @Override
@@ -462,7 +475,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespacedKubernetesClient inAnyNamespace() {
-    return inNamespace(null);
+    return new DefaultKubernetesClient(createInNamespaceContext(null, true));
   }
 
   /**
