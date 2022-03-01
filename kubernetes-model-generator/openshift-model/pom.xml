@@ -99,25 +99,6 @@
             <groupId>org.jsonschema2pojo</groupId>
             <artifactId>jsonschema2pojo-maven-plugin</artifactId>
           </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <target>
-                    <echo>Removing the duplicate generated class</echo>
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/openshift/api/model/Template.java"
-                      verbose="true" />
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>

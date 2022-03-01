@@ -59,7 +59,8 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     }
 
     @Override
-    public GeneratorResult generateJava(CompilationUnit cu) {
+    public GeneratorResult generateJava() {
+        CompilationUnit cu = new CompilationUnit();
         EnumDeclaration en = cu.addEnum(this.type);
 
         en.addField(JAVA_LANG_STRING, VALUE);
@@ -95,6 +96,8 @@ public class JEnum extends AbstractJSONSchema2Pojo {
             en.addEntry(decl);
         }
 
-        return new GeneratorResult(new ArrayList<>(), Collections.singletonList(getType()));
+        return new GeneratorResult(
+                new ArrayList<>(),
+                Collections.singletonList(new GeneratorResult.ClassResult(this.type, cu)));
     }
 }

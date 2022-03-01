@@ -11,6 +11,7 @@
 - [ServiceCatalog Changes](#service-catalog-changes)
 - [Adapt Changes](#adapt-changes)
 - [Deprecations](#deprecations)
+- [Object sorting](#object-sorting)
 
 ## Namespace Changes
 
@@ -152,4 +153,8 @@ Client.isAdaptable and Client.adapt will check first if the existing instance is
 
 ## Deprecations
 
-- ApiVersionUtil classes in each extension have been deprecated, you should use io.fabric8.kubernetes.client.utils.ApiVersionUtil instead. 
+- ApiVersionUtil classes in each extension have been deprecated, you should use io.fabric8.kubernetes.client.utils.ApiVersionUtil instead.
+
+## Object Sorting
+
+KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.

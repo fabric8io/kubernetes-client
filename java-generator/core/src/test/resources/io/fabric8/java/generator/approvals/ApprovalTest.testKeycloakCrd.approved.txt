@@ -2,30 +2,14 @@ KeycloakJavaCr[0] = package org.test.v1alpha1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1alpha1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("keycloak.org")
-public class Keycloak extends io.fabric8.kubernetes.client.CustomResource<KeycloakSpec, KeycloakStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+public class Keycloak extends io.fabric8.kubernetes.client.CustomResource<org.test.v1alpha1.KeycloakSpec, org.test.v1alpha1.KeycloakStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }
+
 KeycloakJavaCr[1] = package org.test.v1alpha1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"extensions","external","externalAccess","externalDatabase","instances","keycloakDeploymentSpec","migration","multiAvailablityZones","podDisruptionBudget","postgresDeploymentSpec","profile","storageClassName","unmanaged"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@lombok.ToString()
-@lombok.EqualsAndHashCode()
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
-@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
-})
 public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     /**
@@ -46,13 +30,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Contains configuration for external Keycloak instances. Unmanaged needs to be set to true to use this.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("external")
-    private ExternalSpec external;
+    private org.test.v1alpha1.keycloakspec.External external;
 
-    public ExternalSpec getExternal() {
+    public org.test.v1alpha1.keycloakspec.External getExternal() {
         return external;
     }
 
-    public void setExternal(ExternalSpec external) {
+    public void setExternal(org.test.v1alpha1.keycloakspec.External external) {
         this.external = external;
     }
 
@@ -60,13 +44,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Controls external Ingress/Route settings.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("externalAccess")
-    private ExternalAccessSpec externalAccess;
+    private org.test.v1alpha1.keycloakspec.ExternalAccess externalAccess;
 
-    public ExternalAccessSpec getExternalAccess() {
+    public org.test.v1alpha1.keycloakspec.ExternalAccess getExternalAccess() {
         return externalAccess;
     }
 
-    public void setExternalAccess(ExternalAccessSpec externalAccess) {
+    public void setExternalAccess(org.test.v1alpha1.keycloakspec.ExternalAccess externalAccess) {
         this.externalAccess = externalAccess;
     }
 
@@ -77,13 +61,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      *  For more information, please refer to the Operator documentation.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("externalDatabase")
-    private ExternalDatabaseSpec externalDatabase;
+    private org.test.v1alpha1.keycloakspec.ExternalDatabase externalDatabase;
 
-    public ExternalDatabaseSpec getExternalDatabase() {
+    public org.test.v1alpha1.keycloakspec.ExternalDatabase getExternalDatabase() {
         return externalDatabase;
     }
 
-    public void setExternalDatabase(ExternalDatabaseSpec externalDatabase) {
+    public void setExternalDatabase(org.test.v1alpha1.keycloakspec.ExternalDatabase externalDatabase) {
         this.externalDatabase = externalDatabase;
     }
 
@@ -105,13 +89,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Resources (Requests and Limits) for KeycloakDeployment.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("keycloakDeploymentSpec")
-    private KeycloakDeploymentSpecSpec keycloakDeploymentSpec;
+    private org.test.v1alpha1.keycloakspec.KeycloakDeploymentSpec keycloakDeploymentSpec;
 
-    public KeycloakDeploymentSpecSpec getKeycloakDeploymentSpec() {
+    public org.test.v1alpha1.keycloakspec.KeycloakDeploymentSpec getKeycloakDeploymentSpec() {
         return keycloakDeploymentSpec;
     }
 
-    public void setKeycloakDeploymentSpec(KeycloakDeploymentSpecSpec keycloakDeploymentSpec) {
+    public void setKeycloakDeploymentSpec(org.test.v1alpha1.keycloakspec.KeycloakDeploymentSpec keycloakDeploymentSpec) {
         this.keycloakDeploymentSpec = keycloakDeploymentSpec;
     }
 
@@ -119,13 +103,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Specify Migration configuration
      */
     @com.fasterxml.jackson.annotation.JsonProperty("migration")
-    private MigrationSpec migration;
+    private org.test.v1alpha1.keycloakspec.Migration migration;
 
-    public MigrationSpec getMigration() {
+    public org.test.v1alpha1.keycloakspec.Migration getMigration() {
         return migration;
     }
 
-    public void setMigration(MigrationSpec migration) {
+    public void setMigration(org.test.v1alpha1.keycloakspec.Migration migration) {
         this.migration = migration;
     }
 
@@ -133,13 +117,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Specify PodAntiAffinity settings for Keycloak deployment in Multi AZ
      */
     @com.fasterxml.jackson.annotation.JsonProperty("multiAvailablityZones")
-    private MultiAvailablityZonesSpec multiAvailablityZones;
+    private org.test.v1alpha1.keycloakspec.MultiAvailablityZones multiAvailablityZones;
 
-    public MultiAvailablityZonesSpec getMultiAvailablityZones() {
+    public org.test.v1alpha1.keycloakspec.MultiAvailablityZones getMultiAvailablityZones() {
         return multiAvailablityZones;
     }
 
-    public void setMultiAvailablityZones(MultiAvailablityZonesSpec multiAvailablityZones) {
+    public void setMultiAvailablityZones(org.test.v1alpha1.keycloakspec.MultiAvailablityZones multiAvailablityZones) {
         this.multiAvailablityZones = multiAvailablityZones;
     }
 
@@ -147,13 +131,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Specify PodDisruptionBudget configuration.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("podDisruptionBudget")
-    private PodDisruptionBudgetSpec podDisruptionBudget;
+    private org.test.v1alpha1.keycloakspec.PodDisruptionBudget podDisruptionBudget;
 
-    public PodDisruptionBudgetSpec getPodDisruptionBudget() {
+    public org.test.v1alpha1.keycloakspec.PodDisruptionBudget getPodDisruptionBudget() {
         return podDisruptionBudget;
     }
 
-    public void setPodDisruptionBudget(PodDisruptionBudgetSpec podDisruptionBudget) {
+    public void setPodDisruptionBudget(org.test.v1alpha1.keycloakspec.PodDisruptionBudget podDisruptionBudget) {
         this.podDisruptionBudget = podDisruptionBudget;
     }
 
@@ -161,13 +145,13 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
      * Resources (Requests and Limits) for PostgresDeployment.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("postgresDeploymentSpec")
-    private PostgresDeploymentSpecSpec postgresDeploymentSpec;
+    private org.test.v1alpha1.keycloakspec.PostgresDeploymentSpec postgresDeploymentSpec;
 
-    public PostgresDeploymentSpecSpec getPostgresDeploymentSpec() {
+    public org.test.v1alpha1.keycloakspec.PostgresDeploymentSpec getPostgresDeploymentSpec() {
         return postgresDeploymentSpec;
     }
 
-    public void setPostgresDeploymentSpec(PostgresDeploymentSpecSpec postgresDeploymentSpec) {
+    public void setPostgresDeploymentSpec(org.test.v1alpha1.keycloakspec.PostgresDeploymentSpec postgresDeploymentSpec) {
         this.postgresDeploymentSpec = postgresDeploymentSpec;
     }
 
@@ -213,28 +197,12 @@ public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesR
         this.unmanaged = unmanaged;
     }
 }
+
 KeycloakJavaCr[2] = package org.test.v1alpha1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"credentialSecret","externalURL","internalURL","message","phase","ready","secondaryResources","version"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@lombok.ToString()
-@lombok.EqualsAndHashCode()
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
-@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
-})
 public class KeycloakStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     /**
@@ -355,3 +323,4 @@ public class KeycloakStatus implements io.fabric8.kubernetes.api.model.Kubernete
         this.version = version;
     }
 }
+

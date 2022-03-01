@@ -15,20 +15,39 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.github.javaparser.ast.CompilationUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GeneratorResult {
 
-    private final List<String> topLevelClasses;
+    public static class ClassResult {
+        private final String name;
+        private final CompilationUnit cu;
 
-    public List<String> getInnerClasses() {
+        public String getName() {
+            return name;
+        }
+
+        public CompilationUnit getCompilationUnit() {
+            return cu;
+        }
+
+        public ClassResult(String name, CompilationUnit cu) {
+            this.name = name;
+            this.cu = cu;
+        }
+    }
+
+    private final List<ClassResult> topLevelClasses;
+
+    public List<ClassResult> getInnerClasses() {
         return innerClasses;
     }
 
-    private final List<String> innerClasses;
+    private final List<ClassResult> innerClasses;
 
-    public List<String> getTopLevelClasses() {
+    public List<ClassResult> getTopLevelClasses() {
         return topLevelClasses;
     }
 
@@ -37,12 +56,12 @@ public class GeneratorResult {
         this.innerClasses = new ArrayList<>();
     }
 
-    public GeneratorResult(List<String> topLevelClasses) {
+    public GeneratorResult(List<ClassResult> topLevelClasses) {
         this.topLevelClasses = topLevelClasses;
         this.innerClasses = new ArrayList<>();
     }
 
-    public GeneratorResult(List<String> topLevelClasses, List<String> innerClasses) {
+    public GeneratorResult(List<ClassResult> topLevelClasses, List<ClassResult> innerClasses) {
         this.topLevelClasses = topLevelClasses;
         this.innerClasses = innerClasses;
     }

@@ -15,9 +15,9 @@
  */
 package io.fabric8.java.generator;
 
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
+import io.fabric8.java.generator.nodes.GeneratorResult;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,58 +25,57 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WritableCRCompilationUnit {
 
-    private final CompilationUnit cu;
-    private final List<String> classNames;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WritableCRCompilationUnit.class);
 
-    WritableCRCompilationUnit(CompilationUnit cu, List<String> classNames) {
-        this.cu = cu;
-        this.classNames = classNames;
+    private final List<GeneratorResult.ClassResult> classResults;
+
+    WritableCRCompilationUnit(List<GeneratorResult.ClassResult> classResults) {
+        this.classResults = classResults;
     }
 
-    public void writeAllJavaClasses(File basePath) {
+    public List<GeneratorResult.ClassResult> getClassResults() {
+        return classResults;
+    }
+
+    public void writeAllJavaClasses(File basePath, String basePackage) {
         try {
-            File finalPath =
-                    createFolders(
-                            cu.getPackageDeclaration().map(p -> p.getName().asString()), basePath);
-            for (String cn : this.classNames) {
-                writeJavaClass(finalPath, cn);
+            createFolders(basePackage, basePath);
+            for (GeneratorResult.ClassResult cr : this.classResults) {
+                String pkg =
+                        cr.getCompilationUnit()
+                                .getPackageDeclaration()
+                                .map(NodeWithName::getNameAsString)
+                                .orElse(null);
+                File path = createFolders(pkg, basePath);
+
+                writeToFile(
+                        path.toPath().resolve(cr.getName() + ".java").toFile(),
+                        cr.getCompilationUnit().toString());
             }
         } catch (Exception e) {
             throw new JavaGeneratorException(e);
         }
     }
 
-    protected String getJavaClass(String name) {
-        Optional<ClassOrInterfaceDeclaration> clazz = cu.getClassByName(name);
-        assert (clazz.isPresent());
-
-        StringBuilder content = new StringBuilder();
-        cu.getPackageDeclaration().ifPresent(content::append);
-        content.append(clazz.get());
-
-        return content.toString();
-    }
-
-    private void writeJavaClass(File basePath, String name) throws IOException {
-        String content = getJavaClass(name);
-
-        writeToFile(basePath.toPath().resolve(name + ".java").toFile(), content);
-    }
-
     private void writeToFile(File file, String str) throws IOException {
+        if (file.exists()) {
+            LOGGER.warn("File {} already exists, overwriting", file.getAbsolutePath());
+        }
         try (FileWriter fileWriter = new FileWriter(file);
                 PrintWriter printWriter = new PrintWriter(fileWriter)) {
             printWriter.println(str);
         }
     }
 
-    private static File createFolders(Optional<String> pkg, File folder) {
+    private static File createFolders(String pkg, File folder) {
         Path destFolder = folder.toPath();
-        if (pkg.isPresent()) {
-            for (String p : pkg.get().split("\\.")) {
+        if (Optional.ofNullable(pkg).isPresent()) {
+            for (String p : pkg.split("\\.")) {
                 destFolder = destFolder.resolve(p);
             }
         }

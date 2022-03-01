@@ -17,10 +17,10 @@ package io.fabric8.java.generator.nodes;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_KEYWORDS;
 
-import com.github.javaparser.ast.CompilationUnit;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import java.util.Locale;
 import java.util.function.Function;
 
 public abstract class AbstractJSONSchema2Pojo {
@@ -41,7 +41,12 @@ public abstract class AbstractJSONSchema2Pojo {
 
     public abstract String getType();
 
-    public abstract GeneratorResult generateJava(CompilationUnit cu);
+    public abstract GeneratorResult generateJava();
+
+    /** Takes a string and return the corresponding package name */
+    public static String packageName(String str) {
+        return str.toLowerCase(Locale.ROOT);
+    }
 
     public String getDescription() {
         return description;
@@ -80,10 +85,22 @@ public abstract class AbstractJSONSchema2Pojo {
     }
 
     public static AbstractJSONSchema2Pojo fromJsonSchema(
-            String key, JSONSchemaProps prop, String prefix, String suffix, Config config) {
+            String key,
+            JSONSchemaProps prop,
+            String parentPkg,
+            String classPrefix,
+            String classSuffix,
+            Config config) {
         Function<JavaNameAndType, AbstractJSONSchema2Pojo> fromJsonSchema =
                 javaNameAndType ->
-                        fromJsonSchema(key, javaNameAndType, prop, prefix, suffix, config);
+                        fromJsonSchema(
+                                key,
+                                javaNameAndType,
+                                prop,
+                                parentPkg,
+                                classPrefix,
+                                classSuffix,
+                                config);
         String type = prop.getType();
         if (Boolean.TRUE.equals(prop.getXKubernetesIntOrString())) {
             return fromJsonSchema.apply(JPrimitiveNameAndType.INT_OR_STRING);
@@ -143,15 +160,22 @@ public abstract class AbstractJSONSchema2Pojo {
             String key,
             JavaNameAndType nt,
             JSONSchemaProps prop,
-            String prefix,
-            String suffix,
+            String parentPkg,
+            String classPrefix,
+            String classSuffix,
             Config config) {
         switch (nt.getType()) {
             case PRIMITIVE:
                 return new JPrimitive(nt.getName(), config, prop.getDescription());
             case ARRAY:
                 return new JArray(
-                        fromJsonSchema(key, prop.getItems().getSchema(), prefix, suffix, config),
+                        fromJsonSchema(
+                                key,
+                                prop.getItems().getSchema(),
+                                parentPkg,
+                                classPrefix,
+                                classSuffix,
+                                config),
                         config,
                         prop.getDescription());
             case MAP:
@@ -159,8 +183,9 @@ public abstract class AbstractJSONSchema2Pojo {
                         fromJsonSchema(
                                 key,
                                 prop.getAdditionalProperties().getSchema(),
-                                prefix,
-                                suffix,
+                                parentPkg,
+                                classPrefix,
+                                classSuffix,
                                 config),
                         config,
                         prop.getDescription());
@@ -168,10 +193,13 @@ public abstract class AbstractJSONSchema2Pojo {
                 boolean preserveUnknownFields =
                         Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields());
                 return new JObject(
+                        parentPkg,
                         key,
                         prop.getProperties(),
                         prop.getRequired(),
-                        new JObjectOptions(preserveUnknownFields, prefix, suffix),
+                        preserveUnknownFields,
+                        classPrefix,
+                        classSuffix,
                         config,
                         prop.getDescription());
             case ENUM:

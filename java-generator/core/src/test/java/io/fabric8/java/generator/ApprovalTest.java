@@ -18,6 +18,7 @@ package io.fabric8.java.generator;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import java.util.ArrayList;
@@ -33,6 +34,12 @@ class ApprovalTest {
         return Serialization.unmarshal(
                 this.getClass().getClassLoader().getResourceAsStream(name),
                 CustomResourceDefinition.class);
+    }
+
+    String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
+        GeneratorResult.ClassResult cr =
+                classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
+        return cr.getCompilationUnit().toString();
     }
 
     @Test
@@ -51,9 +58,10 @@ class ApprovalTest {
         WritableCRCompilationUnit writable = writables.get(0);
 
         List<String> underTest = new ArrayList<>();
-        underTest.add(writable.getJavaClass("CronTab"));
-        underTest.add(writable.getJavaClass("CronTabSpec"));
-        underTest.add(writable.getJavaClass("CronTabStatus"));
+        List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+        underTest.add(getJavaClass(crl, "CronTab"));
+        underTest.add(getJavaClass(crl, "CronTabSpec"));
+        underTest.add(getJavaClass(crl, "CronTabStatus"));
 
         Approvals.verifyAll("CrontabJavaCr", underTest);
     }
@@ -74,9 +82,10 @@ class ApprovalTest {
         WritableCRCompilationUnit writable = writables.get(0);
 
         List<String> underTest = new ArrayList<>();
-        underTest.add(writable.getJavaClass("Keycloak"));
-        underTest.add(writable.getJavaClass("KeycloakSpec"));
-        underTest.add(writable.getJavaClass("KeycloakStatus"));
+        List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+        underTest.add(getJavaClass(crl, "Keycloak"));
+        underTest.add(getJavaClass(crl, "KeycloakSpec"));
+        underTest.add(getJavaClass(crl, "KeycloakStatus"));
 
         Approvals.verifyAll("KeycloakJavaCr", underTest);
     }
@@ -97,9 +106,10 @@ class ApprovalTest {
         WritableCRCompilationUnit writable = writables.get(0);
 
         List<String> underTest = new ArrayList<>();
-        underTest.add(writable.getJavaClass("JokeRequest"));
-        underTest.add(writable.getJavaClass("JokeRequestSpec"));
-        underTest.add(writable.getJavaClass("JokeRequestStatus"));
+        List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+        underTest.add(getJavaClass(crl, "JokeRequest"));
+        underTest.add(getJavaClass(crl, "JokeRequestSpec"));
+        underTest.add(getJavaClass(crl, "JokeRequestStatus"));
 
         Approvals.verifyAll("JokeRequestJavaCr", underTest);
     }
