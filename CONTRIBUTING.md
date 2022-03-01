@@ -84,6 +84,13 @@ To run regression test
 ```
 mvn clean install -P itests
 ```
+#### * Format the files that you touched
+```
+git --no-pager diff --name-only | \
+  sed 's|^.*/main/java/||g' | \
+  sed 's|^.*/test/java/||g' | \
+  xargs -I {} mvn formatter:format impsort:sort -Dimpsort.includes={} -Dformatter.includes={}
+```
 #### * Push the changes to your fork
 ```
 git push origin iss_issueNumber
