@@ -47,3 +47,14 @@ jobs:
           distribution: 'temurin'
       - name: Build Project
         run: mvn ${MAVEN_ARGS} clean install
+      - name: Check Format (only on touched files)
+        run: |
+          set -euxo pipefail
+          git --no-pager diff --name-only | \
+            sed 's|^.*/main/java/||g' | \
+            sed 's|^.*/test/java/||g' | \
+            xargs -I {} mvn formatter:validate -Dformatter.includes={}
+          git --no-pager diff --name-only | \
+            sed 's|^.*/main/java/||g' | \
+            sed 's|^.*/test/java/||g' | \
+            xargs -I {} mvn impsort:check -Dimpsort.includes={}
