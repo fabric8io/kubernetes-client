@@ -17,10 +17,9 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.extension.ExtensibleResource;
+import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 
-import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
  * An Adapter that can be used to adapt an instance of the {@link Client} .
@@ -30,7 +29,7 @@ import java.util.function.BiFunction;
 public interface ExtensionAdapter<C> {
 
   public interface HandlerFactory {
-    <T extends HasMetadata, R extends Resource<T>> void register(Class<T> type, BiFunction<ExtensibleResource<T>, Client, R> target);
+    <T extends HasMetadata, R extends ExtensibleResourceAdapter<T>> void register(Class<T> type, Supplier<R> target);
   }
 
   /**

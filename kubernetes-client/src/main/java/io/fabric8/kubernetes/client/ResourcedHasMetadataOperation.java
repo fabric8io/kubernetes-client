@@ -22,24 +22,26 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.extension.ExtensibleResource;
+import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
-import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
-class ResourcedHasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
+class ResourcedHasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends ExtensibleResourceAdapter<T>>
     extends HasMetadataOperationsImpl<T, L> {
 
-  private BiFunction<ExtensibleResource<T>, Client, R> adapter;
+  private Supplier<R> adapter;
 
-  public ResourcedHasMetadataOperation(OperationContext ctx, ResourceDefinitionContext resourceDefinitionContext, Class<T> type, Class<L> listType, BiFunction<ExtensibleResource<T>, Client, R> adapter) {
+  public ResourcedHasMetadataOperation(OperationContext ctx, ResourceDefinitionContext resourceDefinitionContext, Class<T> type, Class<L> listType, Supplier<R> adapter) {
     super(ctx, resourceDefinitionContext, type, listType);
     this.adapter = adapter;
   }
 
   @Override
   protected R newResource(OperationContext context) {
-    return adapter.apply(super.newInstance(context), new BaseClient(context));
+    R result = adapter.get();
+    result.init(super.newInstance(context), new BaseClient(context));
+    return result;
   }
   
   @Override
@@ -47,12 +49,14 @@ class ResourcedHasMetadataOperation<T extends HasMetadata, L extends KubernetesR
     return new ResourcedHasMetadataOperation<>(context, this.rdc, type, listType, adapter);
   }
   
-  public static <T extends HasMetadata, R extends Resource<T>> void register(
-      Class<T> type, BiFunction<ExtensibleResource<T>, Client, R> target) {
+  public static <T extends HasMetadata, R extends ExtensibleResourceAdapter<T>> void register(
+      Class<T> type, Supplier<R> target) {
+    ResourceDefinitionContext definitionContest = ResourceDefinitionContext.fromResourceType(type);
+    Class<? extends KubernetesResourceList> listType = KubernetesResourceUtil.inferListType(type);
     Handlers.register(type,
         c -> new ResourcedHasMetadataOperation<>(HasMetadataOperationsImpl.defaultContext(c),
-            ResourceDefinitionContext.fromResourceType(type), type,
-            KubernetesResourceUtil.inferListType(type), target));
+              definitionContest, type,
+              listType, target));
   }
 
 }

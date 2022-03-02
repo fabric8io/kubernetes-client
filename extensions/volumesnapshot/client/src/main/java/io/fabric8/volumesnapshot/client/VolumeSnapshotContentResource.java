@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.volumesnapshot.client.internal;
+package io.fabric8.volumesnapshot.client;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
-import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 
-public interface VolumeSnapshotClassResource extends Resource<VolumeSnapshotClass> {
-  VolumeSnapshotList listSnapshots();
+
+public interface VolumeSnapshotContentResource extends Resource<VolumeSnapshotContent> {
 }

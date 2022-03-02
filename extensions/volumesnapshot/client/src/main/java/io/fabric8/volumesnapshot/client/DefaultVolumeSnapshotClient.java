@@ -15,29 +15,22 @@
  */
 package io.fabric8.volumesnapshot.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassOperationsImpl;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassResource;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentOperationsImpl;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentResource;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotOperationsImpl;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotResource;
 
-public class DefaultVolumeSnapshotClient extends BaseClient implements NamespacedVolumeSnapshotClient {
+public class DefaultVolumeSnapshotClient extends ClientAdapter<NamespacedVolumeSnapshotClient> implements NamespacedVolumeSnapshotClient {
 
   public DefaultVolumeSnapshotClient() {
     super();
@@ -47,37 +40,28 @@ public class DefaultVolumeSnapshotClient extends BaseClient implements Namespace
     super(configuration);
   }
 
-  public DefaultVolumeSnapshotClient(ClientContext clientContext) {
-    super(clientContext);
+  public DefaultVolumeSnapshotClient(Client client) {
+    super(client);
   }
 
   @Override
-public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses() {
-    return new VolumeSnapshotClassOperationsImpl(this);
+  protected NamespacedVolumeSnapshotClient newInstance(Client client) {
+    return new DefaultVolumeSnapshotClient(client);
   }
 
   @Override
-public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents() {
-    return new VolumeSnapshotContentOperationsImpl(this);
+  public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses() {
+    return resources(VolumeSnapshotClass.class, VolumeSnapshotClassList.class, VolumeSnapshotClassResource.class);
   }
 
   @Override
-public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots() {
-    return new VolumeSnapshotOperationsImpl(this);
+  public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents() {
+    return resources(VolumeSnapshotContent.class, VolumeSnapshotContentList.class, VolumeSnapshotContentResource.class);
   }
 
   @Override
-  public NamespacedVolumeSnapshotClient inAnyNamespace() {
-    return inNamespace(null);
-  }
-
-  @Override
-  public NamespacedVolumeSnapshotClient inNamespace(String namespace) {
-    Config updated = new ConfigBuilder(getConfiguration())
-      .withNamespace(namespace)
-      .build();
-
-    return new DefaultVolumeSnapshotClient(newState(updated));
+  public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots() {
+    return resources(VolumeSnapshot.class, VolumeSnapshotList.class, VolumeSnapshotResource.class);
   }
 
   @Override

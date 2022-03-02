@@ -16,18 +16,12 @@
 package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 
 public class ServiceBindingOperationsImpl extends ExtensibleResourceAdapter<ServiceBinding> implements ServiceBindingResource {
-
-    public ServiceBindingOperationsImpl(ExtensibleResource<ServiceBinding> resource, Client client) {
-        super(resource, client);
-    }
 
     @Override
     public Secret getSecret() {

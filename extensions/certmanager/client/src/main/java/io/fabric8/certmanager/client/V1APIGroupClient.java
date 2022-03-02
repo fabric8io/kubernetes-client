@@ -28,47 +28,51 @@ import io.fabric8.certmanager.api.model.v1.ClusterIssuerList;
 import io.fabric8.certmanager.api.model.v1.Issuer;
 import io.fabric8.certmanager.api.model.v1.IssuerList;
 import io.fabric8.certmanager.client.dsl.V1APIGroupDSL;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
+public class V1APIGroupClient extends ClientAdapter<V1APIGroupDSL> implements V1APIGroupDSL {
   public V1APIGroupClient() {super();}
 
-  public V1APIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public V1APIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected V1APIGroupDSL newInstance(Client client) {
+    return new V1APIGroupClient(client);
   }
 
   @Override
   public MixedOperation<Certificate, CertificateList, Resource<Certificate>> certificates() {
-    return Handlers.getOperation(Certificate.class, CertificateList.class, this);
+    return resources(Certificate.class, CertificateList.class);
   }
 
   @Override
   public MixedOperation<CertificateRequest, CertificateRequestList, Resource<CertificateRequest>> certificateRequests() {
-    return Handlers.getOperation(CertificateRequest.class, CertificateRequestList.class, this);
+    return resources(CertificateRequest.class, CertificateRequestList.class);
   }
 
   @Override
   public MixedOperation<Issuer, IssuerList, Resource<Issuer>> issuers() {
-    return Handlers.getOperation(Issuer.class, IssuerList.class, this);
+    return resources(Issuer.class, IssuerList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterIssuer, ClusterIssuerList, Resource<ClusterIssuer>> clusterIssuers() {
-    return Handlers.getOperation(ClusterIssuer.class, ClusterIssuerList.class, this);
+    return resources(ClusterIssuer.class, ClusterIssuerList.class);
   }
 
   @Override
   public MixedOperation<Challenge, ChallengeList, Resource<Challenge>> challenges() {
-    return Handlers.getOperation(Challenge.class, ChallengeList.class, this);
+    return resources(Challenge.class, ChallengeList.class);
   }
 
   @Override
   public MixedOperation<Order, OrderList, Resource<Order>> orders() {
-    return Handlers.getOperation(Order.class, OrderList.class, this);
+    return resources(Order.class, OrderList.class);
   }
 }

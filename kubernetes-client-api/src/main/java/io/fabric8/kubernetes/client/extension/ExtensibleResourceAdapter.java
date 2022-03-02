@@ -34,8 +34,16 @@ public class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> implements 
   protected ExtensibleResource<T> resource;
   protected Client client;
 
+  public ExtensibleResourceAdapter() {
+
+  }
+
   public ExtensibleResourceAdapter(ExtensibleResource<T> resource, Client client) {
-    super(resource);
+    init(resource, client);
+  }
+
+  public void init(ExtensibleResource<T> resource, Client client) {
+    super.resource = resource;
     this.resource = resource;
     this.client = client;
   }

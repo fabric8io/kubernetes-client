@@ -19,8 +19,8 @@ package io.fabric8.volumesnapshot.test.crud;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
+import io.fabric8.volumesnapshot.client.VolumeSnapshotClassResource;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassResource;
 import io.fabric8.volumesnapshot.server.mock.EnableVolumeSnapshotMockClient;
 import org.junit.jupiter.api.Test;
 

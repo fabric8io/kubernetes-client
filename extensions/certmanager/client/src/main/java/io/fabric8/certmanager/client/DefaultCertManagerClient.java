@@ -19,15 +19,14 @@ import io.fabric8.certmanager.client.dsl.V1APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class DefaultCertManagerClient extends BaseClient implements NamespacedCertManagerClient {
+public class DefaultCertManagerClient extends ClientAdapter<NamespacedCertManagerClient> implements NamespacedCertManagerClient {
 
   public DefaultCertManagerClient() {
     super();
@@ -37,22 +36,13 @@ public class DefaultCertManagerClient extends BaseClient implements NamespacedCe
     super(configuration);
   }
 
-  public DefaultCertManagerClient(ClientContext clientContext) {
-    super(clientContext);
+  public DefaultCertManagerClient(Client client) {
+    super(client);
   }
 
   @Override
-  public NamespacedCertManagerClient inAnyNamespace() {
-    return inNamespace(null);
-  }
-
-  @Override
-  public NamespacedCertManagerClient inNamespace(String namespace) {
-    Config updated = new ConfigBuilder(getConfiguration())
-      .withNamespace(namespace)
-      .build();
-
-    return new DefaultCertManagerClient(newState(updated));
+  protected NamespacedCertManagerClient newInstance(Client client) {
+    return new DefaultCertManagerClient(client);
   }
 
   @Override
