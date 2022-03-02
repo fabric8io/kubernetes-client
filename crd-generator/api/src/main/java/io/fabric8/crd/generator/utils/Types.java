@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.adapter.api.AdapterContext;
 import io.sundr.adapter.api.Adapters;
+import io.sundr.adapter.apt.AptAdapter;
+import io.sundr.adapter.apt.AptContext;
 import io.sundr.builder.TypedVisitor;
 import io.sundr.model.*;
 import io.sundr.model.functions.GetDefinition;

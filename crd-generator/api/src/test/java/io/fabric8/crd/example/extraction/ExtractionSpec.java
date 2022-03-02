@@ -22,4 +22,6 @@ public class ExtractionSpec {
   @SchemaFrom(type = FooExtractor.class)
   private Foo foo;
 
+  private Foo bar;
+
 }

@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
 import io.fabric8.crd.generator.v1.decorator.SortPrinterColumnsDecorator;
 
