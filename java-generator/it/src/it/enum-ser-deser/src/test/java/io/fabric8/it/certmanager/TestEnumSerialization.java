@@ -16,27 +16,20 @@
 package io.fabric8.it.certmanager;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.cert_manager.v1.CertificateRequest;
 import io.cert_manager.v1.CertificateRequestSpec;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
+import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestEnumSerialization {
-
-  ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
 
   @Test
   void testDeserialization() {
@@ -60,13 +53,11 @@ class TestEnumSerialization {
     // Arrange
     Path resPath = Paths.get(getClass().getResource("/sample1.yaml").toURI());
     String yamlContent = new String(Files.readAllBytes(resPath), "UTF8");
-    JsonNode originalCRJson = yamlMapper.readTree(yamlContent);
     CertificateRequest sample = Serialization.unmarshal(yamlContent, CertificateRequest.class);
+    KubernetesResourceDiff diff = new KubernetesResourceDiff(yamlContent, Serialization.asYaml(sample));
 
     // Act
-    JsonNode resultCRJson = yamlMapper.readTree(Serialization.asYaml(sample));
-    JsonNode diff = JsonDiff.asJson(originalCRJson, resultCRJson);
-    List<JsonNode> aggregatedDiffs = StreamSupport.stream(diff.spliterator(), false).collect(Collectors.toList());
+    List<JsonNode> aggregatedDiffs = diff.getListOfDiffs();
 
     // Assert
     assertEquals(0, aggregatedDiffs.size());
