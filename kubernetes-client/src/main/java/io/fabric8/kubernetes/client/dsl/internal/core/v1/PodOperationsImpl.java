@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -86,7 +85,7 @@ import io.fabric8.kubernetes.client.utils.internal.Base64;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.kubernetes.client.lib.FilenameUtils;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource<Pod>> implements PodResource<Pod>,CopyOrReadable<Boolean,InputStream, Boolean> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource<Pod>> implements PodResource<Pod>,CopyOrReadable<InputStream> {
 
     public static final int HTTP_TOO_MANY_REQUESTS = 429;
     private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
@@ -201,7 +200,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     return new PodOperationsImpl(getContext().withPrettyOutput(isPretty), context).getLog();
   }
 
@@ -266,7 +265,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public Boolean evict() {
+  public boolean evict() {
     Eviction eviction = new EvictionBuilder()
       .withNewMetadata()
       .withName(getName())
@@ -278,11 +277,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public Boolean evict(io.fabric8.kubernetes.api.model.policy.v1.Eviction eviction) {
+  public boolean evict(io.fabric8.kubernetes.api.model.policy.v1.Eviction eviction) {
     return handleEvict(eviction);
   }
 
-  private Boolean handleEvict(HasMetadata eviction) {
+  private boolean handleEvict(HasMetadata eviction) {
     try {
       if (Utils.isNullOrEmpty(eviction.getMetadata().getNamespace())) {
         throw new KubernetesClientException("Namespace not specified, but operation requires it.");
@@ -296,7 +295,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       handleResponse(requestBuilder, null, Collections.emptyMap());
       return true;
     } catch (KubernetesClientException e) {
-      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND && e.getCode() != HTTP_TOO_MANY_REQUESTS) {
+      if (e.getCode() != HTTP_TOO_MANY_REQUESTS) {
         throw e;
       }
       return false;
@@ -309,7 +308,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-    public ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean> inContainer(String containerId) {
+    public ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream> inContainer(String containerId) {
         return new PodOperationsImpl(getContext().withContainerId(containerId), context);
     }
 
@@ -364,17 +363,17 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
 
     @Override
-    public CopyOrReadable<Boolean, InputStream, Boolean> file(String file) {
+    public CopyOrReadable<InputStream> file(String file) {
       return new PodOperationsImpl(getContext().withFile(file), context);
     }
 
     @Override
-    public CopyOrReadable<Boolean, InputStream, Boolean> dir(String dir) {
+    public CopyOrReadable<InputStream> dir(String dir) {
       return new PodOperationsImpl(getContext().withDir(dir), context);
     }
 
    @Override
-   public Boolean copy(Path destination) {
+   public boolean copy(Path destination) {
     try {
       if (Utils.isNotNullOrEmpty(getContext().getFile())) {
         copyFile(getContext().getFile(), destination.toFile());
@@ -390,7 +389,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
    }
 
   @Override
-  public Boolean upload(InputStream inputStream) {
+  public boolean upload(InputStream inputStream) {
     return wrapRunWithOptionalDependency(() -> {
       try {
         return PodUpload.uploadFileData(httpClient, getContext(), this, inputStream);
@@ -402,7 +401,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public Boolean upload(Path path) {
+  public boolean upload(Path path) {
     return wrapRunWithOptionalDependency(() -> {
       try {
         return PodUpload.upload(httpClient, getContext(), this, path);

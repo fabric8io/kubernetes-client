@@ -138,7 +138,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
 
