@@ -31,7 +31,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.internal.SerializationUtils;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,8 +113,7 @@ public class FullExample {
                 ReplicationController gotRc = client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").get();
                 log("Get RC by name in namespace", gotRc);
                 // Dump the RC as YAML
-                log("Dump RC as YAML", SerializationUtils.dumpAsYaml(gotRc));
-                log("Dump RC as YAML without state", SerializationUtils.dumpWithoutRuntimeStateAsYaml(gotRc));
+                log("Dump RC as YAML", Serialization.asYaml(gotRc));
 
                 // Get the RC by label
                 log("Get RC by label", client.replicationControllers().withLabel("server", "nginx").list());
