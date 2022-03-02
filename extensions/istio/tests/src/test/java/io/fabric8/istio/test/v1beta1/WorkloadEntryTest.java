@@ -15,29 +15,28 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.fabric8.istio.api.networking.v1beta1.WorkloadEntry;
+import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryBuilder;
+import io.fabric8.istio.client.IstioClient;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.fabric8.istio.api.networking.v1beta1.WorkloadEntry;
-import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryBuilder;
-import io.fabric8.istio.client.IstioClient;
-import io.fabric8.istio.mock.EnableIstioMockClient;
-import io.fabric8.istio.mock.IstioMockServer;
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import okhttp3.mockwebserver.RecordedRequest;
-
-@EnableIstioMockClient
+@EnableKubernetesMock
 class WorkloadEntryTest {
 
   IstioClient client;
-  IstioMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a Workload Entry")

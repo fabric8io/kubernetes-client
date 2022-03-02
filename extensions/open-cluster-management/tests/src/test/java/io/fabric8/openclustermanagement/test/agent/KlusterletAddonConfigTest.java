@@ -15,23 +15,23 @@
  */
 package io.fabric8.openclustermanagement.test.agent;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigBuilder;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigList;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMock
 class KlusterletAddonConfigTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {

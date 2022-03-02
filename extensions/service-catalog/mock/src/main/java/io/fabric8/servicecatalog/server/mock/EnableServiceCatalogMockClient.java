@@ -15,18 +15,24 @@
  */
 package io.fabric8.servicecatalog.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Annotation that is used for enabling ServiceCatalogMockServerExtension JUnit5 extension.
  * You may set here two parameters of `ServiceCatalogServer`: crudMode and https
+ *
+ * @deprecated use {@link EnableKubernetesMock} instead
  */
+@Deprecated
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @ExtendWith(ServiceCatalogMockServerExtension.class)

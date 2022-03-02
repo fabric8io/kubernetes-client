@@ -15,19 +15,21 @@
  */
 package io.fabric8.verticalpodautoscaler.test.crud;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerBuilder;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList;
 import io.fabric8.verticalpodautoscaler.client.VerticalPodAutoscalerClient;
-import io.fabric8.verticalpodautoscaler.server.mock.EnableVerticalPodAutoscalerMockClient;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableVerticalPodAutoscalerMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class V1VerticalPodAutoscalerCrudTest {
   VerticalPodAutoscalerClient client;
 

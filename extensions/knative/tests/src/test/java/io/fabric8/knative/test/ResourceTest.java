@@ -19,13 +19,13 @@ import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class ResourceTest {
 
   KubernetesClient client;

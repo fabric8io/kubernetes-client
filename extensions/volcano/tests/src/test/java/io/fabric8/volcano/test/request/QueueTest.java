@@ -15,12 +15,11 @@
  */
 package io.fabric8.volcano.test.request;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.volcano.client.VolcanoClient;
 import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueBuilder;
-import io.fabric8.volcano.server.mock.EnableVolcanoMockClient;
-import io.fabric8.volcano.server.mock.VolcanoMockServer;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,11 +28,11 @@ import java.net.HttpURLConnection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableVolcanoMockClient
+@EnableKubernetesMock
 class QueueTest {
 
   VolcanoClient client;
-  VolcanoMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a queue")

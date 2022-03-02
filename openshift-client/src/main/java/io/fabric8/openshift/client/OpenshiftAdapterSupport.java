@@ -39,9 +39,6 @@ public class OpenshiftAdapterSupport {
   }
 
   public DefaultOpenShiftClient adapt(Client client) {
-    if (!isAdaptable(client)) {
-      throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
-    }
     return new DefaultOpenShiftClient(client);
   }
 

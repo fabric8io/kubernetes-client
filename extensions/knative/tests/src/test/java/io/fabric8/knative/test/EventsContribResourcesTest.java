@@ -30,10 +30,10 @@ import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel;
 import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelBuilder;
 import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource;
 import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSourceBuilder;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
-import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -41,12 +41,12 @@ import java.net.HttpURLConnection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKnativeMockClient
+@EnableKubernetesMock
 class EventsContribResourcesTest {
 
 
   KnativeClient client;
-  KnativeMockServer server;
+  KubernetesMockServer server;
   @Test
   void testKafkaChannel() {
     // Given

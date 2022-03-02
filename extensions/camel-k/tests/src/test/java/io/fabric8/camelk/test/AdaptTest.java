@@ -15,37 +15,22 @@
  */
 package io.fabric8.camelk.test;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.camelk.client.CamelKClient;
-import io.fabric8.camelk.mock.CamelKMockServer;
 import io.fabric8.kubernetes.client.KubernetesClient;
-
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableKubernetesMock
 class AdaptTest {
 
-  private io.fabric8.camelk.mock.CamelKMockServer mock = new CamelKMockServer();
-
-  @BeforeEach
-  public void setUp() {
-    mock.init();
-  }
-
-  @AfterEach
-  void tearDown() throws IOException {
-    mock.destroy();
-  }
+  KubernetesClient client;
 
   @Test
   void testAdapt() {
-    CamelKClient sc = mock.createCamelKClient();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
-    assertNotNull(kc.adapt(CamelKClient.class));
+    assertTrue(client.isAdaptable(CamelKClient.class));
+    assertNotNull(client.adapt(CamelKClient.class));
   }
 }

@@ -15,23 +15,23 @@
  */
 package io.fabric8.openclustermanagement.test.discovery;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterBuilder;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterList;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMock
 class DiscoveredClusterTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {

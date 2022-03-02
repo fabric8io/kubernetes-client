@@ -15,18 +15,19 @@
  */
 package io.fabric8.servicecatalog.test.crud;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceBuilder;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.EnableServiceCatalogMockClient;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableServiceCatalogMockClient(crud=true)
+@EnableKubernetesMock(crud=true)
 class ServiceInstanceTest {
 
 ServiceCatalogClient client;

@@ -29,6 +29,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class OpenShiftMockServer extends KubernetesMockServer {
   private boolean disableApiGroupCheck = true;
 

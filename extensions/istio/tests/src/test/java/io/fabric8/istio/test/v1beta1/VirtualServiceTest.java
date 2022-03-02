@@ -15,23 +15,6 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
-
 import io.fabric8.istio.api.networking.v1beta1.Destination;
 import io.fabric8.istio.api.networking.v1beta1.HTTPFaultInjectionAbort;
 import io.fabric8.istio.api.networking.v1beta1.HTTPFaultInjectionAbortHttpStatus;
@@ -47,17 +30,33 @@ import io.fabric8.istio.api.networking.v1beta1.StringMatchRegex;
 import io.fabric8.istio.api.networking.v1beta1.VirtualService;
 import io.fabric8.istio.api.networking.v1beta1.VirtualServiceBuilder;
 import io.fabric8.istio.client.IstioClient;
-import io.fabric8.istio.mock.EnableIstioMockClient;
-import io.fabric8.istio.mock.IstioMockServer;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Assert;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
-@EnableIstioMockClient(crud = true)
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableKubernetesMock(crud = true)
 class VirtualServiceTest {
 
   IstioClient client;
-  IstioMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a Virtual Service")

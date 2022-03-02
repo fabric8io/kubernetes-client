@@ -15,13 +15,13 @@
  */
 package io.fabric8.openclustermanagement.test.policy;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyBuilder;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyList;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -29,10 +29,10 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMock
 class PolicyTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {

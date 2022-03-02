@@ -15,39 +15,38 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSProtocol.TLSV1_2;
-import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSmode.PASSTHROUGH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
-
 import io.fabric8.istio.api.networking.v1beta1.Gateway;
 import io.fabric8.istio.api.networking.v1beta1.GatewayBuilder;
 import io.fabric8.istio.api.networking.v1beta1.PortBuilder;
 import io.fabric8.istio.api.networking.v1beta1.ServerBuilder;
 import io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsBuilder;
 import io.fabric8.istio.client.IstioClient;
-import io.fabric8.istio.mock.EnableIstioMockClient;
-import io.fabric8.istio.mock.IstioMockServer;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Assert;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
-@EnableIstioMockClient
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSProtocol.TLSV1_2;
+import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSmode.PASSTHROUGH;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableKubernetesMock
 class GatewayTest {
 
   IstioClient client;
-  IstioMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a Gateway")

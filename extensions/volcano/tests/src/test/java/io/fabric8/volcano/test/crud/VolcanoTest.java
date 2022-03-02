@@ -16,12 +16,14 @@
 package io.fabric8.volcano.test.crud;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.QuantityBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import io.fabric8.volcano.client.VolcanoClient;
-import io.fabric8.volcano.scheduling.v1beta1.*;
+import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupBuilder;
-import io.fabric8.volcano.scheduling.v1beta1.PodGroupSpecBuilder;
+import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
+import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueBuilder;
-import io.fabric8.volcano.server.mock.EnableVolcanoMockClient;
+import io.fabric8.volcano.scheduling.v1beta1.QueueList;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -30,7 +32,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableVolcanoMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class VolcanoTest {
   VolcanoClient client;
   String TEST_GROUP_NAME = "group1";

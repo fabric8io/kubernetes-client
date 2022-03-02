@@ -19,15 +19,17 @@ import io.fabric8.certmanager.api.model.v1.Certificate;
 import io.fabric8.certmanager.api.model.v1.CertificateBuilder;
 import io.fabric8.certmanager.api.model.v1.CertificateList;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.certmanager.server.mock.EnableCertManagerMockClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableCertManagerMockClient(crud=true)
+@EnableKubernetesMock(crud = true)
 class V1CertificateCrudTest {
     CertManagerClient client;
 

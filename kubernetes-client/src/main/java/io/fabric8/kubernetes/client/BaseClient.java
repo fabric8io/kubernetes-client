@@ -34,6 +34,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.URL;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BaseClient extends SimpleClientContext implements Client {
 
@@ -42,6 +43,8 @@ public class BaseClient extends SimpleClientContext implements Client {
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
+  
+  private Predicate<Class<?>> adaptableOverride;
 
   public BaseClient() {
     this(new ConfigBuilder().build());
@@ -96,6 +99,10 @@ public class BaseClient extends SimpleClientContext implements Client {
   public String getNamespace() {
     return namespace;
   }
+  
+  public void setAdaptableOverride(Predicate<Class<?>> adaptableOverride) {
+    this.adaptableOverride = adaptableOverride;
+  }
 
   @Override
   public <C> Boolean isAdaptable(Class<C> type) {
@@ -104,6 +111,9 @@ public class BaseClient extends SimpleClientContext implements Client {
     }
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
+      if (adaptableOverride != null) {
+        return adaptableOverride.test(type);
+      }
       return adapter.isAdaptable(this);
     } else {
       return false;
@@ -115,9 +125,11 @@ public class BaseClient extends SimpleClientContext implements Client {
     if (type.isAssignableFrom(this.getClass())) {
       return (C) this;
     }
-    ExtensionAdapter<C> adapter = Adapters.get(type);
-    if (adapter != null) {
-      return adapter.adapt(this);
+    if (isAdaptable(type)) {
+      ExtensionAdapter<C> adapter = Adapters.get(type);
+      if (adapter != null) {
+        return adapter.adapt(this);
+      }
     }
     throw new IllegalStateException("No adapter available for type:" + type);
   }

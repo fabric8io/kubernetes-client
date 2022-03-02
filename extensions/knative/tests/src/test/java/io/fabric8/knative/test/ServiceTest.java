@@ -16,24 +16,26 @@
 package io.fabric8.knative.test;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
-import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKnativeMockClient
+@EnableKubernetesMock
 class ServiceTest {
 
   KnativeClient client;
-  KnativeMockServer server;
+  KubernetesMockServer server;
   @Test
   @DisplayName("Should get a Knative Service")
   void testGet() {

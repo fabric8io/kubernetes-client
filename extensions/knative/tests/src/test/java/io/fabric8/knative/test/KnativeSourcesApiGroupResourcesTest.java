@@ -17,11 +17,18 @@ package io.fabric8.knative.test;
 
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
-import io.fabric8.knative.mock.KnativeMockServer;
-import io.fabric8.knative.sources.v1.*;
+import io.fabric8.knative.sources.v1.ApiServerSource;
+import io.fabric8.knative.sources.v1.ApiServerSourceBuilder;
+import io.fabric8.knative.sources.v1.ContainerSource;
+import io.fabric8.knative.sources.v1.ContainerSourceBuilder;
+import io.fabric8.knative.sources.v1.PingSource;
+import io.fabric8.knative.sources.v1.PingSourceBuilder;
+import io.fabric8.knative.sources.v1.SinkBinding;
+import io.fabric8.knative.sources.v1.SinkBindingBuilder;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -29,10 +36,10 @@ import java.net.HttpURLConnection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKnativeMockClient
+@EnableKubernetesMock
 class KnativeSourcesApiGroupResourcesTest {
 
-  KnativeMockServer server;
+  KubernetesMockServer server;
   KnativeClient client;
   @Test
   void testPingSourceCreateOrReplace() {

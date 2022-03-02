@@ -16,16 +16,19 @@
 package io.fabric8.servicecatalog.test.crud;
 
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanBuilder;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.EnableServiceCatalogMockClient;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableServiceCatalogMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class ClusterServicePlanTest {
 
     ServiceCatalogClient client;
@@ -81,7 +84,7 @@ class ClusterServicePlanTest {
                 .editMetadata()
                 .addToLabels("updated", "true")
                 .endMetadata()
-                .build()); 
+                .build());
 
         assertNotNull(u1);
         assertEquals("true", u1.getMetadata().getLabels().get("updated"));

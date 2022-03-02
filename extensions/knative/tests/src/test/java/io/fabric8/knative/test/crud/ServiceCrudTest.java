@@ -16,16 +16,18 @@
 package io.fabric8.knative.test.crud;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceBuilder;
 import io.fabric8.knative.serving.v1.ServiceList;
 import io.fabric8.knative.serving.v1.ServiceStatusBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKnativeMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class ServiceCrudTest {
 
 KnativeClient client;

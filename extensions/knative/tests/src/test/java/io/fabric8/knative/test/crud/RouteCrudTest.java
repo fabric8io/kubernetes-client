@@ -16,15 +16,17 @@
 package io.fabric8.knative.test.crud;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
 import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteBuilder;
 import io.fabric8.knative.serving.v1.RouteList;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKnativeMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class RouteCrudTest {
 
   KnativeClient client;

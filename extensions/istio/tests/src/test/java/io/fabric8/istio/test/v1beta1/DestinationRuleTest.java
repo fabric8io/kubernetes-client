@@ -15,15 +15,6 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.HttpURLConnection;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.istio.api.networking.v1beta1.DestinationRule;
 import io.fabric8.istio.api.networking.v1beta1.DestinationRuleBuilder;
 import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsBuilder;
@@ -33,16 +24,24 @@ import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHas
 import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsSimple;
 import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsSimpleLB;
 import io.fabric8.istio.client.IstioClient;
-import io.fabric8.istio.mock.EnableIstioMockClient;
-import io.fabric8.istio.mock.IstioMockServer;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-@EnableIstioMockClient
+import java.net.HttpURLConnection;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableKubernetesMock
 class DestinationRuleTest {
 
   IstioClient client;
-  IstioMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a Destination Rule")

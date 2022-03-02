@@ -15,31 +15,30 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.HttpURLConnection;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.istio.api.security.v1beta1.PeerAuthentication;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationBuilder;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLSMode;
 import io.fabric8.istio.api.type.v1beta1.WorkloadSelectorBuilder;
 import io.fabric8.istio.client.IstioClient;
-import io.fabric8.istio.mock.EnableIstioMockClient;
-import io.fabric8.istio.mock.IstioMockServer;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-@EnableIstioMockClient
+import java.net.HttpURLConnection;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableKubernetesMock
 class PeerAuthenticationTest {
 
   IstioClient client;
-  IstioMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a PeerAuthentication Entry")

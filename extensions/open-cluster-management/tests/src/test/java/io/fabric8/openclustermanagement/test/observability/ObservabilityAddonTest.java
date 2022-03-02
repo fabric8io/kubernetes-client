@@ -15,23 +15,23 @@
  */
 package io.fabric8.openclustermanagement.test.observability;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonBuilder;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonList;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMock
 class ObservabilityAddonTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {

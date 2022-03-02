@@ -15,8 +15,8 @@
  */
 package io.fabric8.tekton.test.crud;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.mock.EnableTektonMockClient;
 import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineBuilder;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
@@ -27,9 +27,11 @@ import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableTektonMockClient(crud=true)
+@EnableKubernetesMock(crud=true)
 class V1alpha1PipelineCrudTest {
 
   TektonClient client;

@@ -15,34 +15,20 @@
  */
 package io.fabric8.openclustermanagement.test;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@EnableKubernetesMock
 class AdaptTest {
 
-  private final OpenClusterManagementMockServer mock = new OpenClusterManagementMockServer();
-
-  @BeforeEach
-  public void setUp() {
-    mock.init();
-  }
-
-  @AfterEach
-  public void tearDown() {
-    mock.destroy();
-  }
+  KubernetesClient kc;
 
   @Test
   void testAdapt() {
-    OpenClusterManagementClient sc = mock.createOpenClusterManagement();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(OpenClusterManagementClient.class));
   }
 }

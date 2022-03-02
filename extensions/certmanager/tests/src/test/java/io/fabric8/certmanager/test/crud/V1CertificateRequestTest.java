@@ -19,9 +19,9 @@ import io.fabric8.certmanager.api.model.meta.v1.ObjectReferenceBuilder;
 import io.fabric8.certmanager.api.model.v1.CertificateRequest;
 import io.fabric8.certmanager.api.model.v1.CertificateRequestBuilder;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.certmanager.server.mock.CertManagerMockServer;
-import io.fabric8.certmanager.server.mock.EnableCertManagerMockClient;
 import io.fabric8.kubernetes.api.model.Duration;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -30,11 +30,11 @@ import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableCertManagerMockClient
+@EnableKubernetesMock
 class V1CertificateRequestTest {
-  
+
   CertManagerClient client;
-  CertManagerMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void testCreate() throws Exception {

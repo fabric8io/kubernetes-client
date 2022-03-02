@@ -16,17 +16,20 @@
 package io.fabric8.camelk.test.crud;
 
 import io.fabric8.camelk.client.CamelKClient;
-import io.fabric8.camelk.mock.EnableCamelKMockClient;
 import io.fabric8.camelk.v1.Integration;
 import io.fabric8.camelk.v1.IntegrationBuilder;
 import io.fabric8.camelk.v1.IntegrationList;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
 import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableCamelKMockClient(crud = true)
+@EnableKubernetesMock(crud = true)
 class IntegrationCrudTest {
 
 
