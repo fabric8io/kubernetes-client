@@ -33,14 +33,13 @@ import io.fabric8.istio.api.security.v1beta1.PeerAuthentication;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationList;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthentication;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthenticationList;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroupDSL {
+public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupDSL> implements V1beta1APIGroupDSL {
 
   public V1beta1APIGroupClient() {
     super();
@@ -50,55 +49,60 @@ public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroup
     super(configuration);
   }
 
-  public V1beta1APIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public V1beta1APIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected V1beta1APIGroupDSL newInstance(Client client) {
+    return new V1beta1APIGroupClient(client);
   }
 
   // networking
 
   @Override
   public MixedOperation<DestinationRule, DestinationRuleList, Resource<DestinationRule>> destinationRules() {
-    return Handlers.getOperation(DestinationRule.class, DestinationRuleList.class, this);
+    return resources(DestinationRule.class, DestinationRuleList.class);
   }
 
   @Override
   public MixedOperation<Gateway, GatewayList, Resource<Gateway>> gateways() {
-    return Handlers.getOperation(Gateway.class, GatewayList.class, this);
+    return resources(Gateway.class, GatewayList.class);
   }
 
   @Override
   public MixedOperation<ServiceEntry, ServiceEntryList, Resource<ServiceEntry>> serviceEntries() {
-    return Handlers.getOperation(ServiceEntry.class, ServiceEntryList.class, this);
+    return resources(ServiceEntry.class, ServiceEntryList.class);
   }
 
   @Override
   public MixedOperation<Sidecar, SidecarList, Resource<Sidecar>> sidecars() {
-    return Handlers.getOperation(Sidecar.class, SidecarList.class, this);
+    return resources(Sidecar.class, SidecarList.class);
   }
 
   @Override
   public MixedOperation<VirtualService, VirtualServiceList, Resource<VirtualService>> virtualServices() {
-    return Handlers.getOperation(VirtualService.class, VirtualServiceList.class, this);
+    return resources(VirtualService.class, VirtualServiceList.class);
   }
 
   @Override
   public MixedOperation<WorkloadEntry, WorkloadEntryList, Resource<WorkloadEntry>> workloadEntries() {
-    return Handlers.getOperation(WorkloadEntry.class, WorkloadEntryList.class, this);
+    return resources(WorkloadEntry.class, WorkloadEntryList.class);
   }
 
   // security
   @Override
   public MixedOperation<PeerAuthentication, PeerAuthenticationList, Resource<PeerAuthentication>> peerAuthentications() {
-    return Handlers.getOperation(PeerAuthentication.class, PeerAuthenticationList.class, this);
+    return resources(PeerAuthentication.class, PeerAuthenticationList.class);
   }
 
   @Override
   public MixedOperation<RequestAuthentication, RequestAuthenticationList, Resource<RequestAuthentication>> requestAuthentications() {
-    return Handlers.getOperation(RequestAuthentication.class, RequestAuthenticationList.class, this);
+    return resources(RequestAuthentication.class, RequestAuthenticationList.class);
   }
 
   @Override
   public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, Resource<AuthorizationPolicy>> authorizationPolicies() {
-    return Handlers.getOperation(AuthorizationPolicy.class, AuthorizationPolicyList.class, this);
+    return resources(AuthorizationPolicy.class, AuthorizationPolicyList.class);
   }
 }

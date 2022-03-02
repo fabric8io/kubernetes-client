@@ -143,9 +143,11 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
   String strValue = i2.getStrVal();
   ```
 
-## Service Catalog Changes
+## Extension Changes
 
-io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+- io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+
+- io.fabric8.volumesnapshot.client.internal.XXXResource interfaces moved to io.fabric8.volumesnapshot.client.XXXResource to no longer be in an internal package.
 
 ## Adapt Changes
 

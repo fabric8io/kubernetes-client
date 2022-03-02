@@ -15,17 +15,16 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAgentAPIGroupDSL;
 
-public class OpenClusterManagementAgentAPIGroupClient  extends BaseClient implements OpenClusterManagementAgentAPIGroupDSL {
+public class OpenClusterManagementAgentAPIGroupClient extends ClientAdapter<OpenClusterManagementAgentAPIGroupDSL> implements OpenClusterManagementAgentAPIGroupDSL {
   public OpenClusterManagementAgentAPIGroupClient() {
     super();
   }
@@ -34,12 +33,17 @@ public class OpenClusterManagementAgentAPIGroupClient  extends BaseClient implem
     super(configuration);
   }
 
-  public OpenClusterManagementAgentAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public OpenClusterManagementAgentAPIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected OpenClusterManagementAgentAPIGroupDSL newInstance(Client client) {
+    return new OpenClusterManagementAgentAPIGroupClient(client);
   }
 
   @Override
   public MixedOperation<KlusterletAddonConfig, KlusterletAddonConfigList, Resource<KlusterletAddonConfig>> klusterletAddonConfigs() {
-    return Handlers.getOperation(KlusterletAddonConfig.class, KlusterletAddonConfigList.class, this);
+    return resources(KlusterletAddonConfig.class, KlusterletAddonConfigList.class);
   }
 }

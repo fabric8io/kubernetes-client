@@ -15,8 +15,6 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
@@ -27,10 +25,6 @@ import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
 
 public class ClusterServicePlanOperationsImpl extends ExtensibleResourceAdapter<ClusterServicePlan> implements ClusterServicePlanResource {
-
-    public ClusterServicePlanOperationsImpl(ExtensibleResource<ClusterServicePlan> resource, Client client) {
-        super(resource, client);
-    }
 
     @Override
     public ServiceInstance instantiate(String... args) {

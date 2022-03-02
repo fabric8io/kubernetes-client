@@ -15,11 +15,10 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingList;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy;
@@ -28,28 +27,33 @@ import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.pol
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAPIGroupDSL;
 
-public class OpenClusterManagementPolicyAPIGroupClient extends BaseClient implements OpenClusterManagementPolicyAPIGroupDSL {
+public class OpenClusterManagementPolicyAPIGroupClient extends ClientAdapter<OpenClusterManagementPolicyAPIGroupDSL> implements OpenClusterManagementPolicyAPIGroupDSL {
 
   public OpenClusterManagementPolicyAPIGroupClient() {
     super();
   }
 
-  public OpenClusterManagementPolicyAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public OpenClusterManagementPolicyAPIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected OpenClusterManagementPolicyAPIGroupDSL newInstance(Client client) {
+    return new OpenClusterManagementPolicyAPIGroupClient(client);
   }
 
   @Override
   public MixedOperation<Policy, PolicyList, Resource<Policy>> policies() {
-    return Handlers.getOperation(Policy.class, PolicyList.class, this);
+    return resources(Policy.class, PolicyList.class);
   }
 
   @Override
   public MixedOperation<PlacementBinding, PlacementBindingList, Resource<PlacementBinding>> placementBindings() {
-    return Handlers.getOperation(PlacementBinding.class, PlacementBindingList.class, this);
+    return resources(PlacementBinding.class, PlacementBindingList.class);
   }
 
   @Override
   public MixedOperation<PolicyAutomation, PolicyAutomationList, Resource<PolicyAutomation>> policyAutomations() {
-    return Handlers.getOperation(PolicyAutomation.class, PolicyAutomationList.class, this);
+    return resources(PolicyAutomation.class, PolicyAutomationList.class);
   }
 }
