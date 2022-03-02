@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentSpecBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -52,6 +53,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -171,7 +173,8 @@ public class ResourceIT {
   @Test
   public void testDeleteExistingWithOrphanDeletion() throws Exception {
     // Create Deployment
-    client.resource(deployment).inNamespace(session.getNamespace()).createOrReplace();
+    Resource<Deployment> resource = client.resource(deployment).inNamespace(session.getNamespace());
+    resource.createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
 
     // get uid of underlying replicaset. we expect this NOT to match later, meaning the orphan WAS deleted.
@@ -179,8 +182,10 @@ public class ResourceIT {
     assertEquals(1, replicaSetList.getItems().size());
     String replicaSetUid = replicaSetList.getItems().get(0).getMetadata().getUid();
 
-    // Recreate deployment with deleteExisting
-    client.resource(deployment).inNamespace(session.getNamespace()).deletingExisting().createOrReplace();
+    // Recreate deployment
+    resource.delete();
+    resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    resource.create();
     final Callable<List<ReplicaSet>> replicaSets = () -> client.apps().replicaSets()
       .inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().stream()
       .filter(rs -> Utils.isNullOrEmpty(rs.getMetadata().getDeletionTimestamp()))
@@ -191,7 +196,7 @@ public class ResourceIT {
     assertNotEquals(replicaSetUid, replicaSets.call().iterator().next().getMetadata().getUid());
 
     // cleanup
-    assertEquals(true, client.resource(deployment).inNamespace(session.getNamespace()).withGracePeriod(0L).delete());
+    assertEquals(true, resource.withGracePeriod(0L).delete());
     // Check whether child resources are also deleted
     await().atMost(30, TimeUnit.SECONDS)
       .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().isEmpty());
@@ -200,7 +205,9 @@ public class ResourceIT {
   @Test
   public void testDeleteExistingWithoutOrphanDeletion() {
     // Create Deployment
-    client.resource(deployment).inNamespace(session.getNamespace()).createOrReplace();
+    Resource<Deployment> resource = client.resource(deployment)
+      .inNamespace(session.getNamespace());
+    resource.createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
 
     // get uid of underlying replicaset. we expect this to match later, meaning the orphan was not deleted.
@@ -208,12 +215,12 @@ public class ResourceIT {
     assertEquals(1, replicaSetList.getItems().size());
     String replicaSetUid= replicaSetList.getItems().get(0).getMetadata().getUid();
 
-    // Recreate deployment with deleteExisting
-    client.resource(deployment)
-      .inNamespace(session.getNamespace())
+    // Recreate deployment
+    resource
       .withPropagationPolicy(DeletionPropagation.ORPHAN)
-      .deletingExisting()
-      .createOrReplace();
+      .delete();
+    resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    resource.create();
 
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
 
@@ -223,7 +230,7 @@ public class ResourceIT {
     assertEquals(replicaSetUid, replicaSetList.getItems().get(0).getMetadata().getUid());
 
     // cleanup
-    assertEquals(true, client.resource(deployment).inNamespace(session.getNamespace()).delete());
+    assertEquals(true, resource.delete());
     // Check whether child resources are also deleted
     await().atMost(30, TimeUnit.SECONDS)
       .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size() == 0);

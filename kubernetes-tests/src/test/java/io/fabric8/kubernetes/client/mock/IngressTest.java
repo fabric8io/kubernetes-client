@@ -148,13 +148,10 @@ public class IngressTest {
 
   @Test
   public void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
-      Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
+    Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
 
-      Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
-      assertTrue(deleted);
-    });
+    Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
+    assertFalse(deleted);
   }
 
   @Test

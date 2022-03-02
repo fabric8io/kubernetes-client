@@ -32,9 +32,9 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.Applicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -78,7 +78,7 @@ class ResourceTest {
     // Then
     assertEquals(pod1, response);
   }
-  
+
   @Test
   void testCreateOrReplaceString() {
     // Given
@@ -106,7 +106,7 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
 
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(pod1);
+    NamespaceableResource<Pod> podOperation = client.resource(pod1);
 
     // When
     assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
@@ -129,7 +129,9 @@ class ResourceTest {
       server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
       server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
-      HasMetadata response = client.resource(pod1).inNamespace("ns1").deletingExisting().createOrReplace();
+      Resource<Pod> resource = client.resource(pod1).inNamespace("ns1");
+      resource.delete();
+      HasMetadata response = resource.createOrReplace();
       assertEquals(pod1, response);
 
       RecordedRequest request = server.getLastRequest();
@@ -145,7 +147,9 @@ class ResourceTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
-    HasMetadata response = client.resource(pod1).inNamespace("ns1").withPropagationPolicy(DeletionPropagation.FOREGROUND).deletingExisting().createOrReplace();
+    Resource<Pod> resource = client.resource(pod1).inNamespace("ns1");
+    resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    HasMetadata response = resource.createOrReplace();
     assertEquals(pod1, response);
 
     assertEquals(2, server.getRequestCount());
@@ -168,8 +172,8 @@ class ResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
-    Applicable<Pod> podOperation = client.resource(pod1).inNamespace("ns1").deletingExisting();
-
+    Resource<Pod> podOperation = client.resource(pod1).inNamespace("ns1");
+    podOperation.delete();
     // When
     assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
   }
@@ -506,7 +510,9 @@ class ResourceTest {
       .always();
 
 
-    Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, SECONDS);
+    NamespaceableResource<Pod> resource = client.resource(noReady);
+    resource.create();
+    Pod p = resource.waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 

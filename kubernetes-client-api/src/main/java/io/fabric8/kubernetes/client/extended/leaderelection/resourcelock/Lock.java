@@ -15,8 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 
 public interface Lock {
 
@@ -29,7 +28,7 @@ public interface Lock {
    * @param <C> Type parameter for the Client
    * @return the current LeaderElectionRecord or null if none
    */
-  <C extends Namespaceable<C> & KubernetesClient> LeaderElectionRecord get(C client);
+  <C extends NamespacedKubernetesClient> LeaderElectionRecord get(C client);
 
   /**
    * Attempt to create a new {@link LeaderElectionRecord}.
@@ -39,7 +38,7 @@ public interface Lock {
    * @param <C> Type parameter for the Client
    * @throws LockException if update was not possible
    */
-  <C extends Namespaceable<C> & KubernetesClient> void create(
+  <C extends NamespacedKubernetesClient> void create(
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException;
 
   /**
@@ -50,7 +49,7 @@ public interface Lock {
    * @param <C> Type parameter for the Client
    * @throws LockException if update was not possible
    */
-  <C extends Namespaceable<C> & KubernetesClient> void update(
+  <C extends NamespacedKubernetesClient> void update(
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException;
 
   /**

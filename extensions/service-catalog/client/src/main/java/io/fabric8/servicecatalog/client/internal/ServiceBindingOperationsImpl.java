@@ -16,42 +16,22 @@
 package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
-import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
+import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
-import io.fabric8.servicecatalog.api.model.ServiceBindingList;
+import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 
+public class ServiceBindingOperationsImpl extends ExtensibleResourceAdapter<ServiceBinding> implements ServiceBindingResource {
 
-public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> implements ServiceBindingResource {
-
-  public ServiceBindingOperationsImpl(ClientContext clientContext) {
-      this(HasMetadataOperationsImpl.defaultContext(clientContext));
-  }
-
-    public ServiceBindingOperationsImpl(OperationContext ctx) {
-        super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("servicebindings"),
-                ServiceBinding.class, ServiceBindingList.class);
+    public ServiceBindingOperationsImpl(ExtensibleResource<ServiceBinding> resource, Client client) {
+        super(resource, client);
     }
 
     @Override
-    public BaseOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> newInstance(OperationContext context) {
-        return new ServiceBindingOperationsImpl(context);
+    public Secret getSecret() {
+        ServiceBinding instance = get();
+        return client.adapt(KubernetesClient.class).secrets().withName(instance.getSpec().getSecretName()).get();
     }
-
-  @Override
-  public boolean isResourceNamespaced() {
-    return true;
-  }
-
-  @Override
-  public Secret getSecret() {
-      ServiceBinding instance = get();
-      return Handlers.getOperation(Secret.class, SecretList.class, context)
-              .newInstance(context.withItem(null).withName(instance.getSpec().getSecretName())).get();
-  }
 }

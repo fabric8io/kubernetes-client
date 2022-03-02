@@ -53,14 +53,10 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   public static final String EXTERNAL_NAME = "ExternalName";
 
   public ServiceOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
-  public ServiceOperationsImpl(ClientContext clientContext, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
-  }
-
-  public ServiceOperationsImpl(OperationContext context) {
+  private ServiceOperationsImpl(OperationContext context) {
     super(context.withPlural("services"), Service.class, ServiceList.class);
   }
 
@@ -79,9 +75,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     long remaining = Math.max(10_000, timeUnit.toNanos(amount) - alreadySpent);
 
     HasMetadataOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpointsOperation =
-        (HasMetadataOperation<Endpoints, EndpointsList, Resource<Endpoints>>) Handlers
-            .getOperation(Endpoints.class, EndpointsList.class, this.context)
-            .newInstance(context);
+        Handlers
+        .getOperation(Endpoints.class, EndpointsList.class, this.context)
+        .newInstance(context);
     endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
 
     return get();

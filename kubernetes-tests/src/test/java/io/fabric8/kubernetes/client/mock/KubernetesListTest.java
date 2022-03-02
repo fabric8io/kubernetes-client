@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -25,13 +26,12 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -61,15 +61,15 @@ public class KubernetesListTest {
    server.expect().withPath("/api/v1/namespaces/test/services").andReturn(201, service1).once();
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).once();
 
-    KubernetesList result = client.lists().inNamespace("test").create(list);
+    List<HasMetadata> result = client.resourceList(list.getItems()).inNamespace("test").create();
 
     assertNotNull(result);
-    assertEquals(3, result.getItems().size());
+    assertEquals(3, result.size());
 
 
-    assertTrue(result.getItems().contains(pod1));
-    assertTrue(result.getItems().contains(service1));
-    assertTrue(result.getItems().contains(replicationController1));
+    assertTrue(result.contains(pod1));
+    assertTrue(result.contains(service1));
+    assertTrue(result.contains(replicationController1));
   }
 
   @Test
@@ -77,10 +77,10 @@ public class KubernetesListTest {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).times(2);
 
     InputStream is = KubernetesListTest.class.getResourceAsStream("/test-rclist.json");
-    KubernetesList result = client.lists().inNamespace("test").load(is).create();
+    List<HasMetadata> result = client.load(is).inNamespace("test").create();
 
     assertNotNull(result);
-    assertEquals(2, result.getItems().size());
+    assertEquals(2, result.size());
   }
 
   @Test
@@ -93,17 +93,15 @@ public class KubernetesListTest {
       .editStatus().withReplicas(0).and().build()
     ).times(5);
 
-    Boolean result = client.lists().delete(list);
+    Boolean result = client.resourceList(list).delete();
 
     assertTrue(result);
   }
 
   @Test
   public void testDeleteWithMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Boolean result = client.lists().inNamespace("test1").delete(list);
+    Boolean result = client.resourceList(list).inNamespace("test1").delete();
 
-      assertFalse(result);
-    });
+    assertFalse(result);
   }
 }

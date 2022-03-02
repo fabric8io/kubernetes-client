@@ -227,7 +227,7 @@ class V1CronJobTest {
   void testDeleteWithNamespaceMismatch() {
     CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
     NonNamespaceOperation<CronJob, CronJobList, Resource<CronJob>> cronJobOp = client.batch().v1().cronjobs().inNamespace("test1");
-    Assertions.assertThrows(KubernetesClientException.class, () -> cronJobOp.delete(cronjob1));
+    assertFalse(cronJobOp.delete(cronjob1));
   }
 
   @Test

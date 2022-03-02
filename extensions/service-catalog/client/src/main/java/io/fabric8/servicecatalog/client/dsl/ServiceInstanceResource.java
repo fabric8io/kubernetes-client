@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.servicecatalog.client.dsl;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.servicecatalog.api.model.*;
 
-public interface KubernetesListNonNamespaceOperation extends
-  Createable<KubernetesList>,
-  MultiDeleteable<KubernetesList>,
-  Loadable<RecreateFromServerGettable<KubernetesList>> {
+
+public interface ServiceInstanceResource extends Resource<ServiceInstance> {
+
+    ServiceBinding bind(String secretName);
 }

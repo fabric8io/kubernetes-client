@@ -27,4 +27,6 @@ public interface Operation<T, L, R>
   Namespaceable<NonNamespaceOperation<T, L, R>>,
   FilterWatchListMultiDeletable<T, L>,
   Loadable<R> {
+
+  R withItem(T item);
 }

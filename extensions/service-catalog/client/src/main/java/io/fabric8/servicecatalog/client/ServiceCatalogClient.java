@@ -36,11 +36,11 @@ import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.api.model.ServicePlan;
 import io.fabric8.servicecatalog.api.model.ServicePlanList;
-import io.fabric8.servicecatalog.client.internal.ClusterServiceBrokerResource;
-import io.fabric8.servicecatalog.client.internal.ClusterServiceClassResource;
-import io.fabric8.servicecatalog.client.internal.ClusterServicePlanResource;
-import io.fabric8.servicecatalog.client.internal.ServiceBindingResource;
-import io.fabric8.servicecatalog.client.internal.ServiceInstanceResource;
+import io.fabric8.servicecatalog.client.dsl.ClusterServiceBrokerResource;
+import io.fabric8.servicecatalog.client.dsl.ClusterServiceClassResource;
+import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
+import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
+import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
 /**
  * Main interface for Service Catalog Client.

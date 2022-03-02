@@ -69,12 +69,10 @@ import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -161,22 +159,6 @@ public interface KubernetesClient extends Client {
   default <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources(Class<T> resourceType) {
     return resources(resourceType, null);
   }
-
-  /**
-   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
-   *
-   * <p>
-   *   Note: your resource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
-   * </p>
-   *
-   * @param resourceType Class for resource
-   * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
-   * @param <L> L type represents resource list type
-   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
-   */
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(Class<T> resourceType, Class<L> listClass);
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -407,7 +389,7 @@ public interface KubernetesClient extends Client {
    * @param items a collection containing HasMetadata values
    * @return operations object for Kubernetes list
    */
-  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as a HasMetadata object and do
@@ -417,7 +399,7 @@ public interface KubernetesClient extends Client {
    * @param <T> type of Kubernetes resource
    * @return operations object for Kubernetes resource
    */
-  <T extends HasMetadata> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T> resource(T is);
+  <T extends HasMetadata> NamespaceableResource<T> resource(T is);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as string object and do
@@ -426,7 +408,7 @@ public interface KubernetesClient extends Client {
    * @param s Kubernetes resource object as string
    * @return operations object for Kubernetes resource
    */
-  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s);
+  NamespaceableResource<HasMetadata> resource(String s);
 
   /**
    * Operations for Binding resource in APIgroup core/v1
@@ -520,13 +502,6 @@ public interface KubernetesClient extends Client {
   NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
 
   /**
-   * List related operations.
-   *
-   * @return KubernetesListMixedOperations object for Kubernetes List
-   */
-  KubernetesListMixedOperation lists();
-
-  /**
    * API entrypoint for ConfigMap related operations. ConfigMap (core/v1)
    *
    * @return MixedOperation object for ConfigMap related operations.
@@ -579,7 +554,7 @@ public interface KubernetesClient extends Client {
    * @param <C> type parameter for the Namespaceable KubernetesClient
    * @return LeaderElectorBuilder to build LeaderElector instances
    */
-  <C extends Namespaceable<C> & KubernetesClient> LeaderElectorBuilder<C> leaderElector();
+  <C extends NamespacedKubernetesClient> LeaderElectorBuilder<C> leaderElector();
 
   /**
    * API entrypoint for {@link Lease} related operations. Lease (coordination.k8s.io/v1)

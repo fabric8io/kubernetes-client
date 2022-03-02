@@ -35,7 +35,7 @@ public class GenericKubernetesResourceOperationsImpl
   }
 
   @Override
-  public BaseOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> newInstance(OperationContext context) {
+  public HasMetadataOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> newInstance(OperationContext context) {
     return new GenericKubernetesResourceOperationsImpl(context, resourceNamespaced);
   }
 

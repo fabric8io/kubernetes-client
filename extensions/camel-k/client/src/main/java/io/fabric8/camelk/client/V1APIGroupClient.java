@@ -26,44 +26,49 @@ import io.fabric8.camelk.v1.IntegrationKitList;
 import io.fabric8.camelk.v1.IntegrationList;
 import io.fabric8.camelk.v1.IntegrationPlatform;
 import io.fabric8.camelk.v1.IntegrationPlatformList;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
-  public V1APIGroupClient() {
-    super();
-  }
+public class V1APIGroupClient extends ClientAdapter<V1APIGroupClient> implements V1APIGroupDSL {
 
-  public V1APIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+    public V1APIGroupClient() {
+        super();
+    }
 
-@Override
-public MixedOperation<Build, BuildList, Resource<Build>> builds() {
-	return Handlers.getOperation(Build.class, BuildList.class, this);
-}
+    public V1APIGroupClient(Client client) {
+        super(client);
+    }
 
-@Override
-public MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs() {
-	return Handlers.getOperation(CamelCatalog.class, CamelCatalogList.class, this);
-}
+    @Override
+    protected V1APIGroupClient newInstance(Client client) {
+        return new V1APIGroupClient(client);
+    }
 
-@Override
-public MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations() {
-	return Handlers.getOperation(Integration.class, IntegrationList.class, this);
-}
+    @Override
+    public MixedOperation<Build, BuildList, Resource<Build>> builds() {
+        return resources(Build.class, BuildList.class);
+    }
 
-@Override
-public MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits() {
-	return Handlers.getOperation(IntegrationKit.class, IntegrationKitList.class, this);
-}
+    @Override
+    public MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs() {
+        return resources(CamelCatalog.class, CamelCatalogList.class);
+    }
 
-@Override
-public MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms() {
-  return Handlers.getOperation(IntegrationPlatform.class, IntegrationPlatformList.class, this);
-}
+    @Override
+    public MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations() {
+        return resources(Integration.class, IntegrationList.class);
+    }
+
+    @Override
+    public MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits() {
+        return resources(IntegrationKit.class, IntegrationKitList.class);
+    }
+
+    @Override
+    public MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms() {
+        return resources(IntegrationPlatform.class, IntegrationPlatformList.class);
+    }
 
 }

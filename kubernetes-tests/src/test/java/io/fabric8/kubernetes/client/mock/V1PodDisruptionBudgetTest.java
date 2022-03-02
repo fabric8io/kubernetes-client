@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -134,7 +135,7 @@ class V1PodDisruptionBudgetTest {
     PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
     NonNamespaceOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> pdrOp = client.policy().v1().podDisruptionBudget().inNamespace("test1");
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> pdrOp.delete(podDisruptionBudget1));
+    assertFalse(pdrOp.delete(podDisruptionBudget1));
   }
 
   @Test

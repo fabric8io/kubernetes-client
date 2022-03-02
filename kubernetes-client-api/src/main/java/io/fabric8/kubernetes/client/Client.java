@@ -19,7 +19,11 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.io.Closeable;
 import java.net.URL;
@@ -73,4 +77,41 @@ public interface Client extends ClientContext, Closeable {
    * @return the {@link APIResourceList} for the groupVersion
    */
   APIResourceList getApiResources(String groupVersion);
+
+  /**
+   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
+   *
+   * <p>
+   *   Note: your resource POJO (T in this context) must implement
+   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * </p>
+   *
+   * @param resourceType Class for resource
+   * @param <T> represents resource type. If it's a namespaced resource, it must implement
+   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   * @param <L> represents resource list type
+   * @param <R> represents the Resource operation type
+   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   */
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
+      Class<T> resourceType, Class<L> listClass, Class<R> resourceClass);
+
+  /**
+   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
+   *
+   * <p>
+   *   Note: your resource POJO (T in this context) must implement
+   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * </p>
+   *
+   * @param resourceType Class for resource
+   * @param <T> represents resource type. If it's a namespaced resource, it must implement
+   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   * @param <L> represents resource list type
+   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   */
+  default <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
+      Class<T> resourceType, Class<L> listClass) {
+    return resources(resourceType, listClass, null);
+  }
 }

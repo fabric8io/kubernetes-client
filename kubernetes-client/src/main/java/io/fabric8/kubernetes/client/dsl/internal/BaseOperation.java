@@ -28,30 +28,25 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
@@ -83,7 +78,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements
   OperationInfo,
   MixedOperation<T, L, R>,
-  Resource<T>,
+  ExtensibleResource<T>,
   ListerWatcher<T, L> {
 
   private static final String WATCH = "watch";
@@ -117,6 +112,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public BaseOperation<T, L, R> newInstance(OperationContext context) {
     return new BaseOperation<>(context);
+  }
+  
+  protected R newResource(OperationContext context) {
+    return (R) newInstance(context);
   }
 
   /**
@@ -229,34 +228,35 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    return (R) newInstance(context.withName(name));
+    return newResource(context.withName(name));
   }
 
   @Override
-  public ReplaceDeletable<T> lockResourceVersion(String resourceVersion) {
+  public ExtensibleResource<T> lockResourceVersion(String resourceVersion) {
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
   @Override
-  public NonNamespaceOperation<T, L, R> inNamespace(String namespace) {
+  public BaseOperation<T, L, R> inNamespace(String namespace) {
+    if (namespace == null) {
+      throw new KubernetesClientException("namespace cannot be null");
+    }
     return newInstance(context.withNamespace(namespace));
   }
 
   @Override
-  public NonNamespaceOperation<T, L, R> inAnyNamespace() {
-    Config updated = new ConfigBuilder(config).withNamespace(null).build();
-    return newInstance(context.withConfig(updated).withNamespace(null));
+  public BaseOperation<T, L, R> inAnyNamespace() {
+    return newInstance(context.withNamespace(null));
   }
 
-
   @Override
-  public EditReplacePatchDeletable<T> cascading(boolean cascading) {
+  public ExtensibleResource<T> cascading(boolean cascading) {
     return newInstance(context.withCascading(cascading).withPropagationPolicy(null));
   }
 
   @Override
   public R load(InputStream is) {
-    return (R) newInstance(context.withItem(unmarshal(is, type)));
+    return withItem(unmarshal(is, type));
   }
 
   @Override
@@ -283,7 +283,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Gettable<T> fromServer() {
+  public ExtensibleResource<T> fromServer() {
     return newInstance(context.withReloadingFromServer(true));
   }
 
@@ -306,9 +306,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
     }
     T finalItemToCreateOrReplace = itemToCreateOrReplace;
+    // use the Resource in case create or replace is overriden
+    Resource<T> resource = newResource(context);
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
-      this::create,
-      this::replace,
+      resource::create,
+      resource::replace,
       m -> waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
       m -> fromServer().get()
     );
@@ -478,13 +480,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         updateApiVersion(toDelete);
 
         try {
-          if (toDelete.getMetadata() != null
-            && toDelete.getMetadata().getName() != null
-            && !toDelete.getMetadata().getName().isEmpty()) {
-            deleted &= inNamespace(checkNamespace(toDelete)).withName(toDelete.getMetadata().getName()).delete();
-          } else {
-            deleted &= withItem(toDelete).delete();
-          }
+          deleted &= withItem(toDelete).delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
@@ -514,8 +510,18 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
-  public BaseOperation<T, L, R> withItem(T item) {
-    return newInstance(context.withItem(item));
+  @Override
+  public R withItem(T item) {
+    // set the name, namespace, and item - not all operations are looking at the item for the name
+    // things like configMaps().load(...).watch(...) for example
+    item = correctNamespace(item);
+    updateApiVersion(item);
+    String itemNs = KubernetesResourceUtil.getNamespace(item);
+    OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item)).withItem(item);
+    if (Utils.isNotNullOrEmpty(itemNs)) {
+      ctx = ctx.withNamespace(itemNs); 
+    }
+    return newResource(ctx);
   }
 
   void deleteThis() {
@@ -700,7 +706,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private URL getCompleteResourceUrl() throws MalformedURLException {
     URL requestUrl = null;
     if (item != null) {
-      requestUrl = getNamespacedUrl(item);
+      requestUrl = getNamespacedUrl(checkNamespace(item));
     } else {
       requestUrl = getNamespacedUrl();
     }
@@ -772,12 +778,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withGracePeriod(long gracePeriodSeconds) {
+  public ExtensibleResource<T> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
-  public EditReplacePatchDeletable<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public ExtensibleResource<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
@@ -917,17 +923,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.listType = listType;
   }
 
-  public void setNamespace(String namespace) {
-    this.namespace = namespace;
-  }
-
   @Override
-  public WritableOperation<T> dryRun(boolean isDryRun) {
+  public ExtensibleResource<T> dryRun(boolean isDryRun) {
     return newInstance(context.withDryRun(isDryRun));
   }
 
   @Override
-  public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
+  public ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
     result.indexers = indexers;
     result.limit = this.limit;

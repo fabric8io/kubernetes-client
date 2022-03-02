@@ -17,7 +17,6 @@ package io.fabric8.volumesnapshot.client.internal;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -38,7 +37,7 @@ public class VolumeSnapshotContentOperationsImpl extends HasMetadataOperation<Vo
   }
 
   @Override
-  public BaseOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> newInstance(OperationContext context) {
+  public VolumeSnapshotContentOperationsImpl newInstance(OperationContext context) {
     return new VolumeSnapshotContentOperationsImpl(context);
   }
 

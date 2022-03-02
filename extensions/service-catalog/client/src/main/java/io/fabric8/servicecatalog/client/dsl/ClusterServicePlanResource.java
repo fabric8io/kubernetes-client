@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.servicecatalog.client.internal;
+package io.fabric8.servicecatalog.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.*;
 
-public interface ClusterServiceClassResource extends Resource<ClusterServiceClass> {
 
-    ClusterServicePlanList listPlans();
+public interface ClusterServicePlanResource extends Resource<ClusterServicePlan> {
 
     /**
-     * Switch to the {@link ClusterServicePlanResource} with the specified external name.
-     * @param externalName
-     * @return the resource.
-     * @throws IllegalArgumentException if no unique resource with externalName is found.
+     * Instantiate the {@link ClusterServicePlan}.
+     * @param args      The instance name, or the namespace and instance name (var-arg).
+     * @return          The {@link ServiceInstance}.
      */
-    ClusterServicePlanResource usePlan(String externalName);
+    ServiceInstance instantiate(String... args);
 
-    ServiceInstance instantiate(String instanceName, String plan);
+    /**
+     * Instantiate the {@link ClusterServicePlan} and returns the {@link ServiceInstanceResource}.
+     * @param args      The instance name, or the namespace and instance name (var-arg).
+     * @return          The {@link ServiceInstanceResource}.
+     */
+    ServiceInstanceResource instantiateAnd(String... args);
 }

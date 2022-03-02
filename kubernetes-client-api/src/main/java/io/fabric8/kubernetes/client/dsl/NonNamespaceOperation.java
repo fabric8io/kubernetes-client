@@ -31,5 +31,7 @@ public interface NonNamespaceOperation<T, L, R> extends
   Replaceable<T>,
   StatusReplaceable<T>,
   Loadable<R> {
+
+  R withItem(T item);
 }
 

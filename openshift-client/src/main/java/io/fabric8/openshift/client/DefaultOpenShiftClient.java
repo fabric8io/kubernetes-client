@@ -15,15 +15,13 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.ComponentStatus;
-import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -46,7 +44,6 @@ import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -146,8 +143,8 @@ import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.Operator
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
@@ -193,7 +190,7 @@ import java.util.function.Supplier;
  * Class for Default Openshift Client implementing KubernetesClient interface.
  * It is thread safe.
  */
-public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient, OpenshiftClientContext {
+public class DefaultOpenShiftClient extends DefaultKubernetesClient implements NamespacedOpenShiftClient, OpenshiftClientContext {
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
@@ -274,11 +271,6 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public OpenShiftOperatorHubAPIGroupDSL operatorHub() {
     return adapt(OpenShiftOperatorHubAPIGroupClient.class);
-  }
-
-  @Override
-  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
-    return new ComponentStatusOperationsImpl(this);
   }
 
   @Override
@@ -521,15 +513,12 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
 
   @Override
   public NamespacedOpenShiftClient inNamespace(String namespace) {
-    OpenShiftConfig updated = new OpenShiftConfigBuilder(getConfiguration())
-      .withNamespace(namespace)
-      .build();
-    return new DefaultOpenShiftClient(newState(updated));
+    return new DefaultOpenShiftClient(createInNamespaceContext(namespace, false));
   }
 
   @Override
-  public NamespacedOpenShiftClient inAnyNamespace() {
-    return inNamespace(null);
+  protected Config configCopy() {
+    return new OpenShiftConfigBuilder(getConfiguration()).build();
   }
 
   @Override
@@ -732,6 +721,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
     OpenShiftConfig wrapped = OpenShiftConfig.wrap(config);
     this.config = wrapped;
     this.httpClient = OpenshiftAdapterSupport.adaptHttpClient(httpClient, wrapped);
+  }
+
+  @Override
+  public NamespacedOpenShiftClient inAnyNamespace() {
+    return new DefaultOpenShiftClient(createInNamespaceContext(null, true));
   }
 
 }

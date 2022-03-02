@@ -30,18 +30,14 @@ import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.inferLis
 
 public class HasMetadataOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
 
-  private final ResourceDefinitionContext rdc;
+  protected final ResourceDefinitionContext rdc;
   
   public HasMetadataOperationsImpl(ClientContext clientContext, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
     this(defaultContext(clientContext), rdc, type, listType);
   }
   
-  public static OperationContext defaultContext(OperationContext context, ClientContext clientContext) {
-    return context.withHttpClient(clientContext.getHttpClient()).withConfig(clientContext.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
-  }
-    
   public static OperationContext defaultContext(ClientContext clientContext) {
-    return defaultContext(new OperationContext(), clientContext);
+    return new OperationContext().withHttpClient(clientContext.getHttpClient()).withConfig(clientContext.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
   }
 
   public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {

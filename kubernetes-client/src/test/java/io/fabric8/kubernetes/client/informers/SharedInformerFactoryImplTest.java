@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -40,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SharedInformerFactoryImplTest {
   public static final long RESYNC_PERIOD = 10 * 1000L;
   private ExecutorService executorService;
-  private BaseKubernetesClient<?> mockBaseClient;
+  private DefaultKubernetesClient mockBaseClient;
   private static class TestCustomResourceSpec { }
   private static class TestCustomResourceStatus { }
 

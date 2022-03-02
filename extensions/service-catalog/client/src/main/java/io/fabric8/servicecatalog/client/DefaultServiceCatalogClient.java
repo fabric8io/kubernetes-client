@@ -15,17 +15,15 @@
  */
 package io.fabric8.servicecatalog.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
@@ -42,18 +40,13 @@ import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.api.model.ServicePlan;
 import io.fabric8.servicecatalog.api.model.ServicePlanList;
-import io.fabric8.servicecatalog.client.internal.ClusterServiceBrokerOperationsImpl;
-import io.fabric8.servicecatalog.client.internal.ClusterServiceBrokerResource;
-import io.fabric8.servicecatalog.client.internal.ClusterServiceClassOperationsImpl;
-import io.fabric8.servicecatalog.client.internal.ClusterServiceClassResource;
-import io.fabric8.servicecatalog.client.internal.ClusterServicePlanOperationsImpl;
-import io.fabric8.servicecatalog.client.internal.ClusterServicePlanResource;
-import io.fabric8.servicecatalog.client.internal.ServiceBindingOperationsImpl;
-import io.fabric8.servicecatalog.client.internal.ServiceBindingResource;
-import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
-import io.fabric8.servicecatalog.client.internal.ServiceInstanceResource;
+import io.fabric8.servicecatalog.client.dsl.ClusterServiceBrokerResource;
+import io.fabric8.servicecatalog.client.dsl.ClusterServiceClassResource;
+import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
+import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
+import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
-public class DefaultServiceCatalogClient extends BaseClient implements NamespacedServiceCatalogClient {
+public class DefaultServiceCatalogClient extends ClientAdapter<DefaultServiceCatalogClient> implements NamespacedServiceCatalogClient {
 
   public DefaultServiceCatalogClient() {
     super();
@@ -63,62 +56,53 @@ public class DefaultServiceCatalogClient extends BaseClient implements Namespace
     super(configuration);
   }
 
-  public DefaultServiceCatalogClient(ClientContext clientContext) {
-    super(clientContext);
+  public DefaultServiceCatalogClient(Client client) {
+    super(client);
   }
 
   @Override
-public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers() {
-    return new ClusterServiceBrokerOperationsImpl(this);
+  protected DefaultServiceCatalogClient newInstance(Client client) {
+    return new DefaultServiceCatalogClient(client);
   }
 
   @Override
-public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses() {
-    return new ClusterServiceClassOperationsImpl(this);
+  public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers() {
+    return resources(ClusterServiceBroker.class, ClusterServiceBrokerList.class, ClusterServiceBrokerResource.class);
   }
 
   @Override
-public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans() {
-    return new ClusterServicePlanOperationsImpl(this);
+  public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses() {
+    return resources(ClusterServiceClass.class, ClusterServiceClassList.class, ClusterServiceClassResource.class);
   }
 
   @Override
-public MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances() {
-    return new ServiceInstanceOperationsImpl(this);
+  public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans() {
+    return resources(ClusterServicePlan.class, ClusterServicePlanList.class, ClusterServicePlanResource.class);
   }
 
   @Override
-public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings() {
-    return new ServiceBindingOperationsImpl(this);
+  public MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances() {
+    return resources(ServiceInstance.class, ServiceInstanceList.class, ServiceInstanceResource.class);
+  }
+
+  @Override
+  public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings() {
+    return resources(ServiceBinding.class, ServiceBindingList.class, ServiceBindingResource.class);
   }
 
   @Override
   public MixedOperation<ServiceBroker, ServiceBrokerList, Resource<ServiceBroker>> serviceBrokers() {
-    return Handlers.getOperation(ServiceBroker.class, ServiceBrokerList.class, this);
+    return resources(ServiceBroker.class, ServiceBrokerList.class);
   }
 
   @Override
   public MixedOperation<ServiceClass, ServiceClassList, Resource<ServiceClass>> serviceClasses() {
-    return Handlers.getOperation(ServiceClass.class, ServiceClassList.class, this);
+    return resources(ServiceClass.class, ServiceClassList.class);
   }
 
   @Override
   public MixedOperation<ServicePlan, ServicePlanList, Resource<ServicePlan>> servicePlans() {
-    return Handlers.getOperation(ServicePlan.class, ServicePlanList.class, this);
-  }
-
-  @Override
-  public NamespacedServiceCatalogClient inAnyNamespace() {
-    return inNamespace(null);
-  }
-
-  @Override
-  public NamespacedServiceCatalogClient inNamespace(String namespace) {
-    Config updated = new ConfigBuilder(getConfiguration())
-      .withNamespace(namespace)
-      .build();
-
-    return new DefaultServiceCatalogClient(newState(updated));
+    return resources(ServicePlan.class, ServicePlanList.class);
   }
 
   @Override

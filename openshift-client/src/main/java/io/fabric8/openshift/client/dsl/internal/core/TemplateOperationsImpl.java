@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.http.HttpRequest;
@@ -162,23 +161,13 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  public MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> withParameters(Map<String, String> parameters) {
+  public TemplateOperationsImpl withParameters(Map<String, String> parameters) {
     return newInstance(context, parameters);
   }
 
   @Override
   public KubernetesList processLocally(Map<String, String> valuesMap)  {
-    String namespace = getItem() != null ? getItem().getMetadata().getNamespace() : getNamespace();
-    if (namespace == null) {
-      namespace = getConfig().getNamespace();
-    }
-
-    String name = getItem() != null ? getItem().getMetadata().getName() : getName();
-
-    Template t = withParameters(valuesMap)
-      .inNamespace(namespace)
-      .withName(name)
-      .get();
+    Template t = withParameters(valuesMap).get();
 
     List<Parameter> parameters = t != null ? t.getParameters() : null;
     KubernetesList list = new KubernetesListBuilder()

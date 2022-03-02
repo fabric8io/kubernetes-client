@@ -20,12 +20,11 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -92,7 +91,8 @@ class PodOperationUtilTest {
       .withNewMetadata().withName("foo").endMetadata()
       .withNewStatus().withPhase("Pending").endStatus()
       .build();
-    Gettable<Pod> gettablePod = () -> pod;
+    ExtensibleResource<Pod> gettablePod = Mockito.mock(ExtensibleResource.class);
+    when(gettablePod.get()).thenReturn(pod);
     when(podOperations.fromServer()).thenReturn(gettablePod);
     when(podOperations.waitUntilReady(5, TimeUnit.SECONDS)).thenReturn(pod);
 

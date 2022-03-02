@@ -154,12 +154,16 @@ public class ResourceListTest {
   void testCreateOrReplaceWithDeleteExisting() throws Exception {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK , service).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, configMap).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dmy-service").andReturn(HTTP_OK,
+        new KubernetesListBuilder().withNewMetadata().endMetadata().build()).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps?fieldSelector=metadata.name%3Dmy-configmap").andReturn(HTTP_OK,
+        new KubernetesListBuilder().withNewMetadata().endMetadata().build()).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HTTP_OK, updatedService).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HTTP_OK, updatedConfigMap).once();
 
     client.resourceList(resourcesToUpdate).inNamespace("ns1").deletingExisting().createOrReplace();
 
-    assertEquals(4, server.getRequestCount());
+    assertEquals(6, server.getRequestCount());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps", request.getPath());
     assertEquals("POST", request.getMethod());

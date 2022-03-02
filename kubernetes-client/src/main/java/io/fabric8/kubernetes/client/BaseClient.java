@@ -16,12 +16,19 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
@@ -92,6 +99,9 @@ public class BaseClient extends SimpleClientContext implements Client {
 
   @Override
   public <C> Boolean isAdaptable(Class<C> type) {
+    if (type.isAssignableFrom(this.getClass())) {
+      return true;
+    }
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.isAdaptable(this);
@@ -102,6 +112,9 @@ public class BaseClient extends SimpleClientContext implements Client {
 
   @Override
   public <C> C adapt(Class<C> type) {
+    if (type.isAssignableFrom(this.getClass())) {
+      return (C) this;
+    }
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.adapt(this);
@@ -159,4 +172,27 @@ public class BaseClient extends SimpleClientContext implements Client {
   protected SimpleClientContext newState(Config updated) {
     return new SimpleClientContext(updated, httpClient);
   }
+
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
+      Class<T> resourceType, Class<L> listClass, Class<R> resourceClass) {
+    if (GenericKubernetesResource.class.equals(resourceType)) {
+      throw new KubernetesClientException("resources cannot be called with a generic type");
+    }
+    try {
+      // TODO: check the Resource class type
+      return Handlers.getOperation(resourceType, listClass, this);
+    } catch (Exception e) {
+      //may be the wrong list type, try more general - may still fail if the resource is not properly annotated
+      if (resourceClass == null || Resource.class.equals(resourceClass)) {
+        return (MixedOperation<T, L, R>) newHasMetadataOperation(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
+      }
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+  
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> newHasMetadataOperation(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
+    return new HasMetadataOperationsImpl<>(this, rdContext, resourceType, listClass);
+  }
+
 }

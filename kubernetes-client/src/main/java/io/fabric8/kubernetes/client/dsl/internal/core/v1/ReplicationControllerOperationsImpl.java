@@ -34,7 +34,6 @@ import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourc
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.Collections;
@@ -47,11 +46,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
   public ReplicationControllerOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
-  }
-
-  public ReplicationControllerOperationsImpl(ClientContext clientContext, String namespace) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -66,12 +61,6 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   @Override
   public ReplicationControllerOperationsImpl newInstance(RollingOperationContext context) {
     return new ReplicationControllerOperationsImpl(context, this.context);
-  }
-
-  @Override
-  public RollableScalableResource<ReplicationController> load(InputStream is) {
-      ReplicationController item = unmarshal(is, ReplicationController.class);
-      return new ReplicationControllerOperationsImpl(rollingOperationContext, context.withItem(item));
   }
 
   @Override

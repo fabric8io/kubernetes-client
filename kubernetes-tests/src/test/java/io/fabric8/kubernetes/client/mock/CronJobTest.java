@@ -18,9 +18,9 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobBuilder;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobListBuilder;
-import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
@@ -227,12 +227,10 @@ class CronJobTest {
 
   @Test
   void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
+    CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
 
-      Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
-      assertFalse(deleted);
-    });
+    Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
+    assertFalse(deleted);
   }
 
   @Test

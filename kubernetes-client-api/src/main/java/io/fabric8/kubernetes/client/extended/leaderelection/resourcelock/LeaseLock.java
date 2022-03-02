@@ -17,8 +17,7 @@ package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -41,7 +40,7 @@ public class LeaseLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends Namespaceable<C> & KubernetesClient> LeaderElectionRecord get(C client) {
+  public <C extends NamespacedKubernetesClient> LeaderElectionRecord get(C client) {
     final Lease lease = client.inNamespace(leaseNamespace).leases().withName(leaseName).get();
     return Optional.ofNullable(lease)
       .map(Lease::getSpec)
@@ -63,7 +62,7 @@ public class LeaseLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends Namespaceable<C> & KubernetesClient> void create(
+  public <C extends NamespacedKubernetesClient> void create(
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
@@ -86,7 +85,7 @@ public class LeaseLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends Namespaceable<C> & KubernetesClient> void update(
+  public <C extends NamespacedKubernetesClient> void update(
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {

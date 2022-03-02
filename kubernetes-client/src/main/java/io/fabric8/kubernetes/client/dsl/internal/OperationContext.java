@@ -39,16 +39,11 @@ public class OperationContext extends SimpleClientContext {
   protected String apiGroupVersion;
 
   protected String namespace;
+  protected boolean defaultNamespace = true;
   protected String name;
   protected boolean cascading;
   protected boolean reloadingFromServer;
   protected boolean dryRun;
-  /*
-   * This field is added in order to distinguish whether namespace is picked from global
-   * Configuration (either your KUBECONFIG or /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-   * if inside a Pod
-   */
-  protected boolean namespaceFromGlobalConfig;
 
   // Default to -1 to respect the value set in the resource or the Kubernetes default (30 seconds)
   protected long gracePeriodSeconds = -1L;
@@ -66,20 +61,20 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
+    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.dryRun, other.selectorAsString, other.defaultNamespace);
   }
 
   public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
                           String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
                           Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
                           Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
-                          long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean namespaceFromGlobalConfig,
-                          boolean dryRun, String selectorAsString) {
+                          long gracePeriodSeconds, DeletionPropagation propagationPolicy,
+                          boolean dryRun, String selectorAsString, boolean defaultNamespace) {
     this.httpClient = client;
     this.config = config;
     this.item = item;
     this.plural = plural;
-    setNamespace(namespace);
+    setNamespace(namespace, defaultNamespace);
     this.name = name;
     setApiGroupName(apiGroupName);
     setApiGroupVersion(apiGroupVersion);
@@ -94,7 +89,6 @@ public class OperationContext extends SimpleClientContext {
     this.reloadingFromServer = reloadingFromServer;
     this.gracePeriodSeconds = gracePeriodSeconds;
     this.propagationPolicy = propagationPolicy;
-    this.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
   }
@@ -131,8 +125,14 @@ public class OperationContext extends SimpleClientContext {
     this.apiGroupName = ApiVersionUtil.apiGroup(item, apiGroupName);
   }
 
-  private void setNamespace(String namespace) {
-    this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
+  private void setNamespace(String namespace, boolean defaultNamespace) {
+    if (!defaultNamespace || Utils.isNotNullOrEmpty(namespace)) {
+      this.namespace = namespace;
+      this.defaultNamespace = defaultNamespace;
+    } else {
+      this.namespace = config != null && Utils.isNotNullOrEmpty(config.getNamespace()) ? config.getNamespace() : null;
+      this.defaultNamespace = config != null ? config.isDefaultNamespace() : true;
+    }
   }
 
   public HttpClient getClient() {
@@ -149,6 +149,10 @@ public class OperationContext extends SimpleClientContext {
 
   public String getNamespace() {
     return namespace;
+  }
+  
+  public boolean isDefaultNamespace() {
+    return defaultNamespace;
   }
 
   public String getName() {
@@ -209,10 +213,6 @@ public class OperationContext extends SimpleClientContext {
 
   public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
-  }
-
-  public boolean isNamespaceFromGlobalConfig() {
-    return namespaceFromGlobalConfig;
   }
 
   public boolean getDryRun() {
@@ -309,11 +309,11 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public OperationContext withNamespace(String namespace) {
-    if (Objects.equals(this.namespace, namespace)) {
+    if (Objects.equals(this.namespace, namespace) && !this.defaultNamespace) {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.setNamespace(namespace);
+    context.setNamespace(namespace, false);
     return context;
   }
 
@@ -452,15 +452,6 @@ public class OperationContext extends SimpleClientContext {
     return context;
   }
 
-  public OperationContext withIsNamespaceConfiguredFromGlobalConfig(boolean namespaceFromGlobalConfig) {
-    if (this.namespaceFromGlobalConfig == namespaceFromGlobalConfig) {
-      return this;
-    }
-    final OperationContext context = new OperationContext(this);
-    context.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
-    return context;
-  }
-
   public OperationContext withDryRun(boolean dryRun) {
     if(this.dryRun == dryRun) {
       return this;
@@ -479,35 +470,4 @@ public class OperationContext extends SimpleClientContext {
     return context;
   }
 
-  /**
-   * Returns an OperationContext object merged with current object.
-   *
-   * @param context object with modifications
-   * @return a merged object between passed argument and current object
-   */
-  public OperationContext withOperationContext(OperationContext context) {
-    return new OperationContext(Utils.getNonNullOrElse(context.getClient(), getClient()),
-      Utils.getNonNullOrElse(context.getConfig(), getConfig()),
-      Utils.getNonNullOrElse(context.getPlural(), getPlural()),
-      Utils.getNonNullOrElse(context.getNamespace(), getNamespace()),
-      Utils.getNonNullOrElse(context.getName(), getName()),
-      Utils.getNonNullOrElse(context.getApiGroupName(), getApiGroupName()),
-      Utils.getNonNullOrElse(context.getApiGroupVersion(), getApiGroupVersion()),
-      context.getCascading() ? context.getCascading() : getCascading(),
-      Utils.getNonNullOrElse(context.getItem(), getItem()),
-      Utils.getNonNullOrElse(context.getLabels(), getLabels()),
-      Utils.getNonNullOrElse(context.getLabelsNot(), getLabelsNot()),
-      Utils.getNonNullOrElse(context.getLabelsIn(), getLabelsIn()),
-      Utils.getNonNullOrElse(context.getLabelsNotIn(), getLabelsNotIn()),
-      Utils.getNonNullOrElse(context.getFields(), getFields()),
-      Utils.getNonNullOrElse(context.getFieldsNot(), getFieldsNot()),
-      Utils.getNonNullOrElse(context.getResourceVersion(), getResourceVersion()),
-      context.isReloadingFromServer() ? context.isReloadingFromServer() : isReloadingFromServer(),
-      context.getGracePeriodSeconds() > 0 ? context.getGracePeriodSeconds() : getGracePeriodSeconds(),
-      Utils.getNonNullOrElse(context.getPropagationPolicy(), getPropagationPolicy()),
-      context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig(), context.getDryRun() ? context.getDryRun() : getDryRun(),
-      Utils.getNonNullOrElse(context.selectorAsString, selectorAsString)
-    );
-  }
-  
 }

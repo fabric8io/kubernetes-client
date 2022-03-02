@@ -85,13 +85,8 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
 
   @Override
   public NamespacedKubernetesClient inNamespace(String namespace) {
-    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
+    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).withDefaultNamespace(false).build();
     return new AutoAdaptableKubernetesClient(newState(updated));
-  }
-
-  @Override
-  public NamespacedKubernetesClient inAnyNamespace() {
-    return inNamespace(null);
   }
 
   @Override
@@ -165,12 +160,12 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata is) {
+  public NamespaceableResource<HasMetadata> resource(HasMetadata is) {
     return delegate.resource(is);
   }
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
+  public NamespaceableResource<HasMetadata> resource(String s) {
     return delegate.resource(s);
   }
 
@@ -227,11 +222,6 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
     return delegate.serviceAccounts();
-  }
-
-  @Override
-  public KubernetesListMixedOperation lists() {
-    return delegate.lists();
   }
 
   @Override

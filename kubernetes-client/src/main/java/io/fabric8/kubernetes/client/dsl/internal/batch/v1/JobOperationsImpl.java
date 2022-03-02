@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
 import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -33,7 +32,6 @@ import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.HashMap;
@@ -51,11 +49,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   private final PodControllerOperationContext podControllerOperationContext;
 
   public JobOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
-  }
-
-  public JobOperationsImpl(ClientContext clientContext, String namespace) {
-    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
+    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {
@@ -68,21 +62,6 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   @Override
   public JobOperationsImpl newInstance(OperationContext context) {
     return new JobOperationsImpl(podControllerOperationContext, context);
-  }
-
-  @Override
-  public ScalableResource<Job> load(InputStream is) {
-    try {
-      Job item = unmarshal(is, Job.class);
-      return newInstance(context.withItem(item));
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
-  }
-
-  @Override
-  public ScalableResource<Job> fromServer() {
-    return newInstance(context.withReloadingFromServer(true));
   }
 
   @Override

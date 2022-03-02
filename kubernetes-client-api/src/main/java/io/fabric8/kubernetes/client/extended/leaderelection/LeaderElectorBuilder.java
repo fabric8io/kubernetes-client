@@ -15,15 +15,14 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 
 import java.time.Duration;
 import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.JITTER_FACTOR;
 
-public class LeaderElectorBuilder<C extends Namespaceable<C> & KubernetesClient> {
+public class LeaderElectorBuilder<C extends NamespacedKubernetesClient> {
 
   private final C client;
   private LeaderElectionConfig leaderElectionConfig;

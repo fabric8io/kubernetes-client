@@ -43,8 +43,6 @@ import java.util.function.UnaryOperator;
 import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
-  private static final String NO_BUILDER = "Cannot edit with visitors, no builder is associated";
-  
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
@@ -91,10 +89,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   
   protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
     ResourceHandler<T, V> handler = Handlers.get(item, new BaseClient(context));
-    if (handler != null) {
-      return handler.edit(item);
-    }
-    throw new KubernetesClientException(NO_BUILDER);
+    return handler.edit(item);
   }
   
   @Override
@@ -119,16 +114,16 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   protected T requireFromServer(ObjectMeta metadata) {
     try {
       if (Utils.isNotNullOrEmpty(getName())) {
-        return withItem(null).require();
+        return newInstance(context.withItem(null)).require();
       }
       if (getItem() != null) {
         String name = KubernetesResourceUtil.getName(getItem());
         if (Utils.isNotNullOrEmpty(name)) {
-          return withItem(null).withName(name).require();
+          return newInstance(context.withItem(null)).withName(name).require();
         } 
       }
       if (metadata != null && Utils.isNotNullOrEmpty(metadata.getName())) {
-        return withItem(null).withName(metadata.getName()).require();
+        return newInstance(context.withItem(null)).withName(metadata.getName()).require();
       }
     } catch (ResourceNotFoundException e) {
       if (e.getCause() instanceof KubernetesClientException) {
@@ -274,7 +269,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   @Override
-  public BaseOperation<T, L, R> newInstance(OperationContext context) {
+  public HasMetadataOperation<T, L, R> newInstance(OperationContext context) {
     return new HasMetadataOperation<>(context, type, listType);
   }
+  
 }

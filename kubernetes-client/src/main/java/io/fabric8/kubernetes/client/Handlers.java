@@ -58,6 +58,9 @@ public final class Handlers {
   /**
    * Returns a {@link ResourceHandler} for the given item.  The client is optional, if it is supplied, then the server can be 
    * consulted for resource metadata if a generic item is passed in. 
+   * 
+   * @return the handler
+   * @throws KubernetesClientException if a handler cannot be found
    */
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(T meta, BaseClient client) {
     Class<T> type = (Class<T>)meta.getClass();
@@ -70,7 +73,11 @@ public final class Handlers {
       }
     }
     
-    return get(type);
+    ResourceHandler<T, V> result = get(type);
+    if (result == null) {
+        throw new KubernetesClientException("Could not find a registered handler for item: [" + meta + "].");
+    }
+    return result;
   }
   
   public static ResourceDefinitionContext getResourceDefinitionContext(String apiVersion, String kind, BaseClient client) {
