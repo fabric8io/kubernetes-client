@@ -116,7 +116,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
     List<PodResource<Pod>> podOperationList = doGetLog(false);
     for (PodResource<Pod> podOperation : podOperationList) {

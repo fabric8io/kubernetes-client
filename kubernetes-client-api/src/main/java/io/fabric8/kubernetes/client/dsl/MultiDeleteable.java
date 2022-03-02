@@ -20,7 +20,7 @@ import java.util.List;
 
 public interface MultiDeleteable<T> {
 
-  Boolean delete(T... items);
+  boolean delete(T... items);
 
-  Boolean delete(List<T> items);
+  boolean delete(List<T> items);
 }

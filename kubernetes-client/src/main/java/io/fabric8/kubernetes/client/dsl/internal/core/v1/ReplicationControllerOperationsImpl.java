@@ -133,7 +133,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
 

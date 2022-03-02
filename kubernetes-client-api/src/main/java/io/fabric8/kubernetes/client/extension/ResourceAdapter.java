@@ -58,7 +58,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public Boolean delete() {
+  public boolean delete() {
     return resource.delete();
   }
 

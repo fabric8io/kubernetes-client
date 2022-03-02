@@ -228,9 +228,9 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   @Override
-  public Boolean delete() {
+  public boolean delete() {
     for (Resource<HasMetadata> impl :  getResources()) {
-      if (Boolean.FALSE.equals(impl.delete())) {
+      if (!impl.delete()) {
         return false;
       }
     }

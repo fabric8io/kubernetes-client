@@ -360,7 +360,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
     return new NameableCreateOrDeleteable() {
 
       @Override
-      public Boolean delete() {
+      public boolean delete() {
         return operation.delete();
       }
 
