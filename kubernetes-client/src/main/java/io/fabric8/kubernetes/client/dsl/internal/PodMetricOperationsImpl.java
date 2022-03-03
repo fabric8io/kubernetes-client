@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.PodMetricOperation;
 
 import java.util.Map;
@@ -27,9 +26,7 @@ public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, Po
   
   public PodMetricOperationsImpl(ClientContext clientContext) {
     // default to any namespace
-    this(HasMetadataOperationsImpl.defaultContext(clientContext)
-        .withConfig(new ConfigBuilder(clientContext.getConfiguration()).withNamespace(null).build())
-        .withNamespace(null));
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(null));
   }
   
   public PodMetricOperationsImpl(OperationContext context) {
