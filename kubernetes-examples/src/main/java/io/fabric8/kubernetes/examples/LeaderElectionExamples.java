@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderCallbacks;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectionConfigBuilder;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.ConfigMapLock;
@@ -40,14 +40,14 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("java:S106")
 public class LeaderElectionExamples {
- 
+
   private static final String NAMESPACE = "default";
   private static final String NAME = "leaders-of-the-future";
 
   public static final class SingleThreadExample {
     public static void main(String[] args) {
       final String lockIdentity = UUID.randomUUID().toString();
-      try (KubernetesClient kc = new DefaultKubernetesClient()) {
+      try (KubernetesClient kc = new KubernetesClientBuilder().build()) {
         kc.leaderElector()
           .withConfig(
             new LeaderElectionConfigBuilder()
@@ -95,7 +95,7 @@ public class LeaderElectionExamples {
     }
 
     public static void main(String[] args) throws Exception {
-      try (KubernetesClient kc = new DefaultKubernetesClient()) {
+      try (KubernetesClient kc = new KubernetesClientBuilder().build()) {
         final Function<String, Lock> lockSupplier;
         final String lockArgument = args.length > 0 ? args[0] : "";
         switch(lockArgument) {

@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class PodLogsEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(PodLogsEquivalent.class);
 
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       String log = k8s.pods().inNamespace("default").withName("my-pod").getLog();
       logger.info(log);
     }

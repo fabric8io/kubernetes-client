@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class ConfigUseContext {
     // Pass the context you want to use in Config.autoConfigure(..)
     Config config = Config.autoConfigure( "minikube");
     // Use modified Config for your operations with KubernetesClient
-    try (final KubernetesClient k8s = new DefaultKubernetesClient(config)) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().withConfig(config).build()) {
       k8s.pods().inNamespace("default").list().getItems().stream()
         .map(Pod::getMetadata)
         .map(ObjectMeta::getName)

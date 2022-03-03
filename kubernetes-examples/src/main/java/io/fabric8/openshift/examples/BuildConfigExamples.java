@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
@@ -41,7 +41,7 @@ public class BuildConfigExamples {
 
   @SuppressWarnings("java:S106")
   public static void main(String[] args) throws InterruptedException {
-    try(KubernetesClient kubernetesClient = new DefaultKubernetesClient()){
+    try(KubernetesClient kubernetesClient = new KubernetesClientBuilder().build()) {
       final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
       final String namespace;
       if (client.getNamespace() != null) {

@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 @SuppressWarnings("java:S106")
 public class ListCustomResourceDefinitions {
   public static void main(String[] args) {
-    try(KubernetesClient client = new DefaultKubernetesClient()){
+    try(KubernetesClient client = new KubernetesClientBuilder().build()) {
       if (!client.supportsApiPath("/apis/apiextensions.k8s.io/v1beta1") && !client.supportsApiPath("/apis/apiextensions.k8s.io/v1")) {
         System.out.println("WARNING this cluster does not support the API Group apiextensions.k8s.io");
         return;

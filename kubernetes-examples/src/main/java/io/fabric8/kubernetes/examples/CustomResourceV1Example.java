@@ -21,8 +21,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -35,7 +35,7 @@ public class CustomResourceV1Example {
 
   @SuppressWarnings("java:S106")
   public static void main(String... args) {
-    try (KubernetesClient kc = new DefaultKubernetesClient()) {
+    try (KubernetesClient kc = new KubernetesClientBuilder().build()) {
       // @formatter:off
       final CustomResourceDefinition crd = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(Show.class)
         .editSpec().editVersion(0)

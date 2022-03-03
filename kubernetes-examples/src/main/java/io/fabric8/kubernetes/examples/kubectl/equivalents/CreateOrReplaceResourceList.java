@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * This example is Java equivalent of applying a generic Kubernetes resource list like we
@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class CreateOrReplaceResourceList {
   public static void main(String[] args) {
-    try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.load(CreateOrReplaceResourceList.class.getResourceAsStream("/test-resource-list.yaml"))
         .inNamespace("default")
         .createOrReplace();

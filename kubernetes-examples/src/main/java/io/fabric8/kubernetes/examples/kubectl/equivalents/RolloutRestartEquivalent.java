@@ -15,15 +15,15 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * Java equivalent for `kubectl rollout restart deploy/nginx-deployment`
  */
 public class RolloutRestartEquivalent {
   public static void main(String[] args) {
-    try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.apps().deployments().inNamespace("default").withName("nginx-deployment")
         .rolling()
         .restart();

@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class PodExecEquivalent {
   private static final CountDownLatch execLatch = new CountDownLatch(1);
 
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       ByteArrayOutputStream error = new ByteArrayOutputStream();
 

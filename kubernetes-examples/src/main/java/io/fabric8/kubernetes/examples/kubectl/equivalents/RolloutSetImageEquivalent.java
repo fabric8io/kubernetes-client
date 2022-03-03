@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 import java.util.Collections;
 
 public class RolloutSetImageEquivalent {
   public static void main(String[] args) {
-    try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.apps().deployments().inNamespace("default").withName("nginx-deployment")
         .rolling()
         .updateImage(Collections.singletonMap("nginx", "nginx:alpine"));

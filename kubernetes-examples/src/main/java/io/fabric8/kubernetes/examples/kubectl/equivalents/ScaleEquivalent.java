@@ -15,15 +15,15 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * Java equivalent of `kubectl scale --replicas=2 deploy/nginx-deployment`
  */
 public class ScaleEquivalent {
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.apps().deployments().inNamespace("default").withName("nginx-deployment").scale(4);
     }
   }

@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.examples.crds.Dummy;
@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.examples.crds.DummyList;
 public class CustomResourceCreateDemo {
     public static void main(String[] args) {
 
-        try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+        try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
             // Dummy Client
             MixedOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = null;
 

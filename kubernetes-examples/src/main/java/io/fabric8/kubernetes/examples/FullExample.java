@@ -26,8 +26,8 @@ import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.APIGroupNotAvailableException;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -46,7 +46,7 @@ public class FullExample {
         }
 
         Config config = new ConfigBuilder().withMasterUrl(master).build();
-        try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+        try (final KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
             try (Watch watch = client.replicationControllers().inNamespace("thisisatest").withResourceVersion("0").watch(new Watcher<ReplicationController>() {
                 @Override
                 public void eventReceived(Action action, ReplicationController resource) {

@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * This example is Java equivalent to `kubectl create -f test-crd.yaml`. It applies
@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class LoadAndCreateCustomResourceDefinition {
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       CustomResourceDefinition crd = k8s.apiextensions().v1()
         .customResourceDefinitions()
         .load(LoadAndCreateCustomResourceDefinition.class.getResourceAsStream("/test-crd.yaml"))

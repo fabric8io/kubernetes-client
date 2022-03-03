@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * This sample code is Java equivalent to `kubectl delete pod my-pod`. It assumes that
@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class PodDelete {
     public static void main(String[] args) {
-        try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+        try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
             k8s.pods().inNamespace("default").withName("my-pod").delete();
         }
     }
