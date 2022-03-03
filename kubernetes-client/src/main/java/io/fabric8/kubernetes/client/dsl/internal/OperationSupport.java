@@ -233,6 +233,9 @@ public class OperationSupport {
     String operationNs = getNamespace();
     String itemNs = (item instanceof HasMetadata) ? KubernetesResourceUtil.getNamespace((HasMetadata)item) : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
+      if (context.isDefaultNamespace()) {
+        throw new KubernetesClientException("namespace not specified for an operation requiring one and no default was found in the Config.");  
+      }
       throw new KubernetesClientException("namespace not specified for an operation requiring one.");
     } else if (!Utils.isNullOrEmpty(itemNs) && (Utils.isNullOrEmpty(operationNs)
         || this.context.isDefaultNamespace())) {

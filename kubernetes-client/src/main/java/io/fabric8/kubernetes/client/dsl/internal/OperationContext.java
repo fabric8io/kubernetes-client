@@ -129,9 +129,9 @@ public class OperationContext extends SimpleClientContext {
     if (!defaultNamespace || Utils.isNotNullOrEmpty(namespace)) {
       this.namespace = namespace;
       this.defaultNamespace = defaultNamespace;
-    } else {
-      this.namespace = config != null && Utils.isNotNullOrEmpty(config.getNamespace()) ? config.getNamespace() : null;
-      this.defaultNamespace = config != null ? config.isDefaultNamespace() : true;
+    } else if (config != null) {
+      this.namespace = config.getNamespace();
+      this.defaultNamespace = config.isDefaultNamespace();
     }
   }
 

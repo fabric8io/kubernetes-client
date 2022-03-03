@@ -291,31 +291,28 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public final T createOrReplace(T... items) {
     T itemToCreateOrReplace = getItem();
+    Resource<T> resource;
     if (items.length > 1) {
       throw new IllegalArgumentException("Too many items to create.");
     } else if (items.length == 1) {
       itemToCreateOrReplace = items[0];
+      resource = withItem(itemToCreateOrReplace);
+    } else {
+      resource = this;
     }
 
     if (itemToCreateOrReplace == null) {
       throw new IllegalArgumentException("Nothing to create.");
     }
-
-    if (Utils.isNullOrEmpty(name)) {
-
-      return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
-    }
-    T finalItemToCreateOrReplace = itemToCreateOrReplace;
-    // use the Resource in case create or replace is overriden
-    Resource<T> resource = newResource(context);
+    
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
       resource::create,
       resource::replace,
-      m -> waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
-      m -> fromServer().get()
+      m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
+      m -> resource.fromServer().get()
     );
 
-    return createOrReplaceHelper.createOrReplace(finalItemToCreateOrReplace);
+    return createOrReplaceHelper.createOrReplace(itemToCreateOrReplace);
   }
 
   @Override
@@ -704,12 +701,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   private URL getCompleteResourceUrl() throws MalformedURLException {
-    URL requestUrl = null;
-    if (item != null) {
-      requestUrl = getNamespacedUrl(checkNamespace(item));
-    } else {
-      requestUrl = getNamespacedUrl();
-    }
+    URL requestUrl = getNamespacedUrl(checkNamespace(item));
     if (name != null) {
       requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
     } else if (item != null && reloadingFromServer) {

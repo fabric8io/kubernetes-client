@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableOpenShiftMockClient(crud = true)
 class NamespacedItemTest {
@@ -114,6 +115,13 @@ class NamespacedItemTest {
   void testOperationNullNamespace() {
     MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = this.client.configMaps();
     assertThrows(KubernetesClientException.class, () -> configMaps.inNamespace(null));
+  }
+
+  @Test
+  void testInAnyNamespaceWithNamespacedOperation() {
+    Resource<ConfigMap> op = client.adapt(NamespacedKubernetesClient.class).inAnyNamespace().configMaps().withName("x");
+    KubernetesClientException e = assertThrows(KubernetesClientException.class, () -> op.get());
+    assertTrue(e.getMessage().contains("namespace not"));
   }
 
 }
