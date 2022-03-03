@@ -16,10 +16,10 @@
 package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.TagReferenceBuilder;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class ImageStreamExample {
   private static final Logger logger = LoggerFactory.getLogger(ImageStreamExample.class);
 
   public static void main(String[] args) {
-    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       final String imageStreamName = "slave-jenkins";
       final ImageStream imageStream = client.imageStreams().inNamespace(project).create(

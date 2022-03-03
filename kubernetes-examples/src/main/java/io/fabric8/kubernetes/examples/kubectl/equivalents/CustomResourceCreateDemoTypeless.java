@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 
@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
  */
 public class CustomResourceCreateDemoTypeless {
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       // Create Custom Resource Context
       ResourceDefinitionContext context = new ResourceDefinitionContext
         .Builder()

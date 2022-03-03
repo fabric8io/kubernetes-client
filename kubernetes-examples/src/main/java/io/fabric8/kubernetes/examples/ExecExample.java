@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 
@@ -40,8 +40,8 @@ public class ExecExample {
         }
 
         try (
-          KubernetesClient client = new DefaultKubernetesClient();
-          ExecWatch watch = newExecWatch(client, namespace, podName)
+          KubernetesClient client = new KubernetesClientBuilder().build();
+          ExecWatch ignore = newExecWatch(client, namespace, podName)
         ) {
             Thread.sleep(10 * 1000L);
         }

@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class ReplaceExamples {
       configBuilder.withMasterUrl(args[0]);
       logger.info("Using master with URL: {}", args[0]);
     }
-    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       try {
         final Namespace namespace = client.namespaces().create(
           new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()

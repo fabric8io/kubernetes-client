@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class EventsGetEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(EventsGetEquivalent.class);
 
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.v1().events().inNamespace("default").list().getItems().stream()
         .map(Event::getMessage)
         .forEach(logger::info);

@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -44,7 +44,7 @@ public class CRDExample {
 
   private static final Logger logger = LoggerFactory.getLogger(CRDExample.class);
 
-  private static boolean logRootPaths = false;
+  private static final boolean LOG_ROOT_PATHS = false;
 
   /**
    * Example of Cluster and Namespaced scoped K8S Custom Resources.
@@ -63,7 +63,7 @@ public class CRDExample {
         namespace = args[0];
       }
     }
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+    try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       if (resourceNamespaced) {
         if (namespace == null) {
           namespace = client.getNamespace();
@@ -78,7 +78,7 @@ public class CRDExample {
         System.out.println("Creating cluster scoped resource");
       }
 
-      if (logRootPaths) {
+      if (LOG_ROOT_PATHS) {
         RootPaths rootPaths = client.rootPaths();
         if (rootPaths != null) {
           List<String> paths = rootPaths.getPaths();

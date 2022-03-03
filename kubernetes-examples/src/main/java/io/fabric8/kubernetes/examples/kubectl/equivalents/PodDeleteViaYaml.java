@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  *  This sample code is Java equivalent to `kubectl delete -f test-pod.yml`. It loads
@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class PodDeleteViaYaml {
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       /*
        * If namespace is specified in YAML client would pick it up from there,
        * otherwise you would need to specify it in operation context like being done

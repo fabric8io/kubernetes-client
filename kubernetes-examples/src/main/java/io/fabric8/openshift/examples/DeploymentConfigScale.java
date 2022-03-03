@@ -16,11 +16,11 @@
 
 package io.fabric8.openshift.examples;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -43,10 +43,8 @@ public class DeploymentConfigScale {
       System.out.println("Could not parse integer " + replicaText + " due to: " + e);
       return;
     }
-    try {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       Integer oldReplicas = 0;
-
-      OpenShiftClient client = new DefaultOpenShiftClient();
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.APPS)) {
         System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.APPS);
         return;

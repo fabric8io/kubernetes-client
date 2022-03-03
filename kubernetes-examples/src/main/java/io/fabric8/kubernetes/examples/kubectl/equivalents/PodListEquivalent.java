@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public class PodListEquivalent {
     private static final Logger logger = LoggerFactory.getLogger(PodListEquivalent.class);
 
     public static void main(String[] args) {
-        try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+        try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
             // Print names of all pods in specified namespace
             k8s.pods().inNamespace("default").list()
               .getItems()

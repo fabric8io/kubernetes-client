@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class PodPriorityExample {
       configBuilder.withMasterUrl(args[0]);
       logger.info("Using master with URL: {}", args[0]);
     }
-    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       PriorityClass priorityClass = new PriorityClassBuilder()
         .withNewMetadata().withName("high-priority").endMetadata()
         .withValue(100000)

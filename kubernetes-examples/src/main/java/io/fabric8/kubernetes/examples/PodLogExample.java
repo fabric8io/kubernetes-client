@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +43,8 @@ public class PodLogExample {
     System.out.println("----------------------------------------------------------------");
 
     try (
-      KubernetesClient client = new DefaultKubernetesClient();
-      LogWatch watch = client.pods().inNamespace(namespace).withName(podName).tailingLines(10).watchLog(System.out)
+      KubernetesClient client = new KubernetesClientBuilder().build();
+      LogWatch ignore = client.pods().inNamespace(namespace).withName(podName).tailingLines(10).watchLog(System.out)
     ) {
       Thread.sleep(5 * 1000L);
     } catch (Exception e) {

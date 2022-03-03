@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * This example is Java equivalent to `kubectl create -f test-deploy.yaml`. It loads
@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class LoadAndCreateDeployment {
   public static void main(String[] args) {
-    try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       // Load Deployment YAML Manifest into Java object
       Deployment deploy1 = k8s.apps().deployments()
         .load(LoadAndCreateDeployment.class.getResourceAsStream("/test-deploy.yaml"))

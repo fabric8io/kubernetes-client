@@ -17,21 +17,18 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- */
 public class NamespaceListEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(NamespaceListEquivalent.class);
 
   public static void main(String[] args) {
-    logger.info("Creating Kuberntes client");
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+    logger.info("Creating Kubernetes client");
+    try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       logger.info("Kubernetes client successfully created");
 
       // List all namespaces

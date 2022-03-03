@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 import java.util.UUID;
 /**
@@ -31,8 +31,8 @@ public class BindingExample {
 
   @SuppressWarnings("java:S106")
   public static void main(String[] args) {
-    final String podName = "binding-example-" + UUID.randomUUID().toString();
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+    final String podName = "binding-example-" + UUID.randomUUID();
+    try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       final String namespace;
       if (client.getConfiguration().getNamespace() != null) {
         namespace = client.getConfiguration().getNamespace();

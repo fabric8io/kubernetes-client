@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ import java.io.File;
  */
 public class UploadDirectoryToPod {
   public static void main(String[] args) {
-    try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       File fileToUpload = new File("/tmp/test-dir-src");
       k8s.pods().inNamespace("default")     // <- Namespace of Pod
         .withName("my-pod")                 // <- Name of Pod

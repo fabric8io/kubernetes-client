@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class PodSortByCreationTimestamp {
   private static final Logger logger = LoggerFactory.getLogger(PodSortByCreationTimestamp.class);
 
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       List<Pod> podList = k8s.pods().inNamespace("default").list().getItems();
 
       // In kubectl sorting is done on client side; so we can sort list by ourselves in latest to oldest pod

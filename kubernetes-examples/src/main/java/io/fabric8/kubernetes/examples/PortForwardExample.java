@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.LocalPortForward;
 
 import okhttp3.OkHttpClient;
@@ -41,7 +41,7 @@ public class PortForwardExample {
       configBuilder.withMasterUrl(args[0]);
       logger.info("Using master with URL: {}", args[0]);
     }
-    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       String namespace = "default";
       logger.info("Using namespace: {}", namespace);
       Pod pod = client.pods().inNamespace(namespace)

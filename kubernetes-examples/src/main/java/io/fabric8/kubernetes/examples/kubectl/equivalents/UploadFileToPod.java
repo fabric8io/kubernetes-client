@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ import java.io.File;
  */
 public class UploadFileToPod {
   public static void main(String[] args) {
-    try (KubernetesClient client = new DefaultKubernetesClient()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       File fileToUpload = new File("/tmp/jobExample.yml");
       client.pods().inNamespace("default")   // <- Namespace of Pod
         .withName("my-pod")                  // <- Name of Pod
