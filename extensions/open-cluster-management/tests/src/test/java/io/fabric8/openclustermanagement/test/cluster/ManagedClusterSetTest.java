@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.test.cluster;
 
-
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet;
@@ -38,26 +37,26 @@ class ManagedClusterSetTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/managedclustersets/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSet("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSet("test-get"))
+        .once();
 
     // When
     ManagedClusterSet managedClusterSet = client.clusters().managedClusterSets().withName("test-get").get();
 
     // Then
     assertThat(managedClusterSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/managedclustersets")
-      .andReturn(HttpURLConnection.HTTP_OK, new ManagedClusterSetListBuilder()
-        .addToItems(createNewManagedClusterSet("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ManagedClusterSetListBuilder()
+            .addToItems(createNewManagedClusterSet("test-list"))
+            .build())
+        .once();
 
     // When
     ManagedClusterSetList managedClusterSetList = client.clusters().managedClusterSets().list();
@@ -66,15 +65,15 @@ class ManagedClusterSetTest {
     assertThat(managedClusterSetList).isNotNull();
     assertThat(managedClusterSetList.getItems()).hasSize(1);
     assertThat(managedClusterSetList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1beta1/managedclustersets/clusterset")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSet("clusterset"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSet("clusterset"))
+        .once();
 
     // When
     Boolean isDeleted = client.clusters().managedClusterSets().withName("clusterset").delete();
@@ -85,10 +84,9 @@ class ManagedClusterSetTest {
 
   private ManagedClusterSet createNewManagedClusterSet(String name) {
     return new ManagedClusterSetBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
   }
 }
-

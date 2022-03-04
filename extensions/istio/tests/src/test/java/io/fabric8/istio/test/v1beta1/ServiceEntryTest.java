@@ -44,8 +44,8 @@ class ServiceEntryTest {
   void testGet() {
     ServiceEntry service2 = new ServiceEntryBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/serviceentries/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     ServiceEntry service = client.v1beta1().serviceEntries().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -57,19 +57,19 @@ class ServiceEntryTest {
   void testCreate() throws InterruptedException {
     // Example from: https://istio.io/latest/docs/reference/config/networking/service-entry/
     ServiceEntry service = new ServiceEntryBuilder()
-      .withNewMetadata()
-      .withName("external-svc-https")
-      .endMetadata()
-      .withNewSpec()
-      .withHosts("api.dropboxapi.com", "www.googleapis.com")
-      .withLocation(ServiceEntryLocation.MESH_INTERNAL)
-      .withPorts(new PortBuilder().withName("https").withProtocol("TLS").withNumber(443).build())
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("external-svc-https")
+        .endMetadata()
+        .withNewSpec()
+        .withHosts("api.dropboxapi.com", "www.googleapis.com")
+        .withLocation(ServiceEntryLocation.MESH_INTERNAL)
+        .withPorts(new PortBuilder().withName("https").withProtocol("TLS").withNumber(443).build())
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/serviceentries")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().serviceEntries().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -81,34 +81,35 @@ class ServiceEntryTest {
         + "\"hosts\":[\"api.dropboxapi.com\",\"www.googleapis.com\"],"
         + "\"location\":\"MESH_INTERNAL\","
         + "\"ports\":[{\"name\":\"https\",\"number\":443,\"protocol\":\"TLS\"}]}}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a Service Entry")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/serviceentries/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new ServiceEntryBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ServiceEntryBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().serviceEntries().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/serviceentries/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new ServiceEntryBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ServiceEntryBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().serviceEntries().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 }

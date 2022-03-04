@@ -37,26 +37,26 @@ class ChannelTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/channels/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("test-get"))
+        .once();
 
     // When
     Channel channel = client.apps().channels().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(channel)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/channels")
-      .andReturn(HttpURLConnection.HTTP_OK, new ChannelListBuilder()
-        .addToItems(createNewChannel("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ChannelListBuilder()
+            .addToItems(createNewChannel("test-list"))
+            .build())
+        .once();
 
     // When
     ChannelList channelList = client.apps().channels().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class ChannelTest {
     assertThat(channelList).isNotNull();
     assertThat(channelList.getItems()).hasSize(1);
     assertThat(channelList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/channels/sample-channel")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("sample-channel"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("sample-channel"))
+        .once();
 
     // When
     Boolean isDeleted = client.apps().channels().inNamespace("ns1").withName("sample-channel").delete();
@@ -84,16 +84,15 @@ class ChannelTest {
 
   private Channel createNewChannel(String name) {
     return new ChannelBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewConfigMapRef()
-      .withKind("configmap")
-      .withName("bookinfo-resource-filter-configmap")
-      .endConfigMapRef()
-      .withPathname("https://charts.helm.sh/stable")
-      .withType("HelmRepo")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewConfigMapRef()
+        .withKind("configmap")
+        .withName("bookinfo-resource-filter-configmap")
+        .endConfigMapRef()
+        .withPathname("https://charts.helm.sh/stable")
+        .withType("HelmRepo")
+        .endSpec()
+        .build();
   }
 }
-

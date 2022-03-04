@@ -37,26 +37,26 @@ class PlacementTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("test-get"))
+        .once();
 
     // When
     Placement placement = client.clusters().placements().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(placement)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements")
-      .andReturn(HttpURLConnection.HTTP_OK, new PlacementListBuilder()
-        .addToItems(createNewPlacement("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PlacementListBuilder()
+            .addToItems(createNewPlacement("test-list"))
+            .build())
+        .once();
 
     // When
     PlacementList placementList = client.clusters().placements().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class PlacementTest {
     assertThat(placementList).isNotNull();
     assertThat(placementList.getItems()).hasSize(1);
     assertThat(placementList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements/placement1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("placement1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("placement1"))
+        .once();
 
     // When
     Boolean isDeleted = client.clusters().placements().inNamespace("ns1").withName("placement1").delete();
@@ -84,16 +84,16 @@ class PlacementTest {
 
   private Placement createNewPlacement(String name) {
     return new PlacementBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addNewPredicate()
-      .withNewRequiredClusterSelector()
-      .withNewLabelSelector()
-      .addToMatchLabels("vendor", "OpenShift")
-      .endLabelSelector()
-      .endRequiredClusterSelector()
-      .endPredicate()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addNewPredicate()
+        .withNewRequiredClusterSelector()
+        .withNewLabelSelector()
+        .addToMatchLabels("vendor", "OpenShift")
+        .endLabelSelector()
+        .endRequiredClusterSelector()
+        .endPredicate()
+        .endSpec()
+        .build();
   }
 }

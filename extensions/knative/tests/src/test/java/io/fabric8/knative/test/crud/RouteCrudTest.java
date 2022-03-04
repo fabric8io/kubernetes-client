@@ -35,7 +35,6 @@ class RouteCrudTest {
   void shouldReturnEmptyList() {
     // Given
 
-
     // When
     RouteList RouteList = client.routes().inNamespace("ns1").list();
 
@@ -49,12 +48,12 @@ class RouteCrudTest {
     // Given
 
     Route Route2 = new RouteBuilder().withNewMetadata().withName("Route2").endMetadata()
-      .withNewSpec()
-      .addNewTraffic()
-      .withConfigurationName("greeter").withPercent(new Long(100l))
-      .endTraffic()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .addNewTraffic()
+        .withConfigurationName("greeter").withPercent(new Long(100l))
+        .endTraffic()
+        .endSpec()
+        .build();
 
     // When
     client.routes().inNamespace("ns2").create(Route2);

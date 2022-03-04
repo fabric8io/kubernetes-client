@@ -38,7 +38,7 @@ class PodGroupTest {
   @DisplayName("Should get a pod group")
   void testGet() {
     server.expect().get().withPath("/apis/scheduling.volcano.sh/v1beta1/namespaces/ns1/podgroups/pg1")
-      .andReturn(HttpURLConnection.HTTP_OK, createPodGroup()).once();
+        .andReturn(HttpURLConnection.HTTP_OK, createPodGroup()).once();
     PodGroup podGroup = client.v1beta1().podGroups().inNamespace("ns1").withName("pg1").get();
     assertNotNull(podGroup);
   }
@@ -48,7 +48,7 @@ class PodGroupTest {
   void testCreate() {
     PodGroup podGroup = createPodGroup();
     server.expect().post().withPath("/apis/scheduling.volcano.sh/v1beta1/namespaces/ns1/podgroups")
-      .andReturn(HttpURLConnection.HTTP_CREATED, podGroup).once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, podGroup).once();
     podGroup = client.v1beta1().podGroups().inNamespace("ns1").create(createPodGroup());
     assertNotNull(podGroup);
     assertEquals("pg1", podGroup.getMetadata().getName());
@@ -56,7 +56,7 @@ class PodGroupTest {
 
   private PodGroup createPodGroup() {
     return new PodGroupBuilder()
-      .withNewMetadata().withName("pg1").endMetadata()
-      .build();
+        .withNewMetadata().withName("pg1").endMetadata()
+        .build();
   }
 }

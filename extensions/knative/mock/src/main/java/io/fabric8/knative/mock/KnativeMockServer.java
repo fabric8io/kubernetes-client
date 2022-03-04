@@ -42,13 +42,14 @@ public class KnativeMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public KnativeMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public KnativeMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api","/apis/serving.knative.dev", "/apis/eventing/knative.dev"};
+    return new String[] { "/api", "/apis/serving.knative.dev", "/apis/eventing/knative.dev" };
   }
 
   public NamespacedKnativeClient createKnative() {

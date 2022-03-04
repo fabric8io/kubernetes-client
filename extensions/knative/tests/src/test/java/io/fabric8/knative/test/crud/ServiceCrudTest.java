@@ -30,7 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnableKubernetesMockClient(crud = true)
 class ServiceCrudTest {
 
-KnativeClient client;
+  KnativeClient client;
+
   @Test
   void shouldReturnEmptyList() {
 
@@ -53,13 +54,12 @@ KnativeClient client;
     assertEquals("service2", service.getMetadata().getName());
   }
 
-
   @Test
   void shouldIncludeServiceStatus() {
 
     Service service = new ServiceBuilder()
-      .withNewMetadata().withName("service").endMetadata()
-      .build();
+        .withNewMetadata().withName("service").endMetadata()
+        .build();
 
     Service created = client.services().inNamespace("ns2").create(service);
 

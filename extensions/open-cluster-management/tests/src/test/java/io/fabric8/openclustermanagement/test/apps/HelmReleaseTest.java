@@ -37,26 +37,26 @@ class HelmReleaseTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/helmreleases/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewHelmRelease("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewHelmRelease("test-get"))
+        .once();
 
     // When
     HelmRelease helmRelease = client.apps().helmReleases().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(helmRelease)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/helmreleases")
-      .andReturn(HttpURLConnection.HTTP_OK, new HelmReleaseListBuilder()
-        .addToItems(createNewHelmRelease("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new HelmReleaseListBuilder()
+            .addToItems(createNewHelmRelease("test-list"))
+            .build())
+        .once();
 
     // When
     HelmReleaseList HelmReleaseList = client.apps().helmReleases().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class HelmReleaseTest {
     assertThat(HelmReleaseList).isNotNull();
     assertThat(HelmReleaseList.getItems()).hasSize(1);
     assertThat(HelmReleaseList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/helmreleases/sample-hr")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewHelmRelease("sample-hr"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewHelmRelease("sample-hr"))
+        .once();
 
     // When
     Boolean isDeleted = client.apps().helmReleases().inNamespace("ns1").withName("sample-hr").delete();
@@ -84,17 +84,17 @@ class HelmReleaseTest {
 
   private HelmRelease createNewHelmRelease(String name) {
     return new HelmReleaseBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewRepo()
-      .withChartName("nginx-ingress")
-      .withNewSource()
-      .withNewHelmRepo()
-      .withUrls("https://kubernetes-charts.storage.googleapis.com/nginx-ingress-1.26.0.tgz")
-      .endHelmRepo()
-      .withType("HelmRepo")
-      .endSource()
-      .withVersion("1.26.0")
-      .endRepo()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewRepo()
+        .withChartName("nginx-ingress")
+        .withNewSource()
+        .withNewHelmRepo()
+        .withUrls("https://kubernetes-charts.storage.googleapis.com/nginx-ingress-1.26.0.tgz")
+        .endHelmRepo()
+        .withType("HelmRepo")
+        .endSource()
+        .withVersion("1.26.0")
+        .endRepo()
+        .build();
   }
 }

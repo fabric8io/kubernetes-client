@@ -74,29 +74,28 @@ class VirtualServiceTest {
   void testCreate() throws InterruptedException {
     // Example from: https://istio.io/latest/docs/reference/config/networking/virtual-service/
     VirtualService service = new VirtualServiceBuilder()
-      .withNewMetadata()
-      .withName("reviews-route")
-      .endMetadata()
-      .withNewSpec()
-      .withHosts("reviews-v2-routes")
-      .withHttp(
-        new HTTPRouteBuilder().withName("reviews-v2-routes")
-          .withMatch(
-            new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/wpcatalog"))).build(),
-            new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/consumercatalog"))).build()
-          )
-          .withRewrite(new HTTPRewriteBuilder().withUri("/newcatalog").build())
-          .withRoute(
-            new HTTPRouteDestinationBuilder().withDestination(new Destination("reviews.prod.svc.cluster.local", null, "v2"))
-              .build())
-          .build()
-      )
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("reviews-route")
+        .endMetadata()
+        .withNewSpec()
+        .withHosts("reviews-v2-routes")
+        .withHttp(
+            new HTTPRouteBuilder().withName("reviews-v2-routes")
+                .withMatch(
+                    new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/wpcatalog"))).build(),
+                    new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/consumercatalog"))).build())
+                .withRewrite(new HTTPRewriteBuilder().withUri("/newcatalog").build())
+                .withRoute(
+                    new HTTPRouteDestinationBuilder()
+                        .withDestination(new Destination("reviews.prod.svc.cluster.local", null, "v2"))
+                        .build())
+                .build())
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/virtualservices")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().virtualServices().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -105,83 +104,84 @@ class VirtualServiceTest {
         + "\"kind\":\"VirtualService\","
         + "\"metadata\":{\"name\":\"reviews-route\"},"
         + "\"spec\":{"
-        +   "\"hosts\":[\"reviews-v2-routes\"],"
-        +   "\"http\":[{"
-        +     "\"match\":["
-        +       "{\"uri\":{\"prefix\":\"/wpcatalog\"}},"
-        +       "{\"uri\":{\"prefix\":\"/consumercatalog\"}}],"
-        +     "\"name\":\"reviews-v2-routes\","
-        +     "\"rewrite\":{\"uri\":\"/newcatalog\"},"
-        +     "\"route\":[{\"destination\":{\"host\":\"reviews.prod.svc.cluster.local\",\"subset\":\"v2\"}}]}]}}",
-      recordedRequest.getBody().readUtf8());
+        + "\"hosts\":[\"reviews-v2-routes\"],"
+        + "\"http\":[{"
+        + "\"match\":["
+        + "{\"uri\":{\"prefix\":\"/wpcatalog\"}},"
+        + "{\"uri\":{\"prefix\":\"/consumercatalog\"}}],"
+        + "\"name\":\"reviews-v2-routes\","
+        + "\"rewrite\":{\"uri\":\"/newcatalog\"},"
+        + "\"route\":[{\"destination\":{\"host\":\"reviews.prod.svc.cluster.local\",\"subset\":\"v2\"}}]}]}}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a Virtual Service")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/virtualservices/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new VirtualServiceBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new VirtualServiceBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().virtualServices().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/virtualservices/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new VirtualServiceBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new VirtualServiceBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().virtualServices().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   /*
-    ---
-apiVersion: "networking.istio.io/v1beta1"
-kind: "VirtualService"
-metadata:
-  annotations: {}
-  finalizers: []
-  labels: {}
-  name: "details"
-  ownerReferences: []
-spec:
-  hosts:
-  - "details"
-  http:
-  - route:
-    - destination:
-        host: "details"
-        subset: "v1"
-     */
+   * ---
+   * apiVersion: "networking.istio.io/v1beta1"
+   * kind: "VirtualService"
+   * metadata:
+   * annotations: {}
+   * finalizers: []
+   * labels: {}
+   * name: "details"
+   * ownerReferences: []
+   * spec:
+   * hosts:
+   * - "details"
+   * http:
+   * - route:
+   * - destination:
+   * host: "details"
+   * subset: "v1"
+   */
 
   @Test
   public void checkBasicVirtualService() throws Exception {
     final VirtualService virtualService = new VirtualServiceBuilder()
-      .withNewMetadata()
-      .withName("details")
-      .endMetadata()
-      .withNewSpec()
-      .withHosts("details")
-      .addNewHttp()
-      .addNewRoute()
-      .withNewDestination()
-      .withHost("details")
-      .withSubset("v1")
-      .endDestination()
-      .endRoute()
-      .endHttp()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("details")
+        .endMetadata()
+        .withNewSpec()
+        .withHosts("details")
+        .addNewHttp()
+        .addNewRoute()
+        .withNewDestination()
+        .withHost("details")
+        .withSubset("v1")
+        .endDestination()
+        .endRoute()
+        .endHttp()
+        .endSpec()
+        .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(virtualService);
 
@@ -217,52 +217,52 @@ spec:
   }
 
   /*
-        apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: reviews-route
-spec:
-  hosts:
-  - reviews.prod.svc.cluster.local
-  http:
-  - match:
-    - uri:
-        prefix: "/wpcatalog"
-    - uri:
-        prefix: "/consumercatalog"
-    rewrite:
-      uri: "/newcatalog"
-    route:
-    - destination:
-        host: reviews.prod.svc.cluster.local
-        subset: v2
-  - route:
-    - destination:
-        host: reviews.prod.svc.cluster.local
-        subset: v1
-     */
+   * apiVersion: networking.istio.io/v1beta1
+   * kind: VirtualService
+   * metadata:
+   * name: reviews-route
+   * spec:
+   * hosts:
+   * - reviews.prod.svc.cluster.local
+   * http:
+   * - match:
+   * - uri:
+   * prefix: "/wpcatalog"
+   * - uri:
+   * prefix: "/consumercatalog"
+   * rewrite:
+   * uri: "/newcatalog"
+   * route:
+   * - destination:
+   * host: reviews.prod.svc.cluster.local
+   * subset: v2
+   * - route:
+   * - destination:
+   * host: reviews.prod.svc.cluster.local
+   * subset: v1
+   */
   @Test
   public void checkVirtualServiceWithMatch() throws IOException {
     final String reviewsHost = "reviews.prod.svc.cluster.local";
     final VirtualService resource = new VirtualServiceBuilder()
-      .withNewMetadata().withName("reviews-route").endMetadata()
-      .withNewSpec()
-      .addToHosts(reviewsHost)
-      .addNewHttp()
-      .addNewMatch().withNewUri().withNewStringMatchPrefixType("/wpcatalog").endUri().endMatch()
-      .addNewMatch().withNewUri().withNewStringMatchPrefixType("/consumercatalog").endUri().endMatch()
-      .withNewRewrite().withUri("/newcatalog").endRewrite()
-      .addNewRoute()
-      .withNewDestination().withHost(reviewsHost).withSubset("v2").endDestination()
-      .endRoute()
-      .endHttp()
-      .addNewHttp()
-      .addNewRoute()
-      .withNewDestination().withHost(reviewsHost).withSubset("v1").endDestination()
-      .endRoute()
-      .endHttp()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("reviews-route").endMetadata()
+        .withNewSpec()
+        .addToHosts(reviewsHost)
+        .addNewHttp()
+        .addNewMatch().withNewUri().withNewStringMatchPrefixType("/wpcatalog").endUri().endMatch()
+        .addNewMatch().withNewUri().withNewStringMatchPrefixType("/consumercatalog").endUri().endMatch()
+        .withNewRewrite().withUri("/newcatalog").endRewrite()
+        .addNewRoute()
+        .withNewDestination().withHost(reviewsHost).withSubset("v2").endDestination()
+        .endRoute()
+        .endHttp()
+        .addNewHttp()
+        .addNewRoute()
+        .withNewDestination().withHost(reviewsHost).withSubset("v1").endDestination()
+        .endRoute()
+        .endHttp()
+        .endSpec()
+        .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(resource);
     Yaml parser = new Yaml();
@@ -304,48 +304,48 @@ spec:
   }
 
   /*
-apiVersion: "networking.istio.io/v1beta1"
-kind: "VirtualService"
-metadata:
-  name: "reviews-route"
-spec:
-  hosts:
-  - "reviews.prod.svc.cluster.local"
-  http:
-  - route:
-    - destination:
-        host: "reviews.prod.svc.cluster.local"
-        port:
-          number: 9090
-        subset: "v2"
-  - route:
-    - destination:
-        host: "reviews.prod.svc.cluster.local"
-        port:
-          number: 9090
-        subset: "v1"
-    */
+   * apiVersion: "networking.istio.io/v1beta1"
+   * kind: "VirtualService"
+   * metadata:
+   * name: "reviews-route"
+   * spec:
+   * hosts:
+   * - "reviews.prod.svc.cluster.local"
+   * http:
+   * - route:
+   * - destination:
+   * host: "reviews.prod.svc.cluster.local"
+   * port:
+   * number: 9090
+   * subset: "v2"
+   * - route:
+   * - destination:
+   * host: "reviews.prod.svc.cluster.local"
+   * port:
+   * number: 9090
+   * subset: "v1"
+   */
   @Test
   public void checkVirtualServiceWithPortSelector() throws IOException {
     final String reviewsHost = "reviews.prod.svc.cluster.local";
     final VirtualService resource = new VirtualServiceBuilder()
-      .withNewMetadata().withName("reviews-route").endMetadata()
-      .withNewSpec()
-      .addToHosts(reviewsHost)
-      .addNewHttp()
-      .addNewRoute()
-      .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
-      .withNumber(9090).endPort().endDestination()
-      .endRoute()
-      .endHttp()
-      .addNewHttp()
-      .addNewRoute()
-      .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
-      .withNumber(9090).endPort().endDestination()
-      .endRoute()
-      .endHttp()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("reviews-route").endMetadata()
+        .withNewSpec()
+        .addToHosts(reviewsHost)
+        .addNewHttp()
+        .addNewRoute()
+        .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
+        .withNumber(9090).endPort().endDestination()
+        .endRoute()
+        .endHttp()
+        .addNewHttp()
+        .addNewRoute()
+        .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
+        .withNumber(9090).endPort().endDestination()
+        .endRoute()
+        .endHttp()
+        .endSpec()
+        .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(resource);
     Yaml parser = new Yaml();
@@ -390,24 +390,24 @@ spec:
   public void loadingFromYAMLShouldWork() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service.yaml");
 
-        /*
- apiVersion: networking.istio.io/v1beta1
- metadata:
- kind: VirtualService
-   name: ratings-route
- spec:
-   hosts:
-     - ratings.prod.svc.cluster.local
-   http:
-   - route:
-     - destination:
-         host: ratings.prod.svc.cluster.local
-         subset: v1
-     fault:
-       abort:
-         percent: 10
-         httpStatus: 400
-         */
+    /*
+     * apiVersion: networking.istio.io/v1beta1
+     * metadata:
+     * kind: VirtualService
+     * name: ratings-route
+     * spec:
+     * hosts:
+     * - ratings.prod.svc.cluster.local
+     * http:
+     * - route:
+     * - destination:
+     * host: ratings.prod.svc.cluster.local
+     * subset: v1
+     * fault:
+     * abort:
+     * percent: 10
+     * httpStatus: 400
+     */
 
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
     Assert.assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
@@ -430,19 +430,19 @@ spec:
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service-issue48.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 
-        /*
-        ...
-        spec:
-  hosts:
-    - recommendation
-  http:
-    - match:
-        - headers:
-            baggage-user-agent:
-              regex: .*DarkLaunch.*
-
-              ...
-         */
+    /*
+     * ...
+     * spec:
+     * hosts:
+     * - recommendation
+     * http:
+     * - match:
+     * - headers:
+     * baggage-user-agent:
+     * regex: .*DarkLaunch.*
+     * 
+     * ...
+     */
     final Map<String, StringMatch> headers = virtualService.getSpec().getHttp().get(0).getMatch().get(0).getHeaders();
     final StringMatch stringMatch = headers.get("baggage-user-agent");
     Assert.assertEquals(StringMatchRegex.class, stringMatch.getMatchType().getClass());

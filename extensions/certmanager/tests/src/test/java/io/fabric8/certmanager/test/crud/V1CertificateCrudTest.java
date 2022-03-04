@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
 class V1CertificateCrudTest {
-    CertManagerClient client;
+  CertManagerClient client;
 
   @Test
   void shouldReturnEmptyList() {
@@ -64,20 +64,20 @@ class V1CertificateCrudTest {
   void shouldLoadCertificate() {
 
     String certificateDefinition = String.join("\n", Arrays.asList(
-      "apiVersion: cert-manager.io/v1beta1",
-      "kind: Certificate",
-      "metadata:",
-      "  name: ca-issuer",
-      "spec:",
-      "  isCA: true",
-      "  secretName: ca-key-pair",
-      "  commonName: my-csi-app",
-      "  issuerRef:",
-      "    name: selfsigned-issuer",
-      "    kind: Issuer",
-      "    group: cert-manager.io"
-    ));
-    io.fabric8.certmanager.api.model.v1beta1.Certificate certificate = client.v1beta1().certificates().inNamespace("ns4").load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
+        "apiVersion: cert-manager.io/v1beta1",
+        "kind: Certificate",
+        "metadata:",
+        "  name: ca-issuer",
+        "spec:",
+        "  isCA: true",
+        "  secretName: ca-key-pair",
+        "  commonName: my-csi-app",
+        "  issuerRef:",
+        "    name: selfsigned-issuer",
+        "    kind: Issuer",
+        "    group: cert-manager.io"));
+    io.fabric8.certmanager.api.model.v1beta1.Certificate certificate = client.v1beta1().certificates().inNamespace("ns4")
+        .load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
     assertEquals("ca-issuer", certificate.getMetadata().getName());
     assertEquals("ca-key-pair", certificate.getSpec().getSecretName());
     assertEquals("my-csi-app", certificate.getSpec().getCommonName());

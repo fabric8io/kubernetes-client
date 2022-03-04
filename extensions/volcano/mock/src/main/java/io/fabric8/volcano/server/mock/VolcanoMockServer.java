@@ -42,13 +42,14 @@ public class VolcanoMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public VolcanoMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public VolcanoMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/scheduling.k8s.io"};
+    return new String[] { "/api", "/apis/scheduling.k8s.io" };
   }
 
   public NamespacedVolcanoClient createVolcano() {

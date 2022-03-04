@@ -15,7 +15,6 @@
  */
 package io.fabric8.knative.test;
 
-
 import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.knative.sources.v1.ApiServerSource;
 import io.fabric8.knative.sources.v1.ApiServerSourceBuilder;
@@ -41,26 +40,27 @@ class KnativeSourcesApiGroupResourcesTest {
 
   KubernetesMockServer server;
   KnativeClient client;
+
   @Test
   void testPingSourceCreateOrReplace() {
     // Given
     PingSource pingSource = new PingSourceBuilder()
-      .withNewMetadata().withName("test-ping-source").endMetadata()
-      .withNewSpec()
-      .withSchedule("*/1 * * * *")
-      .withData("{\"message\": \"Hello world!\"}")
-      .withNewSink()
-      .withNewRef()
-      .withApiVersion("v1")
-      .withKind("Service")
-      .withName("event-display")
-      .endRef()
-      .endSink()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("test-ping-source").endMetadata()
+        .withNewSpec()
+        .withSchedule("*/1 * * * *")
+        .withData("{\"message\": \"Hello world!\"}")
+        .withNewSink()
+        .withNewRef()
+        .withApiVersion("v1")
+        .withKind("Service")
+        .withName("event-display")
+        .endRef()
+        .endSink()
+        .endSpec()
+        .build();
     server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/pingsources")
-      .andReturn(HttpURLConnection.HTTP_OK, pingSource)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, pingSource)
+        .once();
 
     // When
     pingSource = client.pingSources().inNamespace("ns1").createOrReplace(pingSource);
@@ -74,28 +74,28 @@ class KnativeSourcesApiGroupResourcesTest {
   void testApiServerSourceCreateOrReplace() {
     // Given
     ApiServerSource apiServerSource = new ApiServerSourceBuilder()
-      .withNewMetadata()
-      .withName("testevents")
-      .endMetadata()
-      .withNewSpec()
-      .withServiceAccountName("events-sa")
-      .withMode("Resource")
-      .addNewResource()
-      .withApiVersion("v1")
-      .withKind("Event")
-      .endResource()
-      .withNewSink()
-      .withNewRef()
-      .withApiVersion("v1")
-      .withKind("Service")
-      .withName("event-display")
-      .endRef()
-      .endSink()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("testevents")
+        .endMetadata()
+        .withNewSpec()
+        .withServiceAccountName("events-sa")
+        .withMode("Resource")
+        .addNewResource()
+        .withApiVersion("v1")
+        .withKind("Event")
+        .endResource()
+        .withNewSink()
+        .withNewRef()
+        .withApiVersion("v1")
+        .withKind("Service")
+        .withName("event-display")
+        .endRef()
+        .endSink()
+        .endSpec()
+        .build();
     server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/apiserversources")
-      .andReturn(HttpURLConnection.HTTP_OK, apiServerSource)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, apiServerSource)
+        .once();
 
     // When
     apiServerSource = client.apiServerSources().inNamespace("ns1").createOrReplace(apiServerSource);
@@ -109,25 +109,25 @@ class KnativeSourcesApiGroupResourcesTest {
   void testSinkBindingCreateOrReplace() {
     // Given
     SinkBinding sinkBinding = new SinkBindingBuilder()
-      .withNewMetadata().withName("bind-heartbeat").endMetadata()
-      .withNewSpec()
-      .withNewSubject()
-      .withApiVersion("batch/v1")
-      .withKind("Job")
-      .withSelector(new LabelSelectorBuilder().addToMatchLabels("app", "heatbeat-cron").build())
-      .endSubject()
-      .withNewSink()
-      .withNewRef()
-      .withApiVersion("v1")
-      .withKind("Service")
-      .withName("event-display")
-      .endRef()
-      .endSink()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("bind-heartbeat").endMetadata()
+        .withNewSpec()
+        .withNewSubject()
+        .withApiVersion("batch/v1")
+        .withKind("Job")
+        .withSelector(new LabelSelectorBuilder().addToMatchLabels("app", "heatbeat-cron").build())
+        .endSubject()
+        .withNewSink()
+        .withNewRef()
+        .withApiVersion("v1")
+        .withKind("Service")
+        .withName("event-display")
+        .endRef()
+        .endSink()
+        .endSpec()
+        .build();
     server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/sinkbindings")
-      .andReturn(HttpURLConnection.HTTP_OK, sinkBinding)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, sinkBinding)
+        .once();
 
     // When
     sinkBinding = client.sinkBindings().inNamespace("ns1").createOrReplace(sinkBinding);
@@ -141,31 +141,31 @@ class KnativeSourcesApiGroupResourcesTest {
   void testContainerSourceCreateOrReplace() {
     // Given
     ContainerSource containerSource = new ContainerSourceBuilder()
-      .withNewMetadata().withName("test-heartbeats").endMetadata()
-      .withNewSpec()
-      .withTemplate(new PodTemplateSpecBuilder()
+        .withNewMetadata().withName("test-heartbeats").endMetadata()
         .withNewSpec()
-        .addNewContainer()
-        .withImage("test-image")
-        .withName("heartbeats")
-        .addToArgs("--period=1")
-        .addNewEnv().withName("POD_NAME").withValue("mypod").endEnv()
-        .addNewEnv().withName("POD_NAMESPACE").withValue("event-test").endEnv()
-        .endContainer()
+        .withTemplate(new PodTemplateSpecBuilder()
+            .withNewSpec()
+            .addNewContainer()
+            .withImage("test-image")
+            .withName("heartbeats")
+            .addToArgs("--period=1")
+            .addNewEnv().withName("POD_NAME").withValue("mypod").endEnv()
+            .addNewEnv().withName("POD_NAMESPACE").withValue("event-test").endEnv()
+            .endContainer()
+            .endSpec()
+            .build())
+        .withNewSink()
+        .withNewRef()
+        .withApiVersion("v1")
+        .withName("Service")
+        .withName("event-test")
+        .endRef()
+        .endSink()
         .endSpec()
-        .build())
-      .withNewSink()
-      .withNewRef()
-      .withApiVersion("v1")
-      .withName("Service")
-      .withName("event-test")
-      .endRef()
-      .endSink()
-      .endSpec()
-      .build();
+        .build();
     server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/containersources")
-      .andReturn(HttpURLConnection.HTTP_OK, containerSource)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, containerSource)
+        .once();
 
     // When
     containerSource = client.containerSources().inNamespace("ns1").createOrReplace(containerSource);

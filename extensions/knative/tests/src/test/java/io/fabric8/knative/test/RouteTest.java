@@ -36,41 +36,41 @@ class RouteTest {
   void testCreateOrReplace() {
     // Given
     Route route = new RouteBuilder()
-      .withNewMetadata()
-      .withName("helloworld-nodejs-red-blue1")
-      .withNamespace("test")
-      .endMetadata()
-      .withNewSpec()
-      .addNewTraffic()
-      .withConfigurationName("greeter")
-      .withPercent(100L)
-      .endTraffic()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("helloworld-nodejs-red-blue1")
+        .withNamespace("test")
+        .endMetadata()
+        .withNewSpec()
+        .addNewTraffic()
+        .withConfigurationName("greeter")
+        .withPercent(100L)
+        .endTraffic()
+        .endSpec()
+        .build();
     server.expect().post().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, route)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, route)
+        .once();
     server.expect().get().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes/helloworld-nodejs-red-blue1")
-      .andReturn(HttpURLConnection.HTTP_OK, route)
-      .times(2);
+        .andReturn(HttpURLConnection.HTTP_OK, route)
+        .times(2);
     server.expect().put().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes/helloworld-nodejs-red-blue1")
-      .andReturn(HttpURLConnection.HTTP_OK, route)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, route)
+        .once();
 
     // When
     route = client.routes().createOrReplace(new RouteBuilder()
-      .withNewMetadata()
-      .withName("helloworld-nodejs-red-blue1")
-      .addToAnnotations("foo", "bar")
-      .withNamespace("test")
-      .endMetadata()
-      .withNewSpec()
-      .addNewTraffic()
-      .withConfigurationName("greeter")
-      .withPercent(100L)
-      .endTraffic()
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("helloworld-nodejs-red-blue1")
+        .addToAnnotations("foo", "bar")
+        .withNamespace("test")
+        .endMetadata()
+        .withNewSpec()
+        .addNewTraffic()
+        .withConfigurationName("greeter")
+        .withPercent(100L)
+        .endTraffic()
+        .endSpec()
+        .build());
 
     // Then
     assertNotNull(route);

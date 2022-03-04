@@ -49,10 +49,11 @@ class AuthorizationPolicyTest {
   @Test
   @DisplayName("Should get a AuthorizationPolicy Entry")
   void testGet() {
-    AuthorizationPolicy service2 = new AuthorizationPolicyBuilder().withNewMetadata().withName("service2").endMetadata().build();
+    AuthorizationPolicy service2 = new AuthorizationPolicyBuilder().withNewMetadata().withName("service2").endMetadata()
+        .build();
     server.expect().get().withPath("/apis/security.istio.io/v1beta1/namespaces/ns2/authorizationpolicies/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     AuthorizationPolicy service = client.v1beta1().authorizationPolicies().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -63,26 +64,28 @@ class AuthorizationPolicyTest {
   @DisplayName("Should Create a AuthorizationPolicy Entry")
   void testCreate() throws InterruptedException {
     AuthorizationPolicy service = new AuthorizationPolicyBuilder()
-      .withNewMetadata()
-      .withName("httpbin")
-      .endMetadata()
-      .withNewSpec()
-      .withSelector(new WorkloadSelectorBuilder().withMatchLabels(Collections.singletonMap("app", "httpbin")).build())
-      .withAction(AuthorizationPolicyAction.DENY)
-      .withRules(new RuleBuilder()
-        .withFrom(
-          new RuleFromBuilder().withSource(new SourceBuilder().withPrincipals("cluster.local/ns/default/sa/sleep").build())
-            .build(),
-          new RuleFromBuilder().withSource(new SourceBuilder().withNamespaces("dev").build()).build())
-        .withTo(new RuleToBuilder().withOperation(new OperationBuilder().withMethods("GET").build()).build())
-        .withWhen(new ConditionBuilder().withKey("request.auth.claims[iss]").withValues("https://accounts.google.com").build())
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("httpbin")
+        .endMetadata()
+        .withNewSpec()
+        .withSelector(new WorkloadSelectorBuilder().withMatchLabels(Collections.singletonMap("app", "httpbin")).build())
+        .withAction(AuthorizationPolicyAction.DENY)
+        .withRules(new RuleBuilder()
+            .withFrom(
+                new RuleFromBuilder()
+                    .withSource(new SourceBuilder().withPrincipals("cluster.local/ns/default/sa/sleep").build())
+                    .build(),
+                new RuleFromBuilder().withSource(new SourceBuilder().withNamespaces("dev").build()).build())
+            .withTo(new RuleToBuilder().withOperation(new OperationBuilder().withMethods("GET").build()).build())
+            .withWhen(
+                new ConditionBuilder().withKey("request.auth.claims[iss]").withValues("https://accounts.google.com").build())
+            .build())
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/security.istio.io/v1beta1/namespaces/ns2/authorizationpolicies")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().authorizationPolicies().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -98,34 +101,35 @@ class AuthorizationPolicyTest {
         + "\"to\":[{\"operation\":{\"methods\":[\"GET\"]}}],"
         + "\"when\":[{\"key\":\"request.auth.claims[iss]\",\"values\":[\"https://accounts.google.com\"]}]}],"
         + "\"selector\":{\"matchLabels\":{\"app\":\"httpbin\"}}}}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a AuthorizationPolicy Entry")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/security.istio.io/v1beta1/namespaces/ns3/authorizationpolicies/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new AuthorizationPolicyBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new AuthorizationPolicyBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().authorizationPolicies().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/security.istio.io/v1beta1/namespaces/ns3/authorizationpolicies/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new AuthorizationPolicyBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new AuthorizationPolicyBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().authorizationPolicies().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 }

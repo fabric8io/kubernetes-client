@@ -30,16 +30,17 @@ class TriggerBindingTest {
 
   TektonClient client;
   KubernetesMockServer server;
+
   @Test
   @DisplayName("Should get a triggerbinding")
   void testGet() {
     server.expect().get().withPath("/apis/triggers.tekton.dev/v1alpha1/namespaces/ns1/triggerbindings/tb")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.TriggerBindingBuilder()
-        .withNewMetadata()
-        .withName("tb")
-        .endMetadata()
-        .build()).once();
-
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.TriggerBindingBuilder()
+            .withNewMetadata()
+            .withName("tb")
+            .endMetadata()
+            .build())
+        .once();
 
     TriggerBinding tb = client.v1alpha1().triggerBindings().inNamespace("ns1").withName("tb").get();
     assertNotNull(tb);

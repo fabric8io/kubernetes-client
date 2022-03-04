@@ -36,13 +36,14 @@ class ServiceTest {
 
   KnativeClient client;
   KubernetesMockServer server;
+
   @Test
   @DisplayName("Should get a Knative Service")
   void testGet() {
     Service service2 = new ServiceBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     Service service = client.services().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -54,8 +55,8 @@ class ServiceTest {
   void testCreate() {
     Service service = new ServiceBuilder().withNewMetadata().withName("service").endMetadata().build();
     server.expect().post().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.services().inNamespace("ns2").create(service);
     assertNotNull(service);
   }
@@ -64,25 +65,28 @@ class ServiceTest {
   @DisplayName("Should Delete a Knative Service")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
+        .once();
     Boolean deleted = client.services().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
-      .once();
-    Boolean deleted = client.services().inNamespace("ns3").withName("service3").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
+        .once();
+    Boolean deleted = client.services().inNamespace("ns3").withName("service3")
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
+        recordedRequest.getBody().readUtf8());
   }
 }

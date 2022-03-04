@@ -45,8 +45,8 @@ class PeerAuthenticationTest {
   void testGet() {
     PeerAuthentication service2 = new PeerAuthenticationBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/security.istio.io/v1beta1/namespaces/ns2/peerauthentications/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     PeerAuthentication service = client.v1beta1().peerAuthentications().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -57,18 +57,18 @@ class PeerAuthenticationTest {
   @DisplayName("Should Create a PeerAuthentication Entry")
   void testCreate() throws InterruptedException {
     PeerAuthentication service = new PeerAuthenticationBuilder()
-      .withNewMetadata()
-      .withName("details-svc")
-      .endMetadata()
-      .withNewSpec()
-      .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
-      .withMtls(new PeerAuthenticationMutualTLS(PeerAuthenticationMutualTLSMode.STRICT))
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("details-svc")
+        .endMetadata()
+        .withNewSpec()
+        .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
+        .withMtls(new PeerAuthenticationMutualTLS(PeerAuthenticationMutualTLSMode.STRICT))
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/security.istio.io/v1beta1/namespaces/ns2/peerauthentications")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().peerAuthentications().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -77,34 +77,35 @@ class PeerAuthenticationTest {
         + "\"kind\":\"PeerAuthentication\","
         + "\"metadata\":{\"name\":\"details-svc\"},"
         + "\"spec\":{\"mtls\":{\"mode\":\"STRICT\"},\"selector\":{\"matchLabels\":{\"app\":\"reviews\"}}}}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a PeerAuthentication Entry")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/security.istio.io/v1beta1/namespaces/ns3/peerauthentications/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new PeerAuthenticationBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PeerAuthenticationBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().peerAuthentications().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/security.istio.io/v1beta1/namespaces/ns3/peerauthentications/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new PeerAuthenticationBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PeerAuthenticationBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().peerAuthentications().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 }

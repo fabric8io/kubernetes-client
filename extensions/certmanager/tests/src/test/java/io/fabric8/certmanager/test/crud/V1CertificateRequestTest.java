@@ -41,8 +41,8 @@ class V1CertificateRequestTest {
     // Given
     CertificateRequest certificateRequest = createCertificateRequest();
     server.expect().post().withPath("/apis/cert-manager.io/v1/namespaces/ns1/certificaterequests")
-      .andReturn(HttpURLConnection.HTTP_CREATED, certificateRequest)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, certificateRequest)
+        .once();
 
     // When
     CertificateRequest createdRequest = client.v1().certificateRequests().inNamespace("ns1").create(certificateRequest);
@@ -54,18 +54,18 @@ class V1CertificateRequestTest {
 
   private CertificateRequest createCertificateRequest() throws ParseException {
     return new CertificateRequestBuilder()
-      .withNewMetadata().withName("my-ca-cr").endMetadata()
-      .withNewSpec()
-      .withRequest("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQzNqQ0N")
-      .withIsCA(false)
-      .addToUsages("signing", "digital signature", "server auth")
-      .withDuration(Duration.parse("90d"))
-      .withIssuerRef(new ObjectReferenceBuilder()
-        .withName("ca-issuer")
-        .withKind("Issuer")
-        .withGroup("cert-manager.io")
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("my-ca-cr").endMetadata()
+        .withNewSpec()
+        .withRequest("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQzNqQ0N")
+        .withIsCA(false)
+        .addToUsages("signing", "digital signature", "server auth")
+        .withDuration(Duration.parse("90d"))
+        .withIssuerRef(new ObjectReferenceBuilder()
+            .withName("ca-issuer")
+            .withKind("Issuer")
+            .withGroup("cert-manager.io")
+            .build())
+        .endSpec()
+        .build();
   }
 }

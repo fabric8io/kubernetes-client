@@ -32,8 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnableKubernetesMockClient(crud = true)
 class IntegrationCrudTest {
 
-
   CamelKClient client;
+
   @Test
   void shouldReturnEmptyList() {
 
@@ -70,27 +70,27 @@ class IntegrationCrudTest {
   void shouldLoadAIntegrationWithParams() {
 
     String definition = String.join("\n", Arrays.asList(
-      "apiVersion: camel.apache.org/v1alpha1",
-      "kind: Integration",
-      "metadata:",
-      "  name: integration4",
-      "spec:",
-      "  flows:",
-      "  - from:",
-      "      parameters:",
-      "        period: \"1000\"",
-      "      steps:",
-      "      - set-body:",
-      "          constant: Hello Camel K from yaml",
-      "      - to: log:info",
-      "      uri: timer:yaml",
-      "  traits:",
-      "    container:",
-      "      configuration:",
-      "        requestCPU: \"1\""
-    ));
+        "apiVersion: camel.apache.org/v1alpha1",
+        "kind: Integration",
+        "metadata:",
+        "  name: integration4",
+        "spec:",
+        "  flows:",
+        "  - from:",
+        "      parameters:",
+        "        period: \"1000\"",
+        "      steps:",
+        "      - set-body:",
+        "          constant: Hello Camel K from yaml",
+        "      - to: log:info",
+        "      uri: timer:yaml",
+        "  traits:",
+        "    container:",
+        "      configuration:",
+        "        requestCPU: \"1\""));
 
-    Integration i = client.v1().integrations().inNamespace("ns4").load(new ByteArrayInputStream(definition.getBytes())).createOrReplace();
+    Integration i = client.v1().integrations().inNamespace("ns4").load(new ByteArrayInputStream(definition.getBytes()))
+        .createOrReplace();
     assertNotNull(i);
   }
 

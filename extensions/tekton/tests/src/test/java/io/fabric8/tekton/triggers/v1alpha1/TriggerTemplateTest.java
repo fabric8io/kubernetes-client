@@ -30,16 +30,17 @@ class TriggerTemplateTest {
 
   TektonClient client;
   KubernetesMockServer server;
+
   @Test
   @DisplayName("Should get a triggertemplate")
   void testGet() {
     server.expect().get().withPath("/apis/triggers.tekton.dev/v1alpha1/namespaces/ns1/triggertemplates/tt")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateBuilder()
-        .withNewMetadata()
-        .withName("tt")
-        .endMetadata()
-        .build()).once();
-
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateBuilder()
+            .withNewMetadata()
+            .withName("tt")
+            .endMetadata()
+            .build())
+        .once();
 
     TriggerTemplate tt = client.v1alpha1().triggerTemplates().inNamespace("ns1").withName("tt").get();
     assertNotNull(tt);

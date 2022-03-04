@@ -30,15 +30,17 @@ class EventListenerTest {
 
   TektonClient client;
   KubernetesMockServer server;
+
   @Test
   @DisplayName("Should get a eventlistener")
   void testGet() {
     server.expect().get().withPath("/apis/triggers.tekton.dev/v1alpha1/namespaces/ns1/eventlisteners/el")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.EventListenerBuilder()
-        .withNewMetadata()
-        .withName("el")
-        .endMetadata()
-        .build()).once();
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.EventListenerBuilder()
+            .withNewMetadata()
+            .withName("el")
+            .endMetadata()
+            .build())
+        .once();
 
     EventListener el = client.v1alpha1().eventListeners().inNamespace("ns1").withName("el").get();
     assertNotNull(el);

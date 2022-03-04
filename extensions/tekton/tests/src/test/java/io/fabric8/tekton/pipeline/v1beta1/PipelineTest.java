@@ -34,16 +34,17 @@ class PipelineTest {
 
   KubernetesMockServer server;
   TektonClient client;
+
   @Test
   @DisplayName("Should get a pipeline")
   void testGet() {
     server.expect().get().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines/pipeline")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder()
-        .withNewMetadata()
-        .withName("pipeline")
-        .endMetadata()
-        .build()).once();
-
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder()
+            .withNewMetadata()
+            .withName("pipeline")
+            .endMetadata()
+            .build())
+        .once();
 
     Pipeline pipeline = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline").get();
     assertNotNull(pipeline);
@@ -52,9 +53,10 @@ class PipelineTest {
   @Test
   @DisplayName("Should create a pipeline")
   void testCreate() {
-    Pipeline pipeline = new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().withNewMetadata().withName("pipeline").endMetadata().build();
+    Pipeline pipeline = new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().withNewMetadata().withName("pipeline")
+        .endMetadata().build();
     server.expect().post().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines")
-      .andReturn(HttpURLConnection.HTTP_OK, pipeline).once();
+        .andReturn(HttpURLConnection.HTTP_OK, pipeline).once();
 
     pipeline = client.v1beta1().pipelines().inNamespace("ns1").create(pipeline);
     assertNotNull(pipeline);
@@ -64,27 +66,30 @@ class PipelineTest {
   @DisplayName("Should delete a pipeline")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines/pipeline")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
+        .once();
 
     Boolean isDeleted = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline").delete();
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete pipeline with some explicit propagationpolicy")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines/pipeline")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
+        .once();
 
-    Boolean isDeleted = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    Boolean isDeleted = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline")
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
+        recordedRequest.getBody().readUtf8());
   }
 }

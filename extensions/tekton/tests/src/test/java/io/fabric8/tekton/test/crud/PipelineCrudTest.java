@@ -31,10 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient(crud=true)
+@EnableKubernetesMockClient(crud = true)
 class PipelineCrudTest {
 
   TektonClient client;
+
   @Test
   void shouldReturnEmptyList() {
 
@@ -70,21 +71,20 @@ class PipelineCrudTest {
   @Test
   void shouldLoadAPipelineWithParams() {
 
-
     String pipelineDefinition = String.join("\n", Arrays.asList(
-      "apiVersion: tekton.dev/v1alpha1",
-      "kind: Pipeline",
-      "metadata:",
-      "  name: pipeline4",
-      "spec:",
-      "  tasks:",
-      "    - name: task-with-params",
-      "      params:",
-      "        - name: name",
-      "          value: param-value"
-    ));
+        "apiVersion: tekton.dev/v1alpha1",
+        "kind: Pipeline",
+        "metadata:",
+        "  name: pipeline4",
+        "spec:",
+        "  tasks:",
+        "    - name: task-with-params",
+        "      params:",
+        "        - name: name",
+        "          value: param-value"));
 
-    Pipeline p = client.v1beta1().pipelines().inNamespace("ns4").load(new ByteArrayInputStream(pipelineDefinition.getBytes())).createOrReplace();
+    Pipeline p = client.v1beta1().pipelines().inNamespace("ns4").load(new ByteArrayInputStream(pipelineDefinition.getBytes()))
+        .createOrReplace();
 
     final List<Param> taskParams = p.getSpec().getTasks().get(0).getParams();
     assertEquals(1, taskParams.size());

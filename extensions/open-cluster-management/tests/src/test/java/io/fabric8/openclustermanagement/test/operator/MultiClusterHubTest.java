@@ -37,26 +37,26 @@ class MultiClusterHubTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/operator.open-cluster-management.io/v1/namespaces/ns1/multiclusterhubs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterHub("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterHub("test-get"))
+        .once();
 
     // When
     MultiClusterHub multiClusterHub = client.operator().multiClusterHubs().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(multiClusterHub)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/operator.open-cluster-management.io/v1/namespaces/ns1/multiclusterhubs")
-      .andReturn(HttpURLConnection.HTTP_OK, new MultiClusterHubListBuilder()
-        .addToItems(createNewMultiClusterHub("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MultiClusterHubListBuilder()
+            .addToItems(createNewMultiClusterHub("test-list"))
+            .build())
+        .once();
 
     // When
     MultiClusterHubList multiClusterHubList = client.operator().multiClusterHubs().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class MultiClusterHubTest {
     assertThat(multiClusterHubList).isNotNull();
     assertThat(multiClusterHubList.getItems()).hasSize(1);
     assertThat(multiClusterHubList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/operator.open-cluster-management.io/v1/namespaces/ns1/multiclusterhubs/sample-mch")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterHub("sample-mch"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterHub("sample-mch"))
+        .once();
 
     // When
     Boolean isDeleted = client.operator().multiClusterHubs().inNamespace("ns1").withName("sample-mch").delete();
@@ -84,11 +84,11 @@ class MultiClusterHubTest {
 
   private MultiClusterHub createNewMultiClusterHub(String name) {
     return new MultiClusterHubBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withImagePullSecret("redhat-registry")
-      .withDisableHubSelfManagement(false)
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withImagePullSecret("redhat-registry")
+        .withDisableHubSelfManagement(false)
+        .endSpec()
+        .build();
   }
 }

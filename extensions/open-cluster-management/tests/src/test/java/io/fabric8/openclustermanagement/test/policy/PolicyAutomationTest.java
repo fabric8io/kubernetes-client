@@ -38,26 +38,26 @@ class PolicyAutomationTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/policy.open-cluster-management.io/v1beta1/namespaces/ns1/policyautomations/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPolicyAutomation("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPolicyAutomation("test-get"))
+        .once();
 
     // When
     PolicyAutomation policy = client.policy().policyAutomations().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(policy)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/policy.open-cluster-management.io/v1beta1/namespaces/ns1/policyautomations")
-      .andReturn(HttpURLConnection.HTTP_OK, new PolicyAutomationListBuilder()
-        .addToItems(createNewPolicyAutomation("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PolicyAutomationListBuilder()
+            .addToItems(createNewPolicyAutomation("test-list"))
+            .build())
+        .once();
 
     // When
     PolicyAutomationList policyAutomationList = client.policy().policyAutomations().inNamespace("ns1").list();
@@ -66,15 +66,16 @@ class PolicyAutomationTest {
     assertThat(policyAutomationList).isNotNull();
     assertThat(policyAutomationList.getItems()).hasSize(1);
     assertThat(policyAutomationList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/policy.open-cluster-management.io/v1beta1/namespaces/ns1/policyautomations/sample-policy")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPolicyAutomation("sample-policy"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/policy.open-cluster-management.io/v1beta1/namespaces/ns1/policyautomations/sample-policy")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPolicyAutomation("sample-policy"))
+        .once();
 
     // When
     Boolean isDeleted = client.policy().policyAutomations().inNamespace("ns1").withName("sample-policy").delete();
@@ -85,19 +86,19 @@ class PolicyAutomationTest {
 
   private PolicyAutomation createNewPolicyAutomation(String name) {
     return new PolicyAutomationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withEventHook("noncompliant")
-      .withPolicyRef("case5-test-policy")
-      .withMode("disabled")
-      .withNewAutomationDef()
-      .withName("Demo Job Template")
-      .withSecret("toweraccess")
-      .addToExtraVars("sn_severity", 1)
-      .addToExtraVars("sn_priority", 1)
-      .addToExtraVars("target_clusters", Collections.singletonList("cluster1"))
-      .endAutomationDef()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withEventHook("noncompliant")
+        .withPolicyRef("case5-test-policy")
+        .withMode("disabled")
+        .withNewAutomationDef()
+        .withName("Demo Job Template")
+        .withSecret("toweraccess")
+        .addToExtraVars("sn_severity", 1)
+        .addToExtraVars("sn_priority", 1)
+        .addToExtraVars("target_clusters", Collections.singletonList("cluster1"))
+        .endAutomationDef()
+        .endSpec()
+        .build();
   }
 }

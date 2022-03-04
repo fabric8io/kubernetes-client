@@ -42,13 +42,14 @@ public class TektonMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public TektonMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public TektonMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api","/apis/tekton.k8s.io"};
+    return new String[] { "/api", "/apis/tekton.k8s.io" };
   }
 
   public NamespacedTektonClient createTekton() {

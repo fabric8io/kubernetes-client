@@ -37,26 +37,26 @@ class PlacementRuleTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/placementrules/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementRule("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementRule("test-get"))
+        .once();
 
     // When
     PlacementRule placementRule = client.apps().placementRules().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(placementRule)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/placementrules")
-      .andReturn(HttpURLConnection.HTTP_OK, new PlacementRuleListBuilder()
-        .addToItems(createNewPlacementRule("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PlacementRuleListBuilder()
+            .addToItems(createNewPlacementRule("test-list"))
+            .build())
+        .once();
 
     // When
     PlacementRuleList placementRuleList = client.apps().placementRules().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class PlacementRuleTest {
     assertThat(placementRuleList).isNotNull();
     assertThat(placementRuleList.getItems()).hasSize(1);
     assertThat(placementRuleList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/placementrules/towhichcluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementRule("towhichcluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementRule("towhichcluster"))
+        .once();
 
     // When
     Boolean isDeleted = client.apps().placementRules().inNamespace("ns1").withName("towhichcluster").delete();
@@ -84,15 +84,13 @@ class PlacementRuleTest {
 
   private PlacementRule createNewPlacementRule(String name) {
     return new PlacementRuleBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addNewClusterCondition()
-      .withType("ManagedClusterConditionAvailable")
-      .withStatus("True")
-      .endClusterCondition()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addNewClusterCondition()
+        .withType("ManagedClusterConditionAvailable")
+        .withStatus("True")
+        .endClusterCondition()
+        .endSpec()
+        .build();
   }
 }
-
-

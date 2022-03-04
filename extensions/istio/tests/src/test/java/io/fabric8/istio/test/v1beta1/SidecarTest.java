@@ -43,8 +43,8 @@ class SidecarTest {
   void testGet() {
     Sidecar service2 = new SidecarBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/sidecars/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     Sidecar service = client.v1beta1().sidecars().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -56,18 +56,18 @@ class SidecarTest {
   void testCreate() throws InterruptedException {
     // Example from: https://istio.io/latest/docs/reference/config/networking/sidecar/
     Sidecar service = new SidecarBuilder()
-      .withNewMetadata()
-      .withName("default")
-      .endMetadata()
-      .withNewSpec()
-      .withEgress(new IstioEgressListenerBuilder()
-        .withHosts("./*", "istio-system/*").build())
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("default")
+        .endMetadata()
+        .withNewSpec()
+        .withEgress(new IstioEgressListenerBuilder()
+            .withHosts("./*", "istio-system/*").build())
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/sidecars")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().sidecars().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -76,34 +76,35 @@ class SidecarTest {
         + "\"kind\":\"Sidecar\","
         + "\"metadata\":{\"name\":\"default\"},"
         + "\"spec\":{\"egress\":[{\"hosts\":[\"./*\",\"istio-system/*\"]}]}}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a Sidecar")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/sidecars/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new SidecarBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SidecarBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().sidecars().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/sidecars/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new SidecarBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SidecarBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().sidecars().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 }

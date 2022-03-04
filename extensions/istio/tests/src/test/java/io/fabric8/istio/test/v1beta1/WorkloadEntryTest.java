@@ -43,8 +43,8 @@ class WorkloadEntryTest {
   void testGet() {
     WorkloadEntry service2 = new WorkloadEntryBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/workloadentries/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     WorkloadEntry service = client.v1beta1().workloadEntries().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -56,19 +56,19 @@ class WorkloadEntryTest {
   void testCreate() throws InterruptedException {
     // Example from: https://istio.io/latest/docs/reference/config/networking/workload-entry/
     WorkloadEntry service = new WorkloadEntryBuilder()
-      .withNewMetadata()
-      .withName("details-svc")
-      .endMetadata()
-      .withNewSpec()
-      .withServiceAccount("details-legacy")
-      .withAddress("2.2.2.2")
-      .withLabels(Collections.singletonMap("app", "details-legacy"))
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("details-svc")
+        .endMetadata()
+        .withNewSpec()
+        .withServiceAccount("details-legacy")
+        .withAddress("2.2.2.2")
+        .withLabels(Collections.singletonMap("app", "details-legacy"))
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/workloadentries")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().workloadEntries().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -77,34 +77,35 @@ class WorkloadEntryTest {
         + "\"kind\":\"WorkloadEntry\","
         + "\"metadata\":{\"name\":\"details-svc\"},"
         + "\"spec\":{\"address\":\"2.2.2.2\",\"labels\":{\"app\":\"details-legacy\"},\"serviceAccount\":\"details-legacy\"}}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a Workload Entry")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/workloadentries/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new WorkloadEntryBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new WorkloadEntryBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().workloadEntries().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/workloadentries/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new WorkloadEntryBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new WorkloadEntryBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().workloadEntries().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 }

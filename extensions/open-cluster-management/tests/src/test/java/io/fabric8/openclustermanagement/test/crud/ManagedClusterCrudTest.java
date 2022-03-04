@@ -40,8 +40,8 @@ class ManagedClusterCrudTest {
 
     // Then
     assertThat(managedCluster)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
@@ -56,7 +56,7 @@ class ManagedClusterCrudTest {
     assertThat(managedClusterList).isNotNull();
     assertThat(managedClusterList.getItems()).hasSize(1);
     assertThat(managedClusterList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
@@ -73,15 +73,15 @@ class ManagedClusterCrudTest {
 
   private ManagedCluster createNewManagedCluster(String name) {
     return new ManagedClusterBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withHubAcceptsClient(true)
-      .addNewManagedClusterClientConfig()
-      .withCaBundle("test")
-      .withUrl("test.com")
-      .endManagedClusterClientConfig()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withHubAcceptsClient(true)
+        .addNewManagedClusterClientConfig()
+        .withCaBundle("test")
+        .withUrl("test.com")
+        .endManagedClusterClientConfig()
+        .endSpec()
+        .build();
   }
 
 }

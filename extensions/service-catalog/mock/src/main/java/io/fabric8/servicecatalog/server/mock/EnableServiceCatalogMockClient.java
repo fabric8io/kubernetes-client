@@ -42,5 +42,3 @@ public @interface EnableServiceCatalogMockClient {
 
   boolean crud() default false;
 }
-
-

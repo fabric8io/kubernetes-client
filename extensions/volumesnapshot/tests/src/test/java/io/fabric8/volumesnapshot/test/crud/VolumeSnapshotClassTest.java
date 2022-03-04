@@ -15,7 +15,6 @@
  */
 package io.fabric8.volumesnapshot.test.crud;
 
-
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassBuilder;
@@ -32,33 +31,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnableKubernetesMockClient(crud = true)
 class VolumeSnapshotClassTest {
   VolumeSnapshotClient client;
+
   @Test
   void testCrud() {
 
     VolumeSnapshotClass vsc1 = new VolumeSnapshotClassBuilder()
-      .withNewMetadata()
-      .withName("csi-snapclass1")
-      .addToLabels("key1", "value1")
-      .endMetadata()
-      .withDriver("foo.csi.k8s.io")
-      .withDeletionPolicy("Delete")
-      .build();
+        .withNewMetadata()
+        .withName("csi-snapclass1")
+        .addToLabels("key1", "value1")
+        .endMetadata()
+        .withDriver("foo.csi.k8s.io")
+        .withDeletionPolicy("Delete")
+        .build();
     VolumeSnapshotClass vsc2 = new VolumeSnapshotClassBuilder()
-      .withNewMetadata()
-      .withName("csi-snapclass2")
-      .addToLabels("key2", "value2")
-      .endMetadata()
-      .withDriver("foo.csi.k8s.io")
-      .withDeletionPolicy("Delete")
-      .build();
+        .withNewMetadata()
+        .withName("csi-snapclass2")
+        .addToLabels("key2", "value2")
+        .endMetadata()
+        .withDriver("foo.csi.k8s.io")
+        .withDeletionPolicy("Delete")
+        .build();
     VolumeSnapshotClass vsc3 = new VolumeSnapshotClassBuilder()
-      .withNewMetadata()
-      .withName("csi-snapclass3")
-      .addToLabels("key3", "value3")
-      .endMetadata()
-      .withDriver("foo.csi.k8s.io")
-      .withDeletionPolicy("Delete")
-      .build();
+        .withNewMetadata()
+        .withName("csi-snapclass3")
+        .addToLabels("key3", "value3")
+        .endMetadata()
+        .withDriver("foo.csi.k8s.io")
+        .withDeletionPolicy("Delete")
+        .build();
 
     //Create
     client.volumeSnapshotClasses().create(vsc1);
@@ -75,11 +75,12 @@ class VolumeSnapshotClassTest {
     assertNotNull(sc1);
 
     //Update
-    VolumeSnapshotClass u1 = client.volumeSnapshotClasses().withName("csi-snapclass2").edit(v -> new VolumeSnapshotClassBuilder(v)
-      .editMetadata()
-      .addToLabels("updated", "true")
-      .endMetadata()
-      .build());
+    VolumeSnapshotClass u1 = client.volumeSnapshotClasses().withName("csi-snapclass2")
+        .edit(v -> new VolumeSnapshotClassBuilder(v)
+            .editMetadata()
+            .addToLabels("updated", "true")
+            .endMetadata()
+            .build());
 
     assertNotNull(u1);
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));

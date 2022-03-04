@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package io.fabric8.volcano.test.crud;
+
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volcano.client.VolcanoClient;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
@@ -34,10 +35,10 @@ class V1Beta1VolcanoTest {
   @Test
   void testV1Beta1PodGroup() {
     PodGroup podGroup = new PodGroupBuilder()
-      .editOrNewMetadata()
+        .editOrNewMetadata()
         .withName("Pod")
-      .endMetadata()
-      .build();
+        .endMetadata()
+        .build();
     client.v1beta1().podGroups().inNamespace("ns1").create(podGroup);
 
     PodGroupList podGroupList = client.v1beta1().podGroups().inNamespace("ns1").list();
@@ -48,10 +49,10 @@ class V1Beta1VolcanoTest {
   @Test
   void testV1Beta1Queue() {
     Queue queue = new QueueBuilder()
-      .editOrNewMetadata()
+        .editOrNewMetadata()
         .withName("queue1")
-      .endMetadata()
-      .build();
+        .endMetadata()
+        .build();
     client.v1beta1().queues().create(queue);
 
     QueueList queueList = client.v1beta1().queues().list();

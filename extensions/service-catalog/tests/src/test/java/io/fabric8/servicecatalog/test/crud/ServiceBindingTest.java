@@ -30,86 +30,86 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnableKubernetesMockClient(crud = true)
 class ServiceBindingTest {
 
+  ServiceCatalogClient client;
 
-    ServiceCatalogClient client;
-    @Test
-    void testCrud() {
+  @Test
+  void testCrud() {
 
-        ServiceBinding binding1 = new ServiceBindingBuilder()
-                .withNewMetadata()
-                .withName("binding1")
-                .addToLabels("key1", "value1")
-                .endMetadata()
-                .withNewSpec()
-                .withSecretName("secret1")
-                .withNewInstanceRef("instance1")
-                .endSpec()
-                .build();
+    ServiceBinding binding1 = new ServiceBindingBuilder()
+        .withNewMetadata()
+        .withName("binding1")
+        .addToLabels("key1", "value1")
+        .endMetadata()
+        .withNewSpec()
+        .withSecretName("secret1")
+        .withNewInstanceRef("instance1")
+        .endSpec()
+        .build();
 
-        ServiceBinding binding2 = new ServiceBindingBuilder()
-                .withNewMetadata()
-                .withName("binding2")
-                .addToLabels("key2", "value2")
-                .endMetadata()
-                .withNewSpec()
-                .withSecretName("secret2")
-                .withNewInstanceRef("instance2")
-                .endSpec()
-                .build();
+    ServiceBinding binding2 = new ServiceBindingBuilder()
+        .withNewMetadata()
+        .withName("binding2")
+        .addToLabels("key2", "value2")
+        .endMetadata()
+        .withNewSpec()
+        .withSecretName("secret2")
+        .withNewInstanceRef("instance2")
+        .endSpec()
+        .build();
 
-        ServiceBinding binding3 = new ServiceBindingBuilder()
-                .withNewMetadata()
-                .withName("binding3")
-                .addToLabels("key3", "value3")
-                .endMetadata()
-                .withNewSpec()
-                .withSecretName("secret3")
-                .withNewInstanceRef("instance3")
-                .endSpec()
-                .build();
+    ServiceBinding binding3 = new ServiceBindingBuilder()
+        .withNewMetadata()
+        .withName("binding3")
+        .addToLabels("key3", "value3")
+        .endMetadata()
+        .withNewSpec()
+        .withSecretName("secret3")
+        .withNewInstanceRef("instance3")
+        .endSpec()
+        .build();
 
-        ServiceBinding binding4 = new ServiceBindingBuilder()
-                .withNewMetadata()
-                .withName("binding4")
-                .addToLabels("key4", "value4")
-                .endMetadata()
-                .withNewSpec()
-                .withSecretName("secret4")
-                .withNewInstanceRef("instance4")
-                .endSpec()
-                .build();
+    ServiceBinding binding4 = new ServiceBindingBuilder()
+        .withNewMetadata()
+        .withName("binding4")
+        .addToLabels("key4", "value4")
+        .endMetadata()
+        .withNewSpec()
+        .withSecretName("secret4")
+        .withNewInstanceRef("instance4")
+        .endSpec()
+        .build();
 
-        //Create
-        client.serviceBindings().inNamespace("testns").create(binding1);
-        client.serviceBindings().inNamespace("testns").create(binding2);
-        client.serviceBindings().inNamespace("testns").create(binding3);
-        client.serviceBindings().inNamespace("otherns").create(binding4);
+    //Create
+    client.serviceBindings().inNamespace("testns").create(binding1);
+    client.serviceBindings().inNamespace("testns").create(binding2);
+    client.serviceBindings().inNamespace("testns").create(binding3);
+    client.serviceBindings().inNamespace("otherns").create(binding4);
 
+    //Read
+    ServiceBindingList bindings = client.serviceBindings().inNamespace("testns").list();
+    assertNotNull(bindings);
+    assertEquals(3, bindings.getItems().size());
 
-        //Read
-        ServiceBindingList bindings = client.serviceBindings().inNamespace("testns").list();
-        assertNotNull(bindings);
-        assertEquals(3, bindings.getItems().size());
+    bindings = client.serviceBindings().inNamespace("otherns").list();
+    assertNotNull(bindings);
+    assertEquals(1, bindings.getItems().size());
 
-        bindings = client.serviceBindings().inNamespace("otherns").list();
-        assertNotNull(bindings);
-        assertEquals(1, bindings.getItems().size());
+    ServiceBinding r1 = client.serviceBindings().inNamespace("testns").withName("binding1").get();
+    assertNotNull(r1);
 
-        ServiceBinding r1 = client.serviceBindings().inNamespace("testns").withName("binding1").get();
-        assertNotNull(r1);
+    //Update
+    ServiceBinding u1 = client.serviceBindings().inNamespace("testns").withName("binding1")
+        .edit(s -> new ServiceBindingBuilder(s)
+            .editMetadata()
+            .addToLabels("updated", "true")
+            .endMetadata()
+            .build());
 
-        //Update
-        ServiceBinding u1 = client.serviceBindings().inNamespace("testns").withName("binding1").edit(s -> new ServiceBindingBuilder(s)
-                .editMetadata()
-                .addToLabels("updated", "true")
-                .endMetadata()
-                .build());
+    assertNotNull(u1);
+    assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
-        assertNotNull(u1);
-        assertEquals("true", u1.getMetadata().getLabels().get("updated"));
-
-        //Delete
-        assertTrue(client.serviceBindings().inNamespace("testns").withName("binding1").delete());
-        assertNull(client.serviceBindings().inNamespace("testns").withName("binding1").get());
-    }
+    //Delete
+    assertTrue(client.serviceBindings().inNamespace("testns").withName("binding1").delete());
+    assertNull(client.serviceBindings().inNamespace("testns").withName("binding1").get());
+  }
 }
