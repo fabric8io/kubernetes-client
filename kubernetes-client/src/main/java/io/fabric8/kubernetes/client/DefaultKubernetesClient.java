@@ -121,26 +121,32 @@ import java.util.concurrent.ExecutorService;
 /**
  * Class for Default Kubernetes Client implementing KubernetesClient interface.
  * It is thread safe.
+ * 
+ * @deprecated direct usage should no longer be needed. Please use the {@link KubernetesClientBuilder} instead.
  */
+@Deprecated
 public class DefaultKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
   public static final String KUBERNETES_VERSION_ENDPOINT = "version";
-  
+
   static {
     Handlers.register(Pod.class, PodOperationsImpl::new);
     Handlers.register(Job.class, JobOperationsImpl::new);
     Handlers.register(Service.class, ServiceOperationsImpl::new);
     Handlers.register(Deployment.class, DeploymentOperationsImpl::new);
-    Handlers.register(io.fabric8.kubernetes.api.model.extensions.Deployment.class, io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
+    Handlers.register(io.fabric8.kubernetes.api.model.extensions.Deployment.class,
+        io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
     Handlers.register(ReplicaSet.class, ReplicaSetOperationsImpl::new);
-    Handlers.register(io.fabric8.kubernetes.api.model.extensions.ReplicaSet.class, io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl::new);
+    Handlers.register(io.fabric8.kubernetes.api.model.extensions.ReplicaSet.class,
+        io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl::new);
     Handlers.register(ReplicationController.class, ReplicationControllerOperationsImpl::new);
     Handlers.register(StatefulSet.class, StatefulSetOperationsImpl::new);
-    Handlers.register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class, CertificateSigningRequestOperationsImpl::new);
+    Handlers.register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class,
+        CertificateSigningRequestOperationsImpl::new);
     // trigger a load of the other client handlers and make KubernetesClient and DefaultKubernetesClient
     Adapters.initializeHandlers(ResourcedHasMetadataOperation::register);
   }
-  
+
   public DefaultKubernetesClient() {
     super();
   }
@@ -152,11 +158,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public DefaultKubernetesClient(Config config) {
     super(config);
   }
-  
+
   public DefaultKubernetesClient(HttpClient httpClient, Config config) {
     super(httpClient, config);
   }
-  
+
   public DefaultKubernetesClient(ClientContext clientContext) {
     super(clientContext);
   }
@@ -183,7 +189,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     copy.setDefaultNamespace(false);
     return newState(copy);
   }
-  
+
   protected Config configCopy() {
     return new ConfigBuilder(getConfiguration()).build();
   }
@@ -197,7 +203,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public FunctionCallable<? extends NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<>(this, requestConfig);
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -238,7 +244,8 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(
+      Collection<? extends HasMetadata> items) {
     return resourceList(new KubernetesListBuilder().withItems(new ArrayList<>(items)).build());
   }
 
@@ -249,7 +256,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
     return resourceListFor(s);
   }
-  
+
   @Override
   public <T extends HasMetadata> NamespaceableResource<T> resource(T item) {
     // lookup the operation given the item
@@ -263,7 +270,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NamespaceableResource<HasMetadata> resource(String s) {
-    return resource((HasMetadata)Serialization.unmarshal(s));
+    return resource((HasMetadata) Serialization.unmarshal(s));
   }
 
   /**
@@ -271,7 +278,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
-    return resources(Binding.class, (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType()));
+    return resources(Binding.class,
+        (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>() {
+        }.getType()));
   }
 
   /**
@@ -372,7 +381,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
-      return Handlers.getOperation(APIService.class, APIServiceList.class, this);
+    return Handlers.getOperation(APIService.class, APIServiceList.class, this);
   }
 
   /**
@@ -432,37 +441,40 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
+  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(
+      Class<T> resourceType) {
     return customResources(resourceType, null);
   }
-
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
+  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      Class<T> resourceType, Class<L> listClass) {
     return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
   }
-  
+
   @Override
   public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       String apiVersion, String kind) {
     ResourceDefinitionContext context = Handlers.getResourceDefinitionContext(apiVersion, kind, this);
     if (context == null) {
-      throw new KubernetesClientException("Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
+      throw new KubernetesClientException(
+          "Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
     }
     return genericKubernetesResources(context);
   }
-  
+
   /**
    * {@inheritDoc}
    */
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> customResources(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> customResources(
+      ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
     return newHasMetadataOperation(rdContext, resourceType, listClass);
   }
-  
+
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return adapt(DiscoveryAPIGroupClient.class);
@@ -498,7 +510,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public VersionInfo getVersion() {
     return getVersionInfo(KUBERNETES_VERSION_ENDPOINT);
   }
-  
+
   @Override
   public VersionInfo getKubernetesVersion() {
     return getVersionInfo(KUBERNETES_VERSION_ENDPOINT);
@@ -540,37 +552,49 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public NetworkAPIGroupDSL network() { return adapt(NetworkAPIGroupClient.class); }
+  public NetworkAPIGroupDSL network() {
+    return adapt(NetworkAPIGroupClient.class);
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public StorageAPIGroupDSL storage() { return adapt(StorageAPIGroupClient.class); }
+  public StorageAPIGroupDSL storage() {
+    return adapt(StorageAPIGroupClient.class);
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public BatchAPIGroupDSL batch() { return adapt(BatchAPIGroupClient.class); }
+  public BatchAPIGroupDSL batch() {
+    return adapt(BatchAPIGroupClient.class);
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public MetricAPIGroupDSL top() { return adapt(MetricAPIGroupClient.class); }
+  public MetricAPIGroupDSL top() {
+    return adapt(MetricAPIGroupClient.class);
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public PolicyAPIGroupDSL policy() { return adapt(PolicyAPIGroupClient.class); }
+  public PolicyAPIGroupDSL policy() {
+    return adapt(PolicyAPIGroupClient.class);
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public RbacAPIGroupDSL rbac() { return adapt(RbacAPIGroupClient.class); }
+  public RbacAPIGroupDSL rbac() {
+    return adapt(RbacAPIGroupClient.class);
+  }
 
   /**
    * {@inheritDoc}
