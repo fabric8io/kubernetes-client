@@ -227,7 +227,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
               new VariableDeclarator()
                   .setName(Keywords.ADDITIONAL_PROPERTIES)
                   .setType(mapType)
-                  .setInitializer("new java.util.HashMap<String, Object>()")));
+                  .setInitializer("new java.util.HashMap<>()")));
 
       objField.addAnnotation("com.fasterxml.jackson.annotation.JsonIgnore");
 
