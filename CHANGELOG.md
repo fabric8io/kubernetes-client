@@ -20,6 +20,7 @@
 * Fix #3813: Handle exit code status messages with pod uploads
 
 #### New Features
+* Fix #3407: Added Itemable.withItem to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  There is also client.resourceList(...).getResources() - that will provide the resource list as Resources.  This allows you to implement composite operations easily with lambda: client.resourceList(...).getResources().forEach(r -> r.delete());
 
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)

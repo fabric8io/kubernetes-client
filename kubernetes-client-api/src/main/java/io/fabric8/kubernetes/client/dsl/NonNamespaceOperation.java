@@ -18,20 +18,19 @@ package io.fabric8.kubernetes.client.dsl;
 /**
  * The entry point to client operations that are either "cross namespace resources", or are available in the invocation chain
  * after a namespace has already been specified.
- * @param <T>   The Kubernetes resource type.
- * @param <L>   The list variant of the Kubernetes resource type.
- * @param <R>   The resource operations.
+ * 
+ * @param <T> The Kubernetes resource type.
+ * @param <L> The list variant of the Kubernetes resource type.
+ * @param <R> The resource operations.
  */
 public interface NonNamespaceOperation<T, L, R> extends
-  Nameable<R>,
-  FilterWatchListMultiDeletable<T, L>,
-  Createable<T>,
-  CreateOrReplaceable<T>,
-  DryRunable<WritableOperation<T>>,
-  Replaceable<T>,
-  StatusReplaceable<T>,
-  Loadable<R> {
-
-  R withItem(T item);
+    Nameable<R>,
+    FilterWatchListMultiDeletable<T, L>,
+    Createable<T>,
+    CreateOrReplaceable<T>,
+    DryRunable<WritableOperation<T>>,
+    Replaceable<T>,
+    StatusReplaceable<T>,
+    Loadable<R>,
+    Itemable<T, R> {
 }
-
