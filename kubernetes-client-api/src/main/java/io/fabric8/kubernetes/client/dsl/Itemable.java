@@ -15,18 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-/**
- * The entry point to client operations.
- * 
- * @param <T> The Kubernetes resource type.
- * @param <L> The list variant of the Kubernetes resource type.
- * @param <R> The resource operations.
- */
-public interface Operation<T, L, R>
-    extends
-    AnyNamespaceable<FilterWatchListMultiDeletable<T, L>>,
-    Namespaceable<NonNamespaceOperation<T, L, R>>,
-    FilterWatchListMultiDeletable<T, L>,
-    Loadable<R>,
-    Itemable<T, R> {
+public interface Itemable<T, R> {
+
+  R withItem(T item);
+
 }
