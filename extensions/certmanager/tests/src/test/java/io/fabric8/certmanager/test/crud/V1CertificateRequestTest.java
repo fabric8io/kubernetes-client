@@ -20,7 +20,7 @@ import io.fabric8.certmanager.api.model.v1.CertificateRequest;
 import io.fabric8.certmanager.api.model.v1.CertificateRequestBuilder;
 import io.fabric8.certmanager.client.CertManagerClient;
 import io.fabric8.kubernetes.api.model.Duration;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class V1CertificateRequestTest {
 
   CertManagerClient client;

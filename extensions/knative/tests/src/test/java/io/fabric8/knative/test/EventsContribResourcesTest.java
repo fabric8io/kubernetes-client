@@ -32,7 +32,7 @@ import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource;
 import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSourceBuilder;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +41,7 @@ import java.net.HttpURLConnection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class EventsContribResourcesTest {
 
 

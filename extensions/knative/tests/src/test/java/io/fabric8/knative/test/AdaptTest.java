@@ -18,12 +18,12 @@ package io.fabric8.knative.test;
 import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.knative.client.serving.v1.ServingV1Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class AdaptTest {
 
   KubernetesClient kc;

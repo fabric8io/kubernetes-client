@@ -19,7 +19,7 @@ import io.fabric8.certmanager.api.model.v1alpha3.Certificate;
 import io.fabric8.certmanager.api.model.v1alpha3.CertificateBuilder;
 import io.fabric8.certmanager.api.model.v1alpha3.CertificateList;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMock(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class V1alpha3CertificateCrudTest {
 
   CertManagerClient client;

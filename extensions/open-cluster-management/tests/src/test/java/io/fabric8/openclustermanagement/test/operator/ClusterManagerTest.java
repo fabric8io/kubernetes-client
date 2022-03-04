@@ -15,7 +15,7 @@
  */
 package io.fabric8.openclustermanagement.test.operator;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerBuilder;
@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class ClusterManagerTest {
   private OpenClusterManagementClient client;
   private KubernetesMockServer server;

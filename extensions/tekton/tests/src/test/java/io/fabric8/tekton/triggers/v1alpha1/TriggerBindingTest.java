@@ -15,7 +15,7 @@
  */
 package io.fabric8.tekton.triggers.v1alpha1;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.tekton.client.TektonClient;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class TriggerBindingTest {
 
   TektonClient client;

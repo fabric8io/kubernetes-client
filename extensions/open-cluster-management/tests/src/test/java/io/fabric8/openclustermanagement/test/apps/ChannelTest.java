@@ -15,7 +15,7 @@
  */
 package io.fabric8.openclustermanagement.test.apps;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel;
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelBuilder;
@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class ChannelTest {
   private OpenClusterManagementClient client;
   private KubernetesMockServer server;

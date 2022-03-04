@@ -15,7 +15,7 @@
  */
 package io.fabric8.verticalpodautoscaler.test.crud;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerBuilder;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMock(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class V1VerticalPodAutoscalerCrudTest {
   VerticalPodAutoscalerClient client;
 

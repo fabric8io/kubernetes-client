@@ -15,7 +15,7 @@
  */
 package io.fabric8.volcano.test.request;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.volcano.client.VolcanoClient;
 import io.fabric8.volcano.scheduling.v1beta1.Queue;
@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class QueueTest {
 
   VolcanoClient client;

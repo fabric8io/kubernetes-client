@@ -15,7 +15,7 @@
  */
 package io.fabric8.openclustermanagement.test.crud;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterBuilder;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMock(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class ManagedClusterCrudTest {
   private OpenClusterManagementClient client;
   private KubernetesMockServer server;

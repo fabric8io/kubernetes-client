@@ -17,13 +17,13 @@ package io.fabric8.camelk.test;
 
 import io.fabric8.camelk.client.CamelKClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class AdaptTest {
 
   KubernetesClient client;

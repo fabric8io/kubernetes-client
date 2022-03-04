@@ -15,7 +15,7 @@
  */
 package io.fabric8.openclustermanagement.test.policy;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationBuilder;
@@ -29,7 +29,7 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class PolicyAutomationTest {
   private OpenClusterManagementClient client;
   private KubernetesMockServer server;

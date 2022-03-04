@@ -16,7 +16,7 @@
 package io.fabric8.volumesnapshot.test.crud;
 
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMock(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class VolumeSnapshotTest {
 
   VolumeSnapshotClient client;

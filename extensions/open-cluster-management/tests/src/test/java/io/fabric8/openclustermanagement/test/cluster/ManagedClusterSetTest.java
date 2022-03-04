@@ -16,7 +16,7 @@
 package io.fabric8.openclustermanagement.test.cluster;
 
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet;
 import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBuilder;
@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class ManagedClusterSetTest {
   private OpenClusterManagementClient client;
   private KubernetesMockServer server;

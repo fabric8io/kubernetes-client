@@ -15,7 +15,7 @@
  */
 package io.fabric8.tekton.mock;
 
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Annotation that is used for enabling TektonMockServerExtension JUnit5 extension.
  * You may set here two parameters of `TektonServer`: crudMode and https
  *
- * @deprecated use {@link EnableKubernetesMock} instead
+ * @deprecated use {@link EnableKubernetesMockClient} instead
  */
 @Deprecated
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })

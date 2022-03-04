@@ -17,12 +17,12 @@ package io.fabric8.chaosmesh.test;
 
 import io.fabric8.chaosmesh.client.ChaosMeshClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMock
+@EnableKubernetesMockClient
 class AdaptTest {
 
   KubernetesClient client;

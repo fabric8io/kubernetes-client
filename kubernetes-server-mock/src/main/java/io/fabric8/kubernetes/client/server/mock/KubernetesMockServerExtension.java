@@ -16,15 +16,9 @@
 
 package io.fabric8.kubernetes.client.server.mock;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Queue;
-
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
@@ -35,15 +29,24 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with <code>@ExtendWith(KubernetesMockServerExtension.class)</code> or through
- * <code>@EnableKubernetesMockClient</code> annotation
+ * by annotating it with <code>@ExtendWith(KubernetesMockExtension.class)</code> or through
+ * <code>@EnableKubernetesMock</code> annotation
  */
 public class KubernetesMockServerExtension implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
   private KubernetesMockServer mock;
-  private NamespacedKubernetesClient client;
+  private DefaultKubernetesClient client;
+  private Class<? extends Client>[] extensions;
 
   public interface SetTestClassField {
     void apply(Object instance, Field f) throws IllegalAccessException;
@@ -76,12 +79,18 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
   }
 
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, client));
+    if (extensions.length == 0) {
+      setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class, (i, f) -> f.set(i, client.adapt(f.getType())));
+    } else {
+      for (Class<? extends Client> clazz : extensions) {
+        setFieldIfEqualsToProvidedType(context, isStatic, field, clazz, (i, f) -> f.set(i, client.adapt(f.getType())));
+      }
+    }
     setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
   }
 
   protected void setFieldIfEqualsToProvidedType(ExtensionContext context, boolean isStatic, Field field, Class<?> fieldType, SetTestClassField setTestClassField) throws IllegalAccessException {
-    if (field.getType().equals(fieldType) && Modifier.isStatic(field.getModifiers()) == isStatic) {
+    if (fieldType.isAssignableFrom(field.getType()) && Modifier.isStatic(field.getModifiers()) == isStatic) {
       setKubernetesClientStaticOrMemberField(context, isStatic, field, setTestClassField);
     }
   }
@@ -93,7 +102,9 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
       ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), a.https())
       : new KubernetesMockServer(a.https());
     mock.init();
-    client = mock.createClient();
+    client = new DefaultKubernetesClient(mock.getMockConfiguration());
+    client.setAdaptableOverride(this::extensionMatches);
+    this.extensions = a.extensions();
   }
 
   protected void destroy() {
@@ -101,6 +112,10 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     client.close();
   }
 
+  /**
+   * @deprecated no longer used
+   */
+  @Deprecated
   protected Class<?> getClientType() {
     return KubernetesClient.class;
   }
@@ -113,11 +128,16 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     Field[] fields = testClass.getDeclaredFields();
     for (Field f : fields) {
       if (Modifier.isStatic(f.getModifiers()) == isStatic &&
-        (f.getType().equals(getClientType()) || f.getType().equals(getKubernetesMockServerType()))) {
+          (extensionMatches(f.getType()) || f.getType().equals(getKubernetesMockServerType()))) {
         return f;
       }
     }
     return null;
+  }
+
+  private boolean extensionMatches(Class<?> type) {
+    return extensions.length == 0 && Client.class.isAssignableFrom(type)
+        || Arrays.stream(extensions).anyMatch(c -> c.isAssignableFrom(type));
   }
 
   private void setKubernetesClientAndMockServerFields(ExtensionContext context, boolean isStatic) throws IllegalAccessException {

@@ -20,7 +20,7 @@ import io.fabric8.chaosmesh.client.ChaosMeshClient;
 import io.fabric8.chaosmesh.v1alpha1.IoChaos;
 import io.fabric8.chaosmesh.v1alpha1.IoChaosBuilder;
 import io.fabric8.chaosmesh.v1alpha1.IoChaosList;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMock;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMock(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class IoChaosTest {
 
   ChaosMeshClient client;
