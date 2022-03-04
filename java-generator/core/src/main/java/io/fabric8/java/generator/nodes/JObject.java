@@ -32,10 +32,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.fabric8.java.generator.nodes.Keywords.ADDITIONAL_PROPERTIES;
-import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
-
-public class JObject extends AbstractJSONSchema2Pojo {
+public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
   private static final Set<String> IGNORED_FIELDS = new HashSet<>();
 
@@ -116,32 +113,6 @@ public class JObject extends AbstractJSONSchema2Pojo {
   @Override
   public String getType() {
     return this.type;
-  }
-
-  private void addExtraAnnotations(ClassOrInterfaceDeclaration clz) {
-    clz.addAnnotation("lombok.ToString");
-    clz.addAnnotation("lombok.EqualsAndHashCode");
-    clz.addAnnotation("lombok.Setter");
-
-    clz.addAnnotation(
-        new SingleMemberAnnotationExpr(
-            new Name("lombok.experimental.Accessors"),
-            new NameExpr("prefix = {\n" + "    \"_\",\n" + "    \"\"\n" + "}")));
-
-    clz.addAnnotation(
-        new SingleMemberAnnotationExpr(
-            new Name("io.sundr.builder.annotations.Buildable"),
-            new NameExpr(
-                "editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = \"io.fabric8.kubernetes.api.builder\", refs = {\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),\n"
-                    + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)\n"
-                    + "}")));
   }
 
   private String getSortedFieldsAsParam(Set<String> list) {
@@ -239,15 +210,15 @@ public class JObject extends AbstractJSONSchema2Pojo {
 
     if (this.preserveUnknownFields || config.isAlwaysPreserveUnknownFields()) {
       ClassOrInterfaceType mapType = new ClassOrInterfaceType()
-          .setName(JAVA_UTIL_MAP)
+          .setName(Keywords.JAVA_UTIL_MAP)
           .setTypeArguments(
               new ClassOrInterfaceType().setName("String"),
               new ClassOrInterfaceType().setName("Object"));
-      FieldDeclaration objField = clz.addField(mapType, ADDITIONAL_PROPERTIES, Modifier.Keyword.PRIVATE);
+      FieldDeclaration objField = clz.addField(mapType, Keywords.ADDITIONAL_PROPERTIES, Modifier.Keyword.PRIVATE);
       objField.setVariables(
           new NodeList<>(
               new VariableDeclarator()
-                  .setName(ADDITIONAL_PROPERTIES)
+                  .setName(Keywords.ADDITIONAL_PROPERTIES)
                   .setType(mapType)
                   .setInitializer("new java.util.HashMap<String, Object>()")));
 
