@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.client.Version;
 import picocli.CommandLine;
 
 public class KubernetesClientVersionProvider implements CommandLine.IVersionProvider {
-    @Override
-    public String[] getVersion() throws Exception {
-        return new String[] {Version.clientVersion()};
-    }
+  @Override
+  public String[] getVersion() throws Exception {
+    return new String[] { Version.clientVersion() };
+  }
 }

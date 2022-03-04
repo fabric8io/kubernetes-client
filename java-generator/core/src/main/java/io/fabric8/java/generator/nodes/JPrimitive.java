@@ -16,26 +16,26 @@
 package io.fabric8.java.generator.nodes;
 
 import io.fabric8.java.generator.Config;
+
 import java.util.ArrayList;
 
 public class JPrimitive extends AbstractJSONSchema2Pojo {
-    private final String type;
+  private final String type;
 
-    private static final GeneratorResult empty =
-            new GeneratorResult(new ArrayList<>(), new ArrayList<>());
+  private static final GeneratorResult empty = new GeneratorResult(new ArrayList<>(), new ArrayList<>());
 
-    public JPrimitive(String type, Config config, String description) {
-        super(config, description);
-        this.type = type;
-    }
+  public JPrimitive(String type, Config config, String description) {
+    super(config, description);
+    this.type = type;
+  }
 
-    @Override
-    public String getType() {
-        return type;
-    }
+  @Override
+  public String getType() {
+    return type;
+  }
 
-    @Override
-    public GeneratorResult generateJava() {
-        return empty;
-    }
+  @Override
+  public GeneratorResult generateJava() {
+    return empty;
+  }
 }

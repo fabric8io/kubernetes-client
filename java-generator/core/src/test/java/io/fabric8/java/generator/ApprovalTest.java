@@ -15,102 +15,99 @@
  */
 package io.fabric8.java.generator;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import java.util.ArrayList;
-import java.util.List;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ApprovalTest {
 
-    CRGeneratorRunner runner = new CRGeneratorRunner(new Config());
+  CRGeneratorRunner runner = new CRGeneratorRunner(new Config());
 
-    CustomResourceDefinition getCRD(String name) {
-        return Serialization.unmarshal(
-                this.getClass().getClassLoader().getResourceAsStream(name),
-                CustomResourceDefinition.class);
-    }
+  CustomResourceDefinition getCRD(String name) {
+    return Serialization.unmarshal(
+        this.getClass().getClassLoader().getResourceAsStream(name),
+        CustomResourceDefinition.class);
+  }
 
-    String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
-        GeneratorResult.ClassResult cr =
-                classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
-        return cr.getCompilationUnit().toString();
-    }
+  String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
+    GeneratorResult.ClassResult cr = classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
+    return cr.getCompilationUnit().toString();
+  }
 
-    @Test
-    void testCrontabCrd() {
-        // Arrange
-        CustomResourceDefinition crd = getCRD("crontab-crd.yml");
+  @Test
+  void testCrontabCrd() {
+    // Arrange
+    CustomResourceDefinition crd = getCRD("crontab-crd.yml");
 
-        // Act
-        List<WritableCRCompilationUnit> writables =
-                runner.generate(crd, runner.getPackage("test.org"));
+    // Act
+    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
 
-        // Assert
-        assertEquals(1, writables.size());
-        assertThat(writables.size()).isEqualTo(1);
+    // Assert
+    assertEquals(1, writables.size());
+    assertThat(writables.size()).isEqualTo(1);
 
-        WritableCRCompilationUnit writable = writables.get(0);
+    WritableCRCompilationUnit writable = writables.get(0);
 
-        List<String> underTest = new ArrayList<>();
-        List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-        underTest.add(getJavaClass(crl, "CronTab"));
-        underTest.add(getJavaClass(crl, "CronTabSpec"));
-        underTest.add(getJavaClass(crl, "CronTabStatus"));
+    List<String> underTest = new ArrayList<>();
+    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+    underTest.add(getJavaClass(crl, "CronTab"));
+    underTest.add(getJavaClass(crl, "CronTabSpec"));
+    underTest.add(getJavaClass(crl, "CronTabStatus"));
 
-        Approvals.verifyAll("CrontabJavaCr", underTest);
-    }
+    Approvals.verifyAll("CrontabJavaCr", underTest);
+  }
 
-    @Test
-    void testKeycloakCrd() {
-        // Arrange
-        CustomResourceDefinition crd = getCRD("keycloak-crd.yml");
+  @Test
+  void testKeycloakCrd() {
+    // Arrange
+    CustomResourceDefinition crd = getCRD("keycloak-crd.yml");
 
-        // Act
-        List<WritableCRCompilationUnit> writables =
-                runner.generate(crd, runner.getPackage("test.org"));
+    // Act
+    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
 
-        // Assert
-        assertEquals(1, writables.size());
-        assertThat(writables.size()).isEqualTo(1);
+    // Assert
+    assertEquals(1, writables.size());
+    assertThat(writables.size()).isEqualTo(1);
 
-        WritableCRCompilationUnit writable = writables.get(0);
+    WritableCRCompilationUnit writable = writables.get(0);
 
-        List<String> underTest = new ArrayList<>();
-        List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-        underTest.add(getJavaClass(crl, "Keycloak"));
-        underTest.add(getJavaClass(crl, "KeycloakSpec"));
-        underTest.add(getJavaClass(crl, "KeycloakStatus"));
+    List<String> underTest = new ArrayList<>();
+    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+    underTest.add(getJavaClass(crl, "Keycloak"));
+    underTest.add(getJavaClass(crl, "KeycloakSpec"));
+    underTest.add(getJavaClass(crl, "KeycloakStatus"));
 
-        Approvals.verifyAll("KeycloakJavaCr", underTest);
-    }
+    Approvals.verifyAll("KeycloakJavaCr", underTest);
+  }
 
-    @Test
-    void testJokeCrd() {
-        // Arrange
-        CustomResourceDefinition crd = getCRD("jokerequests-crd.yml");
+  @Test
+  void testJokeCrd() {
+    // Arrange
+    CustomResourceDefinition crd = getCRD("jokerequests-crd.yml");
 
-        // Act
-        List<WritableCRCompilationUnit> writables =
-                runner.generate(crd, runner.getPackage("test.org"));
+    // Act
+    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
 
-        // Assert
-        assertEquals(1, writables.size());
-        assertThat(writables.size()).isEqualTo(1);
+    // Assert
+    assertEquals(1, writables.size());
+    assertThat(writables.size()).isEqualTo(1);
 
-        WritableCRCompilationUnit writable = writables.get(0);
+    WritableCRCompilationUnit writable = writables.get(0);
 
-        List<String> underTest = new ArrayList<>();
-        List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-        underTest.add(getJavaClass(crl, "JokeRequest"));
-        underTest.add(getJavaClass(crl, "JokeRequestSpec"));
-        underTest.add(getJavaClass(crl, "JokeRequestStatus"));
+    List<String> underTest = new ArrayList<>();
+    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+    underTest.add(getJavaClass(crl, "JokeRequest"));
+    underTest.add(getJavaClass(crl, "JokeRequestSpec"));
+    underTest.add(getJavaClass(crl, "JokeRequestStatus"));
 
-        Approvals.verifyAll("JokeRequestJavaCr", underTest);
-    }
+    Approvals.verifyAll("JokeRequestJavaCr", underTest);
+  }
 }

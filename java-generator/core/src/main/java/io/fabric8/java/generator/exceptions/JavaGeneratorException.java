@@ -16,17 +16,18 @@
 package io.fabric8.java.generator.exceptions;
 
 public class JavaGeneratorException extends RuntimeException {
-    public JavaGeneratorException() {}
+  public JavaGeneratorException() {
+  }
 
-    public JavaGeneratorException(String message) {
-        super(message);
-    }
+  public JavaGeneratorException(String message) {
+    super(message);
+  }
 
-    public JavaGeneratorException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  public JavaGeneratorException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public JavaGeneratorException(Throwable cause) {
-        super(cause);
-    }
+  public JavaGeneratorException(Throwable cause) {
+    super(cause);
+  }
 }
