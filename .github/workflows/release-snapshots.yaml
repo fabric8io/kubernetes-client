@@ -64,5 +64,5 @@ jobs:
           server-id: ossrh
           server-username: OSSRHUSERNAME
           server-password: OSSRHPASSWORD
-      - name: Build and Release Project
-        run: mvn ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -P'java-11' deploy
+      - name: Release Project to OSSRH SNAPSHOTS
+        run: mvn ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -P'java-11' nexus-staging-maven-plugin:deploy
