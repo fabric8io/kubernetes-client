@@ -47,5 +47,3 @@ jobs:
           distribution: 'temurin'
       - name: Build Project
         run: mvn ${MAVEN_ARGS} clean install
-      - name: Check Format (only on touched files)
-        run: mvn spotless:check
