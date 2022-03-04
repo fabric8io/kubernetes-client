@@ -17,8 +17,8 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
@@ -42,11 +42,12 @@ import java.util.Queue;
  * by annotating it with <code>@ExtendWith(KubernetesMockExtension.class)</code> or through
  * <code>@EnableKubernetesMock</code> annotation
  */
-public class KubernetesMockServerExtension implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
+public class KubernetesMockServerExtension
+    implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
   private KubernetesMockServer mock;
-  private DefaultKubernetesClient client;
-  private Class<? extends Client>[] extensions;
+  private NamespacedKubernetesClient client;
+  private Class<? extends Client>[] extensions = new Class[0];
 
   public interface SetTestClassField {
     void apply(Object instance, Field f) throws IllegalAccessException;
@@ -78,18 +79,17 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     setKubernetesClientAndMockServerFields(context, true);
   }
 
-  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
-    if (extensions.length == 0) {
+  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field)
+      throws IllegalAccessException {
+    if (extensionMatches(field.getType())) {
       setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class, (i, f) -> f.set(i, client.adapt(f.getType())));
     } else {
-      for (Class<? extends Client> clazz : extensions) {
-        setFieldIfEqualsToProvidedType(context, isStatic, field, clazz, (i, f) -> f.set(i, client.adapt(f.getType())));
-      }
+      setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
     }
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
   }
 
-  protected void setFieldIfEqualsToProvidedType(ExtensionContext context, boolean isStatic, Field field, Class<?> fieldType, SetTestClassField setTestClassField) throws IllegalAccessException {
+  protected void setFieldIfEqualsToProvidedType(ExtensionContext context, boolean isStatic, Field field, Class<?> fieldType,
+      SetTestClassField setTestClassField) throws IllegalAccessException {
     if (fieldType.isAssignableFrom(field.getType()) && Modifier.isStatic(field.getModifiers()) == isStatic) {
       setKubernetesClientStaticOrMemberField(context, isStatic, field, setTestClassField);
     }
@@ -99,11 +99,12 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = a.crud()
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), a.https())
-      : new KubernetesMockServer(a.https());
+        ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses),
+            a.https())
+        : new KubernetesMockServer(a.https());
     mock.init();
-    client = new DefaultKubernetesClient(mock.getMockConfiguration());
-    client.setAdaptableOverride(this::extensionMatches);
+    mock.setAdaptableOverride(this::extensionMatches);
+    client = mock.createClient();
     this.extensions = a.extensions();
   }
 
@@ -140,7 +141,8 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
         || Arrays.stream(extensions).anyMatch(c -> c.isAssignableFrom(type));
   }
 
-  private void setKubernetesClientAndMockServerFields(ExtensionContext context, boolean isStatic) throws IllegalAccessException {
+  private void setKubernetesClientAndMockServerFields(ExtensionContext context, boolean isStatic)
+      throws IllegalAccessException {
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
       Class<?> testClass = optClass.get();
@@ -149,14 +151,16 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     }
   }
 
-  private void processTestClassDeclaredFields(ExtensionContext context, boolean isStatic, Class<?> testClass) throws IllegalAccessException {
+  private void processTestClassDeclaredFields(ExtensionContext context, boolean isStatic, Class<?> testClass)
+      throws IllegalAccessException {
     Field[] fields = testClass.getDeclaredFields();
     for (Field field : fields) {
       setFieldIfKubernetesClientOrMockServer(context, isStatic, field);
     }
   }
 
-  private void setKubernetesClientStaticOrMemberField(ExtensionContext context, boolean isStatic, Field f, SetTestClassField setTestClassField) throws IllegalAccessException {
+  private void setKubernetesClientStaticOrMemberField(ExtensionContext context, boolean isStatic, Field f,
+      SetTestClassField setTestClassField) throws IllegalAccessException {
     f.setAccessible(true);
     if (isStatic) {
       setTestClassField.apply(null, f);
