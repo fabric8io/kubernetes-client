@@ -18,10 +18,10 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction2;
 import io.fabric8.crd.example.json.ContainingJson;
-import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -44,16 +44,16 @@ class JsonSchemaTest {
     Map<String, JSONSchemaProps> properties = schema.getProperties();
     assertEquals(7, properties.size());
     final List<String> personTypes = properties.get("type").getEnum().stream().map(JsonNode::asText)
-      .collect(Collectors.toList());
+        .collect(Collectors.toList());
     assertEquals(2, personTypes.size());
     assertTrue(personTypes.contains("crazy"));
     assertTrue(personTypes.contains("crazier"));
     final Map<String, JSONSchemaProps> addressProperties = properties.get("addresses").getItems()
-      .getSchema().getProperties();
+        .getSchema().getProperties();
     assertEquals(5, addressProperties.size());
     final List<String> addressTypes = addressProperties.get("type").getEnum().stream()
-      .map(JsonNode::asText)
-      .collect(Collectors.toList());
+        .map(JsonNode::asText)
+        .collect(Collectors.toList());
     assertEquals(2, addressTypes.size());
     assertTrue(addressTypes.contains("home"));
     assertTrue(addressTypes.contains("work"));

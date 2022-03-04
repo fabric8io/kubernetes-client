@@ -15,10 +15,6 @@
  */
 package io.fabric8.crd.generator.utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.basic.BasicSpec;
 import io.fabric8.crd.example.basic.BasicStatus;
@@ -31,9 +27,14 @@ import io.sundr.model.ClassRef;
 import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeRef;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TypesTest {
 
@@ -67,7 +68,7 @@ public class TypesTest {
     final List<Property> properties = def.getProperties();
     assertEquals(7, properties.size());
   }
-  
+
   @Test
   void findingSuperClassesShouldWork() {
     List<ClassRef> superClasses = Types.typeDefFrom(Basic.class).getExtendsList();
@@ -79,7 +80,7 @@ public class TypesTest {
     List<ClassRef> superClasses = Types.typeDefFrom(Basic.class).getExtendsList();
     assertEquals(2, superClasses.size());
     Optional<ClassRef> crOpt = superClasses.stream()
-      .filter(c -> c.getName().contains("CustomResource")).findFirst();
+        .filter(c -> c.getName().contains("CustomResource")).findFirst();
     assertTrue(crOpt.isPresent());
     ClassRef crDef = crOpt.get();
     List<TypeRef> arguments = crDef.getArguments();

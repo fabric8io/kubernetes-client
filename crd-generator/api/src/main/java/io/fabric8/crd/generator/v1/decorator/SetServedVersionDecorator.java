@@ -17,22 +17,23 @@ package io.fabric8.crd.generator.v1.decorator;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluent;
 
-public class SetServedVersionDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+public class SetServedVersionDecorator
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
   private final boolean served;
 
-	public SetServedVersionDecorator(String name, String version, boolean served) {
-		super(name, version);
-		this.served = served;
-	}
+  public SetServedVersionDecorator(String name, String version, boolean served) {
+    super(name, version);
+    this.served = served;
+  }
 
-	@Override
-	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
+  @Override
+  public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
     version.withServed(served);
-	}
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() + ", served:" + served + "]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + ", served:" + served + "]";
+  }
 }

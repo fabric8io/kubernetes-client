@@ -20,11 +20,11 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 
 public class CustomResourceDefinitionDecorator<T> extends NamedResourceDecorator<T> {
 
-	public CustomResourceDefinitionDecorator(String name) {
-		super("CustomResourceDefinition", name);
-	}
+  public CustomResourceDefinitionDecorator(String name) {
+    super("CustomResourceDefinition", name);
+  }
 
-	@Override
-	public void andThenVisit(T item, ObjectMeta resourceMeta) {
-	}
+  @Override
+  public void andThenVisit(T item, ObjectMeta resourceMeta) {
+  }
 }

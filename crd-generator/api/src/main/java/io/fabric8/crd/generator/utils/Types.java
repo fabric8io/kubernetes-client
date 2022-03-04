@@ -33,7 +33,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 public class Types {
   private Types() {
     throw new IllegalStateException("Utility class");
@@ -45,7 +44,8 @@ public class Types {
   public static final AdapterContext REFLECTION_CONTEXT = AdapterContext.create(DefinitionRepository.getRepository());
 
   /**
-   * Make sure the generation context is reset so that types can be properly introspected if classes have changed since the last generation round.
+   * Make sure the generation context is reset so that types can be properly introspected if classes have changed since the last
+   * generation round.
    */
   public static void resetGenerationContext() {
     DefinitionRepository.getRepository().clear();
@@ -62,10 +62,10 @@ public class Types {
     final List<Property> properties = Types.projectProperties(definition);
     // re-create TypeDef with all the needed information
     return new TypeDef(definition.getKind(), definition.getPackageName(),
-      definition.getName(), definition.getComments(), definition.getAnnotations(), classRefs,
-      definition.getImplementsList(), definition.getParameters(), properties,
-      definition.getConstructors(), definition.getMethods(), definition.getOuterTypeName(),
-      definition.getInnerTypes(), definition.getModifiers(), definition.getAttributes());
+        definition.getName(), definition.getComments(), definition.getAnnotations(), classRefs,
+        definition.getImplementsList(), definition.getParameters(), properties,
+        definition.getConstructors(), definition.getMethods(), definition.getOuterTypeName(),
+        definition.getInnerTypes(), definition.getModifiers(), definition.getAttributes());
   }
 
   public static TypeDef typeDefFrom(ClassRef classRef) {
@@ -88,14 +88,15 @@ public class Types {
     }
 
     return new TypeDefBuilder(definition)
-      .accept(mapClassRefArguments(mappings), mapGenericProperties(mappings))
-      .build();
+        .accept(mapClassRefArguments(mappings), mapGenericProperties(mappings))
+        .build();
   }
 
   /**
    * Map generic properties to known {@link TypeRef} based on the specified mappings.
    * Example: Given a property {@code T size} and a map containing {@code T -> Integer} the final
    * property will be: {@code Integer type}.
+   * 
    * @param mappings A map that maps class arguments names to types.
    * @return a visitors that performs the actual mapping.
    */
@@ -120,6 +121,7 @@ public class Types {
    * Map arguments, of {@link ClassRef} instances to known {@link TypeRef} based on the specified mappings.
    * Example: Given a class reference to {@code Shape<T>} and a map containing {@code T -> Integer}
    * the final reference will be: {@code Shape<Integer> type}.
+   * 
    * @param mappings A map that maps class arguments names to types.
    * @return a visitors that performs the actual mapping.
    */
@@ -147,13 +149,14 @@ public class Types {
   private static Set<ClassRef> projectSuperClasses(TypeDef definition) {
     List<ClassRef> extendsList = definition.getExtendsList();
     return extendsList.stream()
-      .flatMap(s -> Stream.concat(Stream.of(s), projectDefinition(s).getExtendsList().stream()))
-      .collect(Collectors.toSet());
+        .flatMap(s -> Stream.concat(Stream.of(s), projectDefinition(s).getExtendsList().stream()))
+        .collect(Collectors.toSet());
   }
 
   /**
    * All non-static properties (including inherited).
-   * @param typeDef        The type.
+   * 
+   * @param typeDef The type.
    * @return A list with all properties.
    */
   private static List<Property> projectProperties(TypeDef typeDef) {
@@ -172,22 +175,19 @@ public class Types {
           return !p.isStatic();
         }),
         typeDef.getExtendsList().stream()
-          .filter(e -> !e.getFullyQualifiedName().startsWith("java."))
-          .flatMap(e -> projectProperties(projectDefinition(e))
-            .stream()
-            .filter(p -> filterCustomResourceProperties(e).test(p)))
-      )
+            .filter(e -> !e.getFullyQualifiedName().startsWith("java."))
+            .flatMap(e -> projectProperties(projectDefinition(e))
+                .stream()
+                .filter(p -> filterCustomResourceProperties(e).test(p))))
 
-      .collect(Collectors.toList());
+        .collect(Collectors.toList());
   }
-
 
   private static Predicate<Property> filterCustomResourceProperties(ClassRef ref) {
     return p -> !p.isStatic() &&
-      (!ref.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME) ||
-        (p.getName().equals("spec") || p.getName().equals("status")));
+        (!ref.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME) ||
+            (p.getName().equals("spec") || p.getName().equals("status")));
   }
-
 
   public static void output(TypeDef def) {
     final StringBuilder builder = new StringBuilder(300);
@@ -258,7 +258,7 @@ public class Types {
 
   public static SpecAndStatus resolveSpecAndStatusTypes(TypeDef definition) {
     Optional<ClassRef> optionalCustomResourceRef = definition.getExtendsList().stream()
-      .filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
+        .filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
     if (optionalCustomResourceRef.isPresent()) {
       ClassRef customResourceRef = optionalCustomResourceRef.get();
       List<TypeRef> arguments = customResourceRef.getArguments();
@@ -309,14 +309,14 @@ public class Types {
    */
   public static Optional<Property> findStatusProperty(TypeDef typeDef) {
     return typeDef.getProperties().stream()
-      .filter(Types::isStatusProperty)
-      .findFirst();
+        .filter(Types::isStatusProperty)
+        .findFirst();
   }
-
 
   /**
    * Returns true if the specified property corresponds to status.
    * A property qualifies as `status` if it is called `status`.
+   * 
    * @param property the property we want to check
    * @return {@code true} if named {@code status}, {@code false} otherwise
    */

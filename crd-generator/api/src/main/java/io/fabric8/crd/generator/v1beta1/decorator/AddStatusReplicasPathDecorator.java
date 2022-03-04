@@ -19,7 +19,7 @@ import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresourcesFluent;
 
 public class AddStatusReplicasPathDecorator extends
-  CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
+    CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
 
   private final String path;
 
@@ -39,6 +39,6 @@ public class AddStatusReplicasPathDecorator extends
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{AddSubresourcesDecorator.class};
+    return new Class[] { AddSubresourcesDecorator.class };
   }
 }

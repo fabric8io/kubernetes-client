@@ -33,7 +33,7 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
   private String singular;
 
   public AddCustomResourceDefinitionResourceDecorator(String name, String apiGroup, String kind,
-    String scope, String[] shortNames, String plural, String singular) {
+      String scope, String[] shortNames, String plural, String singular) {
     this.name = name;
     this.apiGroup = apiGroup;
     this.kind = kind;
@@ -44,40 +44,38 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
   }
 
   @Override
-	public void visit(KubernetesListBuilder list) {
-    boolean exists = list.getItems().stream().anyMatch(i ->
-      i.getKind().equals("CustomResourceDefinition")
+  public void visit(KubernetesListBuilder list) {
+    boolean exists = list.getItems().stream().anyMatch(i -> i.getKind().equals("CustomResourceDefinition")
         && i.getMetadata().getName().equals(name)
-        && ApiVersionUtil.trimVersion(i.getApiVersion()).equals("v1")
-    );
+        && ApiVersionUtil.trimVersion(i.getApiVersion()).equals("v1"));
 
     if (!exists) {
       list.addToItems(new CustomResourceDefinitionBuilder()
-        .withNewMetadata()
-        .withName(name)
-        .endMetadata()
-        .withNewSpec()
-        .withScope(scope)
-        .withGroup(apiGroup)
-        .withNewNames()
-         .withKind(kind)
-         .withShortNames(shortNames)
-               .withPlural(plural)
-               .withSingular(singular)
+          .withNewMetadata()
+          .withName(name)
+          .endMetadata()
+          .withNewSpec()
+          .withScope(scope)
+          .withGroup(apiGroup)
+          .withNewNames()
+          .withKind(kind)
+          .withShortNames(shortNames)
+          .withPlural(plural)
+          .withSingular(singular)
           .endNames()
-        .endSpec()
-        .build());
-     }
-	}
-
-	@Override
-	public Class<? extends Decorator>[] before() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class, CustomResourceDefinitionDecorator.class};
+          .endSpec()
+          .build());
+    }
   }
 
+  @Override
+  public Class<? extends Decorator>[] before() {
+    return new Class[] { AddCustomResourceDefinitionVersionDecorator.class, CustomResourceDefinitionDecorator.class };
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [apiGroup=" + apiGroup + ", kind=" + kind + ", name=" + name + ", plural=" + plural + ", scope=" + scope + "]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [apiGroup=" + apiGroup + ", kind=" + kind + ", name=" + name + ", plural=" + plural
+        + ", scope=" + scope + "]";
+  }
 }

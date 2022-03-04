@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 
 public class AddSchemaToCustomResourceDefinitionVersionDecorator
-  extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
   private JSONSchemaProps schema;
 
   public AddSchemaToCustomResourceDefinitionVersionDecorator(String name, String version,
-    JSONSchemaProps schema) {
+      JSONSchemaProps schema) {
     super(name, version);
     this.schema = schema;
   }
@@ -37,11 +37,11 @@ public class AddSchemaToCustomResourceDefinitionVersionDecorator
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class};
+    return new Class[] { AddCustomResourceDefinitionVersionDecorator.class };
   }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() +"]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "]";
+  }
 }

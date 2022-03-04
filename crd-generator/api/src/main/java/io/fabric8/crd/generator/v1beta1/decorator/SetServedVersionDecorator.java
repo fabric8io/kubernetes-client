@@ -18,7 +18,7 @@ package io.fabric8.crd.generator.v1beta1.decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
 
 public class SetServedVersionDecorator extends
-  CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+    CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
   private final boolean served;
 

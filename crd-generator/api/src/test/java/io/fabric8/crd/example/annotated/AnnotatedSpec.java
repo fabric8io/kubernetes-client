@@ -62,6 +62,8 @@ public class AnnotatedSpec {
   }
 
   public enum AnnotatedEnum {
-    non, @JsonProperty("oui") Yes
+    non,
+    @JsonProperty("oui")
+    Yes
   }
 }

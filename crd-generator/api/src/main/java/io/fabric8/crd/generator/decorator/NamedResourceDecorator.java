@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Utils;
+
 import java.util.Optional;
 
 public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuilder> {
@@ -123,13 +124,13 @@ public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuild
 
     public Class<T> getType() {
       return (Class) Generics
-        .getTypeArguments(NamedResourceDecorator.class, NamedResourceDecorator.this.getClass())
-        .get(0);
+          .getTypeArguments(NamedResourceDecorator.class, NamedResourceDecorator.this.getClass())
+          .get(0);
     }
   }
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{ ResourceProvidingDecorator.class };
+    return new Class[] { ResourceProvidingDecorator.class };
   }
 }

@@ -17,10 +17,12 @@ package io.fabric8.crd.generator.annotation;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE_USE, ElementType.TYPE})
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE_USE, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SchemaSwap {
   Class<?> originalType();
+
   String fieldName();
+
   Class<?> targetType() default void.class;
 }
