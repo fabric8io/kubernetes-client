@@ -19,8 +19,8 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public class ServiceExample {
   private static final Logger logger = LoggerFactory.getLogger(ServiceExample.class);
 
   public static void main(String[] args) {
-    try (KubernetesClient client = new DefaultKubernetesClient()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
       if (args.length > 0) {
         namespace = args[0];

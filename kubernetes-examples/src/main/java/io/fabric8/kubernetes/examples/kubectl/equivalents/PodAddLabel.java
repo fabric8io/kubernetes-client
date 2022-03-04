@@ -16,15 +16,15 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * Java equivalent of `kubectl label pods my-pod new-label=awesome`
  */
 public class PodAddLabel {
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inNamespace("default").withName("my-pod").edit(p -> new PodBuilder(p).editMetadata()
         .addToLabels("new-label", "awesome")
         .endMetadata()

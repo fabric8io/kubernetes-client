@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
@@ -43,7 +43,7 @@ public class ExecPipesExample {
         Config config = new ConfigBuilder().withMasterUrl(master).build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         try (
-                KubernetesClient client = new DefaultKubernetesClient(config);
+                KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build();
                 ExecWatch watch = client.pods().withName(podName)
                         .redirectingInput()
                         .redirectingOutput()

@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
@@ -40,7 +40,7 @@ public class DynamicSharedIndexInformerExample {
   private static final Logger logger = LoggerFactory.getLogger(DynamicSharedIndexInformerExample.class.getSimpleName());
 
   public static void main(String[] args) {
-    try (KubernetesClient client = new DefaultKubernetesClient()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       SharedInformerFactory informerFactory = client.informers();
       CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
         .withGroup("demo.fabric8.io")

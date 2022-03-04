@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.examples;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class SecurityContextConstraintExample {
     //oc login -u system:admin
 
     public static void main(String[] args) {
-        try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+        try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
           logger.info("Cluster SecurityContextConstraints:");
           client.securityContextConstraints().list().getItems().forEach(scc ->
             logger.info(" - {}", scc.getMetadata().getName()));

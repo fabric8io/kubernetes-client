@@ -3,6 +3,7 @@
 ## Contents:
 - [Namespace Changes](#namespace-changes)
 - [API/Impl split](#api-impl-split)
+- [Deserialization Resolution](#deserialization-resolution)
 - [Deprecation Removals](#deprecation-removals)
 - [Resource Changes](#resource-changes)
 - [lists Removal](#lists-removal)
@@ -74,7 +75,11 @@ To use it, exclude the kubernetes-httpclient-okhttp dependency and add the kuber
 - client.utils classes including Base64, CreateOrReplaceHelper, DeleteOrCreateHelper, OptionalDendencyWrapper, etc. are not in the -api jar, they are still in the -client jar under utils.internal.
 - Some other effectively internal classes in dsl.base and other packages were moved to corresponding internal packages - it is unlikely this will affect you unless you developed a custom extension.
 
-### Deprecation Removals
+## Deserialization Resolution
+
+The group on the object being deserialized is not required to match the prospective class - even for built-in types.  This prevents the unintentional parsing of custom types without a registered class as a built-in type of the same name.  This also means that you must ensure the apiVersion values are correct on the objects you are deserializing as they will no longer resolve to built-in type of the same name when there is a mistake.
+
+## Deprecation Removals
 
 - Removed KubernetesClient.customResource / RawCustomResourceOperationsImpl, please use the generic resource api instead 
 - Removed HttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead

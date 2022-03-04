@@ -260,6 +260,22 @@ class CompilationTest {
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
+    @Test
+    void testCRDsInFolderCompiles() throws Exception {
+        // Arrange
+        File crd = getCRD("folder");
+        File dest = tmpFolder.newFolder("folder");
+
+        // Act
+        defaultRunner.run(crd, dest);
+        Compilation compilation = javac().compile(getSources(dest));
+
+        // Assert
+        assertTrue(compilation.errors().isEmpty());
+        assertEquals(6, compilation.sourceFiles().size());
+        assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    }
+
     @AfterAll
     public static void afterAll() {
         tmpFolder.delete();

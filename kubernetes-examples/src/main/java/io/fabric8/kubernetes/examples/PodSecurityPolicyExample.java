@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class PodSecurityPolicyExample {
   private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyExample.class);
 
   public static void main(String[] args) {
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+    try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       final String localYamlToCreate = "/PodSecurityPolicy.yml";
       logger.info("Creating PodSecurityPolicy from Yaml file: {}", localYamlToCreate);
       try (final InputStream localYamlStream = PodSecurityPolicyExample.class.getResourceAsStream(localYamlToCreate)) {

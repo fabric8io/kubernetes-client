@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -37,11 +37,11 @@ public class WatchExample {
   @SuppressWarnings("java:S1604")
   public static void main(String[] args) {
     try (
-      KubernetesClient client = new DefaultKubernetesClient();
+      KubernetesClient client = new KubernetesClientBuilder().build();
       Watch ignored = newConfigMapWatch(client)
     ) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
-      final String name = "watch-config-map-test-" + UUID.randomUUID().toString();
+      final String name = "watch-config-map-test-" + UUID.randomUUID();
       final ConfigMap cm = client.configMaps().inNamespace(namespace).createOrReplace(new ConfigMapBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .build()

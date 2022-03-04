@@ -84,6 +84,10 @@ To run regression test
 ```
 mvn clean install -P itests
 ```
+#### * Format the files that you touched
+```shell
+mvn spotless:apply
+```
 #### * Push the changes to your fork
 ```
 git push origin iss_issueNumber

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-name: License
+name: Style Checks
 
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
@@ -31,12 +31,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  license-check:
-    name: License Check
+  style-check:
+    name: License & Code Style Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Setup Java 8
         uses: actions/setup-java@v2
         with:
@@ -44,3 +46,5 @@ jobs:
           distribution: 'temurin'
       - name: Check License Headers
         run: mvn ${MAVEN_ARGS} -N license:check
+      - name: Check Format (only on touched files)
+        run: mvn ${MAVEN_ARGS} spotless:check

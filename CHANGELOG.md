@@ -2,15 +2,18 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
+* Fix #3880: Synchronize access to map in KubernetesCrudDispatcher
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3848: Supports Queue (cluster) API for Volcano extension
 * Fix #3582: SSL truststore can be loaded in FIPS enabled environments
 * Fix #3818: adding missing throws to launderThrowable
+* Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
 
 #### Improvements
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
 * Fix #3889 : remove piped stream for file download
+* Fix #1285: removed references to manually calling registerCustomKind
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0

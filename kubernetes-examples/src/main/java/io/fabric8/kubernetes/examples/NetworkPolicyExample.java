@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class NetworkPolicyExample {
     if (args.length > 0) {
       namespace = args[0];
     }
-    try (KubernetesClient client = new DefaultKubernetesClient()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       NetworkPolicy networkPolicy = new NetworkPolicyBuilder()
         .withNewMetadata()
         .withName("test-network-policy")

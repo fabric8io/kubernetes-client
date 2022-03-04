@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class ListExamples {
     if (args.length > 0) {
       configBuilder.withMasterUrl(args[0]);
     }
-    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
 
       System.out.println(

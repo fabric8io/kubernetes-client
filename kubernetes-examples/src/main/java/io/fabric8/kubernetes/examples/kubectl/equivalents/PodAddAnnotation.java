@@ -16,15 +16,15 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * Java equivalent of `kubectl annotate pods my-pod icon-url=http://goo.gl/XXBTWq`
  */
 public class PodAddAnnotation {
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inNamespace("default").withName("my-pod").edit(p -> new PodBuilder(p).editMetadata()
         .addToAnnotations("icon-url", "http://goo.gl/XXBTWq")
         .endMetadata()

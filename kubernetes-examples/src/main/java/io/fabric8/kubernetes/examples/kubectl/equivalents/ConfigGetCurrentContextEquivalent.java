@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.NamedContext;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class ConfigGetCurrentContextEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(ConfigGetCurrentContextEquivalent.class);
 
   public static void main(String[] args) {
-    try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       NamedContext currentContext = k8s.getConfiguration().getCurrentContext();
       logger.info("Current Context: {}", currentContext.getName());
     }

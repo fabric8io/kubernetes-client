@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -45,7 +45,7 @@ public class GenericKubernetesResourceExample {
     final ConfigBuilder configBuilder = new ConfigBuilder();
     configBuilder.withWatchReconnectInterval(500);
     configBuilder.withWatchReconnectLimit(5);
-    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
 
       String namespace = "default";
       CustomResourceDefinition prometheousRuleCrd = client.apiextensions().v1beta1().customResourceDefinitions()

@@ -41,7 +41,7 @@ public class CronJobExample {
 
     log("Using master with url ", master);
     Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try(final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try(final KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
       final String namespace = client.getNamespace();
 
       CronJob cronJob1 = new CronJobBuilder()

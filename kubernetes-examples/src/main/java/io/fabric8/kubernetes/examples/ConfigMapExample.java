@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,21 +34,20 @@ public class ConfigMapExample {
 
   public static void main(String[] args) {
     Config config = new ConfigBuilder().build();
-    KubernetesClient client = new DefaultKubernetesClient(config);
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
 
-    String namespace = null;
-    if (args.length > 0) {
-      namespace = args[0];
-    }
-    if (namespace == null) {
-      namespace = client.getNamespace();
-    }
-    if (namespace == null) {
-      namespace = "default";
-    }
+      String namespace = null;
+      if (args.length > 0) {
+        namespace = args[0];
+      }
+      if (namespace == null) {
+        namespace = client.getNamespace();
+      }
+      if (namespace == null) {
+        namespace = "default";
+      }
 
-    String name = "cheese";
-    try {
+      String name = "cheese";
       Resource<ConfigMap> configMapResource = client.configMaps().inNamespace(namespace).withName(name);
 
 
@@ -60,8 +59,6 @@ public class ConfigMapExample {
 
       logger.info("Upserted ConfigMap at {} data {}", configMap.getMetadata().getSelfLink(), configMap.getData());
 
-    } finally {
-      client.close();
     }
   }
 }

@@ -88,7 +88,7 @@
           </execution>
         </executions>
         <configuration>
-          <crdFile>src/test/resources/cert-manager.crds.1.7.1.yaml</crdFile>
+          <source>src/test/resources/cert-manager.crds.1.7.1.yaml</source>
         </configuration>
       </plugin>
       <plugin>

@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class CRDLoadExample {
   private static final Logger logger = LoggerFactory.getLogger(CRDLoadExample.class);
 
   public static void main(String[] args) {
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+    try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       // List all Custom resources.
       logger.info("Listing all current Custom Resource Definitions :");
       CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customResourceDefinitions().list();

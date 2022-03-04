@@ -1864,7 +1864,7 @@ cronTabClient.inNamespace("default").pachStatus(updatedCronTab);
 // generates a json patch between the passed in cronTab and the updated result.  Typically you will use a builder to construct a copy from the current and make modifications
 cronTabClient.inNamespace("default").editStatus(cronTab->updatedCronTab);
 ``` 
-- Watch `CustomResource`, (*note:* You need to register your `CustomResource` to `KubernetesDeserializer` otherwise you won't be able to use watch):
+- Watch `CustomResource`:
 ```java
 cronTabClient.inNamespace("default").watch(new Watcher<CronTab>() {
    @Override

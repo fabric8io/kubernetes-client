@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -33,7 +33,7 @@ public class CustomResourceInformerExample {
   private static final Logger logger = LoggerFactory.getLogger(CustomResourceInformerExample.class);
 
   public static void main(String[] args) {
-    try (KubernetesClient client = new DefaultKubernetesClient()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       SharedInformerFactory sharedInformerFactory = client.informers();
       SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
       logger.info("Informer factory initialized.");

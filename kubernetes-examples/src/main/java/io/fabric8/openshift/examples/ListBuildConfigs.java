@@ -16,10 +16,10 @@
 
 package io.fabric8.openshift.examples;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class ListBuildConfigs {
   private static final Logger logger = LoggerFactory.getLogger(ListBuildConfigs.class);
 
   public static void main(String[] args) {
-    try(OpenShiftClient client = new DefaultOpenShiftClient()) {
+    try(OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.BUILD)) {
         logger.warn("This cluster does not support the API Group {}", OpenShiftAPIGroups.BUILD);
         return;

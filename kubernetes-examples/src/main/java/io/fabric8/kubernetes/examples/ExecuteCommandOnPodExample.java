@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import lombok.SneakyThrows;
@@ -36,7 +36,7 @@ public class ExecuteCommandOnPodExample implements AutoCloseable {
 
   public ExecuteCommandOnPodExample() {
     Config config = new ConfigBuilder().build();
-    this.client = new DefaultKubernetesClient(config);
+    this.client = new KubernetesClientBuilder().withConfig(config).build();
   }
 
   @Override
