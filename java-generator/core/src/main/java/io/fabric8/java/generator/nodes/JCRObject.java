@@ -15,7 +15,9 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -114,6 +116,14 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
 
         clz.addExtendedType(crType);
         clz.addImplementedType("io.fabric8.kubernetes.api.model.Namespaced");
+
+        clz.addFieldWithInitializer(
+                "long",
+                "serialVersionUID",
+                new JavaParser().parseExpression("1L").getResult().get(),
+                Modifier.Keyword.PRIVATE,
+                Modifier.Keyword.STATIC,
+                Modifier.Keyword.FINAL);
 
         return new GeneratorResult(
                 Collections.singletonList(new GeneratorResult.ClassResult(className, cu)));

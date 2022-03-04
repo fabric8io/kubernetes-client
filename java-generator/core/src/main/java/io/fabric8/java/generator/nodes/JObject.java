@@ -18,6 +18,7 @@ package io.fabric8.java.generator.nodes;
 import static io.fabric8.java.generator.nodes.Keywords.ADDITIONAL_PROPERTIES;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
 
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
@@ -193,6 +194,14 @@ public class JObject extends AbstractJSONSchema2Pojo {
         }
 
         clz.addImplementedType("io.fabric8.kubernetes.api.model.KubernetesResource");
+
+        clz.addFieldWithInitializer(
+                "long",
+                "serialVersionUID",
+                new JavaParser().parseExpression("1L").getResult().get(),
+                Modifier.Keyword.PRIVATE,
+                Modifier.Keyword.STATIC,
+                Modifier.Keyword.FINAL);
 
         List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
 
