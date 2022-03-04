@@ -16,7 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 public class JObjectNameAndType extends JavaNameAndType {
-    public JObjectNameAndType(String name) {
-        super(name, JavaType.OBJECT);
-    }
+  public JObjectNameAndType(String name) {
+    super(name, JavaType.OBJECT);
+  }
 }

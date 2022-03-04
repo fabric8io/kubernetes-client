@@ -15,34 +15,34 @@
  */
 package io.fabric8.java.generator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class StringSanitizationTest {
 
-    @Test
-    void shouldRemoveDashes() {
-        // Arrange
-        String str = "property-name";
+  @Test
+  void shouldRemoveDashes() {
+    // Arrange
+    String str = "property-name";
 
-        // Act
-        String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    // Act
+    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
-        // Assert
-        assertEquals("propertyName", res);
-    }
+    // Assert
+    assertEquals("propertyName", res);
+  }
 
-    @Test
-    void shouldRemoveTrailingDashes() {
-        // Arrange
-        String str = "property-name-";
+  @Test
+  void shouldRemoveTrailingDashes() {
+    // Arrange
+    String str = "property-name-";
 
-        // Act
-        String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    // Act
+    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
-        // Assert
-        assertEquals("propertyName", res);
-    }
+    // Assert
+    assertEquals("propertyName", res);
+  }
 }
