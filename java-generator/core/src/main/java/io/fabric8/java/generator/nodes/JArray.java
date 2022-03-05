@@ -15,8 +15,18 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_LIST;
 
@@ -32,6 +42,7 @@ public class JArray extends AbstractJSONSchema2Pojo {
         .setTypeArguments(new ClassOrInterfaceType().setName(nested.getType()))
         .toString();
     this.nested = nested;
+    this.skipDefault = nested.skipDefault;
   }
 
   @Override
@@ -42,5 +53,25 @@ public class JArray extends AbstractJSONSchema2Pojo {
   @Override
   public GeneratorResult generateJava() {
     return nested.generateJava();
+  }
+
+  @Override
+  protected Expression generateDefaultInstance(JsonNode defaultValue) {
+    return new NameExpr("new java.util.ArrayList<>()");
+  }
+
+  @Override
+  protected List<Statement> expandDefaultInstance(final String scope, JsonNode defaultValue) {
+    final List<Statement> statements = new ArrayList<>();
+
+    AtomicInteger counter = new AtomicInteger(0);
+    Iterator<JsonNode> elements = defaultValue.elements();
+    while (elements.hasNext()) {
+      JsonNode element = elements.next();
+      statements.add(new ExpressionStmt(
+          new NameExpr(scope + ".add(" + this.nested.generateDefaultInstance(element) + ")")));
+      statements.addAll(this.nested.expandDefaultInstance(scope + ".get(" + counter.getAndIncrement() + ")", element));
+    }
+    return statements;
   }
 }

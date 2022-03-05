@@ -15,10 +15,18 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 
@@ -40,6 +48,7 @@ public abstract class AbstractJSONSchema2Pojo {
   protected final String description;
   protected final Config config;
   protected final boolean isNullable;
+  protected boolean skipDefault;
 
   public abstract String getType();
 
@@ -58,6 +67,7 @@ public abstract class AbstractJSONSchema2Pojo {
     this.config = config;
     this.description = description;
     this.isNullable = isNullable;
+    this.skipDefault = Boolean.FALSE;
   }
 
   /** Takes a random string and manipulate it to be a valid Java identifier */
@@ -213,4 +223,45 @@ public abstract class AbstractJSONSchema2Pojo {
         throw new JavaGeneratorException("Unreachable " + nt.getType());
     }
   }
+
+  /**
+   * Part of the default value generation APIs, this method is responsible for creating a block statement that
+   * represents the body of a default value initialization method.
+   * 
+   * @param defaultValue The {@link JsonNode} instance holding the actual default value
+   * @return a {@link BlockStmt} instance that contains all the statements that code the default value initialization.
+   */
+  protected BlockStmt generateDefaultInitializerBody(JsonNode defaultValue) {
+    BlockStmt body = new BlockStmt();
+    final String scope = "tmp";
+    // init local variable
+    body.addStatement(new ExpressionStmt(
+        new NameExpr(this.getType() + " " + scope + " = " + this.generateDefaultInstance(defaultValue))));
+    // expand generation
+    this.expandDefaultInstance(scope, defaultValue).stream().forEach(s -> body.addStatement(s));
+    // return local variable
+    body.addStatement(new ReturnStmt(scope));
+    return body;
+  }
+
+  /**
+   * Part of the default value generation APIs, this method actually generates the expression that will be used as the
+   * default value <i>instance</i>, i.e. a constant for primitive values, or a call to a class constructor for complex
+   * values.
+   *
+   * @param defaultValue The {@link JsonNode} instance holding the actual default value
+   * @return An {@link Expression} instance that can be used to {@code set} a default value to a POJO field
+   */
+  protected abstract Expression generateDefaultInstance(JsonNode defaultValue);
+
+  /**
+   * Part of the default value generation APIs, this method expands the <i>complex</i> types default value generation
+   * by returning a list of statements that fill the default instance properties with values.
+   *
+   * @param scope A string that represents the scope for setting a default value, e.g.: in
+   *        {@code obj.getChild().setProp()}, {@code obj.getChild} is the scope
+   * @param defaultValue The {@link JsonNode} instance holding the actual default value
+   * @return A list of {@link Statement} instances that will be added to the default generation method.
+   */
+  protected abstract List<Statement> expandDefaultInstance(String scope, JsonNode defaultValue);
 }

@@ -15,16 +15,20 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 
 import java.util.Collections;
+import java.util.List;
 
 public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
@@ -119,5 +123,15 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
 
     return new GeneratorResult(
         Collections.singletonList(new GeneratorResult.ClassResult(className, cu)));
+  }
+
+  @Override
+  protected Expression generateDefaultInstance(JsonNode defaultValue) {
+    return new NameExpr("new " + this.type + "()");
+  }
+
+  @Override
+  protected List<Statement> expandDefaultInstance(String scope, JsonNode defaultValue) {
+    return Collections.emptyList();
   }
 }

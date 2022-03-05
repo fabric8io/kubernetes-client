@@ -21,10 +21,16 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -32,6 +38,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GeneratorTest {
@@ -503,5 +510,70 @@ class GeneratorTest {
         clzO2.get().getFieldByName("o1").get().getElementType().toString());
     assertTrue(clzO2.get().getFieldByName("o2").isPresent());
     assertTrue(clzO2.get().getFieldByName("o3").isPresent());
+  }
+
+  @Test
+  void testObjectWithDefaultFields() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps objWithDefaultValues = new JSONSchemaProps();
+    objWithDefaultValues.setType("object");
+    JSONSchemaProps memoryObject = new JSONSchemaProps();
+    memoryObject.setType("string");
+    JSONSchemaProps cpuObject = new JSONSchemaProps();
+    cpuObject.setType("integer");
+
+    Map<String, JSONSchemaProps> o1Props = new HashMap<>();
+    o1Props.put("memory", memoryObject);
+    o1Props.put("cpu", cpuObject);
+    objWithDefaultValues.setProperties(o1Props);
+
+    props.put("o1", objWithDefaultValues);
+
+    String jsonContent = "{\"memory\":\"1024Mi\",\"cpu\": 4}";
+    JsonNode defaultValue = Serialization.unmarshal(jsonContent, JsonNode.class);
+    objWithDefaultValues.setDefault(defaultValue);
+
+    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    assertEquals(2, res.getTopLevelClasses().size());
+    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
+    assertEquals("T", res.getTopLevelClasses().get(1).getName());
+
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(1).getCompilationUnit().getClassByName("T");
+    assertTrue(clzT.isPresent());
+    assertEquals(1, clzT.get().getFields().size());
+    Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
+    assertTrue(o1Field.isPresent());
+    FieldDeclaration actualO1Field = o1Field.get();
+
+    final VariableDeclarator variableDeclarator = actualO1Field.getVariable(0);
+    assertNotNull(variableDeclarator);
+    final Optional<Expression> initializer = variableDeclarator.getInitializer();
+    assertTrue(initializer.isPresent());
+    final Expression actualInitializer = initializer.get();
+    assertEquals(MethodCallExpr.class, actualInitializer.getClass());
+    final MethodCallExpr initializerMethodExpression = (MethodCallExpr) actualInitializer;
+    assertEquals("init_o1", initializerMethodExpression.getNameAsString());
+
+    final List<MethodDeclaration> initializerMethodsByName = clzT.get()
+        .getMethodsByName(initializerMethodExpression.getNameAsString());
+    assertEquals(1, initializerMethodsByName.size());
+    final MethodDeclaration actualInitializerMethodDeclaration = initializerMethodsByName.get(0);
+    final Optional<BlockStmt> body = actualInitializerMethodDeclaration.getBody();
+    assertTrue(body.isPresent());
+    final BlockStmt actualBody = body.get();
+    assertEquals(4, actualBody.getStatements().size());
+    assertEquals("t.O1 tmp = new t.O1();", actualBody.getStatements().get(0).toString());
+    assertEquals("tmp.setMemory(\"1024Mi\");", actualBody.getStatements().get(1).toString());
+    assertEquals("tmp.setCpu(4L);", actualBody.getStatements().get(2).toString());
+    assertEquals("return tmp;", actualBody.getStatements().get(3).toString());
+
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    assertTrue(clzO1.isPresent());
   }
 }

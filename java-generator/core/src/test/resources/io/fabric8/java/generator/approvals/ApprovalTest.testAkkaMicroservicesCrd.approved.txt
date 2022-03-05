@@ -1,0 +1,666 @@
+AkkaMicroserviceJavaCr[0] = package org.test.v1;
+
+@io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
+@io.fabric8.kubernetes.model.annotation.Group("akka.lightbend.com")
+public class AkkaMicroservice extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.AkkaMicroserviceSpec, org.test.v1.AkkaMicroserviceStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+}
+
+AkkaMicroserviceJavaCr[1] = package org.test.v1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"akkaManagementPort","appVersion","cassandraDataStaxAstra","configSecret","deploymentStrategy","env","envFrom","envSecret","extraVolumeMounts","grpcIngress","grpcPort","httpIngress","httpPort","image","imagePullPolicy","imagePullSecrets","javaOptions","jdbc","kafka","kafkaConfluentCloud","livenessProbe","logbackSecret","podTemplateSpec","prometheusPort","readinessProbe","replicas","resources","roles","secretVolumes","serviceAccount","splitBrainResolver"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    /**
+     * Akka Management (Cluster Bootstrap) HTTP port in the range 1024 - 65535. Can be disabled with "off". This port is exposed as HTTP_MGMT_PORT environment variable if it is enabled.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("akkaManagementPort")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Akka Management (Cluster Bootstrap) HTTP port in the range 1024 - 65535. Can be disabled with \"off\". This port is exposed as HTTP_MGMT_PORT environment variable if it is enabled.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String akkaManagementPort = init_akkaManagementPort();
+
+    public String getAkkaManagementPort() {
+        return akkaManagementPort;
+    }
+
+    public void setAkkaManagementPort(String akkaManagementPort) {
+        this.akkaManagementPort = akkaManagementPort;
+    }
+
+    private String init_akkaManagementPort() {
+        return "8558";
+    }
+
+    /**
+     * Application version of the deployment. Used by rolling update features to distinguish between old and new nodes. Unlike "deployment.kubernetes.io/revision", the appVersion may span multiple "Deployment" resources.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("appVersion")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Application version of the deployment. Used by rolling update features to distinguish between old and new nodes. Unlike \"deployment.kubernetes.io/revision\", the appVersion may span multiple \"Deployment\" resources.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String appVersion;
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    /**
+     * Integration with DataStax Astra (Cloud-Native Cassandra-as-a-Service)
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("cassandraDataStaxAstra")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Integration with DataStax Astra (Cloud-Native Cassandra-as-a-Service)")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.CassandraDataStaxAstra cassandraDataStaxAstra;
+
+    public org.test.v1.akkamicroservicespec.CassandraDataStaxAstra getCassandraDataStaxAstra() {
+        return cassandraDataStaxAstra;
+    }
+
+    public void setCassandraDataStaxAstra(org.test.v1.akkamicroservicespec.CassandraDataStaxAstra cassandraDataStaxAstra) {
+        this.cassandraDataStaxAstra = cassandraDataStaxAstra;
+    }
+
+    /**
+     * Name of Secret with config entries that will be concatenated into main.conf together with
+     * configuration provided by the operator. The main.conf includes application.conf and the JVM system
+     * property config.file is set to main.conf. The purpose of this configuration is to be able to
+     * override environment specific configuration.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("configSecret")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Name of Secret with config entries that will be concatenated into main.conf together with\nconfiguration provided by the operator. The main.conf includes application.conf and the JVM system\nproperty config.file is set to main.conf. The purpose of this configuration is to be able to\noverride environment specific configuration.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.ConfigSecret configSecret;
+
+    public org.test.v1.akkamicroservicespec.ConfigSecret getConfigSecret() {
+        return configSecret;
+    }
+
+    public void setConfigSecret(org.test.v1.akkamicroservicespec.ConfigSecret configSecret) {
+        this.configSecret = configSecret;
+    }
+
+    /**
+     * The deployment strategy to use to replace existing pods with new ones.
+     * For more information see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("deploymentStrategy")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The deployment strategy to use to replace existing pods with new ones.\nFor more information see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.DeploymentStrategy deploymentStrategy;
+
+    public org.test.v1.akkamicroservicespec.DeploymentStrategy getDeploymentStrategy() {
+        return deploymentStrategy;
+    }
+
+    public void setDeploymentStrategy(org.test.v1.akkamicroservicespec.DeploymentStrategy deploymentStrategy) {
+        this.deploymentStrategy = deploymentStrategy;
+    }
+
+    /**
+     * List of environment variables to set in the container.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("env")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of environment variables to set in the container.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<org.test.v1.akkamicroservicespec.Env> env;
+
+    public java.util.List<org.test.v1.akkamicroservicespec.Env> getEnv() {
+        return env;
+    }
+
+    public void setEnv(java.util.List<org.test.v1.akkamicroservicespec.Env> env) {
+        this.env = env;
+    }
+
+    /**
+     * A list of Secret and/or ConfigMap references with entries that will be included as environment variables.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("envFrom")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("A list of Secret and/or ConfigMap references with entries that will be included as environment variables.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<org.test.v1.akkamicroservicespec.EnvFrom> envFrom;
+
+    public java.util.List<org.test.v1.akkamicroservicespec.EnvFrom> getEnvFrom() {
+        return envFrom;
+    }
+
+    public void setEnvFrom(java.util.List<org.test.v1.akkamicroservicespec.EnvFrom> envFrom) {
+        this.envFrom = envFrom;
+    }
+
+    /**
+     * DEPRECATED use envFrom instead* Name of Secret with entries that will be included as environment variables.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("envSecret")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("*DEPRECATED use envFrom instead* Name of Secret with entries that will be included as environment variables.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.EnvSecret envSecret;
+
+    public org.test.v1.akkamicroservicespec.EnvSecret getEnvSecret() {
+        return envSecret;
+    }
+
+    public void setEnvSecret(org.test.v1.akkamicroservicespec.EnvSecret envSecret) {
+        this.envSecret = envSecret;
+    }
+
+    /**
+     * List of extra volume mounts to be provided to the main container.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("extraVolumeMounts")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of extra volume mounts to be provided to the main container.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts> extraVolumeMounts;
+
+    public java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts> getExtraVolumeMounts() {
+        return extraVolumeMounts;
+    }
+
+    public void setExtraVolumeMounts(java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts> extraVolumeMounts) {
+        this.extraVolumeMounts = extraVolumeMounts;
+    }
+
+    /**
+     * Enable ingress for gRPC
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("grpcIngress")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Enable ingress for gRPC")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.GrpcIngress grpcIngress;
+
+    public org.test.v1.akkamicroservicespec.GrpcIngress getGrpcIngress() {
+        return grpcIngress;
+    }
+
+    public void setGrpcIngress(org.test.v1.akkamicroservicespec.GrpcIngress grpcIngress) {
+        this.grpcIngress = grpcIngress;
+    }
+
+    /**
+     * gRPC port in the range 1024 - 65535. Can be disabled with "off". This port is exposed as GRPC_PORT environment variable if it is enabled.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("grpcPort")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("gRPC port in the range 1024 - 65535. Can be disabled with \"off\". This port is exposed as GRPC_PORT environment variable if it is enabled.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String grpcPort = init_grpcPort();
+
+    public String getGrpcPort() {
+        return grpcPort;
+    }
+
+    public void setGrpcPort(String grpcPort) {
+        this.grpcPort = grpcPort;
+    }
+
+    private String init_grpcPort() {
+        return "8101";
+    }
+
+    /**
+     * Enable ingress for http
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("httpIngress")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Enable ingress for http")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.HttpIngress httpIngress;
+
+    public org.test.v1.akkamicroservicespec.HttpIngress getHttpIngress() {
+        return httpIngress;
+    }
+
+    public void setHttpIngress(org.test.v1.akkamicroservicespec.HttpIngress httpIngress) {
+        this.httpIngress = httpIngress;
+    }
+
+    /**
+     * HTTP port in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PORT environment variable if it is enabled.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("httpPort")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("HTTP port in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PORT environment variable if it is enabled.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String httpPort = init_httpPort();
+
+    public String getHttpPort() {
+        return httpPort;
+    }
+
+    public void setHttpPort(String httpPort) {
+        this.httpPort = httpPort;
+    }
+
+    private String init_httpPort() {
+        return "off";
+    }
+
+    /**
+     * Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("image")
+    @javax.validation.constraints.NotNull()
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    /**
+     * Image pull policy. One of Always, Never, IfNotPresent. No setting falls back to the container default. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("imagePullPolicy")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Image pull policy. One of Always, Never, IfNotPresent. No setting falls back to the container default. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String imagePullPolicy;
+
+    public String getImagePullPolicy() {
+        return imagePullPolicy;
+    }
+
+    public void setImagePullPolicy(String imagePullPolicy) {
+        this.imagePullPolicy = imagePullPolicy;
+    }
+
+    /**
+     * List of the image pull secrets to be used. More info: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("imagePullSecrets")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of the image pull secrets to be used. More info: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<String> imagePullSecrets = init_imagePullSecrets();
+
+    public java.util.List<String> getImagePullSecrets() {
+        return imagePullSecrets;
+    }
+
+    public void setImagePullSecrets(java.util.List<String> imagePullSecrets) {
+        this.imagePullSecrets = imagePullSecrets;
+    }
+
+    private java.util.List<String> init_imagePullSecrets() {
+        java.util.List<String> tmp = new java.util.ArrayList<>();
+        return tmp;
+    }
+
+    /**
+     * Additional arguments to the application JVM. It will be added to the `JAVA_TOOL_OPTIONS` environment variable, which will be used by most JVM implementations.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("javaOptions")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Additional arguments to the application JVM. It will be added to the `JAVA_TOOL_OPTIONS` environment variable, which will be used by most JVM implementations.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String javaOptions = init_javaOptions();
+
+    public String getJavaOptions() {
+        return javaOptions;
+    }
+
+    public void setJavaOptions(String javaOptions) {
+        this.javaOptions = javaOptions;
+    }
+
+    private String init_javaOptions() {
+        return "";
+    }
+
+    /**
+     * Integration with JDBC data source
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("jdbc")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Integration with JDBC data source")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.Jdbc jdbc;
+
+    public org.test.v1.akkamicroservicespec.Jdbc getJdbc() {
+        return jdbc;
+    }
+
+    public void setJdbc(org.test.v1.akkamicroservicespec.Jdbc jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    /**
+     * Integration with Kafka
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("kafka")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Integration with Kafka")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.Kafka kafka;
+
+    public org.test.v1.akkamicroservicespec.Kafka getKafka() {
+        return kafka;
+    }
+
+    public void setKafka(org.test.v1.akkamicroservicespec.Kafka kafka) {
+        this.kafka = kafka;
+    }
+
+    /**
+     * Integration with Confluent Cloud
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("kafkaConfluentCloud")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Integration with Confluent Cloud")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.KafkaConfluentCloud kafkaConfluentCloud;
+
+    public org.test.v1.akkamicroservicespec.KafkaConfluentCloud getKafkaConfluentCloud() {
+        return kafkaConfluentCloud;
+    }
+
+    public void setKafkaConfluentCloud(org.test.v1.akkamicroservicespec.KafkaConfluentCloud kafkaConfluentCloud) {
+        this.kafkaConfluentCloud = kafkaConfluentCloud;
+    }
+
+    /**
+     * The liveness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("livenessProbe")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The liveness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.LivenessProbe livenessProbe;
+
+    public org.test.v1.akkamicroservicespec.LivenessProbe getLivenessProbe() {
+        return livenessProbe;
+    }
+
+    public void setLivenessProbe(org.test.v1.akkamicroservicespec.LivenessProbe livenessProbe) {
+        this.livenessProbe = livenessProbe;
+    }
+
+    /**
+     * Name of Secret with entries that will be used as logback.xml configuration.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("logbackSecret")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Name of Secret with entries that will be used as logback.xml configuration.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.LogbackSecret logbackSecret;
+
+    public org.test.v1.akkamicroservicespec.LogbackSecret getLogbackSecret() {
+        return logbackSecret;
+    }
+
+    public void setLogbackSecret(org.test.v1.akkamicroservicespec.LogbackSecret logbackSecret) {
+        this.logbackSecret = logbackSecret;
+    }
+
+    /**
+     * A Pod Template to be merged with the one generated by the operator. More info: https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("podTemplateSpec")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("A Pod Template to be merged with the one generated by the operator. More info: https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.PodTemplateSpec podTemplateSpec;
+
+    public org.test.v1.akkamicroservicespec.PodTemplateSpec getPodTemplateSpec() {
+        return podTemplateSpec;
+    }
+
+    public void setPodTemplateSpec(org.test.v1.akkamicroservicespec.PodTemplateSpec podTemplateSpec) {
+        this.podTemplateSpec = podTemplateSpec;
+    }
+
+    /**
+     * HTTP port to expose metrics for Prometheus to scrape. Must be  in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PROMETHEUS_PORT environment variable if it is enabled.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("prometheusPort")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("HTTP port to expose metrics for Prometheus to scrape. Must be  in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PROMETHEUS_PORT environment variable if it is enabled.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String prometheusPort = init_prometheusPort();
+
+    public String getPrometheusPort() {
+        return prometheusPort;
+    }
+
+    public void setPrometheusPort(String prometheusPort) {
+        this.prometheusPort = prometheusPort;
+    }
+
+    private String init_prometheusPort() {
+        return "off";
+    }
+
+    /**
+     * The readiness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("readinessProbe")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The readiness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.ReadinessProbe readinessProbe;
+
+    public org.test.v1.akkamicroservicespec.ReadinessProbe getReadinessProbe() {
+        return readinessProbe;
+    }
+
+    public void setReadinessProbe(org.test.v1.akkamicroservicespec.ReadinessProbe readinessProbe) {
+        this.readinessProbe = readinessProbe;
+    }
+
+    /**
+     * Number of desired pods.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("replicas")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Number of desired pods.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Long replicas = init_replicas();
+
+    public Long getReplicas() {
+        return replicas;
+    }
+
+    public void setReplicas(Long replicas) {
+        this.replicas = replicas;
+    }
+
+    private Long init_replicas() {
+        return 1L;
+    }
+
+    /**
+     * ResourceRequirements describes the compute resource requirements.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("resources")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("ResourceRequirements describes the compute resource requirements.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.Resources resources = init_resources();
+
+    public org.test.v1.akkamicroservicespec.Resources getResources() {
+        return resources;
+    }
+
+    public void setResources(org.test.v1.akkamicroservicespec.Resources resources) {
+        this.resources = resources;
+    }
+
+    private org.test.v1.akkamicroservicespec.Resources init_resources() {
+        org.test.v1.akkamicroservicespec.Resources tmp = new org.test.v1.akkamicroservicespec.Resources();
+        tmp.setLimits(new org.test.v1.akkamicroservicespec.resources.Limits());
+        tmp.getLimits().setMemory("1024Mi");
+        tmp.getLimits().setCpu("");
+        tmp.setRequests(new org.test.v1.akkamicroservicespec.resources.Requests());
+        tmp.getRequests().setMemory("1024Mi");
+        tmp.getRequests().setCpu("1");
+        return tmp;
+    }
+
+    /**
+     * Scale by Akka Cluster node role. https://doc.akka.io/docs/akka/current/typed/cluster.html#node-roles
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("roles")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Scale by Akka Cluster node role. https://doc.akka.io/docs/akka/current/typed/cluster.html#node-roles")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<org.test.v1.akkamicroservicespec.Roles> roles = init_roles();
+
+    public java.util.List<org.test.v1.akkamicroservicespec.Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(java.util.List<org.test.v1.akkamicroservicespec.Roles> roles) {
+        this.roles = roles;
+    }
+
+    private java.util.List<org.test.v1.akkamicroservicespec.Roles> init_roles() {
+        java.util.List<org.test.v1.akkamicroservicespec.Roles> tmp = new java.util.ArrayList<>();
+        return tmp;
+    }
+
+    /**
+     * List of Secrets with entries that will be mounted as files in the mountPath directory.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("secretVolumes")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of Secrets with entries that will be mounted as files in the mountPath directory.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> secretVolumes = init_secretVolumes();
+
+    public java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> getSecretVolumes() {
+        return secretVolumes;
+    }
+
+    public void setSecretVolumes(java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> secretVolumes) {
+        this.secretVolumes = secretVolumes;
+    }
+
+    private java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> init_secretVolumes() {
+        java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> tmp = new java.util.ArrayList<>();
+        return tmp;
+    }
+
+    /**
+     * The service account to be used by the microservice, instead of the one generated one. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("serviceAccount")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The service account to be used by the microservice, instead of the one generated one. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String serviceAccount;
+
+    public String getServiceAccount() {
+        return serviceAccount;
+    }
+
+    public void setServiceAccount(String serviceAccount) {
+        this.serviceAccount = serviceAccount;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("splitBrainResolver")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicespec.SplitBrainResolver splitBrainResolver;
+
+    public org.test.v1.akkamicroservicespec.SplitBrainResolver getSplitBrainResolver() {
+        return splitBrainResolver;
+    }
+
+    public void setSplitBrainResolver(org.test.v1.akkamicroservicespec.SplitBrainResolver splitBrainResolver) {
+        this.splitBrainResolver = splitBrainResolver;
+    }
+}
+
+AkkaMicroserviceJavaCr[2] = package org.test.v1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"akkaClusterStatus","availableReplicas","message","oldestPodStartTime","phase","podStatus"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+public class AkkaMicroserviceStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    /**
+     * Status summary about the Akka Cluster members.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("akkaClusterStatus")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Status summary about the Akka Cluster members.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.akkamicroservicestatus.AkkaClusterStatus akkaClusterStatus;
+
+    public org.test.v1.akkamicroservicestatus.AkkaClusterStatus getAkkaClusterStatus() {
+        return akkaClusterStatus;
+    }
+
+    public void setAkkaClusterStatus(org.test.v1.akkamicroservicestatus.AkkaClusterStatus akkaClusterStatus) {
+        this.akkaClusterStatus = akkaClusterStatus;
+    }
+
+    /**
+     * Total number of available pods targeted by this AkkaMicroservice.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("availableReplicas")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Total number of available pods targeted by this AkkaMicroservice.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Integer availableReplicas;
+
+    public Integer getAvailableReplicas() {
+        return availableReplicas;
+    }
+
+    public void setAvailableReplicas(Integer availableReplicas) {
+        this.availableReplicas = availableReplicas;
+    }
+
+    /**
+     * A human readable message indicating details about why the AkkaMicroservice is in this condition.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("message")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("A human readable message indicating details about why the AkkaMicroservice is in this condition.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * The start time of the oldest pod.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("oldestPodStartTime")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The start time of the oldest pod.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String oldestPodStartTime;
+
+    public String getOldestPodStartTime() {
+        return oldestPodStartTime;
+    }
+
+    public void setOldestPodStartTime(String oldestPodStartTime) {
+        this.oldestPodStartTime = oldestPodStartTime;
+    }
+
+    /**
+     * The phase of an AkkaMicroservice is a simple, high-level summary of where the AkkaMicroservice is in its lifecycle.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("phase")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The phase of an AkkaMicroservice is a simple, high-level summary of where the AkkaMicroservice is in its lifecycle.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String phase;
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    /**
+     * The pods state in case of failures.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("podStatus")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The pods state in case of failures.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<String> podStatus;
+
+    public java.util.List<String> getPodStatus() {
+        return podStatus;
+    }
+
+    public void setPodStatus(java.util.List<String> podStatus) {
+        this.podStatus = podStatus;
+    }
+}
+

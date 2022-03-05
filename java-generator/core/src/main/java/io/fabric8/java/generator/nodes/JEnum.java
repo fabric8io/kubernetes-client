@@ -20,6 +20,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import io.fabric8.java.generator.Config;
 
 import java.util.ArrayList;
@@ -78,14 +80,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
 
     for (String k : this.values) {
       String constantName;
-      try {
-        // If the value can be parsed as an Integer
-        Integer.valueOf(k);
-        // Prepend
-        constantName = "V_" + sanitizeEnumEntry(sanitizeString(k));
-      } catch (Exception e) {
-        constantName = sanitizeEnumEntry(sanitizeString(k));
-      }
+      constantName = getConstantName(k);
       EnumConstantDeclaration decl = new EnumConstantDeclaration();
       decl.addAnnotation(
           new SingleMemberAnnotationExpr(
@@ -99,5 +94,36 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     return new GeneratorResult(
         new ArrayList<>(),
         Collections.singletonList(new GeneratorResult.ClassResult(this.type, cu)));
+  }
+
+  @Override
+  protected BlockStmt generateDefaultInitializerBody(JsonNode defaultValue) {
+    BlockStmt body = new BlockStmt();
+    // return value representation
+    body.addStatement(new ReturnStmt(this.generateDefaultInstance(defaultValue)));
+    return body;
+  }
+
+  @Override
+  protected Expression generateDefaultInstance(JsonNode defaultValue) {
+    return new NameExpr(this.type + "." + this.getConstantName(defaultValue.asText()));
+  }
+
+  @Override
+  protected List<Statement> expandDefaultInstance(final String scope, JsonNode defaultValue) {
+    return Collections.emptyList();
+  }
+
+  private String getConstantName(String k) {
+    String constantName;
+    try {
+      // If the value can be parsed as an Integer
+      Integer.valueOf(k);
+      // Prepend
+      constantName = "V_" + sanitizeEnumEntry(sanitizeString(k));
+    } catch (Exception e) {
+      constantName = sanitizeEnumEntry(sanitizeString(k));
+    }
+    return constantName;
   }
 }

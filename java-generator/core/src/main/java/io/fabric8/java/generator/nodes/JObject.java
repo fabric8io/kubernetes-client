@@ -15,19 +15,25 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -47,7 +53,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   private final String className;
   private final String pkg;
   private final Map<String, AbstractJSONSchema2Pojo> fields;
+  private final Map<String, JsonNode> fieldDefaults;
   private final Set<String> required;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(JObject.class);
   private final boolean preserveUnknownFields;
 
   public JObject(
@@ -64,6 +73,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     super(config, description, isNullable);
     this.required = new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
     this.fields = new HashMap<>();
+    this.fieldDefaults = new HashMap<>();
     this.preserveUnknownFields = preserveUnknownFields;
 
     this.pkg = (pkg == null) ? "" : pkg.trim();
@@ -81,6 +91,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
     if (fields == null) {
       // no fields
+      // ... then no POJO properties can be assigned default values
+      this.skipDefault = Boolean.TRUE;
     } else {
       String nextPackagePath = null;
       switch (config.getCodeStructure()) {
@@ -96,15 +108,25 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         if (!IGNORED_FIELDS.contains(field.getKey())) {
           String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
           String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
+
+          AbstractJSONSchema2Pojo fieldProp = AbstractJSONSchema2Pojo.fromJsonSchema(
+              field.getKey(),
+              field.getValue(),
+              nextPackagePath,
+              nextPrefix,
+              nextSuffix,
+              config);
+          // As it happens for fields POJO generation, default value generation is handled by JObject
+          if (field.getValue().getDefault() != null) {
+            if (!fieldProp.skipDefault) {
+              this.fieldDefaults.put(field.getKey(), field.getValue().getDefault());
+            } else {
+              LOGGER.warn("Default value will be skipped for {}", type);
+            }
+          }
           this.fields.put(
               field.getKey(),
-              AbstractJSONSchema2Pojo.fromJsonSchema(
-                  field.getKey(),
-                  field.getValue(),
-                  nextPackagePath,
-                  nextPrefix,
-                  nextSuffix,
-                  config));
+              fieldProp);
         }
       }
     }
@@ -212,11 +234,21 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         if (!prop.isNullable) {
           // from https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#defaulting-and-nullable :
           // "_null values for fields that either don't specify the nullable flag, or give it a false
-          // value, will be pruned before defaulting happens..._"
+          // value, will be pruned before defaulting happens. If a default is present, it will be applied_"
           objField.addAnnotation(
               new SingleMemberAnnotationExpr(
                   new Name("com.fasterxml.jackson.annotation.JsonSetter"),
                   new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP")));
+          JsonNode defaultValue = this.fieldDefaults.get(k);
+          if (defaultValue != null) {
+            // always add an "init_*" method which will be expanded by statements needed to create the default value
+            VariableDeclarator propertyVariable = objField.getVariable(0);
+            MethodDeclaration methodDeclaration = clz.addMethod("init_" + propertyVariable.getNameAsString(),
+                Modifier.Keyword.PRIVATE);
+            methodDeclaration.setType(propertyVariable.getType());
+            methodDeclaration.setBody(prop.generateDefaultInitializerBody(defaultValue));
+            propertyVariable.setInitializer(new MethodCallExpr(methodDeclaration.getNameAsString()));
+          }
         } else {
           // from https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#defaulting-and-nullable :
           // "... _When nullable is true, null values will be conserved..._"
@@ -225,7 +257,6 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   new Name("com.fasterxml.jackson.annotation.JsonSetter"),
                   new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SET")));
         }
-
       } catch (Exception cause) {
         throw new JavaGeneratorException(
             "Error generating field " + fieldName + " with type " + prop.getType(),
@@ -256,5 +287,31 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     buffer.add(new GeneratorResult.ClassResult(this.className, cu));
 
     return new GeneratorResult(buffer);
+  }
+
+  @Override
+  protected Expression generateDefaultInstance(JsonNode defaultValue) {
+    return new NameExpr("new " + this.type + "()");
+  }
+
+  @Override
+  protected List<Statement> expandDefaultInstance(final String scope, JsonNode defaultValue) {
+    final List<Statement> statements = new ArrayList<>();
+
+    Iterator<Map.Entry<String, JsonNode>> childFields = defaultValue.fields();
+    while (childFields.hasNext()) {
+      final Map.Entry<String, JsonNode> childField = childFields.next();
+      final AbstractJSONSchema2Pojo childSchema = this.fields.get(childField.getKey());
+      if (childSchema == null) {
+        throw new JavaGeneratorException("No field definition found in parent schema fields: " + childField.getKey());
+      }
+      final String upperCaseClassName = childField.getKey().substring(0, 1).toUpperCase() + childField.getKey().substring(1);
+
+      statements.add(new ExpressionStmt(
+          new NameExpr(
+              scope + ".set" + upperCaseClassName + "(" + childSchema.generateDefaultInstance(childField.getValue()) + ")")));
+      statements.addAll(childSchema.expandDefaultInstance(scope + ".get" + upperCaseClassName + "()", childField.getValue()));
+    }
+    return statements;
   }
 }

@@ -16,8 +16,18 @@
 /* (C)2015 */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
@@ -37,6 +47,7 @@ public class JMap extends AbstractJSONSchema2Pojo {
             new ClassOrInterfaceType().setName(nested.getType()))
         .toString();
     this.nested = nested;
+    this.skipDefault = nested.skipDefault;
   }
 
   @Override
@@ -47,5 +58,27 @@ public class JMap extends AbstractJSONSchema2Pojo {
   @Override
   public GeneratorResult generateJava() {
     return nested.generateJava();
+  }
+
+  @Override
+  protected Expression generateDefaultInstance(JsonNode defaultValue) {
+    return new NameExpr("new java.util.HashMap<String, " + this.type + ">()");
+  }
+
+  @Override
+  protected List<Statement> expandDefaultInstance(final String scope, JsonNode defaultValue) {
+    final List<Statement> statements = new ArrayList<>();
+
+    Iterator<Map.Entry<String, JsonNode>> childFields = defaultValue.fields();
+    while (childFields.hasNext()) {
+      Map.Entry<String, JsonNode> childField = childFields.next();
+      statements.add(new ExpressionStmt(
+          new NameExpr(scope + ".put(\"" + childField.getKey() + "\", "
+              + this.nested.generateDefaultInstance(childField.getValue()) + ")")));
+      statements
+          .addAll(this.nested.expandDefaultInstance(scope + ".get(\"" + childField.getKey() + "\")", childField.getValue()));
+    }
+
+    return statements;
   }
 }
