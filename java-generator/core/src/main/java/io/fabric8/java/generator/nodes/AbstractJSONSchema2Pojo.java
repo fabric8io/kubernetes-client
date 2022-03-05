@@ -39,6 +39,7 @@ public abstract class AbstractJSONSchema2Pojo {
 
   protected final String description;
   protected final Config config;
+  protected final boolean isNullable;
 
   public abstract String getType();
 
@@ -53,9 +54,10 @@ public abstract class AbstractJSONSchema2Pojo {
     return description;
   }
 
-  protected AbstractJSONSchema2Pojo(Config config, String description) {
+  protected AbstractJSONSchema2Pojo(Config config, String description, final boolean isNullable) {
     this.config = config;
     this.description = description;
+    this.isNullable = isNullable;
   }
 
   /** Takes a random string and manipulate it to be a valid Java identifier */
@@ -164,9 +166,10 @@ public abstract class AbstractJSONSchema2Pojo {
       String classPrefix,
       String classSuffix,
       Config config) {
+    final boolean isNullable = Boolean.TRUE.equals(prop.getNullable());
     switch (nt.getType()) {
       case PRIMITIVE:
-        return new JPrimitive(nt.getName(), config, prop.getDescription());
+        return new JPrimitive(nt.getName(), config, prop.getDescription(), isNullable);
       case ARRAY:
         return new JArray(
             fromJsonSchema(
@@ -177,7 +180,8 @@ public abstract class AbstractJSONSchema2Pojo {
                 classSuffix,
                 config),
             config,
-            prop.getDescription());
+            prop.getDescription(),
+            isNullable);
       case MAP:
         return new JMap(
             fromJsonSchema(
@@ -188,7 +192,8 @@ public abstract class AbstractJSONSchema2Pojo {
                 classSuffix,
                 config),
             config,
-            prop.getDescription());
+            prop.getDescription(),
+            isNullable);
       case OBJECT:
         boolean preserveUnknownFields = Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields());
         return new JObject(
@@ -200,9 +205,10 @@ public abstract class AbstractJSONSchema2Pojo {
             classPrefix,
             classSuffix,
             config,
-            prop.getDescription());
+            prop.getDescription(),
+            isNullable);
       case ENUM:
-        return new JEnum(key, prop.getEnum(), config, prop.getDescription());
+        return new JEnum(key, prop.getEnum(), config, prop.getDescription(), isNullable);
       default:
         throw new JavaGeneratorException("Unreachable " + nt.getType());
     }

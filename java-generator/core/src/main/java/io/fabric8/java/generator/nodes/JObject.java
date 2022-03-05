@@ -59,8 +59,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       String classPrefix,
       String classSuffix,
       Config config,
-      String description) {
-    super(config, description);
+      String description,
+      final boolean isNullable) {
+    super(config, description, isNullable);
     this.required = new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
     this.fields = new HashMap<>();
     this.preserveUnknownFields = preserveUnknownFields;
@@ -95,7 +96,6 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         if (!IGNORED_FIELDS.contains(field.getKey())) {
           String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
           String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
-
           this.fields.put(
               field.getKey(),
               AbstractJSONSchema2Pojo.fromJsonSchema(
@@ -208,6 +208,24 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   new StringLiteralExpr(
                       prop.getDescription().replace("\"", "\\\""))));
         }
+
+        if (!prop.isNullable) {
+          // from https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#defaulting-and-nullable :
+          // "_null values for fields that either don't specify the nullable flag, or give it a false
+          // value, will be pruned before defaulting happens..._"
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("com.fasterxml.jackson.annotation.JsonSetter"),
+                  new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP")));
+        } else {
+          // from https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#defaulting-and-nullable :
+          // "... _When nullable is true, null values will be conserved..._"
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("com.fasterxml.jackson.annotation.JsonSetter"),
+                  new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SET")));
+        }
+
       } catch (Exception cause) {
         throw new JavaGeneratorException(
             "Error generating field " + fieldName + " with type " + prop.getType(),
