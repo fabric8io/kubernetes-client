@@ -112,7 +112,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
 
   /**
    * Replace the object on `path` endpoint with the object represented by `s`
-   * 
+   *
    * @param path String
    * @param s String
    * @return The {@link MockResponse}
@@ -470,7 +470,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
       metadata.put("namespace", pathValues.get(KubernetesAttributesExtractor.NAMESPACE));
     }
     metadata.put("uid", getOrDefault(existingMetadata, "uid", uuid.toString()));
-    metadata.put(GENERATION, getOrDefault(existingMetadata, GENERATION, "1"));
+    metadata.put(GENERATION, Integer.parseInt(getOrDefault(existingMetadata, GENERATION, "1")));
     metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp",
         ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
 
