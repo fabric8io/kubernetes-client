@@ -15,9 +15,15 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.util.Locale;
 import java.util.function.Function;
@@ -40,6 +46,7 @@ public abstract class AbstractJSONSchema2Pojo {
   protected final String description;
   protected final Config config;
   protected final boolean isNullable;
+  protected final JsonNode defaultValue;
 
   public abstract String getType();
 
@@ -54,10 +61,19 @@ public abstract class AbstractJSONSchema2Pojo {
     return description;
   }
 
-  protected AbstractJSONSchema2Pojo(Config config, String description, final boolean isNullable) {
+  protected JsonNode getDefaultValue() {
+    return defaultValue;
+  }
+
+  protected String getClassType() {
+    return getType();
+  }
+
+  protected AbstractJSONSchema2Pojo(Config config, String description, final boolean isNullable, JsonNode defaultValue) {
     this.config = config;
     this.description = description;
     this.isNullable = isNullable;
+    this.defaultValue = defaultValue;
   }
 
   /** Takes a random string and manipulate it to be a valid Java identifier */
@@ -169,7 +185,7 @@ public abstract class AbstractJSONSchema2Pojo {
     final boolean isNullable = Boolean.TRUE.equals(prop.getNullable());
     switch (nt.getType()) {
       case PRIMITIVE:
-        return new JPrimitive(nt.getName(), config, prop.getDescription(), isNullable);
+        return new JPrimitive(nt.getName(), config, prop.getDescription(), isNullable, prop.getDefault());
       case ARRAY:
         return new JArray(
             fromJsonSchema(
@@ -181,7 +197,8 @@ public abstract class AbstractJSONSchema2Pojo {
                 config),
             config,
             prop.getDescription(),
-            isNullable);
+            isNullable,
+            prop.getDefault());
       case MAP:
         return new JMap(
             fromJsonSchema(
@@ -193,9 +210,10 @@ public abstract class AbstractJSONSchema2Pojo {
                 config),
             config,
             prop.getDescription(),
-            isNullable);
+            isNullable,
+            prop.getDefault());
       case OBJECT:
-        boolean preserveUnknownFields = Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields());
+        final boolean preserveUnknownFields = Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields());
         return new JObject(
             parentPkg,
             key,
@@ -206,9 +224,10 @@ public abstract class AbstractJSONSchema2Pojo {
             classSuffix,
             config,
             prop.getDescription(),
-            isNullable);
+            isNullable,
+            prop.getDefault());
       case ENUM:
-        return new JEnum(key, prop.getEnum(), config, prop.getDescription(), isNullable);
+        return new JEnum(key, prop.getEnum(), config, prop.getDescription(), isNullable, prop.getDefault());
       default:
         throw new JavaGeneratorException("Unreachable " + nt.getType());
     }
