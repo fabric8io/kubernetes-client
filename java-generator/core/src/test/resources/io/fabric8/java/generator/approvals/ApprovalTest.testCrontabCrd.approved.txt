@@ -13,6 +13,7 @@ CrontabJavaCr[1] = package org.test.v1;
 public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("cronSpec")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String cronSpec;
 
     public String getCronSpec() {
@@ -24,6 +25,7 @@ public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesRe
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("image")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String image;
 
     public String getImage() {
@@ -35,6 +37,7 @@ public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesRe
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("replicas")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private Long replicas;
 
     public Long getReplicas() {
@@ -54,6 +57,7 @@ CrontabJavaCr[2] = package org.test.v1;
 public class CronTabStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("labelSelector")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String labelSelector;
 
     public String getLabelSelector() {
@@ -65,6 +69,7 @@ public class CronTabStatus implements io.fabric8.kubernetes.api.model.Kubernetes
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("replicas")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private Long replicas;
 
     public Long getReplicas() {

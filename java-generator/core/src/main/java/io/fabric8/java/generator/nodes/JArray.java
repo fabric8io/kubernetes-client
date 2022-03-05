@@ -25,8 +25,8 @@ public class JArray extends AbstractJSONSchema2Pojo {
   private final String type;
   private final AbstractJSONSchema2Pojo nested;
 
-  public JArray(AbstractJSONSchema2Pojo nested, Config config, String description) {
-    super(config, description);
+  public JArray(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable) {
+    super(config, description, isNullable);
     this.type = new ClassOrInterfaceType()
         .setName(JAVA_UTIL_LIST)
         .setTypeArguments(new ClassOrInterfaceType().setName(nested.getType()))
