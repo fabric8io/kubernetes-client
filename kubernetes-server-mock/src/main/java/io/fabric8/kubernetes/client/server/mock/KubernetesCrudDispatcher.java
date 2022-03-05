@@ -111,6 +111,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
   /**
    * Replace the object on `path` endpoint with the object represented by `s`
+   *
    * @param path String
    * @param s String
    * @return The {@link MockResponse}
@@ -137,11 +138,11 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
     synchronized (map) {
       map.entrySet().stream()
-        .filter(entry -> entry.getKey().matches(query))
-        .forEach(entry -> {
-          LOGGER.debug("Entry found for query {} : {}", query, entry);
-          items.add(entry.getValue());
-        });
+          .filter(entry -> entry.getKey().matches(query))
+          .forEach(entry -> {
+            LOGGER.debug("Entry found for query {} : {}", query, entry);
+            items.add(entry.getValue());
+          });
     }
 
     if (query.containsKey(KubernetesAttributesExtractor.NAME)) {
@@ -175,8 +176,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     Optional<Map.Entry<AttributeSet, String>> bodyEntry;
     synchronized (map) {
       bodyEntry = map.entrySet().stream()
-        .filter(entry -> entry.getKey().matches(query))
-        .findFirst();
+          .filter(entry -> entry.getKey().matches(query))
+          .findFirst();
     }
 
     if (!bodyEntry.isPresent()) {
@@ -189,8 +190,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         JsonNode status = null;
 
         Map<String, String> pathValues = kubernetesAttributesExtractor.fromKubernetesPath(path);
-        boolean statusSubresource =
-            crdProcessor.isStatusSubresource(pathValues);
+        boolean statusSubresource = crdProcessor.isStatusSubresource(pathValues);
 
         if (statusSubresource && !isStatusPath(path)) {
           status = removeStatus(source);
@@ -229,9 +229,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         // restore the status
         if (statusSubresource || isStatusPath(path)) {
           if (status == null) {
-              removeStatus(updated);
+            removeStatus(updated);
           } else {
-              ((ObjectNode)updated).set(STATUS, status);
+            ((ObjectNode) updated).set(STATUS, status);
           }
         }
 
@@ -278,14 +278,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       query = query.add(new Attribute("name", resourceName));
     }
     WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER,
-      watch -> {
-        synchronized (map) {
-          map.entrySet().stream()
-            .filter(entry -> watch.attributeMatches(entry.getKey()))
-            .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
-        }
-      }
-    );
+        watch -> {
+          synchronized (map) {
+            map.entrySet().stream()
+                .filter(entry -> watch.attributeMatches(entry.getKey()))
+                .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
+          }
+        });
     watchEventListeners.add(watchEventListener);
     mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);
     return mockResponse.withWebSocketUpgrade(watchEventListener);
@@ -319,20 +318,21 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     }
 
     String name = "";
-    for (String q: queryString.split("&")) {
+    for (String q : queryString.split("&")) {
       if (q.contains("fieldSelector") && q.contains("metadata.name")) {
         String[] s = q.split("=");
         name = s[s.length - 1];
       }
     }
-    return name.isEmpty()? null: name;
+    return name.isEmpty() ? null : name;
   }
 
   private int doDelete(String path) {
     AttributeSet fromPath = attributeExtractor.fromPath(path);
     List<AttributeSet> items = findItems(fromPath);
 
-    if (items.isEmpty()) return HttpURLConnection.HTTP_NOT_FOUND;
+    if (items.isEmpty())
+      return HttpURLConnection.HTTP_NOT_FOUND;
 
     items.forEach(item -> processEvent(path, fromPath, item, null));
     return HttpURLConnection.HTTP_OK;
@@ -370,8 +370,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private List<AttributeSet> findItems(AttributeSet query) {
     synchronized (map) {
       return map.keySet().stream()
-        .filter(entry -> entry.matches(query))
-        .collect(Collectors.toList());
+          .filter(entry -> entry.matches(query))
+          .collect(Collectors.toList());
     }
   }
 
@@ -442,24 +442,24 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   // Visible for testing
   static boolean shouldIncreaseGeneration(JsonNode existing, JsonNode source) {
     final JsonNode differences = Optional.ofNullable(existing).map(e -> JsonDiff.asJson(e, source))
-      .orElse(null);
+        .orElse(null);
     return shouldIncreaseGeneration(differences);
   }
 
   static boolean shouldIncreaseGeneration(JsonNode differences) {
     if (differences != null && !differences.isEmpty()) {
       return StreamSupport.stream(differences.spliterator(), false)
-        .filter(n -> !n.get("path").asText().startsWith("/metadata/"))
-        .anyMatch(n -> !n.get("path").asText().startsWith("/status/"));
+          .filter(n -> !n.get("path").asText().startsWith("/metadata/"))
+          .anyMatch(n -> !n.get("path").asText().startsWith("/status/"));
     }
     return false;
   }
 
   private void setDefaultMetadata(JsonNode source, Map<String, String> pathValues, JsonNode existing) {
-    ObjectNode metadata = (ObjectNode)source.findValue("metadata");
+    ObjectNode metadata = (ObjectNode) source.findValue("metadata");
     ObjectNode existingMetadata = null;
     if (existing != null) {
-      existingMetadata = (ObjectNode)existing.findValue("metadata");
+      existingMetadata = (ObjectNode) existing.findValue("metadata");
     }
     UUID uuid = UUID.randomUUID();
     if (metadata.get("name") == null) {
@@ -469,8 +469,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       metadata.put("namespace", pathValues.get(KubernetesAttributesExtractor.NAMESPACE));
     }
     metadata.put("uid", getOrDefault(existingMetadata, "uid", uuid.toString()));
-    metadata.put(GENERATION, getOrDefault(existingMetadata, GENERATION, "1"));
-    metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
+    metadata.put(GENERATION, Integer.parseInt(getOrDefault(existingMetadata, GENERATION, "1")));
+    metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp",
+        ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
 
     if (existing == null) {
       metadata.put(RESOURCE_VERSION, String.valueOf(resourceVersion.incrementAndGet()));
@@ -497,7 +498,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   private JsonNode removeStatus(JsonNode source) {
-    return ((ObjectNode)source).remove(STATUS);
+    return ((ObjectNode) source).remove(STATUS);
   }
 
   private void setStatus(JsonNode source, JsonNode status) {
@@ -534,14 +535,14 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       kind = h.getKind();
     }
     Status status = new StatusBuilder().withStatus("Failure")
-      .withReason("Invalid")
-      .withMessage(kind + " is invalid")
-      .withNewDetails()
-      .withKind(kind)
-      .withCauses(getFailureStatusCause(ex))
-      .endDetails()
-      .withCode(code)
-      .build();
+        .withReason("Invalid")
+        .withMessage(kind + " is invalid")
+        .withNewDetails()
+        .withKind(kind)
+        .withCauses(getFailureStatusCause(ex))
+        .endDetails()
+        .withCode(code)
+        .build();
     try {
       return Serialization.jsonMapper().writeValueAsString(status);
     } catch (IOException ioException) {
@@ -551,9 +552,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
   private StatusCause getFailureStatusCause(Exception ex) {
     return new StatusCauseBuilder()
-      .withMessage(ex.getMessage())
-      .withReason("ValueRequired")
-      .build();
+        .withMessage(ex.getMessage())
+        .withReason("ValueRequired")
+        .build();
   }
 
   private void validateResource(HasMetadata item) {
