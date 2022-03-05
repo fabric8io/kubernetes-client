@@ -15,6 +15,7 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 
@@ -25,8 +26,9 @@ public class JArray extends AbstractJSONSchema2Pojo {
   private final String type;
   private final AbstractJSONSchema2Pojo nested;
 
-  public JArray(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable) {
-    super(config, description, isNullable);
+  public JArray(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable,
+      JsonNode defaultValue) {
+    super(config, description, isNullable, defaultValue);
     this.type = new ClassOrInterfaceType()
         .setName(JAVA_UTIL_LIST)
         .setTypeArguments(new ClassOrInterfaceType().setName(nested.getType()))
@@ -37,6 +39,11 @@ public class JArray extends AbstractJSONSchema2Pojo {
   @Override
   public String getType() {
     return this.type;
+  }
+
+  @Override
+  protected String getClassType() {
+    return JAVA_UTIL_LIST;
   }
 
   @Override

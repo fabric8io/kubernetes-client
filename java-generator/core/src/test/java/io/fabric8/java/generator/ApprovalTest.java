@@ -110,4 +110,27 @@ class ApprovalTest {
 
     Approvals.verifyAll("JokeRequestJavaCr", underTest);
   }
+
+  @Test
+  void testAkkaMicroservicesCrd() {
+    // Arrange
+    CustomResourceDefinition crd = getCRD("akka-microservices-crd.yml");
+
+    // Act
+    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
+
+    // Assert
+    assertEquals(1, writables.size());
+    assertThat(writables.size()).isEqualTo(1);
+
+    WritableCRCompilationUnit writable = writables.get(0);
+
+    List<String> underTest = new ArrayList<>();
+    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+    underTest.add(getJavaClass(crl, "AkkaMicroservice"));
+    underTest.add(getJavaClass(crl, "AkkaMicroserviceSpec"));
+    underTest.add(getJavaClass(crl, "AkkaMicroserviceStatus"));
+
+    Approvals.verifyAll("AkkaMicroserviceJavaCr", underTest);
+  }
 }
