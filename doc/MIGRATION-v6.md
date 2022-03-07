@@ -13,6 +13,8 @@
 - [Adapt Changes](#adapt-changes)
 - [Deprecations](#deprecations)
 - [Object sorting](#object-sorting)
+- [Boolean Changes](#boolean-changes)
+- [evict Changes](#evict-changes)
 
 ## Namespace Changes
 
@@ -148,9 +150,11 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
   String strValue = i2.getStrVal();
   ```
 
-## Service Catalog Changes
+## Extension Changes
 
-io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+- io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+
+- io.fabric8.volumesnapshot.client.internal.XXXResource interfaces moved to io.fabric8.volumesnapshot.client.XXXResource to no longer be in an internal package.
 
 ## Adapt Changes
 
@@ -165,3 +169,11 @@ Client.isAdaptable and Client.adapt will check first if the existing instance is
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
+
+## Boolean Changes
+
+The usage of Boolean in the api was removed where it was not a nullable value.  Please expect a boolean primitive from methods such as delete, copy, or as an argument in Loggable.getLog
+
+## Evict Changes
+
+Evictable.evict will throw an exception rather than returning false if the pod is not found.  This ensures that false strictly means that the evict failed.

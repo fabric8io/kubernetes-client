@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
+import io.fabric8.volumesnapshot.client.VolumeSnapshotClassResource;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassResource;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

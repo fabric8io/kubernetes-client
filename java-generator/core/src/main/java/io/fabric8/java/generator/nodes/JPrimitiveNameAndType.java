@@ -16,16 +16,15 @@
 package io.fabric8.java.generator.nodes;
 
 public class JPrimitiveNameAndType extends JavaNameAndType {
-    static final JPrimitiveNameAndType INT_OR_STRING =
-            new JPrimitiveNameAndType("io.fabric8.kubernetes.api.model.IntOrString");
-    static final JPrimitiveNameAndType BOOL = new JPrimitiveNameAndType("Boolean");
-    static final JPrimitiveNameAndType INTEGER = new JPrimitiveNameAndType("Integer");
-    static final JPrimitiveNameAndType LONG = new JPrimitiveNameAndType("Long");
-    static final JPrimitiveNameAndType FLOAT = new JPrimitiveNameAndType("Float");
-    static final JPrimitiveNameAndType DOUBLE = new JPrimitiveNameAndType("Double");
-    static final JPrimitiveNameAndType STRING = new JPrimitiveNameAndType("String");
+  static final JPrimitiveNameAndType INT_OR_STRING = new JPrimitiveNameAndType("io.fabric8.kubernetes.api.model.IntOrString");
+  static final JPrimitiveNameAndType BOOL = new JPrimitiveNameAndType("Boolean");
+  static final JPrimitiveNameAndType INTEGER = new JPrimitiveNameAndType("Integer");
+  static final JPrimitiveNameAndType LONG = new JPrimitiveNameAndType("Long");
+  static final JPrimitiveNameAndType FLOAT = new JPrimitiveNameAndType("Float");
+  static final JPrimitiveNameAndType DOUBLE = new JPrimitiveNameAndType("Double");
+  static final JPrimitiveNameAndType STRING = new JPrimitiveNameAndType("String");
 
-    public JPrimitiveNameAndType(String name) {
-        super(name, JavaType.PRIMITIVE);
-    }
+  public JPrimitiveNameAndType(String name) {
+    super(name, JavaType.PRIMITIVE);
+  }
 }

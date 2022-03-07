@@ -32,7 +32,6 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>certmanager-client</artifactId>
-      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

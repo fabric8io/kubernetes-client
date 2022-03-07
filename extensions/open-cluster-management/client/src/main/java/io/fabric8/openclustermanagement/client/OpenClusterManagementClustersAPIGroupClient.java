@@ -15,12 +15,11 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement;
@@ -33,38 +32,43 @@ import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedCluster
 import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementClustersAPIGroupDSL;
 
-public class OpenClusterManagementClustersAPIGroupClient extends BaseClient implements OpenClusterManagementClustersAPIGroupDSL {
+public class OpenClusterManagementClustersAPIGroupClient extends ClientAdapter<OpenClusterManagementClustersAPIGroupDSL> implements OpenClusterManagementClustersAPIGroupDSL {
 
   public OpenClusterManagementClustersAPIGroupClient() {
     super();
   }
 
-  public OpenClusterManagementClustersAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public OpenClusterManagementClustersAPIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected OpenClusterManagementClustersAPIGroupDSL newInstance(Client client) {
+    return new OpenClusterManagementClustersAPIGroupClient(client);
   }
 
   @Override
   public NonNamespaceOperation<ManagedCluster, ManagedClusterList, Resource<ManagedCluster>> managedClusters() {
-    return Handlers.getOperation(ManagedCluster.class, ManagedClusterList.class, this);
+    return resources(ManagedCluster.class, ManagedClusterList.class);
   }
 
   @Override
   public NonNamespaceOperation<ManagedClusterSet, ManagedClusterSetList, Resource<ManagedClusterSet>> managedClusterSets() {
-    return Handlers.getOperation(ManagedClusterSet.class, ManagedClusterSetList.class, this);
+    return resources(ManagedClusterSet.class, ManagedClusterSetList.class);
   }
 
   @Override
   public MixedOperation<ManagedClusterSetBinding, ManagedClusterSetBindingList, Resource<ManagedClusterSetBinding>> managedClusterSetBindings() {
-    return Handlers.getOperation(ManagedClusterSetBinding.class, ManagedClusterSetBindingList.class, this);
+    return resources(ManagedClusterSetBinding.class, ManagedClusterSetBindingList.class);
   }
 
   @Override
   public MixedOperation<Placement, PlacementList, Resource<Placement>> placements() {
-    return Handlers.getOperation(Placement.class, PlacementList.class, this);
+    return resources(Placement.class, PlacementList.class);
   }
 
   @Override
   public MixedOperation<PlacementDecision, PlacementDecisionList, Resource<PlacementDecision>> placementDecisions() {
-    return Handlers.getOperation(PlacementDecision.class, PlacementDecisionList.class, this);
+    return resources(PlacementDecision.class, PlacementDecisionList.class);
   }
 }

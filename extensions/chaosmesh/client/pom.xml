@@ -53,18 +53,23 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>chaosmesh-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
       <exclusions>
         <exclusion>
           <groupId>io.sundr</groupId>
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>

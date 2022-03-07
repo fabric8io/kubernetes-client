@@ -16,36 +16,35 @@
 /* (C)2015 */
 package io.fabric8.java.generator.nodes;
 
-import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
-import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
-
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
+
 public class JMap extends AbstractJSONSchema2Pojo {
 
-    private final String type;
-    private final AbstractJSONSchema2Pojo nested;
+  private final String type;
+  private final AbstractJSONSchema2Pojo nested;
 
-    public JMap(AbstractJSONSchema2Pojo nested, Config config, String description) {
-        super(config, description);
-        this.type =
-                new ClassOrInterfaceType()
-                        .setName(JAVA_UTIL_MAP)
-                        .setTypeArguments(
-                                new ClassOrInterfaceType().setName(JAVA_LANG_STRING),
-                                new ClassOrInterfaceType().setName(nested.getType()))
-                        .toString();
-        this.nested = nested;
-    }
+  public JMap(AbstractJSONSchema2Pojo nested, Config config, String description) {
+    super(config, description);
+    this.type = new ClassOrInterfaceType()
+        .setName(JAVA_UTIL_MAP)
+        .setTypeArguments(
+            new ClassOrInterfaceType().setName(JAVA_LANG_STRING),
+            new ClassOrInterfaceType().setName(nested.getType()))
+        .toString();
+    this.nested = nested;
+  }
 
-    @Override
-    public String getType() {
-        return this.type;
-    }
+  @Override
+  public String getType() {
+    return this.type;
+  }
 
-    @Override
-    public GeneratorResult generateJava() {
-        return nested.generateJava();
-    }
+  @Override
+  public GeneratorResult generateJava() {
+    return nested.generateJava();
+  }
 }

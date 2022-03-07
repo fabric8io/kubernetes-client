@@ -39,7 +39,7 @@ public interface Loggable<W> {
    * @param isPretty whether we need logs with pretty output or not
    * @return logs as string
    */
-  String getLog(Boolean isPretty);
+  String getLog(boolean isPretty);
 
   /**
    * Get a Reader for reading logs

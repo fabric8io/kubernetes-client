@@ -53,12 +53,16 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   protected Resource<T> resource;
 
+  public ResourceAdapter() {
+
+  }
+
   public ResourceAdapter(Resource<T> resource) {
     this.resource = resource;
   }
 
   @Override
-  public Boolean delete() {
+  public boolean delete() {
     return resource.delete();
   }
 

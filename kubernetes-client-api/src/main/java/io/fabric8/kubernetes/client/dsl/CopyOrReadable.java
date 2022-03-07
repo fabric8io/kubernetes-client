@@ -15,6 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CopyOrReadable<B, I, UB> extends Copiable<B>, Readable<I>, Uploadable<UB> {
+public interface CopyOrReadable<I> extends Copiable, Readable<I>, Uploadable {
 
 }

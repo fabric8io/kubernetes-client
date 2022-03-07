@@ -15,11 +15,10 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application;
 import io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationList;
 import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster;
@@ -34,43 +33,48 @@ import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscriptio
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAppsAPIGroupDSL;
 
-public class OpenClusterManagementAppsAPIGroupClient extends BaseClient implements OpenClusterManagementAppsAPIGroupDSL {
+public class OpenClusterManagementAppsAPIGroupClient extends ClientAdapter<OpenClusterManagementAppsAPIGroupDSL> implements OpenClusterManagementAppsAPIGroupDSL {
 
   public OpenClusterManagementAppsAPIGroupClient() {
     super();
   }
 
-  public OpenClusterManagementAppsAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public OpenClusterManagementAppsAPIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected OpenClusterManagementAppsAPIGroupDSL newInstance(Client client) {
+    return new OpenClusterManagementAppsAPIGroupClient(client);
   }
 
   @Override
   public MixedOperation<Channel, ChannelList, Resource<Channel>> channels() {
-    return Handlers.getOperation(Channel.class, ChannelList.class, this);
+    return resources(Channel.class, ChannelList.class);
   }
 
   @Override
   public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
-    return Handlers.getOperation(Subscription.class, SubscriptionList.class, this);
+    return resources(Subscription.class, SubscriptionList.class);
   }
 
   @Override
   public MixedOperation<HelmRelease, HelmReleaseList, Resource<HelmRelease>> helmReleases() {
-    return Handlers.getOperation(HelmRelease.class, HelmReleaseList.class, this);
+    return resources(HelmRelease.class, HelmReleaseList.class);
   }
 
   @Override
   public MixedOperation<Application, ApplicationList, Resource<Application>> applications() {
-    return Handlers.getOperation(Application.class, ApplicationList.class, this);
+    return resources(Application.class, ApplicationList.class);
   }
 
   @Override
   public MixedOperation<PlacementRule, PlacementRuleList, Resource<PlacementRule>> placementRules() {
-    return Handlers.getOperation(PlacementRule.class, PlacementRuleList.class, this);
+    return resources(PlacementRule.class, PlacementRuleList.class);
   }
 
   @Override
   public MixedOperation<GitOpsCluster, GitOpsClusterList, Resource<GitOpsCluster>> gitOpsClusters() {
-    return Handlers.getOperation(GitOpsCluster.class, GitOpsClusterList.class, this);
+    return resources(GitOpsCluster.class, GitOpsClusterList.class);
   }
 }

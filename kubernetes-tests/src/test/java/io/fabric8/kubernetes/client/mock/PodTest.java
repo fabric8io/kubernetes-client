@@ -234,8 +234,8 @@ class PodTest {
     assertTrue(deleted);
 
     // not found
-    deleted = client.pods().withName("pod2").evict();
-    assertFalse(deleted);
+    PodResource<Pod> podResource = client.pods().withName("pod2");
+    assertThrows(KubernetesClientException.class, () -> podResource.evict());
 
     deleted = client.pods().inNamespace("ns1").withName("pod2").evict();
     assertTrue(deleted);
