@@ -45,8 +45,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-maven-
+          key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
       - name: Setup Java 8
         uses: actions/setup-java@v2
         with:
@@ -77,8 +76,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-maven-
+          key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
       - name: Setup Java 8
         uses: actions/setup-java@v2
         with:
@@ -108,8 +106,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-maven-
+          key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
       - name: Setup Java 8
         uses: actions/setup-java@v2
         with:
