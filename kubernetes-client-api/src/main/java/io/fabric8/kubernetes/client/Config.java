@@ -255,14 +255,12 @@ public class Config {
    * You can also reuse this object to build your own {@link Config} object
    * without any auto configuration like this:
    *
-   * <pre>
-   * {
-   *   &#64;code
-   *   Config configFromBuilder = new ConfigBuilder(Config.empty())
-   *       // ...
-   *       .build();
-   * }
-   * </pre>
+   *
+   * <pre>{@code
+   * Config configFromBuilder = new ConfigBuilder(Config.empty())
+   *                                // ...
+   *                               .build();
+   * }</pre>
    *
    * @return a Config object without any automatic configuration
    */
