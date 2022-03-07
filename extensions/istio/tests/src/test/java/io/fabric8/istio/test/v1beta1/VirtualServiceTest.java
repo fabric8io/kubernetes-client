@@ -144,26 +144,27 @@ class VirtualServiceTest {
         recordedRequest.getBody().readUtf8());
   }
 
+  // @formatter:off
   /*
-   * ---
-   * apiVersion: "networking.istio.io/v1beta1"
-   * kind: "VirtualService"
-   * metadata:
-   * annotations: {}
-   * finalizers: []
-   * labels: {}
-   * name: "details"
-   * ownerReferences: []
-   * spec:
-   * hosts:
-   * - "details"
-   * http:
-   * - route:
-   * - destination:
-   * host: "details"
-   * subset: "v1"
-   */
-
+    ---
+apiVersion: "networking.istio.io/v1beta1"
+kind: "VirtualService"
+metadata:
+  annotations: {}
+  finalizers: []
+  labels: {}
+  name: "details"
+  ownerReferences: []
+spec:
+  hosts:
+  - "details"
+  http:
+  - route:
+    - destination:
+        host: "details"
+        subset: "v1"
+     */
+  // @formatter:on
   @Test
   public void checkBasicVirtualService() throws Exception {
     final VirtualService virtualService = new VirtualServiceBuilder()
@@ -216,31 +217,33 @@ class VirtualServiceTest {
     Assert.assertEquals("v1", destination.get("subset"));
   }
 
+  // @formatter:off
   /*
-   * apiVersion: networking.istio.io/v1beta1
-   * kind: VirtualService
-   * metadata:
-   * name: reviews-route
-   * spec:
-   * hosts:
-   * - reviews.prod.svc.cluster.local
-   * http:
-   * - match:
-   * - uri:
-   * prefix: "/wpcatalog"
-   * - uri:
-   * prefix: "/consumercatalog"
-   * rewrite:
-   * uri: "/newcatalog"
-   * route:
-   * - destination:
-   * host: reviews.prod.svc.cluster.local
-   * subset: v2
-   * - route:
-   * - destination:
-   * host: reviews.prod.svc.cluster.local
-   * subset: v1
-   */
+        apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: reviews-route
+spec:
+  hosts:
+  - reviews.prod.svc.cluster.local
+  http:
+  - match:
+    - uri:
+        prefix: "/wpcatalog"
+    - uri:
+        prefix: "/consumercatalog"
+    rewrite:
+      uri: "/newcatalog"
+    route:
+    - destination:
+        host: reviews.prod.svc.cluster.local
+        subset: v2
+  - route:
+    - destination:
+        host: reviews.prod.svc.cluster.local
+        subset: v1
+     */
+  // @formatter:on
   @Test
   public void checkVirtualServiceWithMatch() throws IOException {
     final String reviewsHost = "reviews.prod.svc.cluster.local";
@@ -303,28 +306,30 @@ class VirtualServiceTest {
     Assert.assertEquals("v1", destination.get("subset"));
   }
 
+  // @formatter:off
   /*
-   * apiVersion: "networking.istio.io/v1beta1"
-   * kind: "VirtualService"
-   * metadata:
-   * name: "reviews-route"
-   * spec:
-   * hosts:
-   * - "reviews.prod.svc.cluster.local"
-   * http:
-   * - route:
-   * - destination:
-   * host: "reviews.prod.svc.cluster.local"
-   * port:
-   * number: 9090
-   * subset: "v2"
-   * - route:
-   * - destination:
-   * host: "reviews.prod.svc.cluster.local"
-   * port:
-   * number: 9090
-   * subset: "v1"
-   */
+apiVersion: "networking.istio.io/v1beta1"
+kind: "VirtualService"
+metadata:
+  name: "reviews-route"
+spec:
+  hosts:
+  - "reviews.prod.svc.cluster.local"
+  http:
+  - route:
+    - destination:
+        host: "reviews.prod.svc.cluster.local"
+        port:
+          number: 9090
+        subset: "v2"
+  - route:
+    - destination:
+        host: "reviews.prod.svc.cluster.local"
+        port:
+          number: 9090
+        subset: "v1"
+    */
+  // @formatter:on
   @Test
   public void checkVirtualServiceWithPortSelector() throws IOException {
     final String reviewsHost = "reviews.prod.svc.cluster.local";
@@ -390,24 +395,26 @@ class VirtualServiceTest {
   public void loadingFromYAMLShouldWork() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service.yaml");
 
-    /*
-     * apiVersion: networking.istio.io/v1beta1
-     * metadata:
-     * kind: VirtualService
-     * name: ratings-route
-     * spec:
-     * hosts:
-     * - ratings.prod.svc.cluster.local
-     * http:
-     * - route:
-     * - destination:
-     * host: ratings.prod.svc.cluster.local
-     * subset: v1
-     * fault:
-     * abort:
-     * percent: 10
-     * httpStatus: 400
-     */
+    // @formatter:off
+        /*
+ apiVersion: networking.istio.io/v1beta1
+ metadata:
+ kind: VirtualService
+   name: ratings-route
+ spec:
+   hosts:
+     - ratings.prod.svc.cluster.local
+   http:
+   - route:
+     - destination:
+         host: ratings.prod.svc.cluster.local
+         subset: v1
+     fault:
+       abort:
+         percent: 10
+         httpStatus: 400
+         */
+    // @formatter:on
 
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
     Assert.assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
@@ -430,19 +437,22 @@ class VirtualServiceTest {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service-issue48.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 
-    /*
-     * ...
-     * spec:
-     * hosts:
-     * - recommendation
-     * http:
-     * - match:
-     * - headers:
-     * baggage-user-agent:
-     * regex: .*DarkLaunch.*
-     * 
-     * ...
-     */
+   // @formatter:off
+        /* 
+        ...
+        spec:
+  hosts:
+    - recommendation
+  http:
+    - match:
+        - headers:
+            baggage-user-agent:
+              regex: .*DarkLaunch.*
+
+              ...
+         */
+    // @formatter:on
+
     final Map<String, StringMatch> headers = virtualService.getSpec().getHttp().get(0).getMatch().get(0).getHeaders();
     final StringMatch stringMatch = headers.get("baggage-user-agent");
     Assert.assertEquals(StringMatchRegex.class, stringMatch.getMatchType().getClass());
