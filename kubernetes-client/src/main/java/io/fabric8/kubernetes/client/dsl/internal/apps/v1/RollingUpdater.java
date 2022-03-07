@@ -70,7 +70,8 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     this(clientContext, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  protected RollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  protected RollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis,
+      long loggingIntervalMillis) {
     this.clientContext = clientContext;
     this.namespace = namespace;
     this.rollingTimeoutMillis = rollingTimeoutMillis;
@@ -104,11 +105,11 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
       for (Pod pod : oldPods.getItems()) {
         try {
-            Pod old = pods().inNamespace(namespace).withName(pod.getMetadata().getName()).get();
-            Pod updated = new PodBuilder(old)
-                .editMetadata().addToLabels(DEPLOYMENT_KEY, oldDeploymentHash).endMetadata()
-                .build();
-            pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(updated);
+          Pod old = pods().inNamespace(namespace).withName(pod.getMetadata().getName()).get();
+          Pod updated = new PodBuilder(old)
+              .editMetadata().addToLabels(DEPLOYMENT_KEY, oldDeploymentHash).endMetadata()
+              .build();
+          pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(updated);
         } catch (KubernetesClientException e) {
           LOG.warn("Unable to add deployment key to pod: {}", e.getMessage());
         }
@@ -191,7 +192,8 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   public static Map<String, Object> requestPayLoadForRolloutRestart() {
     Map<String, Object> jsonPatchPayload = new HashMap<>();
     Map<String, String> annotations = new HashMap<>();
-    annotations.put("kubectl.kubernetes.io/restartedAt", new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    annotations.put("kubectl.kubernetes.io/restartedAt",
+        new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     Map<String, Object> templateMetadata = new HashMap<>();
     templateMetadata.put("annotations", annotations);
     Map<String, Object> template = new HashMap<>();
@@ -207,7 +209,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
    */
   private void waitUntilPodsAreReady(final T obj, final String namespace, final int requiredPodCount) {
     final AtomicInteger podCount = new AtomicInteger(0);
-    
+
     CompletableFuture<List<Pod>> future = selectedPodLister(obj).informOnCondition(items -> {
       int count = 0;
       for (Pod item : items) {
@@ -225,11 +227,12 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
         () -> LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
             podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace),
         0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
-    
+
     try {
       if (!Utils.waitUntilReady(future, rollingTimeoutMillis, TimeUnit.MILLISECONDS)) {
-          LOG.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
-                  podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace, TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
+        LOG.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
+            podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace,
+            TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
       }
     } finally {
       future.cancel(true);
@@ -265,9 +268,9 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   protected Operation<Pod, PodList, PodResource<Pod>> pods() {
     return new PodOperationsImpl(clientContext);
   }
-  
+
   protected FilterWatchListDeletable<Pod, PodList> selectedPodLister(LabelSelector selector) {
     return pods().inNamespace(namespace).withLabelSelector(selector);
   }
-  
+
 }

@@ -23,10 +23,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PatchUtilsTest {
+class PatchUtilsTest {
 
   @Test
-  public void testOmitStatus() {
+  void testOmitStatus() {
     ReplicationController rc = new ReplicationControllerBuilder().withNewStatus().withFullyLabeledReplicas(1).endStatus()
         .withNewMetadata().withName("x").endMetadata().build();
     assertEquals("---\n"
@@ -42,14 +42,16 @@ public class PatchUtilsTest {
   }
 
   @Test
-  public void testDiff() {
+  void testDiff() {
     ReplicationController rc1 = new ReplicationControllerBuilder().withNewStatus().withFullyLabeledReplicas(1).endStatus()
         .withNewMetadata().withName("x").endMetadata().build();
 
     ReplicationController rc2 = new ReplicationControllerBuilder(rc1).editMetadata().addToLabels("my", "label").endMetadata()
         .editStatus().withAvailableReplicas(2).endStatus().build();
 
-    assertEquals("[{\"op\":\"add\",\"path\":\"/metadata/labels\",\"value\":{\"my\":\"label\"}},{\"op\":\"add\",\"path\":\"/status/availableReplicas\",\"value\":2}]", PatchUtils.jsonDiff(rc1, rc2, false));
+    assertEquals(
+        "[{\"op\":\"add\",\"path\":\"/metadata/labels\",\"value\":{\"my\":\"label\"}},{\"op\":\"add\",\"path\":\"/status/availableReplicas\",\"value\":2}]",
+        PatchUtils.jsonDiff(rc1, rc2, false));
   }
 
 }
