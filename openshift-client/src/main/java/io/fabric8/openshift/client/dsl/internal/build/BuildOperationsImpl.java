@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.Build;
@@ -38,7 +37,6 @@ import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -83,7 +81,6 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
     this.withPrettyOutput = context.isPrettyOutput();
     this.version = context.getVersion();
     this.limitBytes = context.getLimitBytes();
-    PatchUtils.addMixInToMapper(Build.class, BuildMixIn.class);
   }
 
   @Override

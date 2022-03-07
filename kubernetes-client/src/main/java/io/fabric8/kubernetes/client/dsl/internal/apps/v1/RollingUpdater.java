@@ -31,6 +31,8 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.internal.PatchUtils;
+import io.fabric8.kubernetes.client.internal.PatchUtils.Format;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +51,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
 public abstract class RollingUpdater<T extends HasMetadata, L> {
   public static final String DEPLOYMENT_KEY = "deployment";
@@ -255,7 +255,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   }
 
   private String md5sum(HasMetadata obj) throws NoSuchAlgorithmException, JsonProcessingException {
-    byte[] digest = MessageDigest.getInstance("MD5").digest(dumpWithoutRuntimeStateAsYaml(obj).getBytes());
+    byte[] digest = MessageDigest.getInstance("MD5").digest(PatchUtils.withoutRuntimeState(obj, Format.YAML, true).getBytes());
     BigInteger i = new BigInteger(1, digest);
     return String.format("%1$032x", i);
   }
