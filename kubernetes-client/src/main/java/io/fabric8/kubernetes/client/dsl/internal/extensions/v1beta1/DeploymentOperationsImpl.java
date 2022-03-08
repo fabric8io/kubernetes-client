@@ -264,7 +264,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
     List<RollableScalableResource<ReplicaSet>> rcList = doGetLog();
     for (RollableScalableResource<ReplicaSet> rcOperation : rcList) {

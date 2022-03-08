@@ -28,6 +28,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class IstioMockServer extends KubernetesMockServer {
   public IstioMockServer() {
     super();
@@ -37,7 +41,8 @@ public class IstioMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public IstioMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public IstioMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 

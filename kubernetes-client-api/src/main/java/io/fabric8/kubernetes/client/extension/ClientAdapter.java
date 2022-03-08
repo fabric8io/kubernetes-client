@@ -123,7 +123,7 @@ public abstract class ClientAdapter<C extends Client> implements Client {
   }
 
   public C inAnyNamespace() {
-    return inNamespace(null);
+    return newInstance(client.adapt(NamespacedKubernetesClient.class).inAnyNamespace());
   }
 
   public C inNamespace(String namespace) {

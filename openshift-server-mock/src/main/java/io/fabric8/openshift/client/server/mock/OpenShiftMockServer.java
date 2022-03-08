@@ -29,6 +29,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class OpenShiftMockServer extends KubernetesMockServer {
   private boolean disableApiGroupCheck = true;
 
@@ -40,13 +44,14 @@ public class OpenShiftMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public OpenShiftMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public OpenShiftMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api","/oapi"};
+    return new String[] { "/api", "/oapi" };
   }
 
   public NamespacedOpenShiftClient createOpenShiftClient() {

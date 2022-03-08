@@ -15,30 +15,34 @@
  */
 package io.fabric8.volcano.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.volcano.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueList;
 
-public class V1beta1APIGroupClient  extends BaseClient implements V1beta1APIGroupDSL {
+public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupDSL> implements V1beta1APIGroupDSL {
 
-  public V1beta1APIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  public V1beta1APIGroupClient(Client client) {
+    super(client);
+  }
+
+  @Override
+  protected V1beta1APIGroupDSL newInstance(Client client) {
+    return new V1beta1APIGroupClient(client);
   }
 
   @Override
   public MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> podGroups() {
-    return Handlers.getOperation(PodGroup.class, PodGroupList.class, this);
+    return resources(PodGroup.class, PodGroupList.class);
   }
 
   @Override
   public MixedOperation<Queue, QueueList, Resource<Queue>> queues() {
-    return Handlers.getOperation(Queue.class, QueueList.class, this);
+    return resources(Queue.class, QueueList.class);
   }
 }

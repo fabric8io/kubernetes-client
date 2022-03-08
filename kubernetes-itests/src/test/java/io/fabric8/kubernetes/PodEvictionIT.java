@@ -20,6 +20,8 @@ import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Evictable;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -30,7 +32,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -80,12 +82,10 @@ public class PodEvictionIT {
       .withName(podName)
       .endMetadata()
       .build();
+    final Evictable podOps = client.pods().inNamespace(session.getNamespace()).withName(podName);
 
-    // When
-    boolean evicted = client.pods().inNamespace(session.getNamespace()).withName(podName).evict(eviction);
-
-    // Then
-    assertFalse(evicted);
+    // When + Then
+    assertThrows(KubernetesClientException.class, () -> podOps.evict(eviction));
   }
 
   @AfterClass

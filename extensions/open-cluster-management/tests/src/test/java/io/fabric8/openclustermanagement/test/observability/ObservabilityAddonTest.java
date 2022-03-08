@@ -15,48 +15,50 @@
  */
 package io.fabric8.openclustermanagement.test.observability;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonBuilder;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonList;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class ObservabilityAddonTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/observability.open-cluster-management.io/v1beta1/namespaces/ns1/observabilityaddons/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewObservabilityAddon("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/observability.open-cluster-management.io/v1beta1/namespaces/ns1/observabilityaddons/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewObservabilityAddon("test-get"))
+        .once();
 
     // When
-    ObservabilityAddon observabilityAddon = client.observability().observabilityAddons().inNamespace("ns1").withName("test-get").get();
+    ObservabilityAddon observabilityAddon = client.observability().observabilityAddons().inNamespace("ns1").withName("test-get")
+        .get();
 
     // Then
     assertThat(observabilityAddon)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/observability.open-cluster-management.io/v1beta1/namespaces/ns1/observabilityaddons")
-      .andReturn(HttpURLConnection.HTTP_OK, new ObservabilityAddonListBuilder()
-        .addToItems(createNewObservabilityAddon("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ObservabilityAddonListBuilder()
+            .addToItems(createNewObservabilityAddon("test-list"))
+            .build())
+        .once();
 
     // When
     ObservabilityAddonList observabilityAddonList = client.observability().observabilityAddons().inNamespace("ns1").list();
@@ -65,18 +67,20 @@ class ObservabilityAddonTest {
     assertThat(observabilityAddonList).isNotNull();
     assertThat(observabilityAddonList.getItems()).hasSize(1);
     assertThat(observabilityAddonList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/observability.open-cluster-management.io/v1beta1/namespaces/ns1/observabilityaddons/sample-observabilityaddon")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewObservabilityAddon("sample-observabilityaddon"))
-      .once();
+    server.expect().delete().withPath(
+        "/apis/observability.open-cluster-management.io/v1beta1/namespaces/ns1/observabilityaddons/sample-observabilityaddon")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewObservabilityAddon("sample-observabilityaddon"))
+        .once();
 
     // When
-    Boolean isDeleted = client.observability().observabilityAddons().inNamespace("ns1").withName("sample-observabilityaddon").delete();
+    Boolean isDeleted = client.observability().observabilityAddons().inNamespace("ns1").withName("sample-observabilityaddon")
+        .delete();
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,11 +88,11 @@ class ObservabilityAddonTest {
 
   private ObservabilityAddon createNewObservabilityAddon(String name) {
     return new ObservabilityAddonBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withEnableMetrics(true)
-      .withInterval(10)
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withEnableMetrics(true)
+        .withInterval(10)
+        .endSpec()
+        .build();
   }
 }

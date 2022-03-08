@@ -1,4 +1,5 @@
 package io.fabric8.kubernetes.client.server.mock;
+
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -15,10 +16,11 @@ package io.fabric8.kubernetes.client.server.mock;
  * limitations under the License.
  */
 
+import io.fabric8.kubernetes.client.Client;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
@@ -26,15 +28,18 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation that is used for enabling KubernetesMockServerExtension JUnit5 extension.
- * You may set here two parameters of `KubernetesServer`: crudMode and https
+ * Annotation that is used for enabling KubernetesMockExtension JUnit5 extension.
+ * You may set parameters of `KubernetesServer`: crudMode and https
+ * And what the supported extensions are - empty supports all
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @ExtendWith(KubernetesMockServerExtension.class)
 public @interface EnableKubernetesMockClient {
 
-	boolean https() default true;
+  boolean https() default true;
 
-	boolean crud() default false;
+  boolean crud() default false;
+
+  Class<? extends Client>[] extensions() default {};
 }

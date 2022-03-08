@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 package io.fabric8.volcano.test.crud;
+
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volcano.client.VolcanoClient;
-import io.fabric8.volcano.scheduling.v1beta1.*;
+import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupBuilder;
+import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
+import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueBuilder;
-import io.fabric8.volcano.server.mock.EnableVolcanoMockClient;
+import io.fabric8.volcano.scheduling.v1beta1.QueueList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableVolcanoMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class V1Beta1VolcanoTest {
   VolcanoClient client;
 
   @Test
   void testV1Beta1PodGroup() {
     PodGroup podGroup = new PodGroupBuilder()
-      .editOrNewMetadata()
+        .editOrNewMetadata()
         .withName("Pod")
-      .endMetadata()
-      .build();
+        .endMetadata()
+        .build();
     client.v1beta1().podGroups().inNamespace("ns1").create(podGroup);
 
     PodGroupList podGroupList = client.v1beta1().podGroups().inNamespace("ns1").list();
@@ -45,10 +49,10 @@ class V1Beta1VolcanoTest {
   @Test
   void testV1Beta1Queue() {
     Queue queue = new QueueBuilder()
-      .editOrNewMetadata()
+        .editOrNewMetadata()
         .withName("queue1")
-      .endMetadata()
-      .build();
+        .endMetadata()
+        .build();
     client.v1beta1().queues().create(queue);
 
     QueueList queueList = client.v1beta1().queues().list();

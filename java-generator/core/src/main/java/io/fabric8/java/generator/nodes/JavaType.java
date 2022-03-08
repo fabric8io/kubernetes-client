@@ -16,9 +16,9 @@
 package io.fabric8.java.generator.nodes;
 
 public enum JavaType {
-    PRIMITIVE,
-    OBJECT,
-    ARRAY,
-    MAP,
-    ENUM
+  PRIMITIVE,
+  OBJECT,
+  ARRAY,
+  MAP,
+  ENUM
 }

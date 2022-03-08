@@ -15,45 +15,46 @@
  */
 package io.fabric8.chaosmesh.test.crud;
 
-
 import io.fabric8.chaosmesh.client.ChaosMeshClient;
-import io.fabric8.chaosmesh.server.mock.EnableChaosMeshMockClient;
 import io.fabric8.chaosmesh.v1alpha1.IoChaos;
 import io.fabric8.chaosmesh.v1alpha1.IoChaosBuilder;
 import io.fabric8.chaosmesh.v1alpha1.IoChaosList;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableChaosMeshMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class IoChaosTest {
 
   ChaosMeshClient client;
+
   @Test
   void testCrud() {
 
     IoChaos ioc1 = new IoChaosBuilder()
-      .withNewMetadata()
-      .withName("partition")
-      .addToLabels("key1", "value1")
-      .endMetadata()
-      .withNewSpec()
-      .withAction("partition")
-      .withNewScheduler().withCron("@every 10m").endScheduler()
-      .endSpec().build();
+        .withNewMetadata()
+        .withName("partition")
+        .addToLabels("key1", "value1")
+        .endMetadata()
+        .withNewSpec()
+        .withAction("partition")
+        .withNewScheduler().withCron("@every 10m").endScheduler()
+        .endSpec().build();
     IoChaos ioc2 = new IoChaosBuilder()
-      .withNewMetadata()
-      .withName("latency")
-      .addToLabels("key1", "value1")
-      .endMetadata()
-      .withNewSpec()
-      .withAction("latency")
-      .withDelay("100ms")
-      .withDuration("100s")
-      .withNewScheduler().withCron("@every 10m").endScheduler()
-      .endSpec().build();
+        .withNewMetadata()
+        .withName("latency")
+        .addToLabels("key1", "value1")
+        .endMetadata()
+        .withNewSpec()
+        .withAction("latency")
+        .withDelay("100ms")
+        .withDuration("100s")
+        .withNewScheduler().withCron("@every 10m").endScheduler()
+        .endSpec().build();
 
     //Create
     client.ioChaos().create(ioc1);
@@ -69,10 +70,10 @@ class IoChaosTest {
 
     //Update
     IoChaos u1 = client.ioChaos().withName("latency").edit(io -> new IoChaosBuilder(io)
-      .editMetadata()
-      .addToLabels("updated", "true")
-      .endMetadata()
-      .build());
+        .editMetadata()
+        .addToLabels("updated", "true")
+        .endMetadata()
+        .build());
 
     assertNotNull(u1);
     assertEquals("true", client.ioChaos().withName("latency").get().getMetadata().getLabels().get("updated"));

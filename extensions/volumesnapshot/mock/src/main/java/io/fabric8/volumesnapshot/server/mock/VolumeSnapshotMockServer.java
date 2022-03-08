@@ -28,6 +28,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class VolumeSnapshotMockServer extends KubernetesMockServer {
   public VolumeSnapshotMockServer() {
     super();
@@ -37,13 +41,14 @@ public class VolumeSnapshotMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public VolumeSnapshotMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public VolumeSnapshotMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/snapshot.storage.k8s.io"};
+    return new String[] { "/api", "/apis/snapshot.storage.k8s.io" };
   }
 
   public NamespacedVolumeSnapshotClient createVolumeSnapshot() {

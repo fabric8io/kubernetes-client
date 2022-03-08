@@ -25,10 +25,6 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,13 +41,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+
 public class HttpClientUtils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
 
   public static final String HEADER_INTERCEPTOR = "HEADER";
 
-  private HttpClientUtils() { }
+  private HttpClientUtils() {
+  }
 
   private static Pattern VALID_IPV4_PATTERN = null;
   public static final String ipv4Pattern = "(http:\\/\\/|https:\\/\\/)?(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?";
@@ -65,42 +66,43 @@ public class HttpClientUtils {
     }
   }
 
-    public static URL getProxyUrl(Config config) throws MalformedURLException {
-        URL master = new URL(config.getMasterUrl());
-        String host = master.getHost();
-        if (config.getNoProxy() != null) {
-	        for (String noProxy : config.getNoProxy()) {
-            if (isIpAddress(noProxy)) {
-              if (new IpAddressMatcher(noProxy).matches(host)) {
-                return null;
-              }
-            } else {
-              if (host.contains(noProxy)) {
-                return null;
-              }
-            }
-	        }
+  public static URL getProxyUrl(Config config) throws MalformedURLException {
+    URL master = new URL(config.getMasterUrl());
+    String host = master.getHost();
+    if (config.getNoProxy() != null) {
+      for (String noProxy : config.getNoProxy()) {
+        if (isIpAddress(noProxy)) {
+          if (new IpAddressMatcher(noProxy).matches(host)) {
+            return null;
+          }
+        } else {
+          if (host.contains(noProxy)) {
+            return null;
+          }
         }
-        String proxy = config.getHttpsProxy();
-        if (master.getProtocol().equals("http")) {
-            proxy = config.getHttpProxy();
-        }
-        if (proxy != null) {
-            URL proxyUrl = new URL(proxy);
-            if (proxyUrl.getPort() < 0) {
-              throw new IllegalArgumentException("Failure in creating proxy URL. Proxy port is required!");
-            }
-            return proxyUrl;
-        }
-        return null;
+      }
     }
-
-    private static boolean isIpAddress(String ipAddress) {
-        Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
-        return ipMatcher.matches();
+    String proxy = config.getHttpsProxy();
+    if (master.getProtocol().equals("http")) {
+      proxy = config.getHttpProxy();
     }
+    if (proxy != null) {
+      URL proxyUrl = new URL(proxy);
+      if (proxyUrl.getPort() < 0) {
+        throw new IllegalArgumentException("Failure in creating proxy URL. Proxy port is required!");
+      }
+      return proxyUrl;
+    }
+    return null;
+  }
 
-  public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config, HttpClient.Factory factory) {
+  private static boolean isIpAddress(String ipAddress) {
+    Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
+    return ipMatcher.matches();
+  }
+
+  public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config,
+      HttpClient.Factory factory) {
     Map<String, io.fabric8.kubernetes.client.http.Interceptor> interceptors = new LinkedHashMap<>();
 
     // Header Interceptor
@@ -115,7 +117,7 @@ public class HttpClientUtils {
         }
         if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
           for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
-            builder.header(entry.getKey(),entry.getValue());
+            builder.header(entry.getKey(), entry.getValue());
           }
         }
         if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
@@ -128,7 +130,8 @@ public class HttpClientUtils {
     // Token Refresh Interceptor
     interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
     // Backwards Compatibility Interceptor
-    String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
+    String shouldDisableBackwardsCompatibilityInterceptor = Utils
+        .getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
       interceptors.put(BackwardsCompatibilityInterceptor.NAME, new BackwardsCompatibilityInterceptor());
     }
@@ -144,6 +147,11 @@ public class HttpClientUtils {
 
   private static final AtomicBoolean WARNED = new AtomicBoolean();
 
+  /**
+   * @deprecated you should not need to call this method directly. Please create your own HttpClient.Factory
+   *             should you need to customize your clients.
+   */
+  @Deprecated
   public static HttpClient createHttpClient(Config config) {
     ServiceLoader<HttpClient.Factory> loader = ServiceLoader.load(HttpClient.Factory.class);
     HttpClient.Factory factory = null;
@@ -159,7 +167,8 @@ public class HttpClientUtils {
       }
     }
     if (factory == null) {
-      throw new KubernetesClientException("No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
+      throw new KubernetesClientException(
+          "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
     }
     return factory.createHttpClient(config);
   }

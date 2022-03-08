@@ -16,21 +16,24 @@
 package io.fabric8.camelk.test.crud;
 
 import io.fabric8.camelk.client.CamelKClient;
-import io.fabric8.camelk.mock.EnableCamelKMockClient;
 import io.fabric8.camelk.v1.Integration;
 import io.fabric8.camelk.v1.IntegrationBuilder;
 import io.fabric8.camelk.v1.IntegrationList;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableCamelKMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class IntegrationCrudTest {
 
-
   CamelKClient client;
+
   @Test
   void shouldReturnEmptyList() {
 
@@ -67,27 +70,27 @@ class IntegrationCrudTest {
   void shouldLoadAIntegrationWithParams() {
 
     String definition = String.join("\n", Arrays.asList(
-      "apiVersion: camel.apache.org/v1alpha1",
-      "kind: Integration",
-      "metadata:",
-      "  name: integration4",
-      "spec:",
-      "  flows:",
-      "  - from:",
-      "      parameters:",
-      "        period: \"1000\"",
-      "      steps:",
-      "      - set-body:",
-      "          constant: Hello Camel K from yaml",
-      "      - to: log:info",
-      "      uri: timer:yaml",
-      "  traits:",
-      "    container:",
-      "      configuration:",
-      "        requestCPU: \"1\""
-    ));
+        "apiVersion: camel.apache.org/v1alpha1",
+        "kind: Integration",
+        "metadata:",
+        "  name: integration4",
+        "spec:",
+        "  flows:",
+        "  - from:",
+        "      parameters:",
+        "        period: \"1000\"",
+        "      steps:",
+        "      - set-body:",
+        "          constant: Hello Camel K from yaml",
+        "      - to: log:info",
+        "      uri: timer:yaml",
+        "  traits:",
+        "    container:",
+        "      configuration:",
+        "        requestCPU: \"1\""));
 
-    Integration i = client.v1().integrations().inNamespace("ns4").load(new ByteArrayInputStream(definition.getBytes())).createOrReplace();
+    Integration i = client.v1().integrations().inNamespace("ns4").load(new ByteArrayInputStream(definition.getBytes()))
+        .createOrReplace();
     assertNotNull(i);
   }
 

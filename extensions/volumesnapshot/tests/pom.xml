@@ -32,13 +32,12 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>volumesnapshot-client</artifactId>
     </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>volumesnapshot-server-mock</artifactId>
-      <version>${project.version}</version>
+      <artifactId>kubernetes-server-mock</artifactId>
       <scope>test</scope>
     </dependency>
 

@@ -17,20 +17,20 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
 
-public interface Evictable<B> {
+public interface Evictable {
   /**
    * Evicts resource, respecting {@link io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget}
    * @return value indicating object was evicted or not
-   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs, including if the Pod is not found.
    */
-  B evict();
+  boolean evict();
 
   /**
    * Evicts a pod from its node subject to certain policies and safety constraints.
    *
    * @param eviction Eviction object
    * @return value indicating object was evicted or not
-   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs, including if the Pod is not found.
    */
-  B evict(Eviction eviction);
+  boolean evict(Eviction eviction);
 }

@@ -17,57 +17,55 @@ package io.fabric8.java.generator.maven.plugin;
 
 import io.fabric8.java.generator.CRGeneratorRunner;
 import io.fabric8.java.generator.Config;
-import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import java.io.File;
+
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JavaGeneratorMojo extends AbstractMojo {
 
-    @Parameter(defaultValue = "${project}")
-    private MavenProject project;
+  @Parameter(defaultValue = "${project}")
+  private MavenProject project;
 
-    @Parameter(property = "fabric8.java-generator.source", required = true)
-    File source;
+  @Parameter(property = "fabric8.java-generator.source", required = true)
+  File source;
 
-    @Parameter(
-            property = "fabric8.java-generator.target",
-            defaultValue = "${basedir}/target/generated-sources/java")
-    File target;
+  @Parameter(property = "fabric8.java-generator.target", defaultValue = "${basedir}/target/generated-sources/java")
+  File target;
 
-    @Parameter(property = "fabric8.java-generator.enum-uppercase", required = false)
-    Boolean enumUppercase = null;
+  @Parameter(property = "fabric8.java-generator.enum-uppercase", required = false)
+  Boolean enumUppercase = null;
 
-    @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false, readonly = true)
-    Config.Prefix prefixStrategy = null;
+  @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false, readonly = true)
+  Config.Prefix prefixStrategy = null;
 
-    @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
-    Config.Suffix suffixStrategy = null;
+  @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
+  Config.Suffix suffixStrategy = null;
 
-    @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false, readonly = true)
-    Boolean alwaysPreserveUnknown = null;
+  @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false, readonly = true)
+  Boolean alwaysPreserveUnknown = null;
 
-    @Parameter(property = "fabric8.java-generator.extra-annotations", required = false)
-    Boolean extraAnnotations = null;
+  @Parameter(property = "fabric8.java-generator.extra-annotations", required = false)
+  Boolean extraAnnotations = null;
 
-    @Parameter(property = "fabric8.java-generator.code-structure", required = false, readonly = true)
-    protected Config.CodeStructure codeStructure = null;
+  @Parameter(property = "fabric8.java-generator.code-structure", required = false, readonly = true)
+  protected Config.CodeStructure codeStructure = null;
 
-    @Override
-    public void execute() {
-        final Config config =
-                new Config(
-                        enumUppercase,
-                        prefixStrategy,
-                        suffixStrategy,
-                        alwaysPreserveUnknown,
-                        extraAnnotations,
-                        codeStructure);
-        final CRGeneratorRunner runner = new CRGeneratorRunner(config);
-        runner.run(source, target);
-        project.addCompileSourceRoot(target.getAbsolutePath());
-    }
+  @Override
+  public void execute() {
+    final Config config = new Config(
+        enumUppercase,
+        prefixStrategy,
+        suffixStrategy,
+        alwaysPreserveUnknown,
+        extraAnnotations,
+        codeStructure);
+    final CRGeneratorRunner runner = new CRGeneratorRunner(config);
+    runner.run(source, target);
+    project.addCompileSourceRoot(target.getAbsolutePath());
+  }
 }

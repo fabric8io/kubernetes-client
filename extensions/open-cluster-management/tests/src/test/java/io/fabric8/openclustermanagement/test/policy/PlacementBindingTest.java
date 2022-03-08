@@ -15,48 +15,48 @@
  */
 package io.fabric8.openclustermanagement.test.policy;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingBuilder;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingList;
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class PlacementBindingTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/policy.open-cluster-management.io/v1/namespaces/ns1/placementbindings/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementBinding("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementBinding("test-get"))
+        .once();
 
     // When
     PlacementBinding placementBinding = client.policy().placementBindings().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(placementBinding)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/policy.open-cluster-management.io/v1/namespaces/ns1/placementbindings")
-      .andReturn(HttpURLConnection.HTTP_OK, new PlacementBindingListBuilder()
-        .addToItems(createNewPlacementBinding("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PlacementBindingListBuilder()
+            .addToItems(createNewPlacementBinding("test-list"))
+            .build())
+        .once();
 
     // When
     PlacementBindingList placementBindingList = client.policy().placementBindings().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class PlacementBindingTest {
     assertThat(placementBindingList).isNotNull();
     assertThat(placementBindingList.getItems()).hasSize(1);
     assertThat(placementBindingList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/policy.open-cluster-management.io/v1/namespaces/ns1/placementbindings/sample-pb")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementBinding("sample-pb"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementBinding("sample-pb"))
+        .once();
 
     // When
     Boolean isDeleted = client.policy().placementBindings().inNamespace("ns1").withName("sample-pb").delete();
@@ -84,17 +84,17 @@ class PlacementBindingTest {
 
   private PlacementBinding createNewPlacementBinding(String name) {
     return new PlacementBindingBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewPlacementRef()
-      .withName("test-policy-plr")
-      .withApiGroup("apps.open-cluster-management.io")
-      .withKind("PlacementRule")
-      .endPlacementRef()
-      .addNewSubject()
-      .withName("test-policy")
-      .withApiGroup("policy.open-cluster-management.io")
-      .withKind("Policy")
-      .endSubject()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewPlacementRef()
+        .withName("test-policy-plr")
+        .withApiGroup("apps.open-cluster-management.io")
+        .withKind("PlacementRule")
+        .endPlacementRef()
+        .addNewSubject()
+        .withName("test-policy")
+        .withApiGroup("policy.open-cluster-management.io")
+        .withKind("Policy")
+        .endSubject()
+        .build();
   }
 }

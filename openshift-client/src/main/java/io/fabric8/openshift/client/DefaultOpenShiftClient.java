@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.SimpleClientContext;
@@ -189,8 +190,12 @@ import java.util.function.Supplier;
 /**
  * Class for Default Openshift Client implementing KubernetesClient interface.
  * It is thread safe.
+ *
+ * @deprecated direct usage should no longer be needed. Please use the {@link KubernetesClientBuilder} instead.
  */
-public class DefaultOpenShiftClient extends DefaultKubernetesClient implements NamespacedOpenShiftClient, OpenshiftClientContext {
+@Deprecated
+public class DefaultOpenShiftClient extends DefaultKubernetesClient
+    implements NamespacedOpenShiftClient, OpenshiftClientContext {
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
@@ -350,17 +355,19 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
 
   @Override
   public Namespaceable<Nameable<? extends Gettable<ImageStreamImage>>> imageStreamImages() {
-    HasMetadataOperation<ImageStreamImage, ?, Resource<ImageStreamImage>> operation = Handlers.getNonListingOperation(ImageStreamImage.class, this);
+    HasMetadataOperation<ImageStreamImage, ?, Resource<ImageStreamImage>> operation = Handlers
+        .getNonListingOperation(ImageStreamImage.class, this);
     return operation::inNamespace;
   }
 
   @Override
   public NameableCreateOrDeleteable imageSignatures() {
-    HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = Handlers.getNonListingOperation(ImageSignature.class, this);
+    HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = Handlers
+        .getNonListingOperation(ImageSignature.class, this);
     return new NameableCreateOrDeleteable() {
 
       @Override
-      public Boolean delete() {
+      public boolean delete() {
         return operation.delete();
       }
 
@@ -383,7 +390,8 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
 
   @Override
   public NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs() {
-    return OpenShiftHandlers.getOperation(io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config.class, ConfigList.class, this);
+    return OpenShiftHandlers.getOperation(io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config.class,
+        ConfigList.class, this);
   }
 
   @Override
@@ -428,12 +436,14 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
 
   @Override
   public NamespacedInOutCreateable<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews() {
-    return OpenShiftHandlers.getCreateOnlyResourceOperation(PodSecurityPolicySelfSubjectReview.class, PodSecurityPolicySelfSubjectReview.class, this);
+    return OpenShiftHandlers.getCreateOnlyResourceOperation(PodSecurityPolicySelfSubjectReview.class,
+        PodSecurityPolicySelfSubjectReview.class, this);
   }
 
   @Override
   public NamespacedInOutCreateable<PodSecurityPolicySubjectReview, PodSecurityPolicySubjectReview> podSecurityPolicySubjectReviews() {
-    return OpenShiftHandlers.getCreateOnlyResourceOperation(PodSecurityPolicySubjectReview.class, PodSecurityPolicySubjectReview.class, this);
+    return OpenShiftHandlers.getCreateOnlyResourceOperation(PodSecurityPolicySubjectReview.class,
+        PodSecurityPolicySubjectReview.class, this);
   }
 
   @Override
@@ -530,15 +540,15 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
   @Override
   public VersionInfo getVersion() {
     for (Supplier<VersionInfo> supplier : new Supplier[] {
-      this::getOpenShiftV3Version,
-      this::getOpenShiftV4VersionInfo
+        this::getOpenShiftV3Version,
+        this::getOpenShiftV4VersionInfo
     }) {
       try {
         final VersionInfo vi = supplier.get();
         if (vi != null) {
           return vi;
         }
-      } catch(Exception ex) {
+      } catch (Exception ex) {
         // try next
       }
     }
@@ -589,7 +599,9 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
   }
 
   @Override
-  public OpenShiftMonitoringAPIGroupDSL monitoring() { return adapt(OpenShiftMonitoringAPIGroupClient.class); }
+  public OpenShiftMonitoringAPIGroupDSL monitoring() {
+    return adapt(OpenShiftMonitoringAPIGroupClient.class);
+  }
 
   @Override
   public NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces() {
@@ -628,17 +640,20 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient implements N
 
   @Override
   public InOutCreateable<ResourceAccessReview, ResourceAccessReviewResponse> resourceAccessReviews() {
-    return OpenShiftHandlers.getCreateOnlyResourceOperation(ResourceAccessReview.class, ResourceAccessReviewResponse.class, this);
+    return OpenShiftHandlers.getCreateOnlyResourceOperation(ResourceAccessReview.class, ResourceAccessReviewResponse.class,
+        this);
   }
 
   @Override
   public NamespacedInOutCreateable<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews() {
-    return OpenShiftHandlers.getCreateOnlyResourceOperation(LocalSubjectAccessReview.class, SubjectAccessReviewResponse.class, this);
+    return OpenShiftHandlers.getCreateOnlyResourceOperation(LocalSubjectAccessReview.class, SubjectAccessReviewResponse.class,
+        this);
   }
 
   @Override
   public NamespacedInOutCreateable<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews() {
-    return OpenShiftHandlers.getCreateOnlyResourceOperation(LocalResourceAccessReview.class, ResourceAccessReviewResponse.class, this);
+    return OpenShiftHandlers.getCreateOnlyResourceOperation(LocalResourceAccessReview.class, ResourceAccessReviewResponse.class,
+        this);
   }
 
   @Override

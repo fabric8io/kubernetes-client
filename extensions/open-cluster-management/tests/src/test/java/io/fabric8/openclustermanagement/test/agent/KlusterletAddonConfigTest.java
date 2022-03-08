@@ -15,48 +15,49 @@
  */
 package io.fabric8.openclustermanagement.test.agent;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigBuilder;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigList;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class KlusterletAddonConfigTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/agent.open-cluster-management.io/v1/namespaces/ns1/klusterletaddonconfigs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewKlusterletAddonConfig("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewKlusterletAddonConfig("test-get"))
+        .once();
 
     // When
-    KlusterletAddonConfig klusterletAddonConfig = client.agents().klusterletAddonConfigs().inNamespace("ns1").withName("test-get").get();
+    KlusterletAddonConfig klusterletAddonConfig = client.agents().klusterletAddonConfigs().inNamespace("ns1")
+        .withName("test-get").get();
 
     // Then
     assertThat(klusterletAddonConfig)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/agent.open-cluster-management.io/v1/namespaces/ns1/klusterletaddonconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, new KlusterletAddonConfigListBuilder()
-        .addToItems(createNewKlusterletAddonConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new KlusterletAddonConfigListBuilder()
+            .addToItems(createNewKlusterletAddonConfig("test-list"))
+            .build())
+        .once();
 
     // When
     KlusterletAddonConfigList klusterletAddonConfigList = client.agents().klusterletAddonConfigs().inNamespace("ns1").list();
@@ -65,18 +66,21 @@ class KlusterletAddonConfigTest {
     assertThat(klusterletAddonConfigList).isNotNull();
     assertThat(klusterletAddonConfigList.getItems()).hasSize(1);
     assertThat(klusterletAddonConfigList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/agent.open-cluster-management.io/v1/namespaces/ns1/klusterletaddonconfigs/sample-klusterletaddonconfig")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewKlusterletAddonConfig("sample-klusterletaddonconfig"))
-      .once();
+    server.expect().delete()
+        .withPath(
+            "/apis/agent.open-cluster-management.io/v1/namespaces/ns1/klusterletaddonconfigs/sample-klusterletaddonconfig")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewKlusterletAddonConfig("sample-klusterletaddonconfig"))
+        .once();
 
     // When
-    Boolean isDeleted = client.agents().klusterletAddonConfigs().inNamespace("ns1").withName("sample-klusterletaddonconfig").delete();
+    Boolean isDeleted = client.agents().klusterletAddonConfigs().inNamespace("ns1").withName("sample-klusterletaddonconfig")
+        .delete();
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,27 +88,27 @@ class KlusterletAddonConfigTest {
 
   private KlusterletAddonConfig createNewKlusterletAddonConfig(String name) {
     return new KlusterletAddonConfigBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withNewApplicationManager()
-      .withEnabled(true)
-      .endApplicationManager()
-      .withNewPolicyController()
-      .withEnabled(true)
-      .endPolicyController()
-      .withNewSearchCollector()
-      .withEnabled(true)
-      .endSearchCollector()
-      .withNewCertPolicyController()
-      .withEnabled(true)
-      .endCertPolicyController()
-      .withNewIamPolicyController()
-      .withEnabled(true)
-      .endIamPolicyController()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withNewApplicationManager()
+        .withEnabled(true)
+        .endApplicationManager()
+        .withNewPolicyController()
+        .withEnabled(true)
+        .endPolicyController()
+        .withNewSearchCollector()
+        .withEnabled(true)
+        .endSearchCollector()
+        .withNewCertPolicyController()
+        .withEnabled(true)
+        .endCertPolicyController()
+        .withNewIamPolicyController()
+        .withEnabled(true)
+        .endIamPolicyController()
+        .endSpec()
+        .build();
   }
 
 }

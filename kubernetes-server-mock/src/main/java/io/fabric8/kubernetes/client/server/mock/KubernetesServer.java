@@ -61,7 +61,8 @@ public class KubernetesServer extends ExternalResource {
     this(https, crudMode, InetAddress.getLoopbackAddress(), 0, crdContextList);
   }
 
-  public KubernetesServer(boolean https, boolean crudMode, InetAddress address, int port, List<CustomResourceDefinitionContext> crdContextList) {
+  public KubernetesServer(boolean https, boolean crudMode, InetAddress address, int port,
+      List<CustomResourceDefinitionContext> crdContextList) {
     this.https = https;
     this.crudMode = crudMode;
     this.address = address;
@@ -73,9 +74,11 @@ public class KubernetesServer extends ExternalResource {
   public void before() {
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = crudMode
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses, crdContextList), https)
-      : new KubernetesMockServer(https);
+        ? new KubernetesMockServer(new Context(), new MockWebServer(), responses,
+            new KubernetesMixedDispatcher(responses, crdContextList), https)
+        : new KubernetesMockServer(https);
     mock.init(address, port);
+    mock.setAdaptableOverride(c -> true);
     client = mock.createClient();
   }
 
@@ -95,16 +98,19 @@ public class KubernetesServer extends ExternalResource {
 
   @Deprecated
   public <T> void expectAndReturnAsJson(String path, int code, T body) {
-   expect().withPath(path).andReturn(code, body).always();
+    expect().withPath(path).andReturn(code, body).always();
   }
+
   @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
   }
+
   @Deprecated
   public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
     expect().withPath(path).andReturn(code, body).always();
   }
+
   @Deprecated
   public void expectAndReturnAsString(String method, String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();

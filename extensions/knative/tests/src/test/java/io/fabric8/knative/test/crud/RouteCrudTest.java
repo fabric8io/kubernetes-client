@@ -16,15 +16,17 @@
 package io.fabric8.knative.test.crud;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
 import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteBuilder;
 import io.fabric8.knative.serving.v1.RouteList;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKnativeMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class RouteCrudTest {
 
   KnativeClient client;
@@ -32,7 +34,6 @@ class RouteCrudTest {
   @Test
   void shouldReturnEmptyList() {
     // Given
-
 
     // When
     RouteList RouteList = client.routes().inNamespace("ns1").list();
@@ -47,12 +48,12 @@ class RouteCrudTest {
     // Given
 
     Route Route2 = new RouteBuilder().withNewMetadata().withName("Route2").endMetadata()
-      .withNewSpec()
-      .addNewTraffic()
-      .withConfigurationName("greeter").withPercent(new Long(100l))
-      .endTraffic()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .addNewTraffic()
+        .withConfigurationName("greeter").withPercent(new Long(100l))
+        .endTraffic()
+        .endSpec()
+        .build();
 
     // When
     client.routes().inNamespace("ns2").create(Route2);

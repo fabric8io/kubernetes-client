@@ -15,9 +15,9 @@
  */
 package io.fabric8.openshift.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.http.TlsVersion;
@@ -41,12 +41,17 @@ public class OpenShiftConfig extends Config {
   public static final String OPENSHIFT_URL_SYSTEM_PROPERTY = "openshift.url";
   public static final String OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY = "openshift.build.timeout";
 
+  public static final String DISABLE_API_GROUP_CHECK = "disableApiGroupCheck";
+  public static final String OPENSHIFT_URL = "openShiftUrl";
+  public static final String BUILD_TIMEOUT = "buildTimeout";
+  public static final String OAPI_VERSION = "oapiVersion";
+
   public static final Long DEFAULT_BUILD_TIMEOUT = 5 * 60 * 1000L;
 
-  private String oapiVersion = "v1";
+  // dummy fields so that Builder is created correctly
+  private String oapiVersion;
   private String openShiftUrl;
-  private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
-  private boolean openshiftApiGroupsEnabled;
+  private long buildTimeout;
   private boolean disableApiGroupCheck; //If group hasn't been explicitly set.
 
   //This is not meant to be used. This constructor is used only by the generated builder.
@@ -55,69 +60,83 @@ public class OpenShiftConfig extends Config {
 
   public OpenShiftConfig(Config kubernetesConfig) {
     this(kubernetesConfig,
-      getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
-    );
+        getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT);
   }
 
   public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl) {
     this(kubernetesConfig,
-      getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
-    );
-    this.openShiftUrl = openShiftUrl;
+        getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT);
+    this.setOpenShiftUrl(openShiftUrl);
   }
 
-  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
-  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost, boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider, Map<String,String> customHeaders, int requestRetryBackoffLimit, int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout, long buildTimeout, boolean openshiftApiGroupsEnabled, boolean disableApiGroupCheck) {
-    super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout, loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable, httpProxy, httpsProxy, noProxy, errorMessages, userAgent, tlsVersions, websocketTimeout, websocketPingInterval, proxyUsername, proxyPassword, trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups, impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval, uploadConnectionTimeout, uploadRequestTimeout);
-    this.oapiVersion = oapiVersion;
-    this.openShiftUrl = openShiftUrl;
-    this.buildTimeout = buildTimeout;
-    this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
-    this.disableApiGroupCheck = disableApiGroupCheck;
+  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {
+      @BuildableReference(Config.class) })
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace,
+      boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile,
+      String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase,
+      String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit,
+      int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval,
+      int maxConcurrentRequests, int maxConcurrentRequestsPerHost, boolean http2Disable, String httpProxy, String httpsProxy,
+      String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout,
+      long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile,
+      String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername,
+      String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider,
+      Map<String, String> customHeaders, int requestRetryBackoffLimit, int requestRetryBackoffInterval,
+      int uploadConnectionTimeout, int uploadRequestTimeout, long buildTimeout,
+      boolean disableApiGroupCheck) {
+    super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile,
+        clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken,
+        watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout,
+        loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable, httpProxy, httpsProxy, noProxy,
+        errorMessages, userAgent, tlsVersions, websocketTimeout, websocketPingInterval, proxyUsername, proxyPassword,
+        trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
+        impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
+        uploadConnectionTimeout, uploadRequestTimeout);
+    this.setOapiVersion(oapiVersion);
+    this.setBuildTimeout(buildTimeout);
+    this.setDisableApiGroupCheck(disableApiGroupCheck);
 
-    if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
-      this.openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", this.oapiVersion);
+    if (openShiftUrl == null || openShiftUrl.isEmpty()) {
+      openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", oapiVersion);
     }
-    if (!this.openShiftUrl.endsWith("/")) {
-      this.openShiftUrl = this.openShiftUrl + "/";
+    if (!openShiftUrl.endsWith("/")) {
+      openShiftUrl += "/";
     }
+    this.setOpenShiftUrl(openShiftUrl);
   }
 
   public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl, String oapiVersion, long buildTimeout) {
     this(openShiftUrl, oapiVersion,
-      kubernetesConfig.getMasterUrl(), kubernetesConfig.getApiVersion(),
-      kubernetesConfig.getNamespace(), kubernetesConfig.isTrustCerts(),
-      kubernetesConfig.isDisableHostnameVerification(), kubernetesConfig.getCaCertFile(),
-      kubernetesConfig.getCaCertData(), kubernetesConfig.getClientCertFile(),
-      kubernetesConfig.getClientCertData(), kubernetesConfig.getClientKeyFile(),
-      kubernetesConfig.getClientKeyData(), kubernetesConfig.getClientKeyAlgo(), kubernetesConfig.getClientKeyPassphrase(),
-      kubernetesConfig.getUsername(), kubernetesConfig.getPassword(), kubernetesConfig.getOauthToken(),
-      kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(),
-      kubernetesConfig.getConnectionTimeout(), kubernetesConfig.getRequestTimeout(),
-      kubernetesConfig.getRollingTimeout(), kubernetesConfig.getScaleTimeout(),
-      kubernetesConfig.getLoggingInterval(), kubernetesConfig.getMaxConcurrentRequests(),
-      kubernetesConfig.getMaxConcurrentRequestsPerHost(), kubernetesConfig.isHttp2Disable(),
-      kubernetesConfig.getHttpProxy(), kubernetesConfig.getHttpsProxy(), kubernetesConfig.getNoProxy(),
-      kubernetesConfig.getErrorMessages(), kubernetesConfig.getUserAgent(),
-      kubernetesConfig.getTlsVersions(), kubernetesConfig.getWebsocketTimeout(),
-      kubernetesConfig.getWebsocketPingInterval(), kubernetesConfig.getProxyUsername(),
-      kubernetesConfig.getProxyPassword(), kubernetesConfig.getTrustStoreFile(),
-      kubernetesConfig.getTrustStorePassphrase(), kubernetesConfig.getKeyStoreFile(),
-      kubernetesConfig.getKeyStorePassphrase(), kubernetesConfig.getImpersonateUsername(),
-      kubernetesConfig.getImpersonateGroups(), kubernetesConfig.getImpersonateExtras(),
-      kubernetesConfig.getOauthTokenProvider(), kubernetesConfig.getCustomHeaders(),
-      kubernetesConfig.getRequestRetryBackoffLimit(), kubernetesConfig.getRequestRetryBackoffInterval(),
-      kubernetesConfig.getUploadConnectionTimeout(), kubernetesConfig.getUploadRequestTimeout(),
-      buildTimeout,
-      false,
-      false
-      );
+        kubernetesConfig.getMasterUrl(), kubernetesConfig.getApiVersion(),
+        kubernetesConfig.getNamespace(), kubernetesConfig.isTrustCerts(),
+        kubernetesConfig.isDisableHostnameVerification(), kubernetesConfig.getCaCertFile(),
+        kubernetesConfig.getCaCertData(), kubernetesConfig.getClientCertFile(),
+        kubernetesConfig.getClientCertData(), kubernetesConfig.getClientKeyFile(),
+        kubernetesConfig.getClientKeyData(), kubernetesConfig.getClientKeyAlgo(), kubernetesConfig.getClientKeyPassphrase(),
+        kubernetesConfig.getUsername(), kubernetesConfig.getPassword(), kubernetesConfig.getOauthToken(),
+        kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(),
+        kubernetesConfig.getConnectionTimeout(), kubernetesConfig.getRequestTimeout(),
+        kubernetesConfig.getRollingTimeout(), kubernetesConfig.getScaleTimeout(),
+        kubernetesConfig.getLoggingInterval(), kubernetesConfig.getMaxConcurrentRequests(),
+        kubernetesConfig.getMaxConcurrentRequestsPerHost(), kubernetesConfig.isHttp2Disable(),
+        kubernetesConfig.getHttpProxy(), kubernetesConfig.getHttpsProxy(), kubernetesConfig.getNoProxy(),
+        kubernetesConfig.getErrorMessages(), kubernetesConfig.getUserAgent(),
+        kubernetesConfig.getTlsVersions(), kubernetesConfig.getWebsocketTimeout(),
+        kubernetesConfig.getWebsocketPingInterval(), kubernetesConfig.getProxyUsername(),
+        kubernetesConfig.getProxyPassword(), kubernetesConfig.getTrustStoreFile(),
+        kubernetesConfig.getTrustStorePassphrase(), kubernetesConfig.getKeyStoreFile(),
+        kubernetesConfig.getKeyStorePassphrase(), kubernetesConfig.getImpersonateUsername(),
+        kubernetesConfig.getImpersonateGroups(), kubernetesConfig.getImpersonateExtras(),
+        kubernetesConfig.getOauthTokenProvider(), kubernetesConfig.getCustomHeaders(),
+        kubernetesConfig.getRequestRetryBackoffLimit(), kubernetesConfig.getRequestRetryBackoffInterval(),
+        kubernetesConfig.getUploadConnectionTimeout(), kubernetesConfig.getUploadRequestTimeout(),
+        buildTimeout,
+        false);
   }
 
   public static OpenShiftConfig wrap(Config config) {
     return config instanceof OpenShiftConfig ? (OpenShiftConfig) config : new OpenShiftConfig(config);
   }
-
 
   private static String getDefaultOapiVersion(Config config) {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, config.getApiVersion());
@@ -136,14 +155,6 @@ public class OpenShiftConfig extends Config {
     }
   }
 
-  /**
-   * @deprecated openshiftApiGroupsEnabled is no longer honored
-   */
-  @Deprecated
-  public OpenShiftConfig withOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
-    return new OpenShiftConfigBuilder(this).withOpenshiftApiGroupsEnabled(openshiftApiGroupsEnabled).build();
-  }
-
   private static boolean isRootURL(String url) {
     try {
       String path = new URL(url).getPath();
@@ -153,55 +164,39 @@ public class OpenShiftConfig extends Config {
     }
   }
 
-  @JsonProperty("oapiVersion")
+  @JsonIgnore
   public String getOapiVersion() {
-    return oapiVersion;
+    return (String) this.additionalProperties.getOrDefault(OAPI_VERSION, "v1");
   }
 
   public void setOapiVersion(String oapiVersion) {
-    this.oapiVersion = oapiVersion;
+    this.additionalProperties.put(OAPI_VERSION, oapiVersion);
   }
 
-  @JsonProperty("openShiftUrl")
+  @JsonIgnore
   public String getOpenShiftUrl() {
-    return openShiftUrl;
+    return (String) this.additionalProperties.get(OPENSHIFT_URL);
   }
 
   public void setOpenShiftUrl(String openShiftUrl) {
-    this.openShiftUrl = openShiftUrl;
+    this.additionalProperties.put(OPENSHIFT_URL, openShiftUrl);
   }
 
-  @JsonProperty("buildTimeout")
   public long getBuildTimeout() {
-    return buildTimeout;
+    return (long) this.additionalProperties.getOrDefault(BUILD_TIMEOUT, DEFAULT_BUILD_TIMEOUT);
   }
 
   public void setBuildTimeout(long buildTimeout) {
-    this.buildTimeout = buildTimeout;
+    this.additionalProperties.put(BUILD_TIMEOUT, buildTimeout);
   }
 
+  @JsonIgnore
   public boolean isDisableApiGroupCheck() {
-    return disableApiGroupCheck;
+    return Boolean.TRUE.equals(additionalProperties.get(DISABLE_API_GROUP_CHECK));
   }
 
   public void setDisableApiGroupCheck(boolean disableApiGroupCheck) {
-    this.disableApiGroupCheck = disableApiGroupCheck;
-  }
-
-  /**
-   * @deprecated openshiftApiGroupsEnabled is no longer honored
-   */
-  @Deprecated
-  public boolean isOpenshiftApiGroupsEnabled() {
-    return openshiftApiGroupsEnabled;
-  }
-
-  /**
-   * @deprecated openshiftApiGroupsEnabled is no longer honored
-   */
-  @Deprecated
-  public void setOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
-    this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
+    this.additionalProperties.put(DISABLE_API_GROUP_CHECK, disableApiGroupCheck);
   }
 
   @Override

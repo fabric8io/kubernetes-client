@@ -25,9 +25,6 @@ import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassResource;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentResource;
-import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotResource;
 
 /**
  * Main interface for VolumeSnapshot Client library.

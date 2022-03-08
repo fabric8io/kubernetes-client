@@ -155,7 +155,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
     List<PodResource<Pod>> podOperationList = doGetLog(isPretty);
     for (PodResource<Pod> podOperation : podOperationList) {

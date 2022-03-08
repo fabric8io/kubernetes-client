@@ -18,8 +18,6 @@ package io.fabric8.volumesnapshot.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import io.fabric8.kubernetes.client.Handlers;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
@@ -32,12 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<VolumeSnapshotClient> {
-
-  static {
-    Handlers.register(VolumeSnapshotClass.class, VolumeSnapshotClassOperationsImpl::new);
-    Handlers.register(VolumeSnapshotContent.class, VolumeSnapshotContentOperationsImpl::new);
-    Handlers.register(VolumeSnapshot.class, VolumeSnapshotOperationsImpl::new);
-  }
 
   static final ConcurrentMap<URL, Boolean> IS_VOLUME_SNAPSHOT = new ConcurrentHashMap<>();
   static final ConcurrentMap<URL, Boolean> USES_VOLUME_SNAPSHOT_APIGROUPS = new ConcurrentHashMap<>();
@@ -56,6 +48,13 @@ public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport impl
   @Override
   public VolumeSnapshotClient adapt(Client client) {
     return new DefaultVolumeSnapshotClient(client);
+  }
+
+  @Override
+  public void registerHandlers(HandlerFactory factory) {
+    factory.register(VolumeSnapshotClass.class, VolumeSnapshotClassOperationsImpl::new);
+    factory.register(VolumeSnapshotContent.class, VolumeSnapshotContentOperationsImpl::new);
+    factory.register(VolumeSnapshot.class, VolumeSnapshotOperationsImpl::new);
   }
 
 }

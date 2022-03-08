@@ -22,6 +22,6 @@ public interface Deletable {
    * @return value indicating object was deleted or not
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */
-  Boolean delete();
+  boolean delete();
 
 }

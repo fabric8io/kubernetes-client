@@ -15,12 +15,11 @@
  */
 package io.fabric8.volcano.test.request;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.volcano.client.VolcanoClient;
 import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueBuilder;
-import io.fabric8.volcano.server.mock.EnableVolcanoMockClient;
-import io.fabric8.volcano.server.mock.VolcanoMockServer;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,17 +28,17 @@ import java.net.HttpURLConnection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableVolcanoMockClient
+@EnableKubernetesMockClient
 class QueueTest {
 
   VolcanoClient client;
-  VolcanoMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a queue")
   void testGet() {
     server.expect().get().withPath("/apis/scheduling.volcano.sh/v1beta1/queues/q1")
-      .andReturn(HttpURLConnection.HTTP_OK, createQueue()).once();
+        .andReturn(HttpURLConnection.HTTP_OK, createQueue()).once();
 
     Queue queue = client.v1beta1().queues().withName("q1").get();
     assertNotNull(queue);
@@ -50,7 +49,7 @@ class QueueTest {
   void testCreate() {
     Queue queue = createQueue();
     server.expect().post().withPath("/apis/scheduling.volcano.sh/v1beta1/queues")
-      .andReturn(HttpURLConnection.HTTP_CREATED, queue).once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, queue).once();
     queue = client.v1beta1().queues().create(queue);
     assertNotNull(queue);
     assertEquals("q1", queue.getMetadata().getName());
@@ -58,7 +57,7 @@ class QueueTest {
 
   private Queue createQueue() {
     return new QueueBuilder()
-      .withNewMetadata().withName("q1").endMetadata()
-      .build();
+        .withNewMetadata().withName("q1").endMetadata()
+        .build();
   }
 }

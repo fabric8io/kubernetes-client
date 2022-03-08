@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.volumesnapshot.client.internal;
 
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
+package io.fabric8.kubernetes.client.server.mock;
 
+public interface Resetable {
 
-public interface VolumeSnapshotResource extends Resource<VolumeSnapshot> {
+  /**
+   * return the resource to its initial state
+   */
+  void reset();
+
 }

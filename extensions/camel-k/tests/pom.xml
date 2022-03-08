@@ -36,8 +36,7 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>camel-k-mock</artifactId>
-      <version>${project.version}</version>
+      <artifactId>kubernetes-server-mock</artifactId>
       <scope>test</scope>
     </dependency>
 

@@ -16,61 +16,61 @@
 package io.fabric8.knative.test;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.EnableKnativeMockClient;
-import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKnativeMockClient
+@EnableKubernetesMockClient
 class RouteTest {
 
   KnativeClient client;
-  KnativeMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void testCreateOrReplace() {
     // Given
     Route route = new RouteBuilder()
-      .withNewMetadata()
-      .withName("helloworld-nodejs-red-blue1")
-      .withNamespace("test")
-      .endMetadata()
-      .withNewSpec()
-      .addNewTraffic()
-      .withConfigurationName("greeter")
-      .withPercent(100L)
-      .endTraffic()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("helloworld-nodejs-red-blue1")
+        .withNamespace("test")
+        .endMetadata()
+        .withNewSpec()
+        .addNewTraffic()
+        .withConfigurationName("greeter")
+        .withPercent(100L)
+        .endTraffic()
+        .endSpec()
+        .build();
     server.expect().post().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, route)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, route)
+        .once();
     server.expect().get().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes/helloworld-nodejs-red-blue1")
-      .andReturn(HttpURLConnection.HTTP_OK, route)
-      .times(2);
+        .andReturn(HttpURLConnection.HTTP_OK, route)
+        .times(2);
     server.expect().put().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes/helloworld-nodejs-red-blue1")
-      .andReturn(HttpURLConnection.HTTP_OK, route)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, route)
+        .once();
 
     // When
     route = client.routes().createOrReplace(new RouteBuilder()
-      .withNewMetadata()
-      .withName("helloworld-nodejs-red-blue1")
-      .addToAnnotations("foo", "bar")
-      .withNamespace("test")
-      .endMetadata()
-      .withNewSpec()
-      .addNewTraffic()
-      .withConfigurationName("greeter")
-      .withPercent(100L)
-      .endTraffic()
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("helloworld-nodejs-red-blue1")
+        .addToAnnotations("foo", "bar")
+        .withNamespace("test")
+        .endMetadata()
+        .withNewSpec()
+        .addNewTraffic()
+        .withConfigurationName("greeter")
+        .withPercent(100L)
+        .endTraffic()
+        .endSpec()
+        .build());
 
     // Then
     assertNotNull(route);
