@@ -96,6 +96,7 @@ The group on the object being deserialized is not required to match the prospect
 - Removed HttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead
 - Removed methods on SharedInformerFactory dealing with the OperationContext
 - Removed DefaultKubernetesClient and DefaultOpenShiftClient constructors directly referencing OkHttp - use OkHttpClientImpl to wrap the OkHttpClient, or the OkHttpClientFactory instead.
+- Removed the AutoAdaptableKubernetesClient, use the new KubernetesClientBuilder instead
 - Removed OpenShiftConfig OpenshiftApiGroupsEnabled methods
 
 ### Extension Development
