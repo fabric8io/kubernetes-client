@@ -507,6 +507,7 @@ public class ConfigTest {
     assertFalse(emptyConfig.isHttp2Disable());
     assertEquals(1, emptyConfig.getTlsVersions().length);
     assertTrue(emptyConfig.getErrorMessages().isEmpty());
+    assertNotNull(emptyConfig.getUserAgent());
   }
 
   private void assertConfig(Config config) {

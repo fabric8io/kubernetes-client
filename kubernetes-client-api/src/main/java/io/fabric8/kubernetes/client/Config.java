@@ -126,7 +126,7 @@ public class Config {
   public static final String KUBERNETES_PROXY_USERNAME = "proxy.username";
   public static final String KUBERNETES_PROXY_PASSWORD = "proxy.password";
 
-  public static final String KUBERNETES_USER_AGENT = "fabric8-kubernetes-client/" + Version.clientVersion() ;
+  public static final String KUBERNETES_USER_AGENT = "kubernetes.user.agent";
 
   public static final String DEFAULT_MASTER_URL = "https://kubernetes.default.svc";
   public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
@@ -216,7 +216,7 @@ public class Config {
   private String proxyUsername;
   private String proxyPassword;
   private String[] noProxy;
-  private String userAgent;
+  private String userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
   private TlsVersion[] tlsVersions = new TlsVersion[]{TlsVersion.TLS_1_2};
 
   private Map<Integer, String> errorMessages = new HashMap<>();
