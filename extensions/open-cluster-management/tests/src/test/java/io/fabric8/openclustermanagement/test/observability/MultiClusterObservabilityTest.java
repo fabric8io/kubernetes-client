@@ -15,48 +15,50 @@
  */
 package io.fabric8.openclustermanagement.test.observability;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityBuilder;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityList;
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class MultiClusterObservabilityTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/observability.open-cluster-management.io/v1beta2/multiclusterobservabilities/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterObservability("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/observability.open-cluster-management.io/v1beta2/multiclusterobservabilities/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterObservability("test-get"))
+        .once();
 
     // When
-    MultiClusterObservability multiClusterObservability = client.observability().multiClusterObservailities().withName("test-get").get();
+    MultiClusterObservability multiClusterObservability = client.observability().multiClusterObservailities()
+        .withName("test-get").get();
 
     // Then
     assertThat(multiClusterObservability)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/observability.open-cluster-management.io/v1beta2/multiclusterobservabilities")
-      .andReturn(HttpURLConnection.HTTP_OK, new MultiClusterObservabilityListBuilder()
-        .addToItems(createNewMultiClusterObservability("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MultiClusterObservabilityListBuilder()
+            .addToItems(createNewMultiClusterObservability("test-list"))
+            .build())
+        .once();
 
     // When
     MultiClusterObservabilityList multiClusterObservabilityList = client.observability().multiClusterObservailities().list();
@@ -65,15 +67,16 @@ class MultiClusterObservabilityTest {
     assertThat(multiClusterObservabilityList).isNotNull();
     assertThat(multiClusterObservabilityList.getItems()).hasSize(1);
     assertThat(multiClusterObservabilityList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/observability.open-cluster-management.io/v1beta2/multiclusterobservabilities/sample-mch")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterObservability("sample-mch"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/observability.open-cluster-management.io/v1beta2/multiclusterobservabilities/sample-mch")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMultiClusterObservability("sample-mch"))
+        .once();
 
     // When
     Boolean isDeleted = client.observability().multiClusterObservailities().withName("sample-mch").delete();
@@ -84,10 +87,9 @@ class MultiClusterObservabilityTest {
 
   private MultiClusterObservability createNewMultiClusterObservability(String name) {
     return new MultiClusterObservabilityBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
   }
 }
-

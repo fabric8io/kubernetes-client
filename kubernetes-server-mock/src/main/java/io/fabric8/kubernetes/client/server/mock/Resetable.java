@@ -13,24 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.camelk.test;
 
-import io.fabric8.camelk.client.CamelKClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
-import org.junit.jupiter.api.Test;
+package io.fabric8.kubernetes.client.server.mock;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+public interface Resetable {
 
-@EnableKubernetesMockClient
-class AdaptTest {
+  /**
+   * return the resource to its initial state
+   */
+  void reset();
 
-  KubernetesClient client;
-
-  @Test
-  void testAdapt() {
-    assertTrue(client.isAdaptable(CamelKClient.class));
-    assertNotNull(client.adapt(CamelKClient.class));
-  }
 }

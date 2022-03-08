@@ -15,48 +15,49 @@
  */
 package io.fabric8.openclustermanagement.test.cluster;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionBuilder;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionList;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class PlacementDecisionTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementDecision("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementDecision("test-get"))
+        .once();
 
     // When
     PlacementDecision placementDecision = client.clusters().placementDecisions().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(placementDecision)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions")
-      .andReturn(HttpURLConnection.HTTP_OK, new PlacementDecisionListBuilder()
-        .addToItems(createNewPlacementDecision("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PlacementDecisionListBuilder()
+            .addToItems(createNewPlacementDecision("test-list"))
+            .build())
+        .once();
 
     // When
     PlacementDecisionList placementDecisionList = client.clusters().placementDecisions().inNamespace("ns1").list();
@@ -65,15 +66,16 @@ class PlacementDecisionTest {
     assertThat(placementDecisionList).isNotNull();
     assertThat(placementDecisionList.getItems()).hasSize(1);
     assertThat(placementDecisionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions/placement1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementDecision("placement1"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions/placement1")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementDecision("placement1"))
+        .once();
 
     // When
     Boolean isDeleted = client.clusters().placementDecisions().inNamespace("ns1").withName("placement1").delete();
@@ -84,10 +86,10 @@ class PlacementDecisionTest {
 
   private PlacementDecision createNewPlacementDecision(String name) {
     return new PlacementDecisionBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .addToAnnotations("cluster.open-cluster-management.io/placement", "placement1")
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .addToAnnotations("cluster.open-cluster-management.io/placement", "placement1")
+        .endMetadata()
+        .build();
   }
 }

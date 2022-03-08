@@ -15,9 +15,9 @@
  */
 package io.fabric8.tekton.triggers.v1alpha1;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.mock.EnableTektonMockClient;
-import io.fabric8.tekton.mock.TektonMockServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,20 +25,22 @@ import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableTektonMockClient
+@EnableKubernetesMockClient
 class EventListenerTest {
 
   TektonClient client;
-  TektonMockServer server;
+  KubernetesMockServer server;
+
   @Test
   @DisplayName("Should get a eventlistener")
   void testGet() {
     server.expect().get().withPath("/apis/triggers.tekton.dev/v1alpha1/namespaces/ns1/eventlisteners/el")
-      .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.EventListenerBuilder()
-        .withNewMetadata()
-        .withName("el")
-        .endMetadata()
-        .build()).once();
+        .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.triggers.v1alpha1.EventListenerBuilder()
+            .withNewMetadata()
+            .withName("el")
+            .endMetadata()
+            .build())
+        .once();
 
     EventListener el = client.v1alpha1().eventListeners().inNamespace("ns1").withName("el").get();
     assertNotNull(el);

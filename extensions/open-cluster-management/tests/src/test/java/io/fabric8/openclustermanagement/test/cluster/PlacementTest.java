@@ -15,48 +15,48 @@
  */
 package io.fabric8.openclustermanagement.test.cluster;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementBuilder;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementList;
 import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class PlacementTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("test-get"))
+        .once();
 
     // When
     Placement placement = client.clusters().placements().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(placement)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements")
-      .andReturn(HttpURLConnection.HTTP_OK, new PlacementListBuilder()
-        .addToItems(createNewPlacement("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PlacementListBuilder()
+            .addToItems(createNewPlacement("test-list"))
+            .build())
+        .once();
 
     // When
     PlacementList placementList = client.clusters().placements().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class PlacementTest {
     assertThat(placementList).isNotNull();
     assertThat(placementList.getItems()).hasSize(1);
     assertThat(placementList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements/placement1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("placement1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("placement1"))
+        .once();
 
     // When
     Boolean isDeleted = client.clusters().placements().inNamespace("ns1").withName("placement1").delete();
@@ -84,16 +84,16 @@ class PlacementTest {
 
   private Placement createNewPlacement(String name) {
     return new PlacementBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addNewPredicate()
-      .withNewRequiredClusterSelector()
-      .withNewLabelSelector()
-      .addToMatchLabels("vendor", "OpenShift")
-      .endLabelSelector()
-      .endRequiredClusterSelector()
-      .endPredicate()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addNewPredicate()
+        .withNewRequiredClusterSelector()
+        .withNewLabelSelector()
+        .addToMatchLabels("vendor", "OpenShift")
+        .endLabelSelector()
+        .endRequiredClusterSelector()
+        .endPredicate()
+        .endSpec()
+        .build();
   }
 }

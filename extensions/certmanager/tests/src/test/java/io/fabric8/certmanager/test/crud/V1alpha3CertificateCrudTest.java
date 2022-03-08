@@ -19,18 +19,21 @@ import io.fabric8.certmanager.api.model.v1alpha3.Certificate;
 import io.fabric8.certmanager.api.model.v1alpha3.CertificateBuilder;
 import io.fabric8.certmanager.api.model.v1alpha3.CertificateList;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.certmanager.server.mock.EnableCertManagerMockClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableCertManagerMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class V1alpha3CertificateCrudTest {
 
   CertManagerClient client;
+
   @Test
   void shouldReturnEmptyList() {
 
@@ -62,20 +65,20 @@ class V1alpha3CertificateCrudTest {
   void shouldLoadCertificate() {
 
     String certificateDefinition = String.join("\n", Arrays.asList(
-      "apiVersion: cert-manager.io/v1beta1",
-      "kind: Certificate",
-      "metadata:",
-      "  name: ca-issuer",
-      "spec:",
-      "  isCA: true",
-      "  secretName: ca-key-pair",
-      "  commonName: my-csi-app",
-      "  issuerRef:",
-      "    name: selfsigned-issuer",
-      "    kind: Issuer",
-      "    group: cert-manager.io"
-    ));
-    io.fabric8.certmanager.api.model.v1beta1.Certificate certificate = client.v1beta1().certificates().inNamespace("ns4").load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
+        "apiVersion: cert-manager.io/v1beta1",
+        "kind: Certificate",
+        "metadata:",
+        "  name: ca-issuer",
+        "spec:",
+        "  isCA: true",
+        "  secretName: ca-key-pair",
+        "  commonName: my-csi-app",
+        "  issuerRef:",
+        "    name: selfsigned-issuer",
+        "    kind: Issuer",
+        "    group: cert-manager.io"));
+    io.fabric8.certmanager.api.model.v1beta1.Certificate certificate = client.v1beta1().certificates().inNamespace("ns4")
+        .load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
     assertEquals("ca-issuer", certificate.getMetadata().getName());
     assertEquals("ca-key-pair", certificate.getSpec().getSecretName());
     assertEquals("my-csi-app", certificate.getSpec().getCommonName());

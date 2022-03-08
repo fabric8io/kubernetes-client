@@ -31,13 +31,12 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>servicecatalog-client</artifactId>
     </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>servicecatalog-server-mock</artifactId>
-      <version>${project.version}</version>
+      <artifactId>kubernetes-server-mock</artifactId>
       <scope>test</scope>
     </dependency>
 

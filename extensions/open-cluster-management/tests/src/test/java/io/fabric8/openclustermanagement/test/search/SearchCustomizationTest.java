@@ -15,48 +15,50 @@
  */
 package io.fabric8.openclustermanagement.test.search;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization;
 import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationBuilder;
 import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationList;
 import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class SearchCustomizationTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/search.open-cluster-management.io/v1alpha1/namespaces/ns1/searchcustomizations/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSearchCustomization("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/search.open-cluster-management.io/v1alpha1/namespaces/ns1/searchcustomizations/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSearchCustomization("test-get"))
+        .once();
 
     // When
-    SearchCustomization searchCustomization = client.search().searchCustomizations().inNamespace("ns1").withName("test-get").get();
+    SearchCustomization searchCustomization = client.search().searchCustomizations().inNamespace("ns1").withName("test-get")
+        .get();
 
     // Then
     assertThat(searchCustomization)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/search.open-cluster-management.io/v1alpha1/namespaces/ns1/searchcustomizations")
-      .andReturn(HttpURLConnection.HTTP_OK, new SearchCustomizationListBuilder()
-        .addToItems(createNewSearchCustomization("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SearchCustomizationListBuilder()
+            .addToItems(createNewSearchCustomization("test-list"))
+            .build())
+        .once();
 
     // When
     SearchCustomizationList searchCustomizationList = client.search().searchCustomizations().inNamespace("ns1").list();
@@ -65,15 +67,16 @@ class SearchCustomizationTest {
     assertThat(searchCustomizationList).isNotNull();
     assertThat(searchCustomizationList.getItems()).hasSize(1);
     assertThat(searchCustomizationList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/search.open-cluster-management.io/v1alpha1/namespaces/ns1/searchcustomizations/sample-sc")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSearchCustomization("sample-sc"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/search.open-cluster-management.io/v1alpha1/namespaces/ns1/searchcustomizations/sample-sc")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSearchCustomization("sample-sc"))
+        .once();
 
     // When
     Boolean isDeleted = client.search().searchCustomizations().inNamespace("ns1").withName("sample-sc").delete();
@@ -84,10 +87,10 @@ class SearchCustomizationTest {
 
   private SearchCustomization createNewSearchCustomization(String name) {
     return new SearchCustomizationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withPersistence(true)
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withPersistence(true)
+        .endSpec()
+        .build();
   }
 }

@@ -15,48 +15,48 @@
  */
 package io.fabric8.openclustermanagement.test.apps;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster;
 import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterBuilder;
 import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterList;
 import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class GitOpsClusterTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1beta1/namespaces/ns1/gitopsclusters/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewGitOpsCluster("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewGitOpsCluster("test-get"))
+        .once();
 
     // When
     GitOpsCluster gitOpsCluster = client.apps().gitOpsClusters().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(gitOpsCluster)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1beta1/namespaces/ns1/gitopsclusters")
-      .andReturn(HttpURLConnection.HTTP_OK, new GitOpsClusterListBuilder()
-        .addToItems(createNewGitOpsCluster("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new GitOpsClusterListBuilder()
+            .addToItems(createNewGitOpsCluster("test-list"))
+            .build())
+        .once();
 
     // When
     GitOpsClusterList gitOpsClusterList = client.apps().gitOpsClusters().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class GitOpsClusterTest {
     assertThat(gitOpsClusterList).isNotNull();
     assertThat(gitOpsClusterList.getItems()).hasSize(1);
     assertThat(gitOpsClusterList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apps.open-cluster-management.io/v1beta1/namespaces/ns1/gitopsclusters/sample-goc")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewGitOpsCluster("sample-goc"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewGitOpsCluster("sample-goc"))
+        .once();
 
     // When
     Boolean isDeleted = client.apps().gitOpsClusters().inNamespace("ns1").withName("sample-goc").delete();
@@ -84,19 +84,19 @@ class GitOpsClusterTest {
 
   private GitOpsCluster createNewGitOpsCluster(String name) {
     return new GitOpsClusterBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewArgoServer()
-      .withCluster("notused")
-      .withArgoNamespace("openshift-gitops")
-      .endArgoServer()
-      .withNewPlacementRef()
-      .withApiVersion("cluster.open-cluster-management.io/v1alpha1")
-      .withKind("Placement")
-      .withName("all-openshift-clusters")
-      .withNamespace("openshift-gitops")
-      .endPlacementRef()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewArgoServer()
+        .withCluster("notused")
+        .withArgoNamespace("openshift-gitops")
+        .endArgoServer()
+        .withNewPlacementRef()
+        .withApiVersion("cluster.open-cluster-management.io/v1alpha1")
+        .withKind("Placement")
+        .withName("all-openshift-clusters")
+        .withNamespace("openshift-gitops")
+        .endPlacementRef()
+        .endSpec()
+        .build();
   }
 }

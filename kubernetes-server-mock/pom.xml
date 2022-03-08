@@ -33,6 +33,7 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>

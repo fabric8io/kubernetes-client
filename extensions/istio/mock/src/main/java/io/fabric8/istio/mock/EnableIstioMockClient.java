@@ -15,20 +15,24 @@
  */
 package io.fabric8.istio.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-
 /**
  * Annotation that is used for enabling IstioMockServerExtension JUnit5 extension.
  * You may set here two parameters of `IstioServer`: crudMode and https
+ *
+ * @deprecated use {@link EnableKubernetesMockClient} instead
  */
+@Deprecated
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @ExtendWith(IstioMockServerExtension.class)

@@ -15,48 +15,49 @@
  */
 package io.fabric8.openclustermanagement.test.discovery;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterBuilder;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterList;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class DiscoveredClusterTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveredclusters/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveredCluster("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveredclusters/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveredCluster("test-get"))
+        .once();
 
     // When
     DiscoveredCluster discoveredCluster = client.discovery().discoveredClusters().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(discoveredCluster)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveredclusters")
-      .andReturn(HttpURLConnection.HTTP_OK, new DiscoveredClusterListBuilder()
-        .addToItems(createNewDiscoveredCluster("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new DiscoveredClusterListBuilder()
+            .addToItems(createNewDiscoveredCluster("test-list"))
+            .build())
+        .once();
 
     // When
     DiscoveredClusterList discoveredClusterList = client.discovery().discoveredClusters().inNamespace("ns1").list();
@@ -65,15 +66,16 @@ class DiscoveredClusterTest {
     assertThat(discoveredClusterList).isNotNull();
     assertThat(discoveredClusterList.getItems()).hasSize(1);
     assertThat(discoveredClusterList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveredclusters/sample-dc")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveredCluster("sample-dc"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveredclusters/sample-dc")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveredCluster("sample-dc"))
+        .once();
 
     // When
     Boolean isDeleted = client.discovery().discoveredClusters().inNamespace("ns1").withName("sample-dc").delete();
@@ -84,14 +86,13 @@ class DiscoveredClusterTest {
 
   private DiscoveredCluster createNewDiscoveredCluster(String name) {
     return new DiscoveredClusterBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withName("crc-cluster")
-      .withApiUrl("https://api.crc.testing:6443")
-      .withCloudProvider("RedHat")
-      .withDisplayName("Crc")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withName("crc-cluster")
+        .withApiUrl("https://api.crc.testing:6443")
+        .withCloudProvider("RedHat")
+        .withDisplayName("Crc")
+        .endSpec()
+        .build();
   }
 }
-
