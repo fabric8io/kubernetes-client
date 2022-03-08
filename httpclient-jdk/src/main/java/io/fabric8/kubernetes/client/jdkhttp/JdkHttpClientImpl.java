@@ -194,13 +194,13 @@ public class JdkHttpClientImpl implements HttpClient {
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
-    CompletableFuture<WebSocketResponse> cf = internalBuildAsync(webSocketBuilder, listener);
+    CompletableFuture<WebSocketResponse> cf = internalBuildAsync(copy, listener);
 
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null
             && interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse()))) {
-          return this.internalBuildAsync(webSocketBuilder, listener);
+          return this.internalBuildAsync(copy, listener);
         }
         return CompletableFuture.completedFuture(response);
       });
