@@ -68,7 +68,7 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
     }
 
     @com.fasterxml.jackson.annotation.JsonIgnore()
-    private java.util.Map<String, Object> additionalProperties = new java.util.HashMap<String, Object>();
+    private java.util.Map<String, Object> additionalProperties = new java.util.HashMap<>();
 
     @com.fasterxml.jackson.annotation.JsonAnyGetter()
     public java.util.Map<String, Object> getAdditionalProperties() {
