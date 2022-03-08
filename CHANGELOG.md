@@ -8,6 +8,7 @@
 * Fix #3582: SSL truststore can be loaded in FIPS enabled environments
 * Fix #3818: adding missing throws to launderThrowable
 * Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
+* Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
 
 #### Improvements
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
