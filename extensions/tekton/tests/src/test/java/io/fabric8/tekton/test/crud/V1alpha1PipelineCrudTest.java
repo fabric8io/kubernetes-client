@@ -15,8 +15,8 @@
  */
 package io.fabric8.tekton.test.crud;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.mock.EnableTektonMockClient;
 import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineBuilder;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
@@ -27,12 +27,15 @@ import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableTektonMockClient(crud=true)
+@EnableKubernetesMockClient(crud = true)
 class V1alpha1PipelineCrudTest {
 
   TektonClient client;
+
   @Test
   void shouldReturnEmptyList() {
 
@@ -68,21 +71,20 @@ class V1alpha1PipelineCrudTest {
   @Test
   void shouldLoadAPipelineWithParams() {
 
-
     String pipelineDefinition = String.join("\n", Arrays.asList(
-      "apiVersion: tekton.dev/v1alpha1",
-      "kind: Pipeline",
-      "metadata:",
-      "  name: pipeline4",
-      "spec:",
-      "  tasks:",
-      "    - name: task-with-params",
-      "      params:",
-      "        - name: name",
-      "          value: param-value"
-    ));
+        "apiVersion: tekton.dev/v1alpha1",
+        "kind: Pipeline",
+        "metadata:",
+        "  name: pipeline4",
+        "spec:",
+        "  tasks:",
+        "    - name: task-with-params",
+        "      params:",
+        "        - name: name",
+        "          value: param-value"));
 
-    Pipeline p = client.v1alpha1().pipelines().inNamespace("ns4").load(new ByteArrayInputStream(pipelineDefinition.getBytes())).createOrReplace();
+    Pipeline p = client.v1alpha1().pipelines().inNamespace("ns4").load(new ByteArrayInputStream(pipelineDefinition.getBytes()))
+        .createOrReplace();
 
     final List<Param> taskParams = p.getSpec().getTasks().get(0).getParams();
     assertEquals(1, taskParams.size());

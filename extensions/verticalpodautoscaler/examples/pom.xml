@@ -32,7 +32,6 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>verticalpodautoscaler-client</artifactId>
-      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

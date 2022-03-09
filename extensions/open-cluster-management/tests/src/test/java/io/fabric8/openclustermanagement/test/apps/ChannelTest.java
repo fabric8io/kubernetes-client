@@ -15,48 +15,48 @@
  */
 package io.fabric8.openclustermanagement.test.apps;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel;
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelBuilder;
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelList;
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class ChannelTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/channels/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("test-get"))
+        .once();
 
     // When
     Channel channel = client.apps().channels().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(channel)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/channels")
-      .andReturn(HttpURLConnection.HTTP_OK, new ChannelListBuilder()
-        .addToItems(createNewChannel("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ChannelListBuilder()
+            .addToItems(createNewChannel("test-list"))
+            .build())
+        .once();
 
     // When
     ChannelList channelList = client.apps().channels().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class ChannelTest {
     assertThat(channelList).isNotNull();
     assertThat(channelList.getItems()).hasSize(1);
     assertThat(channelList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apps.open-cluster-management.io/v1/namespaces/ns1/channels/sample-channel")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("sample-channel"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewChannel("sample-channel"))
+        .once();
 
     // When
     Boolean isDeleted = client.apps().channels().inNamespace("ns1").withName("sample-channel").delete();
@@ -84,16 +84,15 @@ class ChannelTest {
 
   private Channel createNewChannel(String name) {
     return new ChannelBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewConfigMapRef()
-      .withKind("configmap")
-      .withName("bookinfo-resource-filter-configmap")
-      .endConfigMapRef()
-      .withPathname("https://charts.helm.sh/stable")
-      .withType("HelmRepo")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewConfigMapRef()
+        .withKind("configmap")
+        .withName("bookinfo-resource-filter-configmap")
+        .endConfigMapRef()
+        .withPathname("https://charts.helm.sh/stable")
+        .withType("HelmRepo")
+        .endSpec()
+        .build();
   }
 }
-

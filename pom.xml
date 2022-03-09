@@ -96,7 +96,7 @@
     <!-- Testing versions -->
     <assertj.core.version>3.22.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
-    <awaitility.version>4.1.1</awaitility.version>
+    <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>14.0.0</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
@@ -149,6 +149,7 @@
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.12</nexus-staging-maven-plugin>
+    <spotless-maven-plugin.version>2.21.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -762,7 +763,7 @@
         <version>${mockito.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-inline</artifactId>
@@ -997,6 +998,22 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless-maven-plugin.version}</version>
+        <configuration>
+          <ratchetFrom>origin/master</ratchetFrom>
+          <java>
+            <eclipse>
+              <file>ide-config/eclipse-format.xml</file>
+            </eclipse>
+            <importOrder>
+              <file>ide-config/eclipse.importorder</file>
+            </importOrder>
+          </java>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>

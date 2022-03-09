@@ -34,6 +34,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.URL;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BaseClient extends SimpleClientContext implements Client {
 
@@ -42,6 +43,8 @@ public class BaseClient extends SimpleClientContext implements Client {
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
+
+  private Predicate<Class<?>> adaptableOverride;
 
   public BaseClient() {
     this(new ConfigBuilder().build());
@@ -58,7 +61,7 @@ public class BaseClient extends SimpleClientContext implements Client {
   public BaseClient(final HttpClient httpClient, Config config) {
     this(new SimpleClientContext(config, httpClient));
   }
-  
+
   public BaseClient(ClientContext clientContext) {
     try {
       this.config = clientContext.getConfiguration();
@@ -68,8 +71,10 @@ public class BaseClient extends SimpleClientContext implements Client {
       this.apiVersion = config.getApiVersion();
       if (config.getMasterUrl() == null) {
         throw new KubernetesClientException("Unknown Kubernetes master URL - " +
-          "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY + "\"" +
-          " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY) + "\"");
+            "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY
+            + "\"" +
+            " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY)
+            + "\"");
       }
       this.masterUrl = new URL(config.getMasterUrl());
     } catch (Exception e) {
@@ -97,6 +102,10 @@ public class BaseClient extends SimpleClientContext implements Client {
     return namespace;
   }
 
+  public void setAdaptableOverride(Predicate<Class<?>> adaptableOverride) {
+    this.adaptableOverride = adaptableOverride;
+  }
+
   @Override
   public <C> Boolean isAdaptable(Class<C> type) {
     if (type.isAssignableFrom(this.getClass())) {
@@ -104,6 +113,9 @@ public class BaseClient extends SimpleClientContext implements Client {
     }
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
+      if (adaptableOverride != null) {
+        return adaptableOverride.test(type);
+      }
       return adapter.isAdaptable(this);
     } else {
       return false;
@@ -115,9 +127,11 @@ public class BaseClient extends SimpleClientContext implements Client {
     if (type.isAssignableFrom(this.getClass())) {
       return (C) this;
     }
-    ExtensionAdapter<C> adapter = Adapters.get(type);
-    if (adapter != null) {
-      return adapter.adapt(this);
+    if (isAdaptable(type)) {
+      ExtensionAdapter<C> adapter = Adapters.get(type);
+      if (adapter != null) {
+        return adapter.adapt(this);
+      }
     }
     throw new IllegalStateException("No adapter available for type:" + type);
   }
@@ -168,7 +182,7 @@ public class BaseClient extends SimpleClientContext implements Client {
   protected void adaptState() {
     // nothing by default
   }
-  
+
   protected SimpleClientContext newState(Config updated) {
     return new SimpleClientContext(updated, httpClient);
   }
@@ -185,13 +199,15 @@ public class BaseClient extends SimpleClientContext implements Client {
     } catch (Exception e) {
       //may be the wrong list type, try more general - may still fail if the resource is not properly annotated
       if (resourceClass == null || Resource.class.equals(resourceClass)) {
-        return (MixedOperation<T, L, R>) newHasMetadataOperation(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
+        return (MixedOperation<T, L, R>) newHasMetadataOperation(ResourceDefinitionContext.fromResourceType(resourceType),
+            resourceType, listClass);
       }
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> newHasMetadataOperation(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
+
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> newHasMetadataOperation(
+      ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
     return new HasMetadataOperationsImpl<>(this, rdContext, resourceType, listClass);
   }
 

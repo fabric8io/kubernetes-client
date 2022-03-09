@@ -15,15 +15,14 @@
  */
 package io.fabric8.istio.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
+public class DefaultIstioClient extends ClientAdapter<NamespacedIstioClient> implements NamespacedIstioClient {
 
   public DefaultIstioClient() {
     super();
@@ -33,22 +32,13 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     super(configuration);
   }
 
-  public DefaultIstioClient(ClientContext clientContext) {
-    super(clientContext);
+  public DefaultIstioClient(Client client) {
+    super(client);
   }
 
   @Override
-  public NamespacedIstioClient inAnyNamespace() {
-    return inNamespace(null);
-  }
-
-  @Override
-  public NamespacedIstioClient inNamespace(String namespace) {
-    Config updated = new ConfigBuilder(getConfiguration())
-      .withNamespace(namespace)
-      .build();
-
-    return new DefaultIstioClient(newState(updated));
+  protected NamespacedIstioClient newInstance(Client client) {
+    return new DefaultIstioClient(client);
   }
 
   @Override

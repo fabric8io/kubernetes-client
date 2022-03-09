@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestConditionBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
  * This sample code is Java equivalent to `kubectl certificate deny my-cert`. It assumes that
@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class CertificateSigningRequestDenyYamlEquivalent {
     public static void main(String[] args) {
-        try(KubernetesClient client = new DefaultKubernetesClient()){
+        try(KubernetesClient client = new KubernetesClientBuilder().build()) {
             CertificateSigningRequestCondition csrCondition = new CertificateSigningRequestConditionBuilder()
               .withType("Denied")
               .withStatus("True")

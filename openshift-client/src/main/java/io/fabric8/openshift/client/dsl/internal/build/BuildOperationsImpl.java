@@ -136,7 +136,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   }
 
   @Override
-  public String getLog(Boolean isPretty) {
+  public String getLog(boolean isPretty) {
     return new BuildOperationsImpl(getContext().withPrettyOutput(isPretty), context).getLog();
   }
 

@@ -60,26 +60,27 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>certmanager-model-v1alpha2</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>certmanager-model-v1alpha3</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>certmanager-model-v1beta1</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>certmanager-model-v1</artifactId>
-      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

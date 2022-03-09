@@ -36,7 +36,7 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>istio-server-mock</artifactId>
+      <artifactId>kubernetes-server-mock</artifactId>
       <scope>test</scope>
     </dependency>
 

@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class TopEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(TopEquivalent.class);
 
   public static void main(String[] args) {
-      try (KubernetesClient k8s = new DefaultKubernetesClient()) {
+      try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
         NodeMetricsList nodeMetricsList = k8s.top().nodes().metrics();
 
         for (NodeMetrics nodeMetrics : nodeMetricsList.getItems()) {

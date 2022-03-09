@@ -16,7 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 public class JEnumNameAndType extends JavaNameAndType {
-    public JEnumNameAndType(String name) {
-        super(name, JavaType.ENUM);
-    }
+  public JEnumNameAndType(String name) {
+    super(name, JavaType.ENUM);
+  }
 }

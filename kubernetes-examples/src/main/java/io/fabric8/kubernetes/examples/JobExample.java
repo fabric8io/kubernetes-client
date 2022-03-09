@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class JobExample {
         if (args.length > 0) {
           configBuilder.withMasterUrl(args[0]);
         }
-        try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+        try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
           final String namespace = "default";
           final Job job = new JobBuilder()
             .withApiVersion("batch/v1")
@@ -69,7 +69,7 @@ public class JobExample {
           PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
           // Wait for pod to complete
           client.pods().inNamespace(namespace).withName(podList.getItems().get(0).getMetadata().getName())
-            .waitUntilCondition(pod -> pod.getStatus().getPhase().equals("Succeeded"), 1, TimeUnit.MINUTES);
+            .waitUntilCondition(pod -> pod.getStatus().getPhase().equals("Succeeded"), 2, TimeUnit.MINUTES);
 
           // Print Job's log
           String joblog = client.batch().v1().jobs().inNamespace(namespace).withName("pi").getLog();

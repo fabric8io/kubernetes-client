@@ -19,10 +19,10 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
  */
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class TemplateExample {
   private static final String DEFAULT_NAME_OF_TEMPLATE = "eap6-basic-sti";
 
   public static void main(String[] args) {
-    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       try {
         logger.info("Creating temporary project '{}' for example", NAMESPACE);
         client.projectrequests().create(

@@ -15,37 +15,20 @@
  */
 package io.fabric8.servicecatalog.test;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.ServiceCatalogMockServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
+@EnableKubernetesMockClient
 class AdaptTest {
 
-  private ServiceCatalogMockServer mock = new ServiceCatalogMockServer();
-
-  @BeforeEach
-  void setUp() {
-    mock.init();
-  }
-
-  @AfterEach
-  void tearDown() throws IOException {
-    mock.destroy();
-  }
+  KubernetesClient kc;
 
   @Test
   void testAdapt() {
-    ServiceCatalogClient sc = mock.createServiceCatalog();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ServiceCatalogClient.class));
   }
 }

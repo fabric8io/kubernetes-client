@@ -13,25 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.volumesnapshot.client;
 
-package io.fabric8.openshift.client;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 
-import io.fabric8.kubernetes.client.BaseKubernetesClientBuilder;
 
-public class OpenShiftClientBuilder extends BaseKubernetesClientBuilder<OpenShiftClientBuilder> {
-
-  public OpenShiftClientBuilder() {
-    super("io.fabric8.openshift.client.DefaultOpenShiftClient");
-  }
-
-  public OpenShiftClientBuilder withOpenShiftConfig(OpenShiftConfig config) {
-    super.withConfig(config);
-    return this;
-  }
-
-  @Override
-  public OpenShiftClient build() {
-    return (OpenShiftClient)super.build();
-  }
-
+public interface VolumeSnapshotContentResource extends Resource<VolumeSnapshotContent> {
 }

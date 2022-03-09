@@ -28,6 +28,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class ServiceCatalogMockServer extends KubernetesMockServer {
 
   public ServiceCatalogMockServer() {
@@ -38,13 +42,14 @@ public class ServiceCatalogMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public ServiceCatalogMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public ServiceCatalogMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api","/apis/servicecatalog.k8s.io"};
+    return new String[] { "/api", "/apis/servicecatalog.k8s.io" };
   }
 
   public NamespacedServiceCatalogClient createServiceCatalog() {

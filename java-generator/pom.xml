@@ -37,46 +37,4 @@
     <module>it</module>
   </modules>
 
-  <build>
-    <plugins>
-        <plugin>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.21.0</version>
-            <configuration>
-                <formats>
-                    <format>
-                        <includes>
-                            <include>*.md</include>
-                            <include>.gitignore</include>
-                        </includes>
-
-                        <trimTrailingWhitespace />
-
-                        <endWithNewline />
-
-                        <indent>
-                            <spaces>true</spaces>
-                            <spacesPerTab>4</spacesPerTab>
-                        </indent>
-                    </format>
-                </formats>
-                <java>
-                    <importOrder />
-                    <googleJavaFormat>
-                        <version>1.13.0</version>
-                        <style>AOSP</style>
-                    </googleJavaFormat>
-                </java>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>apply</goal>
-                </goals>
-              </execution>
-            </executions>
-        </plugin>
-    </plugins>
-  </build>
 </project>

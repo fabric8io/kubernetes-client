@@ -82,3 +82,6 @@ crashlytics-build.properties
 # Ignore generator binary output file
 kubernetes-model-generator/*/generate
 extensions/*/generator/generate
+
+# Formatter and Impsort cache directory
+.cache

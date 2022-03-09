@@ -15,48 +15,48 @@
  */
 package io.fabric8.openclustermanagement.test.operator;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerBuilder;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerList;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class ClusterManagerTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/operator.open-cluster-management.io/v1/clustermanagers/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterManager("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterManager("test-get"))
+        .once();
 
     // When
     ClusterManager clusterManager = client.operator().clusterManagers().withName("test-get").get();
 
     // Then
     assertThat(clusterManager)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/operator.open-cluster-management.io/v1/clustermanagers")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterManagerListBuilder()
-        .addToItems(createNewClusterManager("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterManagerListBuilder()
+            .addToItems(createNewClusterManager("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterManagerList clusterManagerList = client.operator().clusterManagers().list();
@@ -65,15 +65,15 @@ class ClusterManagerTest {
     assertThat(clusterManagerList).isNotNull();
     assertThat(clusterManagerList.getItems()).hasSize(1);
     assertThat(clusterManagerList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/operator.open-cluster-management.io/v1/clustermanagers/sample-cm")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterManager("sample-cm"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterManager("sample-cm"))
+        .once();
 
     // When
     Boolean isDeleted = client.operator().clusterManagers().withName("sample-cm").delete();
@@ -84,12 +84,12 @@ class ClusterManagerTest {
 
   private ClusterManager createNewClusterManager(String name) {
     return new ClusterManagerBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withRegistrationImagePullSpec("quay.io/open-cluster-management/registration")
-      .withWorkImagePullSpec("quay.io/open-cluster-management/work")
-      .withPlacementImagePullSpec("quay.io/open-cluster-management/placement")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withRegistrationImagePullSpec("quay.io/open-cluster-management/registration")
+        .withWorkImagePullSpec("quay.io/open-cluster-management/work")
+        .withPlacementImagePullSpec("quay.io/open-cluster-management/placement")
+        .endSpec()
+        .build();
   }
 }

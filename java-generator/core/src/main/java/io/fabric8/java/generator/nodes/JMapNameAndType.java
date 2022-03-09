@@ -16,7 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 public class JMapNameAndType extends JavaNameAndType {
-    public JMapNameAndType(String name) {
-        super(name, JavaType.MAP);
-    }
+  public JMapNameAndType(String name) {
+    super(name, JavaType.MAP);
+  }
 }

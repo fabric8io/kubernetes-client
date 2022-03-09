@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscal
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.MetricSpecBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class HorizontalPodAutoscalerV2beta2Example {
     if (args.length > 0) {
       configBuilder.withMasterUrl(args[0]);
     }
-    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       HorizontalPodAutoscaler horizontalPodAutoscaler = new HorizontalPodAutoscalerBuilder()
         .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
         .withNewSpec()

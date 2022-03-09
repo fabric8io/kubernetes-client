@@ -436,7 +436,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Boolean delete() {
+  public boolean delete() {
     if (item != null || (name != null && !name.isEmpty())) {
       try {
         deleteThis();
@@ -462,12 +462,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @SafeVarargs
   @Override
-  public final Boolean delete(T... items) {
+  public final boolean delete(T... items) {
     return delete(Arrays.asList(items));
   }
 
   @Override
-  public Boolean delete(List<T> items) {
+  public boolean delete(List<T> items) {
     boolean deleted = true;
     if (items != null) {
       for (T toDelete : items) {

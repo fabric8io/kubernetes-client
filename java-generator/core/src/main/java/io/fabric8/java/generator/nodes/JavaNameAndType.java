@@ -17,19 +17,19 @@ package io.fabric8.java.generator.nodes;
 
 public class JavaNameAndType {
 
-    public JavaType getType() {
-        return type;
-    }
+  public JavaType getType() {
+    return type;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    private final JavaType type;
-    private final String name;
+  private final JavaType type;
+  private final String name;
 
-    public JavaNameAndType(String name, JavaType type) {
-        this.name = name;
-        this.type = type;
-    }
+  public JavaNameAndType(String name, JavaType type) {
+    this.name = name;
+    this.type = type;
+  }
 }

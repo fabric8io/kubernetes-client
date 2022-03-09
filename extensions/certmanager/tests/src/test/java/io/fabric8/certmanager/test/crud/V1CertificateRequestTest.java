@@ -19,9 +19,9 @@ import io.fabric8.certmanager.api.model.meta.v1.ObjectReferenceBuilder;
 import io.fabric8.certmanager.api.model.v1.CertificateRequest;
 import io.fabric8.certmanager.api.model.v1.CertificateRequestBuilder;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.certmanager.server.mock.CertManagerMockServer;
-import io.fabric8.certmanager.server.mock.EnableCertManagerMockClient;
 import io.fabric8.kubernetes.api.model.Duration;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -30,19 +30,19 @@ import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableCertManagerMockClient
+@EnableKubernetesMockClient
 class V1CertificateRequestTest {
-  
+
   CertManagerClient client;
-  CertManagerMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void testCreate() throws Exception {
     // Given
     CertificateRequest certificateRequest = createCertificateRequest();
     server.expect().post().withPath("/apis/cert-manager.io/v1/namespaces/ns1/certificaterequests")
-      .andReturn(HttpURLConnection.HTTP_CREATED, certificateRequest)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, certificateRequest)
+        .once();
 
     // When
     CertificateRequest createdRequest = client.v1().certificateRequests().inNamespace("ns1").create(certificateRequest);
@@ -54,18 +54,18 @@ class V1CertificateRequestTest {
 
   private CertificateRequest createCertificateRequest() throws ParseException {
     return new CertificateRequestBuilder()
-      .withNewMetadata().withName("my-ca-cr").endMetadata()
-      .withNewSpec()
-      .withRequest("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQzNqQ0N")
-      .withIsCA(false)
-      .addToUsages("signing", "digital signature", "server auth")
-      .withDuration(Duration.parse("90d"))
-      .withIssuerRef(new ObjectReferenceBuilder()
-        .withName("ca-issuer")
-        .withKind("Issuer")
-        .withGroup("cert-manager.io")
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("my-ca-cr").endMetadata()
+        .withNewSpec()
+        .withRequest("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQzNqQ0N")
+        .withIsCA(false)
+        .addToUsages("signing", "digital signature", "server auth")
+        .withDuration(Duration.parse("90d"))
+        .withIssuerRef(new ObjectReferenceBuilder()
+            .withName("ca-issuer")
+            .withKind("Issuer")
+            .withGroup("cert-manager.io")
+            .build())
+        .endSpec()
+        .build();
   }
 }

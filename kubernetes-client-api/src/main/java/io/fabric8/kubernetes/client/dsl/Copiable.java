@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.nio.file.Path;
 
-public interface Copiable<T> {
-  
-  T copy(Path destination);
+public interface Copiable {
+
+  boolean copy(Path destination);
 }

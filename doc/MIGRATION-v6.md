@@ -13,6 +13,8 @@
 - [Adapt Changes](#adapt-changes)
 - [Deprecations](#deprecations)
 - [Object sorting](#object-sorting)
+- [Boolean Changes](#boolean-changes)
+- [evict Changes](#evict-changes)
 
 ## Namespace Changes
 
@@ -57,7 +59,16 @@ This release introduces kubernetes-client-api and openshift-client-api modules. 
 
 If you are directly relying on classes in the -client jars other than DefaultKubernetesClient and DefaultOpenShiftClient, please let us know your usage scenario.  Moving forward we'd like consider all classes in the -client jars internal.
 
-When you rely solely on a compile dependency to the respective -api dependencies you will not be able to use DefaultKubernetesClient nor DefaultOpenShiftClient directly to create your client instances.  You should instead - TBD 
+When you rely solely on a compile dependency to the respective -api dependencies you will not be able to use DefaultKubernetesClient nor DefaultOpenShiftClient directly to create your client instances.  You should instead use KubernetesClientBuilder.  Passing a configuration of HttpClient is instead done through builder methods - withConfig and withHttpClientFactory.  For example:
+
+  ```java
+  KubernetesClient client = new KubernetesClientBuilder().build();
+  ...  
+  ```
+  ```java
+  OpenShiftClient openShiftClient = new new KubernetesClientBuilder().withConfig(new OpenShiftConfigBuilder()...build()).build().adapt(OpenShiftClient.class);
+  ...
+  ```
 
 ### OkHttp HttpClient
 
@@ -85,6 +96,8 @@ The group on the object being deserialized is not required to match the prospect
 - Removed HttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead
 - Removed methods on SharedInformerFactory dealing with the OperationContext
 - Removed DefaultKubernetesClient and DefaultOpenShiftClient constructors directly referencing OkHttp - use OkHttpClientImpl to wrap the OkHttpClient, or the OkHttpClientFactory instead.
+- Removed the AutoAdaptableKubernetesClient, use the new KubernetesClientBuilder instead
+- Removed OpenShiftConfig OpenshiftApiGroupsEnabled methods
 
 ### Extension Development
 
@@ -148,9 +161,11 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
   String strValue = i2.getStrVal();
   ```
 
-## Service Catalog Changes
+## Extension Changes
 
-io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+- io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+
+- io.fabric8.volumesnapshot.client.internal.XXXResource interfaces moved to io.fabric8.volumesnapshot.client.XXXResource to no longer be in an internal package.
 
 ## Adapt Changes
 
@@ -159,7 +174,18 @@ Client.isAdaptable and Client.adapt will check first if the existing instance is
 ## Deprecations
 
 - ApiVersionUtil classes in each extension have been deprecated, you should use io.fabric8.kubernetes.client.utils.ApiVersionUtil instead.
+- HttpClientUtils.createHttpClient has been deprecated, you should create your own client factory instead.
+
+- Extension specific EnableXXXMockClient and XXXMockServer classes have been deprecated.  You can simply use EnableKubernetesMockClient and KubernetesMockServer instead. Dependencies on the xxx-mock jar are then no longer needed, just a dependency to kubernetes-server-mock.
 
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
+
+## Boolean Changes
+
+The usage of Boolean in the api was removed where it was not a nullable value.  Please expect a boolean primitive from methods such as delete, copy, or as an argument in Loggable.getLog
+
+## Evict Changes
+
+Evictable.evict will throw an exception rather than returning false if the pod is not found.  This ensures that false strictly means that the evict failed.

@@ -17,9 +17,9 @@
 package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class NewProjectExamples {
@@ -29,7 +29,8 @@ public class NewProjectExamples {
     if (args.length > 0) {
       configBuilder.withMasterUrl(args[0]);
     }
-    try (OpenShiftClient client = new DefaultOpenShiftClient(configBuilder.build())) {
+    try (OpenShiftClient client = new KubernetesClientBuilder()
+      .withConfig(configBuilder.build()).build().adapt(OpenShiftClient.class)) {
       ProjectRequest request = null;
       try {
           request = client.projectrequests().create(

@@ -16,7 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 public class JArrayNameAndType extends JavaNameAndType {
-    public JArrayNameAndType(String name) {
-        super(name, JavaType.ARRAY);
-    }
+  public JArrayNameAndType(String name) {
+    super(name, JavaType.ARRAY);
+  }
 }

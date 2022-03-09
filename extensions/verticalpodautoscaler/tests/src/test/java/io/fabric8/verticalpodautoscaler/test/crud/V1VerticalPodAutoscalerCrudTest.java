@@ -15,19 +15,21 @@
  */
 package io.fabric8.verticalpodautoscaler.test.crud;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerBuilder;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList;
 import io.fabric8.verticalpodautoscaler.client.VerticalPodAutoscalerClient;
-import io.fabric8.verticalpodautoscaler.server.mock.EnableVerticalPodAutoscalerMockClient;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableVerticalPodAutoscalerMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class V1VerticalPodAutoscalerCrudTest {
   VerticalPodAutoscalerClient client;
 
@@ -62,7 +64,7 @@ class V1VerticalPodAutoscalerCrudTest {
   void shouldLoadVerticalPodAutoscaler() {
 
     String certificateDefinition = String.join("\n", Arrays.asList(
-      "apiVersion: autoscaling.k8s.io/v1",
+        "apiVersion: autoscaling.k8s.io/v1",
         "kind: VerticalPodAutoscaler",
         "metadata:",
         "  name: my-app-vpa",
@@ -77,15 +79,18 @@ class V1VerticalPodAutoscalerCrudTest {
         "    containerPolicies:",
         "      - containerName: container",
         "        controlledResources: [\"cpu\", \"memory\"]",
-        "        controlledValues: RequestsOnly"
-    ));
-    VerticalPodAutoscaler verticalPodAutoscaler = client.v1().verticalpodautoscalers().inNamespace("ns4").load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
+        "        controlledValues: RequestsOnly"));
+    VerticalPodAutoscaler verticalPodAutoscaler = client.v1().verticalpodautoscalers().inNamespace("ns4")
+        .load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
     assertEquals("my-app-vpa", verticalPodAutoscaler.getMetadata().getName());
     assertEquals("my-app", verticalPodAutoscaler.getSpec().getTargetRef().getName());
     assertEquals("Auto", verticalPodAutoscaler.getSpec().getUpdatePolicy().getUpdateMode());
-    assertEquals("container", verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getContainerName());
-    assertEquals(Arrays.asList("cpu", "memory"), verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getControlledResources());
-    assertEquals("RequestsOnly", verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getControlledValues());
+    assertEquals("container",
+        verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getContainerName());
+    assertEquals(Arrays.asList("cpu", "memory"),
+        verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getControlledResources());
+    assertEquals("RequestsOnly",
+        verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getControlledValues());
   }
 
 }

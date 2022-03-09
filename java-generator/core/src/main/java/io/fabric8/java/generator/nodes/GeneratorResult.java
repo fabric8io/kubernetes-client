@@ -16,53 +16,54 @@
 package io.fabric8.java.generator.nodes;
 
 import com.github.javaparser.ast.CompilationUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GeneratorResult {
 
-    public static class ClassResult {
-        private final String name;
-        private final CompilationUnit cu;
+  public static class ClassResult {
+    private final String name;
+    private final CompilationUnit cu;
 
-        public String getName() {
-            return name;
-        }
-
-        public CompilationUnit getCompilationUnit() {
-            return cu;
-        }
-
-        public ClassResult(String name, CompilationUnit cu) {
-            this.name = name;
-            this.cu = cu;
-        }
+    public String getName() {
+      return name;
     }
 
-    private final List<ClassResult> topLevelClasses;
-
-    public List<ClassResult> getInnerClasses() {
-        return innerClasses;
+    public CompilationUnit getCompilationUnit() {
+      return cu;
     }
 
-    private final List<ClassResult> innerClasses;
-
-    public List<ClassResult> getTopLevelClasses() {
-        return topLevelClasses;
+    public ClassResult(String name, CompilationUnit cu) {
+      this.name = name;
+      this.cu = cu;
     }
+  }
 
-    public GeneratorResult() {
-        this.topLevelClasses = new ArrayList<>();
-        this.innerClasses = new ArrayList<>();
-    }
+  private final List<ClassResult> topLevelClasses;
 
-    public GeneratorResult(List<ClassResult> topLevelClasses) {
-        this.topLevelClasses = topLevelClasses;
-        this.innerClasses = new ArrayList<>();
-    }
+  public List<ClassResult> getInnerClasses() {
+    return innerClasses;
+  }
 
-    public GeneratorResult(List<ClassResult> topLevelClasses, List<ClassResult> innerClasses) {
-        this.topLevelClasses = topLevelClasses;
-        this.innerClasses = innerClasses;
-    }
+  private final List<ClassResult> innerClasses;
+
+  public List<ClassResult> getTopLevelClasses() {
+    return topLevelClasses;
+  }
+
+  public GeneratorResult() {
+    this.topLevelClasses = new ArrayList<>();
+    this.innerClasses = new ArrayList<>();
+  }
+
+  public GeneratorResult(List<ClassResult> topLevelClasses) {
+    this.topLevelClasses = topLevelClasses;
+    this.innerClasses = new ArrayList<>();
+  }
+
+  public GeneratorResult(List<ClassResult> topLevelClasses, List<ClassResult> innerClasses) {
+    this.topLevelClasses = topLevelClasses;
+    this.innerClasses = innerClasses;
+  }
 }

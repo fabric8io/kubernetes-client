@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class LoadExample {
     if (args.length > 0) {
       configBuilder.withMasterUrl(args[0]);
     }
-    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient kubernetesClient = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
       final List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).get();

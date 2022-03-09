@@ -53,58 +53,55 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-apps-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-cluster-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-discovery-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-observability-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-operator-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-placementruleapps-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-policy-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-search-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>open-cluster-management-agent-model</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
       <exclusions>
         <exclusion>
           <groupId>io.sundr</groupId>
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>

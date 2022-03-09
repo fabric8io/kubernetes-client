@@ -16,9 +16,9 @@
 
 package io.fabric8.openshift.examples;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class ImageStreamTagExample {
 
   public static void main(String[] args) throws InterruptedException {
 
-    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       final String isTagName = "bar1:1.0.12";
       final ImageStreamTag isTag = client.imageStreamTags().inNamespace(project).createOrReplace(

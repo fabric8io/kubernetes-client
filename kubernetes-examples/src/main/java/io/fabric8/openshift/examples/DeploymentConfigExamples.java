@@ -18,8 +18,8 @@ package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -34,7 +34,7 @@ public class DeploymentConfigExamples {
   private static final String IMAGE = "busybox";
 
   public static void main(String[] args)  {
-    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient()) {
+    try (KubernetesClient kubernetesClient = new KubernetesClientBuilder().build()) {
       final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
       final String project;

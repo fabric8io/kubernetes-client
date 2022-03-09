@@ -33,12 +33,14 @@ import java.util.Queue;
 /**
  * A composite dispatcher consistent of a {@link MockDispatcher} and a {@link KubernetesCrudDispatcher}.
  *
- * <p> Any request matching a pre-recorded response for the MockDispatcher is handled by the MockDispatcher.
+ * <p>
+ * Any request matching a pre-recorded response for the MockDispatcher is handled by the MockDispatcher.
  * The rest of requests are forwarded to the KubernetesCrudDispatcher.
  *
- * <p> This dispatcher is useful to use the KubernetesMockServer in a mixed CRUD mode.
+ * <p>
+ * This dispatcher is useful to use the KubernetesMockServer in a mixed CRUD mode.
  */
-public class KubernetesMixedDispatcher extends Dispatcher {
+public class KubernetesMixedDispatcher extends Dispatcher implements Resetable {
 
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final MockDispatcher mockDispatcher;
@@ -49,7 +51,7 @@ public class KubernetesMixedDispatcher extends Dispatcher {
   }
 
   public KubernetesMixedDispatcher(
-    Map<ServerRequest, Queue<ServerResponse>> responses, List<CustomResourceDefinitionContext> crdContexts) {
+      Map<ServerRequest, Queue<ServerResponse>> responses, List<CustomResourceDefinitionContext> crdContexts) {
     this.responses = responses;
     mockDispatcher = new MockDispatcher(responses);
     kubernetesCrudDispatcher = new KubernetesCrudDispatcher(crdContexts);
@@ -58,10 +60,15 @@ public class KubernetesMixedDispatcher extends Dispatcher {
   @Override
   public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
     final Queue<ServerResponse> responseQueue = responses.get(
-      new SimpleRequest(HttpMethod.valueOf(request.getMethod()), request.getPath()));
+        new SimpleRequest(HttpMethod.valueOf(request.getMethod()), request.getPath()));
     if (responseQueue != null && !responseQueue.isEmpty()) {
       return mockDispatcher.dispatch(request);
     }
     return kubernetesCrudDispatcher.dispatch(request);
+  }
+
+  @Override
+  public void reset() {
+    this.kubernetesCrudDispatcher.reset();
   }
 }

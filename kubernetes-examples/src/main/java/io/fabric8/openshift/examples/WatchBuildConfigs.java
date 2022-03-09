@@ -16,12 +16,12 @@
 
 package io.fabric8.openshift.examples;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class WatchBuildConfigs {
   private static final Logger logger = LoggerFactory.getLogger(WatchBuildConfigs.class);
 
   public static void main(String[] args) {
-    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       logger.info("Watching BuildConfigs in namespace {}", namespace);
       try (Watch watchable = client.buildConfigs().inNamespace(namespace).watch(new Watcher<BuildConfig>() {
