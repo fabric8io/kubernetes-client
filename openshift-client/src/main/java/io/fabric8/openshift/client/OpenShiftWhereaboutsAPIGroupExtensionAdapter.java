@@ -15,14 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftWhereaboutsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftWhereaboutsAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "whereabouts.cni.cncf.io";
-  }
+public class OpenShiftWhereaboutsAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftWhereaboutsAPIGroupClient> {
 
   @Override
   public Class<OpenShiftWhereaboutsAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenShiftWhereaboutsAPIGroupExtensionAdapter extends APIGroupExtens
   }
 
   @Override
-  protected OpenShiftWhereaboutsAPIGroupClient newInstance(Client client) {
+  public OpenShiftWhereaboutsAPIGroupClient adapt(Client client) {
     return new OpenShiftWhereaboutsAPIGroupClient(client);
   }
 

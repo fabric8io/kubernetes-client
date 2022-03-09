@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -34,11 +35,47 @@ public interface Client extends ClientContext, Closeable {
    * Checks if the client can be adapted to an other client type.
    * @param type  The target client class.
    * @param <C>   The target client type.
-   * @return      Returns true if a working {@link io.fabric8.kubernetes.client.ExtensionAdapter} is found.
+   * @return      Returns true if a working {@link io.fabric8.kubernetes.client.extension.ExtensionAdapter} is found.
+   * @deprecated use {@link #supports(Class)} instead
    */
-  <C> Boolean  isAdaptable(Class<C> type);
+  @Deprecated
+  default <C extends Client> Boolean  isAdaptable(Class<C> type) {
+    return supports(type);
+  }
 
-  <C> C adapt(Class<C> type);
+  /**
+   * For {@link KubernetesResource} classes, the logic will check for the existence of a handler
+   * or check the api server for support.
+   *
+   * For {@link Client} classes, the logic checks that the requirements of the target client are meet. (e.g. checks that openshift is available).
+   * <br>NOTE: this is mostly meaningful for the openshift client.  Other clients may provide
+   * operations that span apiGroups, so it is better to check for specific {@link KubernetesResource} support.
+   *
+   * <p>NOTE: {@link Client} check results are not cached.
+   *
+   * @param type to check for support
+   * @return boolean value indicating whether this extension is supported
+   */
+  <C> boolean supports(Class<C> type);
+
+  /**
+   * Checks for the api group.  exact = false will scan all groups
+   * for a suffix match. exact = true will look only for that apiGroup.
+   * @param apiGroup to check for
+   * @param exact true for an exact match
+   * @return true if there is a match
+   */
+  boolean hasApiGroup(String apiGroup, boolean exact);
+
+  /**
+   * Adapt the client to another type.  This will not perform any check of whether the new client
+   * type is supported.  It may even return the same object if it already supports the given
+   * client type.
+   *
+   * @param client The instance of {@link Client} to adapt.
+   * @return The refined instance of the {@link Client}.
+   */
+  <C extends Client> C adapt(Class<C> type);
 
   URL getMasterUrl();
 
@@ -52,7 +89,9 @@ public interface Client extends ClientContext, Closeable {
    * Returns true if this cluster supports the given API path or API Group ID
    * @param path Path as string
    * @return returns boolean value indicating whether it supports.
+   * @deprecated use {@link #supports(Class)} instead
    */
+  @Deprecated
   boolean supportsApiPath(String path);
 
   @Override
@@ -80,6 +119,7 @@ public interface Client extends ClientContext, Closeable {
 
   /**
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
+   * <br>Note: this call is generally for use internally within the DSL, not by end users
    *
    * <p>
    *   Note: your resource POJO (T in this context) must implement

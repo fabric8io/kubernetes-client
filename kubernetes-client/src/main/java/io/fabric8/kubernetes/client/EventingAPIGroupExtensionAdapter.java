@@ -15,12 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class EventingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<EventingAPIGroupClient> {
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-  @Override
-  protected String getAPIGroupName() {
-    return "events";
-  }
+public class EventingAPIGroupExtensionAdapter implements ExtensionAdapter<EventingAPIGroupClient> {
 
   @Override
   public Class<EventingAPIGroupClient> getExtensionType() {
@@ -28,7 +25,7 @@ public class EventingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<E
   }
 
   @Override
-  protected EventingAPIGroupClient newInstance(Client client) {
+  public EventingAPIGroupClient adapt(Client client) {
     return new EventingAPIGroupClient(client);
   }
 

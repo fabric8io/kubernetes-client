@@ -15,14 +15,10 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenClusterManagementDiscoveryAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenClusterManagementDiscoveryAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "discovery.open-cluster-management.io";
-  }
+public class OpenClusterManagementDiscoveryAPIGroupExtensionAdapter implements ExtensionAdapter<OpenClusterManagementDiscoveryAPIGroupClient> {
 
   @Override
   public Class<OpenClusterManagementDiscoveryAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenClusterManagementDiscoveryAPIGroupExtensionAdapter extends APIG
   }
 
   @Override
-  protected OpenClusterManagementDiscoveryAPIGroupClient newInstance(Client client) {
+  public OpenClusterManagementDiscoveryAPIGroupClient adapt(Client client) {
     return new OpenClusterManagementDiscoveryAPIGroupClient(client);
   }
 }

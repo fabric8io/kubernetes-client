@@ -16,17 +16,9 @@
 package io.fabric8.chaosmesh.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class ChaosMeshExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<ChaosMeshClient> {
-
-   static final ConcurrentMap<URL, Boolean> IS_CHAOS_MESH = new ConcurrentHashMap<>();
-   static final ConcurrentMap<URL, Boolean> USES_CHAOS_MESH_APIGROUPS = new ConcurrentHashMap<>();
+public class ChaosMeshExtensionAdapter implements ExtensionAdapter<ChaosMeshClient> {
 
 	@Override
 	public Class<ChaosMeshClient> getExtensionType() {
@@ -34,12 +26,13 @@ public class ChaosMeshExtensionAdapter extends ExtensionAdapterSupport implement
 	}
 
 	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_CHAOS_MESH, USES_CHAOS_MESH_APIGROUPS, "chaos-mesh.org");
-	}
-
-	@Override
 	public ChaosMeshClient adapt(Client client) {
             return new DefaultChaosMeshClient(client);
 	}
+
+	@Override
+	public boolean isSupported(Client client) {
+	  return client.hasApiGroup("chaos-mesh.org", true);
+	}
+
 }

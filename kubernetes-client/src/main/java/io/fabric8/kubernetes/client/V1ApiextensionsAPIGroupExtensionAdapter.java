@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class V1ApiextensionsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1ApiextensionsAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "apiextensions/v1";
-  }
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+
+public class V1ApiextensionsAPIGroupExtensionAdapter implements ExtensionAdapter<V1ApiextensionsAPIGroupClient> {
 
   @Override
   public Class<V1ApiextensionsAPIGroupClient> getExtensionType() {
@@ -27,7 +25,7 @@ public class V1ApiextensionsAPIGroupExtensionAdapter extends APIGroupExtensionAd
   }
 
   @Override
-  protected V1ApiextensionsAPIGroupClient newInstance(Client client) {
+  public V1ApiextensionsAPIGroupClient adapt(Client client) {
     return new V1ApiextensionsAPIGroupClient(client);
   }
 }

@@ -39,7 +39,7 @@
     </osgi.export>
     <osgi.include.resources>
       ${osgi.include.resources.default},
-      /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter,
+      /META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter,
     </osgi.include.resources>
   </properties>
 

@@ -252,7 +252,7 @@
                 <Export-Service>${osgi.export.service}</Export-Service>
                 <Include-Resource>
                   /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
-                  /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
+                  /META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter
                 </Include-Resource>
               </instructions>
               <classifier>bundle</classifier>

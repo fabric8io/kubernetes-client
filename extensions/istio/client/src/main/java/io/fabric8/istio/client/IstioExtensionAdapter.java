@@ -16,17 +16,9 @@
 package io.fabric8.istio.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class IstioExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<IstioClient> {
-
-  private static final ConcurrentMap<URL, Boolean> IS_ISTIO = new ConcurrentHashMap<>();
-  private static final ConcurrentMap<URL, Boolean> USES_ISTIO_APIGROUPS = new ConcurrentHashMap<>();
+public class IstioExtensionAdapter implements ExtensionAdapter<IstioClient> {
 
   @Override
   public Class<IstioClient> getExtensionType() {
@@ -34,12 +26,12 @@ public class IstioExtensionAdapter extends ExtensionAdapterSupport implements Ex
   }
 
   @Override
-  public Boolean isAdaptable(Client client) {
-    return isAdaptable(client, IS_ISTIO, USES_ISTIO_APIGROUPS, "istio.io");
+  public IstioClient adapt(Client client) {
+    return new DefaultIstioClient(client);
   }
 
   @Override
-  public IstioClient adapt(Client client) {
-    return new DefaultIstioClient(client);
+  public boolean isSupported(Client client) {
+    return client.hasApiGroup("networking.istio.io", true);
   }
 }

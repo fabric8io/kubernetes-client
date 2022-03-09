@@ -15,14 +15,10 @@
  */
 package io.fabric8.camelk.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha1APIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "v1alpha1";
-  }
+public class V1alpha1APIGroupExtensionAdapter implements ExtensionAdapter<V1alpha1APIGroupClient> {
 
   @Override
   public Class<V1alpha1APIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V
   }
 
   @Override
-  protected V1alpha1APIGroupClient newInstance(Client client) {
+  public V1alpha1APIGroupClient adapt(Client client) {
     return new V1alpha1APIGroupClient(client);
   }
 }

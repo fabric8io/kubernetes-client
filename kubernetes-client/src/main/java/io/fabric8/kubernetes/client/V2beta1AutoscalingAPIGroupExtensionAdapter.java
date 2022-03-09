@@ -15,12 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class V2beta1AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V2beta1AutoscalingAPIGroupClient> {
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-  @Override
-  protected String getAPIGroupName() {
-    return "autoscaling/v2beta1";
-  }
+public class V2beta1AutoscalingAPIGroupExtensionAdapter implements ExtensionAdapter<V2beta1AutoscalingAPIGroupClient> {
 
   @Override
   public Class<V2beta1AutoscalingAPIGroupClient> getExtensionType() {
@@ -28,7 +25,7 @@ public class V2beta1AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensio
   }
 
   @Override
-  protected V2beta1AutoscalingAPIGroupClient newInstance(Client client) {
+  public V2beta1AutoscalingAPIGroupClient adapt(Client client) {
     return new V2beta1AutoscalingAPIGroupClient(client);
   }
 

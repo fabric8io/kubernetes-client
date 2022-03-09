@@ -16,17 +16,9 @@
 package io.fabric8.knative.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class KnativeExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<KnativeClient> {
-
-    static final ConcurrentMap<URL, Boolean> IS_TEKTON = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_TEKTON_APIGROUPS = new ConcurrentHashMap<>();
+public class KnativeExtensionAdapter implements ExtensionAdapter<KnativeClient> {
 
 	@Override
 	public Class<KnativeClient> getExtensionType() {
@@ -34,12 +26,13 @@ public class KnativeExtensionAdapter extends ExtensionAdapterSupport implements 
 	}
 
 	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_TEKTON, USES_TEKTON_APIGROUPS, "knative.dev");
-	}
-
-	@Override
 	public KnativeClient adapt(Client client) {
             return new DefaultKnativeClient(client);
 	}
+
+	@Override
+	public boolean isSupported(Client client) {
+	  return client.hasApiGroup("knative.dev", true);
+	}
+
 }

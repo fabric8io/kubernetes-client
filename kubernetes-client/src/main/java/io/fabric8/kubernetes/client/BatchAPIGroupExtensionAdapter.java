@@ -15,17 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class BatchAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<BatchAPIGroupClient> {
-
-  @Override
-  protected String getAPIGroupName() {
-    return "batch";
-  }
+public class BatchAPIGroupExtensionAdapter implements ExtensionAdapter<BatchAPIGroupClient> {
 
   @Override
   public Class<BatchAPIGroupClient> getExtensionType() {
@@ -33,7 +29,7 @@ public class BatchAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<Batc
   }
 
   @Override
-  protected BatchAPIGroupClient newInstance(Client client) {
+  public BatchAPIGroupClient adapt(Client client) {
     return new BatchAPIGroupClient(client);
   }
 }

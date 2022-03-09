@@ -15,17 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class StorageAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<StorageAPIGroupClient> {
-
-  @Override
-  protected String getAPIGroupName() {
-    return "storage";
-  }
+public class StorageAPIGroupExtensionAdapter implements ExtensionAdapter<StorageAPIGroupClient> {
 
   @Override
   public Class<StorageAPIGroupClient> getExtensionType() {
@@ -33,7 +29,7 @@ public class StorageAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<St
   }
 
   @Override
-  protected StorageAPIGroupClient newInstance(Client client) {
+  public StorageAPIGroupClient adapt(Client client) {
     return new StorageAPIGroupClient(client);
   }
 

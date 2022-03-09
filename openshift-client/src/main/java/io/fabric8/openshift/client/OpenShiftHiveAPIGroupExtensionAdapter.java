@@ -15,14 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftHiveAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftHiveAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "hive";
-  }
+public class OpenShiftHiveAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftHiveAPIGroupClient> {
 
   @Override
   public Class<OpenShiftHiveAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenShiftHiveAPIGroupExtensionAdapter extends APIGroupExtensionAdap
   }
 
   @Override
-  protected OpenShiftHiveAPIGroupClient newInstance(Client client) {
+  public OpenShiftHiveAPIGroupClient adapt(Client client) {
     return new OpenShiftHiveAPIGroupClient(client);
   }
 }

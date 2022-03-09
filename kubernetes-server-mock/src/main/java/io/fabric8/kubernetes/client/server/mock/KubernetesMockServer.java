@@ -32,10 +32,13 @@ import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class KubernetesMockServer extends DefaultMockServer implements Resetable {
 
@@ -44,7 +47,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final VersionInfo versionInfo;
   private Dispatcher dispatcher;
-  private Predicate<Class<?>> adaptableOverride;
+  private List<Pattern> unsupportedPatterns = Collections.emptyList();
 
   public KubernetesMockServer() {
     this(true);
@@ -102,12 +105,16 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   public NamespacedKubernetesClient createClient() {
     Config config = getMockConfiguration();
     DefaultKubernetesClient defaultKubernetesClient = new DefaultKubernetesClient(config);
-    defaultKubernetesClient.setAdaptableOverride(adaptableOverride);
+    defaultKubernetesClient.setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
     return defaultKubernetesClient;
   }
 
-  void setAdaptableOverride(Predicate<Class<?>> adaptableOverride) {
-    this.adaptableOverride = adaptableOverride;
+  void setUnsupported(String[] unsupported) {
+    this.unsupportedPatterns = new ArrayList<>(unsupported.length);
+    for (int i = 0; i < unsupported.length; i++) {
+      String asRegex = unsupported[i].replace(".", "\\.").replace("*", ".*");
+      this.unsupportedPatterns.add(Pattern.compile(asRegex));
+    }
   }
 
   /**

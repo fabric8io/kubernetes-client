@@ -16,60 +16,56 @@
 
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 
 import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class OpenshiftAdapterSupport {
+public abstract class OpenshiftAdapterSupport<T extends OpenShiftClient> implements ExtensionAdapter<T> {
 
-  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new ConcurrentHashMap<>();
+  private static final String API_GROUP_SUFFIX = "openshift.io";
 
-  public Boolean isAdaptable(Client client) {
+  @Override
+  public boolean isSupported(Client client) {
     OpenShiftConfig config = OpenShiftConfig.wrap(client.getConfiguration());
-    return hasCustomOpenShiftUrl(config) || isOpenShiftAPIGroups(client.getHttpClient(), config);
+    return hasCustomOpenShiftUrl(config) || isOpenShiftAPIGroups(client, config);
   }
 
-  public DefaultOpenShiftClient adapt(Client client) {
-    return new DefaultOpenShiftClient(client);
+  @Override
+  public T adapt(Client client) {
+    return (T) new DefaultOpenShiftClient(client);
   }
 
   /**
    * Check if OpenShift API Groups are available
-   * 
+   *
    * @param client The client.
    * @param config {@link OpenShiftConfig} OpenShift Configuration
    * @return True if oapi is found in the root paths.
    */
-  public static boolean isOpenShiftAPIGroups(HttpClient client, OpenShiftConfig config) {
+  public static boolean isOpenShiftAPIGroups(Client client, OpenShiftConfig config) {
     if (config.isDisableApiGroupCheck()) {
       return true;
     }
-    String url = config.getMasterUrl();
-    return API_GROUPS_ENABLED_PER_URL.computeIfAbsent(url,
-        k -> {
-          APIGroupList apiGroups = new BaseClient(adaptHttpClient(client, config), config).getApiGroups();
-          if (apiGroups == null) {
-            return false;
-          }
-          return apiGroups
-              .getGroups()
-              .stream()
-              .anyMatch(g -> g.getName().endsWith("openshift.io"));
-        });
+    try {
+      // test first on the existing client
+      return client.hasApiGroup(API_GROUP_SUFFIX, false);
+    } catch (KubernetesClientException e) {
+      if (!(client.getConfiguration() instanceof OpenShiftConfig)) {
+        return new BaseClient(adaptHttpClient(client.getHttpClient(), config), config).hasApiGroup(API_GROUP_SUFFIX, false);
+      }
+    }
+    return false;
   }
 
   /**
    * Checks if a custom URL for OpenShift has been used.
-   * 
+   *
    * @param config The openshift configuration.
    * @return True if both master and openshift url have the same root.
    */
@@ -91,9 +87,6 @@ public class OpenshiftAdapterSupport {
    * @return an adapted OkHttpClient instance
    */
   public static HttpClient adaptHttpClient(HttpClient httpClient, OpenShiftConfig config) {
-    if (httpClient == null) {
-      httpClient = HttpClientUtils.createHttpClient(config);
-    }
     HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
     return builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, config))
         .build();

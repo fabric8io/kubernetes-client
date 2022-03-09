@@ -15,14 +15,10 @@
  */
 package io.fabric8.istio.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class V1alpha3APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha3APIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "v1alpha3";
-  }
+public class V1alpha3APIGroupExtensionAdapter implements ExtensionAdapter<V1alpha3APIGroupClient> {
 
   @Override
   public Class<V1alpha3APIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class V1alpha3APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V
   }
 
   @Override
-  protected V1alpha3APIGroupClient newInstance(Client client) {
+  public V1alpha3APIGroupClient adapt(Client client) {
     return new V1alpha3APIGroupClient(client);
   }
 }

@@ -84,7 +84,7 @@ To use it, exclude the kubernetes-httpclient-okhttp dependency and add the kuber
 
 - Readiness/OpenShiftReadiness moved from client.internal.readiness to client.readiness
 - client.utils classes including Base64, CreateOrReplaceHelper, DeleteOrCreateHelper, OptionalDendencyWrapper, etc. are not in the -api jar, they are still in the -client jar under utils.internal.
-- Some other effectively internal classes in dsl.base and other packages were moved to corresponding internal packages - it is unlikely this will affect you unless you developed a custom extension.
+- Some other effectively internal classes in dsl.base and other packages were moved to corresponding internal packages - it is unlikely this will affect you unless you developed a custom extension.  Extension development can now be done exclusively against the api, please see the previous section.
 
 ## Deserialization Resolution
 
@@ -102,6 +102,11 @@ The group on the object being deserialized is not required to match the prospect
 ### Extension Development
 
 Extension development may now be done using only the kubernetes-client-api dependency.  Please see the [extensions](../extensions).
+
+Of note:
+- extension related classes are now in the package io.fabric8.kubernetes.client.extension, which means that you should now use META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter
+- Unless you need support for specific metadata to be returned by calls to rootPaths, apiGroups, or apiResources, you do not need to create a mock module.  The mocking logic can accomodate for based adapt/support checks.
+- Do not include any check of support in ExtensionAdapter.adapt
 
 ## Resource Changes
 
@@ -171,12 +176,15 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
 
 Client.isAdaptable and Client.adapt will check first if the existing instance is compatible with the desired type.
 
+Client.adapt will no longer perform the isAdaptable check - that is you may freely adapt from one Client to another as long as the extension exists.  If you need to make a specific check of support, please use the Client.supports method.
+
 ## Deprecations
 
 - ApiVersionUtil classes in each extension have been deprecated, you should use io.fabric8.kubernetes.client.utils.ApiVersionUtil instead.
 - HttpClientUtils.createHttpClient has been deprecated, you should create your own client factory instead.
 
 - Extension specific EnableXXXMockClient and XXXMockServer classes have been deprecated.  You can simply use EnableKubernetesMockClient and KubernetesMockServer instead. Dependencies on the xxx-mock jar are then no longer needed, just a dependency to kubernetes-server-mock.
+- Client.supportsApiPath and Client.isAdaptable have been deprecated.  Please use Client.supports and Client.hasApiGroup as needed.
 
 ## Object Sorting
 

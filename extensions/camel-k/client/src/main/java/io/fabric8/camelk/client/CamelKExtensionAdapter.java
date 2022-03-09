@@ -16,17 +16,9 @@
 package io.fabric8.camelk.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class CamelKExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<CamelKClient> {
-
-    static final ConcurrentMap<URL, Boolean> IS_CAMELK = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_CAMELK_APIGROUPS = new ConcurrentHashMap<>();
+public class CamelKExtensionAdapter implements ExtensionAdapter<CamelKClient> {
 
 	@Override
 	public Class<CamelKClient> getExtensionType() {
@@ -34,13 +26,13 @@ public class CamelKExtensionAdapter extends ExtensionAdapterSupport implements E
 	}
 
 	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_CAMELK, USES_CAMELK_APIGROUPS, "camel.apache.org");
-	}
+	public CamelKClient adapt(Client client) {
+    return new DefaultCamelKClient(client);
+  }
 
 	@Override
-	public CamelKClient adapt(Client client) {
-            return new DefaultCamelKClient(client);
-  }
+	public boolean isSupported(Client client) {
+	  return client.hasApiGroup("camel.apache.org", true);
+	}
 
 }

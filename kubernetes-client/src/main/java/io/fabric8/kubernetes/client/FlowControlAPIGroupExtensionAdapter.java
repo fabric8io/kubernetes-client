@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class FlowControlAPIGroupExtensionAdapter  extends APIGroupExtensionAdapter<FlowControlAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "flowcontrol.apiserver.k8s.io";
-  }
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+
+public class FlowControlAPIGroupExtensionAdapter implements ExtensionAdapter<FlowControlAPIGroupClient> {
 
   @Override
   public Class<FlowControlAPIGroupClient> getExtensionType() {
@@ -27,7 +25,7 @@ public class FlowControlAPIGroupExtensionAdapter  extends APIGroupExtensionAdapt
   }
 
   @Override
-  protected FlowControlAPIGroupClient newInstance(Client client) {
+  public FlowControlAPIGroupClient adapt(Client client) {
     return new FlowControlAPIGroupClient(client);
   }
 }

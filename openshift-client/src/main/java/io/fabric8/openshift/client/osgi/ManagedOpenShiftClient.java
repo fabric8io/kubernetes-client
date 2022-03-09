@@ -61,6 +61,7 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -760,7 +761,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public <C> C adapt(Class<C> type) {
+  public <C extends Client> C adapt(Class<C> type) {
     return delegate.adapt(type);
   }
 

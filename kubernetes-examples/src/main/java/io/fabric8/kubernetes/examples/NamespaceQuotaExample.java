@@ -20,10 +20,8 @@ import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
-import io.fabric8.kubernetes.client.APIGroupNotAvailableException;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +60,9 @@ public class NamespaceQuotaExample {
             .build());
         logger.info("Create resource quota: {}", quota.getMetadata().getName());
 
-        try {
-          logger.info("Listing jobs in namespace");
-          client.batch().v1().jobs().inNamespace(namespace).list().getItems()
-            .forEach(j -> logger.info(" - {}", j.getMetadata().getName()));
-        } catch (APIGroupNotAvailableException e) {
-          logger.warn("Skipping jobs example - extensions API group not available");
-        }
+        logger.info("Listing jobs in namespace");
+        client.batch().v1().jobs().inNamespace(namespace).list().getItems()
+          .forEach(j -> logger.info(" - {}", j.getMetadata().getName()));
       } finally {
         // Delete namespace
         client.namespaces().withName(namespace).delete();

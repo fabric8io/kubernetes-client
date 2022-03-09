@@ -62,12 +62,17 @@ public abstract class ClientAdapter<C extends Client> implements Client {
   }
 
   @Override
-  public <A> Boolean isAdaptable(Class<A> type) {
-    return client.isAdaptable(type);
+  public <T> boolean supports(Class<T> type) {
+    return client.supports(type);
   }
 
   @Override
-  public <A> A adapt(Class<A> type) {
+  public boolean hasApiGroup(String apiGroup, boolean exact) {
+    return client.hasApiGroup(apiGroup, exact);
+  }
+
+  @Override
+  public <A extends Client> A adapt(Class<A> type) {
     return client.adapt(type);
   }
 

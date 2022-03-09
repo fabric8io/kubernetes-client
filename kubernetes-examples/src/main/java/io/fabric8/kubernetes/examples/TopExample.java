@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -33,7 +34,7 @@ public class TopExample {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-      if (!client.supportsApiPath("/apis/metrics.k8s.io")) {
+      if (!client.supports(NodeMetrics.class)) {
         logger.warn("Metrics API is not enabled in your cluster");
         return;
       }

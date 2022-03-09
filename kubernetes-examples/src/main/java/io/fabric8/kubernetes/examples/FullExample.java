@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.client.APIGroupNotAvailableException;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -73,11 +72,7 @@ public class FullExample {
                 ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec().addToHard("pods", new Quantity("10")).endSpec().build();
                 log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
 
-                try {
-                  log("Get jobs in namespace", client.batch().v1().jobs().inNamespace("thisisatest").list());
-                } catch (APIGroupNotAvailableException e) {
-                  log("Skipping jobs example - extensions API group not available");
-                }
+                log("Get jobs in namespace", client.batch().v1().jobs().inNamespace("thisisatest").list());
 
                 // Create an RC
                 ReplicationController rc = new ReplicationControllerBuilder()

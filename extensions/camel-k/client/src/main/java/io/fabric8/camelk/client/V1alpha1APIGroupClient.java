@@ -34,7 +34,7 @@ public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupClient
   }
 
   @Override
-  protected V1alpha1APIGroupClient newInstance(Client client) {
+  public V1alpha1APIGroupClient newInstance(Client client) {
     return new V1alpha1APIGroupClient(client);
   }
 

@@ -16,8 +16,7 @@
 package io.fabric8.servicecatalog.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
@@ -29,15 +28,7 @@ import io.fabric8.servicecatalog.client.internal.ClusterServicePlanOperationsImp
 import io.fabric8.servicecatalog.client.internal.ServiceBindingOperationsImpl;
 import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport
-        implements ExtensionAdapter<ServiceCatalogClient> {
-
-    static final ConcurrentMap<URL, Boolean> IS_SERVICE_CATALOG = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_SERVICE_CATALOG_APIGROUPS = new ConcurrentHashMap<>();
+public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceCatalogClient> {
 
     @Override
     public Class<ServiceCatalogClient> getExtensionType() {
@@ -45,8 +36,8 @@ public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport
     }
 
     @Override
-    public Boolean isAdaptable(Client client) {
-        return isAdaptable(client, IS_SERVICE_CATALOG, USES_SERVICE_CATALOG_APIGROUPS, "servicecatalog.k8s.io");
+    public boolean isSupported(Client client) {
+      return client.hasApiGroup("servicecatalog.k8s.io", true);
     }
 
     @Override

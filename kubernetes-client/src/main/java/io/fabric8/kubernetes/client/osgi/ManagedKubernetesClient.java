@@ -64,7 +64,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
@@ -102,6 +101,7 @@ import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -528,10 +528,15 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public URL getMasterUrl() {
     return delegate.getMasterUrl();
   }
-
+  
   @Override
-  public <C> C adapt(Class<C> type) {
-    return delegate.adapt(type);
+  public <T> boolean supports(Class<T> type) {
+    return delegate.supports(type);
+  }
+  
+  @Override
+  public boolean hasApiGroup(String apiGroup, boolean exact) {
+    return delegate.hasApiGroup(apiGroup, exact);
   }
 
   @Override

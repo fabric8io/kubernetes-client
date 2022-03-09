@@ -15,14 +15,10 @@
  */
 package io.fabric8.certmanager.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class V1alpha2APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha2APIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "v1alpha2";
-  }
+public class V1alpha2APIGroupExtensionAdapter implements ExtensionAdapter<V1alpha2APIGroupClient> {
 
   @Override
   public Class<V1alpha2APIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class V1alpha2APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V
   }
 
   @Override
-  protected V1alpha2APIGroupClient newInstance(Client client) {
+  public V1alpha2APIGroupClient adapt(Client client) {
     return new V1alpha2APIGroupClient(client);
   }
 }

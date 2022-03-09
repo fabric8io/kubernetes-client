@@ -15,14 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftQuotaAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftQuotaAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "quota";
-  }
+public class OpenShiftQuotaAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftQuotaAPIGroupClient> {
 
   @Override
   public Class<OpenShiftQuotaAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenShiftQuotaAPIGroupExtensionAdapter extends APIGroupExtensionAda
   }
 
   @Override
-  protected OpenShiftQuotaAPIGroupClient newInstance(Client client) {
+  public OpenShiftQuotaAPIGroupClient adapt(Client client) {
     return new OpenShiftQuotaAPIGroupClient(client);
   }
 

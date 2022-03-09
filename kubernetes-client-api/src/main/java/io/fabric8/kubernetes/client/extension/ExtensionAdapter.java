@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
+import io.fabric8.kubernetes.client.Client;
 
 import java.util.function.Supplier;
 
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  *
  * @param <C> The Client.
  */
-public interface ExtensionAdapter<C> {
+public interface ExtensionAdapter<C extends Client> {
 
   public interface HandlerFactory {
     <T extends HasMetadata, R extends ExtensibleResourceAdapter<T>> void register(Class<T> type, Supplier<R> target);
@@ -38,20 +38,28 @@ public interface ExtensionAdapter<C> {
   Class<C> getExtensionType();
 
   /**
-   * Checks if it is possible to adapt.
-   * It checks that the requirements of the target client are meet. (e.g. checks that openshift is available).
-   * @param client The instance of {@link Client} to adapt.
-   * @return boolean value indicating whether client is adaptable or not.
+   * Checks that the requirements of the target client are meet. (e.g. checks that openshift is available).
+   * @param client The instance of {@link Client}.
+   * @return boolean value indicating whether this extension is supported
    */
-  Boolean isAdaptable(Client client);
+  default boolean isSupported(Client client) {
+    return true;
+  }
 
   /**
-   * The adapt function.
+   * Adapt the client to another type.  This will not perform any check of whether the new client
+   * type is supported.  It may even return the same object if it already supports the given
+   * client type.
    *
    * @param client The instance of {@link Client} to adapt.
-   * @return The instance of the {@link io.fabric8.kubernetes.client.Client}.
+   * @return The refined instance of the {@link Client}.
    */
   C adapt(Client client);
 
+  /**
+   * Extensions should override to inject {@link ExtensibleResourceAdapter} usage into the {@link HandlerFactory}
+   * @param factory
+   */
   default void registerHandlers(HandlerFactory factory) {}
+
 }
