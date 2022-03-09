@@ -31,7 +31,8 @@ class SupportTest {
 
   KubernetesClient client;
 
-  @Test void testOpenShiftNotSupported() {
+  @Test
+  void testOpenShiftNotSupported() {
     assertFalse(client.supports(OpenShiftClient.class));
     assertFalse(client.isAdaptable(OpenShiftClient.class));
     assertFalse(client.supports(Route.class));

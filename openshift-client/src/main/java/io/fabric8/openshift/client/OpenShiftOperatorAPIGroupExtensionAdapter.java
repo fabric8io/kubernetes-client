@@ -30,4 +30,3 @@ public class OpenShiftOperatorAPIGroupExtensionAdapter implements ExtensionAdapt
     return new OpenShiftOperatorAPIGroupClient(client);
   }
 }
-

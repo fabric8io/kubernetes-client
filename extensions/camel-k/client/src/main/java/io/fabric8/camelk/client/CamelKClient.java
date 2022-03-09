@@ -32,6 +32,7 @@ public interface CamelKClient extends Client {
 
   /**
    * API entrypoint for camel.apache.org/v1alpha1 API group resources
+   * 
    * @return {@link V1alpha1APIGroupDSL} for CamelK resource operations in this API group.
    */
   V1alpha1APIGroupDSL v1alpha1();

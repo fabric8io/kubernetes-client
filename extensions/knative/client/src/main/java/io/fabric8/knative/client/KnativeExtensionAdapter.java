@@ -20,19 +20,19 @@ import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
 public class KnativeExtensionAdapter implements ExtensionAdapter<KnativeClient> {
 
-	@Override
-	public Class<KnativeClient> getExtensionType() {
-		return KnativeClient.class;
-	}
+  @Override
+  public Class<KnativeClient> getExtensionType() {
+    return KnativeClient.class;
+  }
 
-	@Override
-	public KnativeClient adapt(Client client) {
-            return new DefaultKnativeClient(client);
-	}
+  @Override
+  public KnativeClient adapt(Client client) {
+    return new DefaultKnativeClient(client);
+  }
 
-	@Override
-	public boolean isSupported(Client client) {
-	  return client.hasApiGroup("knative.dev", true);
-	}
+  @Override
+  public boolean isSupported(Client client) {
+    return client.hasApiGroup("knative.dev", true);
+  }
 
 }

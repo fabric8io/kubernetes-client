@@ -51,7 +51,6 @@ import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-
 @Component
 @Service
 public class OpenShiftExtensionAdapter extends OpenshiftAdapterSupport<OpenShiftClient> {

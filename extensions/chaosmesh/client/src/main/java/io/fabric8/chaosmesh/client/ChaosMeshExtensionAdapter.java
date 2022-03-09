@@ -20,19 +20,19 @@ import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
 public class ChaosMeshExtensionAdapter implements ExtensionAdapter<ChaosMeshClient> {
 
-	@Override
-	public Class<ChaosMeshClient> getExtensionType() {
-		return ChaosMeshClient.class;
-	}
+  @Override
+  public Class<ChaosMeshClient> getExtensionType() {
+    return ChaosMeshClient.class;
+  }
 
-	@Override
-	public ChaosMeshClient adapt(Client client) {
-            return new DefaultChaosMeshClient(client);
-	}
+  @Override
+  public ChaosMeshClient adapt(Client client) {
+    return new DefaultChaosMeshClient(client);
+  }
 
-	@Override
-	public boolean isSupported(Client client) {
-	  return client.hasApiGroup("chaos-mesh.org", true);
-	}
+  @Override
+  public boolean isSupported(Client client) {
+    return client.hasApiGroup("chaos-mesh.org", true);
+  }
 
 }

@@ -23,7 +23,7 @@ public class AdmissionRegistrationAPIGroupExtensionAdapter implements ExtensionA
   public Class<AdmissionRegistrationAPIGroupClient> getExtensionType() {
     return AdmissionRegistrationAPIGroupClient.class;
   }
-  
+
   @Override
   public AdmissionRegistrationAPIGroupClient adapt(Client client) {
     return new AdmissionRegistrationAPIGroupClient(client);

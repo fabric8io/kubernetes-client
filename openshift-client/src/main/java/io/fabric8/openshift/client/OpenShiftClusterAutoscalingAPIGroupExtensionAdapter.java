@@ -18,7 +18,8 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftClusterAutoscalingAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftClusterAutoscalingAPIGroupClient> {
+public class OpenShiftClusterAutoscalingAPIGroupExtensionAdapter
+    implements ExtensionAdapter<OpenShiftClusterAutoscalingAPIGroupClient> {
 
   @Override
   public Class<OpenShiftClusterAutoscalingAPIGroupClient> getExtensionType() {
@@ -30,4 +31,3 @@ public class OpenShiftClusterAutoscalingAPIGroupExtensionAdapter implements Exte
     return new OpenShiftClusterAutoscalingAPIGroupClient(client);
   }
 }
-

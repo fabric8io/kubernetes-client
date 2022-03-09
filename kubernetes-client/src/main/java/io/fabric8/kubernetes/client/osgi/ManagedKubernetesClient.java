@@ -148,11 +148,11 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_PING_INTE
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY;
 
 @Component(immediate = true, configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.REQUIRE)
-@Service({KubernetesClient.class,NamespacedKubernetesClient.class})
+@Service({ KubernetesClient.class, NamespacedKubernetesClient.class })
 @References({
-  @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
-  @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
-  @Reference(referenceInterface = OAuthTokenProvider.class ,cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind="unbindOAuthTokenProvider")
+    @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
+    @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
+    @Reference(referenceInterface = OAuthTokenProvider.class, cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind = "unbindOAuthTokenProvider")
 })
 public class ManagedKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
@@ -207,10 +207,12 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
       builder.withOauthToken((String) properties.get(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY));
     }
     if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)) {
-      builder.withWatchReconnectInterval(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)));
+      builder.withWatchReconnectInterval(
+          Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)) {
-      builder.withWatchReconnectLimit(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)));
+      builder
+          .withWatchReconnectLimit(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)) {
       builder.withRequestTimeout(Integer.parseInt((String) properties.get(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)));
@@ -229,7 +231,8 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
       builder.withWebsocketTimeout(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)) {
-      builder.withWebsocketPingInterval(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
+      builder.withWebsocketPingInterval(
+          Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_TRUSTSTORE_FILE_PROPERTY)) {
       builder.withTrustStoreFile((String) properties.get(KUBERNETES_TRUSTSTORE_FILE_PROPERTY));
@@ -243,7 +246,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     if (properties.containsKey(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY)) {
       builder.withKeyStorePassphrase((String) properties.get(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY));
     }
-    if (provider != null ) {
+    if (provider != null) {
       builder.withOauthTokenProvider(provider);
     }
 
@@ -257,7 +260,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
-	return delegate.componentstatuses();
+    return delegate.componentstatuses();
   }
 
   @Override
@@ -276,7 +279,8 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(
+      Collection<? extends HasMetadata> items) {
     return delegate.resourceList(items);
   }
 
@@ -284,7 +288,6 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
     return delegate.resourceList(s);
   }
-
 
   @Override
   public NamespaceableResource<HasMetadata> resource(HasMetadata is) {
@@ -390,7 +393,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public VersionInfo getVersion() {
     return delegate.getVersion();
   }
-  
+
   @Override
   public VersionInfo getKubernetesVersion() {
     return delegate.getVersion();
@@ -417,26 +420,40 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public SchedulingAPIGroupDSL scheduling() { return delegate.scheduling(); }
+  public SchedulingAPIGroupDSL scheduling() {
+    return delegate.scheduling();
+  }
 
   @Override
 
-  public NetworkAPIGroupDSL network() { return delegate.network(); }
+  public NetworkAPIGroupDSL network() {
+    return delegate.network();
+  }
 
   @Override
-  public StorageAPIGroupDSL storage() { return delegate.storage(); }
+  public StorageAPIGroupDSL storage() {
+    return delegate.storage();
+  }
 
   @Override
-  public BatchAPIGroupDSL batch() { return delegate.batch(); }
+  public BatchAPIGroupDSL batch() {
+    return delegate.batch();
+  }
 
   @Override
-  public MetricAPIGroupDSL top() { return delegate.top(); }
+  public MetricAPIGroupDSL top() {
+    return delegate.top();
+  }
 
   @Override
-  public PolicyAPIGroupDSL policy() { return delegate.policy(); }
+  public PolicyAPIGroupDSL policy() {
+    return delegate.policy();
+  }
 
   @Override
-  public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
+  public RbacAPIGroupDSL rbac() {
+    return delegate.rbac();
+  }
 
   @Override
   public ApiextensionsAPIGroupDSL apiextensions() {
@@ -464,26 +481,29 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
+  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(
+      Class<T> resourceType) {
     return delegate.customResources(resourceType);
   }
 
   @Override
-  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
+  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      Class<T> resourceType, Class<L> listClass) {
     return delegate.customResources(resourceType, listClass);
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(ResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      ResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
     return delegate.customResources(crdContext, resourceType, listClass);
   }
-  
+
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {
     return delegate.resources(resourceType, listClass);
   }
-  
+
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return delegate.discovery();
@@ -528,12 +548,12 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public URL getMasterUrl() {
     return delegate.getMasterUrl();
   }
-  
+
   @Override
   public <T> boolean supports(Class<T> type) {
     return delegate.supports(type);
   }
-  
+
   @Override
   public boolean hasApiGroup(String apiGroup, boolean exact) {
     return delegate.hasApiGroup(apiGroup, exact);
@@ -574,13 +594,13 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   public void bindOAuthTokenProvider(OAuthTokenProvider provider) {
-      this.provider = provider;
+    this.provider = provider;
   }
 
   public void unbindOAuthTokenProvider(OAuthTokenProvider provider) {
-      if ( this.provider == provider ) {
-          this.provider = null;
-      }
+    if (this.provider == provider) {
+      this.provider = null;
+    }
   }
 
   @Override
@@ -607,11 +627,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return delegate.runtimeClasses();
   }
-  
+
   @Override
   public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       String apiVersion, String kind) {
     return delegate.genericKubernetesResources(apiVersion, kind);
   }
-  
+
 }

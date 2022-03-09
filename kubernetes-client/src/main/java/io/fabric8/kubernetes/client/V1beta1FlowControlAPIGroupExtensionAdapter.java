@@ -29,4 +29,3 @@ public class V1beta1FlowControlAPIGroupExtensionAdapter implements ExtensionAdap
     return new V1beta1FlowControlAPIGroupClient(client);
   }
 }
-

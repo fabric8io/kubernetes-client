@@ -113,6 +113,10 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     this.unsupportedPatterns = new ArrayList<>(unsupported.length);
     for (int i = 0; i < unsupported.length; i++) {
       String asRegex = unsupported[i].replace(".", "\\.").replace("*", ".*");
+      if (!asRegex.contains("/")) {
+        asRegex += "(/.*)?";
+      }
+      asRegex += "$";
       this.unsupportedPatterns.add(Pattern.compile(asRegex));
     }
   }

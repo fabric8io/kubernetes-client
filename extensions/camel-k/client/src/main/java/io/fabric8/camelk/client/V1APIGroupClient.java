@@ -33,42 +33,42 @@ import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
 public class V1APIGroupClient extends ClientAdapter<V1APIGroupClient> implements V1APIGroupDSL {
 
-    public V1APIGroupClient() {
-        super();
-    }
+  public V1APIGroupClient() {
+    super();
+  }
 
-    public V1APIGroupClient(Client client) {
-        super(client);
-    }
+  public V1APIGroupClient(Client client) {
+    super(client);
+  }
 
-    @Override
-    public V1APIGroupClient newInstance(Client client) {
-        return new V1APIGroupClient(client);
-    }
+  @Override
+  public V1APIGroupClient newInstance(Client client) {
+    return new V1APIGroupClient(client);
+  }
 
-    @Override
-    public MixedOperation<Build, BuildList, Resource<Build>> builds() {
-        return resources(Build.class, BuildList.class);
-    }
+  @Override
+  public MixedOperation<Build, BuildList, Resource<Build>> builds() {
+    return resources(Build.class, BuildList.class);
+  }
 
-    @Override
-    public MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs() {
-        return resources(CamelCatalog.class, CamelCatalogList.class);
-    }
+  @Override
+  public MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs() {
+    return resources(CamelCatalog.class, CamelCatalogList.class);
+  }
 
-    @Override
-    public MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations() {
-        return resources(Integration.class, IntegrationList.class);
-    }
+  @Override
+  public MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations() {
+    return resources(Integration.class, IntegrationList.class);
+  }
 
-    @Override
-    public MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits() {
-        return resources(IntegrationKit.class, IntegrationKitList.class);
-    }
+  @Override
+  public MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits() {
+    return resources(IntegrationKit.class, IntegrationKitList.class);
+  }
 
-    @Override
-    public MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms() {
-        return resources(IntegrationPlatform.class, IntegrationPlatformList.class);
-    }
+  @Override
+  public MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms() {
+    return resources(IntegrationPlatform.class, IntegrationPlatformList.class);
+  }
 
 }

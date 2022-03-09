@@ -20,18 +20,18 @@ import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
 public class TektonExtensionAdapter implements ExtensionAdapter<TektonClient> {
 
-	@Override
-	public Class<TektonClient> getExtensionType() {
-		return TektonClient.class;
-	}
+  @Override
+  public Class<TektonClient> getExtensionType() {
+    return TektonClient.class;
+  }
 
-	@Override
-	public TektonClient adapt(Client client) {
-            return new DefaultTektonClient(client);
-	}
+  @Override
+  public TektonClient adapt(Client client) {
+    return new DefaultTektonClient(client);
+  }
 
-	@Override
-	public boolean isSupported(Client client) {
-	  return client.hasApiGroup("tekton.dev", true);
-	}
+  @Override
+  public boolean isSupported(Client client) {
+    return client.hasApiGroup("tekton.dev", true);
+  }
 }

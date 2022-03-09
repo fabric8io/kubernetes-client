@@ -17,7 +17,8 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class V1beta1AdmissionRegistrationAPIGroupExtensionAdapter implements ExtensionAdapter<V1beta1AdmissionRegistrationAPIGroupClient> {
+public class V1beta1AdmissionRegistrationAPIGroupExtensionAdapter
+    implements ExtensionAdapter<V1beta1AdmissionRegistrationAPIGroupClient> {
 
   @Override
   public Class<V1beta1AdmissionRegistrationAPIGroupClient> getExtensionType() {

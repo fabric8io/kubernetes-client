@@ -18,7 +18,8 @@ package io.fabric8.openclustermanagement.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenClusterManagementSearchAPIGroupExtensionsAdapter implements ExtensionAdapter<OpenClusterManagementSearchAPIGroupClient> {
+public class OpenClusterManagementSearchAPIGroupExtensionsAdapter
+    implements ExtensionAdapter<OpenClusterManagementSearchAPIGroupClient> {
 
   @Override
   public Class<OpenClusterManagementSearchAPIGroupClient> getExtensionType() {

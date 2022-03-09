@@ -83,7 +83,8 @@ public final class Adapters {
       }
 
       try {
-        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, Thread.currentThread().getContextClassLoader())) {
+        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class,
+            Thread.currentThread().getContextClassLoader())) {
           if (adapter.getExtensionType().equals(type)) {
             return adapter;
           }
@@ -98,9 +99,9 @@ public final class Adapters {
   public static <C> Collection<ExtensionAdapter<? extends C>> list(Class<C> type) {
     List<ExtensionAdapter<? extends C>> result = new ArrayList<>();
     for (ExtensionAdapter candidate : EXTENSION_ADAPTER_MAP.values()) {
-        if (type.isAssignableFrom(candidate.getExtensionType())) {
-            result.add(candidate);
-        }
+      if (type.isAssignableFrom(candidate.getExtensionType())) {
+        result.add(candidate);
+      }
     }
     return result;
   }

@@ -20,19 +20,19 @@ import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
 public class CamelKExtensionAdapter implements ExtensionAdapter<CamelKClient> {
 
-	@Override
-	public Class<CamelKClient> getExtensionType() {
-		return CamelKClient.class;
-	}
+  @Override
+  public Class<CamelKClient> getExtensionType() {
+    return CamelKClient.class;
+  }
 
-	@Override
-	public CamelKClient adapt(Client client) {
+  @Override
+  public CamelKClient adapt(Client client) {
     return new DefaultCamelKClient(client);
   }
 
-	@Override
-	public boolean isSupported(Client client) {
-	  return client.hasApiGroup("camel.apache.org", true);
-	}
+  @Override
+  public boolean isSupported(Client client) {
+    return client.hasApiGroup("camel.apache.org", true);
+  }
 
 }

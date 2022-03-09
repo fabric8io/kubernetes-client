@@ -19,7 +19,6 @@ package io.fabric8.openshift.client;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-
 @Component
 @Service
 public class NamespacedOpenShiftExtensionAdapter extends OpenshiftAdapterSupport<NamespacedOpenShiftClient> {

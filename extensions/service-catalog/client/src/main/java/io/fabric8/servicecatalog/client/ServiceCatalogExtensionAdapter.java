@@ -30,27 +30,27 @@ import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
 
 public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceCatalogClient> {
 
-    @Override
-    public Class<ServiceCatalogClient> getExtensionType() {
-        return ServiceCatalogClient.class;
-    }
+  @Override
+  public Class<ServiceCatalogClient> getExtensionType() {
+    return ServiceCatalogClient.class;
+  }
 
-    @Override
-    public boolean isSupported(Client client) {
-      return client.hasApiGroup("servicecatalog.k8s.io", true);
-    }
+  @Override
+  public boolean isSupported(Client client) {
+    return client.hasApiGroup("servicecatalog.k8s.io", true);
+  }
 
-    @Override
-    public ServiceCatalogClient adapt(Client client) {
-        return new DefaultServiceCatalogClient(client);
-    }
+  @Override
+  public ServiceCatalogClient adapt(Client client) {
+    return new DefaultServiceCatalogClient(client);
+  }
 
-    @Override
-    public void registerHandlers(HandlerFactory factory) {
-        factory.register(ClusterServiceBroker.class, ClusterServiceBrokerOperationsImpl::new);
-        factory.register(ClusterServiceClass.class, ClusterServiceClassOperationsImpl::new);
-        factory.register(ClusterServicePlan.class, ClusterServicePlanOperationsImpl::new);
-        factory.register(ServiceBinding.class, ServiceBindingOperationsImpl::new);
-        factory.register(ServiceInstance.class, ServiceInstanceOperationsImpl::new);
-    }
+  @Override
+  public void registerHandlers(HandlerFactory factory) {
+    factory.register(ClusterServiceBroker.class, ClusterServiceBrokerOperationsImpl::new);
+    factory.register(ClusterServiceClass.class, ClusterServiceClassOperationsImpl::new);
+    factory.register(ClusterServicePlan.class, ClusterServicePlanOperationsImpl::new);
+    factory.register(ServiceBinding.class, ServiceBindingOperationsImpl::new);
+    factory.register(ServiceInstance.class, ServiceInstanceOperationsImpl::new);
+  }
 }

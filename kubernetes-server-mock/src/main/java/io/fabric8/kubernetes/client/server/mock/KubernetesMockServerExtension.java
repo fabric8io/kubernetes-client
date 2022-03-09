@@ -80,7 +80,8 @@ public class KubernetesMockServerExtension
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field)
       throws IllegalAccessException {
     if (extensionMatches(field.getType())) {
-      setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class, (i, f) -> f.set(i, client.adapt((Class<Client>) f.getType())));
+      setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class,
+          (i, f) -> f.set(i, client.adapt((Class<Client>) f.getType())));
     } else {
       setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
     }

@@ -21,7 +21,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class NetworkAPIGroupExtensionAdapter implements ExtensionAdapter<NetworkAPIGroupClient>{
+public class NetworkAPIGroupExtensionAdapter implements ExtensionAdapter<NetworkAPIGroupClient> {
 
   @Override
   public Class<NetworkAPIGroupClient> getExtensionType() {

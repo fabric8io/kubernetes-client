@@ -18,7 +18,8 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftMachineConfigurationAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftMachineConfigurationAPIGroupClient> {
+public class OpenShiftMachineConfigurationAPIGroupExtensionAdapter
+    implements ExtensionAdapter<OpenShiftMachineConfigurationAPIGroupClient> {
 
   @Override
   public Class<OpenShiftMachineConfigurationAPIGroupClient> getExtensionType() {

@@ -29,4 +29,3 @@ public class V1beta1PolicyAPIGroupExtensionAdapter implements ExtensionAdapter<V
     return new V1beta1PolicyAPIGroupClient(client);
   }
 }
-

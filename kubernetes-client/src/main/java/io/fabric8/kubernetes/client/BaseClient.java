@@ -102,15 +102,15 @@ public class BaseClient extends SimpleClientContext implements Client {
   public String getNamespace() {
     return namespace;
   }
-  
+
   public void setMatchingGroupPredicate(Predicate<String> unsupportedApiGroups) {
     this.matchingGroupPredicate = unsupportedApiGroups;
   }
-  
+
   public Predicate<String> getMatchingGroupPredicate() {
     return matchingGroupPredicate;
   }
-  
+
   @Override
   public boolean hasApiGroup(String apiGroup, boolean exact) {
     if (matchingGroupPredicate != null) {
@@ -128,7 +128,7 @@ public class BaseClient extends SimpleClientContext implements Client {
         .stream()
         .anyMatch(g -> g.getName().endsWith(apiGroup));
   }
-  
+
   @Override
   public <T> boolean supports(Class<T> type) {
     if (type.isAssignableFrom(this.getClass())) {
@@ -137,17 +137,17 @@ public class BaseClient extends SimpleClientContext implements Client {
     if (Client.class.isAssignableFrom(type)) {
       return getAdapter((Class<Client>) type).isSupported(this);
     }
-    
+
     if (!KubernetesResource.class.isAssignableFrom(type)) {
       return false; // or could be an exception
     }
-    
+
     String apiVersion = HasMetadata.getApiVersion(type);
-    
+
     if (matchingGroupPredicate != null) {
       return matchingGroupPredicate.test(apiVersion);
     }
-    
+
     String kind = HasMetadata.getKind(type);
     // TODO: we eventually don't want this to be static
     // but it is currently because resources expects HasMetadata, and this could

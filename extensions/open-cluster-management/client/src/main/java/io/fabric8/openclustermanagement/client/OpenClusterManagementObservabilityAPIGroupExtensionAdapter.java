@@ -18,7 +18,8 @@ package io.fabric8.openclustermanagement.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenClusterManagementObservabilityAPIGroupExtensionAdapter implements ExtensionAdapter<OpenClusterManagementObservabilityAPIGroupClient> {
+public class OpenClusterManagementObservabilityAPIGroupExtensionAdapter
+    implements ExtensionAdapter<OpenClusterManagementObservabilityAPIGroupClient> {
 
   @Override
   public Class<OpenClusterManagementObservabilityAPIGroupClient> getExtensionType() {

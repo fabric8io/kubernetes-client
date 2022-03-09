@@ -42,27 +42,29 @@ public class NamespaceQuotaExample {
       if (args.length > 2) {
         namespace = args[2];
       }
-      try  {
+      try {
         // Creating namespace
-        Namespace ns = new NamespaceBuilder().withNewMetadata().withName(namespace).addToLabels("hello", "world").endMetadata().build();
+        Namespace ns = new NamespaceBuilder().withNewMetadata().withName(namespace).addToLabels("hello", "world").endMetadata()
+            .build();
         logger.info("Created namespace: {}", client.namespaces().create(ns).getMetadata().getName());
 
         // Get namespace by name
         logger.info("Get namespace by name: {}", client.namespaces().withName(namespace).get());
         // Get namespace by label
         logger.info("Get namespace by label:");
-        client.namespaces().withLabel("hello", "world").list().getItems().forEach(n -> logger.info(" - {}", n.getMetadata().getName()));
+        client.namespaces().withLabel("hello", "world").list().getItems()
+            .forEach(n -> logger.info(" - {}", n.getMetadata().getName()));
 
         final ResourceQuota quota = client.resourceQuotas().inNamespace(namespace).createOrReplace(
-          new ResourceQuotaBuilder()
-            .withNewMetadata().withName("quota-example").endMetadata()
-            .withNewSpec().addToHard("pods", new Quantity("5")).endSpec()
-            .build());
+            new ResourceQuotaBuilder()
+                .withNewMetadata().withName("quota-example").endMetadata()
+                .withNewSpec().addToHard("pods", new Quantity("5")).endSpec()
+                .build());
         logger.info("Create resource quota: {}", quota.getMetadata().getName());
 
         logger.info("Listing jobs in namespace");
         client.batch().v1().jobs().inNamespace(namespace).list().getItems()
-          .forEach(j -> logger.info(" - {}", j.getMetadata().getName()));
+            .forEach(j -> logger.info(" - {}", j.getMetadata().getName()));
       } finally {
         // Delete namespace
         client.namespaces().withName(namespace).delete();
