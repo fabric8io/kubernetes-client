@@ -74,12 +74,12 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
-  extends CreateOnlyResourceOperation<T, T>
-  implements
-  OperationInfo,
-  MixedOperation<T, L, R>,
-  ExtensibleResource<T>,
-  ListerWatcher<T, L> {
+    extends CreateOnlyResourceOperation<T, T>
+    implements
+    OperationInfo,
+    MixedOperation<T, L, R>,
+    ExtensibleResource<T>,
+    ListerWatcher<T, L> {
 
   private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
@@ -113,7 +113,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public BaseOperation<T, L, R> newInstance(OperationContext context) {
     return new BaseOperation<>(context);
   }
-  
+
   protected R newResource(OperationContext context) {
     return (R) newInstance(context);
   }
@@ -217,7 +217,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     });
   }
 
-
   @Override
   public T accept(Consumer<T> consumer) {
     throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
@@ -304,13 +303,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (itemToCreateOrReplace == null) {
       throw new IllegalArgumentException("Nothing to create.");
     }
-    
+
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
-      resource::create,
-      resource::replace,
-      m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
-      m -> resource.fromServer().get()
-    );
+        resource::create,
+        resource::replace,
+        m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
+        m -> resource.fromServer().get());
 
     return createOrReplaceHelper.createOrReplace(itemToCreateOrReplace);
   }
@@ -410,7 +408,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public L list(ListOptions listOptions) {
     try {
       return listRequestHelper(
-        fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
+          fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -516,7 +514,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     String itemNs = KubernetesResourceUtil.getNamespace(item);
     OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item)).withItem(item);
     if (Utils.isNotNullOrEmpty(itemNs)) {
-      ctx = ctx.withNamespace(itemNs); 
+      ctx = ctx.withNamespace(itemNs);
     }
     return newResource(ctx);
   }
@@ -527,7 +525,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         updateApiVersion(item);
         handleDelete(item, gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
       } else {
-        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
+        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion,
+            cascading);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
@@ -551,8 +550,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Watch watch(String resourceVersion, Watcher<T> watcher) {
     return watch(new ListOptionsBuilder()
-      .withResourceVersion(resourceVersion)
-      .build(), watcher);
+        .withResourceVersion(resourceVersion)
+        .build(), watcher);
   }
 
   @Override
@@ -562,14 +561,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     WatchConnectionManager<T, L> watch = null;
     try {
       watch = new WatchConnectionManager<>(
-        httpClient,
-        this,
-        options,
-        watcherToggle,
-        config.getWatchReconnectInterval(),
-        config.getWatchReconnectLimit(),
-        config.getWebsocketTimeout()
-      );
+          httpClient,
+          this,
+          options,
+          watcherToggle,
+          config.getWatchReconnectInterval(),
+          config.getWatchReconnectLimit(),
+          config.getWebsocketTimeout());
       watch.waitUntilReady();
       return watch;
     } catch (MalformedURLException e) {
@@ -596,13 +594,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
         return new WatchHTTPManager<>(
-          httpClient,
-          this,
-          options,
-          watcher,
-          config.getWatchReconnectInterval(),
-          config.getWatchReconnectLimit()
-        );
+            httpClient,
+            this,
+            options,
+            watcher,
+            config.getWatchReconnectInterval(),
+            config.getWatchReconnectLimit());
       } catch (MalformedURLException e) {
         throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
       }
@@ -965,7 +962,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
 
     // use the local context / namespace but without a resourceVersion
-    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null).withLimit(this.limit), resync, Runnable::run); // just run the event notification in the websocket thread
+    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(),
+        this.withResourceVersion(null).withLimit(this.limit), resync, Runnable::run); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
     }
@@ -1011,4 +1009,3 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
 }
-

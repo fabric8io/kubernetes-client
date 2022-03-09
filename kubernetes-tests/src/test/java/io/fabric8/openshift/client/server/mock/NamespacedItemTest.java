@@ -34,8 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class NamespacedItemTest {
   private OpenShiftClient client;
 
-  ConfigMap configmap =
-      new ConfigMapBuilder().withNewMetadata().withName("name").withNamespace("item").endMetadata().build();
+  ConfigMap configmap = new ConfigMapBuilder().withNewMetadata().withName("name").withNamespace("item").endMetadata().build();
 
   @Test
   void testDefaultNamespace() {

@@ -23,16 +23,16 @@ import io.fabric8.kubernetes.client.dsl.PodMetricOperation;
 import java.util.Map;
 
 public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, PodMetricsList> implements PodMetricOperation {
-  
+
   public PodMetricOperationsImpl(ClientContext clientContext) {
     // default to any namespace
     this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(null));
   }
-  
+
   public PodMetricOperationsImpl(OperationContext context) {
     super(context.withPlural("pods"), PodMetrics.class, PodMetricsList.class);
   }
-  
+
   @Override
   public PodMetrics metrics(String namespace, String podName) {
     return inNamespace(namespace).withName(podName).metric();
