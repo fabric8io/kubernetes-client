@@ -31,36 +31,28 @@ import java.net.URL;
 
 public interface Client extends ClientContext, Closeable {
 
+  public enum Supports {
+
+  }
+
   /**
-   * Checks if the client can be adapted to an other client type.
+   * Checks if the client can be adapted to an other client type and if that target client is supported.
    *
    * @param type The target client class.
    * @param <C> The target client type.
    * @return Returns true if a working {@link io.fabric8.kubernetes.client.extension.ExtensionAdapter} is found.
-   * @deprecated use {@link #supports(Class)} instead
+   * @deprecated if the client can test for support, then use adapt(type).isSupported() instead.
    */
   @Deprecated
-  default <C extends Client> Boolean isAdaptable(Class<C> type) {
-    return supports(type);
-  }
+  <C extends Client> Boolean isAdaptable(Class<C> type);
 
   /**
-   * For {@link KubernetesResource} classes, the logic will check for the existence of a handler
-   * or check the api server for support.
-   *
-   * For {@link Client} classes, the logic checks that the requirements of the target client are meet. (e.g. checks that
-   * openshift is available).
-   * <br>
-   * NOTE: this is mostly meaningful for the openshift client. Other clients may provide
-   * operations that span apiGroups, so it is better to check for specific {@link KubernetesResource} support.
-   *
-   * <p>
-   * NOTE: {@link Client} check results are not cached.
+   * The logic will check for the existence of a handler or check the api server for support.
    *
    * @param type to check for support
-   * @return boolean value indicating whether this extension is supported
+   * @return boolean value indicating whether this type is supported
    */
-  <C> boolean supports(Class<C> type);
+  <R extends KubernetesResource> boolean supports(Class<R> type);
 
   /**
    * Checks for the api group. exact = false will scan all groups

@@ -26,11 +26,6 @@ public class OpenClusterManagementExtensionAdapter implements ExtensionAdapter<O
   }
 
   @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("open-cluster-management.io", false);
-  }
-
-  @Override
   public OpenClusterManagementClient adapt(Client client) {
     return new DefaultOpenClusterManagementClient(client);
   }

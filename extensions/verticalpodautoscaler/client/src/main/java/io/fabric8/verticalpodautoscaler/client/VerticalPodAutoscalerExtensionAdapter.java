@@ -32,8 +32,4 @@ public class VerticalPodAutoscalerExtensionAdapter implements ExtensionAdapter<V
     return new DefaultVerticalPodAutoscalerClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup(API_GROUP, true);
-  }
 }

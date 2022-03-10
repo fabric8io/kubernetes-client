@@ -36,11 +36,6 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
   }
 
   @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("servicecatalog.k8s.io", true);
-  }
-
-  @Override
   public ServiceCatalogClient adapt(Client client) {
     return new DefaultServiceCatalogClient(client);
   }

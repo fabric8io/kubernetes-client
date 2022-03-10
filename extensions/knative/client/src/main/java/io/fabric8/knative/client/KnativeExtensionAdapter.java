@@ -30,9 +30,4 @@ public class KnativeExtensionAdapter implements ExtensionAdapter<KnativeClient> 
     return new DefaultKnativeClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("knative.dev", true);
-  }
-
 }

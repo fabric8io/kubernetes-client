@@ -30,9 +30,4 @@ public class ServingV1ExtensionAdapter implements ExtensionAdapter<ServingV1Clie
     return new DefaultServingV1Client(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("knative.dev", false);
-  }
-
 }

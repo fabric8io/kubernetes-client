@@ -1052,4 +1052,9 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
     return delegate.genericKubernetesResources(apiVersion, kind);
   }
 
+  @Override
+  public boolean isSupported() {
+    return delegate.isSupported();
+  }
+
 }

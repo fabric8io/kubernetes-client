@@ -24,17 +24,17 @@ class OpenShiftExtensionAdapterTest {
   @Test
   void testHasCustomConfig() {
     OpenShiftConfig config = new OpenShiftConfigBuilder()
-      .withMasterUrl("http://host1:80")
-      .build();
+        .withMasterUrl("http://host1:80")
+        .build();
 
-    Assert.assertFalse(OpenShiftExtensionAdapter.hasCustomOpenShiftUrl(config));
+    Assert.assertFalse(DefaultOpenShiftClient.hasCustomOpenShiftUrl(config));
 
     config = new OpenShiftConfigBuilder()
-      .withMasterUrl("http://host1:80")
-      .withOpenShiftUrl("http://host2:80/oapi/v1")
-      .build();
+        .withMasterUrl("http://host1:80")
+        .withOpenShiftUrl("http://host2:80/oapi/v1")
+        .build();
 
-    Assert.assertTrue(OpenShiftExtensionAdapter.hasCustomOpenShiftUrl(config));
+    Assert.assertTrue(DefaultOpenShiftClient.hasCustomOpenShiftUrl(config));
   }
 
 }

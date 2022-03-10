@@ -23,8 +23,10 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultCamelKClient extends ClientAdapter<DefaultCamelKClient> implements NamespacedCamelKClient {
+public class DefaultCamelKClient extends ClientAdapter<DefaultCamelKClient>
+    implements NamespacedCamelKClient, SupportTestingClient {
 
   public DefaultCamelKClient() {
     super();
@@ -56,6 +58,11 @@ public class DefaultCamelKClient extends ClientAdapter<DefaultCamelKClient> impl
   @Override
   public V1alpha1APIGroupDSL v1alpha1() {
     return adapt(V1alpha1APIGroupClient.class);
+  }
+
+  @Override
+  public boolean isSupported() {
+    return hasApiGroup("camel.apache.org", true);
   }
 
 }

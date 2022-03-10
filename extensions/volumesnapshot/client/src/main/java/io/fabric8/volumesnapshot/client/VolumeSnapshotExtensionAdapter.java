@@ -45,9 +45,4 @@ public class VolumeSnapshotExtensionAdapter implements ExtensionAdapter<VolumeSn
     factory.register(VolumeSnapshot.class, VolumeSnapshotOperationsImpl::new);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup(API_GROUP, true);
-  }
-
 }

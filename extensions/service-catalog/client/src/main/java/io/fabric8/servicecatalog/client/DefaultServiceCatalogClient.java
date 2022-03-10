@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
@@ -46,7 +47,8 @@ import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
-public class DefaultServiceCatalogClient extends ClientAdapter<DefaultServiceCatalogClient> implements NamespacedServiceCatalogClient {
+public class DefaultServiceCatalogClient extends ClientAdapter<DefaultServiceCatalogClient>
+    implements NamespacedServiceCatalogClient, SupportTestingClient {
 
   public DefaultServiceCatalogClient() {
     super();
@@ -108,5 +110,10 @@ public class DefaultServiceCatalogClient extends ClientAdapter<DefaultServiceCat
   @Override
   public FunctionCallable<NamespacedServiceCatalogClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<>(this, requestConfig);
+  }
+
+  @Override
+  public boolean isSupported() {
+    return hasApiGroup("servicecatalog.k8s.io", true);
   }
 }

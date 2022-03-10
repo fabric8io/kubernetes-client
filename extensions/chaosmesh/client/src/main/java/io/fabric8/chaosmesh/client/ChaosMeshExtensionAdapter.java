@@ -30,9 +30,4 @@ public class ChaosMeshExtensionAdapter implements ExtensionAdapter<ChaosMeshClie
     return new DefaultChaosMeshClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("chaos-mesh.org", true);
-  }
-
 }

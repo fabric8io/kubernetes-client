@@ -32,9 +32,4 @@ public class VolcanoExtensionAdapter implements ExtensionAdapter<VolcanoClient> 
     return new DefaultVolcanoClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup(API_GROUP, true);
-  }
-
 }

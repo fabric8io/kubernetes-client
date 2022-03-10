@@ -174,7 +174,7 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
 
 ## Adapt Changes
 
-Client.isAdaptable and Client.adapt will check first if the existing instance is compatible with the desired type.
+Client.isAdaptable and Client.adapt will check first if the existing client is an instance of the desired type.
 
 Client.adapt will no longer perform the isAdaptable check - that is you may freely adapt from one Client to another as long as the extension exists.  If you need to make a specific check of support, please use the Client.supports method.
 

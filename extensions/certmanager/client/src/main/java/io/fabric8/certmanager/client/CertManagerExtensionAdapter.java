@@ -20,8 +20,6 @@ import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
 public class CertManagerExtensionAdapter implements ExtensionAdapter<CertManagerClient> {
 
-  public static final String API_GROUP = "cert-manager.io";
-
   @Override
   public Class<CertManagerClient> getExtensionType() {
     return CertManagerClient.class;
@@ -32,8 +30,4 @@ public class CertManagerExtensionAdapter implements ExtensionAdapter<CertManager
     return new DefaultCertManagerClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup(API_GROUP, true);
-  }
 }

@@ -30,9 +30,4 @@ public class CamelKExtensionAdapter implements ExtensionAdapter<CamelKClient> {
     return new DefaultCamelKClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("camel.apache.org", true);
-  }
-
 }

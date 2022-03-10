@@ -33,11 +33,9 @@ class SupportTest {
 
   @Test
   void testOpenShiftNotSupported() {
-    assertFalse(client.supports(OpenShiftClient.class));
     assertFalse(client.isAdaptable(OpenShiftClient.class));
     assertFalse(client.supports(Route.class));
     assertTrue(client.supports(Pod.class));
-    assertFalse(client.supports(String.class));
   }
 
 }

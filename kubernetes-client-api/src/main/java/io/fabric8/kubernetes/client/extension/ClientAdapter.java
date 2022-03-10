@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
@@ -62,7 +63,12 @@ public abstract class ClientAdapter<C extends Client> implements Client {
   }
 
   @Override
-  public <T> boolean supports(Class<T> type) {
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    return client.isAdaptable(type);
+  }
+
+  @Override
+  public <T extends KubernetesResource> boolean supports(Class<T> type) {
     return client.supports(type);
   }
 

@@ -38,16 +38,6 @@ public interface ExtensionAdapter<C extends Client> {
   Class<C> getExtensionType();
 
   /**
-   * Checks that the requirements of the target client are meet. (e.g. checks that openshift is available).
-   * 
-   * @param client The instance of {@link Client}.
-   * @return boolean value indicating whether this extension is supported
-   */
-  default boolean isSupported(Client client) {
-    return true;
-  }
-
-  /**
    * Adapt the client to another type. This will not perform any check of whether the new client
    * type is supported. It may even return the same object if it already supports the given
    * client type.
@@ -59,7 +49,7 @@ public interface ExtensionAdapter<C extends Client> {
 
   /**
    * Extensions should override to inject {@link ExtensibleResourceAdapter} usage into the {@link HandlerFactory}
-   * 
+   *
    * @param factory
    */
   default void registerHandlers(HandlerFactory factory) {

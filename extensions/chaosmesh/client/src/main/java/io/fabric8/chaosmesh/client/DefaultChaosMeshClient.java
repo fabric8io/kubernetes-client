@@ -47,31 +47,32 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshClient> implements NamespacedChaosMeshClient {
+public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshClient>
+    implements NamespacedChaosMeshClient, SupportTestingClient {
 
-    public DefaultChaosMeshClient() {
-        super();
-    }
+  public DefaultChaosMeshClient() {
+    super();
+  }
 
-    public DefaultChaosMeshClient(Config configuration) {
-        super(configuration);
-    }
+  public DefaultChaosMeshClient(Config configuration) {
+    super(configuration);
+  }
 
-    public DefaultChaosMeshClient(Client client) {
-        super(client);
-    }
+  public DefaultChaosMeshClient(Client client) {
+    super(client);
+  }
 
-    @Override
-    protected NamespacedChaosMeshClient newInstance(Client client) {
-        return new DefaultChaosMeshClient(client);
-    }
+  @Override
+  protected NamespacedChaosMeshClient newInstance(Client client) {
+    return new DefaultChaosMeshClient(client);
+  }
 
-    @Override
-    public FunctionCallable<NamespacedChaosMeshClient> withRequestConfig(RequestConfig requestConfig) {
-        return new WithRequestCallable<>(this, requestConfig);
-    }
-
+  @Override
+  public FunctionCallable<NamespacedChaosMeshClient> withRequestConfig(RequestConfig requestConfig) {
+    return new WithRequestCallable<>(this, requestConfig);
+  }
 
   @Override
   public MixedOperation<IoChaos, IoChaosList, Resource<IoChaos>> ioChaos() {
@@ -79,8 +80,7 @@ public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshCli
   }
 
   @Override
-  public MixedOperation<KernelChaos, KernelChaosList,
-    Resource<KernelChaos>> kernelChaos() {
+  public MixedOperation<KernelChaos, KernelChaosList, Resource<KernelChaos>> kernelChaos() {
     return resources(KernelChaos.class, KernelChaosList.class);
   }
 
@@ -105,8 +105,7 @@ public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshCli
   }
 
   @Override
-  public MixedOperation<StressChaos, StressChaosList,
-    Resource<StressChaos>> stressChaos() {
+  public MixedOperation<StressChaos, StressChaosList, Resource<StressChaos>> stressChaos() {
     return resources(StressChaos.class, StressChaosList.class);
   }
 
@@ -133,5 +132,10 @@ public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshCli
   @Override
   public MixedOperation<AwsChaos, AwsChaosList, Resource<AwsChaos>> awsChaos() {
     return resources(AwsChaos.class, AwsChaosList.class);
+  }
+
+  @Override
+  public boolean isSupported() {
+    return hasApiGroup("chaos-mesh.org", true);
   }
 }

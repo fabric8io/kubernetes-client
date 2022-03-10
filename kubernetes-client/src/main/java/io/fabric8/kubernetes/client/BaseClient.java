@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -130,18 +131,18 @@ public class BaseClient extends SimpleClientContext implements Client {
   }
 
   @Override
-  public <T> boolean supports(Class<T> type) {
-    if (type.isAssignableFrom(this.getClass())) {
-      return true;
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    // if type is an instanceof SupportTestingClient, then it's a proper
+    // test, otherwise it could be legacy support on an extension client
+    C toTest = adapt(type);
+    if (toTest instanceof SupportTestingClient) {
+      return ((SupportTestingClient) toTest).isSupported();
     }
-    if (Client.class.isAssignableFrom(type)) {
-      return getAdapter((Class<Client>) type).isSupported(this);
-    }
+    return true;
+  }
 
-    if (!KubernetesResource.class.isAssignableFrom(type)) {
-      return false; // or could be an exception
-    }
-
+  @Override
+  public <R extends KubernetesResource> boolean supports(Class<R> type) {
     String apiVersion = HasMetadata.getApiVersion(type);
 
     if (matchingGroupPredicate != null) {
@@ -155,20 +156,16 @@ public class BaseClient extends SimpleClientContext implements Client {
     return Handlers.getResourceDefinitionContext(apiVersion, kind, this) != null;
   }
 
-  private <C extends Client> ExtensionAdapter<C> getAdapter(Class<C> type) {
-    ExtensionAdapter<C> adapter = Adapters.get(type);
-    if (adapter == null) {
-      throw new IllegalStateException("No adapter available for type:" + type);
-    }
-    return adapter;
-  }
-
   @Override
   public <C extends Client> C adapt(Class<C> type) {
     if (type.isAssignableFrom(this.getClass())) {
       return (C) this;
     }
-    return getAdapter(type).adapt(this);
+    ExtensionAdapter<C> adapter = Adapters.get(type);
+    if (adapter == null) {
+      throw new IllegalStateException("No adapter available for type:" + type);
+    }
+    return adapter.adapt(this);
   }
 
   @Override

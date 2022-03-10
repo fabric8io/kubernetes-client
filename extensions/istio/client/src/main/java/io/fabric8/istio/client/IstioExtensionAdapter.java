@@ -30,8 +30,4 @@ public class IstioExtensionAdapter implements ExtensionAdapter<IstioClient> {
     return new DefaultIstioClient(client);
   }
 
-  @Override
-  public boolean isSupported(Client client) {
-    return client.hasApiGroup("networking.istio.io", true);
-  }
 }
