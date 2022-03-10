@@ -289,7 +289,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @SafeVarargs
   @Override
   public final T createOrReplace(T... items) {
-    T itemToCreateOrReplace = getItem();
+    final T itemToCreateOrReplace;
     Resource<T> resource;
     if (items.length > 1) {
       throw new IllegalArgumentException("Too many items to create.");
@@ -297,6 +297,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       itemToCreateOrReplace = items[0];
       resource = withItem(itemToCreateOrReplace);
     } else {
+      itemToCreateOrReplace = getItem();
       resource = this;
     }
 
