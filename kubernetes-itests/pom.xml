@@ -61,4 +61,26 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>httpclient-jdk</id>
+      <dependencies>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>openshift-client</artifactId>
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>io.fabric8</groupId>
+              <artifactId>kubernetes-httpclient-okhttp</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-httpclient-jdk</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
