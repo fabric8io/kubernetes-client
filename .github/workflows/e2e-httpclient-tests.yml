@@ -60,7 +60,6 @@ jobs:
 
   openshift:
     name: OpenShift
-    needs: buildWithoutTests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
