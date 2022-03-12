@@ -47,6 +47,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Log Options](#log-options)
   * [Serializing to yaml](#serializing-to-yaml)
   * [Running a Pod](#running-a-pod)
+  * [Server Side Apply](#server-side-apply)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -74,16 +75,16 @@ This document contains common usages of different resources using Fabric8 Kubern
 ### Initializing Kubernetes Client
 Typically, we create Kubernetes Client like this:
 ```
-try (final KubernetesClient client = new DefaultKubernetesClient()) {
+try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
   // Do stuff with client
 }
 ```
-This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable. But if you want to customize creation of client, you can also pass a `Config` object inside `DefaultKubernetesClient` like this:
+This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable. But if you want to customize creation of client, you can also pass a `Config` object inside the builder like this:
 ```
 Config kubeConfig = new ConfigBuilder()
   .withMasterUrl("https://192.168.42.20:8443/")
   .build()
-try (final KubernetesClient client = new DefaultKubernetesClient(kubeConfig)) {
+try (final KubernetesClient client = new KubernetesClientBuilder().withConfig(kubeConfig).build()) {
   // Do stuff with client
 }
 ```
@@ -196,7 +197,7 @@ deleteLatch.await(10, TimeUnit.MINUTES)
 When trying to access Kubernetes API from within a `Pod` authentication is done a bit differently as compared to when being done on your system. If you checkout [documentation](https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/#accessing-the-api-from-a-pod). Client authenticates by reading `ServiceAccount` from `/var/run/secrets/kubernetes.io/serviceaccount/` and reads environment variables like `KUBERNETES_SERVICE_HOST` and `KUBERNETES_SERVICE_PORT` for apiServer URL. You don't have to worry about all this when using Fabric8 Kubernetes Client. You can simply use it like this and client will take care of everything:
 ```
 // reads serviceaccount from mounted volume and gets apiServer url from environment variables itself.
-KubernetesClient client = new DefaultKubernetesClient();
+KubernetesClient client = new KubernetesClientBuilder().build();
 ```
 You can also checkout a demo example here: [kubernetes-client-inside-pod](https://github.com/rohanKanojia/kubernetes-client-inside-pod)
 
@@ -1449,7 +1450,7 @@ Boolean deleted = client.policy().podDisruptionBudget().inNamespace("default").w
 ### SelfSubjectAccessReview
 - Create `SelfSubjectAccessReview`(equivalent of `kubectl auth can-i create deployments --namespace dev`):
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
             .withNewSpec()
             .withNewResourceAttributes()
@@ -1470,7 +1471,7 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ### SubjectAccessReview
 - Create `SubjectAccessReview`:
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
             .withNewSpec()
             .withNewResourceAttributes()
@@ -1491,7 +1492,7 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ### LocalSubjectAccessReview
 - Create `LocalSubjectAccessReview`:
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     LocalSubjectAccessReview lsar = new LocalSubjectAccessReviewBuilder()
             .withNewMetadata().withNamespace("default").endMetadata()
             .withNewSpec()
@@ -1512,7 +1513,7 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ### SelfSubjectRulesReview
 - Create `SelfSubjectRulesReview`:
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     SelfSubjectRulesReview selfSubjectRulesReview = new SelfSubjectRulesReviewBuilder()
             .withNewMetadata().withName("foo").endMetadata()
             .withNewSpec()
@@ -1880,7 +1881,13 @@ cronTabClient.inNamespace("default").watch(new Watcher<CronTab>() {
 ```
 
 ### Resource Typeless API
-If you don't need or want to use a strongly typed client, the Kubernetes Client also provides a typeless/raw API to handle your resources in form of GenericKubernetesResource, which implements HasMetadata and provides the rest of its fields via a map. In order to use it, you need to provide a `ResourceDefinitionContext`, which carries necessary information about the resource.  Here is an example on how to create one:
+If you don't need or want to use a strongly typed client, the Kubernetes Client also provides a typeless/raw API to handle your resources in form of GenericKubernetesResource.  GenericKubernetesResource implements HasMetadata and provides the rest of its fields via a map. In most circumstances the client can infer the necessary details about your type from the api server, this includes:
+
+* client.genericKuberetesResources(apiVersion, kind) - to perform operations generically
+* client.resource(resource) - if you already constructed an instance of your GenericKubernetesResource
+* any of the load and related methods - if you have the yaml/json of a resource, but there is no class defined for deserializing it.
+
+In some circumstances, such as an error with the logic automatically inferring the type details or when trying to use built-in mock support for the implicit generic scenario, you will need to use you will need to provide a `ResourceDefinitionContext`, which carries necessary information about the resource.  Here is an example on how to create one:
 - Create `ResourceDefinitionContext`:
 ```java
 ResourceDefinitionContext resourceDefinitionContext = new ResourceDefinitionContext.Builder()
@@ -1891,7 +1898,9 @@ ResourceDefinitionContext resourceDefinitionContext = new ResourceDefinitionCont
       .withNamespaced(true)
       .build();
 ```
-Once you have built it, you can pass it to typeless DSL as argument `client.genericKubernetesResources(resourceDefinitionContext)`. With this in place, you can do your standard operations.
+Once you have built it, you instead use `client.genericKubernetesResources(resourceDefinitionContext)` as your api entry point.
+
+Explicit usage examples:
 
 - Load a resource from yaml:
 ```java
@@ -1962,7 +1971,7 @@ closeLatch.await(10, TimeUnit.MINUTES);
 Kubernetes Client provides using `CertificateSigningRequest` via the `client.certificates().v1().certificateSigningRequests()` DSL interface. Here is an example of creating `CertificateSigningRequest` using Fabric8 Kubernetes Client:
 - Create `CertificateSigningRequest`:
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     CertificateSigningRequest csr = new CertificateSigningRequestBuilder()
             .withNewMetadata().withName("test-k8s-csr").endMetadata()
             .withNewSpec()
@@ -2304,7 +2313,7 @@ String myPodAsYamlWithoutRuntimeState = SerializationUtils.dumpWithoutRuntimeSta
 Kubernetes Client also provides mechanism similar to `kubectl run` in which you can spin a `Pod` just by specifying it's image and name:
 - Running a `Pod` by just providing image and name:
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     client.run().inNamespace("default")
             .withName("hazelcast")
             .withImage("hazelcast/hazelcast:3.12.9")
@@ -2313,7 +2322,7 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ```
 - You can also provide slighly complex configuration with `withGeneratorConfig` method in which you can specify labels, environment variables, ports etc:
 ```
-try (KubernetesClient client = new DefaultKubernetesClient()) {
+try (KubernetesClient client = new KubernetesClientBuilder().build()) {
     client.run().inNamespace("default")
             .withRunConfig(new RunConfigBuilder()
                     .withName("nginx")
@@ -2325,31 +2334,44 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 }
 ```
 
+#### Server Side Apply
+
+Basic usage of server side apply is available via Patchable.  At it's simplest you just need to call:
+
+```
+client.services().withName("name").patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service);
+```
+
+For any create or update.  This can be a good alternative to using createOrReplace as it is always a single api call and does not issue a replace/PUT which can be problematic.
+
+If the resources may be created or modified by something other than a fabric8 patch, you will need to force your modifications:
+
+```
+client.services().withName("name").patch(new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build(), service);
+```
+
+Please consult the Kubernetes server side apply documentation if you want to do more detailed field management or want to understand the full semantics of how the patches are merged.
+
 ### OpenShift Client DSL Usage
 
 Fabric8 Kubernetes Client also has an extension for OpenShift. It is pretty much the same as Kubernetes Client but has support for some additional OpenShift resources.
 
 #### Initializing OpenShift Client:
-Initializing OpenShift client is the same as Kubernetes Client. Yo
+Initializing OpenShift client is the same as Kubernetes Client. You use
 ```
-try (final OpenShiftClient client = new DefaultOpenShiftClient()) {
+try (final OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
   // Do stuff with client
 }
 ```
-This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable. But if you want to customize creation of client, you can also pass a `Config` object inside `DefaultKubernetesClient` like this:
+This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable. But if you want to customize creation of client, you can also pass a `Config` object inside the builder like this:
 ```
 Config kubeConfig = new ConfigBuilder()
             .withMasterUrl("https://api.ci-ln-3sbdl1b-d5d6b.origin-ci-int-aws.dev.examplecloud.com:6443")
             .withOauthToken("xxxxxxxx-41oafKI6iU637-xxxxxxxxxxxxx")
             .build())) {
-try (final OpenShiftClient client = new DefaultOpenShiftClient(config)) {
+try (final OpenShiftClient client = new KubernetesClientBuilder().withConfig(kubeConfig).build().adapt(OpenShiftClient.class)) {
   // Do stuff with client
 }
-```
-You can also create `OpenShiftClient` from an existing instance of `KubernetesClient`. There is a method called `adapt(..)` for this. Here is an example:
-```
-KubernetesClient client = new DefaultKubernetesClient();
-OpenShiftClient openShiftClient = client.adapt(OpenShiftClient.class);
 ```
 
 #### DeploymentConfig
@@ -2757,7 +2779,7 @@ client.operatorHub().monitoring().inNamespace("default").withName("foo").delete(
 #### ClusterResourceQuota
 - Create `ClusterResourceQuota`:
 ```
-try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
     Map<String, Quantity> hard = new HashMap<>();
     hard.put("pods", new Quantity("10"));
     hard.put("secrets", new Quantity("20"));
@@ -2788,7 +2810,7 @@ client.quotas().clusterResourceQuotas().withName("foo").delete();
 #### ClusterVersion
 - Fetch Cluster Version:
 ```
-try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
     ClusterVersion clusterVersion = client.config().clusterVersions().withName("version").get();
     System.out.println("Cluster Version: " + clusterVersion.getStatus().getDesired().getVersion());
 }
@@ -2803,7 +2825,7 @@ EgressNetworkPolicy egressNetworkPolicy = client.egressNetworkPolicies()
 ```
 - Create `EgressNetworkPolicy`:
 ```
-try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
     EgressNetworkPolicy enp = new EgressNetworkPolicyBuilder()
             .withNewMetadata()
             .withName("foo")
@@ -2851,19 +2873,12 @@ It is pretty much the same as Kubernetes Client but has support for some additio
 #### Initializing Tekton Client
 Initializing Tekton client is the same as Kubernetes Client. You
 ```
-try (final TektonClient client = new DefaultTektonClient()) {
+try (final TektonClient client = new KubernetesClientBuilder().build().adapt(TektonClient.class)) {
   // Do stuff with client
 }
 ```
 This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable.
-But if you want to customize creation of client, you can also pass a `Config` object inside `DefaultTektonClient`.
-You can also create `TektonClient` from an existing instance of `KubernetesClient`. 
-There is a method called `adapt(..)` for this.
-Here is an example:
-```
-KubernetesClient client = new DefaultKubernetesClient();
-TektonClient tektonClient = client.adapt(TektonClient.class);
-```
+But if you want to customize creation of client, you can also pass a `Config` object inside the builder.
 
 #### Tekton Client DSL Usage
 The Tekton client supports CRD API version `tekton.dev/v1alpha1` as well as `tekton.dev/v1beta1`.
@@ -2901,19 +2916,12 @@ It is pretty much the same as Kubernetes Client but has support for some additio
 #### Initializing Knative Client
 Initializing Knative client is the same as Kubernetes Client. 
 ```
-try (final KnativeClient client = new DefaultKnativeClient()) {
+try (final KnativeClient client = new KubernetesClientBuilder().build().adapt(KnativeClient.class)) {
   // Do stuff with client
 }
 ```
 This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable.
-But if you want to customize creation of client, you can also pass a `Config` object inside `DefaultKnativeClient`.
-You can also create `KnativeClient` from an existing instance of `KubernetesClient`. 
-There is a method called `adapt(..)` for this.
-Here is an example:
-```
-KubernetesClient client = new DefaultKubernetesClient();
-KnativeClient knativeClient = client.adapt(KnativeClient.class);
-```
+But if you want to customize creation of client, you can also pass a `Config` object inside the builder.
 
 #### Knative Client DSL Usage
 The usage of the resources follows the same pattern as for K8s resources like Pods or Deployments.

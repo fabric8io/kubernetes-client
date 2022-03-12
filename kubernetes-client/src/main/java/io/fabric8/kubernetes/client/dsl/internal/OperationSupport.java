@@ -61,7 +61,7 @@ public class OperationSupport {
   public static final String JSON_PATCH = "application/json-patch+json";
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
   public static final String JSON_MERGE_PATCH = "application/merge-patch+json";
-  
+
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
@@ -80,7 +80,7 @@ public class OperationSupport {
   private final int requestRetryBackoffLimit;
 
   public OperationSupport() {
-    this (new OperationContext());
+    this(new OperationContext());
   }
 
   public OperationSupport(HttpClient client, Config config) {
@@ -93,7 +93,7 @@ public class OperationSupport {
     this.config = ctx.getConfig();
     this.resourceT = ctx.getPlural();
     this.namespace = ctx.getNamespace();
-    this.name = ctx.getName() ;
+    this.name = ctx.getName();
     this.apiGroupName = ctx.getApiGroupName();
     this.dryRun = ctx.getDryRun();
     if (Utils.isNotNullOrEmpty(ctx.getApiGroupVersion())) {
@@ -112,7 +112,8 @@ public class OperationSupport {
       requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
       this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
     }
-    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, maxRetryIntervalExponent);
+    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval,
+        maxRetryIntervalExponent);
   }
 
   public String getAPIGroupName() {
@@ -168,7 +169,7 @@ public class OperationSupport {
   public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
     return getResourceUrl(namespace, name, false);
   }
-  
+
   public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
     if (name == null) {
       if (status) {
@@ -205,23 +206,30 @@ public class OperationSupport {
       if ((patchContext.getDryRun() != null && !patchContext.getDryRun().isEmpty()) || dryRun) {
         url = URLUtils.join(url, "?dryRun=All");
       }
-      if (patchContext.getFieldManager() != null) {
-        url = URLUtils.join(url, "?fieldManager=" + patchContext.getFieldManager());
+      String fieldManager = patchContext.getFieldManager();
+      if (fieldManager == null && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
+        fieldManager = "fabric8";
+      }
+      if (fieldManager != null) {
+        url = URLUtils.join(url, "?fieldManager=" + fieldManager);
+      }
+      if (patchContext.getFieldValidation() != null) {
+        url = URLUtils.join(url, "?fieldValidation=" + patchContext.getFieldValidation());
       }
       return new URL(url);
     }
     return resourceUrl;
   }
-  
+
   protected <T> T correctNamespace(T item) {
     if (!isResourceNamespaced() || this.context.isDefaultNamespace() || !(item instanceof HasMetadata)) {
       return item;
     }
-    String itemNs = KubernetesResourceUtil.getNamespace((HasMetadata)item);
-    
+    String itemNs = KubernetesResourceUtil.getNamespace((HasMetadata) item);
+
     if (Utils.isNotNullOrEmpty(namespace) && Utils.isNotNullOrEmpty(itemNs) && !namespace.equals(itemNs)) {
       item = Serialization.clone(item);
-      KubernetesResourceUtil.setNamespace((HasMetadata)item, namespace);
+      KubernetesResourceUtil.setNamespace((HasMetadata) item, namespace);
     }
     return item;
   }
@@ -231,7 +239,7 @@ public class OperationSupport {
       return null;
     }
     String operationNs = getNamespace();
-    String itemNs = (item instanceof HasMetadata) ? KubernetesResourceUtil.getNamespace((HasMetadata)item) : null;
+    String itemNs = (item instanceof HasMetadata) ? KubernetesResourceUtil.getNamespace((HasMetadata) item) : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
       throw new KubernetesClientException("namespace not specified for an operation requiring one.");
     } else if (!Utils.isNullOrEmpty(itemNs) && (Utils.isNullOrEmpty(operationNs)
@@ -258,16 +266,19 @@ public class OperationSupport {
   }
 
   protected <T> T handleMetric(String resourceUrl, Class<T> type) throws InterruptedException, IOException {
-      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .uri(resourceUrl);
-      return handleResponse(requestBuilder, type);
+    return handleResponse(requestBuilder, type);
   }
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws InterruptedException, IOException {
-    handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))), gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
+      String resourceVersion, boolean cascading) throws InterruptedException, IOException {
+    handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))),
+        gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
   }
 
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws InterruptedException, IOException {
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
+      String resourceVersion, boolean cascading) throws InterruptedException, IOException {
     DeleteOptions deleteOptions = new DeleteOptions();
     if (gracePeriodSeconds >= 0) {
       deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
@@ -288,10 +299,10 @@ public class OperationSupport {
       deleteOptions.setDryRun(Collections.singletonList("All"));
     }
 
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
-    handleResponse(requestBuilder, null, Collections.<String, String>emptyMap());
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+        .delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
+    handleResponse(requestBuilder, null, Collections.<String, String> emptyMap());
   }
-
 
   /**
    * Create a resource.
@@ -310,9 +321,8 @@ public class OperationSupport {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .post(JSON, JSON_MAPPER.writeValueAsString(resource))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
-    return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
+    return handleResponse(requestBuilder, outputType, Collections.<String, String> emptyMap());
   }
-
 
   /**
    * Replace a resource.
@@ -327,7 +337,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws InterruptedException, IOException {
-    return handleUpdate(updated, type, Collections.<String, String>emptyMap(), status);
+    return handleUpdate(updated, type, Collections.<String, String> emptyMap(), status);
   }
 
   /**
@@ -343,7 +353,8 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws InterruptedException, IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status)
+      throws InterruptedException, IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
@@ -354,7 +365,8 @@ public class OperationSupport {
   /**
    * Send an http patch and handle the response.
    * 
-   * If current is not null and patchContext does not specify a patch type, then a JSON patch is assumed.  Otherwise a STRATEGIC MERGE is assumed.
+   * If current is not null and patchContext does not specify a patch type, then a JSON patch is assumed. Otherwise a STRATEGIC
+   * MERGE is assumed.
    *
    * @param patchContext patch options for patch request
    * @param current current object
@@ -367,14 +379,27 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status) throws InterruptedException, IOException {
+  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status)
+      throws InterruptedException, IOException {
     String patchForUpdate = null;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
-      patchForUpdate = JSON_MAPPER.writeValueAsString(JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated)));
+      patchForUpdate = JSON_MAPPER
+          .writeValueAsString(JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated)));
       if (patchContext == null) {
         patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
       }
     } else {
+      if (patchContext != null
+          && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
+        // TODO: it would probably be better to do this with a mixin
+        if (updated instanceof HasMetadata) {
+          ObjectMeta meta = ((HasMetadata) updated).getMetadata();
+          if (meta != null && meta.getManagedFields() != null && !meta.getManagedFields().isEmpty()) {
+            // the item should have already been cloned
+            meta.setManagedFields(null);
+          }
+        }
+      }
       patchForUpdate = Serialization.asJson(updated);
       current = updated; // use the updated to determine the path
     }
@@ -393,7 +418,8 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type) throws InterruptedException, IOException {
+  protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type)
+      throws InterruptedException, IOException {
     return handlePatch(new PatchContext.Builder().withPatchType(PatchType.STRATEGIC_MERGE).build(), current,
         JSON_MAPPER.writeValueAsString(patchForUpdate), type, false);
   }
@@ -411,7 +437,8 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException in case of network errors
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status) throws InterruptedException, IOException {
+  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status)
+      throws InterruptedException, IOException {
     String bodyContentType = getContentTypeFromPatchContextOrDefault(patchContext);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .patch(bodyContentType, patchForUpdate)
@@ -446,8 +473,10 @@ public class OperationSupport {
    * @throws InterruptedException in case thread is interrupted
    * @throws IOException in some other I/O problem
    */
-  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON, JSON_MAPPER.writeValueAsString(deploymentRollback));
+  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback)
+      throws InterruptedException, IOException {
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON,
+        JSON_MAPPER.writeValueAsString(deploymentRollback));
     return handleResponse(requestBuilder, Status.class);
   }
 
@@ -463,15 +492,15 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws InterruptedException, IOException {
-    return handleGet(resourceUrl, type, Collections.<String, String>emptyMap());
+    return handleGet(resourceUrl, type, Collections.<String, String> emptyMap());
   }
-  
+
   /**
    * Send a raw get - where the type should be one of String, Reader, InputStream
    * <br>
    * NOTE: Currently does not utilize the retry logic
    */
-  protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException{
+  protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
     HttpRequest request = requestBuilder.build();
     HttpResponse<T> response = httpClient.send(request, type);
@@ -491,7 +520,8 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters)
+      throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
     return handleResponse(requestBuilder, type, parameters);
   }
@@ -508,7 +538,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws InterruptedException, IOException {
-    return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
+    return handleResponse(requestBuilder, type, Collections.<String, String> emptyMap());
   }
 
   /**
@@ -523,7 +553,8 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
+  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters)
+      throws InterruptedException, IOException {
     return handleResponse(httpClient, requestBuilder, type, parameters);
   }
 
@@ -539,24 +570,26 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type) throws InterruptedException, IOException {
-    return handleResponse(client, requestBuilder, type, Collections.<String, String>emptyMap());
+  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type)
+      throws InterruptedException, IOException {
+    return handleResponse(client, requestBuilder, type, Collections.<String, String> emptyMap());
   }
 
   /**
    * Send an http request and handle the response, optionally performing placeholder substitution to the response.
    *
-   * @param client               the client
-   * @param requestBuilder       Request builder
-   * @param type                 Type of object provided
-   * @param parameters           A hashmap containing parameters
-   * @param <T>                  Template argument provided
+   * @param client the client
+   * @param requestBuilder Request builder
+   * @param type Type of object provided
+   * @param parameters A hashmap containing parameters
+   * @param <T> Template argument provided
    *
-   * @return                      Returns a de-serialized object as api server response of provided type.
+   * @return Returns a de-serialized object as api server response of provided type.
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
+  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type,
+      Map<String, String> parameters) throws InterruptedException, IOException {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
     HttpResponse<InputStream> response = retryWithExponentialBackoff(client, request);
@@ -575,7 +608,8 @@ public class OperationSupport {
     }
   }
 
-  protected HttpResponse<InputStream> retryWithExponentialBackoff(HttpClient client, HttpRequest request) throws InterruptedException, IOException {
+  protected HttpResponse<InputStream> retryWithExponentialBackoff(HttpClient client, HttpRequest request)
+      throws InterruptedException, IOException {
     int numRetries = 0;
     long retryInterval;
     while (true) {
@@ -583,7 +617,8 @@ public class OperationSupport {
         HttpResponse<InputStream> response = client.send(request, InputStream.class);
         if (numRetries < requestRetryBackoffLimit && response.code() >= 500) {
           retryInterval = retryIntervalCalculator.getInterval(numRetries);
-          LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.uri(), response.code(), retryInterval);
+          LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+              request.uri(), response.code(), retryInterval);
           if (response.body() != null) {
             response.body().close();
           }
@@ -593,7 +628,8 @@ public class OperationSupport {
       } catch (IOException ie) {
         if (numRetries < requestRetryBackoffLimit) {
           retryInterval = retryIntervalCalculator.getInterval(numRetries);
-          LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException", request.uri(), retryInterval), ie);
+          LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
+              request.uri(), retryInterval), ie);
         } else {
           throw ie;
         }
@@ -606,8 +642,8 @@ public class OperationSupport {
   /**
    * Checks if the response status code is the expected and throws the appropriate KubernetesClientException if not.
    *
-   * @param request            The {#link HttpRequest} object.
-   * @param response           The {@link HttpResponse} object.
+   * @param request The {#link HttpRequest} object.
+   * @param response The {@link HttpResponse} object.
    */
   protected void assertResponseCode(HttpRequest request, HttpResponse<?> response) {
     int statusCode = response.code();
@@ -637,7 +673,7 @@ public class OperationSupport {
     int statusCode = response != null ? response.code() : 0;
     if (response == null) {
       statusMessage = "No response";
-    } else { 
+    } else {
       try {
         String bodyString = response.bodyString();
         if (Utils.isNotNullOrEmpty(bodyString)) {
@@ -659,9 +695,9 @@ public class OperationSupport {
 
   public static Status createStatus(int statusCode, String message) {
     Status status = new StatusBuilder()
-            .withCode(statusCode)
-            .withMessage(message)
-            .build();
+        .withCode(statusCode)
+        .withMessage(message)
+        .build();
     status.getAdditionalProperties().put(CLIENT_STATUS_FLAG, "true");
     return status;
   }
@@ -672,12 +708,12 @@ public class OperationSupport {
 
   public static KubernetesClientException requestFailure(HttpRequest request, Status status, String message) {
     StringBuilder sb = new StringBuilder();
-    if(message != null && !message.isEmpty()) {
+    if (message != null && !message.isEmpty()) {
       sb.append(message).append(". ");
     }
-    
+
     sb.append("Failure executing: ").append(request.method())
-      .append(" at: ").append(request.uri()).append(".");
+        .append(" at: ").append(request.uri()).append(".");
 
     if (status.getMessage() != null && !status.getMessage().isEmpty()) {
       sb.append(" Message: ").append(status.getMessage()).append(".");
@@ -688,7 +724,8 @@ public class OperationSupport {
     }
 
     final RequestMetadata metadata = RequestMetadata.from(request);
-    return new KubernetesClientException(sb.toString(), status.getCode(), status, metadata.group, metadata.version, metadata.plural, metadata.namespace);
+    return new KubernetesClientException(sb.toString(), status.getCode(), status, metadata.group, metadata.version,
+        metadata.plural, metadata.namespace);
   }
 
   public static KubernetesClientException requestException(HttpRequest request, Throwable e, String message) {
@@ -696,19 +733,20 @@ public class OperationSupport {
     if (message != null && !message.isEmpty()) {
       sb.append(message).append(". ");
     }
-    
+
     sb.append("Error executing: ").append(request.method())
-      .append(" at: ").append(request.uri())
-      .append(". Cause: ").append(e.getMessage());
+        .append(" at: ").append(request.uri())
+        .append(". Cause: ").append(e.getMessage());
 
     final RequestMetadata metadata = RequestMetadata.from(request);
-    return new KubernetesClientException(sb.toString(), e, metadata.group, metadata.version, metadata.plural, metadata.namespace);
+    return new KubernetesClientException(sb.toString(), e, metadata.group, metadata.version, metadata.plural,
+        metadata.namespace);
   }
 
   public static KubernetesClientException requestException(HttpRequest request, Exception e) {
     return requestException(request, e, null);
   }
-  
+
   private static class RequestMetadata {
     private final String group;
     private final String version;
@@ -747,7 +785,7 @@ public class OperationSupport {
   }
 
   protected static <T> T unmarshal(InputStream is, TypeReference<T> type) {
-   return Serialization.unmarshal(is, type);
+    return Serialization.unmarshal(is, type);
   }
 
   protected static <T> Map getObjectValueAsMap(T object) {
@@ -764,7 +802,7 @@ public class OperationSupport {
     }
     return STRATEGIC_MERGE_JSON_PATCH;
   }
-  
+
   public <R1> R1 restCall(Class<R1> result, String... path) {
     try {
       URL requestUrl = new URL(config.getMasterUrl());
@@ -785,6 +823,6 @@ public class OperationSupport {
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
- }
-  
+  }
+
 }
