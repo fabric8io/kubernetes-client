@@ -15,34 +15,20 @@
  */
 package io.fabric8.volumesnapshot.test;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
-import io.fabric8.volumesnapshot.server.mock.VolumeSnapshotMockServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@EnableKubernetesMockClient
 class AdaptTest {
 
-  private final VolumeSnapshotMockServer mock = new VolumeSnapshotMockServer();
-
-  @BeforeEach
-  public void setUp() {
-    mock.init();
-  }
-
-  @AfterEach
-  public void tearDown() {
-    mock.destroy();
-  }
+  KubernetesClient kc;
 
   @Test
   void testAdapt() {
-    VolumeSnapshotClient sc = mock.createVolumeSnapshot();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(VolumeSnapshotClient.class));
   }
 }

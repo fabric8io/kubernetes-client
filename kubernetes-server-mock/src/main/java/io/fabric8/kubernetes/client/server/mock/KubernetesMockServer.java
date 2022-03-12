@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.VersionInfo;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.DefaultMockServer;
@@ -35,83 +35,103 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.function.Predicate;
 
-public class KubernetesMockServer extends DefaultMockServer {
+public class KubernetesMockServer extends DefaultMockServer implements Resetable {
 
-    private static final Context context = new Context(Serialization.jsonMapper());
+  private static final Context context = new Context(Serialization.jsonMapper());
 
-    private final Map<ServerRequest, Queue<ServerResponse>> responses;
-    private final VersionInfo versionInfo;
+  private final Map<ServerRequest, Queue<ServerResponse>> responses;
+  private final VersionInfo versionInfo;
+  private Dispatcher dispatcher;
+  private Predicate<Class<?>> adaptableOverride;
 
-    public KubernetesMockServer() {
-        this(true);
-    }
+  public KubernetesMockServer() {
+    this(true);
+  }
 
-    public KubernetesMockServer(boolean useHttps) {
-        this(new MockWebServer(), new HashMap<>(), useHttps);
-    }
+  public KubernetesMockServer(boolean useHttps) {
+    this(new MockWebServer(), new HashMap<>(), useHttps);
+  }
 
-    public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
-        this(context, server, responses, useHttps);
-    }
+  public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
+    this(context, server, responses, useHttps);
+  }
 
-    public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
-        this(context, server, responses, new MockDispatcher(responses), useHttps);
-    }
+  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      boolean useHttps) {
+    this(context, server, responses, new MockDispatcher(responses), useHttps);
+  }
 
-    public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
-        this(context, server, responses, dispatcher, useHttps,
-          new VersionInfo.Builder().withMajor("0").withMinor("0").build());
-    }
+  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
+    this(context, server, responses, dispatcher, useHttps,
+        new VersionInfo.Builder().withMajor("0").withMinor("0").build());
+  }
 
-    public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps, VersionInfo versionInfo) {
-        super(context, server, responses, dispatcher, useHttps);
-        this.responses = responses;
-        this.versionInfo = versionInfo;
-    }
+  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps, VersionInfo versionInfo) {
+    super(context, server, responses, dispatcher, useHttps);
+    this.dispatcher = dispatcher;
+    this.responses = responses;
+    this.versionInfo = versionInfo;
+  }
 
-    @Override
-    public void onStart() {
-        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
-        expect().get().withPath("/version").andReturn(200, versionInfo).always();
-    }
+  @Override
+  public void onStart() {
+    expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
+    expect().get().withPath("/version").andReturn(200, versionInfo).always();
+  }
 
-    public void init() {
-        start();
-    }
+  public void init() {
+    start();
+  }
 
-    public void init(InetAddress address, int port) {
-        start(address, port);
-    }
+  public void init(InetAddress address, int port) {
+    start(address, port);
+  }
 
-    public void destroy() {
-        shutdown();
-    }
+  public void destroy() {
+    shutdown();
+  }
 
-    public String[] getRootPaths() {
-        return new String[]{"/api", "/apis/extensions"};
-    }
+  public String[] getRootPaths() {
+    return new String[] { "/api", "/apis/extensions" };
+  }
 
-    public NamespacedKubernetesClient createClient() {
-        Config config = getMockConfiguration();
-        return new DefaultKubernetesClient(config);
-    }
+  public NamespacedKubernetesClient createClient() {
+    Config config = getMockConfiguration();
+    DefaultKubernetesClient defaultKubernetesClient = new DefaultKubernetesClient(config);
+    defaultKubernetesClient.setAdaptableOverride(adaptableOverride);
+    return defaultKubernetesClient;
+  }
 
+  void setAdaptableOverride(Predicate<Class<?>> adaptableOverride) {
+    this.adaptableOverride = adaptableOverride;
+  }
 
   /**
    * Removes all recorded expectations.
    */
-  public void clearExpectations(){
-      responses.clear();
-    }
+  public void clearExpectations() {
+    responses.clear();
+  }
 
-    protected Config getMockConfiguration() {
-        return new ConfigBuilder(Config.empty())
-                .withMasterUrl(url("/"))
-                .withTrustCerts(true)
-                .withTlsVersions(TlsVersion.TLS_1_2)
-                .withNamespace("test")
-                .withHttp2Disable(true)
-                .build();
+  protected Config getMockConfiguration() {
+    return new ConfigBuilder(Config.empty())
+        .withMasterUrl(url("/"))
+        .withTrustCerts(true)
+        .withTlsVersions(TlsVersion.TLS_1_2)
+        .withNamespace("test")
+        .withHttp2Disable(true)
+        .build();
+  }
+
+  @Override
+  public void reset() {
+    clearExpectations();
+    if (this.dispatcher instanceof Resetable) {
+      ((Resetable) this.dispatcher).reset();
     }
+  }
 }

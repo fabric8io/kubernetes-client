@@ -15,20 +15,20 @@
  */
 package io.fabric8.openclustermanagement.test.crud;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterBuilder;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class ManagedClusterCrudTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
@@ -40,8 +40,8 @@ class ManagedClusterCrudTest {
 
     // Then
     assertThat(managedCluster)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
@@ -56,7 +56,7 @@ class ManagedClusterCrudTest {
     assertThat(managedClusterList).isNotNull();
     assertThat(managedClusterList.getItems()).hasSize(1);
     assertThat(managedClusterList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
@@ -73,15 +73,15 @@ class ManagedClusterCrudTest {
 
   private ManagedCluster createNewManagedCluster(String name) {
     return new ManagedClusterBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withHubAcceptsClient(true)
-      .addNewManagedClusterClientConfig()
-      .withCaBundle("test")
-      .withUrl("test.com")
-      .endManagedClusterClientConfig()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withHubAcceptsClient(true)
+        .addNewManagedClusterClientConfig()
+        .withCaBundle("test")
+        .withUrl("test.com")
+        .endManagedClusterClientConfig()
+        .endSpec()
+        .build();
   }
 
 }

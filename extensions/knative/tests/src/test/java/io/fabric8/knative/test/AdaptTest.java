@@ -15,45 +15,26 @@
  */
 package io.fabric8.knative.test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.IOException;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.knative.client.serving.v1.ServingV1Client;
-import io.fabric8.knative.mock.KnativeMockServer;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@EnableKubernetesMockClient
 class AdaptTest {
 
-  private KnativeMockServer mock = new KnativeMockServer();
-
-  @BeforeEach
-  void setUp() {
-    mock.init();
-  }
-
-  @AfterEach
-  void tearDown() {
-    mock.destroy();
-  }
+  KubernetesClient kc;
 
   @Test
   void testAdapt() {
-    KnativeClient sc = mock.createKnative();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(KnativeClient.class));
   }
 
   @Test
   void testAdaptServingV1() {
-    KnativeClient sc = mock.createKnative();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ServingV1Client.class));
   }
 }

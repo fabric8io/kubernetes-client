@@ -18,11 +18,13 @@ package io.fabric8.kubernetes.client.dsl.base;
 import java.util.List;
 
 public class PatchContext {
+  // TODO this state overlaps with PatchOptions
   private List<String> dryRun;
   private String fieldManager;
   private Boolean force;
   private PatchType patchType;
-  
+  private String fieldValidation;
+
   public static PatchContext of(PatchType type) {
     return new PatchContext.Builder().withPatchType(type).build();
   }
@@ -59,6 +61,14 @@ public class PatchContext {
     this.patchType = patchType;
   }
 
+  public String getFieldValidation() {
+    return fieldValidation;
+  }
+
+  public void setFieldValidation(String fieldValidation) {
+    this.fieldValidation = fieldValidation;
+  }
+
   public static class Builder {
     private final PatchContext patchContext;
 
@@ -83,6 +93,11 @@ public class PatchContext {
 
     public Builder withPatchType(PatchType patchType) {
       this.patchContext.setPatchType(patchType);
+      return this;
+    }
+
+    public Builder withFieldValidation(String fieldValidation) {
+      this.patchContext.setFieldValidation(fieldValidation);
       return this;
     }
 

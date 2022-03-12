@@ -204,8 +204,15 @@ public class OperationSupport {
       if ((patchContext.getDryRun() != null && !patchContext.getDryRun().isEmpty()) || dryRun) {
         url = URLUtils.join(url, "?dryRun=All");
       }
-      if (patchContext.getFieldManager() != null) {
-        url = URLUtils.join(url, "?fieldManager=" + patchContext.getFieldManager());
+      String fieldManager = patchContext.getFieldManager();
+      if (fieldManager == null && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
+        fieldManager = "fabric8";
+      }
+      if (fieldManager != null) {
+        url = URLUtils.join(url, "?fieldManager=" + fieldManager);
+      }
+      if (patchContext.getFieldValidation() != null) {
+        url = URLUtils.join(url, "?fieldValidation=" + patchContext.getFieldValidation());
       }
       return new URL(url);
     }
@@ -380,6 +387,17 @@ public class OperationSupport {
         patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
       }
     } else {
+      if (patchContext != null
+          && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
+        // TODO: it would probably be better to do this with a mixin
+        if (updated instanceof HasMetadata) {
+          ObjectMeta meta = ((HasMetadata) updated).getMetadata();
+          if (meta != null && meta.getManagedFields() != null && !meta.getManagedFields().isEmpty()) {
+            // the item should have already been cloned
+            meta.setManagedFields(null);
+          }
+        }
+      }
       patchForUpdate = Serialization.asJson(updated);
       current = updated; // use the updated to determine the path
     }

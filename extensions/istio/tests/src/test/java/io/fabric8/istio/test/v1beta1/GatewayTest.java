@@ -15,47 +15,46 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSProtocol.TLSV1_2;
-import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSmode.PASSTHROUGH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
-
 import io.fabric8.istio.api.networking.v1beta1.Gateway;
 import io.fabric8.istio.api.networking.v1beta1.GatewayBuilder;
 import io.fabric8.istio.api.networking.v1beta1.PortBuilder;
 import io.fabric8.istio.api.networking.v1beta1.ServerBuilder;
 import io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsBuilder;
 import io.fabric8.istio.client.IstioClient;
-import io.fabric8.istio.mock.EnableIstioMockClient;
-import io.fabric8.istio.mock.IstioMockServer;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Assert;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
-@EnableIstioMockClient
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSProtocol.TLSV1_2;
+import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSmode.PASSTHROUGH;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableKubernetesMockClient
 class GatewayTest {
 
   IstioClient client;
-  IstioMockServer server;
+  KubernetesMockServer server;
 
   @Test
   @DisplayName("Should get a Gateway")
   void testGet() {
     Gateway service2 = new GatewayBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/gateways/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service2)
+        .once();
 
     Gateway service = client.v1beta1().gateways().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -67,22 +66,22 @@ class GatewayTest {
   void testCreate() throws InterruptedException {
     // Example from: https://istio.io/latest/docs/reference/config/networking/virtual-service/
     Gateway service = new GatewayBuilder()
-      .withNewMetadata()
-      .withName("my-gateway")
-      .endMetadata()
-      .withNewSpec()
-      .withSelector(Collections.singletonMap("app", "my-gateway-controller"))
-      .withServers(new ServerBuilder()
-        .withPort(new PortBuilder().withNumber(80).withProtocol("HTTP").withName("http").build())
-        .withHosts("uk.bookinfo.com", "eu.bookinfo.com")
-        .withTls(new ServerTLSSettingsBuilder().withHttpsRedirect(true).build())
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("my-gateway")
+        .endMetadata()
+        .withNewSpec()
+        .withSelector(Collections.singletonMap("app", "my-gateway-controller"))
+        .withServers(new ServerBuilder()
+            .withPort(new PortBuilder().withNumber(80).withProtocol("HTTP").withName("http").build())
+            .withHosts("uk.bookinfo.com", "eu.bookinfo.com")
+            .withTls(new ServerTLSSettingsBuilder().withHttpsRedirect(true).build())
+            .build())
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/gateways")
-      .andReturn(HttpURLConnection.HTTP_OK, service)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, service)
+        .once();
     service = client.v1beta1().gateways().inNamespace("ns2").create(service);
     assertNotNull(service);
 
@@ -91,56 +90,57 @@ class GatewayTest {
         + "\"kind\":\"Gateway\","
         + "\"metadata\":{\"name\":\"my-gateway\"},"
         + "\"spec\":{"
-        +   "\"selector\":{\"app\":\"my-gateway-controller\"},"
-        +   "\"servers\":[{\"hosts\":[\"uk.bookinfo.com\",\"eu.bookinfo.com\"],"
-        +   "\"port\":{\"name\":\"http\",\"number\":80,\"protocol\":\"HTTP\"},"
-        +   "\"tls\":{\"httpsRedirect\":true}}]}}",
-      recordedRequest.getBody().readUtf8());
+        + "\"selector\":{\"app\":\"my-gateway-controller\"},"
+        + "\"servers\":[{\"hosts\":[\"uk.bookinfo.com\",\"eu.bookinfo.com\"],"
+        + "\"port\":{\"name\":\"http\",\"number\":80,\"protocol\":\"HTTP\"},"
+        + "\"tls\":{\"httpsRedirect\":true}}]}}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should Delete a Gateway")
   void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/gateways/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new GatewayBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new GatewayBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().gateways().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}",
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
   void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/gateways/service3")
-      .andReturn(HttpURLConnection.HTTP_OK, new GatewayBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new GatewayBuilder().build())
+        .once();
     Boolean deleted = client.v1beta1().gateways().inNamespace("ns3").withName("service3")
-      .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
-      recordedRequest.getBody().readUtf8());
+        recordedRequest.getBody().readUtf8());
   }
 
   @Test
   public void checkBasicGateway() throws Exception {
     final Gateway gateway = new GatewayBuilder()
-      .withNewMetadata()
-      .withName("httpbin-gateway")
-      .endMetadata()
-      .withNewSpec()
-      .addToSelector("istio", "ingressgateway")
-      .addNewServer().withNewPort().withName("http").withProtocol("HTTP").withNumber(80).endPort()
-      .withHosts("httpbin.example.com").endServer()
-      .addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS", 443)
-      .withNewTls().withMode(PASSTHROUGH).withMinProtocolVersion(TLSV1_2).endTls()
-      .endServer()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("httpbin-gateway")
+        .endMetadata()
+        .withNewSpec()
+        .addToSelector("istio", "ingressgateway")
+        .addNewServer().withNewPort().withName("http").withProtocol("HTTP").withNumber(80).endPort()
+        .withHosts("httpbin.example.com").endServer()
+        .addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS", 443)
+        .withNewTls().withMode(PASSTHROUGH).withMinProtocolVersion(TLSV1_2).endTls()
+        .endServer()
+        .endSpec()
+        .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(gateway);
     Yaml parser = new Yaml();

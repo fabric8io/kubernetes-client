@@ -15,48 +15,49 @@
  */
 package io.fabric8.openclustermanagement.test.discovery;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigBuilder;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigList;
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
-import io.fabric8.openclustermanagement.server.mock.EnableOpenClusterManagementMockClient;
-import io.fabric8.openclustermanagement.server.mock.OpenClusterManagementMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenClusterManagementMockClient
+@EnableKubernetesMockClient
 class DiscoveryConfigTest {
   private OpenClusterManagementClient client;
-  private OpenClusterManagementMockServer server;
+  private KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveryconfigs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveryConfig("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveryconfigs/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveryConfig("test-get"))
+        .once();
 
     // When
     DiscoveryConfig discoveryConfig = client.discovery().discoveryConfigs().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(discoveryConfig)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveryconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, new DiscoveryConfigListBuilder()
-        .addToItems(createNewDiscoveryConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new DiscoveryConfigListBuilder()
+            .addToItems(createNewDiscoveryConfig("test-list"))
+            .build())
+        .once();
 
     // When
     DiscoveryConfigList discoveryConfigList = client.discovery().discoveryConfigs().inNamespace("ns1").list();
@@ -65,15 +66,16 @@ class DiscoveryConfigTest {
     assertThat(discoveryConfigList).isNotNull();
     assertThat(discoveryConfigList.getItems()).hasSize(1);
     assertThat(discoveryConfigList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveryconfigs/sample-discoveryconfig")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveryConfig("sample-discoveryconfig"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/discovery.open-cluster-management.io/v1alpha1/namespaces/ns1/discoveryconfigs/sample-discoveryconfig")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDiscoveryConfig("sample-discoveryconfig"))
+        .once();
 
     // When
     Boolean isDeleted = client.discovery().discoveryConfigs().inNamespace("ns1").withName("sample-discoveryconfig").delete();
@@ -84,14 +86,13 @@ class DiscoveryConfigTest {
 
   private DiscoveryConfig createNewDiscoveryConfig(String name) {
     return new DiscoveryConfigBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withCredential("ocm-api-token")
-      .withNewFilters()
-      .withLastActive(7)
-      .endFilters()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withCredential("ocm-api-token")
+        .withNewFilters()
+        .withLastActive(7)
+        .endFilters()
+        .endSpec()
+        .build();
   }
 }
-

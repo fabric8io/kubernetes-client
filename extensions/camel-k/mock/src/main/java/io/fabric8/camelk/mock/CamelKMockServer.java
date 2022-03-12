@@ -27,6 +27,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class CamelKMockServer extends KubernetesMockServer {
 
   public CamelKMockServer() {
@@ -37,13 +41,14 @@ public class CamelKMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public CamelKMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public CamelKMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api","/apis/camel.apache.org"};
+    return new String[] { "/api", "/apis/camel.apache.org" };
   }
 
   public NamespacedCamelKClient createCamelKClient() {

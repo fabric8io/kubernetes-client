@@ -15,21 +15,19 @@
  */
 package io.fabric8.volumesnapshot.test.crud;
 
-
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
-import io.fabric8.volumesnapshot.server.mock.EnableVolumeSnapshotMockClient;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableVolumeSnapshotMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class VolumeSnapshotTest {
 
   VolumeSnapshotClient client;
@@ -38,41 +36,41 @@ class VolumeSnapshotTest {
   void testCrud() {
 
     VolumeSnapshot vs1 = new VolumeSnapshotBuilder()
-      .withNewMetadata()
-      .withName("my-snapshot1")
-      .addToLabels("key1", "value1")
-      .endMetadata()
-      .withNewSpec()
-      .withVolumeSnapshotClassName("my-vsc")
-      .withNewSource()
-      .withPersistentVolumeClaimName("my-pvc1")
-      .endSource()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("my-snapshot1")
+        .addToLabels("key1", "value1")
+        .endMetadata()
+        .withNewSpec()
+        .withVolumeSnapshotClassName("my-vsc")
+        .withNewSource()
+        .withPersistentVolumeClaimName("my-pvc1")
+        .endSource()
+        .endSpec()
+        .build();
     VolumeSnapshot vs2 = new VolumeSnapshotBuilder()
-      .withNewMetadata()
-      .withName("my-snapshot2")
-      .addToLabels("key2", "value2")
-      .endMetadata()
-      .withNewSpec()
-      .withVolumeSnapshotClassName("my-vsc")
-      .withNewSource()
-      .withPersistentVolumeClaimName("my-pvc1")
-      .endSource()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("my-snapshot2")
+        .addToLabels("key2", "value2")
+        .endMetadata()
+        .withNewSpec()
+        .withVolumeSnapshotClassName("my-vsc")
+        .withNewSource()
+        .withPersistentVolumeClaimName("my-pvc1")
+        .endSource()
+        .endSpec()
+        .build();
     VolumeSnapshot vs3 = new VolumeSnapshotBuilder()
-      .withNewMetadata()
-      .withName("my-snapshot3")
-      .addToLabels("key3", "value3")
-      .endMetadata()
-      .withNewSpec()
-      .withVolumeSnapshotClassName("my-vsc")
-      .withNewSource()
-      .withPersistentVolumeClaimName("my-pvc2")
-      .endSource()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("my-snapshot3")
+        .addToLabels("key3", "value3")
+        .endMetadata()
+        .withNewSpec()
+        .withVolumeSnapshotClassName("my-vsc")
+        .withNewSource()
+        .withPersistentVolumeClaimName("my-pvc2")
+        .endSource()
+        .endSpec()
+        .build();
 
     //Create
     client.volumeSnapshots().create(vs1);
@@ -87,13 +85,12 @@ class VolumeSnapshotTest {
     VolumeSnapshot s1 = client.volumeSnapshots().withName("my-snapshot1").get();
     assertNotNull(s1);
 
-
     //Update
     VolumeSnapshot u1 = client.volumeSnapshots().withName("my-snapshot1").edit(v -> new VolumeSnapshotBuilder(v)
-      .editMetadata()
-      .addToLabels("updated", "true")
-      .endMetadata()
-      .build());
+        .editMetadata()
+        .addToLabels("updated", "true")
+        .endMetadata()
+        .build());
 
     assertNotNull(u1);
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));

@@ -26,7 +26,7 @@ import io.fabric8.java.generator.Config;
 
 import java.util.Collections;
 
-public class JCRObject extends AbstractJSONSchema2Pojo {
+public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
   private final String pkg;
   private final String type;
@@ -105,6 +105,10 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
     ClassOrInterfaceType status = (withStatus)
         ? new ClassOrInterfaceType().setName(this.pkg + "." + this.statusClassName)
         : jlVoid;
+
+    if (config.isObjectExtraAnnotations()) {
+      addExtraAnnotations(clz);
+    }
 
     ClassOrInterfaceType crType = new ClassOrInterfaceType()
         .setName("io.fabric8.kubernetes.client.CustomResource")

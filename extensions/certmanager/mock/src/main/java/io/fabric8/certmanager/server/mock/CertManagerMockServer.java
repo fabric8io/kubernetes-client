@@ -28,6 +28,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class CertManagerMockServer extends KubernetesMockServer {
 
   public CertManagerMockServer() {
@@ -38,13 +42,14 @@ public class CertManagerMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public CertManagerMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public CertManagerMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/cert-manager.io"};
+    return new String[] { "/api", "/apis/cert-manager.io" };
   }
 
   public NamespacedCertManagerClient createCertManager() {

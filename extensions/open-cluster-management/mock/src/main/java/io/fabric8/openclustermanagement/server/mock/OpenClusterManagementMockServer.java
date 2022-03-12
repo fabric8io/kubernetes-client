@@ -27,6 +27,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class OpenClusterManagementMockServer extends KubernetesMockServer {
   public OpenClusterManagementMockServer() {
     super();
@@ -36,19 +40,20 @@ public class OpenClusterManagementMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public OpenClusterManagementMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public OpenClusterManagementMockServer(Context context, MockWebServer server,
+      Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/apps.open-cluster-management.io",
-      "/apis/cluster.open-cluster-management.io",
-      "/apis/discovery.open-cluster-management.io",
-      "/apis/observability.open-cluster-management.io",
-      "/apis/operator.open-cluster-management.io",
-      "/apis/policy.open-cluster-management.io",
-      "/apis/search.open-cluster-management.io",
+    return new String[] { "/api", "/apis/apps.open-cluster-management.io",
+        "/apis/cluster.open-cluster-management.io",
+        "/apis/discovery.open-cluster-management.io",
+        "/apis/observability.open-cluster-management.io",
+        "/apis/operator.open-cluster-management.io",
+        "/apis/policy.open-cluster-management.io",
+        "/apis/search.open-cluster-management.io",
     };
   }
 

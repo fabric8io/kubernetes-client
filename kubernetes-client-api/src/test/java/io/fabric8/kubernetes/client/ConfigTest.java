@@ -54,9 +54,11 @@ public class ConfigTest {
   private static final String TEST_KUBECONFIG_EXEC_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec"));
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
 
-  private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
+  private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
 
-  private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
+  private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
 
   @BeforeEach
   public void setUp() {
@@ -146,40 +148,39 @@ public class ConfigTest {
   @Test
   void testWithBuilder() {
     Config config = new ConfigBuilder()
-      .withMasterUrl("http://somehost:80")
-      .withApiVersion("v1")
-      .withNamespace("testns")
-      .withOauthToken("token")
-      .withUsername("user")
-      .withPassword("pass")
-      .withTrustCerts(true)
-      .withDisableHostnameVerification(true)
-      .withCaCertFile("/path/to/cert")
-      .withCaCertData("cacertdata")
-      .withClientCertFile("/path/to/clientcert")
-      .withClientCertData("clientcertdata")
-      .withClientKeyFile("/path/to/clientkey")
-      .withClientKeyData("clientkeydata")
-      .withClientKeyAlgo("algo")
-      .withClientKeyPassphrase("passphrase")
-      .withMaxConcurrentRequests(120)
-      .withMaxConcurrentRequestsPerHost(20)
-      .withWatchReconnectInterval(5000)
-      .withWatchReconnectLimit(5)
-      .withRequestTimeout(5000)
-      .withUploadConnectionTimeout(60000)
-      .withUploadRequestTimeout(600000)
-      .withHttpProxy("httpProxy")
-      .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1)
-      .withTrustStoreFile("/path/to/truststore")
-      .withTrustStorePassphrase("truststorePassphrase")
-      .withKeyStoreFile("/path/to/keystore")
-      .withKeyStorePassphrase("keystorePassphrase")
-      .build();
+        .withMasterUrl("http://somehost:80")
+        .withApiVersion("v1")
+        .withNamespace("testns")
+        .withOauthToken("token")
+        .withUsername("user")
+        .withPassword("pass")
+        .withTrustCerts(true)
+        .withDisableHostnameVerification(true)
+        .withCaCertFile("/path/to/cert")
+        .withCaCertData("cacertdata")
+        .withClientCertFile("/path/to/clientcert")
+        .withClientCertData("clientcertdata")
+        .withClientKeyFile("/path/to/clientkey")
+        .withClientKeyData("clientkeydata")
+        .withClientKeyAlgo("algo")
+        .withClientKeyPassphrase("passphrase")
+        .withMaxConcurrentRequests(120)
+        .withMaxConcurrentRequestsPerHost(20)
+        .withWatchReconnectInterval(5000)
+        .withWatchReconnectLimit(5)
+        .withRequestTimeout(5000)
+        .withUploadConnectionTimeout(60000)
+        .withUploadRequestTimeout(600000)
+        .withHttpProxy("httpProxy")
+        .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1)
+        .withTrustStoreFile("/path/to/truststore")
+        .withTrustStorePassphrase("truststorePassphrase")
+        .withKeyStoreFile("/path/to/keystore")
+        .withKeyStorePassphrase("keystorePassphrase")
+        .build();
 
     assertConfig(config);
   }
-
 
   @Test
   void testWithBuilderAndSystemProperties() {
@@ -218,9 +219,9 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
 
     Config config = new ConfigBuilder()
-      .withMasterUrl("http://somehost:80")
-      .withNamespace("testns")
-      .build();
+        .withMasterUrl("http://somehost:80")
+        .withNamespace("testns")
+        .build();
 
     assertConfig(config);
   }
@@ -307,8 +308,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
     Config config = new ConfigBuilder()
-      .withNamespace("testns2")
-      .build();
+        .withNamespace("testns2")
+        .build();
 
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
@@ -387,8 +388,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "tobeoverriden");
 
     Config config = new ConfigBuilder()
-      .withNamespace("testns2")
-      .build();
+        .withNamespace("testns2")
+        .build();
 
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
@@ -397,16 +398,16 @@ public class ConfigTest {
 
   @Test
   void testWithCustomHeader() {
-    Map<String,String> customHeaders = new HashMap<>();
-    customHeaders.put("user-id","test-user");
-    customHeaders.put("cluster-id","test-cluster");
+    Map<String, String> customHeaders = new HashMap<>();
+    customHeaders.put("user-id", "test-user");
+    customHeaders.put("cluster-id", "test-cluster");
     Config config = new ConfigBuilder()
-      .withCustomHeaders(customHeaders)
-      .build();
+        .withCustomHeaders(customHeaders)
+        .build();
 
     assertNotNull(config);
     assertNotNull(config.getCustomHeaders());
-    assertEquals(2,config.getCustomHeaders().size());
+    assertEquals(2, config.getCustomHeaders().size());
   }
 
   @Test
@@ -419,12 +420,12 @@ public class ConfigTest {
     extras.put("c", Collections.singletonList("d"));
 
     final Config config = new ConfigBuilder()
-      .withImpersonateUsername("a")
-      .withImpersonateExtras(extras)
-      .build();
+        .withImpersonateUsername("a")
+        .withImpersonateExtras(extras)
+        .build();
 
     assertEquals("a", config.getImpersonateUsername());
-    assertArrayEquals(new String[]{"group"}, config.getImpersonateGroups());
+    assertArrayEquals(new String[] { "group" }, config.getImpersonateGroups());
     assertEquals(Collections.singletonList("d"), config.getImpersonateExtras().get("c"));
 
   }
@@ -449,8 +450,8 @@ public class ConfigTest {
   void shouldBeUsedTokenSuppliedByProvider() {
 
     Config config = new ConfigBuilder().withOauthToken("oauthToken")
-                                       .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
-                                       .build();
+        .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
+        .build();
 
     assertEquals("PROVIDER_TOKEN", config.getOauthToken());
   }
@@ -463,13 +464,14 @@ public class ConfigTest {
   }
 
   @Test
-  void testKubeConfigWithAuthConfigProvider() throws URISyntaxException  {
+  void testKubeConfigWithAuthConfigProvider() throws URISyntaxException {
     System.setProperty("kubeconfig", new File(getClass().getResource("/test-kubeconfig").toURI()).getAbsolutePath());
     Config config = Config.autoConfigure("production/172-28-128-4:8443/mmosley");
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
-    assertEquals("eyJraWQiOiJDTj1vaWRjaWRwLnRyZW1vbG8ubGFuLCBPVT1EZW1vLCBPPVRybWVvbG8gU2VjdXJpdHksIEw9QXJsaW5ndG9uLCBTVD1WaXJnaW5pYSwgQz1VUy1DTj1rdWJlLWNhLTEyMDIxNDc5MjEwMzYwNzMyMTUyIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL29pZGNpZHAudHJlbW9sby5sYW46ODQ0My9hdXRoL2lkcC9PaWRjSWRQIiwiYXVkIjoia3ViZXJuZXRlcyIsImV4cCI6MTQ4MzU0OTUxMSwianRpIjoiMm96US15TXdFcHV4WDlHZUhQdy1hZyIsImlhdCI6MTQ4MzU0OTQ1MSwibmJmIjoxNDgzNTQ5MzMxLCJzdWIiOiI0YWViMzdiYS1iNjQ1LTQ4ZmQtYWIzMC0xYTAxZWU0MWUyMTgifQ.w6p4J_6qQ1HzTG9nrEOrubxIMb9K5hzcMPxc9IxPx2K4xO9l-oFiUw93daH3m5pluP6K7eOE6txBuRVfEcpJSwlelsOsW8gb8VJcnzMS9EnZpeA0tW_p-mnkFc3VcfyXuhe5R3G7aa5d8uHv70yJ9Y3-UhjiN9EhpMdfPAoEB9fYKKkJRzF7utTTIPGrSaSU6d2pcpfYKaxIwePzEkT4DfcQthoZdy9ucNvvLoi1DIC-UocFD8HLs8LYKEqSxQvOcvnThbObJ9af71EwmuE21fO5KzMW20KtAeget1gnldOosPtz1G5EwvaQ401-RPQzPGMVBld0_zMCAwZttJ4knw",
-      config.getOauthToken());
+    assertEquals(
+        "eyJraWQiOiJDTj1vaWRjaWRwLnRyZW1vbG8ubGFuLCBPVT1EZW1vLCBPPVRybWVvbG8gU2VjdXJpdHksIEw9QXJsaW5ndG9uLCBTVD1WaXJnaW5pYSwgQz1VUy1DTj1rdWJlLWNhLTEyMDIxNDc5MjEwMzYwNzMyMTUyIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL29pZGNpZHAudHJlbW9sby5sYW46ODQ0My9hdXRoL2lkcC9PaWRjSWRQIiwiYXVkIjoia3ViZXJuZXRlcyIsImV4cCI6MTQ4MzU0OTUxMSwianRpIjoiMm96US15TXdFcHV4WDlHZUhQdy1hZyIsImlhdCI6MTQ4MzU0OTQ1MSwibmJmIjoxNDgzNTQ5MzMxLCJzdWIiOiI0YWViMzdiYS1iNjQ1LTQ4ZmQtYWIzMC0xYTAxZWU0MWUyMTgifQ.w6p4J_6qQ1HzTG9nrEOrubxIMb9K5hzcMPxc9IxPx2K4xO9l-oFiUw93daH3m5pluP6K7eOE6txBuRVfEcpJSwlelsOsW8gb8VJcnzMS9EnZpeA0tW_p-mnkFc3VcfyXuhe5R3G7aa5d8uHv70yJ9Y3-UhjiN9EhpMdfPAoEB9fYKKkJRzF7utTTIPGrSaSU6d2pcpfYKaxIwePzEkT4DfcQthoZdy9ucNvvLoi1DIC-UocFD8HLs8LYKEqSxQvOcvnThbObJ9af71EwmuE21fO5KzMW20KtAeget1gnldOosPtz1G5EwvaQ401-RPQzPGMVBld0_zMCAwZttJ4knw",
+        config.getOauthToken());
   }
 
   @Test
@@ -507,6 +509,7 @@ public class ConfigTest {
     assertFalse(emptyConfig.isHttp2Disable());
     assertEquals(1, emptyConfig.getTlsVersions().length);
     assertTrue(emptyConfig.getErrorMessages().isEmpty());
+    assertNotNull(emptyConfig.getUserAgent());
   }
 
   private void assertConfig(Config config) {
@@ -536,7 +539,7 @@ public class ConfigTest {
     assertEquals(60000, config.getRequestConfig().getUploadConnectionTimeout());
     assertEquals(600000, config.getRequestConfig().getUploadRequestTimeout());
 
-    assertArrayEquals(new TlsVersion[]{TlsVersion.TLS_1_2, TlsVersion.TLS_1_1}, config.getTlsVersions());
+    assertArrayEquals(new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 }, config.getTlsVersions());
 
     assertEquals("/path/to/truststore", config.getTrustStoreFile());
     assertEquals("truststorePassphrase", config.getTrustStorePassphrase());
@@ -555,13 +558,14 @@ public class ConfigTest {
     boolean isNewFileCreated = commandFile.createNewFile();
     String systemPathValue = getTestPathValue(commandFolder);
     ExecConfig execConfig = new ExecConfigBuilder()
-      .withApiVersion("client.authentication.k8s.io/v1alpha1")
-      .addToArgs("--region", "us-west2", "eks", "get-token", "--cluster-name", "api-eks.example.com")
-      .withCommand("aws")
-      .build();
+        .withApiVersion("client.authentication.k8s.io/v1alpha1")
+        .addToArgs("--region", "us-west2", "eks", "get-token", "--cluster-name", "api-eks.example.com")
+        .withCommand("aws")
+        .build();
 
     // When
-    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, new File("~/.kube/config"), systemPathValue);
+    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, new File("~/.kube/config"),
+        systemPathValue);
 
     // Then
     assertTrue(isNewFileCreated);
@@ -587,12 +591,12 @@ public class ConfigTest {
   private String getTestPathValue(File commandFolder) {
     if (Utils.isWindowsOperatingSystem()) {
       return "C:\\Program Files\\Java\\jdk14.0_23\\bin" + File.pathSeparator +
-        commandFolder.getAbsolutePath() + File.pathSeparator +
-        "C:\\Program Files\\Apache Software Foundation\\apache-maven-3.3.1";
+          commandFolder.getAbsolutePath() + File.pathSeparator +
+          "C:\\Program Files\\Apache Software Foundation\\apache-maven-3.3.1";
     } else {
       return "/usr/java/jdk-14.0.1/bin" + File.pathSeparator +
-        commandFolder.getAbsolutePath() + File.pathSeparator +
-        "/opt/apache-maven/bin";
+          commandFolder.getAbsolutePath() + File.pathSeparator +
+          "/opt/apache-maven/bin";
     }
   }
 }

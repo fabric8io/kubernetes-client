@@ -28,6 +28,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class VerticalPodAutoscalerMockServer extends KubernetesMockServer {
 
   public VerticalPodAutoscalerMockServer() {
@@ -38,13 +42,14 @@ public class VerticalPodAutoscalerMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public VerticalPodAutoscalerMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public VerticalPodAutoscalerMockServer(Context context, MockWebServer server,
+      Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/cert-manager.io"};
+    return new String[] { "/api", "/apis/cert-manager.io" };
   }
 
   public NamespacedVerticalPodAutoscalerClient createVerticalPodAutoscaler() {

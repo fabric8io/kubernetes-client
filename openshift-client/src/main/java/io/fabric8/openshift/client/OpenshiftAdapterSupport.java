@@ -39,17 +39,15 @@ public class OpenshiftAdapterSupport {
   }
 
   public DefaultOpenShiftClient adapt(Client client) {
-    if (!isAdaptable(client)) {
-      throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
-    }
     return new DefaultOpenShiftClient(client);
   }
 
   /**
    * Check if OpenShift API Groups are available
-   * @param client   The client.
+   * 
+   * @param client The client.
    * @param config {@link OpenShiftConfig} OpenShift Configuration
-   * @return         True if oapi is found in the root paths.
+   * @return True if oapi is found in the root paths.
    */
   public static boolean isOpenShiftAPIGroups(HttpClient client, OpenShiftConfig config) {
     if (config.isDisableApiGroupCheck()) {
@@ -69,20 +67,21 @@ public class OpenshiftAdapterSupport {
         });
   }
 
-    /**
-     * Checks if a custom URL for OpenShift has been used.
-     * @param config  The openshift configuration.
-     * @return        True if both master and openshift url have the same root.
-     */
-    static boolean hasCustomOpenShiftUrl(OpenShiftConfig config) {
-        try {
-            URI masterUri = new URI(config.getMasterUrl()).resolve("/");
-            URI openshfitUri = new URI(config.getOpenShiftUrl()).resolve("/");
-            return !masterUri.equals(openshfitUri);
-        } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(e);
-        }
+  /**
+   * Checks if a custom URL for OpenShift has been used.
+   * 
+   * @param config The openshift configuration.
+   * @return True if both master and openshift url have the same root.
+   */
+  static boolean hasCustomOpenShiftUrl(OpenShiftConfig config) {
+    try {
+      URI masterUri = new URI(config.getMasterUrl()).resolve("/");
+      URI openshfitUri = new URI(config.getOpenShiftUrl()).resolve("/");
+      return !masterUri.equals(openshfitUri);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
+  }
 
   /**
    * Creates a new OkHttpClient from the provided one with OpenShift specific interceptors and configurations.
@@ -96,6 +95,7 @@ public class OpenshiftAdapterSupport {
       httpClient = HttpClientUtils.createHttpClient(config);
     }
     HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
-    return builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, config)).build();
+    return builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, config))
+        .build();
   }
 }

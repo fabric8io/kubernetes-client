@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client;
+package io.fabric8.kubernetes.client.server.mock;
 
-import io.fabric8.kubernetes.client.BaseKubernetesClientBuilder;
+public interface Resetable {
 
-public class OpenShiftClientBuilder extends BaseKubernetesClientBuilder<OpenShiftClientBuilder> {
-
-  public OpenShiftClientBuilder() {
-    super("io.fabric8.openshift.client.DefaultOpenShiftClient");
-  }
-
-  public OpenShiftClientBuilder withOpenShiftConfig(OpenShiftConfig config) {
-    super.withConfig(config);
-    return this;
-  }
-
-  @Override
-  public OpenShiftClient build() {
-    return (OpenShiftClient)super.build();
-  }
+  /**
+   * return the resource to its initial state
+   */
+  void reset();
 
 }

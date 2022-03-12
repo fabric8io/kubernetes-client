@@ -27,6 +27,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @deprecated use {@link KubernetesMockServer} instead
+ */
+@Deprecated
 public class ChaosMeshMockServer extends KubernetesMockServer {
   public ChaosMeshMockServer() {
     super();
@@ -36,13 +40,14 @@ public class ChaosMeshMockServer extends KubernetesMockServer {
     super(useHttps);
   }
 
-  public ChaosMeshMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+  public ChaosMeshMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      Dispatcher dispatcher, boolean useHttps) {
     super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/chaos-mesh.org"};
+    return new String[] { "/api", "/apis/chaos-mesh.org" };
   }
 
   public NamespacedChaosMeshClient createChaosMeshClient() {
