@@ -24,8 +24,13 @@ import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
 import java.util.HashMap;
 import java.util.Map;
 
+public class VolumeSnapshotClassOperationsImpl extends ExtensibleResourceAdapter<VolumeSnapshotClass>
+    implements VolumeSnapshotClassResource {
 
-public class VolumeSnapshotClassOperationsImpl extends ExtensibleResourceAdapter<VolumeSnapshotClass> implements VolumeSnapshotClassResource {
+  @Override
+  public ExtensibleResourceAdapter<VolumeSnapshotClass> newInstance() {
+    return new VolumeSnapshotClassOperationsImpl();
+  }
 
   @Override
   public VolumeSnapshotList listSnapshots() {

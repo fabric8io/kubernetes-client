@@ -19,7 +19,12 @@ import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotContentResource;
 
+public class VolumeSnapshotContentOperationsImpl extends ExtensibleResourceAdapter<VolumeSnapshotContent>
+    implements VolumeSnapshotContentResource {
 
-public class VolumeSnapshotContentOperationsImpl extends ExtensibleResourceAdapter<VolumeSnapshotContent> implements VolumeSnapshotContentResource {
+  @Override
+  public ExtensibleResourceAdapter<VolumeSnapshotContent> newInstance() {
+    return new VolumeSnapshotContentOperationsImpl();
+  }
 
 }

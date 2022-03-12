@@ -19,8 +19,6 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Client;
 
-import java.util.function.Supplier;
-
 /**
  * An Adapter that can be used to adapt an instance of the {@link Client} .
  *
@@ -29,7 +27,7 @@ import java.util.function.Supplier;
 public interface ExtensionAdapter<C extends Client> {
 
   public interface HandlerFactory {
-    <T extends HasMetadata, R extends ExtensibleResourceAdapter<T>> void register(Class<T> type, Supplier<R> target);
+    <T extends HasMetadata> void register(Class<T> type, ExtensibleResourceAdapter<T> target);
   }
 
   /**

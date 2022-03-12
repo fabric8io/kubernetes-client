@@ -40,9 +40,9 @@ public class VolumeSnapshotExtensionAdapter implements ExtensionAdapter<VolumeSn
 
   @Override
   public void registerHandlers(HandlerFactory factory) {
-    factory.register(VolumeSnapshotClass.class, VolumeSnapshotClassOperationsImpl::new);
-    factory.register(VolumeSnapshotContent.class, VolumeSnapshotContentOperationsImpl::new);
-    factory.register(VolumeSnapshot.class, VolumeSnapshotOperationsImpl::new);
+    factory.register(VolumeSnapshotClass.class, new VolumeSnapshotClassOperationsImpl());
+    factory.register(VolumeSnapshotContent.class, new VolumeSnapshotContentOperationsImpl());
+    factory.register(VolumeSnapshot.class, new VolumeSnapshotOperationsImpl());
   }
 
 }

@@ -23,9 +23,14 @@ import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 
 public class ServiceBindingOperationsImpl extends ExtensibleResourceAdapter<ServiceBinding> implements ServiceBindingResource {
 
-    @Override
-    public Secret getSecret() {
-        ServiceBinding instance = get();
-        return client.adapt(KubernetesClient.class).secrets().withName(instance.getSpec().getSecretName()).get();
-    }
+  @Override
+  public ExtensibleResourceAdapter<ServiceBinding> newInstance() {
+    return new ServiceBindingOperationsImpl();
+  }
+
+  @Override
+  public Secret getSecret() {
+    ServiceBinding instance = get();
+    return client.adapt(KubernetesClient.class).secrets().withName(instance.getSpec().getSecretName()).get();
+  }
 }

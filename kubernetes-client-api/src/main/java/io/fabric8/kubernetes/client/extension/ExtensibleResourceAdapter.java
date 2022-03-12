@@ -29,7 +29,7 @@ import java.util.function.Function;
  *
  * @param <T> the resource type
  */
-public class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> implements ExtensibleResource<T> {
+public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> implements ExtensibleResource<T> {
 
   protected ExtensibleResource<T> resource;
   protected Client client;
@@ -38,64 +38,63 @@ public class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> implements 
 
   }
 
-  public ExtensibleResourceAdapter(ExtensibleResource<T> resource, Client client) {
-    init(resource, client);
-  }
+  public abstract ExtensibleResourceAdapter<T> newInstance();
 
-  public void init(ExtensibleResource<T> resource, Client client) {
+  public ExtensibleResourceAdapter<T> init(ExtensibleResource<T> resource, Client client) {
     super.resource = resource;
     this.resource = resource;
     this.client = client;
+    return this;
   }
 
   @Override
   public ExtensibleResource<T> lockResourceVersion(String resourceVersion) {
-    return new ExtensibleResourceAdapter<>(resource.lockResourceVersion(resourceVersion), client);
+    return newInstance().init(resource.lockResourceVersion(resourceVersion), client);
   }
 
   @Override
   public ExtensibleResource<T> cascading(boolean enabled) {
-    return new ExtensibleResourceAdapter<>(resource.cascading(enabled), client);
+    return newInstance().init(resource.cascading(enabled), client);
   }
 
   @Override
   public ExtensibleResource<T> withResourceVersion(String resourceVersion) {
-    return new ExtensibleResourceAdapter<>(resource.withResourceVersion(resourceVersion), client);
+    return newInstance().init(resource.withResourceVersion(resourceVersion), client);
   }
 
   @Override
   public ExtensibleResource<T> fromServer() {
-    return new ExtensibleResourceAdapter<>(resource.fromServer(), client);
+    return newInstance().init(resource.fromServer(), client);
   }
 
   @Override
   public ExtensibleResource<T> withGracePeriod(long gracePeriodSeconds) {
-    return new ExtensibleResourceAdapter<>(resource.withGracePeriod(gracePeriodSeconds), client);
+    return newInstance().init(resource.withGracePeriod(gracePeriodSeconds), client);
   }
 
   @Override
   public ExtensibleResource<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return new ExtensibleResourceAdapter<>(resource.withPropagationPolicy(propagationPolicy), client);
+    return newInstance().init(resource.withPropagationPolicy(propagationPolicy), client);
   }
 
   @Override
   public ExtensibleResource<T> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return new ExtensibleResourceAdapter<>(resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier), client);
+    return newInstance().init(resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier), client);
   }
 
   @Override
   public ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
-    return new ExtensibleResourceAdapter<>(resource.withIndexers(indexers), client);
+    return newInstance().init(resource.withIndexers(indexers), client);
   }
 
   @Override
   public ExtensibleResource<T> dryRun(boolean isDryRun) {
-    return new ExtensibleResourceAdapter<>(resource.dryRun(isDryRun), client);
+    return newInstance().init(resource.dryRun(isDryRun), client);
   }
 
   @Override
   public ExtensibleResource<T> withLimit(Long limit) {
-    return new ExtensibleResourceAdapter<>(resource.withLimit(limit), client);
+    return newInstance().init(resource.withLimit(limit), client);
   }
 
 }

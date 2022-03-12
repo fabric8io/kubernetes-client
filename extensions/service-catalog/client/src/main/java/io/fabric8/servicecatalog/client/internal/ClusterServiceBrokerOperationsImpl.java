@@ -28,41 +28,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+public class ClusterServiceBrokerOperationsImpl extends ExtensibleResourceAdapter<ClusterServiceBroker>
+    implements ClusterServiceBrokerResource {
 
-public class ClusterServiceBrokerOperationsImpl extends ExtensibleResourceAdapter<ClusterServiceBroker> implements ClusterServiceBrokerResource {
+  @Override
+  public ExtensibleResourceAdapter<ClusterServiceBroker> newInstance() {
+    return new ClusterServiceBrokerOperationsImpl();
+  }
 
-    @Override
-    public ClusterServicePlanList listPlans() {
-        ClusterServiceBroker item = get();
-        return client.adapt(ServiceCatalogClient.class).clusterServicePlans()
-                .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
-                .list();
+  @Override
+  public ClusterServicePlanList listPlans() {
+    ClusterServiceBroker item = get();
+    return client.adapt(ServiceCatalogClient.class).clusterServicePlans()
+        .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
+        .list();
+  }
+
+  @Override
+  public ClusterServiceClassList listClasses() {
+    ClusterServiceBroker item = get();
+    return client.adapt(ServiceCatalogClient.class).clusterServiceClasses()
+        .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
+        .list();
+  }
+
+  @Override
+  public ClusterServiceClassResource useServiceClass(String externalName) {
+    ClusterServiceBroker item = get();
+    Map<String, String> fields = new HashMap<>();
+    fields.put("spec.clusterServiceBrokerName", item.getMetadata().getName());
+    if (externalName != null) {
+      fields.put("spec.externalName", externalName);
     }
 
-    @Override
-    public ClusterServiceClassList listClasses() {
-        ClusterServiceBroker item = get();
-        return client.adapt(ServiceCatalogClient.class).clusterServiceClasses()
-                .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
-                .list();
+    List<ClusterServiceClass> list = client.adapt(ServiceCatalogClient.class).clusterServiceClasses().withFields(fields).list()
+        .getItems();
+
+    if (list.size() != 1) {
+      throw new IllegalArgumentException("No unique ClusterServiceClass with external name:" + externalName
+          + "found for ClusterServiceBroker: " + item.getMetadata().getName());
     }
-
-    @Override
-    public ClusterServiceClassResource useServiceClass(String externalName) {
-        ClusterServiceBroker item = get();
-        Map<String, String> fields = new HashMap<>();
-        fields.put("spec.clusterServiceBrokerName", item.getMetadata().getName());
-        if (externalName != null) {
-            fields.put("spec.externalName", externalName);
-        }
-
-        List<ClusterServiceClass> list = client.adapt(ServiceCatalogClient.class).clusterServiceClasses().withFields(fields).list().getItems();
-
-        if (list.size() != 1) {
-            throw new IllegalArgumentException("No unique ClusterServiceClass with external name:" + externalName + "found for ClusterServiceBroker: " + item.getMetadata().getName());
-        }
-        ClusterServiceClass c = list.get(0);
-        return client.adapt(ServiceCatalogClient.class).clusterServiceClasses().withItem(c);
-    }
+    ClusterServiceClass c = list.get(0);
+    return client.adapt(ServiceCatalogClient.class).clusterServiceClasses().withItem(c);
+  }
 
 }

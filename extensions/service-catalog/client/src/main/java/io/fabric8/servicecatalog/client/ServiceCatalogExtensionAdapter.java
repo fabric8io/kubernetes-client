@@ -42,10 +42,10 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
 
   @Override
   public void registerHandlers(HandlerFactory factory) {
-    factory.register(ClusterServiceBroker.class, ClusterServiceBrokerOperationsImpl::new);
-    factory.register(ClusterServiceClass.class, ClusterServiceClassOperationsImpl::new);
-    factory.register(ClusterServicePlan.class, ClusterServicePlanOperationsImpl::new);
-    factory.register(ServiceBinding.class, ServiceBindingOperationsImpl::new);
-    factory.register(ServiceInstance.class, ServiceInstanceOperationsImpl::new);
+    factory.register(ClusterServiceBroker.class, new ClusterServiceBrokerOperationsImpl());
+    factory.register(ClusterServiceClass.class, new ClusterServiceClassOperationsImpl());
+    factory.register(ClusterServicePlan.class, new ClusterServicePlanOperationsImpl());
+    factory.register(ServiceBinding.class, new ServiceBindingOperationsImpl());
+    factory.register(ServiceInstance.class, new ServiceInstanceOperationsImpl());
   }
 }
