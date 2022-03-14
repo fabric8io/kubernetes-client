@@ -24,20 +24,32 @@ public interface WebSocket {
 
   public interface Listener {
 
-    default void onOpen(WebSocket webSocket) { }
+    default void onOpen(WebSocket webSocket) {
+    }
 
-    default void onMessage(WebSocket webSocket, String text) {}
+    default void onMessage(WebSocket webSocket, String text) {
+    }
 
-    default void onMessage(WebSocket webSocket, ByteBuffer bytes) {}
+    default void onMessage(WebSocket webSocket, ByteBuffer bytes) {
+    }
 
-    default void onClose(WebSocket webSocket, int code, String reason) {}
+    default void onClose(WebSocket webSocket, int code, String reason) {
+    }
 
-    default void onError(WebSocket webSocket, Throwable error) {}
+    default void onError(WebSocket webSocket, Throwable error) {
+    }
 
   }
 
   public interface Builder extends BasicBuilder {
 
+    /**
+     * Builds a new WebSocket connection and waits asynchronously until the connection is opened.
+     * The listener onOpen callback is called before the returned future is completed.
+     *
+     * @param listener
+     * @return CompletableFuture which is completed after connection is opened
+     */
     CompletableFuture<WebSocket> buildAsync(Listener listener);
 
     Builder subprotocol(String protocol);
@@ -55,12 +67,14 @@ public interface WebSocket {
 
   /**
    * Send some data
+   * 
    * @return true if the message was successfully enqueued.
    */
   boolean send(ByteBuffer buffer);
 
   /**
    * Send a close message
+   * 
    * @return true if the message was successfully enqueued.
    */
   boolean sendClose(int code, String reason);

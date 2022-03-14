@@ -10,6 +10,7 @@
 * Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
 * Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
+* Fix #3957: Lister `onOpen` should be called before marking the connection as open
 
 #### Improvements
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
