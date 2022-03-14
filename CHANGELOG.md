@@ -25,6 +25,7 @@
 #### Dependency Upgrade
 * Bump Knative model to v0.34.0
 * Bump Apache Camel-K to v1.9.2
+* Update chaos-mesh extension to v2.1.3. Add PodHttpChaos, GCPChaos, BlockChaos and PhysicalMachineChaos.
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire

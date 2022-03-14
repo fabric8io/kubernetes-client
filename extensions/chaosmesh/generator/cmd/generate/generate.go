@@ -29,18 +29,22 @@ func main() {
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
 	crdLists := map[reflect.Type]schemagen.CrdScope{
-		reflect.TypeOf(chaosmesh.IoChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.KernelChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.NetworkChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.PodChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.PodIoChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.PodNetworkChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.StressChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.TimeChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.JVMChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.HTTPChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.DNSChaosList{}): schemagen.Namespaced,
-		reflect.TypeOf(chaosmesh.AwsChaosList{}): schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.IOChaosList{}):              schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.KernelChaosList{}):          schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.NetworkChaosList{}):         schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.PodChaosList{}):             schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.PodIOChaosList{}):           schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.PodHttpChaosList{}):         schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.PodNetworkChaosList{}):      schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.StressChaosList{}):          schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.TimeChaosList{}):            schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.JVMChaosList{}):             schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.HTTPChaosList{}):            schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.DNSChaosList{}):             schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.AWSChaosList{}):             schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.GCPChaosList{}):             schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.BlockChaosList{}):           schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.PhysicalMachineChaosList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields
@@ -65,17 +69,27 @@ func main() {
 	//  - replace <key> with <value> aka "package prefix"
 	//  - replace '/' with '.' for a valid java package name
 	// e.g. knative.dev/eventing/pkg/apis/messaging/v1beta1/ChannelTemplateSpec is mapped to "io.fabric8.knative.internal.eventing.pkg.apis.messaging.v1beta1.ChannelTemplateSpec"
-	mappingSchema := map[string]string{
-	}
+	mappingSchema := map[string]string{}
 
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(v1.Time{}):              "java.lang.String",
 		reflect.TypeOf(runtime.RawExtension{}): "Map<String, Object>",
 		reflect.TypeOf([]byte{}):               "java.lang.String",
+		reflect.TypeOf([]string{}):             "java.util.List<java.lang.String>",
 	}
 
-	json := schemagen.GenerateSchema("http://fabric8.io/csi/ChaosMeshSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")
+	json := schemagen.GenerateSchema(
+		"http://fabric8.io/csi/ChaosMeshSchema#",
+		crdLists,
+		providedPackages,
+		manualTypeMap,
+		packageMapping,
+		mappingSchema,
+		providedTypes,
+		constraints,
+		"io.fabric8",
+	)
 
 	fmt.Println(json)
 }

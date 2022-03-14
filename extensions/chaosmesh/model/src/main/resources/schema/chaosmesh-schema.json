@@ -2,6 +2,126 @@
   "id": "http://fabric8.io/csi/ChaosMeshSchema#",
   "$schema": "http://json-schema.org/draft-05/schema#",
   "definitions": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "AWSChaos",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaos",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaos"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "AWSChaosList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.AWSChaos\u003e"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosSpec": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "awsRegion": {
+          "type": "string"
+        },
+        "deviceName": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "duration": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "ec2Instance": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "secretName": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "volumeID": {
+          "type": "string",
+          "existingJavaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
+        "experiment": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AttrOverrideSpec": {
       "type": "object",
       "properties": {
@@ -59,129 +179,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaos": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "chaos-mesh.org/v1alpha1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "default": "AwsChaos",
-          "required": true
-        },
-        "metadata": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosStatus"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaos",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosList": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "chaos-mesh.org/v1alpha1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaos",
-            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaos"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "default": "AwsChaosList",
-          "required": true
-        },
-        "metadata": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.AwsChaos\u003e"
-      ]
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosSpec": {
-      "type": "object",
-      "properties": {
-        "action": {
-          "type": "string"
-        },
-        "awsRegion": {
-          "type": "string"
-        },
-        "deviceName": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "duration": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "ec2Instance": {
-          "type": "string"
-        },
-        "endpoint": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
-        "secretName": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "volumeID": {
-          "type": "string",
-          "existingJavaType": "String"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosStatus": {
-      "type": "object",
-      "properties": {
-        "experiment": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BandwidthSpec": {
       "type": "object",
       "properties": {
@@ -208,6 +205,149 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaos": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "BlockChaos",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaos",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaos"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "BlockChaosList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.BlockChaos\u003e"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosSpec": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "containerNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "delay": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockDelaySpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockDelaySpec"
+        },
+        "duration": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "iops": {
+          "type": "integer"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "selector": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
+        },
+        "value": {
+          "type": "string"
+        },
+        "volumeName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
+        "experiment": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
+        },
+        "ids": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockDelaySpec": {
+      "type": "object",
+      "properties": {
+        "correlation": {
+          "type": "string"
+        },
+        "jitter": {
+          "type": "string"
+        },
+        "latency": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.BlockDelaySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_CPUStressor": {
       "type": "object",
       "properties": {
@@ -216,17 +356,49 @@
           "existingJavaType": "Integer"
         },
         "options": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "workers": {
           "type": "integer"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.CPUStressor",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ClockSpec": {
+      "type": "object",
+      "properties": {
+        "clock-ids-slice": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "time-offset": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.ClockSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -313,6 +485,9 @@
         "action": {
           "type": "string"
         },
+        "containerNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
         "duration": {
           "type": "string",
           "existingJavaType": "String"
@@ -321,18 +496,11 @@
           "type": "string"
         },
         "patterns": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "value": {
           "type": "string"
@@ -346,16 +514,17 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DNSChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.DNSChaosStatus",
@@ -385,6 +554,42 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskFillSpec": {
+      "type": "object",
+      "properties": {
+        "fill-by-fallocate": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.DiskFillSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskPayloadSpec": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "payload-process-num": {
+          "type": "integer"
+        },
+        "size": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.DiskPayloadSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DuplicateSpec": {
       "type": "object",
       "properties": {
@@ -403,28 +608,16 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus": {
       "type": "object",
       "properties": {
-        "duration": {
-          "type": "string"
-        },
-        "endTime": {
-          "existingJavaType": "java.lang.String"
-        },
-        "phase": {
-          "type": "string"
-        },
-        "podRecords": {
+        "containerRecords": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodStatus",
-            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodStatus"
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Record",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Record"
           }
         },
-        "reason": {
+        "desiredPhase": {
           "type": "string"
-        },
-        "startTime": {
-          "existingJavaType": "java.lang.String"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus",
@@ -447,11 +640,7 @@
           "type": "integer"
         },
         "headers": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "probability": {
           "type": "integer"
@@ -479,6 +668,123 @@
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.Frame",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaos": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "GCPChaos",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaos",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaos"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "GCPChaosList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.GCPChaos\u003e"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosSpec": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "deviceNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "duration": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "secretName": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosStatus": {
+      "type": "object",
+      "properties": {
+        "attachedDiskStrings": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
+        "experiment": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -547,34 +853,58 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_HTTPChaosSpec": {
       "type": "object",
       "properties": {
-        "action": {
-          "type": "string"
+        "abort": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
+        "code": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "delay": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "duration": {
           "type": "string",
           "existingJavaType": "String"
         },
-        "headers": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Matcher",
-            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Matcher"
-          }
+        "method": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "mode": {
           "type": "string"
         },
-        "percent": {
-          "type": "string"
+        "patch": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchActions",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchActions"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
+        "path": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "replace": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosReplaceActions",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosReplaceActions"
+        },
+        "request_headers": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "response_headers": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
+        },
+        "target": {
+          "type": "string"
         },
         "value": {
           "type": "string"
@@ -588,16 +918,21 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_HTTPChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
         },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
+        "instances": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,Long\u003e"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.HTTPChaosStatus",
@@ -605,7 +940,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaos": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaos": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -615,28 +950,28 @@
         },
         "kind": {
           "type": "string",
-          "default": "IoChaos",
+          "default": "IOChaos",
           "required": true
         },
         "metadata": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosStatus"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosStatus"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.IoChaos",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.IOChaos",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosAction": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosAction": {
       "type": "object",
       "properties": {
         "atime": {
@@ -722,12 +1057,12 @@
           "existingJavaType": "Long"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosAction",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosAction",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosList": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -738,26 +1073,26 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaos",
-            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaos"
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaos"
           }
         },
         "kind": {
           "type": "string",
-          "default": "IoChaosList",
+          "default": "IOChaosList",
           "required": true
         },
         "metadata": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosList",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.IoChaos\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.IOChaos\u003e"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosSpec": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosSpec": {
       "type": "object",
       "properties": {
         "action": {
@@ -767,9 +1102,8 @@
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AttrOverrideSpec",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AttrOverrideSpec"
         },
-        "containerName": {
-          "type": "string",
-          "existingJavaType": "String"
+        "containerNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "delay": {
           "type": "string"
@@ -801,13 +1135,9 @@
         "percent": {
           "type": "integer"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "value": {
           "type": "string"
@@ -816,27 +1146,32 @@
           "type": "string"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosSpec",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosStatus": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
         },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
+        "instances": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,Long\u003e"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosStatus",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -923,31 +1258,46 @@
         "action": {
           "type": "string"
         },
+        "class": {
+          "type": "string"
+        },
+        "containerNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "cpuCount": {
+          "type": "integer"
+        },
         "duration": {
           "type": "string",
           "existingJavaType": "String"
         },
-        "flags": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        "exception": {
+          "type": "string"
         },
-        "matchers": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        "latency": {
+          "type": "integer"
+        },
+        "memType": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
         },
         "mode": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
+        "name": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "ruleData": {
+          "type": "string"
         },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
-        },
-        "target": {
-          "type": "string"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "value": {
           "type": "string"
@@ -961,19 +1311,146 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMChaosStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMExceptionSpec": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "exception": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMExceptionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMGCSpec": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMGCSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMLatencySpec": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "latency": {
+          "type": "integer"
+        },
+        "method": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMLatencySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMReturnSpec": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMReturnSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMRuleDataSpec": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "rule-data": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMRuleDataSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMStressSpec": {
+      "type": "object",
+      "properties": {
+        "cpu-count": {
+          "type": "integer"
+        },
+        "mem-type": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.JVMStressSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1053,13 +1530,9 @@
         "mode": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "value": {
           "type": "string"
@@ -1073,16 +1546,17 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_KernelChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.KernelChaosStatus",
@@ -1105,59 +1579,11 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Matcher": {
-      "type": "object",
-      "properties": {
-        "exact_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "invert_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "name": {
-          "type": "string"
-        },
-        "prefix_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "present_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "range_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "regex_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "safe_regex_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        },
-        "suffix_match": {
-          "type": "string",
-          "existingJavaType": "String"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.Matcher",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_MemoryStressor": {
       "type": "object",
       "properties": {
         "options": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "size": {
           "type": "string"
@@ -1187,6 +1613,41 @@
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.MistakeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkBandwidthSpec": {
+      "type": "object",
+      "properties": {
+        "buffer": {
+          "type": "integer"
+        },
+        "device": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip-address": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "minburst": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "peakrate": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "rate": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkBandwidthSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1270,6 +1731,9 @@
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DelaySpec",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DelaySpec"
         },
+        "device": {
+          "type": "string"
+        },
         "direction": {
           "type": "string"
         },
@@ -1282,11 +1746,7 @@
           "existingJavaType": "String"
         },
         "externalTargets": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "loss": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_LossSpec",
@@ -1295,17 +1755,16 @@
         "mode": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "target": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Target",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Target"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelector",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelector"
+        },
+        "targetDevice": {
+          "type": "string"
         },
         "value": {
           "type": "string"
@@ -1319,19 +1778,433 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
         },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
+        "instances": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,Long\u003e"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkChaosStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkCorruptSpec": {
+      "type": "object",
+      "properties": {
+        "correlation": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "egress-port": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip-address": {
+          "type": "string"
+        },
+        "ip-protocol": {
+          "type": "string"
+        },
+        "percent": {
+          "type": "string"
+        },
+        "source-port": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkCorruptSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDNSSpec": {
+      "type": "object",
+      "properties": {
+        "dns-domain-name": {
+          "type": "string"
+        },
+        "dns-ip": {
+          "type": "string"
+        },
+        "dns-server": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDNSSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDelaySpec": {
+      "type": "object",
+      "properties": {
+        "correlation": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "egress-port": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip-address": {
+          "type": "string"
+        },
+        "ip-protocol": {
+          "type": "string"
+        },
+        "jitter": {
+          "type": "string"
+        },
+        "latency": {
+          "type": "string"
+        },
+        "source-port": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDelaySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDuplicateSpec": {
+      "type": "object",
+      "properties": {
+        "correlation": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "egress-port": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip-address": {
+          "type": "string"
+        },
+        "ip-protocol": {
+          "type": "string"
+        },
+        "percent": {
+          "type": "string"
+        },
+        "source-port": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDuplicateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkLossSpec": {
+      "type": "object",
+      "properties": {
+        "correlation": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "egress-port": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip-address": {
+          "type": "string"
+        },
+        "ip-protocol": {
+          "type": "string"
+        },
+        "percent": {
+          "type": "string"
+        },
+        "source-port": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkLossSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkPartitionSpec": {
+      "type": "object",
+      "properties": {
+        "accept-tcp-flags": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip-address": {
+          "type": "string"
+        },
+        "ip-protocol": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.NetworkPartitionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaos": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PhysicalMachineChaos",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PhysicalMachineChaosList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos\u003e"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosSpec": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "address": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "clock": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ClockSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ClockSpec"
+        },
+        "disk-fill": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskFillSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DiskFillSpec"
+        },
+        "disk-read-payload": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskPayloadSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DiskPayloadSpec"
+        },
+        "disk-write-payload": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskPayloadSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DiskPayloadSpec"
+        },
+        "duration": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "jvm-exception": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMExceptionSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMExceptionSpec"
+        },
+        "jvm-gc": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMGCSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMGCSpec"
+        },
+        "jvm-latency": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMLatencySpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMLatencySpec"
+        },
+        "jvm-return": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMReturnSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMReturnSpec"
+        },
+        "jvm-rule-data": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMRuleDataSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMRuleDataSpec"
+        },
+        "jvm-stress": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMStressSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMStressSpec"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "network-bandwidth": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkBandwidthSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkBandwidthSpec"
+        },
+        "network-corrupt": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkCorruptSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkCorruptSpec"
+        },
+        "network-delay": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDelaySpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDelaySpec"
+        },
+        "network-dns": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDNSSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDNSSpec"
+        },
+        "network-duplicate": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDuplicateSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDuplicateSpec"
+        },
+        "network-loss": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkLossSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkLossSpec"
+        },
+        "network-partition": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkPartitionSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkPartitionSpec"
+        },
+        "process": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ProcessSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ProcessSpec"
+        },
+        "selector": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineSelectorSpec"
+        },
+        "stress-cpu": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressCPUSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.StressCPUSpec"
+        },
+        "stress-mem": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressMemorySpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.StressMemorySpec"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
+        "experiment": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineSelectorSpec": {
+      "type": "object",
+      "properties": {
+        "annotationSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "expressionSelectors": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
+          }
+        },
+        "fieldSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "labelSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "namespaces": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "physicalMachines": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,java.util.List\u003cjava.lang.String\u003e\u003e"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineSelectorSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1403,8 +2276,8 @@
         "action": {
           "type": "string"
         },
-        "containerName": {
-          "type": "string"
+        "containerNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "duration": {
           "type": "string",
@@ -1417,13 +2290,9 @@
         "mode": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "value": {
           "type": "string"
@@ -1437,16 +2306,17 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.PodChaosStatus",
@@ -1454,7 +2324,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaos": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaos": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1464,24 +2334,53 @@
         },
         "kind": {
           "type": "string",
-          "default": "PodIoChaos",
+          "default": "PodHttpChaos",
           "required": true
         },
         "metadata": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaosSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosStatus"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaos",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaos",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosList": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosActions": {
+      "type": "object",
+      "properties": {
+        "abort": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
+        "delay": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "patch": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchActions",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchActions"
+        },
+        "replace": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosReplaceActions",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosReplaceActions"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosActions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1492,39 +2391,184 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaos",
-            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaos"
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaos"
           }
         },
         "kind": {
           "type": "string",
-          "default": "PodIoChaosList",
+          "default": "PodHttpChaosList",
           "required": true
         },
         "metadata": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaosList",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.PodIoChaos\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.PodHttpChaos\u003e"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosSpec": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchActions": {
       "type": "object",
       "properties": {
-        "actions": {
+        "body": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchBodyAction",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchBodyAction"
+        },
+        "headers": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosAction",
-            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosAction"
+            "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
           }
         },
-        "container": {
+        "queries": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+          }
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchActions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchBodyAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchBodyAction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosReplaceActions": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "existingJavaType": "java.lang.String"
+        },
+        "code": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "headers": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "method": {
           "type": "string",
           "existingJavaType": "String"
+        },
+        "path": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "queries": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosReplaceActions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosRule": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosActions",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosActions"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "selector": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSelector",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosSelector"
+        },
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSelector": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "method": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "path": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "port": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "request_headers": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "response_headers": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSpec": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosRule",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosRule"
+          }
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosStatus": {
+      "type": "object",
+      "properties": {
+        "failedMessage": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "pid": {
           "type": "integer",
@@ -1533,12 +2577,118 @@
         "startTime": {
           "type": "integer",
           "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaos": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodIOChaos",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosStatus",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosStatus"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaos",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "chaos-mesh.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaos",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaos"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodIOChaosList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.chaosmesh.v1alpha1.PodIOChaos\u003e"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosSpec": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosAction",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosAction"
+          }
+        },
+        "container": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "volumeMountPath": {
           "type": "string"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaosSpec",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosStatus": {
+      "type": "object",
+      "properties": {
+        "failedMessage": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "pid": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "startTime": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1640,16 +2790,12 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodNetworkChaosStatus": {
       "type": "object",
       "properties": {
-        "experiment": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
         "failedMessage": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.PodNetworkChaosStatus",
@@ -1657,29 +2803,81 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodStatus": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelector": {
       "type": "object",
       "properties": {
-        "action": {
+        "mode": {
           "type": "string"
         },
-        "hostIP": {
-          "type": "string"
+        "selector": {
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
-        "message": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "podIP": {
+        "value": {
           "type": "string"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodStatus",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec": {
+      "type": "object",
+      "properties": {
+        "annotationSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "expressionSelectors": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
+          }
+        },
+        "fieldSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "labelSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "namespaces": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "nodeSelectors": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "nodes": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "podPhaseSelectors": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
+        },
+        "pods": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,java.util.List\u003cjava.lang.String\u003e\u003e"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ProcessSpec": {
+      "type": "object",
+      "properties": {
+        "process": {
+          "type": "string"
+        },
+        "signal": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.ProcessSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1688,10 +2886,7 @@
       "type": "object",
       "properties": {
         "cidrs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -1708,14 +2903,14 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_RawIptables": {
       "type": "object",
       "properties": {
+        "device": {
+          "type": "string"
+        },
         "direction": {
           "type": "string"
         },
         "ipsets": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -1744,6 +2939,9 @@
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DelaySpec",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DelaySpec"
         },
+        "device": {
+          "type": "string"
+        },
         "duplicate": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DuplicateSpec",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DuplicateSpec"
@@ -1767,6 +2965,24 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Record": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "selectorKey": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.Record",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ReorderSpec": {
       "type": "object",
       "properties": {
@@ -1785,86 +3001,20 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressCPUSpec": {
       "type": "object",
       "properties": {
-        "nextRecover": {
-          "existingJavaType": "java.lang.String"
+        "load": {
+          "type": "integer"
         },
-        "nextStart": {
-          "existingJavaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec": {
-      "type": "object",
-      "properties": {
-        "cron": {
+        "options": {
           "type": "string"
+        },
+        "workers": {
+          "type": "integer"
         }
       },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec": {
-      "type": "object",
-      "properties": {
-        "annotationSelectors": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "expressionSelectors": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
-          }
-        },
-        "fieldSelectors": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "labelSelectors": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "namespaces": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "nodeSelectors": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "nodes": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "podPhaseSelectors": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "pods": {
-          "type": "object",
-          "existingJavaType": "java.util.Map\u003cString,java.util.List\u003cString\u003e\u003e"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec",
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.StressCPUSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1933,9 +3083,8 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressChaosSpec": {
       "type": "object",
       "properties": {
-        "containerName": {
-          "type": "string",
-          "existingJavaType": "String"
+        "containerNames": {
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "duration": {
           "type": "string",
@@ -1944,13 +3093,9 @@
         "mode": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "stressngStressors": {
           "type": "string"
@@ -1971,20 +3116,21 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
         },
-        "failedMessage": {
-          "type": "string"
-        },
         "instances": {
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,io.fabric8.chaosmesh.v1alpha1.StressInstance\u003e"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.StressChaosStatus",
@@ -1995,6 +3141,12 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressInstance": {
       "type": "object",
       "properties": {
+        "memoryStartTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "memoryUid": {
+          "type": "string"
+        },
         "startTime": {
           "existingJavaType": "java.lang.String"
         },
@@ -2003,6 +3155,21 @@
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.StressInstance",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressMemorySpec": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.chaosmesh.v1alpha1.StressMemorySpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2020,25 +3187,6 @@
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.Stressors",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Target": {
-      "type": "object",
-      "properties": {
-        "mode": {
-          "type": "string"
-        },
-        "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "javaType": "io.fabric8.chaosmesh.v1alpha1.Target",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2108,18 +3256,10 @@
       "type": "object",
       "properties": {
         "clockIds": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "containerNames": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "existingJavaType": "java.util.List\u003cjava.lang.String\u003e"
         },
         "duration": {
           "type": "string",
@@ -2128,13 +3268,9 @@
         "mode": {
           "type": "string"
         },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-        },
         "selector": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
         },
         "timeOffset": {
           "type": "string"
@@ -2151,16 +3287,17 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_TimeChaosStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+            "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+          }
+        },
         "experiment": {
           "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ExperimentStatus",
           "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ExperimentStatus"
-        },
-        "failedMessage": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-          "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
         }
       },
       "javaType": "io.fabric8.chaosmesh.v1alpha1.TimeChaosStatus",
@@ -2188,33 +3325,61 @@
   },
   "type": "object",
   "properties": {
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaos"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosList"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AWSChaosStatus"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AttrOverrideSpec": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AttrOverrideSpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AttrOverrideSpec"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaos": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaos",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaos"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosList": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosList",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosList"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosSpec": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosSpec",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosSpec"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosStatus": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AwsChaosStatus",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.AwsChaosStatus"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BandwidthSpec": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BandwidthSpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BandwidthSpec"
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaos"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosList"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockChaosStatus"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockDelaySpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_BlockDelaySpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.BlockDelaySpec"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_CPUStressor": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_CPUStressor",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.CPUStressor"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ChaosCondition",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ChaosCondition"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ClockSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ClockSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ClockSpec"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_CorruptSpec": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_CorruptSpec",
@@ -2240,6 +3405,14 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DelaySpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DelaySpec"
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskFillSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskFillSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DiskFillSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskPayloadSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DiskPayloadSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DiskPayloadSpec"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DuplicateSpec": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_DuplicateSpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.DuplicateSpec"
@@ -2255,6 +3428,22 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Frame": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Frame",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Frame"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaos"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosList"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_GCPChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.GCPChaosStatus"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_HTTPChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_HTTPChaos",
@@ -2272,25 +3461,25 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_HTTPChaosStatus",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.HTTPChaosStatus"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaos": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaos",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaos"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaos"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosAction": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosAction",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosAction"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosAction": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosAction",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosAction"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosList": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosList",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosList"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosList"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosSpec": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosSpec",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosSpec"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosSpec"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosStatus": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoChaosStatus",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IoChaosStatus"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IOChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.IOChaosStatus"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoFault": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_IoFault",
@@ -2312,6 +3501,30 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMChaosStatus",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMChaosStatus"
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMExceptionSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMExceptionSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMExceptionSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMGCSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMGCSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMGCSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMLatencySpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMLatencySpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMLatencySpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMReturnSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMReturnSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMReturnSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMRuleDataSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMRuleDataSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMRuleDataSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMStressSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_JVMStressSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.JVMStressSpec"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_KernelChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_KernelChaos",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.KernelChaos"
@@ -2332,10 +3545,6 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_LossSpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.LossSpec"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Matcher": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Matcher",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Matcher"
-    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_MemoryStressor": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_MemoryStressor",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.MemoryStressor"
@@ -2343,6 +3552,10 @@
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_MistakeSpec": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_MistakeSpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.MistakeSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkBandwidthSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkBandwidthSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkBandwidthSpec"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkChaos",
@@ -2360,6 +3573,50 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkChaosStatus",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkChaosStatus"
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkCorruptSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkCorruptSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkCorruptSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDNSSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDNSSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDNSSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDelaySpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDelaySpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDelaySpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDuplicateSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkDuplicateSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkDuplicateSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkLossSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkLossSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkLossSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkPartitionSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_NetworkPartitionSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.NetworkPartitionSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosList"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaosStatus"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineSelectorSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PhysicalMachineSelectorSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PhysicalMachineSelectorSpec"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodChaos",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodChaos"
@@ -2376,17 +3633,61 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodChaosStatus",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodChaosStatus"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaos": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaos",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaos"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaos"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosList": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosList",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaosList"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosActions": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosActions",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosActions"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosSpec": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIoChaosSpec",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIoChaosSpec"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosList"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchActions": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchActions",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchActions"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchBodyAction": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosPatchBodyAction",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosPatchBodyAction"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosReplaceActions": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosReplaceActions",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosReplaceActions"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosRule": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosRule",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosRule"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSelector": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSelector",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosSelector"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodHttpChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodHttpChaosStatus"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaos": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaos",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaos"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosList": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosList",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosList"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosStatus": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodIOChaosStatus",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodIOChaosStatus"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodNetworkChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodNetworkChaos",
@@ -2404,9 +3705,17 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodNetworkChaosStatus",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodNetworkChaosStatus"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodStatus": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodStatus",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodStatus"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelector": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelector",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelector"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_PodSelectorSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.PodSelectorSpec"
+    },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ProcessSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ProcessSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ProcessSpec"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_RawIPSet": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_RawIPSet",
@@ -2420,21 +3729,17 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_RawTrafficControl",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.RawTrafficControl"
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Record": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Record",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Record"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ReorderSpec": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ReorderSpec",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ReorderSpec"
     },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_ScheduleStatus",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.ScheduleStatus"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SchedulerSpec",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SchedulerSpec"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_SelectorSpec",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.SelectorSpec"
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressCPUSpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressCPUSpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.StressCPUSpec"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressChaos",
@@ -2456,13 +3761,13 @@
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressInstance",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.StressInstance"
     },
+    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressMemorySpec": {
+      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_StressMemorySpec",
+      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.StressMemorySpec"
+    },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Stressors": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Stressors",
       "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Stressors"
-    },
-    "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Target": {
-      "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Target",
-      "existingJavaType": "io.fabric8.chaosmesh.v1alpha1.Target"
     },
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_TimeChaos": {
       "$ref": "#/definitions/github_com_chaos-mesh_chaos-mesh_api_v1alpha1_TimeChaos",
