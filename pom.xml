@@ -87,7 +87,7 @@
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.13.2</jackson.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
-    <maven-core.version>3.8.4</maven-core.version>
+    <maven-core.version>3.8.5</maven-core.version>
     <maven-plugin-annotations.version>3.6.4</maven-plugin-annotations.version>
 
     <!-- API versions -->
