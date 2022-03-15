@@ -87,9 +87,11 @@ public class InputStreamPumper {
     return CompletableFuture.runAsync(() -> {
       try {
         InputStreamPumper.transferTo(in, out);
+      } catch (InterruptedIOException e) {
+        LOGGER.debug("Not actually interrupting the thread.", e);
       } catch (Exception e) {
         if (!Thread.currentThread().isInterrupted()) {
-          LOGGER.debug("Error while pumping stream.", e);
+          LOGGER.error("Error while pumping stream.", e);
         } else {
           LOGGER.debug("Interrupted while pumping stream.");
         }
