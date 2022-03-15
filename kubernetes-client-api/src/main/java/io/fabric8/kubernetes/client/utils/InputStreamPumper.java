@@ -89,7 +89,7 @@ public class InputStreamPumper {
         InputStreamPumper.transferTo(in, out);
       } catch (Exception e) {
         if (!Thread.currentThread().isInterrupted()) {
-          LOGGER.error("Error while pumping stream.", e);
+          LOGGER.debug("Error while pumping stream.", e);
         } else {
           LOGGER.debug("Interrupted while pumping stream.");
         }
