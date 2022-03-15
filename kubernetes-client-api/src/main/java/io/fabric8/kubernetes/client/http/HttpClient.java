@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
 
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
 import java.io.IOException;
@@ -83,7 +83,7 @@ public interface HttpClient extends AutoCloseable {
     @Override
     Builder authenticatorNone();
 
-    Builder sslContext(SSLContext context, TrustManager[] trustManagers);
+    Builder sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers);
 
     Builder followAllRedirects();
 

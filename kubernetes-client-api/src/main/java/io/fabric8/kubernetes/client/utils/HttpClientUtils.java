@@ -25,6 +25,9 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
+
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,10 +43,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 
 public class HttpClientUtils {
 
@@ -212,8 +211,7 @@ public class HttpClientUtils {
       TrustManager[] trustManagers = SSLUtils.trustManagers(config);
       KeyManager[] keyManagers = SSLUtils.keyManagers(config);
 
-      SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
-      builder.sslContext(sslContext, trustManagers);
+      builder.sslContext(keyManagers, trustManagers);
 
       if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
         builder.tlsVersions(config.getTlsVersions());

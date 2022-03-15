@@ -17,8 +17,9 @@
 package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
-import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.Interceptor;
@@ -28,6 +29,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -44,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 import static okhttp3.ConnectionSpec.CLEARTEXT;
 
 class OkHttpClientBuilderImpl implements Builder {
-  
+
   static final class InteceptorAdapter implements Interceptor {
     private final io.fabric8.kubernetes.client.http.Interceptor interceptor;
     private final String name;
@@ -69,12 +71,12 @@ class OkHttpClientBuilderImpl implements Builder {
       }
       return response;
     }
-    
+
     public String getName() {
       return name;
     }
   }
-  
+
   private boolean streaming;
   private OkHttpClient.Builder builder;
 
@@ -85,7 +87,7 @@ class OkHttpClientBuilderImpl implements Builder {
   @Override
   public OkHttpClientImpl build() {
     OkHttpClient client = builder.build();
-    
+
     if (streaming) {
       // If we set the HttpLoggingInterceptor's logging level to Body (as it is by default), it does
       // not let us stream responses from the server.
@@ -96,7 +98,7 @@ class OkHttpClientBuilderImpl implements Builder {
         }
       }
     }
-    
+
     return new OkHttpClientImpl(client);
   }
 
@@ -111,7 +113,7 @@ class OkHttpClientBuilderImpl implements Builder {
     builder.connectTimeout(connectTimeout, unit);
     return this;
   }
-  
+
   @Override
   public Builder writeTimeout(long timeout, TimeUnit timeoutUnit) {
     builder.writeTimeout(timeout, timeoutUnit);
@@ -153,23 +155,24 @@ class OkHttpClientBuilderImpl implements Builder {
     builder.authenticator(Authenticator.NONE);
     return this;
   }
-  
+
   @Override
-  public Builder sslContext(SSLContext context, TrustManager[] trustManagers) {
+  public Builder sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
     X509TrustManager trustManager = null;
     if (trustManagers != null && trustManagers.length == 1) {
       trustManager = (X509TrustManager) trustManagers[0];
     }
-    builder.sslSocketFactory(context.getSocketFactory(), trustManager);
+    SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+    builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
     return this;
   }
-  
+
   @Override
   public Builder followAllRedirects() {
     builder.followRedirects(true).followSslRedirects(true);
     return this;
   }
-  
+
   @Override
   public Builder proxyAddress(InetSocketAddress proxyAddress) {
     if (proxyAddress == null) {
@@ -179,14 +182,14 @@ class OkHttpClientBuilderImpl implements Builder {
     }
     return this;
   }
-  
+
   @Override
   public Builder proxyAuthorization(String credentials) {
     builder.proxyAuthenticator(
         (route, response) -> response.request().newBuilder().header("Proxy-Authorization", credentials).build());
     return this;
   }
-  
+
   @Override
   public Builder tlsVersions(TlsVersion[] tlsVersions) {
     ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
@@ -198,11 +201,11 @@ class OkHttpClientBuilderImpl implements Builder {
     builder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
     return this;
   }
-  
+
   @Override
   public Builder preferHttp11() {
     builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
     return this;
   }
-  
+
 }

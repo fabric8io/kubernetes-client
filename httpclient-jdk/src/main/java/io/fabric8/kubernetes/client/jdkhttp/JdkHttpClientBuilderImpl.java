@@ -22,7 +22,9 @@ import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManager;
@@ -149,8 +151,8 @@ class JdkHttpClientBuilderImpl implements Builder {
   }
 
   @Override
-  public Builder sslContext(SSLContext context, TrustManager[] trustManagers) {
-    this.sslContext = context;
+  public Builder sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
+    this.sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
     return this;
   }
 

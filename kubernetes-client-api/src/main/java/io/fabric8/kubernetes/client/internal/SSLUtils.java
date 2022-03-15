@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +81,14 @@ public final class SSLUtils {
         return sslContext(keyManagers(config), trustManagers(config));
     }
 
-    public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) throws NoSuchAlgorithmException, KeyManagementException {
-        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-        sslContext.init(keyManagers, trustManagers, new SecureRandom());
-        return sslContext;
+    public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
+        try {
+          SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+          sslContext.init(keyManagers, trustManagers, new SecureRandom());
+          return sslContext;
+        } catch (KeyManagementException | NoSuchAlgorithmException e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
     }
 
     public static TrustManager[] trustManagers(Config config) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {

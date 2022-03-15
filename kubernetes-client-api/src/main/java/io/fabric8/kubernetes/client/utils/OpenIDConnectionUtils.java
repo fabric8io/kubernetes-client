@@ -26,13 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
@@ -277,17 +275,15 @@ public class OpenIDConnectionUtils {
   }
 
   private static HttpClient getDefaultHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {
-    SSLContext sslContext = null;
     TrustManager[] trustManagers = null;
+    KeyManager[] keyManagers = null;
     // fist, lets get the pem
     String pemCert = new String(java.util.Base64.getDecoder().decode(idpCert));
 
     try {
       trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
-      KeyManager[] keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
-      sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+      keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
     } catch (KeyStoreException |
-      KeyManagementException |
       InvalidKeySpecException |
       NoSuchAlgorithmException |
       IOException |
@@ -295,10 +291,8 @@ public class OpenIDConnectionUtils {
       CertificateException e) {
       throw new RuntimeException("Could not import idp certificate", e);
     }
-    
-    if (sslContext != null) {
-      clientBuilder.sslContext(sslContext, trustManagers);
-    }
+
+    clientBuilder.sslContext(keyManagers, trustManagers);
     return clientBuilder.build();
   }
 
