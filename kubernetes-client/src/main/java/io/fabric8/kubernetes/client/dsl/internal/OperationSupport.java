@@ -645,12 +645,14 @@ public class OperationSupport {
    * @param response The {@link HttpResponse} object.
    */
   protected void assertResponseCode(HttpRequest request, HttpResponse<?> response) {
+    if (response.isSuccessful()) {
+      return;
+    }
+
     int statusCode = response.code();
     String customMessage = config.getErrorMessages().get(statusCode);
 
-    if (response.isSuccessful()) {
-      return;
-    } else if (customMessage != null) {
+    if (customMessage != null) {
       throw requestFailure(request, createStatus(statusCode, combineMessages(customMessage, createStatus(response))));
     } else {
       throw requestFailure(request, createStatus(response));
@@ -751,7 +753,7 @@ public class OperationSupport {
     private final String version;
     private final String plural;
     private final String namespace;
-    private final static RequestMetadata EMPTY = new RequestMetadata(null, null, null, null);
+    private static final RequestMetadata EMPTY = new RequestMetadata(null, null, null, null);
 
     private RequestMetadata(String group, String version, String plural, String namespace) {
       this.group = group;
