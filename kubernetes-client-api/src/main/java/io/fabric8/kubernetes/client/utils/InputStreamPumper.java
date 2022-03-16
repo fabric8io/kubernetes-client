@@ -95,11 +95,7 @@ public class InputStreamPumper {
           LOGGER.debug("Interrupted while pumping stream.");
         }
       } catch (Exception e) {
-        if (!Thread.currentThread().isInterrupted()) {
-          LOGGER.error("Error while pumping stream.", e);
-        } else {
-          LOGGER.debug("Interrupted while pumping stream.");
-        }
+        LOGGER.error("Error while pumping stream.", e);
       }
     }, executor);
   }
