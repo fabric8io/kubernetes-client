@@ -192,7 +192,7 @@ public class OkHttpClientImpl implements HttpClient {
 
   @Override
   public <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
-    return new OkHttpResponseImpl<>(httpClient.newCall(((OkHttpRequestImpl)request).getRequest()).execute(), type);
+    return new OkHttpResponseImpl<>(httpClient.newCall(((OkHttpRequestImpl) request).getRequest()).execute(), type);
   }
 
   @Override
@@ -227,7 +227,7 @@ public class OkHttpClientImpl implements HttpClient {
   private CompletableFuture<HttpResponse<AsyncBody>> sendAsync(HttpRequest request,
       Function<BufferedSource, AsyncBody> handler) {
     CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
-    Call call = httpClient.newCall(((OkHttpRequestImpl)request).getRequest());
+    Call call = httpClient.newCall(((OkHttpRequestImpl) request).getRequest());
     call.enqueue(new Callback() {
 
       @Override
@@ -255,7 +255,7 @@ public class OkHttpClientImpl implements HttpClient {
   @Override
   public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
     CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
-    Call call = httpClient.newCall(((OkHttpRequestImpl)request).getRequest());
+    Call call = httpClient.newCall(((OkHttpRequestImpl) request).getRequest());
     call.enqueue(new Callback() {
 
       @Override

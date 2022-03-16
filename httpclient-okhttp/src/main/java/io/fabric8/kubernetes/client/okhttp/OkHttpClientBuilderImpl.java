@@ -30,11 +30,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
@@ -44,6 +39,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import static okhttp3.ConnectionSpec.CLEARTEXT;
 
@@ -140,7 +140,7 @@ class OkHttpClientBuilderImpl implements Builder {
     for (int i = 0; i < interceptors.size(); i++) {
       Interceptor exiting = interceptors.get(i);
       if (exiting instanceof InteceptorAdapter) {
-        InteceptorAdapter adapter = (InteceptorAdapter)exiting;
+        InteceptorAdapter adapter = (InteceptorAdapter) exiting;
         if (adapter.getName().equals(name)) {
           if (interceptor == null) {
             interceptors.remove(i);

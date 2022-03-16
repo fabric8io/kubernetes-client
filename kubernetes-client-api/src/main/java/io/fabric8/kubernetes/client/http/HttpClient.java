@@ -18,9 +18,6 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,6 +25,9 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 
 public interface HttpClient extends AutoCloseable {
 
@@ -38,7 +38,7 @@ public interface HttpClient extends AutoCloseable {
     HttpClient.Builder newBuilder();
 
     /**
-     * If the implementation should be considered default.  If default any other implementation in the classpath will
+     * If the implementation should be considered default. If default any other implementation in the classpath will
      * be used instead.
      *
      * @return true if default
@@ -111,6 +111,7 @@ public interface HttpClient extends AutoCloseable {
 
     /**
      * Tracks the completion of the body.
+     * 
      * @return the future
      */
     CompletableFuture<Void> done();
@@ -131,14 +132,18 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Create a builder that starts with the same state as this client.
-   * <br>The client resources will be shared across derived instances.
+   * <br>
+   * The client resources will be shared across derived instances.
+   * 
    * @return a new builder
    */
   DerivedClientBuilder newBuilder();
 
   /**
    * Send a request an wait for the result
-   * <br>A Reader or InputStream result must be closed by the caller to properly cleanup resources.
+   * <br>
+   * A Reader or InputStream result must be closed by the caller to properly cleanup resources.
+   * 
    * @param <T> return type
    * @param request
    * @param type one of InputStream, Reader, String
@@ -149,9 +154,12 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Send an async request
-   * <br>A Reader or InputStream result must be closed by the caller to properly cleanup resources.
-   * <br>A Reader or InputStream result should not be consumed by the thread completing the returned future
+   * <br>
+   * A Reader or InputStream result must be closed by the caller to properly cleanup resources.
+   * <br>
+   * A Reader or InputStream result should not be consumed by the thread completing the returned future
    * as that will hijack a client thread.
+   * 
    * @param <T> return type
    * @param request
    * @param type one of InputStream, Reader, String
@@ -161,6 +169,7 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Consume the lines of a the body using the same logic as {@link BufferedReader} to break up the lines.
+   * 
    * @param request
    * @param consumer
    * @return the future which will be ready after the headers have been read
@@ -169,6 +178,7 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Consume the bytes of a the body
+   * 
    * @param request
    * @param consumer
    * @return the future which will be ready after the headers have been read

@@ -22,13 +22,16 @@ public interface Interceptor {
 
   /**
    * Called before a request to allow for the manipulation of the request
+   * 
    * @param builder used to modify the request
    * @param headers the current headers
    */
-  default void before(BasicBuilder builder, HttpHeaders headers) {}
+  default void before(BasicBuilder builder, HttpHeaders headers) {
+  }
 
   /**
    * Called after a websocket failure or by default from a normal request
+   * 
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
@@ -39,12 +42,13 @@ public interface Interceptor {
 
   /**
    * Called after a non-websocket failure
+   * 
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
    */
   default CompletableFuture<Boolean> afterFailure(HttpRequest.Builder builder, HttpResponse<?> response) {
-    return afterFailure((BasicBuilder)builder, response);
+    return afterFailure((BasicBuilder) builder, response);
   }
 
 }

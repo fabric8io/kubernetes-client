@@ -44,13 +44,15 @@ class TokenRefreshInterceptorTest {
     try {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
-      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")), Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
-      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null).afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
+      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null)
+          .afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
     } finally {

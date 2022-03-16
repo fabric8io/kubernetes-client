@@ -25,9 +25,6 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +37,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 
 /**
  * Utility class for OpenID token refresh.
@@ -64,7 +64,8 @@ public class OpenIDConnectionUtils {
   public static final String WELL_KNOWN_OPENID_CONFIGURATION = ".well-known/openid-configuration";
   public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
 
-  private OpenIDConnectionUtils() { }
+  private OpenIDConnectionUtils() {
+  }
 
   /**
    * Fetch OpenID Connect token from Kubeconfig, check whether it's still valid or not; If expired handle
@@ -73,7 +74,8 @@ public class OpenIDConnectionUtils {
    * @param currentAuthProviderConfig current AuthInfo's AuthProvider config as a map
    * @return access token for interacting with Kubernetes API
    */
-  public static CompletableFuture<String> resolveOIDCTokenFromAuthConfig(Map<String, String> currentAuthProviderConfig, HttpClient.Builder clientBuilder) {
+  public static CompletableFuture<String> resolveOIDCTokenFromAuthConfig(Map<String, String> currentAuthProviderConfig,
+      HttpClient.Builder clientBuilder) {
     String accessToken = currentAuthProviderConfig.get(ID_TOKEN_KUBECONFIG);
     String issuer = currentAuthProviderConfig.get(ISSUER_KUBECONFIG);
     String clientId = currentAuthProviderConfig.get(CLIENT_ID_KUBECONFIG);
@@ -81,7 +83,8 @@ public class OpenIDConnectionUtils {
     String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
     String idpCert = currentAuthProviderConfig.get(IDP_CERT_DATA);
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
-      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, accessToken, idpCert, clientBuilder);
+      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, accessToken, idpCert,
+          clientBuilder);
     }
     return CompletableFuture.completedFuture(accessToken);
   }
@@ -98,9 +101,12 @@ public class OpenIDConnectionUtils {
    * @param shouldPersistUpdatedTokenInKubeConfig boolean value whether to modify kubeconfig file in disc or not
    * @return returns access token(either updated or old) depending upon response from provider
    */
-  static CompletableFuture<String> getOIDCProviderTokenEndpointAndRefreshToken(HttpClient client, Map<String, Object> wellKnownOpenIdConfiguration, String clientId, String refreshToken, String clientSecret, String accessToken, boolean shouldPersistUpdatedTokenInKubeConfig) {
+  static CompletableFuture<String> getOIDCProviderTokenEndpointAndRefreshToken(HttpClient client,
+      Map<String, Object> wellKnownOpenIdConfiguration, String clientId, String refreshToken, String clientSecret,
+      String accessToken, boolean shouldPersistUpdatedTokenInKubeConfig) {
     String oidcTokenEndpoint = getParametersFromDiscoveryResponse(wellKnownOpenIdConfiguration, TOKEN_ENDPOINT_PARAM);
-    CompletableFuture<String> freshAccessToken = OpenIDConnectionUtils.refreshToken(client, oidcTokenEndpoint, clientId, refreshToken, clientSecret, shouldPersistUpdatedTokenInKubeConfig);
+    CompletableFuture<String> freshAccessToken = OpenIDConnectionUtils.refreshToken(client, oidcTokenEndpoint, clientId,
+        refreshToken, clientSecret, shouldPersistUpdatedTokenInKubeConfig);
     return freshAccessToken.thenApply(s -> Utils.getNonNullOrElse(s, accessToken));
   }
 
@@ -126,13 +132,15 @@ public class OpenIDConnectionUtils {
    * @param shouldPersistUpdatedTokenInKubeConfig boolean value whether to update local kubeconfig file or not
    * @return access token received from OpenID Connection provider
    */
-  static CompletableFuture<String> refreshToken(HttpClient client, String oidcTokenEndpoint, String clientId, String refreshToken, String clientSecret, boolean shouldPersistUpdatedTokenInKubeConfig) {
-    CompletableFuture<Map<String, Object>> response = refreshOidcToken(client, clientId, refreshToken, clientSecret, oidcTokenEndpoint);
+  static CompletableFuture<String> refreshToken(HttpClient client, String oidcTokenEndpoint, String clientId,
+      String refreshToken, String clientSecret, boolean shouldPersistUpdatedTokenInKubeConfig) {
+    CompletableFuture<Map<String, Object>> response = refreshOidcToken(client, clientId, refreshToken, clientSecret,
+        oidcTokenEndpoint);
 
     return response.thenApply(map -> {
       if (!map.containsKey(ID_TOKEN_PARAM)) {
         LOGGER.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
-          "requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
+            "requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
         return null;
       }
 
@@ -148,7 +156,6 @@ public class OpenIDConnectionUtils {
     });
   }
 
-
   /**
    * Issue Token Refresh HTTP Request to OIDC Provider
    *
@@ -160,7 +167,8 @@ public class OpenIDConnectionUtils {
    * @return response as HashMap
    * @throws IOException in case of any error in contacting OIDC provider
    */
-  static CompletableFuture<Map<String, Object>> refreshOidcToken(HttpClient client, String clientId, String refreshToken, String clientSecret, String tokenURL) {
+  static CompletableFuture<Map<String, Object>> refreshOidcToken(HttpClient client, String clientId, String refreshToken,
+      String clientSecret, String tokenURL) {
     HttpRequest request = getTokenRefreshHttpRequest(client, tokenURL, clientId, refreshToken, clientSecret);
     CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, String.class);
     return response.thenApply(r -> {
@@ -195,21 +203,20 @@ public class OpenIDConnectionUtils {
   static CompletableFuture<Map<String, Object>> getOIDCDiscoveryDocumentAsMap(HttpClient client, String issuer) {
     HttpRequest request = client.newHttpRequestBuilder().uri(getWellKnownUrlForOpenIDIssuer(issuer)).build();
     return client.sendAsync(request, String.class).thenApply(response -> {
-        try {
-          if (response.isSuccessful() && response.body() != null) {
-            return convertJsonStringToMap(response.body());
-          } else {
-            // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
-            String responseBody = response.body();
-            LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
-          }
-        } catch (IOException e) {
-          LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
+      try {
+        if (response.isSuccessful() && response.body() != null) {
+          return convertJsonStringToMap(response.body());
+        } else {
+          // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
+          String responseBody = response.body();
+          LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
         }
-        return Collections.emptyMap();
-      });
+      } catch (IOException e) {
+        LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
+      }
+      return Collections.emptyMap();
+    });
   }
-
 
   /**
    * Well known URL for getting OpenID Connect metadata.
@@ -250,7 +257,8 @@ public class OpenIDConnectionUtils {
    * @return boolean value whether update was successful not not
    * @throws IOException in case of any failure while writing file
    */
-  static boolean persistKubeConfigWithUpdatedToken(String kubeConfigPath, Map<String, Object> updatedAuthProviderConfig) throws IOException {
+  static boolean persistKubeConfigWithUpdatedToken(String kubeConfigPath, Map<String, Object> updatedAuthProviderConfig)
+      throws IOException {
     io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(new File(kubeConfigPath));
     NamedContext currentNamedContext = KubeConfigUtils.getCurrentContext(config);
 
@@ -286,12 +294,8 @@ public class OpenIDConnectionUtils {
     try {
       trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
       keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
-    } catch (KeyStoreException |
-      InvalidKeySpecException |
-      NoSuchAlgorithmException |
-      IOException |
-      UnrecoverableKeyException |
-      CertificateException e) {
+    } catch (KeyStoreException | InvalidKeySpecException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException
+        | CertificateException e) {
       throw new RuntimeException("Could not import idp certificate", e);
     }
 
@@ -299,19 +303,20 @@ public class OpenIDConnectionUtils {
     return clientBuilder.build();
   }
 
-  private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId, String refreshToken, String clientSecret) {
+  private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId,
+      String refreshToken, String clientSecret) {
     HttpRequest.Builder httpRequestBuilder = client.newHttpRequestBuilder().uri(tokenEndpointUrl);
 
     Map<String, String> requestBody = getRequestBodyContentForRefresh(clientId, refreshToken, clientSecret);
-    String credentials =
-      java.util.Base64.getEncoder()
+    String credentials = java.util.Base64.getEncoder()
         .encodeToString((clientId + ':' + clientSecret).getBytes(StandardCharsets.UTF_8));
     httpRequestBuilder.header("Authorization", "Basic " + credentials);
     httpRequestBuilder.post(requestBody);
     return httpRequestBuilder.build();
   }
 
-  private static Map<String, String> getRequestBodyContentForRefresh(String clientId, String refreshToken, String clientSecret) {
+  private static Map<String, String> getRequestBodyContentForRefresh(String clientId, String refreshToken,
+      String clientSecret) {
     Map<String, String> result = new LinkedHashMap<>();
     result.put(REFRESH_TOKEN_PARAM, refreshToken);
     result.put(GRANT_TYPE_PARAM, GRANT_TYPE_REFRESH_TOKEN);
@@ -320,15 +325,19 @@ public class OpenIDConnectionUtils {
     return result;
   }
 
-  private static CompletableFuture<String> getOIDCProviderTokenEndpointAndRefreshToken(String issuer, String clientId, String refreshToken, String clientSecret, String accessToken, String idpCert, HttpClient.Builder clientBuilder) {
+  private static CompletableFuture<String> getOIDCProviderTokenEndpointAndRefreshToken(String issuer, String clientId,
+      String refreshToken, String clientSecret, String accessToken, String idpCert, HttpClient.Builder clientBuilder) {
     HttpClient newClient = getDefaultHttpClientWithPemCert(idpCert, clientBuilder);
     CompletableFuture<Map<String, Object>> wellKnownOpenIdConfiguration = getOIDCDiscoveryDocumentAsMap(newClient, issuer);
-    CompletableFuture<String> result = wellKnownOpenIdConfiguration.thenCompose(config -> getOIDCProviderTokenEndpointAndRefreshToken(newClient, config, clientId, refreshToken, clientSecret, accessToken, true));
+    CompletableFuture<String> result = wellKnownOpenIdConfiguration
+        .thenCompose(config -> getOIDCProviderTokenEndpointAndRefreshToken(newClient, config, clientId, refreshToken,
+            clientSecret, accessToken, true));
     result.whenComplete((s, t) -> newClient.close());
     return result;
   }
 
   private static boolean persistKubeConfigWithUpdatedToken(Map<String, Object> updatedAuthProviderConfig) throws IOException {
-    return persistKubeConfigWithUpdatedToken(io.fabric8.kubernetes.client.Config.getKubeconfigFilename(), updatedAuthProviderConfig);
+    return persistKubeConfigWithUpdatedToken(io.fabric8.kubernetes.client.Config.getKubeconfigFilename(),
+        updatedAuthProviderConfig);
   }
 }

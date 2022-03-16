@@ -231,7 +231,7 @@ public class JdkHttpClientImpl implements HttpClient {
   }
 
   public <T> CompletableFuture<java.net.http.HttpResponse<T>> sendAsync(HttpRequest request, BodyHandler<T> bodyHandler) {
-    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl)request;
+    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl) request;
     JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
     for (Interceptor interceptor : builder.interceptors.values()) {
       interceptor.before(builderImpl, jdkRequest);
@@ -276,6 +276,7 @@ public class JdkHttpClientImpl implements HttpClient {
       this.webSocket = w;
       this.wshse = wshse;
     }
+
     WebSocket webSocket;
     java.net.http.WebSocketHandshakeException wshse;
   }
@@ -328,7 +329,8 @@ public class JdkHttpClientImpl implements HttpClient {
   /**
    * Convert the invocation of a JDK build async into a holder of both the exception and the response
    */
-  public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder, Listener listener) {
+  public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder,
+      Listener listener) {
     java.net.http.HttpRequest request = webSocketBuilder.asRequest();
     java.net.http.WebSocket.Builder newBuilder = this.httpClient.newWebSocketBuilder();
     request.headers().map().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
@@ -358,7 +360,7 @@ public class JdkHttpClientImpl implements HttpClient {
         t = t.getCause();
       }
       if (t instanceof java.net.http.WebSocketHandshakeException) {
-        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), (WebSocketHandshakeException)t));
+        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), (WebSocketHandshakeException) t));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {

@@ -41,15 +41,15 @@ import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
 public class LogWatchCallback implements LogWatch, AutoCloseable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
-    private final Config config;
-    private OutputStream out;
-    private WritableByteChannel outChannel;
-    private volatile InputStream output;
-    private final Set<Closeable> toClose = new LinkedHashSet<>();
+  private final Config config;
+  private OutputStream out;
+  private WritableByteChannel outChannel;
+  private volatile InputStream output;
+  private final Set<Closeable> toClose = new LinkedHashSet<>();
 
-    private final AtomicBoolean closed = new AtomicBoolean(false);
+  private final AtomicBoolean closed = new AtomicBoolean(false);
 
   public LogWatchCallback(Config config, OutputStream out) {
     this.config = config;
@@ -62,89 +62,89 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     }
   }
 
-    @Override
-    public void close() {
-        cleanUp();
+  @Override
+  public void close() {
+    cleanUp();
+  }
+
+  /**
+   * Performs the cleanup tasks:
+   * 1. cancels the InputStream pumper
+   * 2. closes all internally managed closeables (piped streams).
+   *
+   * The order of these tasks can't change or its likely that the pumper will through errors,
+   * if the stream it uses closes before the pumper it self.
+   */
+  private void cleanUp() {
+    if (!closed.compareAndSet(false, true)) {
+      return;
     }
 
-    /**
-     * Performs the cleanup tasks:
-     * 1. cancels the InputStream pumper
-     * 2. closes all internally managed closeables (piped streams).
-     *
-     * The order of these tasks can't change or its likely that the pumper will through errors,
-     * if the stream it uses closes before the pumper it self.
-     */
-    private void cleanUp() {
-      if (!closed.compareAndSet(false, true)) {
-        return;
-      }
+    closeQuietly(toClose);
+  }
 
-      closeQuietly(toClose);
-    }
+  public LogWatchCallback callAndWait(HttpClient client, URL url) {
+    HttpRequest request = client.newHttpRequestBuilder().url(url).build();
+    HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
 
-    public LogWatchCallback callAndWait(HttpClient client, URL url) {
-      HttpRequest request = client.newHttpRequestBuilder().url(url).build();
-      HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-
-      CompletableFuture<?> future = null;
-      if (out == null) {
-        // we can pass the input stream directly to the consumer
-        future = clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
-          if (e != null) {
-            onFailure(e);
-          }
-          if (r != null) {
-            this.output = r.body();
-          }
-        });
-      } else {
-        // we need to write the bytes to the given output
-        future = clone.consumeBytes(request, (buffers, a) -> {
-          // assuming non-blocking - which may not be valid
-          // if we need to change this, then we'll have to delegate this to an executor
-          for (ByteBuffer byteBuffer : buffers) {
-            outChannel.write(byteBuffer);
-          }
-          a.consume();
-        }).whenComplete((a, e) -> {
-          if (e != null) {
-            onFailure(e);
-          }
-          if (a != null) {
-            a.body().consume();
-            a.body().done().whenComplete((v, t) -> {
-              if (t != null) {
-                onFailure(t);
-              } else {
-                cleanUp();
-              }
-            });
-          }
-        });
-      }
-
-      if (!Utils.waitUntilReady(future, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
-        if (LOGGER.isWarnEnabled()) {
-          LOGGER.warn("Log watch request has not been opened within: {} millis.",config.getRequestTimeout());
+    CompletableFuture<?> future = null;
+    if (out == null) {
+      // we can pass the input stream directly to the consumer
+      future = clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
+        if (e != null) {
+          onFailure(e);
         }
-      }
-      return this;
-    }
-
-    @Override
-    public InputStream getOutput() {
-        return output;
-    }
-
-    public void onFailure(Throwable u) {
-        //If we have closed the watch ignore everything
-        if (closed.get())  {
-            return;
+        if (r != null) {
+          this.output = r.body();
         }
-
-        LOGGER.error("Log Callback Failure.", u);
-        cleanUp();
+      });
+    } else {
+      // we need to write the bytes to the given output
+      future = clone.consumeBytes(request, (buffers, a) -> {
+        // assuming non-blocking - which may not be valid
+        // if we need to change this, then we'll have to delegate this to an executor
+        for (ByteBuffer byteBuffer : buffers) {
+          outChannel.write(byteBuffer);
+        }
+        a.consume();
+      }).whenComplete((a, e) -> {
+        if (e != null) {
+          onFailure(e);
+        }
+        if (a != null) {
+          a.body().consume();
+          a.body().done().whenComplete((v, t) -> {
+            if (t != null) {
+              onFailure(t);
+            } else {
+              cleanUp();
+            }
+          });
+        }
+      });
     }
+
+    if (!Utils.waitUntilReady(future, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
+      if (LOGGER.isWarnEnabled()) {
+        LOGGER.warn("Log watch request has not been opened within: {} millis.", config.getRequestTimeout());
+      }
+    }
+    return this;
+  }
+
+  @Override
+  public InputStream getOutput() {
+    return output;
+  }
+
+  public void onFailure(Throwable u) {
+    //If we have closed the watch ignore everything
+    if (closed.get()) {
+      return;
+    }
+
+    LOGGER.error("Log Callback Failure.", u);
+    cleanUp();
+  }
 
 }

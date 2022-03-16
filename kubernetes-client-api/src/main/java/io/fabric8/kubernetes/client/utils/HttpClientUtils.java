@@ -25,9 +25,6 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
-
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,6 +40,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 
 public class HttpClientUtils {
 

@@ -37,19 +37,19 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   private CompletableFuture<HttpResponse<AsyncBody>> call;
 
   public WatchHTTPManager(final HttpClient client,
-                          final BaseOperation<T, L, ?> baseOperation,
-                          final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
-                          final int reconnectLimit)
-    throws MalformedURLException {
+      final BaseOperation<T, L, ?> baseOperation,
+      final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
+      final int reconnectLimit)
+      throws MalformedURLException {
     // Default max 32x slowdown from base interval
     this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, 5);
   }
 
   public WatchHTTPManager(final HttpClient client,
-                          final BaseOperation<T, L, ?> baseOperation,
-                          final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
-                          final int reconnectLimit, int maxIntervalExponent)
-    throws MalformedURLException {
+      final BaseOperation<T, L, ?> baseOperation,
+      final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
+      final int reconnectLimit, int maxIntervalExponent)
+      throws MalformedURLException {
 
     super(
         watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
