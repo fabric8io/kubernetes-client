@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
@@ -39,12 +40,14 @@ import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
@@ -88,34 +91,32 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
   }
 
   @Override
-  public boolean afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
     if (shouldProceed(response.request(), response)) {
-      return false;
+      return CompletableFuture.completedFuture(false);
     }
 
-    String token = oauthToken.get();
-
+    CompletableFuture<String> tokenFuture = null;
     if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-      synchronized (client) {
-        // current token (if exists) is borked, don't resend
-        oauthToken.set(null);
-        token = authorize();
-        if (token != null) {
-          oauthToken.set(token);
-        }
+      // TODO: we could make all concurrent refresh requests return the same future
+      tokenFuture = authorize();
+    } else {
+      tokenFuture = CompletableFuture.completedFuture(Utils.getNonNullOrElse(config.getOauthToken(), oauthToken.get()));
+    }
+
+    return tokenFuture.thenApply(t -> {
+      if (t != null) {
+        oauthToken.set(t);
       }
-    } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-      token = config.getOauthToken();
-      oauthToken.set(token);
-    }
 
-    //If token was obtained, then retry request using the obtained token.
-    if (Utils.isNotNullOrEmpty(token)) {
-      setAuthHeader(builder, token);
-      return true;
-    }
+      //If token was obtained, then retry request using the obtained token.
+      if (Utils.isNotNullOrEmpty(t)) {
+        setAuthHeader(builder, t);
+        return true;
+      }
 
-    return false;
+      return false;
+    });
   }
 
   private void setAuthHeader(BasicBuilder builder, String token) {
@@ -124,41 +125,48 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     }
   }
 
-  private  String authorize() {
-    try {
+  private CompletableFuture<String> authorize() {
       HttpClient.DerivedClientBuilder builder = client.newBuilder();
       builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, null);
       HttpClient clone = builder.build();
 
-      URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZATION_SERVER_PATH));
-      HttpResponse<String> response = clone.send(clone.newHttpRequestBuilder().url(url).build(), String.class);
-
-      if (!response.isSuccessful() || response.body() == null) {
-        throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + ")");
+      URL url;
+      try {
+        url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZATION_SERVER_PATH));
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
+      CompletableFuture<HttpResponse<String>> responseFuture = clone.sendAsync(clone.newHttpRequestBuilder().url(url).build(), String.class);
+      return responseFuture.thenCompose(response -> {
+        if (!response.isSuccessful() || response.body() == null) {
+          throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + ")");
+        }
 
-      String body = response.body();
-      JsonNode jsonResponse = Serialization.jsonMapper().readTree(body);
-      String authorizationServer = jsonResponse.get("authorization_endpoint").asText();
+        String body = response.body();
+        try {
+          JsonNode jsonResponse = Serialization.jsonMapper().readTree(body);
+          String authorizationServer = jsonResponse.get("authorization_endpoint").asText();
 
-      url = new URL(authorizationServer + AUTHORIZE_QUERY);
+          URL authorizeQuery = new URL(authorizationServer + AUTHORIZE_QUERY);
+          String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
 
-      String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
-      response = clone.send(client.newHttpRequestBuilder().url(url).setHeader(AUTHORIZATION, credential).build(), String.class);
+          return clone.sendAsync(client.newHttpRequestBuilder().url(authorizeQuery).setHeader(AUTHORIZATION, credential).build(), String.class);
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
 
-      HttpResponse<?> responseOrPrevious = response.previousResponse().isPresent() ? response.previousResponse().get() : response;
+      }).thenApply(response -> {
+        HttpResponse<?> responseOrPrevious = response.previousResponse().isPresent() ? response.previousResponse().get() : response;
 
-      List<String> location = responseOrPrevious.headers(LOCATION);
-      String token = !location.isEmpty() ? location.get(0) : null;
-      if (token == null || token.isEmpty()) {
-        throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " " + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
-      }
-      token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
-      token = token.substring(0, token.indexOf(AFTER_TOKEN));
-      return token;
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+        List<String> location = responseOrPrevious.headers(LOCATION);
+        String token = !location.isEmpty() ? location.get(0) : null;
+        if (token == null || token.isEmpty()) {
+          throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " " + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
+        }
+        token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
+        token = token.substring(0, token.indexOf(AFTER_TOKEN));
+        return token;
+      });
   }
 
   private boolean shouldProceed(HttpRequest request, HttpResponse<?> response) {

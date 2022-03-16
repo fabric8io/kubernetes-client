@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.okhttp;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
@@ -41,6 +42,7 @@ import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static okhttp3.ConnectionSpec.CLEARTEXT;
@@ -63,10 +65,15 @@ class OkHttpClientBuilderImpl implements Builder {
       interceptor.before(new OkHttpRequestImpl.BuilderImpl(requestBuilder), new OkHttpRequestImpl(chain.request()));
       Response response = chain.proceed(requestBuilder.build());
       if (!response.isSuccessful()) {
-        boolean call = interceptor.afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class));
-        if (call) {
-          response.close();
-          return chain.proceed(requestBuilder.build());
+        // for okhttp this token refresh will be blocking
+        try {
+          boolean call = interceptor.afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class)).get();
+          if (call) {
+            response.close();
+            return chain.proceed(requestBuilder.build());
+          }
+        } catch (InterruptedException | ExecutionException e) {
+          throw KubernetesClientException.launderThrowable(e);
         }
       }
       return response;

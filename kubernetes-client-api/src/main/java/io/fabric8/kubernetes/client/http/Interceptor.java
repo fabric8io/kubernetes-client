@@ -16,38 +16,34 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 
-/**
- * TODO: consider if after should return a {@link Future} rather
- * than be blocking
- */
 public interface Interceptor {
-  
+
   /**
    * Called before a request to allow for the manipulation of the request
    * @param builder used to modify the request
    * @param headers the current headers
    */
   default void before(BasicBuilder builder, HttpHeaders headers) {}
-  
+
   /**
    * Called after a websocket failure or by default from a normal request
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
    */
-  default boolean afterFailure(BasicBuilder builder, HttpResponse<?> response) {
-    return false;
+  default CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+    return CompletableFuture.completedFuture(false);
   }
-  
+
   /**
    * Called after a non-websocket failure
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
    */
-  default boolean afterFailure(HttpRequest.Builder builder, HttpResponse<?> response) {
+  default CompletableFuture<Boolean> afterFailure(HttpRequest.Builder builder, HttpResponse<?> response) {
     return afterFailure((BasicBuilder)builder, response);
   }
 

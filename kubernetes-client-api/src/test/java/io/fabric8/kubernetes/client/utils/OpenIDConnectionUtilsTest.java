@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
@@ -49,15 +50,15 @@ class OpenIDConnectionUtilsTest {
   HttpClient mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
 
   @Test
-  void testLoadTokenURL() throws IOException {
+  void testLoadTokenURL() throws Exception {
     // Given
     String openIdIssuer = "https://accounts.example.com";
     String tokenEndpointResponse = "{\"issuer\": \"https://accounts.example.com\"," +
       " \"token_endpoint\": \"https://oauth2.exampleapis.com/token\"}";
-    mockOkHttpClient(HttpURLConnection.HTTP_OK, tokenEndpointResponse);
+    mockHttpClient(HttpURLConnection.HTTP_OK, tokenEndpointResponse);
 
     // When
-    Map<String, Object> discoveryDocumentMap = OpenIDConnectionUtils.getOIDCDiscoveryDocumentAsMap(mockClient, openIdIssuer);
+    Map<String, Object> discoveryDocumentMap = OpenIDConnectionUtils.getOIDCDiscoveryDocumentAsMap(mockClient, openIdIssuer).get();
 
     // Then
     assertNotNull(discoveryDocumentMap);
@@ -65,14 +66,14 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
-  void testLoadTokenURLWhenNotFound() throws IOException {
+  void testLoadTokenURLWhenNotFound() throws Exception {
     // Given
     String openIdIssuer = "https://accounts.example.com";
     String tokenEndpointResponse = "{}";
-    mockOkHttpClient(HttpURLConnection.HTTP_NOT_FOUND, tokenEndpointResponse);
+    mockHttpClient(HttpURLConnection.HTTP_NOT_FOUND, tokenEndpointResponse);
 
     // When
-    Map<String, Object> discoveryDocumentAsMap = OpenIDConnectionUtils.getOIDCDiscoveryDocumentAsMap(mockClient, openIdIssuer);
+    Map<String, Object> discoveryDocumentAsMap = OpenIDConnectionUtils.getOIDCDiscoveryDocumentAsMap(mockClient, openIdIssuer).get();
 
     // Then
     assertTrue(discoveryDocumentAsMap.isEmpty());
@@ -91,19 +92,19 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
-  void testRefreshOidcToken() throws IOException {
+  void testRefreshOidcToken() throws Exception {
     // Given
     String clientId = "test-client-id";
     String refreshToken = "test-refresh-token";
     String clientSecret = "test-client-secret";
     String tokenEndpointUrl = "https://oauth2.exampleapis.com/token";
-    mockOkHttpClient(HttpURLConnection.HTTP_OK, "{\""+ ID_TOKEN_PARAM +"\":\"thisisatesttoken\",\"access_token\": \"thisisrefreshtoken\"," +
+    mockHttpClient(HttpURLConnection.HTTP_OK, "{\""+ ID_TOKEN_PARAM +"\":\"thisisatesttoken\",\"access_token\": \"thisisrefreshtoken\"," +
       "\"expires_in\": 3599," +
       "\"scope\": \"openid https://www.exampleapis.com/auth/userinfo.email\"," +
       "\"token_type\": \"Bearer\"}");
 
     // When
-    Map<String, Object> response = OpenIDConnectionUtils.refreshOidcToken(mockClient, clientId, refreshToken, clientSecret, tokenEndpointUrl);
+    Map<String, Object> response = OpenIDConnectionUtils.refreshOidcToken(mockClient, clientId, refreshToken, clientSecret, tokenEndpointUrl).get();
 
     // Then
     assertNotNull(response);
@@ -111,7 +112,7 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
-  void testFetchOIDCProviderDiscoveryDocumentAndRefreshToken() throws IOException {
+  void testFetchOIDCProviderDiscoveryDocumentAndRefreshToken() throws Exception {
     // Given
     Map<String, Object> discoveryDocument = new HashMap<>();
     discoveryDocument.put(TOKEN_ENDPOINT_PARAM, "https://oauth2.exampleapis.com/token");
@@ -119,14 +120,14 @@ class OpenIDConnectionUtilsTest {
     String clientId = "test-client-id";
     String refreshToken = "test-refresh-token";
     String clientSecret = "test-client-secret";
-    mockOkHttpClient(HttpURLConnection.HTTP_OK, "{\""+ ID_TOKEN_PARAM +"\":\"thisisatesttoken\",\"access_token\": \"thisisrefreshtoken\"," +
+    mockHttpClient(HttpURLConnection.HTTP_OK, "{\""+ ID_TOKEN_PARAM +"\":\"thisisatesttoken\",\"access_token\": \"thisisrefreshtoken\"," +
       "\"expires_in\": 3599," +
       "\"scope\": \"openid https://www.exampleapis.com/auth/userinfo.email\"," +
       "\"token_type\": \"Bearer\"}");
 
     // When
     String newAccessToken = OpenIDConnectionUtils.getOIDCProviderTokenEndpointAndRefreshToken(mockClient,
-      discoveryDocument, clientId, refreshToken, clientSecret, accessToken, false);
+      discoveryDocument, clientId, refreshToken, clientSecret, accessToken, false).get();
 
     // Then
     assertNotNull(newAccessToken);
@@ -160,7 +161,7 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
-  void testResolveOIDCTokenFromAuthConfigShouldReturnOldTokenWhenRefreshNotSupported() {
+  void testResolveOIDCTokenFromAuthConfigShouldReturnOldTokenWhenRefreshNotSupported() throws Exception {
     // Given
     Map<String, String> currentAuthProviderConfig = new HashMap<>();
     currentAuthProviderConfig.put(CLIENT_ID_KUBECONFIG, "client-id");
@@ -168,7 +169,7 @@ class OpenIDConnectionUtilsTest {
     currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
 
     // When
-    String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthProviderConfig, null);
+    String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthProviderConfig, null).get();
 
     // Then
     assertEquals("id-token", token);
@@ -187,9 +188,9 @@ class OpenIDConnectionUtilsTest {
     assertEquals("", OpenIDConnectionUtils.getParametersFromDiscoveryResponse(discoveryDocument, "userinfo_endpoint"));
   }
 
-  private void mockOkHttpClient(int responseCode, String responseAsStr) throws IOException {
+  private void mockHttpClient(int responseCode, String responseAsStr) throws IOException {
     HttpResponse<String> mockSuccessResponse = mockResponse(responseCode, responseAsStr);
-    when(mockClient.send(any(), Mockito.eq(String.class))).thenReturn(mockSuccessResponse);
+    when(mockClient.sendAsync(any(), Mockito.eq(String.class))).thenReturn(CompletableFuture.completedFuture(mockSuccessResponse));
   }
 
   private HttpResponse<String> mockResponse(int responseCode, String responseBody) {

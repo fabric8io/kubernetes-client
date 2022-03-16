@@ -242,9 +242,13 @@ public class JdkHttpClientImpl implements HttpClient {
 
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
-        if (response != null && !HttpResponse.isSuccessful(response.statusCode())
-            && interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))) {
-          return this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
+        if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
+          return interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response)).thenCompose(b -> {
+            if (b) {
+              return this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
+            }
+            return CompletableFuture.completedFuture(response);
+          });
         }
         return CompletableFuture.completedFuture(response);
       });
@@ -289,9 +293,13 @@ public class JdkHttpClientImpl implements HttpClient {
 
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
-        if (response.wshse != null && response.wshse.getResponse() != null
-            && interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse()))) {
-          return this.internalBuildAsync(copy, listener);
+        if (response.wshse != null && response.wshse.getResponse() != null) {
+          return interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse())).thenCompose(b -> {
+            if (b) {
+              return this.internalBuildAsync(copy, listener);
+            }
+            return CompletableFuture.completedFuture(response);
+          });
         }
         return CompletableFuture.completedFuture(response);
       });

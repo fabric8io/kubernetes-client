@@ -27,6 +27,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,10 +133,10 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   @Override
-  public boolean afterFailure(Builder builder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
     ResourceKey target = findNewTarget(builder, response);
     if (target == null) {
-      return false;
+      return CompletableFuture.completedFuture(false);
     }
 
     HttpRequest request = response.request();
@@ -155,12 +156,12 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
           builder.delete(JSON, Serialization.asJson(h));
           break;
         default:
-          return false;
+          return CompletableFuture.completedFuture(false);
         }
       }
     }
 
-    return true;
+    return CompletableFuture.completedFuture(true);
   }
 
   public ResourceKey findNewTarget(BasicBuilder basicBuilder, HttpResponse<?> response) {
@@ -185,8 +186,8 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   @Override
-  public boolean afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
-    return findNewTarget(basicBuilder, response) != null;
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
+    return CompletableFuture.completedFuture(findNewTarget(basicBuilder, response) != null);
   }
 
   private static Matcher getMatcher(String url) {

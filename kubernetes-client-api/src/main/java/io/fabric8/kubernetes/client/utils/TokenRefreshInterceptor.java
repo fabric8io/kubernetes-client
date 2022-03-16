@@ -22,28 +22,28 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
 
 import java.net.HttpURLConnection;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Interceptor for handling expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
-  
-  public static final String NAME = "TOKEN"; 
-  
+
+  public static final String NAME = "TOKEN";
+
   private final Config config;
   private HttpClient.Factory factory;
-  
+
   public TokenRefreshInterceptor(Config config, HttpClient.Factory factory) {
     this.config = config;
     this.factory = factory;
   }
-  
+
   @Override
-  public boolean afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
-    boolean resubmit = false;
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       String currentContextName = null;
-      String newAccessToken = null;
+      CompletableFuture<String> newAccessToken = null;
 
       if (config.getCurrentContext() != null) {
         currentContextName = config.getCurrentContext().getName();
@@ -52,18 +52,21 @@ public class TokenRefreshInterceptor implements Interceptor {
       if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
         newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(), factory.newBuilder());
       } else {
-        newAccessToken = newestConfig.getOauthToken();
+        newAccessToken = CompletableFuture.completedFuture(newestConfig.getOauthToken());
       }
 
-      if (newAccessToken != null) {
-        // Delete old Authorization header and append new one
-        headerBuilder
-          .setHeader("Authorization", "Bearer " + newAccessToken);
-        config.setOauthToken(newAccessToken);
-        resubmit = true;
-      }
+      return newAccessToken.thenApply(s -> {
+        if (s != null) {
+          // Delete old Authorization header and append new one
+          headerBuilder.setHeader("Authorization", "Bearer " + s);
+          config.setOauthToken(s);
+          return true;
+        }
+        return false;
+      });
+
     }
-    return resubmit;
+    return CompletableFuture.completedFuture(false);
   }
 
 }
