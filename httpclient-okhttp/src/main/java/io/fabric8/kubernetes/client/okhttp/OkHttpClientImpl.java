@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.ConnectionPool;
@@ -27,20 +28,24 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.BufferedSource;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Function;
 
 public class OkHttpClientImpl implements HttpClient {
-  
+
   static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
-  
+
   public static final MediaType JSON = parseMediaType("application/json");
   public static final MediaType JSON_PATCH = parseMediaType("application/json-patch+json");
   public static final MediaType STRATEGIC_MERGE_JSON_PATCH = parseMediaType("application/strategic-merge-patch+json");
@@ -51,13 +56,65 @@ public class OkHttpClientImpl implements HttpClient {
     MEDIA_TYPES.put(contentType, result);
     return result;
   }
-  
+
+  private abstract class OkHttpAsyncBody<T> implements AsyncBody {
+    private final BodyConsumer<T> consumer;
+    private final BufferedSource source;
+    private final CompletableFuture<Void> done = new CompletableFuture<>();
+
+    private OkHttpAsyncBody(BodyConsumer<T> consumer, BufferedSource source) {
+      this.consumer = consumer;
+      this.source = source;
+    }
+
+    @Override
+    public void consume() {
+      // consume should not block from a callers perspective
+      try {
+        httpClient.dispatcher().executorService().execute(() -> {
+          try {
+            if (!source.exhausted() && !done.isDone()) {
+              T value = process(source);
+              consumer.consume(value, this);
+            }
+            done.complete(null);
+          } catch (Exception e) {
+            Utils.closeQuietly(source);
+            done.completeExceptionally(e);
+          }
+        });
+      } catch (Exception e) {
+        // executor is likely shutdown
+        Utils.closeQuietly(source);
+        done.completeExceptionally(e);
+      }
+    }
+
+    @Override
+    public CompletableFuture<Void> done() {
+      return done;
+    }
+
+    protected abstract T process(BufferedSource source) throws IOException;
+
+    @Override
+    public void cancel() {
+      Utils.closeQuietly(source);
+      done.cancel(false);
+    }
+  }
+
   static class OkHttpResponseImpl<T> implements HttpResponse<T> {
-    
+
     private final Response response;
     private T body;
     private Class<T> type;
-    
+
+    public OkHttpResponseImpl(Response response, T body) throws IOException {
+      this.response = response;
+      this.body = body;
+    }
+
     public OkHttpResponseImpl(Response response, Class<T> type) throws IOException {
       this.response = response;
       this.type = type;
@@ -74,7 +131,7 @@ public class OkHttpClientImpl implements HttpClient {
         }
       }
     }
-    
+
     @Override
     public int code() {
       return response.code();
@@ -89,9 +146,9 @@ public class OkHttpClientImpl implements HttpClient {
     public HttpRequest request() {
       return new OkHttpRequestImpl(response.request());
     }
-    
+
     @Override
-    public Optional<HttpResponse<T>> previousResponse() {
+    public Optional<HttpResponse<?>> previousResponse() {
       Response previous = response.priorResponse() != null ? response.priorResponse() : response;
       previous = previous.networkResponse() != null ? previous.networkResponse() : previous;
       try {
@@ -105,15 +162,15 @@ public class OkHttpClientImpl implements HttpClient {
     public List<String> headers(String key) {
       return response.headers(key);
     }
-    
+
   }
-  
+
   private final okhttp3.OkHttpClient httpClient;
-  
+
   public OkHttpClientImpl(OkHttpClient httpClient) {
     this.httpClient = httpClient;
   }
-  
+
   @Override
   public void close() {
     ConnectionPool connectionPool = httpClient.connectionPool();
@@ -130,30 +187,58 @@ public class OkHttpClientImpl implements HttpClient {
 
     if (executorService != null) {
       executorService.shutdownNow();
-    }    
+    }
   }
-  
+
   @Override
   public <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
     return new OkHttpResponseImpl<>(httpClient.newCall(((OkHttpRequestImpl)request).getRequest()).execute(), type);
   }
-  
+
   @Override
   public Builder newBuilder() {
     return new OkHttpClientBuilderImpl(httpClient.newBuilder());
   }
-  
+
   @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request,
+      BodyConsumer<String> consumer) {
+    Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<String>(consumer, s) {
+      @Override
+      protected String process(BufferedSource source) throws IOException {
+        return source.readUtf8LineStrict();
+      }
+    };
+    return sendAsync(request, handler);
+  }
+
+  @Override
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request,
+      BodyConsumer<List<ByteBuffer>> consumer) {
+    Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
+      @Override
+      protected List<ByteBuffer> process(BufferedSource source) throws IOException {
+        return Arrays.asList(ByteBuffer.wrap(source.readByteArray()));
+      }
+    };
+    return sendAsync(request, handler);
+  }
+
+  private CompletableFuture<HttpResponse<AsyncBody>> sendAsync(HttpRequest request,
+      Function<BufferedSource, AsyncBody> handler) {
+    CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
     Call call = httpClient.newCall(((OkHttpRequestImpl)request).getRequest());
     call.enqueue(new Callback() {
-      
+
       @Override
       public void onResponse(Call call, Response response) throws IOException {
-        future.complete(new OkHttpResponseImpl<>(response, type));
+        BufferedSource source = response.body().source();
+
+        AsyncBody asyncBody = handler.apply(source);
+
+        future.complete(new OkHttpResponseImpl<>(response, asyncBody));
       }
-      
+
       @Override
       public void onFailure(Call call, IOException e) {
         future.completeExceptionally(e);
@@ -166,19 +251,43 @@ public class OkHttpClientImpl implements HttpClient {
     });
     return future;
   }
-  
+
+  @Override
+  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
+    CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
+    Call call = httpClient.newCall(((OkHttpRequestImpl)request).getRequest());
+    call.enqueue(new Callback() {
+
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
+        future.complete(new OkHttpResponseImpl<>(response, type));
+      }
+
+      @Override
+      public void onFailure(Call call, IOException e) {
+        future.completeExceptionally(e);
+      }
+    });
+    future.whenComplete((r, t) -> {
+      if (future.isCancelled()) {
+        call.cancel();
+      }
+    });
+    return future;
+  }
+
   @Override
   public io.fabric8.kubernetes.client.http.WebSocket.Builder newWebSocketBuilder() {
     return new OkHttpWebSocketImpl.BuilderImpl(this.httpClient);
   }
-  
+
   public okhttp3.OkHttpClient getOkHttpClient() {
     return httpClient;
   }
-  
+
   @Override
   public HttpRequest.Builder newHttpRequestBuilder() {
     return new OkHttpRequestImpl.BuilderImpl();
   }
-  
+
 }

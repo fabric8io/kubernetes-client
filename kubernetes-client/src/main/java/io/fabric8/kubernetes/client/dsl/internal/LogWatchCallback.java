@@ -16,63 +16,49 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
 
 import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
-public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<HttpResponse<InputStream>, Throwable> {
+public class LogWatchCallback implements LogWatch, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
     private final Config config;
-    private final OutputStream out;
-    private final PipedInputStream output;
+    private OutputStream out;
+    private WritableByteChannel outChannel;
+    private volatile InputStream output;
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
   public LogWatchCallback(Config config, OutputStream out) {
     this.config = config;
-    if (out == null) {
-      this.out = new PipedOutputStream();
-      this.output = new PipedInputStream();
-      try {
-        // connect so the user will get a ready to use inputstream, which will block until there is actually something to read.
-        this.output.connect((PipedOutputStream) this.out);
-      } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    } else {
-      this.out = out;
-      this.output = null;
-    }
+    this.out = out;
     if (this.out instanceof PipedOutputStream) {
       toClose.add(this.out);
+    }
+    if (out != null) {
+      outChannel = Channels.newChannel(out);
     }
   }
 
@@ -94,14 +80,49 @@ public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<Htt
         return;
       }
 
-      executorService.shutdownNow();
       closeQuietly(toClose);
     }
 
     public LogWatchCallback callAndWait(HttpClient client, URL url) {
       HttpRequest request = client.newHttpRequestBuilder().url(url).build();
       HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      CompletableFuture<HttpResponse<InputStream>> future = clone.sendAsync(request, InputStream.class).whenComplete(this);
+
+      CompletableFuture<?> future = null;
+      if (out == null) {
+        // we can pass the input stream directly to the consumer
+        future = clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
+          if (e != null) {
+            onFailure(e);
+          }
+          if (r != null) {
+            this.output = r.body();
+          }
+        });
+      } else {
+        // we need to write the bytes to the given output
+        future = clone.consumeBytes(request, (buffers, a) -> {
+          // assuming non-blocking - which may not be valid
+          // if we need to change this, then we'll have to delegate this to an executor
+          for (ByteBuffer byteBuffer : buffers) {
+            outChannel.write(byteBuffer);
+          }
+          a.consume();
+        }).whenComplete((a, e) -> {
+          if (e != null) {
+            onFailure(e);
+          }
+          if (a != null) {
+            a.body().consume();
+            a.body().done().whenComplete((v, t) -> {
+              if (t != null) {
+                onFailure(t);
+              } else {
+                cleanUp();
+              }
+            });
+          }
+        });
+      }
 
       if (!Utils.waitUntilReady(future, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
         if (LOGGER.isWarnEnabled()) {
@@ -115,16 +136,6 @@ public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<Htt
     public InputStream getOutput() {
         return output;
     }
-    
-    @Override
-    public void accept(HttpResponse<InputStream> t, Throwable u) {
-      if (u != null) {
-        onFailure(u);
-      }
-      if (t != null) {
-        onResponse(t);
-      }
-    }
 
     public void onFailure(Throwable u) {
         //If we have closed the watch ignore everything
@@ -136,16 +147,4 @@ public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<Htt
         cleanUp();
     }
 
-    public void onResponse(final HttpResponse<InputStream> response) {
-      InputStream body = response.body();
-      if (!executorService.isShutdown()) {
-        // the task will be cancelled via shutdownNow
-        InputStreamPumper.pump(body, out::write, executorService).whenComplete((o, t) -> {
-          cleanUp();
-          Utils.closeQuietly(body);
-        });
-      } else {
-        Utils.closeQuietly(body);
-      }
-    }
 }

@@ -34,12 +34,17 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse.BodySubscriber;
 import java.net.http.HttpResponse.BodySubscribers;
 import java.net.http.WebSocketHandshakeException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Flow;
+import java.util.concurrent.Flow.Subscriber;
+import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -50,12 +55,80 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class JdkHttpClientImpl implements HttpClient {
 
+  private final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
+    private final BodyConsumer<T> consumer;
+    private CompletableFuture<Void> done = new CompletableFuture<Void>();
+    private final AtomicBoolean subscribed = new AtomicBoolean();
+    private volatile Flow.Subscription subscription;
+
+    private AsyncBodySubscriber(BodyConsumer<T> consumer) {
+      this.consumer = consumer;
+    }
+
+    @Override
+    public void onSubscribe(Subscription subscription) {
+      if (!subscribed.compareAndSet(false, true)) {
+        subscription.cancel();
+        return;
+      }
+      this.subscription = subscription;
+      subscription.request(1);
+    }
+
+    @Override
+    public void onNext(T item) {
+      try {
+        if (item == null) {
+          done.complete(null);
+        } else {
+          consumer.consume(item, this);
+        }
+      } catch (Exception e) {
+        subscription.cancel();
+        done.completeExceptionally(e);
+      }
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+      done.completeExceptionally(throwable);
+    }
+
+    @Override
+    public void onComplete() {
+      done.complete(null);
+    }
+
+    @Override
+    public void consume() {
+      this.subscription.request(1);
+    }
+
+    @Override
+    public CompletableFuture<Void> done() {
+      return done;
+    }
+
+    @Override
+    public void cancel() {
+      subscription.cancel();
+      done.cancel(false);
+    }
+
+  }
+
   private static class JdkHttpResponseImpl<T> implements HttpResponse<T> {
 
-    private java.net.http.HttpResponse<T> response;
+    private java.net.http.HttpResponse<?> response;
+    private T body;
 
     public JdkHttpResponseImpl(java.net.http.HttpResponse<T> response) {
+      this(response, response.body());
+    }
+
+    public JdkHttpResponseImpl(java.net.http.HttpResponse<?> response, T body) {
       this.response = response;
+      this.body = body;
     }
 
     @Override
@@ -70,7 +143,7 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public T body() {
-      return response.body();
+      return body;
     }
 
     @Override
@@ -79,7 +152,7 @@ public class JdkHttpClientImpl implements HttpClient {
     }
 
     @Override
-    public Optional<HttpResponse<T>> previousResponse() {
+    public Optional<HttpResponse<?>> previousResponse() {
       return response.previousResponse().map(JdkHttpResponseImpl::new);
     }
 
@@ -122,13 +195,21 @@ public class JdkHttpClientImpl implements HttpClient {
   }
 
   @Override
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer) {
+    AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
+    BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
+    return sendAsync(request, handler).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, subscriber));
+  }
+
+  @Override
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer) {
+    AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
+    BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
+    return sendAsync(request, handler).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, subscriber));
+  }
+
+  @Override
   public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl)request;
-    JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
-    for (Interceptor interceptor : builder.interceptors.values()) {
-      interceptor.before(builderImpl, jdkRequest);
-      jdkRequest = builderImpl.build();
-    }
     BodyHandler<T> bodyHandler;
     if (type == null) {
       bodyHandler = (BodyHandler<T>) BodyHandlers.discarding();
@@ -146,6 +227,16 @@ public class JdkHttpClientImpl implements HttpClient {
         return (BodySubscriber<T>) downstream;
       };
     }
+    return sendAsync(request, bodyHandler).thenApply(JdkHttpResponseImpl::new);
+  }
+
+  public <T> CompletableFuture<java.net.http.HttpResponse<T>> sendAsync(HttpRequest request, BodyHandler<T> bodyHandler) {
+    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl)request;
+    JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
+    for (Interceptor interceptor : builder.interceptors.values()) {
+      interceptor.before(builderImpl, jdkRequest);
+      jdkRequest = builderImpl.build();
+    }
 
     CompletableFuture<java.net.http.HttpResponse<T>> cf = this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
 
@@ -159,7 +250,7 @@ public class JdkHttpClientImpl implements HttpClient {
       });
     }
 
-    return cf.thenApply(JdkHttpResponseImpl::new);
+    return cf;
   }
 
   @Override

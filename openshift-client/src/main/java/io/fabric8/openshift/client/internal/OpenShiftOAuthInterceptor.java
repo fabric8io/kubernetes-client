@@ -146,12 +146,12 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
       response = clone.send(client.newHttpRequestBuilder().url(url).setHeader(AUTHORIZATION, credential).build(), String.class);
 
-      response = response.previousResponse().isPresent() ? response.previousResponse().get() : response;
+      HttpResponse<?> responseOrPrevious = response.previousResponse().isPresent() ? response.previousResponse().get() : response;
 
-      List<String> location = response.headers(LOCATION);
+      List<String> location = responseOrPrevious.headers(LOCATION);
       String token = !location.isEmpty() ? location.get(0) : null;
       if (token == null || token.isEmpty()) {
-        throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
+        throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " " + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
       }
       token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
       token = token.substring(0, token.indexOf(AFTER_TOKEN));

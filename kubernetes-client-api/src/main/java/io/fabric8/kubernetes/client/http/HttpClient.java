@@ -21,8 +21,11 @@ import io.fabric8.kubernetes.client.Config;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -96,6 +99,33 @@ public interface HttpClient extends AutoCloseable {
     Builder preferHttp11();
   }
 
+  /**
+   * A simplified java.util.concurrent.Flow.Subscription and a future tracking done.
+   * <b>The body should be consumed until the end or cancelled.
+   */
+  public interface AsyncBody {
+    /**
+     * Called to deliver results to the {@link BodyConsumer}
+     */
+    void consume();
+
+    /**
+     * Tracks the completion of the body.
+     * @return the future
+     */
+    CompletableFuture<Void> done();
+
+    void cancel();
+  }
+
+  /**
+   * A functional interface for consuming async result bodies
+   */
+  @FunctionalInterface
+  public interface BodyConsumer<T> {
+    void consume(T value, AsyncBody asyncBody) throws Exception;
+  }
+
   @Override
   void close();
 
@@ -108,6 +138,7 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Send a request an wait for the result
+   * <br>A Reader or InputStream result must be closed by the caller to properly cleanup resources.
    * @param <T> return type
    * @param request
    * @param type one of InputStream, Reader, String
@@ -118,12 +149,31 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Send an async request
+   * <br>A Reader or InputStream result must be closed by the caller to properly cleanup resources.
+   * <br>A Reader or InputStream result should not be consumed by the thread completing the returned future
+   * as that will hijack a client thread.
    * @param <T> return type
    * @param request
    * @param type one of InputStream, Reader, String
    * @return
    */
   <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
+
+  /**
+   * Consume the lines of a the body using the same logic as {@link BufferedReader} to break up the lines.
+   * @param request
+   * @param consumer
+   * @return the future which will be ready after the headers have been read
+   */
+  CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer);
+
+  /**
+   * Consume the bytes of a the body
+   * @param request
+   * @param consumer
+   * @return the future which will be ready after the headers have been read
+   */
+  CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer);
 
   WebSocket.Builder newWebSocketBuilder();
 

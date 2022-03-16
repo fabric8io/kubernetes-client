@@ -27,27 +27,27 @@ import java.util.Optional;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public interface HttpResponse<T> extends HttpHeaders {
-  
+
   default boolean isSuccessful() {
     return isSuccessful(code());
   }
-  
+
   public static boolean isSuccessful(int code) {
     return code >= 200 && code < 300;
   }
 
   int code();
-  
+
   default String message() {
     return HttpStatusMessage.getMessageForStatus(code());
   }
-  
+
   /**
    * Get the body.  If the body is {@link Closeable}, it should be closed by the caller.
    * @return the body
    */
   T body();
-  
+
   /**
    * Return the body as a String.  Or an empty String if there was no body (possibly discarded).
    * <br>If the body is an {@link InputStream}, it will be read as UTF-8.
@@ -67,9 +67,9 @@ public interface HttpResponse<T> extends HttpHeaders {
     }
     return IOHelpers.readFully((InputStream)body, UTF_8);
   }
-  
+
   HttpRequest request();
-  
-  public Optional<HttpResponse<T>> previousResponse();
+
+  public Optional<HttpResponse<?>> previousResponse();
 
 }
