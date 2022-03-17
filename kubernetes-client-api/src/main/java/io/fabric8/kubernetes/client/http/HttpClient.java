@@ -20,10 +20,12 @@ import io.fabric8.kubernetes.client.Config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
@@ -101,7 +103,8 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * A simplified java.util.concurrent.Flow.Subscription and a future tracking done.
-   * <b>The body should be consumed until the end or cancelled.
+   * <br>
+   * The body should be consumed until the end or cancelled.
    */
   public interface AsyncBody {
     /**
@@ -111,7 +114,7 @@ public interface HttpClient extends AutoCloseable {
 
     /**
      * Tracks the completion of the body.
-     * 
+     *
      * @return the future
      */
     CompletableFuture<Void> done();
@@ -134,7 +137,7 @@ public interface HttpClient extends AutoCloseable {
    * Create a builder that starts with the same state as this client.
    * <br>
    * The client resources will be shared across derived instances.
-   * 
+   *
    * @return a new builder
    */
   DerivedClientBuilder newBuilder();
@@ -143,14 +146,41 @@ public interface HttpClient extends AutoCloseable {
    * Send a request an wait for the result
    * <br>
    * A Reader or InputStream result must be closed by the caller to properly cleanup resources.
-   * 
+   * <br>
+   * Implementors only have to override if there is specialized blocking logic or the read timeout
+   * is not automatically enforced
+   *
    * @param <T> return type
    * @param request
    * @param type one of InputStream, Reader, String
    * @return
    * @throws IOException
+   *
+   * @deprecated use async instead
    */
-  <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException;
+  @Deprecated
+  default <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
+    try {
+      // readTimeout should be enforced
+      return sendAsync(request, type).get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      InterruptedIOException ie = new InterruptedIOException();
+      ie.initCause(e);
+      throw ie;
+    } catch (ExecutionException e) {
+      Throwable t = e;
+      if (e.getCause() != null) {
+        t = e.getCause();
+      }
+      if (t instanceof IOException) {
+        throw (IOException) t;
+      }
+      InterruptedIOException ie = new InterruptedIOException();
+      ie.initCause(e);
+      throw ie;
+    }
+  }
 
   /**
    * Send an async request
@@ -159,7 +189,7 @@ public interface HttpClient extends AutoCloseable {
    * <br>
    * A Reader or InputStream result should not be consumed by the thread completing the returned future
    * as that will hijack a client thread.
-   * 
+   *
    * @param <T> return type
    * @param request
    * @param type one of InputStream, Reader, String
@@ -169,7 +199,7 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Consume the lines of a the body using the same logic as {@link BufferedReader} to break up the lines.
-   * 
+   *
    * @param request
    * @param consumer
    * @return the future which will be ready after the headers have been read
@@ -178,7 +208,7 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Consume the bytes of a the body
-   * 
+   *
    * @param request
    * @param consumer
    * @return the future which will be ready after the headers have been read

@@ -50,9 +50,8 @@ import java.util.Map;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
-public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
-  BuildResource<Build, LogWatch>> implements
-  BuildResource<Build, LogWatch> {
+public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, BuildResource<Build, LogWatch>> implements
+    BuildResource<Build, LogWatch> {
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
   private final boolean withTerminatedStatus;
@@ -73,7 +72,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {
     super(superContext.withApiGroupName(BUILD)
-      .withPlural("builds"), Build.class, BuildList.class);
+        .withPlural("builds"), Build.class, BuildList.class);
     this.buildOperationContext = context;
     this.withTerminatedStatus = context.isTerminatedStatus();
     this.withTimestamps = context.isTimestamps();
@@ -121,7 +120,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
     return sb.toString();
   }
 
-  protected <T> T doGetLog(Class<T> type){
+  protected <T> T doGetLog(Class<T> type) {
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
       return handleRawGet(url, type);
@@ -142,10 +141,11 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override
-  public Reader getLogReader(){
+  public Reader getLogReader() {
     return doGetLog(Reader.class);
   }
 
@@ -160,7 +160,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
       waitUntilBuildPodBecomesReady(fromServer().get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(this.config, out);
+      final LogWatchCallback callback = new LogWatchCallback(out);
       return callback.callAndWait(this.httpClient, url);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
@@ -216,7 +216,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   private void waitUntilBuildPodBecomesReady(Build build) {
     List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
-      getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout, null);
+        getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout, null);
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }

@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +31,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -43,7 +40,6 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
-  private final Config config;
   private OutputStream out;
   private WritableByteChannel outChannel;
   private volatile InputStream output;
@@ -51,8 +47,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
 
-  public LogWatchCallback(Config config, OutputStream out) {
-    this.config = config;
+  public LogWatchCallback(OutputStream out) {
     this.out = out;
     if (this.out instanceof PipedOutputStream) {
       toClose.add(this.out);
@@ -87,20 +82,19 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     HttpRequest request = client.newHttpRequestBuilder().url(url).build();
     HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
 
-    CompletableFuture<?> future = null;
     if (out == null) {
       // we can pass the input stream directly to the consumer
-      future = clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
+      clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
         if (e != null) {
           onFailure(e);
         }
         if (r != null) {
           this.output = r.body();
         }
-      });
+      }).join();
     } else {
       // we need to write the bytes to the given output
-      future = clone.consumeBytes(request, (buffers, a) -> {
+      clone.consumeBytes(request, (buffers, a) -> {
         // assuming non-blocking - which may not be valid
         // if we need to change this, then we'll have to delegate this to an executor
         for (ByteBuffer byteBuffer : buffers) {
@@ -124,11 +118,6 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
       });
     }
 
-    if (!Utils.waitUntilReady(future, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
-      if (LOGGER.isWarnEnabled()) {
-        LOGGER.warn("Log watch request has not been opened within: {} millis.", config.getRequestTimeout());
-      }
-    }
     return this;
   }
 

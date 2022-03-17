@@ -23,10 +23,8 @@ import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpResponse.BodyHandler;
@@ -40,7 +38,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
@@ -176,22 +173,6 @@ public class JdkHttpClientImpl implements HttpClient {
   @Override
   public DerivedClientBuilder newBuilder() {
     return this.builder.copy(httpClient);
-  }
-
-  @Override
-  public <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
-    try {
-      return sendAsync(request, type).get();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
-    } catch (ExecutionException e) {
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
-    }
   }
 
   @Override

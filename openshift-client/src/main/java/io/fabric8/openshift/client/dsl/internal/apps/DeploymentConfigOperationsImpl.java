@@ -53,8 +53,9 @@ import java.util.function.UnaryOperator;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
-public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList,
-  DeployableScalableResource<DeploymentConfig>> implements DeployableScalableResource<DeploymentConfig> {
+public class DeploymentConfigOperationsImpl
+    extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>>
+    implements DeployableScalableResource<DeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
@@ -92,7 +93,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     return super.accept(consumer);
   }
 
-
   @Override
   public DeploymentConfig replace(DeploymentConfig item) {
     if (isCascading()) {
@@ -117,7 +117,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   @Override
   public DeploymentConfig deployLatest(boolean wait) {
     Long currentVersion = getMandatory().getStatus().getLatestVersion();
-    if(currentVersion == null){
+    if (currentVersion == null) {
       currentVersion = 1L;
     }
     final Long latestVersion = currentVersion + 1;
@@ -174,7 +174,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
               + checkName(getItem()) + " to scale. Resource is no longer available.");
         }
         replicasRef.set(deploymentConfig.getStatus().getReplicas());
-        int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
+        int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas()
+            : 0;
         if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration()
             && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
           return true;
@@ -214,6 +215,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override
@@ -232,7 +234,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
       waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
       URL url = getResourceLogUrl(false, true);
-      final LogWatchCallback callback = new LogWatchCallback(this.config, out);
+      final LogWatchCallback callback = new LogWatchCallback(out);
       return callback.callAndWait(this.httpClient, url);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
@@ -257,8 +259,9 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
     Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
-    List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),
-      getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, rollingOperationContext.getContainerId());
+    List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context,
+        deploymentConfig.getMetadata().getUid(),
+        getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, rollingOperationContext.getContainerId());
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
