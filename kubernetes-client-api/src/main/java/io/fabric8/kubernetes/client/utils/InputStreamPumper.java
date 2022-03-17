@@ -89,13 +89,13 @@ public class InputStreamPumper {
       try {
         InputStreamPumper.transferTo(in, out);
       } catch (InterruptedIOException e){
+        LOGGER.debug("Interrupted while pumping stream.", e);
+      } catch (Exception e) {
         if (!Thread.currentThread().isInterrupted()) {
-          LOGGER.debug("Not actually interrupting the thread.", e);
+          LOGGER.error("Error while pumping stream.", e);
         } else {
           LOGGER.debug("Interrupted while pumping stream.");
         }
-      } catch (Exception e) {
-        LOGGER.error("Error while pumping stream.", e);
       }
     }, executor);
   }
