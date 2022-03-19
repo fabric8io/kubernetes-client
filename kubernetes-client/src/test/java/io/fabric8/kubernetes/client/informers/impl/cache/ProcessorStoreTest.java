@@ -60,21 +60,19 @@ class ProcessorStoreTest {
     Mockito.when(podCache.remove(pod)).thenReturn(pod);
     processorStore.delete(pod);
 
-    Mockito.verify(processor, Mockito.times(4)).distribute(notificationCaptor.capture(), syncCaptor.capture());
+    Mockito.verify(processor, Mockito.times(3)).distribute(notificationCaptor.capture(), syncCaptor.capture());
 
     List<Notification<Pod>> notifications = notificationCaptor.getAllValues();
 
     assertThat(notifications.get(0)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(1)).isInstanceOf(AddNotification.class);
-    assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
-    assertThat(notifications.get(3)).isInstanceOf(DeleteNotification.class);
+    assertThat(notifications.get(2)).isInstanceOf(DeleteNotification.class);
 
     List<Boolean> syncValues = syncCaptor.getAllValues();
 
     assertThat(syncValues.get(0)).isFalse();
     assertThat(syncValues.get(1)).isFalse();
-    assertThat(syncValues.get(2)).isTrue(); // same object/revision, so it's sync
-    assertThat(syncValues.get(3)).isFalse();
+    assertThat(syncValues.get(2)).isFalse();
   }
 
   @Test
@@ -86,8 +84,8 @@ class ProcessorStoreTest {
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
 
-    Pod pod = new PodBuilder().withNewMetadata().endMetadata().build();
-    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
+    Pod pod = new PodBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withResourceVersion("2").endMetadata().build();
 
     // replace empty store with two values
     processorStore.add(pod);
@@ -107,12 +105,12 @@ class ProcessorStoreTest {
     assertThat(notifications.get(1)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
     assertThat(notifications.get(3)).isInstanceOf(UpdateNotification.class);
-    assertTrue(syncCaptor.getAllValues().subList(0, 2).stream().allMatch(s->!s.booleanValue()));
-    assertTrue(syncCaptor.getAllValues().subList(2, 4).stream().allMatch(s->s.booleanValue()));
+    assertTrue(syncCaptor.getAllValues().subList(0, 2).stream().allMatch(s -> !s.booleanValue()));
+    assertTrue(syncCaptor.getAllValues().subList(2, 4).stream().allMatch(s -> s.booleanValue()));
 
     assertThat(notifications.get(4)).isInstanceOf(DeleteNotification.class);
     assertThat(notifications.get(5)).isInstanceOf(DeleteNotification.class);
-    assertTrue(syncCaptor.getAllValues().subList(4, 6).stream().allMatch(s->!s.booleanValue()));
+    assertTrue(syncCaptor.getAllValues().subList(4, 6).stream().allMatch(s -> !s.booleanValue()));
   }
 
 }
