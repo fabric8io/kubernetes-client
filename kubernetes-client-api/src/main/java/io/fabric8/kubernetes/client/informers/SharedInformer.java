@@ -17,10 +17,13 @@ package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.client.informers.cache.Store;
 
+import java.util.stream.Stream;
+
 /**
  * SharedInformer defines basic methods of an informer.
  *
- * This has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go
+ * This has been ported from official go client:
+ * https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go
  */
 public interface SharedInformer<T> extends AutoCloseable {
 
@@ -43,18 +46,20 @@ public interface SharedInformer<T> extends AutoCloseable {
 
   /**
    * Starts the shared informer, which will be stopped when {@link #stop()} is called.
-   * 
-   * <br>Only one start attempt is made - subsequent calls will not re-start the informer.
-   * 
-   * <br>If the informer is not already running, this is a blocking call
+   *
+   * <br>
+   * Only one start attempt is made - subsequent calls will not re-start the informer.
+   *
+   * <br>
+   * If the informer is not already running, this is a blocking call
    */
   void run();
 
   /**
-   * Stops the shared informer.  The informer cannot be started again.
+   * Stops the shared informer. The informer cannot be started again.
    */
   void stop();
-  
+
   @Override
   default void close() {
     stop();
@@ -75,7 +80,7 @@ public interface SharedInformer<T> extends AutoCloseable {
    * @return string value or null if never synced
    */
   String lastSyncResourceVersion();
-  
+
   /**
    * Return true if the informer is running
    */
@@ -85,16 +90,29 @@ public interface SharedInformer<T> extends AutoCloseable {
    * Return the class this informer is watching
    */
   Class<T> getApiTypeClass();
-  
+
   /**
    * Return true if the informer is actively watching
-   * <br>Will return false when {@link #isRunning()} is true when the watch needs to be re-established.
+   * <br>
+   * Will return false when {@link #isRunning()} is true when the watch needs to be re-established.
    */
   boolean isWatching();
-  
+
   /**
    * Return the Store associated with this informer
+   * 
    * @return the store
    */
   Store<T> getStore();
+
+  /**
+   * Sets the initial state of the informer store, which will
+   * be replaced by the initial list operation. This will emit
+   * relevant delete and update events, rather than just adds.
+   * <br>
+   * Can only be called before the informer is running
+   * 
+   * @param items
+   */
+  SharedIndexInformer<T> initialState(Stream<T> items);
 }

@@ -36,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -101,11 +102,11 @@ class InformTest {
   void testInformGeneric() throws InterruptedException {
     // Given
     GenericKubernetesResource dummy = new GenericKubernetesResource();
-    dummy.setMetadata(new ObjectMetaBuilder().withName("one").withNamespace("test").build());
+    dummy.setMetadata(new ObjectMetaBuilder().withName("one").withNamespace("test").withResourceVersion("1").build());
     dummy.setKind("dummy");
     dummy.setApiVersion("demos.fabric8.io/v1");
     GenericKubernetesResourceList list = new GenericKubernetesResourceList();
-    list.setMetadata(new ListMetaBuilder().withResourceVersion("1").build());
+    list.setMetadata(new ListMetaBuilder().withResourceVersion("2").build());
     list.setItems(Arrays.asList(dummy));
 
     server.expect()
@@ -114,7 +115,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label&resourceVersion=2&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -151,8 +153,8 @@ class InformTest {
         .withPlural("dummies")
         .build();
 
-    SharedIndexInformer<GenericKubernetesResource> informer =
-        client.genericKubernetesResources(context).withLabel("my-label").inform(handler);
+    SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context).withLabel("my-label")
+        .inform(handler);
 
     assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
     assertTrue(addLatch.await(10, TimeUnit.SECONDS));
@@ -176,7 +178,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -213,8 +216,8 @@ class InformTest {
         .withPlural("pods")
         .build();
 
-    SharedIndexInformer<GenericKubernetesResource> informer =
-        client.genericKubernetesResources(context).withName("pod1").inform(handler);
+    SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context).withName("pod1")
+        .inform(handler);
 
     assertTrue(deleteLatch.await(1000, TimeUnit.SECONDS));
     assertTrue(addLatch.await(1000, TimeUnit.SECONDS));
@@ -242,7 +245,8 @@ class InformTest {
         .andEmit(new WatchEvent(pod1, "DELETED"))
         .done()
         .once();
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
+    // should be two deletes, pod1 from the event, and pod2 from the initial list
+    final CountDownLatch deleteLatch = new CountDownLatch(2);
     final CountDownLatch addLatch = new CountDownLatch(1);
     final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
 
@@ -263,6 +267,7 @@ class InformTest {
 
     };
     SharedIndexInformer<Pod> informer = client.resources(Pod.class).withLabel("my-label").runnableInformer(1000L);
+    informer.initialState(Stream.of(new PodBuilder(pod1).editMetadata().withName("pod2").endMetadata().build()));
 
     assertFalse(informer.isRunning());
     informer.addEventHandler(handler);
@@ -287,7 +292,8 @@ class InformTest {
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?limit=1")
         .andReturn(HttpURLConnection.HTTP_OK,
-            new PodListBuilder().withNewMetadata().withResourceVersion("2").withContinue("x").endMetadata().withItems(pod1).build())
+            new PodListBuilder().withNewMetadata().withResourceVersion("2").withContinue("x").endMetadata().withItems(pod1)
+                .build())
         .once();
 
     server.expect()

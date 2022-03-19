@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.informers.cache.Cache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +41,10 @@ class CacheTest {
 
   @Test
   void testCacheIndex() {
-    Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod").endMetadata().build();
+    Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod").withResourceVersion("1").endMetadata().build();
 
     cache.put(testPodObj);
-    cache.replace(Collections.singletonList(testPodObj));
+    replace(cache, Collections.singletonList(testPodObj));
 
     String index = mockIndexFunction(testPodObj).get(0);
     String key = mockKeyFunction(testPodObj);
@@ -58,16 +59,27 @@ class CacheTest {
     assertEquals(1, allExistingKeys.size());
     assertEquals(key, allExistingKeys.get(0));
 
-    cache.replace(Collections.emptyList());
+    replace(cache, Collections.emptyList());
     assertEquals(0, cache.byIndex("mock", "y").size());
+  }
+
+  void replace(CacheImpl<Pod> cache, Collection<Pod> replacement) {
+    List<Pod> list = cache.list();
+    list.removeAll(replacement);
+    for (Pod pod : list) {
+      cache.remove(pod);
+    }
+    for (Pod pod : replacement) {
+      cache.put(pod);
+    }
   }
 
   @Test
   void testCacheStore() {
-    Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod2").endMetadata().build();
+    Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod2").withResourceVersion("1").endMetadata().build();
     String index = mockIndexFunction(testPodObj).get(0);
 
-    cache.replace(Collections.singletonList(testPodObj));
+    replace(cache, Collections.singletonList(testPodObj));
     cache.remove(testPodObj);
 
     List<Pod> indexedObjectList = cache.byIndex("mock", index);
@@ -122,9 +134,9 @@ class CacheTest {
     podCache.addIndexers(indexers);
 
     Pod testPod = new PodBuilder()
-      .withNewMetadata().withNamespace("test").withName("test-pod").withClusterName("test-cluster").endMetadata()
-      .withNewSpec().withNodeName("test-node").endSpec()
-      .build();
+        .withNewMetadata().withNamespace("test").withName("test-pod").withClusterName("test-cluster").endMetadata()
+        .withNewSpec().withNodeName("test-node").endSpec()
+        .build();
     podCache.put(testPod);
 
     List<Pod> namespaceIndexedPods = podCache.byIndex(Cache.NAMESPACE_INDEX, "test");
@@ -144,10 +156,11 @@ class CacheTest {
     return Collections.singletonList(obj.getClass().getName());
   }
 
-  private static String mockKeyFunction(Object obj)  {
+  private static String mockKeyFunction(Object obj) {
     if (obj == null) {
       return "null";
     }
     return String.valueOf(System.identityHashCode(obj));
   }
+
 }

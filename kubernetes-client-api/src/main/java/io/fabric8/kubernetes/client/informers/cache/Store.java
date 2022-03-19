@@ -29,14 +29,15 @@ import java.util.List;
  *
  * This is ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/store.go
  * 
- * <br>Refactored to only expose read methods
+ * <br>
+ * Refactored to only expose read methods
  *
  * @param <T> resource
  */
 public interface Store<T> {
 
   /**
-   *  Returns a list of all the items.
+   * Returns a list of all the items.
    *
    * @return list of all items
    */
@@ -64,5 +65,13 @@ public interface Store<T> {
    * @return the requested item
    */
   T getByKey(String key);
+
+  /**
+   * Use the key function to extract the object's key.
+   *
+   * @param object object
+   * @return the key
+   */
+  String getKey(T object);
 
 }

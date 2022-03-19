@@ -33,19 +33,21 @@ import java.util.function.Supplier;
  * SharedProcessor class manages all the registered ProcessListener and distributes
  * notifications.
  *
- * This has been taken from official-client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
- * 
- * <br>Modified to simplify threading
+ * This has been taken from official-client:
+ * https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
+ *
+ * <br>
+ * Modified to simplify threading
  */
 public class SharedProcessor<T> {
   private static final Logger log = LoggerFactory.getLogger(SharedProcessor.class);
-    
+
   private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
   private final List<ProcessorListener<T>> listeners = new ArrayList<>();
   private final List<ProcessorListener<T>> syncingListeners = new ArrayList<>();
   private final Executor executor;
-  
+
   public SharedProcessor() {
     this(Runnable::run);
   }
@@ -63,7 +65,9 @@ public class SharedProcessor<T> {
     lock.writeLock().lock();
     try {
       this.listeners.add(processorListener);
-      this.syncingListeners.add(processorListener);
+      if (processorListener.isReSync()) {
+        this.syncingListeners.add(processorListener);
+      }
     } finally {
       lock.writeLock().unlock();
     }
@@ -78,7 +82,7 @@ public class SharedProcessor<T> {
   public void distribute(ProcessorListener.Notification<T> obj, boolean isSync) {
     distribute(l -> l.add(obj), isSync);
   }
-  
+
   /**
    * Distribute the operation to the respective listeners
    */
@@ -137,18 +141,19 @@ public class SharedProcessor<T> {
   }
 
   /**
-   * Adds a new listener.  When running this will pause event distribution until
+   * Adds a new listener. When running this will pause event distribution until
    * the new listener has received an initial set of add events
    */
-  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodMillis, Supplier<Collection<T>> initialItems) {
+  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodMillis,
+      Supplier<Collection<T>> initialItems) {
     lock.writeLock().lock();
     try {
       ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis);
-      
+
       for (T item : initialItems.get()) {
         listener.add(new ProcessorListener.AddNotification<>(item));
       }
-      
+
       addListener(listener);
       return listener;
     } finally {
