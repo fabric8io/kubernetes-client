@@ -17,6 +17,9 @@
 * Fix #1285: removed references to manually calling registerCustomKind
 * Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 * Fix #3969: relist will not trigger sync events
+* Fix #3968: SharedInformer.initialState can be used to set the store state before the informer starts. 
+SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
+And Store.getKey can be used rather than directly referencing static Cache functions.
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0

@@ -19,6 +19,10 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
 
 import java.util.Set;
 
+/**
+ * Extends a {@link Store}, but also has the responsibility of
+ * notifying listeners on all operations.
+ */
 public interface SyncableStore<T> extends Store<T> {
 
   /**
@@ -29,7 +33,7 @@ public interface SyncableStore<T> extends Store<T> {
   void add(T obj);
 
   /**
-   * Sets an item  in the store to its updated state.
+   * Sets an item in the store to its updated state.
    *
    * @param obj object
    */
@@ -41,21 +45,15 @@ public interface SyncableStore<T> extends Store<T> {
    * @param obj object
    */
   void delete(T obj);
-  
+
   /**
    * Sends a resync event for each item.
    */
   void resync();
-  
-  /**
-   * Get the key for the given object
-   * @param obj object
-   * @return the key
-   */
-  String getKey(T obj);
 
   /**
    * Retain only the values with keys in the given set
+   *
    * @param nextKeys to retain
    */
   void retainAll(Set<String> nextKeys);

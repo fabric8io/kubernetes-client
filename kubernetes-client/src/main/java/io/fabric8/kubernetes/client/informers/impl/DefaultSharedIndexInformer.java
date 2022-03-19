@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
@@ -39,8 +40,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-public class DefaultSharedIndexInformer<T extends HasMetadata, L extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
+public class DefaultSharedIndexInformer<T extends HasMetadata, L extends KubernetesResourceList<T>>
+    implements SharedIndexInformer<T> {
   private static final Logger log = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
 
   private static final long MINIMUM_RESYNC_PERIOD_MILLIS = 1000L;
@@ -66,7 +69,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private ScheduledFuture<?> resyncFuture;
 
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, Executor informerExecutor) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
+      Executor informerExecutor) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
     }
@@ -78,7 +82,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     // reuse the informer executor, but ensure serial processing
     this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
     this.indexer = new CacheImpl<>();
-    this.indexer.setIsRunning(this::isRunning);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
     this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore);
@@ -103,13 +106,16 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     if (resyncPeriodMillis > 0) {
       if (resyncPeriodMillis < MINIMUM_RESYNC_PERIOD_MILLIS) {
-        log.warn("DefaultSharedIndexInformer#resyncPeriod {} is too small. Changing it to minimal allowed value of {}", resyncPeriodMillis, MINIMUM_RESYNC_PERIOD_MILLIS);
+        log.warn("DefaultSharedIndexInformer#resyncPeriod {} is too small. Changing it to minimal allowed value of {}",
+            resyncPeriodMillis, MINIMUM_RESYNC_PERIOD_MILLIS);
         resyncPeriodMillis = MINIMUM_RESYNC_PERIOD_MILLIS;
       }
 
       if (resyncPeriodMillis < this.resyncCheckPeriodMillis) {
         if (started.get()) {
-          log.warn("DefaultSharedIndexInformer#resyncPeriod {} is smaller than resyncCheckPeriod {} and the informer has already started. Changing it to {}", resyncPeriodMillis, resyncCheckPeriodMillis,resyncCheckPeriodMillis);
+          log.warn(
+              "DefaultSharedIndexInformer#resyncPeriod {} is smaller than resyncCheckPeriod {} and the informer has already started. Changing it to {}",
+              resyncPeriodMillis, resyncCheckPeriodMillis, resyncCheckPeriodMillis);
           resyncPeriodMillis = resyncCheckPeriodMillis;
         } else {
           // if the event handler's resyncPeriod is smaller than the current resyncCheckPeriod
@@ -132,10 +138,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   @Override
   public void run() {
     if (stopped) {
-        throw new IllegalStateException("Cannot restart a stopped informer");
+      throw new IllegalStateException("Cannot restart a stopped informer");
     }
-    if (!started.compareAndSet(false, true)) {
-      return;
+    synchronized (this) {
+      if (!started.compareAndSet(false, true)) {
+        return;
+      }
     }
 
     log.debug("informer: ready to run resync and reflector for {} with resync {}", apiTypeClass, resyncCheckPeriodMillis);
@@ -175,7 +183,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   public Indexer<T> getIndexer() {
     return this.indexer;
   }
-  
+
   @Override
   public Store<T> getStore() {
     return this.indexer;
@@ -196,17 +204,18 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   public boolean isRunning() {
     return !stopped && started.get() && reflector.isRunning();
   }
-  
+
   @Override
   public boolean isWatching() {
     return reflector.isWatching();
   }
-  
+
   synchronized void scheduleResync(Supplier<Boolean> resyncFunc) {
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {
       ResyncRunnable<T> resyncRunnable = new ResyncRunnable<>(processorStore, resyncFunc);
-      resyncFuture = Utils.scheduleAtFixedRate(informerExecutor, resyncRunnable, resyncCheckPeriodMillis, resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
+      resyncFuture = Utils.scheduleAtFixedRate(informerExecutor, resyncRunnable, resyncCheckPeriodMillis,
+          resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
     } else {
       log.debug("informer#Controller: resync skipped due to 0 full resync period {}", apiTypeClass);
     }
@@ -223,6 +232,21 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   @Override
   public Class<T> getApiTypeClass() {
     return apiTypeClass;
+  }
+
+  @Override
+  public SharedIndexInformer<T> removeIndexer(String name) {
+    this.indexer.removeIndexer(name);
+    return this;
+  }
+
+  @Override
+  public synchronized SharedIndexInformer<T> initialState(Stream<T> items) {
+    if (started.get()) {
+      throw new KubernetesClientException("Informer cannot be running when initial state is added");
+    }
+    items.forEach(i -> this.indexer.put(i));
+    return this;
   }
 
 }

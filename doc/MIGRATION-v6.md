@@ -178,6 +178,8 @@ Client.isAdaptable and Client.adapt will check first if the existing instance is
 
 - Extension specific EnableXXXMockClient and XXXMockServer classes have been deprecated.  You can simply use EnableKubernetesMockClient and KubernetesMockServer instead. Dependencies on the xxx-mock jar are then no longer needed, just a dependency to kubernetes-server-mock.
 
+- Informable.withIndexers has been deprecated.  Indexers can be added/removed after the creation of the informer.
+
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
