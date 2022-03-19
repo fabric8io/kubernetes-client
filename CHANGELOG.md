@@ -16,10 +16,12 @@
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
+* Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0
 * Fix #3813: Handle exit code status messages with pod uploads
+* Fix #3947: Point CamelK Extension model to latest released version v1.8.2
 
 #### New Features
 * Fix #3407: Added Itemable.withItem to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  There is also client.resourceList(...).getResources() - that will provide the resource list as Resources.  This allows you to implement composite operations easily with lambda: client.resourceList(...).getResources().forEach(r -> r.delete());
