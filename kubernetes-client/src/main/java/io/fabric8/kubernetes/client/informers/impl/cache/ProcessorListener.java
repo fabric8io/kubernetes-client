@@ -22,12 +22,15 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * ProcessorListener implements Runnable interface. It's supposed to run in background
- * and actually executes its event handler on notification. 
+ * and actually executes its event handler on notification.
  *
- * This has been taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
- * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
- * 
- * <br>Modified to execute loosely coupled from its processing thread
+ * This has been taken from official client:
+ * https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
+ * which has been ported from official go client:
+ * https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
+ *
+ * <br>
+ * Modified to execute loosely coupled from its processing thread
  *
  * @param <T> type of ProcessorListener
  */
@@ -35,7 +38,7 @@ public class ProcessorListener<T> {
   private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
   private ResourceEventHandler<? super T> handler;
-  
+
   public ProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodInMillis) {
     this.resyncPeriodInMillis = resyncPeriodInMillis;
     this.handler = handler;
@@ -49,6 +52,10 @@ public class ProcessorListener<T> {
 
   public void determineNextResync(ZonedDateTime now) {
     this.nextResync = now.plus(this.resyncPeriodInMillis, ChronoUnit.MILLIS);
+  }
+
+  public boolean isReSync() {
+    return resyncPeriodInMillis != 0;
   }
 
   public boolean shouldResync(ZonedDateTime now) {
@@ -98,13 +105,13 @@ public class ProcessorListener<T> {
   }
 
   public static final class DeleteNotification<T> extends Notification<T> {
-      
+
     private boolean unknownFinalState;
-    
+
     public DeleteNotification(T oldObject) {
-        this(oldObject, false);
+      this(oldObject, false);
     }
-    
+
     public DeleteNotification(T oldObject, boolean unknownFinalState) {
       super(oldObject, null);
       this.unknownFinalState = unknownFinalState;
@@ -115,7 +122,7 @@ public class ProcessorListener<T> {
       resourceEventHandler.onDelete(getOldObject(), unknownFinalState);
     }
   }
-  
+
   public ResourceEventHandler<? super T> getHandler() {
     return handler;
   }

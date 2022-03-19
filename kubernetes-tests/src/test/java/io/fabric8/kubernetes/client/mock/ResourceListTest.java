@@ -74,11 +74,11 @@ public class ResourceListTest {
     service = mockService().build();
     configMap = mockConfigMap().build();
     updatedService = mockService().editSpec().editFirstPort()
-      .withTargetPort(new IntOrString(9999)).endPort().endSpec()
-      .build();
+        .withTargetPort(new IntOrString(9999)).endPort().endSpec()
+        .build();
     updatedConfigMap = mockConfigMap().addToData(Collections.singletonMap("foo", "bar")).build();
     resourcesToUpdate = new KubernetesListBuilder()
-      .withItems(updatedService, updatedConfigMap).build();
+        .withItems(updatedService, updatedConfigMap).build();
   }
 
   @Test
@@ -96,7 +96,8 @@ public class ResourceListTest {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HTTP_UNAVAILABLE, pod1).once();
-    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> listOp = client.resourceList(new PodListBuilder().addToItems(pod1).build());
+    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> listOp = client
+        .resourceList(new PodListBuilder().addToItems(pod1).build());
 
     // When
     assertThrows(KubernetesClientException.class, listOp::createOrReplace);
@@ -118,7 +119,6 @@ public class ResourceListTest {
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
 
-
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(HTTP_OK, pod1).times(2);
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(HTTP_OK, pod2).times(2);
     server.expect().withPath("/api/v1/namespaces/any/pods/pod3").andReturn(HTTP_OK, pod3).times(1);
@@ -137,10 +137,11 @@ public class ResourceListTest {
     server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HTTP_CONFLICT, service).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HTTP_CONFLICT, configMap).once();
     // once for the ip and once for the resource version - this should be consolidated
-    server.expect().get().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK , service).times(2);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK, service).times(2);
     server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, configMap).once();
     server.expect().put().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK, updatedService).once();
-    server.expect().put().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, updatedConfigMap).once();
+    server.expect().put().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, updatedConfigMap)
+        .once();
 
     client.resourceList(resourcesToUpdate).inNamespace("ns1").createOrReplace();
 
@@ -152,12 +153,16 @@ public class ResourceListTest {
 
   @Test
   void testCreateOrReplaceWithDeleteExisting() throws Exception {
-    server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK , service).once();
+    server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK, service).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, configMap).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dmy-service").andReturn(HTTP_OK,
-        new KubernetesListBuilder().withNewMetadata().endMetadata().build()).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps?fieldSelector=metadata.name%3Dmy-configmap").andReturn(HTTP_OK,
-        new KubernetesListBuilder().withNewMetadata().endMetadata().build()).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dmy-service")
+        .andReturn(HTTP_OK,
+            new KubernetesListBuilder().withNewMetadata().endMetadata().build())
+        .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps?fieldSelector=metadata.name%3Dmy-configmap")
+        .andReturn(HTTP_OK,
+            new KubernetesListBuilder().withNewMetadata().endMetadata().build())
+        .once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HTTP_OK, updatedService).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HTTP_OK, updatedConfigMap).once();
 
@@ -172,168 +177,163 @@ public class ResourceListTest {
   @Test
   void testSuccessfulWaitUntilCondition() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
-      .withName("pod1")
-      .withResourceVersion("1")
-      .withNamespace("ns1").and().build();
-    Pod noReady1 = createReadyFrom(pod1, "False");
-    Pod ready1 = createReadyFrom(pod1, "True");
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withNamespace("ns1").and().build();
+    Pod noReady1 = ResourceTest.createReadyFrom(pod1, "False", "2");
+    Pod ready1 = ResourceTest.createReadyFrom(pod1, "True", "3");
 
     Pod pod2 = new PodBuilder().withNewMetadata()
-      .withName("pod2")
-      .withResourceVersion("1")
-      .withNamespace("ns1").and().build();
-    Pod noReady2 = createReadyFrom(pod2, "False");
-    Pod ready2 = createReadyFrom(pod2, "True");
+        .withName("pod2")
+        .withResourceVersion("1")
+        .withNamespace("ns1").and().build();
+    Pod noReady2 = ResourceTest.createReadyFrom(pod2, "False", "4");
+    Pod ready2 = ResourceTest.createReadyFrom(pod2, "True", "5");
 
     Predicate<HasMetadata> isReady = p -> "Pod".equals(p.getKind()) && ((Pod) p).getStatus().getConditions().stream()
-      .anyMatch(c -> "True".equals(c.getStatus()));
+        .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
     ResourceTest.list(server, noReady1);
     ResourceTest.list(server, noReady2);
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(ready1, "MODIFIED"))
-      .done()
-      .once();
+    server.expect().get().withPath(
+        "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(500).andEmit(new WatchEvent(ready1, "MODIFIED"))
+        .done()
+        .once();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(ready2, "MODIFIED"))
-      .done()
-      .once();
+    server.expect().get().withPath(
+        "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(500).andEmit(new WatchEvent(ready2, "MODIFIED"))
+        .done()
+        .once();
 
     KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
     List<HasMetadata> results = client.resourceList(list).inNamespace("ns1")
-      .waitUntilCondition(isReady, 5, SECONDS);
+        .waitUntilCondition(isReady, 5, SECONDS);
     assertThat(results)
-      .containsExactlyInAnyOrder(ready1, ready2);
+        .containsExactlyInAnyOrder(ready1, ready2);
   }
 
   @Test
   void testPartialSuccessfulWaitUntilCondition() {
     Pod pod1 = new PodBuilder().withNewMetadata()
-      .withName("pod1")
-      .withResourceVersion("1")
-      .withNamespace("ns1").and().build();
-    Pod noReady1 = createReadyFrom(pod1, "False");
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withNamespace("ns1").and().build();
+    Pod noReady1 = ResourceTest.createReadyFrom(pod1, "False", "2");
 
     Pod pod2 = new PodBuilder().withNewMetadata()
-      .withName("pod2")
-      .withResourceVersion("1")
-      .withNamespace("ns1").and().build();
-    Pod noReady2 = createReadyFrom(pod2, "False");
-    Pod ready2 = createReadyFrom(pod2, "True");
+        .withName("pod2")
+        .withResourceVersion("1")
+        .withNamespace("ns1").and().build();
+    Pod noReady2 = ResourceTest.createReadyFrom(pod2, "False", "3");
+    Pod ready2 = ResourceTest.createReadyFrom(pod2, "True", "4");
 
     Predicate<HasMetadata> isReady = p -> "Pod".equals(p.getKind()) && ((Pod) p).getStatus().getConditions().stream()
-      .anyMatch(c -> "True".equals(c.getStatus()));
+        .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
     ResourceTest.list(server, noReady1);
     ResourceTest.list(server, noReady2);
 
     Status gone = new StatusBuilder()
-      .withCode(HTTP_GONE)
-      .build();
+        .withCode(HTTP_GONE)
+        .build();
 
     // This pod has a non-retryable error.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
-      .done()
-      .once();
+    server.expect().get().withPath(
+        "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
+        .done()
+        .once();
 
     // This pod succeeds.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(ready2, "MODIFIED"))
-      .done()
-      .once();
+    server.expect().get().withPath(
+        "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(500).andEmit(new WatchEvent(ready2, "MODIFIED"))
+        .done()
+        .once();
 
-      KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
-      final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
-      KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
-        ops.waitUntilCondition(isReady, 5, SECONDS)
-      );
-      assertThat(ex.getResourcesNotReady())
+    KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
+    final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
+    KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class,
+        () -> ops.waitUntilCondition(isReady, 5, SECONDS));
+    assertThat(ex.getResourcesNotReady())
         .containsExactly(pod1);
   }
 
   @Test
   void testAllFailedWaitUntilCondition() {
     Pod pod1 = new PodBuilder().withNewMetadata()
-      .withName("pod1")
-      .withResourceVersion("1")
-      .withNamespace("ns1").and().build();
-    Pod noReady1 = createReadyFrom(pod1, "False");
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withNamespace("ns1").and().build();
+    Pod noReady1 = ResourceTest.createReadyFrom(pod1, "False", "2");
 
     Pod pod2 = new PodBuilder().withNewMetadata()
-      .withName("pod2")
-      .withResourceVersion("1")
-      .withNamespace("ns1").and().build();
-    Pod noReady2 = createReadyFrom(pod2, "False");
+        .withName("pod2")
+        .withResourceVersion("1")
+        .withNamespace("ns1").and().build();
+    Pod noReady2 = ResourceTest.createReadyFrom(pod2, "False", "3");
 
     Predicate<HasMetadata> isReady = p -> "Pod".equals(p.getKind()) && ((Pod) p).getStatus().getConditions().stream()
-      .anyMatch(c -> "True".equals(c.getStatus()));
+        .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
     ResourceTest.list(server, noReady1);
     ResourceTest.list(server, noReady2);
 
     Status gone = new StatusBuilder()
-      .withCode(HTTP_GONE)
-      .build();
+        .withCode(HTTP_GONE)
+        .build();
 
     // Both pods have a non-retryable error.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
-      .done()
-      .once();
+    server.expect().get().withPath(
+        "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
+        .done()
+        .once();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
-      .done()
-      .once();
+    server.expect().get().withPath(
+        "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
+        .done()
+        .once();
 
     KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
     final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
-    KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
-      ops.waitUntilCondition(isReady, 5, SECONDS)
-    );
+    KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class,
+        () -> ops.waitUntilCondition(isReady, 5, SECONDS));
     assertThat(ex.getResourcesNotReady())
-      .containsExactlyInAnyOrder(pod1, pod2);
-  }
-
-  private static Pod createReadyFrom(Pod pod, String status) {
-    return new PodBuilder(pod)
-      .withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus(status)
-      .endCondition()
-      .endStatus()
-      .build();
+        .containsExactlyInAnyOrder(pod1, pod2);
   }
 
   private static ServiceBuilder mockService() {
     return new ServiceBuilder()
-      .withNewMetadata().withName("my-service").endMetadata()
-      .withNewSpec()
-      .addToSelector("app", "my-app")
-      .addNewPort().withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort()
-      .endSpec();
+        .withNewMetadata().withName("my-service").endMetadata()
+        .withNewSpec()
+        .addToSelector("app", "my-app")
+        .addNewPort().withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort()
+        .endSpec();
   }
 
   private static ConfigMapBuilder mockConfigMap() {
     return new ConfigMapBuilder()
-      .withNewMetadata().withName("my-configmap").endMetadata()
-      .addToData(Collections.singletonMap("app", "my-app"));
+        .withNewMetadata().withName("my-configmap").endMetadata()
+        .addToData(Collections.singletonMap("app", "my-app"));
   }
 }
