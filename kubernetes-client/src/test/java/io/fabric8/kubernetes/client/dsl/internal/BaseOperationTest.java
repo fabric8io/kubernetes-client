@@ -334,6 +334,7 @@ class BaseOperationTest {
   void testMissingNamespace() throws MalformedURLException, IOException {
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<>(new OperationContext()
         .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+        .withNamespace(null)
         .withPlural("pods")
         .withName("test-pod"));
     baseOp.setType(Pod.class);
