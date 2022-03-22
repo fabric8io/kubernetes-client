@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
@@ -38,7 +39,9 @@ import io.fabric8.openshift.client.dsl.*;
 
 import java.net.URL;
 
-public interface OpenShiftClient extends KubernetesClient {
+public interface OpenShiftClient extends KubernetesClient, SupportTestingClient {
+
+  public static final String BASE_API_GROUP = "openshift.io";
 
   /**
    * Get Url of the cluster
@@ -76,7 +79,8 @@ public interface OpenShiftClient extends KubernetesClient {
   OpenShiftHiveAPIGroupDSL hive();
 
   /**
-   * API entrypoint for accessing OpenShift operator APIGroup resources(operator.openshift.io/v1 and operator.openshift.io/v1alpha1)
+   * API entrypoint for accessing OpenShift operator APIGroup resources(operator.openshift.io/v1 and
+   * operator.openshift.io/v1alpha1)
    *
    * @return {@link OpenShiftOperatorAPIGroupDSL} which contains respective resources in this API group
    */
@@ -110,7 +114,8 @@ public interface OpenShiftClient extends KubernetesClient {
 
   /**
    * Get OpenShift server version
-   * <br>for more information use resources(ClusterVersion.class).list()
+   * <br>
+   * for more information use resources(ClusterVersion.class).list()
    *
    * @return version String
    */
@@ -429,8 +434,7 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return MixedOperation object for RoleBinding
    */
-  MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>>
-  roleBindings();
+  MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings();
 
   /**
    * API entrypoint for accessing Route(route.openshift.io/v1)
@@ -574,6 +578,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   /**
    * Returns the current logged in user details similar to the `oc whoami` command.
+   * 
    * @return User as currently logged in user
    */
   User currentUser();
@@ -596,7 +601,7 @@ public interface OpenShiftClient extends KubernetesClient {
   /**
    * API entrypoint for UserOAuthAccessToken(oauth.openshift.io/v1)
    * <p>
-   *   Note: Only GET and DELETE operations are supported by APIServer for this resource.
+   * Note: Only GET and DELETE operations are supported by APIServer for this resource.
    * </p>
    *
    * @return {@link NonNamespaceOperation} for UserOAuthAccessToken
@@ -609,8 +614,10 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return {@link OpenShiftWhereaboutsAPIGroupDSL} which provides DSL methods for available resources.
    */
   OpenShiftWhereaboutsAPIGroupDSL whereabouts();
+
   /**
-   * Returns true if this cluster is a legacy openshift cluster or supports the given OpenShift API Group defined in {@link OpenShiftAPIGroups}
+   * Returns true if this cluster is a legacy openshift cluster or supports the given OpenShift API Group defined in
+   * {@link OpenShiftAPIGroups}
    *
    * @param apiGroup API group as string
    * @return boolean value indicating cluster is legacy or supports APIGroups

@@ -15,14 +15,11 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftClusterAutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftClusterAutoscalingAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "clusterautoscaling.openshift.io";
-  }
+public class OpenShiftClusterAutoscalingAPIGroupExtensionAdapter
+    implements ExtensionAdapter<OpenShiftClusterAutoscalingAPIGroupClient> {
 
   @Override
   public Class<OpenShiftClusterAutoscalingAPIGroupClient> getExtensionType() {
@@ -30,8 +27,7 @@ public class OpenShiftClusterAutoscalingAPIGroupExtensionAdapter extends APIGrou
   }
 
   @Override
-  protected OpenShiftClusterAutoscalingAPIGroupClient newInstance(Client client) {
+  public OpenShiftClusterAutoscalingAPIGroupClient adapt(Client client) {
     return new OpenShiftClusterAutoscalingAPIGroupClient(client);
   }
 }
-

@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openclustermanagement.client;
+
+package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenClusterManagementDiscoveryAPIGroupExtensionAdapter
-    implements ExtensionAdapter<OpenClusterManagementDiscoveryAPIGroupClient> {
+/**
+ * Marks the client as being able to test for it's own support.
+ * <p>
+ * Moving forward only clients with special support needs, such as
+ * the openshift client should implement this interface. For those classes,
+ * this interface can be part of the public contract.
+ */
+public interface SupportTestingClient extends Client {
 
-  @Override
-  public Class<OpenClusterManagementDiscoveryAPIGroupClient> getExtensionType() {
-    return OpenClusterManagementDiscoveryAPIGroupClient.class;
-  }
+  /**
+   * Tests if the client is supported.
+   * <br>
+   * Implementations will use
+   * {@link Client#hasApiGroup(String, boolean)} to be compatible with mock support
+   * 
+   * @return true if supported
+   */
+  boolean isSupported();
 
-  @Override
-  public OpenClusterManagementDiscoveryAPIGroupClient adapt(Client client) {
-    return new OpenClusterManagementDiscoveryAPIGroupClient(client);
-  }
 }

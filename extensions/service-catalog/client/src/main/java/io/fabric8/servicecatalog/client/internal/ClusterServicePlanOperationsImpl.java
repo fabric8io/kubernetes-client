@@ -23,42 +23,49 @@ import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
+public class ClusterServicePlanOperationsImpl extends ExtensibleResourceAdapter<ClusterServicePlan>
+    implements ClusterServicePlanResource {
 
-public class ClusterServicePlanOperationsImpl extends ExtensibleResourceAdapter<ClusterServicePlan> implements ClusterServicePlanResource {
+  @Override
+  public ExtensibleResourceAdapter<ClusterServicePlan> newInstance() {
+    return new ClusterServicePlanOperationsImpl();
+  }
 
-    @Override
-    public ServiceInstance instantiate(String... args) {
-        String instanceName;
-        String instanceNamespace;
+  @Override
+  public ServiceInstance instantiate(String... args) {
+    String instanceName;
+    String instanceNamespace;
 
-        if (args.length == 1) {
-            instanceName = args[0];
-            instanceNamespace = client.getConfiguration().getNamespace();
-        } else if (args.length == 2) {
-            instanceNamespace = args[0];
-            instanceName = args[1];
-        } else {
-            throw new IllegalArgumentException("Instantiate needs to be called with either <namespace> <instance name> or <instance name> arguments, but instead found: " + args.length +" arguments.");
-        }
-
-        ClusterServicePlan item = get();
-        return client.adapt(ServiceCatalogClient.class).serviceInstances()
-                .inNamespace(instanceNamespace).create(new ServiceInstanceBuilder()
-                .withNewMetadata()
-                .withName(instanceName)
-                .withNamespace(instanceNamespace)
-                .endMetadata()
-                .withNewSpec()
-                .withClusterServiceClassName(item.getSpec().getClusterServiceClassRef().getName())
-                .withClusterServicePlanName(item.getMetadata().getName())
-                .endSpec()
-                .build());
+    if (args.length == 1) {
+      instanceName = args[0];
+      instanceNamespace = client.getConfiguration().getNamespace();
+    } else if (args.length == 2) {
+      instanceNamespace = args[0];
+      instanceName = args[1];
+    } else {
+      throw new IllegalArgumentException(
+          "Instantiate needs to be called with either <namespace> <instance name> or <instance name> arguments, but instead found: "
+              + args.length + " arguments.");
     }
 
-    @Override
-    public ServiceInstanceResource instantiateAnd(String... args) {
-        ServiceInstance item = instantiate(args);
-        return client.adapt(ServiceCatalogClient.class).serviceInstances().withItem(item);
-    }
+    ClusterServicePlan item = get();
+    return client.adapt(ServiceCatalogClient.class).serviceInstances()
+        .inNamespace(instanceNamespace).create(new ServiceInstanceBuilder()
+            .withNewMetadata()
+            .withName(instanceName)
+            .withNamespace(instanceNamespace)
+            .endMetadata()
+            .withNewSpec()
+            .withClusterServiceClassName(item.getSpec().getClusterServiceClassRef().getName())
+            .withClusterServicePlanName(item.getMetadata().getName())
+            .endSpec()
+            .build());
+  }
+
+  @Override
+  public ServiceInstanceResource instantiateAnd(String... args) {
+    ServiceInstance item = instantiate(args);
+    return client.adapt(ServiceCatalogClient.class).serviceInstances().withItem(item);
+  }
 
 }

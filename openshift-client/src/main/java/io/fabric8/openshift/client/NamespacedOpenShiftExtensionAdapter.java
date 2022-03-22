@@ -16,18 +16,23 @@
 
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ExtensionAdapter;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-
 @Component
 @Service
-public class NamespacedOpenShiftExtensionAdapter extends OpenshiftAdapterSupport implements ExtensionAdapter<NamespacedOpenShiftClient> {
+public class NamespacedOpenShiftExtensionAdapter implements ExtensionAdapter<NamespacedOpenShiftClient> {
 
   @Override
   public Class<NamespacedOpenShiftClient> getExtensionType() {
     return NamespacedOpenShiftClient.class;
+  }
+
+  @Override
+  public NamespacedOpenShiftClient adapt(Client client) {
+    return new DefaultOpenShiftClient(client);
   }
 
 }

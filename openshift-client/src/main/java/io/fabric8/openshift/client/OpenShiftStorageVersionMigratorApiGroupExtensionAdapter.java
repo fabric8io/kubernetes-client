@@ -15,14 +15,11 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftStorageVersionMigratorApiGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftStorageVersionMigratorApiGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "migration.k8s.io";
-  }
+public class OpenShiftStorageVersionMigratorApiGroupExtensionAdapter
+    implements ExtensionAdapter<OpenShiftStorageVersionMigratorApiGroupClient> {
 
   @Override
   public Class<OpenShiftStorageVersionMigratorApiGroupClient> getExtensionType() {
@@ -30,7 +27,7 @@ public class OpenShiftStorageVersionMigratorApiGroupExtensionAdapter extends API
   }
 
   @Override
-  protected OpenShiftStorageVersionMigratorApiGroupClient newInstance(Client client) {
+  public OpenShiftStorageVersionMigratorApiGroupClient adapt(Client client) {
     return new OpenShiftStorageVersionMigratorApiGroupClient(client);
   }
 }

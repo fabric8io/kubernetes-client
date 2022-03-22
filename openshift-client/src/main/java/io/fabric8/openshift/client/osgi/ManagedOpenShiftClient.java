@@ -61,6 +61,7 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -257,7 +258,7 @@ import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_BUILD_TIMEOU
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY;
 
 @Component(immediate = true, configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.OPTIONAL)
-@Service({OpenShiftClient.class, NamespacedOpenShiftClient.class})
+@Service({ OpenShiftClient.class, NamespacedOpenShiftClient.class })
 public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
   private DefaultOpenShiftClient delegate;
@@ -309,10 +310,12 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
       builder.withOauthToken((String) properties.get(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY));
     }
     if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)) {
-      builder.withWatchReconnectInterval(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)));
+      builder.withWatchReconnectInterval(
+          Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)) {
-      builder.withWatchReconnectLimit(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)));
+      builder
+          .withWatchReconnectLimit(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)) {
       builder.withRequestTimeout(Integer.parseInt((String) properties.get(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)));
@@ -341,7 +344,8 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
       builder.withWebsocketTimeout(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY)));
     }
     if (properties.containsKey(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)) {
-      builder.withWebsocketPingInterval(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
+      builder.withWebsocketPingInterval(
+          Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
     }
 
     delegate = new DefaultOpenShiftClient(builder.build());
@@ -431,7 +435,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public MixedOperation<ImageTag, ImageTagList, Resource<ImageTag>> imageTags() {
     return delegate.imageTags();
   }
-
 
   @Override
   public MixedOperation<ImageStream, ImageStreamList, Resource<ImageStream>> imageStreams() {
@@ -599,7 +602,8 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(
+      Collection<? extends HasMetadata> items) {
     return delegate.resourceList(items);
   }
 
@@ -704,17 +708,20 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
+  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(
+      Class<T> resourceType) {
     return delegate.customResources(resourceType);
   }
 
   @Override
-  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
+  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      Class<T> resourceType, Class<L> listClass) {
     return delegate.customResources(resourceType, listClass);
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(ResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      ResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
     return delegate.customResources(crdContext, resourceType, listClass);
   }
 
@@ -760,7 +767,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public <C> C adapt(Class<C> type) {
+  public <C extends Client> C adapt(Class<C> type) {
     return delegate.adapt(type);
   }
 
@@ -890,25 +897,39 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NetworkAPIGroupDSL network() { return delegate.network(); }
+  public NetworkAPIGroupDSL network() {
+    return delegate.network();
+  }
 
   @Override
-  public StorageAPIGroupDSL storage() { return delegate.storage(); }
+  public StorageAPIGroupDSL storage() {
+    return delegate.storage();
+  }
 
   @Override
-  public BatchAPIGroupDSL batch() { return delegate.batch(); }
+  public BatchAPIGroupDSL batch() {
+    return delegate.batch();
+  }
 
   @Override
-  public MetricAPIGroupDSL top() { return delegate.top(); }
+  public MetricAPIGroupDSL top() {
+    return delegate.top();
+  }
 
   @Override
-  public PolicyAPIGroupDSL policy() { return delegate.policy(); }
+  public PolicyAPIGroupDSL policy() {
+    return delegate.policy();
+  }
 
   @Override
-  public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
+  public RbacAPIGroupDSL rbac() {
+    return delegate.rbac();
+  }
 
   @Override
-  public SchedulingAPIGroupDSL scheduling() { return delegate.scheduling(); }
+  public SchedulingAPIGroupDSL scheduling() {
+    return delegate.scheduling();
+  }
 
   @Override
   public NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts() {
@@ -961,10 +982,14 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public SharedInformerFactory informers() { return delegate.informers(); }
+  public SharedInformerFactory informers() {
+    return delegate.informers();
+  }
 
   @Override
-  public SharedInformerFactory informers(ExecutorService executorService) { return delegate.informers(executorService); }
+  public SharedInformerFactory informers(ExecutorService executorService) {
+    return delegate.informers(executorService);
+  }
 
   @Override
   public LeaderElectorBuilder<NamespacedOpenShiftClient> leaderElector() {
@@ -1025,6 +1050,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       String apiVersion, String kind) {
     return delegate.genericKubernetesResources(apiVersion, kind);
+  }
+
+  @Override
+  public boolean isSupported() {
+    return delegate.isSupported();
   }
 
 }

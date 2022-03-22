@@ -15,12 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class RbacAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<RbacAPIGroupClient> {
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-  @Override
-  protected String getAPIGroupName() {
-    return "rbac";
-  }
+public class RbacAPIGroupExtensionAdapter implements ExtensionAdapter<RbacAPIGroupClient> {
 
   @Override
   public Class<RbacAPIGroupClient> getExtensionType() {
@@ -28,7 +25,7 @@ public class RbacAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<RbacA
   }
 
   @Override
-  protected RbacAPIGroupClient newInstance(Client client) {
+  public RbacAPIGroupClient adapt(Client client) {
     return new RbacAPIGroupClient(client);
   }
 }

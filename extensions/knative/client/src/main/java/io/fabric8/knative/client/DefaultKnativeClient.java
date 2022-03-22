@@ -75,80 +75,82 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultKnativeClient extends ClientAdapter<NamespacedKnativeClient> implements NamespacedKnativeClient {
+public class DefaultKnativeClient extends ClientAdapter<NamespacedKnativeClient>
+    implements NamespacedKnativeClient, SupportTestingClient {
 
-    public DefaultKnativeClient() {
-        super();
-    }
+  public DefaultKnativeClient() {
+    super();
+  }
 
-    public DefaultKnativeClient(Config configuration) {
-        super(configuration);
-    }
+  public DefaultKnativeClient(Config configuration) {
+    super(configuration);
+  }
 
-    public DefaultKnativeClient(Client client) {
-        super(client);
-    }
+  public DefaultKnativeClient(Client client) {
+    super(client);
+  }
 
-    @Override
-    protected NamespacedKnativeClient newInstance(Client client) {
-        return new DefaultKnativeClient(client);
-    }
+  @Override
+  protected NamespacedKnativeClient newInstance(Client client) {
+    return new DefaultKnativeClient(client);
+  }
 
-    @Override
-    public FunctionCallable<NamespacedKnativeClient> withRequestConfig(RequestConfig requestConfig) {
-        return new WithRequestCallable<>(this, requestConfig);
-    }
+  @Override
+  public FunctionCallable<NamespacedKnativeClient> withRequestConfig(RequestConfig requestConfig) {
+    return new WithRequestCallable<>(this, requestConfig);
+  }
 
-    @Override
-    public MixedOperation<Service, ServiceList, Resource<Service>> services() {
-        return resources(Service.class, ServiceList.class);
-    }
+  @Override
+  public MixedOperation<Service, ServiceList, Resource<Service>> services() {
+    return resources(Service.class, ServiceList.class);
+  }
 
-    @Override
-    public MixedOperation<Route, RouteList, Resource<Route>> routes() {
-        return resources(Route.class, RouteList.class);
-    }
+  @Override
+  public MixedOperation<Route, RouteList, Resource<Route>> routes() {
+    return resources(Route.class, RouteList.class);
+  }
 
-    @Override
-    public MixedOperation<Revision, RevisionList, Resource<Revision>> revisions() {
-        return resources(Revision.class, RevisionList.class);
-    }
+  @Override
+  public MixedOperation<Revision, RevisionList, Resource<Revision>> revisions() {
+    return resources(Revision.class, RevisionList.class);
+  }
 
-    @Override
-    public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
-        return resources(Configuration.class, ConfigurationList.class);
-    }
+  @Override
+  public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
+    return resources(Configuration.class, ConfigurationList.class);
+  }
 
-    @Override
-    public MixedOperation<Broker, BrokerList, Resource<Broker>> brokers() {
-        return resources(Broker.class, BrokerList.class);
-    }
+  @Override
+  public MixedOperation<Broker, BrokerList, Resource<Broker>> brokers() {
+    return resources(Broker.class, BrokerList.class);
+  }
 
-    @Override
-    public MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers() {
-        return resources(Trigger.class, TriggerList.class);
-    }
+  @Override
+  public MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers() {
+    return resources(Trigger.class, TriggerList.class);
+  }
 
-    @Override
-    public MixedOperation<Channel, ChannelList, Resource<Channel>> channels() {
-        return resources(Channel.class, ChannelList.class);
-    }
+  @Override
+  public MixedOperation<Channel, ChannelList, Resource<Channel>> channels() {
+    return resources(Channel.class, ChannelList.class);
+  }
 
-    @Override
-    public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
-        return resources(Subscription.class, SubscriptionList.class);
-    }
+  @Override
+  public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
+    return resources(Subscription.class, SubscriptionList.class);
+  }
 
-    @Override
-    public MixedOperation<EventType, EventTypeList, Resource<EventType>> eventTypes() {
-        return resources(EventType.class, EventTypeList.class);
-    }
+  @Override
+  public MixedOperation<EventType, EventTypeList, Resource<EventType>> eventTypes() {
+    return resources(EventType.class, EventTypeList.class);
+  }
 
-    @Override
-    public MixedOperation<Sequence, SequenceList, Resource<Sequence>> sequences() {
-        return resources(Sequence.class, SequenceList.class);
-    }
+  @Override
+  public MixedOperation<Sequence, SequenceList, Resource<Sequence>> sequences() {
+    return resources(Sequence.class, SequenceList.class);
+  }
 
   @Override
   public MixedOperation<Parallel, ParallelList, Resource<Parallel>> parallels() {
@@ -156,9 +158,9 @@ public class DefaultKnativeClient extends ClientAdapter<NamespacedKnativeClient>
   }
 
   @Override
-    public MixedOperation<InMemoryChannel, InMemoryChannelList, Resource<InMemoryChannel>> inMemoryChannels() {
-        return resources(InMemoryChannel.class, InMemoryChannelList.class);
-    }
+  public MixedOperation<InMemoryChannel, InMemoryChannelList, Resource<InMemoryChannel>> inMemoryChannels() {
+    return resources(InMemoryChannel.class, InMemoryChannelList.class);
+  }
 
   @Override
   public MixedOperation<PingSource, PingSourceList, Resource<PingSource>> pingSources() {
@@ -228,5 +230,10 @@ public class DefaultKnativeClient extends ClientAdapter<NamespacedKnativeClient>
   @Override
   public MixedOperation<KafkaBinding, KafkaBindingList, Resource<KafkaBinding>> kafkaBindings() {
     return resources(KafkaBinding.class, KafkaBindingList.class);
+  }
+
+  @Override
+  public boolean isSupported() {
+    return hasApiGroup("knative.dev", true);
   }
 }

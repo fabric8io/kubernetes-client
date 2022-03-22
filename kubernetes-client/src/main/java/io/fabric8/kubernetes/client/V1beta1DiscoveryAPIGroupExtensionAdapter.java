@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class V1beta1DiscoveryAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1beta1DiscoveryAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "discovery/v1beta1";
-  }
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+
+public class V1beta1DiscoveryAPIGroupExtensionAdapter implements ExtensionAdapter<V1beta1DiscoveryAPIGroupClient> {
 
   @Override
   public Class<V1beta1DiscoveryAPIGroupClient> getExtensionType() {
@@ -27,7 +25,7 @@ public class V1beta1DiscoveryAPIGroupExtensionAdapter extends APIGroupExtensionA
   }
 
   @Override
-  protected V1beta1DiscoveryAPIGroupClient newInstance(Client client) {
+  public V1beta1DiscoveryAPIGroupClient adapt(Client client) {
     return new V1beta1DiscoveryAPIGroupClient(client);
   }
 }

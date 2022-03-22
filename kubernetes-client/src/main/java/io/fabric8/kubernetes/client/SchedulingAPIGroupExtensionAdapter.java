@@ -15,17 +15,17 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class SchedulingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<SchedulingAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "scheduling";
-  }
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+
+public class SchedulingAPIGroupExtensionAdapter implements ExtensionAdapter<SchedulingAPIGroupClient> {
+
   @Override
   public Class<SchedulingAPIGroupClient> getExtensionType() {
     return SchedulingAPIGroupClient.class;
   }
+
   @Override
-  protected SchedulingAPIGroupClient newInstance(Client client) {
+  public SchedulingAPIGroupClient adapt(Client client) {
     return new SchedulingAPIGroupClient(client);
   }
 }

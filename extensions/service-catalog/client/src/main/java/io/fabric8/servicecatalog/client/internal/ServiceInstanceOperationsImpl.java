@@ -22,22 +22,28 @@ import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
-public class ServiceInstanceOperationsImpl extends ExtensibleResourceAdapter<ServiceInstance> implements ServiceInstanceResource {
+public class ServiceInstanceOperationsImpl extends ExtensibleResourceAdapter<ServiceInstance>
+    implements ServiceInstanceResource {
 
-    @Override
-    public ServiceBinding bind(String secretName) {
-        ServiceInstance item = get();
-        return client.adapt(ServiceCatalogClient.class)
-                .serviceBindings().create(new ServiceBindingBuilder()
-                .withNewMetadata()
-                    .withName(item.getMetadata().getName())
-                    .withNamespace(item.getMetadata().getNamespace())
-                .endMetadata()
-                .withNewSpec()
-                    .withSecretName(secretName)
-                    .withNewInstanceRef(item.getMetadata().getName())
-                .endSpec()
-                    .build());
-    }
+  @Override
+  public ExtensibleResourceAdapter<ServiceInstance> newInstance() {
+    return new ServiceInstanceOperationsImpl();
+  }
+
+  @Override
+  public ServiceBinding bind(String secretName) {
+    ServiceInstance item = get();
+    return client.adapt(ServiceCatalogClient.class)
+        .serviceBindings().create(new ServiceBindingBuilder()
+            .withNewMetadata()
+            .withName(item.getMetadata().getName())
+            .withNamespace(item.getMetadata().getNamespace())
+            .endMetadata()
+            .withNewSpec()
+            .withSecretName(secretName)
+            .withNewInstanceRef(item.getMetadata().getName())
+            .endSpec()
+            .build());
+  }
 
 }

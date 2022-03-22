@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -33,28 +34,24 @@ public class TopExample {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-      if (!client.supportsApiPath("/apis/metrics.k8s.io")) {
+      if (!client.supports(NodeMetrics.class)) {
         logger.warn("Metrics API is not enabled in your cluster");
         return;
       }
       logger.info("==== Node Metrics  ====");
-      client.top().nodes().metrics().getItems().forEach(nodeMetrics ->
-        logger.info("{}\tCPU: {}{}\tMemory: {}{}",
+      client.top().nodes().metrics().getItems().forEach(nodeMetrics -> logger.info("{}\tCPU: {}{}\tMemory: {}{}",
           nodeMetrics.getMetadata().getName(),
           nodeMetrics.getUsage().get(CPU).getAmount(), nodeMetrics.getUsage().get(CPU).getFormat(),
-          nodeMetrics.getUsage().get(MEMORY).getAmount(), nodeMetrics.getUsage().get(MEMORY).getFormat()
-        ));
+          nodeMetrics.getUsage().get(MEMORY).getAmount(), nodeMetrics.getUsage().get(MEMORY).getFormat()));
 
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
       logger.info("==== Pod Metrics ====");
-      client.top().pods().metrics(namespace).getItems().forEach(podMetrics ->
-        podMetrics.getContainers().forEach(containerMetrics ->
-          logger.info("{}\t{}\tCPU: {}{}\tMemory: {}{}",
-            podMetrics.getMetadata().getName(), containerMetrics.getName(),
-            containerMetrics.getUsage().get(CPU).getAmount(), containerMetrics.getUsage().get(CPU).getFormat(),
-            containerMetrics.getUsage().get(MEMORY).getAmount(), containerMetrics.getUsage().get(MEMORY).getFormat()
-          ))
-      );
+      client.top().pods().metrics(namespace).getItems()
+          .forEach(podMetrics -> podMetrics.getContainers()
+              .forEach(containerMetrics -> logger.info("{}\t{}\tCPU: {}{}\tMemory: {}{}",
+                  podMetrics.getMetadata().getName(), containerMetrics.getName(),
+                  containerMetrics.getUsage().get(CPU).getAmount(), containerMetrics.getUsage().get(CPU).getFormat(),
+                  containerMetrics.getUsage().get(MEMORY).getAmount(), containerMetrics.getUsage().get(MEMORY).getFormat())));
 
       client.pods().inNamespace(namespace).list().getItems().stream().findFirst().map(pod -> {
         logger.info("==== Individual Pod Metrics ({}) ====", pod.getMetadata().getName());
@@ -68,14 +65,11 @@ public class TopExample {
           }
           return null;
         }
-      }).ifPresent(podMetrics ->
-        podMetrics.getContainers().forEach(containerMetrics ->
-          logger.info("{}\t{}\tCPU: {}{}\tMemory: {}{}",
-            podMetrics.getMetadata().getName(), containerMetrics.getName(),
-            containerMetrics.getUsage().get(CPU).getAmount(), containerMetrics.getUsage().get(CPU).getFormat(),
-            containerMetrics.getUsage().get(MEMORY).getAmount(), containerMetrics.getUsage().get(MEMORY).getFormat()
-          ))
-      );
+      }).ifPresent(podMetrics -> podMetrics.getContainers()
+          .forEach(containerMetrics -> logger.info("{}\t{}\tCPU: {}{}\tMemory: {}{}",
+              podMetrics.getMetadata().getName(), containerMetrics.getName(),
+              containerMetrics.getUsage().get(CPU).getAmount(), containerMetrics.getUsage().get(CPU).getFormat(),
+              containerMetrics.getUsage().get(MEMORY).getAmount(), containerMetrics.getUsage().get(MEMORY).getFormat())));
 
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

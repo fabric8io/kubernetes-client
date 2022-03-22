@@ -16,7 +16,8 @@
 
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ExtensionAdapter;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
@@ -52,10 +53,9 @@ import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-
 @Component
 @Service
-public class OpenShiftExtensionAdapter extends OpenshiftAdapterSupport implements ExtensionAdapter<OpenShiftClient> {
+public class OpenShiftExtensionAdapter implements ExtensionAdapter<OpenShiftClient> {
 
   static {
     OpenShiftHandlers.register(BuildConfig.class, BuildConfigOperationsImpl::new);
@@ -79,6 +79,11 @@ public class OpenShiftExtensionAdapter extends OpenshiftAdapterSupport implement
   @Override
   public Class<OpenShiftClient> getExtensionType() {
     return OpenShiftClient.class;
+  }
+
+  @Override
+  public OpenShiftClient adapt(Client client) {
+    return new DefaultOpenShiftClient(client);
   }
 
 }

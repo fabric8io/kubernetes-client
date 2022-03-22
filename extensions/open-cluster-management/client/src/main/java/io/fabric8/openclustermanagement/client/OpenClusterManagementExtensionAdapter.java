@@ -16,26 +16,13 @@
 package io.fabric8.openclustermanagement.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class OpenClusterManagementExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<OpenClusterManagementClient> {
-
-  static final ConcurrentMap<URL, Boolean> IS_OCM = new ConcurrentHashMap<>();
-  static final ConcurrentMap<URL, Boolean> USES_OCM_APIGROUPS = new ConcurrentHashMap<>();
+public class OpenClusterManagementExtensionAdapter implements ExtensionAdapter<OpenClusterManagementClient> {
 
   @Override
   public Class<OpenClusterManagementClient> getExtensionType() {
     return OpenClusterManagementClient.class;
-  }
-
-  @Override
-  public Boolean isAdaptable(Client client) {
-    return isAdaptable(client, IS_OCM, USES_OCM_APIGROUPS, "open-cluster-management");
   }
 
   @Override

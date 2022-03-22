@@ -78,7 +78,6 @@ public class KubernetesServer extends ExternalResource {
             new KubernetesMixedDispatcher(responses, crdContextList), https)
         : new KubernetesMockServer(https);
     mock.init(address, port);
-    mock.setAdaptableOverride(c -> true);
     client = mock.createClient();
   }
 

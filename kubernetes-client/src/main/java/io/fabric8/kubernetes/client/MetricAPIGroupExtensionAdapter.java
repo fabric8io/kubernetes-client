@@ -15,12 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class MetricAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<MetricAPIGroupClient> {
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-  @Override
-  protected String getAPIGroupName() {
-    return "batch";
-  }
+public class MetricAPIGroupExtensionAdapter implements ExtensionAdapter<MetricAPIGroupClient> {
 
   @Override
   public Class<MetricAPIGroupClient> getExtensionType() {
@@ -28,7 +25,7 @@ public class MetricAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<Met
   }
 
   @Override
-  protected MetricAPIGroupClient newInstance(Client client) {
+  public MetricAPIGroupClient adapt(Client client) {
     return new MetricAPIGroupClient(client);
   }
 }

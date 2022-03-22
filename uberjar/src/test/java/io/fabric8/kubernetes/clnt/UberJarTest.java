@@ -22,11 +22,6 @@ import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +29,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -81,8 +81,10 @@ class UberJarTest {
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/storage").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/authorization").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/client/dsl").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter")
+        .exists());
+    assertTrue(
+        getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider").exists());
   }
 
   @Test
@@ -92,7 +94,8 @@ class UberJarTest {
     assertNotNull(projectVersion);
     String majorVersion = getMajorVersion(projectVersion);
     String minorVersion = getMinorVersion(projectVersion);
-    String versionedJarFilePath = OUTPUT_DIR + File.separator + ARTIFACT_ID + JAR_NAME_SEPARATOR + projectVersion + JAR_NAME_SEPARATOR + "versioned" + JAR_SUFFIX;
+    String versionedJarFilePath = OUTPUT_DIR + File.separator + ARTIFACT_ID + JAR_NAME_SEPARATOR + projectVersion
+        + JAR_NAME_SEPARATOR + "versioned" + JAR_SUFFIX;
 
     // When
     File uberJarVersioned = new File(versionedJarFilePath);
@@ -101,25 +104,50 @@ class UberJarTest {
 
     // Then
     assertTrue(uberJarVersioned.exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/builder/v" + majorVersion + "_" + minorVersion + "/Builder.class").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/builder/v" + majorVersion + "_" + minorVersion + "/Visitor.class").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/admission").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/apps").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/autoscaling").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/coordination").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/extensions").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/policy").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/admissionregistration").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/authentication").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/batch").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/discovery").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/metrics").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/rbac").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/storage").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/authorization").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/clnt/v" + majorVersion + "_" + minorVersion + "/dsl").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ExtensionAdapter").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ServiceToURLProvider").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/builder/v" + majorVersion + "_" + minorVersion + "/Builder.class").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/builder/v" + majorVersion + "_" + minorVersion + "/Visitor.class").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/admission").exists());
+    assertTrue(
+        getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/apps")
+            .exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/autoscaling").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/coordination").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/extensions").exists());
+    assertTrue(
+        getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/policy")
+            .exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/admissionregistration").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/authentication").exists());
+    assertTrue(
+        getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/batch")
+            .exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/discovery").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/metrics").exists());
+    assertTrue(
+        getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/rbac")
+            .exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/storage").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/authorization").exists());
+    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/clnt/v" + majorVersion + "_" + minorVersion + "/dsl")
+        .exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".extension.ExtensionAdapter")
+            .exists());
+    assertTrue(getFileInDirectory(jarExtractedDir,
+        "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ServiceToURLProvider")
+            .exists());
   }
 
   private String getMajorVersion(String projectVersion) {

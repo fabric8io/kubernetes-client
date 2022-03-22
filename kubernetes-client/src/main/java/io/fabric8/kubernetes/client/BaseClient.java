@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -28,6 +29,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -43,8 +46,7 @@ public class BaseClient extends SimpleClientContext implements Client {
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
-
-  private Predicate<Class<?>> adaptableOverride;
+  private Predicate<String> matchingGroupPredicate;
 
   public BaseClient() {
     this(new ConfigBuilder().build());
@@ -102,38 +104,68 @@ public class BaseClient extends SimpleClientContext implements Client {
     return namespace;
   }
 
-  public void setAdaptableOverride(Predicate<Class<?>> adaptableOverride) {
-    this.adaptableOverride = adaptableOverride;
+  public void setMatchingGroupPredicate(Predicate<String> unsupportedApiGroups) {
+    this.matchingGroupPredicate = unsupportedApiGroups;
+  }
+
+  public Predicate<String> getMatchingGroupPredicate() {
+    return matchingGroupPredicate;
   }
 
   @Override
-  public <C> Boolean isAdaptable(Class<C> type) {
-    if (type.isAssignableFrom(this.getClass())) {
-      return true;
+  public boolean hasApiGroup(String apiGroup, boolean exact) {
+    if (matchingGroupPredicate != null) {
+      return matchingGroupPredicate.test(apiGroup);
     }
-    ExtensionAdapter<C> adapter = Adapters.get(type);
-    if (adapter != null) {
-      if (adaptableOverride != null) {
-        return adaptableOverride.test(type);
-      }
-      return adapter.isAdaptable(this);
-    } else {
+    if (exact) {
+      return getApiGroup(apiGroup) != null;
+    }
+    APIGroupList apiGroups = getApiGroups();
+    if (apiGroups == null) {
       return false;
     }
+    return apiGroups
+        .getGroups()
+        .stream()
+        .anyMatch(g -> g.getName().endsWith(apiGroup));
   }
 
   @Override
-  public <C> C adapt(Class<C> type) {
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    // if type is an instanceof SupportTestingClient, then it's a proper
+    // test, otherwise it could be legacy support on an extension client
+    C toTest = adapt(type);
+    if (toTest instanceof SupportTestingClient) {
+      return ((SupportTestingClient) toTest).isSupported();
+    }
+    return true;
+  }
+
+  @Override
+  public <R extends KubernetesResource> boolean supports(Class<R> type) {
+    String apiVersion = HasMetadata.getApiVersion(type);
+
+    if (matchingGroupPredicate != null) {
+      return matchingGroupPredicate.test(apiVersion);
+    }
+
+    String kind = HasMetadata.getKind(type);
+    // TODO: we eventually don't want this to be static
+    // but it is currently because resources expects HasMetadata, and this could
+    // be some other non-rest endpoint like LocalResourceAccessReview
+    return Handlers.getResourceDefinitionContext(apiVersion, kind, this) != null;
+  }
+
+  @Override
+  public <C extends Client> C adapt(Class<C> type) {
     if (type.isAssignableFrom(this.getClass())) {
       return (C) this;
     }
-    if (isAdaptable(type)) {
-      ExtensionAdapter<C> adapter = Adapters.get(type);
-      if (adapter != null) {
-        return adapter.adapt(this);
-      }
+    ExtensionAdapter<C> adapter = Adapters.get(type);
+    if (adapter == null) {
+      throw new IllegalStateException("No adapter available for type:" + type);
     }
-    throw new IllegalStateException("No adapter available for type:" + type);
+    return adapter.adapt(this);
   }
 
   @Override

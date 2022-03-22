@@ -15,17 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class AppsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<AppsAPIGroupClient> {
-
-  @Override
-  protected String getAPIGroupName() {
-    return "apps";
-  }
+public class AppsAPIGroupExtensionAdapter implements ExtensionAdapter<AppsAPIGroupClient> {
 
   @Override
   public Class<AppsAPIGroupClient> getExtensionType() {
@@ -33,7 +29,7 @@ public class AppsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<AppsA
   }
 
   @Override
-  protected AppsAPIGroupClient newInstance(Client client) {
+  public AppsAPIGroupClient adapt(Client client) {
     return new AppsAPIGroupClient(client);
   }
 

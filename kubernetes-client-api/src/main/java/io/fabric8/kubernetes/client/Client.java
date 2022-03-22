@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -30,15 +31,48 @@ import java.net.URL;
 
 public interface Client extends ClientContext, Closeable {
 
-  /**
-   * Checks if the client can be adapted to an other client type.
-   * @param type  The target client class.
-   * @param <C>   The target client type.
-   * @return      Returns true if a working {@link io.fabric8.kubernetes.client.ExtensionAdapter} is found.
-   */
-  <C> Boolean  isAdaptable(Class<C> type);
+  public enum Supports {
 
-  <C> C adapt(Class<C> type);
+  }
+
+  /**
+   * Checks if the client can be adapted to an other client type and if that target client is supported.
+   *
+   * @param type The target client class.
+   * @param <C> The target client type.
+   * @return Returns true if a working {@link io.fabric8.kubernetes.client.extension.ExtensionAdapter} is found.
+   * @deprecated if the client can test for support, then use adapt(type).isSupported() instead.
+   */
+  @Deprecated
+  <C extends Client> Boolean isAdaptable(Class<C> type);
+
+  /**
+   * The logic will check for the existence of a handler or check the api server for support.
+   *
+   * @param type to check for support
+   * @return boolean value indicating whether this type is supported
+   */
+  <R extends KubernetesResource> boolean supports(Class<R> type);
+
+  /**
+   * Checks for the api group. exact = false will scan all groups
+   * for a suffix match. exact = true will look only for that apiGroup.
+   *
+   * @param apiGroup to check for
+   * @param exact true for an exact match
+   * @return true if there is a match
+   */
+  boolean hasApiGroup(String apiGroup, boolean exact);
+
+  /**
+   * Adapt the client to another type. This will not perform any check of whether the new client
+   * type is supported. It may even return the same object if it already supports the given
+   * client type.
+   *
+   * @param type the instance of {@link Client} to adapt.
+   * @return The refined instance of the {@link Client}.
+   */
+  <C extends Client> C adapt(Class<C> type);
 
   URL getMasterUrl();
 
@@ -50,9 +84,12 @@ public interface Client extends ClientContext, Closeable {
 
   /**
    * Returns true if this cluster supports the given API path or API Group ID
+   *
    * @param path Path as string
    * @return returns boolean value indicating whether it supports.
+   * @deprecated use {@link #supports(Class)} instead
    */
+  @Deprecated
   boolean supportsApiPath(String path);
 
   @Override
@@ -60,12 +97,14 @@ public interface Client extends ClientContext, Closeable {
 
   /**
    * Returns the api groups
+   *
    * @return the {@link APIGroupList} metadata
    */
   APIGroupList getApiGroups();
 
   /**
    * Return a single api group
+   *
    * @param name of the group
    * @return the {@link APIGroup} metadata
    */
@@ -73,6 +112,7 @@ public interface Client extends ClientContext, Closeable {
 
   /**
    * Return the api resource metadata for the given groupVersion
+   *
    * @param groupVersion the groupVersion - group/version
    * @return the {@link APIResourceList} for the groupVersion
    */
@@ -80,18 +120,21 @@ public interface Client extends ClientContext, Closeable {
 
   /**
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
+   * <br>
+   * Note: this call is generally for use internally within the DSL, not by end users
    *
    * <p>
-   *   Note: your resource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * Note: your resource POJO (T in this context) must implement
+   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for resource
    * @param <T> represents resource type. If it's a namespaced resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @param <L> represents resource list type
    * @param <R> represents the Resource operation type
-   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   * @return returns a MixedOperation object with which you can do basic resource operations. If the class is a known type the
+   *         dsl operation logic will be used.
    */
   <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
       Class<T> resourceType, Class<L> listClass, Class<R> resourceClass);
@@ -100,15 +143,16 @@ public interface Client extends ClientContext, Closeable {
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
    * <p>
-   *   Note: your resource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * Note: your resource POJO (T in this context) must implement
+   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for resource
    * @param <T> represents resource type. If it's a namespaced resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @param <L> represents resource list type
-   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   * @return returns a MixedOperation object with which you can do basic resource operations. If the class is a known type the
+   *         dsl operation logic will be used.
    */
   default <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {

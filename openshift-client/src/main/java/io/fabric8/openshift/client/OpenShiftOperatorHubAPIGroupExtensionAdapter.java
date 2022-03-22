@@ -15,14 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftOperatorHubAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftOperatorHubAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "operatorhub";
-  }
+public class OpenShiftOperatorHubAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftOperatorHubAPIGroupClient> {
 
   @Override
   public Class<OpenShiftOperatorHubAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenShiftOperatorHubAPIGroupExtensionAdapter extends APIGroupExtens
   }
 
   @Override
-  protected OpenShiftOperatorHubAPIGroupClient newInstance(Client client) {
+  public OpenShiftOperatorHubAPIGroupClient adapt(Client client) {
     return new OpenShiftOperatorHubAPIGroupClient(client);
   }
 }

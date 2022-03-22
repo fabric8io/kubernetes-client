@@ -21,4 +21,9 @@ import io.fabric8.volumesnapshot.client.VolumeSnapshotResource;
 
 public class VolumeSnapshotOperationsImpl extends ExtensibleResourceAdapter<VolumeSnapshot> implements VolumeSnapshotResource {
 
+  @Override
+  public ExtensibleResourceAdapter<VolumeSnapshot> newInstance() {
+    return new VolumeSnapshotOperationsImpl();
+  }
+
 }

@@ -31,7 +31,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -47,7 +46,6 @@ public class KubernetesMockServerExtension
 
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
-  private Class<? extends Client>[] extensions = new Class[0];
 
   public interface SetTestClassField {
     void apply(Object instance, Field f) throws IllegalAccessException;
@@ -82,7 +80,8 @@ public class KubernetesMockServerExtension
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field)
       throws IllegalAccessException {
     if (extensionMatches(field.getType())) {
-      setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class, (i, f) -> f.set(i, client.adapt(f.getType())));
+      setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class,
+          (i, f) -> f.set(i, client.adapt((Class<Client>) f.getType())));
     } else {
       setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
     }
@@ -103,9 +102,8 @@ public class KubernetesMockServerExtension
             a.https())
         : new KubernetesMockServer(a.https());
     mock.init();
-    mock.setAdaptableOverride(this::extensionMatches);
+    mock.setUnsupported(a.unsupported());
     client = mock.createClient();
-    this.extensions = a.extensions();
   }
 
   protected void destroy() {
@@ -137,8 +135,7 @@ public class KubernetesMockServerExtension
   }
 
   private boolean extensionMatches(Class<?> type) {
-    return extensions.length == 0 && Client.class.isAssignableFrom(type)
-        || Arrays.stream(extensions).anyMatch(c -> c.isAssignableFrom(type));
+    return Client.class.isAssignableFrom(type);
   }
 
   private void setKubernetesClientAndMockServerFields(ExtensionContext context, boolean isStatic)

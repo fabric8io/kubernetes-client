@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class V1BatchAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1BatchAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "batch/v1";
-  }
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+
+public class V1BatchAPIGroupExtensionAdapter implements ExtensionAdapter<V1BatchAPIGroupClient> {
 
   @Override
   public Class<V1BatchAPIGroupClient> getExtensionType() {
@@ -27,7 +25,7 @@ public class V1BatchAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1
   }
 
   @Override
-  protected V1BatchAPIGroupClient newInstance(Client client) {
+  public V1BatchAPIGroupClient adapt(Client client) {
     return new V1BatchAPIGroupClient(client);
   }
 }

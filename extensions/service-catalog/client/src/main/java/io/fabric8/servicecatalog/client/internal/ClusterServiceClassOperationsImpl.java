@@ -30,53 +30,58 @@ import java.util.List;
 import java.util.Map;
 
 public class ClusterServiceClassOperationsImpl extends ExtensibleResourceAdapter<ClusterServiceClass>
-        implements ClusterServiceClassResource {
+    implements ClusterServiceClassResource {
 
-    @Override
-    public ClusterServicePlanList listPlans() {
-        ClusterServiceClass item = get();
-        return client.adapt(ServiceCatalogClient.class)
-                .clusterServicePlans()
-                .withField("spec.clusterServiceClassRef.name", item != null ? item.getMetadata().getName() : null)
-                .list();
+  @Override
+  public ExtensibleResourceAdapter<ClusterServiceClass> newInstance() {
+    return new ClusterServiceClassOperationsImpl();
+  }
+
+  @Override
+  public ClusterServicePlanList listPlans() {
+    ClusterServiceClass item = get();
+    return client.adapt(ServiceCatalogClient.class)
+        .clusterServicePlans()
+        .withField("spec.clusterServiceClassRef.name", item != null ? item.getMetadata().getName() : null)
+        .list();
+  }
+
+  @Override
+  public ClusterServicePlanResource usePlan(String externalName) {
+    ClusterServiceClass item = get();
+    Map<String, String> fields = new HashMap<>();
+    fields.put("spec.clusterServiceClassRef.name", item.getMetadata().getName());
+    fields.put("spec.externalName", externalName);
+
+    List<ClusterServicePlan> list = client.adapt(ServiceCatalogClient.class)
+        .clusterServicePlans()
+        .withFields(fields)
+        .list()
+        .getItems();
+
+    if (list.size() != 1) {
+      throw new IllegalArgumentException("No unique ClusterServicePlan with external name: " + externalName
+          + " found for ClusterServiceBroker: " + item.getSpec().getClusterServiceBrokerName()
+          + " and ClusterServiceClass: " + item.getSpec().getExternalName() + ".");
     }
+    ClusterServicePlan plan = list.get(0);
+    return client.adapt(ServiceCatalogClient.class).clusterServicePlans().withItem(plan);
+  }
 
-    @Override
-    public ClusterServicePlanResource usePlan(String externalName) {
-        ClusterServiceClass item = get();
-        Map<String, String> fields = new HashMap<>();
-        fields.put("spec.clusterServiceClassRef.name", item.getMetadata().getName());
-        fields.put("spec.externalName", externalName);
-
-        List<ClusterServicePlan> list = client.adapt(ServiceCatalogClient.class)
-                .clusterServicePlans()
-                .withFields(fields)
-                .list()
-                .getItems();
-
-        if (list.size() != 1) {
-            throw new IllegalArgumentException("No unique ClusterServicePlan with external name: " + externalName
-                    + " found for ClusterServiceBroker: " + item.getSpec().getClusterServiceBrokerName()
-                    + " and ClusterServiceClass: " + item.getSpec().getExternalName() + ".");
-        }
-        ClusterServicePlan plan = list.get(0);
-        return client.adapt(ServiceCatalogClient.class).clusterServicePlans().withItem(plan);
-    }
-
-    @Override
-    public ServiceInstance instantiate(String instanceName, String plan) {
-        ClusterServiceClass item = get();
-        return client.adapt(ServiceCatalogClient.class)
-                .serviceInstances()
-                .create(new ServiceInstanceBuilder()
-                        .withNewMetadata()
-                        .withName(instanceName)
-                        .endMetadata()
-                        .withNewSpec()
-                        .withClusterServiceClassExternalName(item.getMetadata().getName())
-                        .withClusterServicePlanExternalName(plan)
-                        .endSpec()
-                        .build());
-    }
+  @Override
+  public ServiceInstance instantiate(String instanceName, String plan) {
+    ClusterServiceClass item = get();
+    return client.adapt(ServiceCatalogClient.class)
+        .serviceInstances()
+        .create(new ServiceInstanceBuilder()
+            .withNewMetadata()
+            .withName(instanceName)
+            .endMetadata()
+            .withNewSpec()
+            .withClusterServiceClassExternalName(item.getMetadata().getName())
+            .withClusterServicePlanExternalName(plan)
+            .endSpec()
+            .build());
+  }
 
 }

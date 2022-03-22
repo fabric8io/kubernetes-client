@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,19 +46,19 @@ public final class Adapters {
     //Utility
   }
 
-  public static <C> void register(ExtensionAdapter<C> adapter) {
+  public static <C extends Client> void register(ExtensionAdapter<C> adapter) {
     EXTENSION_ADAPTER_MAP.put(adapter.getExtensionType(), adapter);
     if (handlerFactory != null) {
       adapter.registerHandlers(handlerFactory);
     }
   }
 
-  public static <C> void unregister(ExtensionAdapter<C> adapter) {
+  public static <C extends Client> void unregister(ExtensionAdapter<C> adapter) {
     EXTENSION_ADAPTER_MAP.remove(adapter.getExtensionType());
     // TODO: remove handlers
   }
 
-  public static <C> ExtensionAdapter<C> get(Class<C> type) {
+  public static <C extends Client> ExtensionAdapter<C> get(Class<C> type) {
     if (EXTENSION_ADAPTER_MAP.containsKey(type)) {
       return EXTENSION_ADAPTER_MAP.get(type);
     } else {
@@ -82,7 +83,8 @@ public final class Adapters {
       }
 
       try {
-        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, Thread.currentThread().getContextClassLoader())) {
+        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class,
+            Thread.currentThread().getContextClassLoader())) {
           if (adapter.getExtensionType().equals(type)) {
             return adapter;
           }
@@ -97,9 +99,9 @@ public final class Adapters {
   public static <C> Collection<ExtensionAdapter<? extends C>> list(Class<C> type) {
     List<ExtensionAdapter<? extends C>> result = new ArrayList<>();
     for (ExtensionAdapter candidate : EXTENSION_ADAPTER_MAP.values()) {
-        if (type.isAssignableFrom(candidate.getExtensionType())) {
-            result.add(candidate);
-        }
+      if (type.isAssignableFrom(candidate.getExtensionType())) {
+        result.add(candidate);
+      }
     }
     return result;
   }

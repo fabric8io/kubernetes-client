@@ -49,6 +49,7 @@ import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
 import io.fabric8.openshift.api.model.Build;
@@ -178,9 +179,11 @@ import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstrai
 import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
@@ -735,12 +738,39 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
   protected void adaptState() {
     OpenShiftConfig wrapped = OpenShiftConfig.wrap(config);
     this.config = wrapped;
-    this.httpClient = OpenshiftAdapterSupport.adaptHttpClient(httpClient, wrapped);
+    HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
+    this.httpClient = builder
+        .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, wrapped))
+        .build();
   }
 
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
     return new DefaultOpenShiftClient(createInNamespaceContext(null, true));
+  }
+
+  /**
+   * Checks if a custom URL for OpenShift has been used.
+   *
+   * @param config The openshift configuration.
+   * @return True if both master and openshift url have the same root.
+   */
+  static boolean hasCustomOpenShiftUrl(OpenShiftConfig config) {
+    try {
+      URI masterUri = new URI(config.getMasterUrl()).resolve("/");
+      URI openshfitUri = new URI(config.getOpenShiftUrl()).resolve("/");
+      return !masterUri.equals(openshfitUri);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public boolean isSupported() {
+    OpenShiftConfig oConfig = getConfiguration();
+    return hasCustomOpenShiftUrl(oConfig)
+        || oConfig.isDisableApiGroupCheck()
+        || hasApiGroup(BASE_API_GROUP, false);
   }
 
 }

@@ -16,30 +16,18 @@
 package io.fabric8.knative.client.serving.v1;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+public class ServingV1ExtensionAdapter implements ExtensionAdapter<ServingV1Client> {
 
-public class ServingV1ExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<ServingV1Client> {
+  @Override
+  public Class<ServingV1Client> getExtensionType() {
+    return ServingV1Client.class;
+  }
 
-    static final ConcurrentMap<URL, Boolean> IS_KNATIVE = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_KNATIVE_APIGROUPS = new ConcurrentHashMap<>();
-
-	@Override
-	public Class<ServingV1Client> getExtensionType() {
-		return ServingV1Client.class;
-	}
-
-	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_KNATIVE, USES_KNATIVE_APIGROUPS, "knative.dev");
-	}
-
-	@Override
-	public ServingV1Client adapt(Client client) {
+  @Override
+  public ServingV1Client adapt(Client client) {
     return new DefaultServingV1Client(client);
-	}
+  }
+
 }

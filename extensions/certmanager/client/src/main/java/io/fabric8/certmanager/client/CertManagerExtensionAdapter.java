@@ -16,18 +16,9 @@
 package io.fabric8.certmanager.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-public class CertManagerExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<CertManagerClient> {
-
-  static final ConcurrentMap<URL, Boolean> IS_VOLUME_SNAPSHOT = new ConcurrentHashMap<>();
-  static final ConcurrentMap<URL, Boolean> USES_VOLUME_SNAPSHOT_APIGROUPS = new ConcurrentHashMap<>();
-  public static final String API_GROUP = "cert-manager.io";
+public class CertManagerExtensionAdapter implements ExtensionAdapter<CertManagerClient> {
 
   @Override
   public Class<CertManagerClient> getExtensionType() {
@@ -35,12 +26,8 @@ public class CertManagerExtensionAdapter extends ExtensionAdapterSupport impleme
   }
 
   @Override
-  public Boolean isAdaptable(Client client) {
-    return isAdaptable(client, IS_VOLUME_SNAPSHOT, USES_VOLUME_SNAPSHOT_APIGROUPS, API_GROUP);
-  }
-
-  @Override
   public CertManagerClient adapt(Client client) {
     return new DefaultCertManagerClient(client);
   }
+
 }

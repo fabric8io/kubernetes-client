@@ -16,30 +16,18 @@
 package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+public class TektonExtensionAdapter implements ExtensionAdapter<TektonClient> {
 
-public class TektonExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<TektonClient> {
+  @Override
+  public Class<TektonClient> getExtensionType() {
+    return TektonClient.class;
+  }
 
-    static final ConcurrentMap<URL, Boolean> IS_TEKTON = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_TEKTON_APIGROUPS = new ConcurrentHashMap<>();
+  @Override
+  public TektonClient adapt(Client client) {
+    return new DefaultTektonClient(client);
+  }
 
-	@Override
-	public Class<TektonClient> getExtensionType() {
-		return TektonClient.class;
-	}
-
-	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_TEKTON, USES_TEKTON_APIGROUPS, "tekton.dev");
-	}
-
-	@Override
-	public TektonClient adapt(Client client) {
-            return new DefaultTektonClient(client);
-	}
 }

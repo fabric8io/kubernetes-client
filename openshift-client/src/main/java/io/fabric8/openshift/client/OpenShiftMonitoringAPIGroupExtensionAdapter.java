@@ -15,14 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftMonitoringAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftMonitoringAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "monitoring";
-  }
+public class OpenShiftMonitoringAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftMonitoringAPIGroupClient> {
 
   @Override
   public Class<OpenShiftMonitoringAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenShiftMonitoringAPIGroupExtensionAdapter extends APIGroupExtensi
   }
 
   @Override
-  protected OpenShiftMonitoringAPIGroupClient newInstance(Client client) {
+  public OpenShiftMonitoringAPIGroupClient adapt(Client client) {
     return new OpenShiftMonitoringAPIGroupClient(client);
   }
 

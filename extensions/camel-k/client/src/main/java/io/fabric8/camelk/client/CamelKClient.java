@@ -15,23 +15,24 @@
  */
 package io.fabric8.camelk.client;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.camelk.client.dsl.V1APIGroupDSL;
+import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
+import io.fabric8.kubernetes.client.Client;
 
 /**
  * Main interface for CamelK client library.
  */
 public interface CamelKClient extends Client {
   /**
-   * API entrypoint for tekton.dev/v1beta1 API group resources
+   * API entrypoint for camel.apache.org/v1 API group resources
    *
    * @return {@link V1APIGroupDSL} for CamelK resource operations in this API group.
    */
   V1APIGroupDSL v1();
 
   /**
-   * API entrypoint for tekton.dev/v1alpha1 API group resources
+   * API entrypoint for camel.apache.org/v1alpha1 API group resources
+   * 
    * @return {@link V1alpha1APIGroupDSL} for CamelK resource operations in this API group.
    */
   V1alpha1APIGroupDSL v1alpha1();

@@ -15,14 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
-public class OpenShiftConsoleAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftConsoleAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "console";
-  }
+public class OpenShiftConsoleAPIGroupExtensionAdapter implements ExtensionAdapter<OpenShiftConsoleAPIGroupClient> {
 
   @Override
   public Class<OpenShiftConsoleAPIGroupClient> getExtensionType() {
@@ -30,7 +26,7 @@ public class OpenShiftConsoleAPIGroupExtensionAdapter extends APIGroupExtensionA
   }
 
   @Override
-  protected OpenShiftConsoleAPIGroupClient newInstance(Client client) {
+  public OpenShiftConsoleAPIGroupClient adapt(Client client) {
     return new OpenShiftConsoleAPIGroupClient(client);
   }
 

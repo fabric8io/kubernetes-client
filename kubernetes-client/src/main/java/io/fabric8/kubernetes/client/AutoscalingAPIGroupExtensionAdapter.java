@@ -15,17 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<AutoscalingAPIGroupClient> {
-
-  @Override
-  protected String getAPIGroupName() {
-    return "autoscaling";
-  }
+public class AutoscalingAPIGroupExtensionAdapter implements ExtensionAdapter<AutoscalingAPIGroupClient> {
 
   @Override
   public Class<AutoscalingAPIGroupClient> getExtensionType() {
@@ -33,7 +29,7 @@ public class AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapte
   }
 
   @Override
-  protected AutoscalingAPIGroupClient newInstance(Client client) {
+  public AutoscalingAPIGroupClient adapt(Client client) {
     return new AutoscalingAPIGroupClient(client);
   }
 

@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class AdmissionRegistrationAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<AdmissionRegistrationAPIGroupClient> {
-  @Override
-  protected String getAPIGroupName() {
-    return "admissionregistration.k8s.io";
-  }
+import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+
+public class AdmissionRegistrationAPIGroupExtensionAdapter implements ExtensionAdapter<AdmissionRegistrationAPIGroupClient> {
 
   @Override
   public Class<AdmissionRegistrationAPIGroupClient> getExtensionType() {
@@ -27,7 +25,7 @@ public class AdmissionRegistrationAPIGroupExtensionAdapter extends APIGroupExten
   }
 
   @Override
-  protected AdmissionRegistrationAPIGroupClient newInstance(Client client) {
+  public AdmissionRegistrationAPIGroupClient adapt(Client client) {
     return new AdmissionRegistrationAPIGroupClient(client);
   }
 }
