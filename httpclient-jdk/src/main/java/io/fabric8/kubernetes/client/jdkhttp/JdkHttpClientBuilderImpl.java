@@ -22,10 +22,7 @@ import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.TlsVersion;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
-import javax.net.ssl.TrustManager;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
@@ -35,6 +32,11 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+import javax.net.ssl.TrustManager;
 
 /**
  * TODO: if there is another implementation that does not support client builder copying, then this needs to be abstracted -
@@ -149,8 +151,8 @@ class JdkHttpClientBuilderImpl implements Builder {
   }
 
   @Override
-  public Builder sslContext(SSLContext context, TrustManager[] trustManagers) {
-    this.sslContext = context;
+  public Builder sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
+    this.sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
     return this;
   }
 

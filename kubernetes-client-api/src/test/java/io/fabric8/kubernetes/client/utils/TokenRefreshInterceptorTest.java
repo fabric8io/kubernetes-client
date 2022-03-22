@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,17 +40,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TokenRefreshInterceptorTest {
 
   @Test
-  void shouldAutoconfigureAfter401() throws IOException {
+  void shouldAutoconfigureAfter401() throws Exception {
     try {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
-      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")), Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
-      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null).afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
+      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null)
+          .afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
     } finally {
@@ -61,7 +62,7 @@ class TokenRefreshInterceptorTest {
   }
 
   @Test
-  void shouldReloadInClusterServiceAccount() throws IOException {
+  void shouldReloadInClusterServiceAccount() throws Exception {
     try {
       // Write service account token file with value "expired" in it,
       // Set properties for it to be used instead of kubeconfig.
@@ -77,7 +78,7 @@ class TokenRefreshInterceptorTest {
 
       // Write new value to token file to simulate renewal.
       Files.write(tokenFile.toPath(), "renewed".getBytes());
-      boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
+      boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
@@ -90,7 +91,7 @@ class TokenRefreshInterceptorTest {
   }
 
   @Test
-  void shouldRefreshOIDCToken() throws IOException {
+  void shouldRefreshOIDCToken() throws Exception {
     try {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
@@ -114,7 +115,7 @@ class TokenRefreshInterceptorTest {
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 
       TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class));
-      boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
+      boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");

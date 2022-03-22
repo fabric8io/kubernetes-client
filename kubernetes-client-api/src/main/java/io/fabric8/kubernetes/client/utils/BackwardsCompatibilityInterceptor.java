@@ -27,6 +27,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,8 +43,10 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
 
   private static final String PATCH = "patch";
   private static final String NAME_REGEX = "[a-z0-9\\-\\.]+";
-  private static final Pattern URL_PATTERN = Pattern.compile("[^ ]+/apis/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")[^ ]*");
-  private static final Pattern NAMESPACED_URL_PATTERN = Pattern.compile("[^ ]+/apis/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")/namespaces/" + NAME_REGEX + "/(" + NAME_REGEX + ")[^ ]*");
+  private static final Pattern URL_PATTERN = Pattern
+      .compile("[^ ]+/apis/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")[^ ]*");
+  private static final Pattern NAMESPACED_URL_PATTERN = Pattern
+      .compile("[^ ]+/apis/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")/namespaces/" + NAME_REGEX + "/(" + NAME_REGEX + ")[^ ]*");
   private static final Map<ResourceKey, ResourceKey> notFoundTransformations = new HashMap<>();
   private static final Map<ResourceKey, ResourceKey> badRequestTransformations = new HashMap<>();
   private static final Map<String, ResourceKey> openshiftOAPITransformations = new HashMap<>();
@@ -81,12 +84,14 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o)
+        return true;
+      if (o == null || getClass() != o.getClass())
+        return false;
       ResourceKey key = (ResourceKey) o;
       return Objects.equals(path, key.path) &&
-        Objects.equals(group, key.group) &&
-        Objects.equals(version, key.version);
+          Objects.equals(group, key.group) &&
+          Objects.equals(version, key.version);
     }
 
     @Override
@@ -97,22 +102,35 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   static {
-    notFoundTransformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1"), new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("StatefulSet", "statefulsets", "apps", "v1"), new ResourceKey("StatefulSet", "statefulsets", "apps", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("DaemonSets", "daemonsets", "apps", "v1"), new ResourceKey("DaemonSet", "daemonsets", "extensions", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("ReplicaSets", "replicasets", "apps", "v1"), new ResourceKey("ReplicaSet", "replicasets", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1"),
+        new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("StatefulSet", "statefulsets", "apps", "v1"),
+        new ResourceKey("StatefulSet", "statefulsets", "apps", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("DaemonSets", "daemonsets", "apps", "v1"),
+        new ResourceKey("DaemonSet", "daemonsets", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("ReplicaSets", "replicasets", "apps", "v1"),
+        new ResourceKey("ReplicaSet", "replicasets", "extensions", "v1beta1"));
     notFoundTransformations
-      .put(new ResourceKey("NetworkPolicy", "networkpolicies", "networking.k8s.io", "v1"), new ResourceKey("NetworkPolicy", "networkpolicies", "extensions", "v1beta1"));
+        .put(new ResourceKey("NetworkPolicy", "networkpolicies", "networking.k8s.io", "v1"),
+            new ResourceKey("NetworkPolicy", "networkpolicies", "extensions", "v1beta1"));
     notFoundTransformations
-      .put(new ResourceKey("StorageClass", "storageclasses", "storage.k8s.io", "v1"), new ResourceKey("StorageClass", "storageclasses", "extensions", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("RoleBinding", "rolebindings", "rbac.authorization.k8s.io", "v1"), new ResourceKey("RoleBinding", "rolebindings", "rbac.authorization.k8s.io", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("Role", "roles", "rbac.authorization.k8s.io", "v1"), new ResourceKey("Role", "roles", "rbac.authorization.k8s.io", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("ClusterRoleBinding", "clusterrolebindings", "rbac.authorization.k8s.io", "v1"), new ResourceKey("ClusterRoleBinding", "clusterrolebindings", "rbac.authorization.k8s.io", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("ClusterRole", "clusterroles", "rbac.authorization.k8s.io", "v1"), new ResourceKey("ClusterRole", "clusterroles", "rbac.authorization.k8s.io", "v1beta1"));
-    notFoundTransformations.put(new ResourceKey("CronJob", "cronjobs", "batch", "v1beta1"), new ResourceKey("CronJob", "cronjob", "batch", "v2alpha1"));
-    notFoundTransformations.put(new ResourceKey("Template", "template", "", "v1"), new ResourceKey("Template", "template", "template.openshift.io", "v1"));
+        .put(new ResourceKey("StorageClass", "storageclasses", "storage.k8s.io", "v1"),
+            new ResourceKey("StorageClass", "storageclasses", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("RoleBinding", "rolebindings", "rbac.authorization.k8s.io", "v1"),
+        new ResourceKey("RoleBinding", "rolebindings", "rbac.authorization.k8s.io", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("Role", "roles", "rbac.authorization.k8s.io", "v1"),
+        new ResourceKey("Role", "roles", "rbac.authorization.k8s.io", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("ClusterRoleBinding", "clusterrolebindings", "rbac.authorization.k8s.io", "v1"),
+        new ResourceKey("ClusterRoleBinding", "clusterrolebindings", "rbac.authorization.k8s.io", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("ClusterRole", "clusterroles", "rbac.authorization.k8s.io", "v1"),
+        new ResourceKey("ClusterRole", "clusterroles", "rbac.authorization.k8s.io", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("CronJob", "cronjobs", "batch", "v1beta1"),
+        new ResourceKey("CronJob", "cronjob", "batch", "v2alpha1"));
+    notFoundTransformations.put(new ResourceKey("Template", "template", "", "v1"),
+        new ResourceKey("Template", "template", "template.openshift.io", "v1"));
 
-    badRequestTransformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1beta1"), new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
+    badRequestTransformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1beta1"),
+        new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
 
     responseCodeToTransformations.put(400, badRequestTransformations);
     responseCodeToTransformations.put(404, notFoundTransformations);
@@ -124,18 +142,23 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
      */
     openshiftOAPITransformations.put("routes", new ResourceKey("Route", "routes", "route.openshift.io", "v1"));
     openshiftOAPITransformations.put("templates", new ResourceKey("Template", "templates", "template.openshift.io", "v1"));
-    openshiftOAPITransformations.put("buildconfigs", new ResourceKey("BuildConfig", "buildconfigs", "build.openshift.io", "v1"));
-    openshiftOAPITransformations.put("deploymentconfigs", new ResourceKey("DeploymentConfig", "deploymentconfigs", "apps.openshift.io", "v1"));
-    openshiftOAPITransformations.put("imagestreams", new ResourceKey("ImageStream", "imagestreams", "image.openshift.io", "v1"));
-    openshiftOAPITransformations.put("imagestreamtags", new ResourceKey("ImageStream", "imagestreamtags", "image.openshift.io", "v1"));
-    openshiftOAPITransformations.put("securitycontextconstraints", new ResourceKey("SecurityContextConstraints", "securitycontextconstraints", "security.openshift.io", "v1"));
+    openshiftOAPITransformations.put("buildconfigs",
+        new ResourceKey("BuildConfig", "buildconfigs", "build.openshift.io", "v1"));
+    openshiftOAPITransformations.put("deploymentconfigs",
+        new ResourceKey("DeploymentConfig", "deploymentconfigs", "apps.openshift.io", "v1"));
+    openshiftOAPITransformations.put("imagestreams",
+        new ResourceKey("ImageStream", "imagestreams", "image.openshift.io", "v1"));
+    openshiftOAPITransformations.put("imagestreamtags",
+        new ResourceKey("ImageStream", "imagestreamtags", "image.openshift.io", "v1"));
+    openshiftOAPITransformations.put("securitycontextconstraints",
+        new ResourceKey("SecurityContextConstraints", "securitycontextconstraints", "security.openshift.io", "v1"));
   }
 
   @Override
-  public boolean afterFailure(Builder builder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
     ResourceKey target = findNewTarget(builder, response);
     if (target == null) {
-      return false;
+      return CompletableFuture.completedFuture(false);
     }
 
     HttpRequest request = response.request();
@@ -145,22 +168,22 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
         HasMetadata h = (HasMetadata) object;
         h.setApiVersion(target.group + "/" + target.version);
         switch (request.method()) {
-        case "POST":
-          builder.post(JSON, Serialization.asJson(h));
-          break;
-        case "PUT":
-          builder.put(JSON, Serialization.asJson(h));
-          break;
-        case "DELETE":
-          builder.delete(JSON, Serialization.asJson(h));
-          break;
-        default:
-          return false;
+          case "POST":
+            builder.post(JSON, Serialization.asJson(h));
+            break;
+          case "PUT":
+            builder.put(JSON, Serialization.asJson(h));
+            break;
+          case "DELETE":
+            builder.delete(JSON, Serialization.asJson(h));
+            break;
+          default:
+            return CompletableFuture.completedFuture(false);
         }
       }
     }
 
-    return true;
+    return CompletableFuture.completedFuture(true);
   }
 
   public ResourceKey findNewTarget(BasicBuilder basicBuilder, HttpResponse<?> response) {
@@ -174,9 +197,9 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
       ResourceKey target = responseCodeToTransformations.get(response.code()).get(key);
       if (target != null) {
         String newUrl = new StringBuilder(url)
-          .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
-          .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
-          .toString();
+            .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
+            .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
+            .toString();
         basicBuilder.uri(URI.create(newUrl));
         return target;
       }
@@ -185,8 +208,8 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   @Override
-  public boolean afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
-    return findNewTarget(basicBuilder, response) != null;
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
+    return CompletableFuture.completedFuture(findNewTarget(basicBuilder, response) != null);
   }
 
   private static Matcher getMatcher(String url) {

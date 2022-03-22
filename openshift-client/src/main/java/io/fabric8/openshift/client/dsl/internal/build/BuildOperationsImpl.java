@@ -157,7 +157,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Bu
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
       waitUntilBuildPodBecomesReady(fromServer().get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(this.config, out);
+      final LogWatchCallback callback = new LogWatchCallback(out);
       return callback.callAndWait(this.httpClient, url);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);

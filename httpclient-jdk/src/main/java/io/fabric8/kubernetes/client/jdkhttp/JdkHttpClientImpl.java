@@ -23,10 +23,8 @@ import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpResponse.BodyHandler;
@@ -34,12 +32,16 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse.BodySubscriber;
 import java.net.http.HttpResponse.BodySubscribers;
 import java.net.http.WebSocketHandshakeException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Flow;
+import java.util.concurrent.Flow.Subscriber;
+import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -50,12 +52,80 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class JdkHttpClientImpl implements HttpClient {
 
+  private final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
+    private final BodyConsumer<T> consumer;
+    private CompletableFuture<Void> done = new CompletableFuture<Void>();
+    private final AtomicBoolean subscribed = new AtomicBoolean();
+    private volatile Flow.Subscription subscription;
+
+    private AsyncBodySubscriber(BodyConsumer<T> consumer) {
+      this.consumer = consumer;
+    }
+
+    @Override
+    public void onSubscribe(Subscription subscription) {
+      if (!subscribed.compareAndSet(false, true)) {
+        subscription.cancel();
+        return;
+      }
+      this.subscription = subscription;
+      subscription.request(1);
+    }
+
+    @Override
+    public void onNext(T item) {
+      try {
+        if (item == null) {
+          done.complete(null);
+        } else {
+          consumer.consume(item, this);
+        }
+      } catch (Exception e) {
+        subscription.cancel();
+        done.completeExceptionally(e);
+      }
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+      done.completeExceptionally(throwable);
+    }
+
+    @Override
+    public void onComplete() {
+      done.complete(null);
+    }
+
+    @Override
+    public void consume() {
+      this.subscription.request(1);
+    }
+
+    @Override
+    public CompletableFuture<Void> done() {
+      return done;
+    }
+
+    @Override
+    public void cancel() {
+      subscription.cancel();
+      done.cancel(false);
+    }
+
+  }
+
   private static class JdkHttpResponseImpl<T> implements HttpResponse<T> {
 
-    private java.net.http.HttpResponse<T> response;
+    private java.net.http.HttpResponse<?> response;
+    private T body;
 
     public JdkHttpResponseImpl(java.net.http.HttpResponse<T> response) {
+      this(response, response.body());
+    }
+
+    public JdkHttpResponseImpl(java.net.http.HttpResponse<?> response, T body) {
       this.response = response;
+      this.body = body;
     }
 
     @Override
@@ -70,7 +140,7 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public T body() {
-      return response.body();
+      return body;
     }
 
     @Override
@@ -79,7 +149,7 @@ public class JdkHttpClientImpl implements HttpClient {
     }
 
     @Override
-    public Optional<HttpResponse<T>> previousResponse() {
+    public Optional<HttpResponse<?>> previousResponse() {
       return response.previousResponse().map(JdkHttpResponseImpl::new);
     }
 
@@ -106,29 +176,21 @@ public class JdkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
-    try {
-      return sendAsync(request, type).get();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
-    } catch (ExecutionException e) {
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
-    }
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer) {
+    AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
+    BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
+    return sendAsync(request, handler).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, subscriber));
+  }
+
+  @Override
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer) {
+    AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
+    BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
+    return sendAsync(request, handler).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, subscriber));
   }
 
   @Override
   public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl)request;
-    JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
-    for (Interceptor interceptor : builder.interceptors.values()) {
-      interceptor.before(builderImpl, jdkRequest);
-      jdkRequest = builderImpl.build();
-    }
     BodyHandler<T> bodyHandler;
     if (type == null) {
       bodyHandler = (BodyHandler<T>) BodyHandlers.discarding();
@@ -146,20 +208,34 @@ public class JdkHttpClientImpl implements HttpClient {
         return (BodySubscriber<T>) downstream;
       };
     }
+    return sendAsync(request, bodyHandler).thenApply(JdkHttpResponseImpl::new);
+  }
+
+  public <T> CompletableFuture<java.net.http.HttpResponse<T>> sendAsync(HttpRequest request, BodyHandler<T> bodyHandler) {
+    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl) request;
+    JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
+    for (Interceptor interceptor : builder.interceptors.values()) {
+      interceptor.before(builderImpl, jdkRequest);
+      jdkRequest = builderImpl.build();
+    }
 
     CompletableFuture<java.net.http.HttpResponse<T>> cf = this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
 
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
-        if (response != null && !HttpResponse.isSuccessful(response.statusCode())
-            && interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))) {
-          return this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
+        if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
+          return interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response)).thenCompose(b -> {
+            if (b) {
+              return this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
+            }
+            return CompletableFuture.completedFuture(response);
+          });
         }
         return CompletableFuture.completedFuture(response);
       });
     }
 
-    return cf.thenApply(JdkHttpResponseImpl::new);
+    return cf;
   }
 
   @Override
@@ -181,6 +257,7 @@ public class JdkHttpClientImpl implements HttpClient {
       this.webSocket = w;
       this.wshse = wshse;
     }
+
     WebSocket webSocket;
     java.net.http.WebSocketHandshakeException wshse;
   }
@@ -198,9 +275,13 @@ public class JdkHttpClientImpl implements HttpClient {
 
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
-        if (response.wshse != null && response.wshse.getResponse() != null
-            && interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse()))) {
-          return this.internalBuildAsync(copy, listener);
+        if (response.wshse != null && response.wshse.getResponse() != null) {
+          return interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse())).thenCompose(b -> {
+            if (b) {
+              return this.internalBuildAsync(copy, listener);
+            }
+            return CompletableFuture.completedFuture(response);
+          });
         }
         return CompletableFuture.completedFuture(response);
       });
@@ -229,7 +310,8 @@ public class JdkHttpClientImpl implements HttpClient {
   /**
    * Convert the invocation of a JDK build async into a holder of both the exception and the response
    */
-  public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder, Listener listener) {
+  public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder,
+      Listener listener) {
     java.net.http.HttpRequest request = webSocketBuilder.asRequest();
     java.net.http.WebSocket.Builder newBuilder = this.httpClient.newWebSocketBuilder();
     request.headers().map().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
@@ -259,7 +341,7 @@ public class JdkHttpClientImpl implements HttpClient {
         t = t.getCause();
       }
       if (t instanceof java.net.http.WebSocketHandshakeException) {
-        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), (WebSocketHandshakeException)t));
+        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), (WebSocketHandshakeException) t));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {
