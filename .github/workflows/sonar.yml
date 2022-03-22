@@ -49,4 +49,4 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - name: Maven Sonar
-        run: mvn ${MAVEN_ARGS} clean install sonar:sonar -Psonar
+        run: ./mvnw ${MAVEN_ARGS} clean install sonar:sonar -Psonar

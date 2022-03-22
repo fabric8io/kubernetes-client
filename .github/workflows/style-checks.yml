@@ -45,6 +45,6 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - name: Check License Headers
-        run: mvn ${MAVEN_ARGS} -N license:check
+        run: ./mvnw ${MAVEN_ARGS} -N license:check
       - name: Check Format (only on touched files)
-        run: mvn ${MAVEN_ARGS} spotless:check
+        run: ./mvnw ${MAVEN_ARGS} spotless:check
