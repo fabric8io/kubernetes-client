@@ -61,15 +61,18 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.dryRun, other.selectorAsString, other.defaultNamespace);
+    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
+        other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
+        other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy,
+        other.dryRun, other.selectorAsString, other.defaultNamespace);
   }
 
   public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
-                          String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
-                          Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
-                          Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
-                          long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-                          boolean dryRun, String selectorAsString, boolean defaultNamespace) {
+      String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
+      Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
+      Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
+      long gracePeriodSeconds, DeletionPropagation propagationPolicy,
+      boolean dryRun, String selectorAsString, boolean defaultNamespace) {
     this.httpClient = client;
     this.config = config;
     this.item = item;
@@ -129,9 +132,9 @@ public class OperationContext extends SimpleClientContext {
     if (!defaultNamespace || Utils.isNotNullOrEmpty(namespace)) {
       this.namespace = namespace;
       this.defaultNamespace = defaultNamespace;
-    } else {
-      this.namespace = config != null && Utils.isNotNullOrEmpty(config.getNamespace()) ? config.getNamespace() : null;
-      this.defaultNamespace = config != null ? config.isDefaultNamespace() : true;
+    } else if (config != null) {
+      this.namespace = config.getNamespace();
+      this.defaultNamespace = config.isDefaultNamespace();
     }
   }
 
@@ -150,7 +153,7 @@ public class OperationContext extends SimpleClientContext {
   public String getNamespace() {
     return namespace;
   }
-  
+
   public boolean isDefaultNamespace() {
     return defaultNamespace;
   }
@@ -220,10 +223,10 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public String getLabelQueryParam() {
-    if(Utils.isNotNullOrEmpty(selectorAsString)) {
+    if (Utils.isNotNullOrEmpty(selectorAsString)) {
       return selectorAsString;
     }
-    
+
     StringBuilder sb = new StringBuilder(101);
 
     appendEntriesAsParam(sb, getLabels(), asKeyValuePair);
@@ -241,23 +244,24 @@ public class OperationContext extends SimpleClientContext {
     return (key, values) -> key + " " + operator + " (" + String.join(",", values) + ")";
   }
 
-  private final static BiFunction<String, String, String> asKeyValuePair =
-    (key, value) -> value != null ? key + "=" + value : key;
-  private final static BiFunction<String, String[], String> asNotEqualToValues =
-    (key, values) -> Utils.isNotNull(values) ? Arrays.stream(values).map(v -> key + "!=" + v).collect(Collectors.joining(",")) : "!" + key;
+  private final static BiFunction<String, String, String> asKeyValuePair = (key, value) -> value != null ? key + "=" + value
+      : key;
+  private final static BiFunction<String, String[], String> asNotEqualToValues = (key, values) -> Utils.isNotNull(values)
+      ? Arrays.stream(values).map(v -> key + "!=" + v).collect(Collectors.joining(","))
+      : "!" + key;
   private final static BiFunction<String, String[], String> asInSet = getEntryProcessorFor("in");
   private final static BiFunction<String, String[], String> asNotInSet = getEntryProcessorFor("notin");
 
-  private <T> void appendEntriesAsParam(StringBuilder sb, Map<String, T> entries, BiFunction<String, T, String> entryProcessor) {
+  private <T> void appendEntriesAsParam(StringBuilder sb, Map<String, T> entries,
+      BiFunction<String, T, String> entryProcessor) {
     if (entries != null && !entries.isEmpty()) {
       if (sb.length() > 0) {
         sb.append(",");
       }
 
       sb.append(entries.entrySet().stream()
-        .map(entry -> entryProcessor.apply(entry.getKey(), entry.getValue()))
-        .collect(Collectors.joining(","))
-      );
+          .map(entry -> entryProcessor.apply(entry.getKey(), entry.getValue()))
+          .collect(Collectors.joining(",")));
     }
   }
 
@@ -275,7 +279,6 @@ public class OperationContext extends SimpleClientContext {
     }
     return null;
   }
-
 
   public OperationContext copy() {
     return new OperationContext(this);
@@ -453,7 +456,7 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public OperationContext withDryRun(boolean dryRun) {
-    if(this.dryRun == dryRun) {
+    if (this.dryRun == dryRun) {
       return this;
     }
     final OperationContext context = new OperationContext(this);
