@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.serializationmixins;
+package io.fabric8.kubernetes.client.internal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -35,18 +35,23 @@ public abstract class ObjectMetaMixIn extends ObjectMeta {
   @Override
   @JsonIgnore
   public abstract String getCreationTimestamp();
+
   @Override
   @JsonIgnore
   public abstract String getDeletionTimestamp();
+
   @Override
   @JsonIgnore
   public abstract Long getGeneration();
+
   @Override
   @JsonIgnore
   public abstract String getResourceVersion();
+
   @Override
   @JsonIgnore
   public abstract String getSelfLink();
+
   @Override
   @JsonIgnore
   public abstract String getUid();

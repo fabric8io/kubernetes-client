@@ -33,13 +33,13 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
-import io.fabric8.zjsonpatch.JsonDiff;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,8 +52,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
 
 public class OperationSupport {
 
@@ -383,8 +381,8 @@ public class OperationSupport {
       throws InterruptedException, IOException {
     String patchForUpdate = null;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
-      patchForUpdate = JSON_MAPPER
-          .writeValueAsString(JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated)));
+      // we can't omit status unless this is not a status operation and we know this has a status subresource
+      patchForUpdate = PatchUtils.jsonDiff(current, updated, false);
       if (patchContext == null) {
         patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
       }

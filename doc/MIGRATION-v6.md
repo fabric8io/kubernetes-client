@@ -9,7 +9,7 @@
 - [lists Removal](#lists-removal)
 - [GenericKubernetesClient Removal](#generickubernetesclient-removal)
 - [IntOrString Changes](#intorstring-changes)
-- [ServiceCatalog Changes](#service-catalog-changes)
+- [Extension Changes](#extension-changes)
 - [Adapt Changes](#adapt-changes)
 - [Deprecations](#deprecations)
 - [Object sorting](#object-sorting)
