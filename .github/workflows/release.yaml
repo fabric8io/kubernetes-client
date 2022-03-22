@@ -60,4 +60,4 @@ jobs:
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
       - name: Build and Release Project
-        run: mvn ${MAVEN_ARGS} -Prelease clean deploy -DstagingProgressTimeoutMinutes=20
+        run: ./mvnw ${MAVEN_ARGS} -Prelease clean deploy -DstagingProgressTimeoutMinutes=20

@@ -42,5 +42,5 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - name: Build Project
-        run: mvn clean install
+        run: ./mvnw clean install
 

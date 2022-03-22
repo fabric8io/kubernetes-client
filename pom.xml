@@ -947,6 +947,9 @@
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>Jenkinsfile</exclude>
+            <exclude>.mvn/**/*</exclude>
+            <exclude>mvnw</exclude>
+            <exclude>mvnw.cmd</exclude>
           </excludes>
           <mapping>
             <go>JAVADOC_STYLE</go>
