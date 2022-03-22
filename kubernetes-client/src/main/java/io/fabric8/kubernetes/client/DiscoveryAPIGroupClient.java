@@ -18,15 +18,9 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class DiscoveryAPIGroupClient extends BaseClient implements DiscoveryAPIGroupDSL {
-  public DiscoveryAPIGroupClient() {
-    super();
-  }
-
-  public DiscoveryAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class DiscoveryAPIGroupClient extends ClientAdapter<DiscoveryAPIGroupClient> implements DiscoveryAPIGroupDSL {
 
   @Override
   public V1DiscoveryAPIGroupDSL v1() {
@@ -36,5 +30,10 @@ public class DiscoveryAPIGroupClient extends BaseClient implements DiscoveryAPIG
   @Override
   public V1beta1DiscoveryAPIGroupDSL v1beta1() {
     return adapt(V1beta1DiscoveryAPIGroupClient.class);
+  }
+
+  @Override
+  public DiscoveryAPIGroupClient newInstance() {
+    return new DiscoveryAPIGroupClient();
   }
 }

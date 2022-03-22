@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
@@ -33,19 +32,12 @@ import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscriptio
 import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAppsAPIGroupDSL;
 
-public class OpenClusterManagementAppsAPIGroupClient extends ClientAdapter<OpenClusterManagementAppsAPIGroupDSL> implements OpenClusterManagementAppsAPIGroupDSL {
-
-  public OpenClusterManagementAppsAPIGroupClient() {
-    super();
-  }
-
-  public OpenClusterManagementAppsAPIGroupClient(Client client) {
-    super(client);
-  }
+public class OpenClusterManagementAppsAPIGroupClient extends ClientAdapter<OpenClusterManagementAppsAPIGroupClient>
+    implements OpenClusterManagementAppsAPIGroupDSL {
 
   @Override
-  protected OpenClusterManagementAppsAPIGroupDSL newInstance(Client client) {
-    return new OpenClusterManagementAppsAPIGroupClient(client);
+  public OpenClusterManagementAppsAPIGroupClient newInstance() {
+    return new OpenClusterManagementAppsAPIGroupClient();
   }
 
   @Override

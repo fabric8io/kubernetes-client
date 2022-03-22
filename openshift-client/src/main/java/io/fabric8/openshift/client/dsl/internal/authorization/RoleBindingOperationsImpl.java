@@ -16,17 +16,16 @@
 package io.fabric8.openshift.client.dsl.internal.authorization;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.api.model.RoleBindingList;
-import io.fabric8.openshift.client.OpenshiftClientContext;
-import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,19 +33,19 @@ import java.util.function.Supplier;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> {
+public class RoleBindingOperationsImpl extends HasMetadataOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> {
 
   public static final String SERVICE_ACCOUNT = "ServiceAccount";
   public static final String USER = "User";
   public static final String GROUP = "Group";
 
-  public RoleBindingOperationsImpl(OpenshiftClientContext clientContext) {
-    this(HasMetadataOperationsImpl.defaultContext(clientContext));
+  public RoleBindingOperationsImpl(Client client) {
+    this(HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public RoleBindingOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION)
-      .withPlural("rolebindings"), RoleBinding.class, RoleBindingList.class);
+        .withPlural("rolebindings"), RoleBinding.class, RoleBindingList.class);
   }
 
   @Override
@@ -68,7 +67,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
     RoleBindingBuilder builder = new RoleBindingBuilder(binding);
 
     if ((binding.getUserNames() != null && !binding.getUserNames().isEmpty()) ||
-      (binding.getGroupNames() != null && !binding.getGroupNames().isEmpty())) {
+        (binding.getGroupNames() != null && !binding.getGroupNames().isEmpty())) {
       enrichFromUsersAndGroups(builder, binding.getUserNames(), binding.getGroupNames());
     } else {
       enrichFromSubjects(builder, binding.getSubjects());
@@ -82,16 +81,12 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
     builder.accept(new TypedVisitor<ObjectReferenceBuilder>() {
       @Override
       public void visit(ObjectReferenceBuilder o) {
-        if (o.getKind() != null && o.getKind().equals(SERVICE_ACCOUNT) && (o.getNamespace() == null || o.getNamespace().isEmpty())) {
+        if (o.getKind() != null && o.getKind().equals(SERVICE_ACCOUNT)
+            && (o.getNamespace() == null || o.getNamespace().isEmpty())) {
           o.withNamespace(getNamespace());
         }
       }
     });
-  }
-
-  @Override
-  protected VisitableBuilder<RoleBinding, ?> createVisitableBuilder(RoleBinding item) {
-      return new RoleBindingBuilder(item);
   }
 
   private void enrichFromUsersAndGroups(RoleBindingBuilder builder, List<String> userNames, List<String> groupNames) {
@@ -102,7 +97,8 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
         if (userName.startsWith("system:serviceaccount:")) {
           String[] splitUserName = userName.split(":");
           if (splitUserName.length == 4) {
-            builder.addNewSubject().withKind(SERVICE_ACCOUNT).withNamespace(splitUserName[2]).withName(splitUserName[3]).endSubject();
+            builder.addNewSubject().withKind(SERVICE_ACCOUNT).withNamespace(splitUserName[2]).withName(splitUserName[3])
+                .endSubject();
             continue;
           }
         }

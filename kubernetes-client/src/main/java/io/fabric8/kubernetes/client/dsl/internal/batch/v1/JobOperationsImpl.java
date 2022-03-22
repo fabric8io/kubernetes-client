@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -43,19 +43,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, ScalableResource<Job>>
-  implements ScalableResource<Job> {
+    implements ScalableResource<Job> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
   private final PodControllerOperationContext podControllerOperationContext;
 
-  public JobOperationsImpl(ClientContext clientContext) {
-    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+  public JobOperationsImpl(Client client) {
+    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {
     super(superContext.withApiGroupName("batch")
-      .withApiGroupVersion("v1")
-      .withPlural("jobs"), Job.class, JobList.class);
+        .withApiGroupVersion("v1")
+        .withPlural("jobs"), Job.class, JobList.class);
     this.podControllerOperationContext = context;
   }
 
@@ -129,11 +129,13 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     Job job = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),
-      getJobPodLabels(job), isPretty, podControllerOperationContext.getLogWaitTimeout(), podControllerOperationContext.getContainerId());
+        getJobPodLabels(job), isPretty, podControllerOperationContext.getLogWaitTimeout(),
+        podControllerOperationContext.getContainerId());
   }
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override
@@ -155,7 +157,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new JobOperationsImpl(podControllerOperationContext.withLogWaitTimout(logWaitTimeout), context);
   }
-  
+
   @Override
   protected Job modifyItemForReplaceOrPatch(Supplier<Job> current, Job job) {
     Job jobFromServer = current.get();

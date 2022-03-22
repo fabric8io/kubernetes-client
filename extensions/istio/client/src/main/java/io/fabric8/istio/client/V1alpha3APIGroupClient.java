@@ -29,29 +29,15 @@ import io.fabric8.istio.api.networking.v1alpha3.VirtualService;
 import io.fabric8.istio.api.networking.v1alpha3.VirtualServiceList;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntryList;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1alpha3APIGroupClient extends ClientAdapter<V1alpha3APIGroupDSL> implements V1alpha3APIGroupDSL {
-
-  public V1alpha3APIGroupClient() {
-    super();
-  }
-
-  public V1alpha3APIGroupClient(Config configuration) {
-    super(configuration);
-  }
-
-  public V1alpha3APIGroupClient(Client client) {
-    super(client);
-  }
+public class V1alpha3APIGroupClient extends ClientAdapter<V1alpha3APIGroupClient> implements V1alpha3APIGroupDSL {
 
   @Override
-  protected V1alpha3APIGroupDSL newInstance(Client client) {
-    return new V1alpha3APIGroupClient(client);
+  public V1alpha3APIGroupClient newInstance() {
+    return new V1alpha3APIGroupClient();
   }
 
   // networking

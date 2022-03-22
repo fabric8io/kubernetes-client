@@ -102,7 +102,6 @@ public class KubernetesMockServerExtension
             a.https())
         : new KubernetesMockServer(a.https());
     mock.init();
-    mock.setUnsupported(a.unsupported());
     client = mock.createClient();
   }
 

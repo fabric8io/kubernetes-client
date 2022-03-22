@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
@@ -27,19 +26,12 @@ import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.pol
 import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAPIGroupDSL;
 
-public class OpenClusterManagementPolicyAPIGroupClient extends ClientAdapter<OpenClusterManagementPolicyAPIGroupDSL> implements OpenClusterManagementPolicyAPIGroupDSL {
-
-  public OpenClusterManagementPolicyAPIGroupClient() {
-    super();
-  }
-
-  public OpenClusterManagementPolicyAPIGroupClient(Client client) {
-    super(client);
-  }
+public class OpenClusterManagementPolicyAPIGroupClient extends ClientAdapter<OpenClusterManagementPolicyAPIGroupClient>
+    implements OpenClusterManagementPolicyAPIGroupDSL {
 
   @Override
-  protected OpenClusterManagementPolicyAPIGroupDSL newInstance(Client client) {
-    return new OpenClusterManagementPolicyAPIGroupClient(client);
+  public OpenClusterManagementPolicyAPIGroupClient newInstance() {
+    return new OpenClusterManagementPolicyAPIGroupClient();
   }
 
   @Override

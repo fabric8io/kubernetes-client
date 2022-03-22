@@ -15,9 +15,9 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownloadList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLink;
@@ -34,48 +34,47 @@ import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
 import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 
-public class OpenShiftConsoleAPIGroupClient extends BaseOpenShiftClient implements OpenShiftConsoleAPIGroupDSL {
-  public OpenShiftConsoleAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftConsoleAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftConsoleAPIGroupClient extends ClientAdapter<OpenShiftConsoleAPIGroupClient>
+    implements OpenShiftConsoleAPIGroupDSL {
 
   @Override
   public NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, Resource<ConsoleCLIDownload>> consoleCLIDownloads() {
-    return OpenShiftHandlers.getOperation(ConsoleCLIDownload.class, ConsoleCLIDownloadList.class, this);
+    return resources(ConsoleCLIDownload.class, ConsoleCLIDownloadList.class);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, Resource<ConsoleExternalLogLink>> consoleExternalLogLinks() {
-    return OpenShiftHandlers.getOperation(ConsoleExternalLogLink.class, ConsoleExternalLogLinkList.class, this);
+    return resources(ConsoleExternalLogLink.class, ConsoleExternalLogLinkList.class);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleLink, ConsoleLinkList, Resource<ConsoleLink>> consoleLinks() {
-    return OpenShiftHandlers.getOperation(ConsoleLink.class, ConsoleLinkList.class, this);
+    return resources(ConsoleLink.class, ConsoleLinkList.class);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, Resource<ConsoleNotification>> consoleNotifications() {
-    return OpenShiftHandlers.getOperation(ConsoleNotification.class, ConsoleNotificationList.class, this);
+    return resources(ConsoleNotification.class, ConsoleNotificationList.class);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, Resource<ConsoleYAMLSample>> consoleYAMLSamples() {
-    return OpenShiftHandlers.getOperation(ConsoleYAMLSample.class, ConsoleYAMLSampleList.class, this);
+    return resources(ConsoleYAMLSample.class, ConsoleYAMLSampleList.class);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleQuickStart, ConsoleQuickStartList, Resource<ConsoleQuickStart>> consoleQuickStarts() {
-    return OpenShiftHandlers.getOperation(ConsoleQuickStart.class, ConsoleQuickStartList.class, this);
+    return resources(ConsoleQuickStart.class, ConsoleQuickStartList.class);
   }
 
   @Override
   public NonNamespaceOperation<ConsolePlugin, ConsolePluginList, Resource<ConsolePlugin>> consolePlugins() {
-    return OpenShiftHandlers.getOperation(ConsolePlugin.class, ConsolePluginList.class, this);
+    return resources(ConsolePlugin.class, ConsolePluginList.class);
+  }
+
+  @Override
+  public OpenShiftConsoleAPIGroupClient newInstance() {
+    return new OpenShiftConsoleAPIGroupClient();
   }
 
 }

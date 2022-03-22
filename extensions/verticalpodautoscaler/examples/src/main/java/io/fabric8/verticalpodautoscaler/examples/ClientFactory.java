@@ -15,14 +15,15 @@
  */
 package io.fabric8.verticalpodautoscaler.examples;
 
-import io.fabric8.verticalpodautoscaler.client.DefaultVerticalPodAutoscalerClient;
-import io.fabric8.verticalpodautoscaler.client.VerticalPodAutoscalerClient;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.verticalpodautoscaler.client.VerticalPodAutoscalerClient;
 
 public class ClientFactory {
   private ClientFactory() {
     throw new IllegalStateException("Utility class");
   }
+
   public static VerticalPodAutoscalerClient newClient(String[] args) {
     ConfigBuilder config = new ConfigBuilder();
     for (int i = 0; i < args.length - 1; i++) {
@@ -49,7 +50,7 @@ public class ClientFactory {
         config = config.withNamespace(value);
       }
     }
-    return new DefaultVerticalPodAutoscalerClient(config.build());
+    return new KubernetesClientBuilder().withConfig(config.build()).build().adapt(VerticalPodAutoscalerClient.class);
   }
 
   public static String getOptions(String[] args, String name, String defaultValue) {
@@ -63,4 +64,3 @@ public class ClientFactory {
     return defaultValue;
   }
 }
-

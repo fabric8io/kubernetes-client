@@ -15,5 +15,3 @@
 #
 
 io.fabric8.volcano.client.VolcanoExtensionAdapter
-io.fabric8.volcano.client.V1beta1APIGroupExtensionAdapter
-

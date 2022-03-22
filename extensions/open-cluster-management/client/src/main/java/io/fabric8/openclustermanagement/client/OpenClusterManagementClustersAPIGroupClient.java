@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -32,19 +31,12 @@ import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedCluster
 import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementClustersAPIGroupDSL;
 
-public class OpenClusterManagementClustersAPIGroupClient extends ClientAdapter<OpenClusterManagementClustersAPIGroupDSL> implements OpenClusterManagementClustersAPIGroupDSL {
-
-  public OpenClusterManagementClustersAPIGroupClient() {
-    super();
-  }
-
-  public OpenClusterManagementClustersAPIGroupClient(Client client) {
-    super(client);
-  }
+public class OpenClusterManagementClustersAPIGroupClient extends ClientAdapter<OpenClusterManagementClustersAPIGroupClient>
+    implements OpenClusterManagementClustersAPIGroupDSL {
 
   @Override
-  protected OpenClusterManagementClustersAPIGroupDSL newInstance(Client client) {
-    return new OpenClusterManagementClustersAPIGroupClient(client);
+  public OpenClusterManagementClustersAPIGroupClient newInstance() {
+    return new OpenClusterManagementClustersAPIGroupClient();
   }
 
   @Override

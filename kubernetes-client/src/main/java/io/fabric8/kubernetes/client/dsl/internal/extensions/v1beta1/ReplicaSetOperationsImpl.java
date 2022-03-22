@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -42,24 +42,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
-  implements TimeoutImageEditReplacePatchable<ReplicaSet> {
+public class ReplicaSetOperationsImpl
+    extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
+    implements TimeoutImageEditReplacePatchable<ReplicaSet> {
 
-  public ReplicaSetOperationsImpl(ClientContext clientContext) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+  public ReplicaSetOperationsImpl(Client client) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("extensions")
-      .withApiGroupVersion("v1beta1")
-      .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);
+        .withApiGroupVersion("v1beta1")
+        .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);
   }
 
   @Override
   public ReplicaSetOperationsImpl newInstance(OperationContext context) {
     return new ReplicaSetOperationsImpl(rollingOperationContext, context);
   }
-  
+
   @Override
   public ReplicaSetOperationsImpl newInstance(RollingOperationContext context) {
     return new ReplicaSetOperationsImpl(context, this.context);
@@ -130,7 +131,8 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public RollingUpdater<ReplicaSet, ReplicaSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new ReplicaSetRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new ReplicaSetRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
+        config.getLoggingInterval());
   }
 
   @Override
@@ -146,7 +148,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public long getObservedGeneration(ReplicaSet current) {
     return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
+        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
   }
 
   @Override
@@ -167,11 +169,13 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
     ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
-      getReplicaSetSelectorLabels(replicaSet), isPretty, rollingOperationContext.getLogWaitTimeout(), rollingOperationContext.getContainerId());
+        getReplicaSetSelectorLabels(replicaSet), isPretty, rollingOperationContext.getLogWaitTimeout(),
+        rollingOperationContext.getContainerId());
   }
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override

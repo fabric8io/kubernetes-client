@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
-public class DefaultTektonClient extends ClientAdapter<NamespacedTektonClient>
+public class DefaultTektonClient extends ExtensionRootClientAdapter<DefaultTektonClient>
     implements NamespacedTektonClient, SupportTestingClient {
 
   public DefaultTektonClient() {
@@ -41,7 +41,7 @@ public class DefaultTektonClient extends ClientAdapter<NamespacedTektonClient>
   }
 
   @Override
-  protected NamespacedTektonClient newInstance(Client client) {
+  protected DefaultTektonClient newInstance(Client client) {
     return new DefaultTektonClient(client);
   }
 

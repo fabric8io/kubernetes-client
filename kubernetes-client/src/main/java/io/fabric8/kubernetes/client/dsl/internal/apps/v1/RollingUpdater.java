@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodCondition;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -61,18 +61,17 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
-  protected final ClientContext clientContext;
+  protected final Client client;
   protected final String namespace;
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
-  protected RollingUpdater(ClientContext clientContext, String namespace) {
-    this(clientContext, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
+  protected RollingUpdater(Client client, String namespace) {
+    this(client, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  protected RollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis,
-      long loggingIntervalMillis) {
-    this.clientContext = clientContext;
+  protected RollingUpdater(Client client, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    this.client = client;
     this.namespace = namespace;
     this.rollingTimeoutMillis = rollingTimeoutMillis;
     this.loggingIntervalMillis = loggingIntervalMillis;
@@ -266,7 +265,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   protected abstract Operation<T, L, RollableScalableResource<T>> resources();
 
   protected Operation<Pod, PodList, PodResource<Pod>> pods() {
-    return new PodOperationsImpl(clientContext);
+    return new PodOperationsImpl(client);
   }
 
   protected FilterWatchListDeletable<Pod, PodList> selectedPodLister(LabelSelector selector) {

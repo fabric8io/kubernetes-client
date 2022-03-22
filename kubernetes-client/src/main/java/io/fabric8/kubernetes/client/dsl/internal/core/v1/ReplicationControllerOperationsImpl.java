@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -42,22 +42,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>>
-  implements TimeoutImageEditReplacePatchable<ReplicationController> {
+public class ReplicationControllerOperationsImpl extends
+    RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>>
+    implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
-  public ReplicationControllerOperationsImpl(ClientContext clientContext) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+  public ReplicationControllerOperationsImpl(Client client) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context, OperationContext superContext) {
-    super(context, superContext.withPlural("replicationcontrollers"), ReplicationController.class, ReplicationControllerList.class);
+    super(context, superContext.withPlural("replicationcontrollers"), ReplicationController.class,
+        ReplicationControllerList.class);
   }
 
   @Override
   public ReplicationControllerOperationsImpl newInstance(OperationContext context) {
     return new ReplicationControllerOperationsImpl(rollingOperationContext, context);
   }
-  
+
   @Override
   public ReplicationControllerOperationsImpl newInstance(RollingOperationContext context) {
     return new ReplicationControllerOperationsImpl(context, this.context);
@@ -65,12 +67,14 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public ReplicationController withReplicas(int count) {
-      return cascading(false).accept(r -> r.getSpec().setReplicas(count));
+    return cascading(false).accept(r -> r.getSpec().setReplicas(count));
   }
 
   @Override
-  public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new ReplicationControllerRollingUpdater(context, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+  public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout,
+      TimeUnit rollingTimeUnit) {
+    return new ReplicationControllerRollingUpdater(context.getClient(), namespace, rollingTimeUnit.toMillis(rollingTimeout),
+        config.getLoggingInterval());
   }
 
   @Override
@@ -86,7 +90,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   @Override
   public long getObservedGeneration(ReplicationController current) {
     return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
+        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
   }
 
   @Override
@@ -141,11 +145,13 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
     ReplicationController rc = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),
-      getReplicationControllerPodLabels(rc), isPretty, rollingOperationContext.getLogWaitTimeout(), rollingOperationContext.getContainerId());
+        getReplicationControllerPodLabels(rc), isPretty, rollingOperationContext.getLogWaitTimeout(),
+        rollingOperationContext.getContainerId());
   }
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override
@@ -175,12 +181,13 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public ReplicationController undo() {
-    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() +"\"");
+    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() + "\"");
   }
 
   static Map<String, String> getReplicationControllerPodLabels(ReplicationController replicationController) {
     Map<String, String> labels = new HashMap<>();
-    if (replicationController != null && replicationController.getSpec() != null && replicationController.getSpec().getSelector() != null) {
+    if (replicationController != null && replicationController.getSpec() != null
+        && replicationController.getSpec().getSelector() != null) {
       labels.putAll(replicationController.getSpec().getSelector());
     }
     return labels;

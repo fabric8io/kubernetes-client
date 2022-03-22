@@ -14,5 +14,3 @@
 # limitations under the License.
 #
 io.fabric8.camelk.client.CamelKExtensionAdapter
-io.fabric8.camelk.client.V1APIGroupExtensionAdapter
-io.fabric8.camelk.client.V1alpha1APIGroupExtensionAdapter

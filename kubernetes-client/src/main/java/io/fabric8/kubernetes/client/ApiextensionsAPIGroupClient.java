@@ -16,16 +16,10 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class ApiextensionsAPIGroupClient extends BaseClient implements ApiextensionsAPIGroupDSL {
-  public ApiextensionsAPIGroupClient() {
-    super();
-  }
-
-  public ApiextensionsAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
-
+public class ApiextensionsAPIGroupClient extends ClientAdapter<ApiextensionsAPIGroupClient>
+    implements ApiextensionsAPIGroupDSL {
 
   @Override
   public V1ApiextensionAPIGroupDSL v1() {
@@ -35,5 +29,10 @@ public class ApiextensionsAPIGroupClient extends BaseClient implements Apiextens
   @Override
   public V1beta1ApiextensionAPIGroupDSL v1beta1() {
     return adapt(V1beta1ApiextensionsAPIGroupClient.class);
+  }
+
+  @Override
+  public ApiextensionsAPIGroupClient newInstance() {
+    return new ApiextensionsAPIGroupClient();
   }
 }

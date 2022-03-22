@@ -29,39 +29,37 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {
-
-  public StorageAPIGroupClient() {
-    super();
-  }
-
-  public StorageAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class StorageAPIGroupClient extends ClientAdapter<StorageAPIGroupClient> implements StorageAPIGroupDSL {
 
   @Override
   public MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses() {
-    return Handlers.getOperation(StorageClass.class, StorageClassList.class, this);
+    return resources(StorageClass.class, StorageClassList.class);
   }
 
   @Override
   public NonNamespaceOperation<CSIDriver, CSIDriverList, Resource<CSIDriver>> csiDrivers() {
-    return Handlers.getOperation(CSIDriver.class, CSIDriverList.class, this);
+    return resources(CSIDriver.class, CSIDriverList.class);
   }
 
   @Override
   public NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes() {
-    return Handlers.getOperation(CSINode.class, CSINodeList.class, this);
+    return resources(CSINode.class, CSINodeList.class);
   }
 
   @Override
   public MixedOperation<CSIStorageCapacity, CSIStorageCapacityList, Resource<CSIStorageCapacity>> csiStorageCapacities() {
-    return Handlers.getOperation(CSIStorageCapacity.class, CSIStorageCapacityList.class, this);
+    return resources(CSIStorageCapacity.class, CSIStorageCapacityList.class);
   }
 
   @Override
   public NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments() {
-    return Handlers.getOperation(VolumeAttachment.class, VolumeAttachmentList.class, this);
+    return resources(VolumeAttachment.class, VolumeAttachmentList.class);
+  }
+
+  @Override
+  public StorageAPIGroupClient newInstance() {
+    return new StorageAPIGroupClient();
   }
 }

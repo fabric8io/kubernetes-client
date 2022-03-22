@@ -15,6 +15,10 @@
  */
 package io.fabric8.certmanager.client;
 
+import io.fabric8.certmanager.client.dsl.V1APIGroupDSL;
+import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
+import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
+import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
@@ -28,6 +32,14 @@ public class CertManagerExtensionAdapter implements ExtensionAdapter<CertManager
   @Override
   public CertManagerClient adapt(Client client) {
     return new DefaultCertManagerClient(client);
+  }
+
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(V1alpha2APIGroupDSL.class, new V1alpha2APIGroupClient());
+    factory.register(V1alpha3APIGroupDSL.class, new V1alpha3APIGroupClient());
+    factory.register(V1beta1APIGroupDSL.class, new V1beta1APIGroupClient());
+    factory.register(V1APIGroupDSL.class, new V1APIGroupClient());
   }
 
 }

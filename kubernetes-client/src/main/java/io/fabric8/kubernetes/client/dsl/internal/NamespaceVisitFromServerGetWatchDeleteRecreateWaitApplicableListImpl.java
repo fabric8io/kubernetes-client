@@ -24,9 +24,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
@@ -66,9 +64,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
-Waitable<List<HasMetadata>, HasMetadata>, Readiable {
-  
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl
+    implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
+    Waitable<List<HasMetadata>, HasMetadata>, Readiable {
+
   static class ChangeNamespace extends TypedVisitor<ObjectMetaBuilder> {
 
     private final String explicitNamespace;
@@ -83,62 +82,64 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
+  private static final Logger LOGGER = LoggerFactory
+      .getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
   protected static final String EXPRESSION = "expression";
   protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   private final NamespaceVisitOperationContext namespaceVisitOperationContext;
   private OperationContext context;
-  
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
+
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context,
+      NamespaceVisitOperationContext namespaceVisitOperationContext) {
     this.namespaceVisitOperationContext = namespaceVisitOperationContext;
     this.context = context;
   }
-  
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(ClientContext clientContext, Object item) {
-    this(HasMetadataOperationsImpl.defaultContext(clientContext).withItem(item), new NamespaceVisitOperationContext());
+
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(Client client, Object item) {
+    this(HasMetadataOperationsImpl.defaultContext(client).withItem(item), new NamespaceVisitOperationContext());
   }
 
   @Override
   public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) {
     return waitUntilCondition(resource -> Objects.nonNull(resource) && getReadiness().isReady(resource), amount, timeUnit);
   }
-  
+
   List<HasMetadata> getItems() {
     Object item = context.getItem();
-    
+
     if (item instanceof InputStream) {
-      item = Serialization.unmarshal((InputStream)item, Collections.emptyMap());
+      item = Serialization.unmarshal((InputStream) item, Collections.emptyMap());
       context = context.withItem(item); // late realization of the inputstream
-    } 
-    
+    }
+
     return asHasMetadata(item).stream()
         .map(meta -> acceptVisitors(meta,
             Collections.emptyList(), namespaceVisitOperationContext.getExplicitNamespace(), this.context))
         .collect(Collectors.toList());
   }
-  
+
   @Override
   public List<NamespaceableResource<io.fabric8.kubernetes.api.model.HasMetadata>> getResources() {
     return getItems().stream()
         .map(this::getResource)
         .collect(Collectors.toList());
   }
-  
+
   /**
    * similar to {@link KubernetesClient#resource(HasMetadata)}, but we want to inherit the context
-   * The namespacing is the same - use the item namespace if available 
+   * The namespacing is the same - use the item namespace if available
    */
   NamespaceableResource<HasMetadata> getResource(HasMetadata meta) {
     OperationContext ctx = context.withItem(null);
-    ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, context);
-    return new NamespaceableResourceAdapter<>(meta, handler.operation(ctx, null).newInstance(ctx));
+    ResourceHandler<HasMetadata, ?> handler = context.getHandler(meta);
+    return new NamespaceableResourceAdapter<>(meta, handler.operation(ctx.getClient(), null).newInstance(ctx));
   }
 
   @Override
   public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
-                                              long amount,
-                                              TimeUnit timeUnit) {
+      long amount,
+      TimeUnit timeUnit) {
     List<? extends Resource<HasMetadata>> operations = getResources();
     if (operations.isEmpty()) {
       return Collections.emptyList();
@@ -152,10 +153,10 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       for (final Resource<HasMetadata> impl : operations) {
         futures.add(CompletableFuture.supplyAsync(() -> impl.waitUntilCondition(condition, amount, timeUnit)));
       }
-  
+
       final List<HasMetadata> results = new ArrayList<>();
       final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
-  
+
       for (int i = 0; i < items.size(); i++) {
         final HasMetadata meta = items.get(i);
         try {
@@ -170,11 +171,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
           throw KubernetesClientException.launderThrowable(e);
         }
       }
-  
+
       if (!itemsWithConditionNotMatched.isEmpty()) {
         throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
       }
-  
+
       return results;
     } finally {
       executor.shutdownNow();
@@ -182,7 +183,9 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   private static void logAsNotReady(Throwable t, HasMetadata meta) {
-    LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
+    LOGGER.warn(
+        "Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.",
+        meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
     LOGGER.debug("The error stack trace:", t);
   }
 
@@ -192,8 +195,9 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(Map<String, String> parameters) {
-    Object item = Serialization.unmarshal((InputStream)context.getItem(), parameters);
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(
+      Map<String, String> parameters) {
+    Object item = Serialization.unmarshal((InputStream) context.getItem(), parameters);
     return newInstance(context.withItem(item), namespaceVisitOperationContext);
   }
 
@@ -229,7 +233,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   @Override
   public boolean delete() {
-    for (Resource<HasMetadata> impl :  getResources()) {
+    for (Resource<HasMetadata> impl : getResources()) {
       if (!impl.delete()) {
         return false;
       }
@@ -244,7 +248,8 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
-    return newInstance(context.withNamespace(explicitNamespace), namespaceVisitOperationContext.withExplicitNamespace(explicitNamespace));
+    return newInstance(context.withNamespace(explicitNamespace),
+        namespaceVisitOperationContext.withExplicitNamespace(explicitNamespace));
   }
 
   @Override
@@ -256,7 +261,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   public Applicable<List<HasMetadata>> deletingExisting() {
     return newInstance(context, namespaceVisitOperationContext.withDeletingExisting(true));
   }
-  
+
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor... visitors) {
     return newInstance(context.withItem(getItems().stream()
@@ -264,18 +269,19 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         .collect(Collectors.toList())), namespaceVisitOperationContext);
   }
 
-  @Override public CascadingDeletable<List<HasMetadata>> withGracePeriod(long gracePeriodSeconds)
-  {
+  @Override
+  public CascadingDeletable<List<HasMetadata>> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds), namespaceVisitOperationContext);
   }
 
-  @Override public CascadingDeletable<List<HasMetadata>> withPropagationPolicy(DeletionPropagation propagationPolicy)
-  {
+  @Override
+  public CascadingDeletable<List<HasMetadata>> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy), namespaceVisitOperationContext);
   }
 
   @Override
-  public Waitable<List<HasMetadata>, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
+  public Waitable<List<HasMetadata>, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit,
+      double backoffMultiplier) {
     return this;
   }
 
@@ -297,9 +303,9 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     } else if (item instanceof HasMetadata) {
       result.add((HasMetadata) item);
     } else if (item instanceof String) {
-      return asHasMetadata(Serialization.unmarshal((String)item));
+      return asHasMetadata(Serialization.unmarshal((String) item));
     } else if (item instanceof Collection) {
-      for (Object o : (Collection)item) {
+      for (Object o : (Collection) item) {
         if (o instanceof HasMetadata) {
           result.add((HasMetadata) o);
         }
@@ -309,14 +315,15 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
     return result;
   }
-  
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
+
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context,
+      NamespaceVisitOperationContext namespaceVisitOperationContext) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context, namespaceVisitOperationContext);
   }
-  
-  static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace, OperationContext context) {
-    ResourceHandler<HasMetadata, ?> h = handlerOf(item, context);
-    VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
+
+  static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace,
+      OperationContext context) {
+    VisitableBuilder<HasMetadata, ?> builder = context.getHandler(item).edit(item);
 
     //Let's apply any visitor that might have been specified.
     for (Visitor v : visitors) {
@@ -326,10 +333,6 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       builder.accept(new ChangeNamespace(explicitNamespace));
     }
     return builder.build();
-  }
-
-  static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, OperationContext context) {
-    return Handlers.get(item, new BaseClient(context));
   }
 
   @Override

@@ -41,7 +41,7 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
   }
 
   @Override
-  public void registerHandlers(HandlerFactory factory) {
+  public void registerResources(ResourceFactory factory) {
     factory.register(ClusterServiceBroker.class, new ClusterServiceBrokerOperationsImpl());
     factory.register(ClusterServiceClass.class, new ClusterServiceClassOperationsImpl());
     factory.register(ClusterServicePlan.class, new ClusterServicePlanOperationsImpl());

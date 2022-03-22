@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
@@ -210,7 +212,7 @@ class BaseOperationTest {
   void testGetWriteOperationUrlWithDryRunEnabled() throws MalformedURLException {
     // Given
     BaseOperation baseOp = new BaseOperation(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+        .withClient(mockClient(null, new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build()))
         .withPlural("pods")
         .withDryRun(true));
     baseOp.setType(Pod.class);
@@ -228,7 +230,7 @@ class BaseOperationTest {
   void testGetWriteOperationUrlWithDryRunDisabled() throws MalformedURLException {
     // Given
     BaseOperation baseOp = new BaseOperation(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+        .withClient(mockClient(null, new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build()))
         .withPlural("pods"));
     baseOp.setType(Pod.class);
     baseOp.setListType(PodList.class);
@@ -270,10 +272,10 @@ class BaseOperationTest {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default").build())
+        .withClient(mockClient(mockClient,
+            new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default").build()))
         .withPlural("pods")
-        .withName("test-pod")
-        .withHttpClient(mockClient));
+        .withName("test-pod"));
     baseOp.setType(Pod.class);
 
     // When
@@ -292,11 +294,11 @@ class BaseOperationTest {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
-            .withRequestRetryBackoffLimit(3).build())
+        .withClient(mockClient(mockClient,
+            new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
+                .withRequestRetryBackoffLimit(3).build()))
         .withPlural("pods")
-        .withName("test-pod")
-        .withHttpClient(mockClient));
+        .withName("test-pod"));
     baseOp.setType(Pod.class);
 
     // When
@@ -315,11 +317,11 @@ class BaseOperationTest {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
-            .withRequestRetryBackoffLimit(3).build())
+        .withClient(mockClient(mockClient,
+            new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
+                .withRequestRetryBackoffLimit(3).build()))
         .withPlural("pods")
-        .withName("test-pod")
-        .withHttpClient(mockClient));
+        .withName("test-pod"));
     baseOp.setType(Pod.class);
 
     // When
@@ -333,7 +335,7 @@ class BaseOperationTest {
   @Test
   void testMissingNamespace() throws MalformedURLException, IOException {
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<>(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+        .withClient(mockClient(null, new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build()))
         .withNamespace(null)
         .withPlural("pods")
         .withName("test-pod"));
@@ -354,10 +356,9 @@ class BaseOperationTest {
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
     CompletableFuture<List<Pod>> future = new CompletableFuture<>();
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+        .withClient(mockClient(mockClient, new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build()))
         .withPlural("pods")
-        .withName("test-pod")
-        .withHttpClient(mockClient)) {
+        .withName("test-pod")) {
 
       @Override
       public CompletableFuture<List<Pod>> informOnCondition(Predicate condition) {
@@ -377,5 +378,12 @@ class BaseOperationTest {
 
     // Then
     assertTrue(future.isCancelled());
+  }
+
+  private Client mockClient(HttpClient httpClient, Config config) {
+    Client client = Mockito.mock(Client.class);
+    Mockito.when(client.getHttpClient()).thenReturn(httpClient);
+    Mockito.when(client.getConfiguration()).thenReturn(config);
+    return client;
   }
 }

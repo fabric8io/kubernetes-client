@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
@@ -31,7 +31,7 @@ import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
 
-public class DefaultVolumeSnapshotClient extends ClientAdapter<NamespacedVolumeSnapshotClient>
+public class DefaultVolumeSnapshotClient extends ExtensionRootClientAdapter<DefaultVolumeSnapshotClient>
     implements NamespacedVolumeSnapshotClient, SupportTestingClient {
 
   public DefaultVolumeSnapshotClient() {
@@ -47,7 +47,7 @@ public class DefaultVolumeSnapshotClient extends ClientAdapter<NamespacedVolumeS
   }
 
   @Override
-  protected NamespacedVolumeSnapshotClient newInstance(Client client) {
+  protected DefaultVolumeSnapshotClient newInstance(Client client) {
     return new DefaultVolumeSnapshotClient(client);
   }
 

@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.osgi;
 
+import io.fabric8.kubernetes.api.model.APIGroup;
+import io.fabric8.kubernetes.api.model.APIGroupList;
+import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
@@ -58,9 +61,8 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
-import io.fabric8.kubernetes.client.Adapters;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
-import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -103,6 +105,7 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -155,9 +158,9 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_TIMEOUT_S
     @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
     @Reference(referenceInterface = OAuthTokenProvider.class, cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind = "unbindOAuthTokenProvider")
 })
-public class ManagedKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
+public class ManagedKubernetesClient implements NamespacedKubernetesClient {
 
-  private NamespacedKubernetesClient delegate;
+  private DefaultKubernetesClient delegate;
 
   private OAuthTokenProvider provider;
 
@@ -526,7 +529,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public LeaderElectorBuilder<NamespacedKubernetesClient> leaderElector() {
+  public LeaderElectorBuilder<? extends NamespacedKubernetesClient> leaderElector() {
     return delegate.leaderElector();
   }
 
@@ -587,11 +590,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   public void bindExtensionAdapter(ExtensionAdapter adapter) {
-    Adapters.register(adapter);
+    delegate.getAdapters().register(adapter);
   }
 
   public void unbindExtensionAdapter(ExtensionAdapter adapter) {
-    Adapters.unregister(adapter);
+    delegate.getAdapters().unregister(adapter);
   }
 
   public void bindOAuthTokenProvider(OAuthTokenProvider provider) {
@@ -633,6 +636,47 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       String apiVersion, String kind) {
     return delegate.genericKubernetesResources(apiVersion, kind);
+  }
+
+  @Override
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    return delegate.isAdaptable(type);
+  }
+
+  @Override
+  public <C extends Client> C adapt(Class<C> type) {
+    return delegate.adapt(type);
+  }
+
+  @Override
+  public boolean supportsApiPath(String path) {
+    return delegate.supportsApiPath(path);
+  }
+
+  @Override
+  public APIGroupList getApiGroups() {
+    return delegate.getApiGroups();
+  }
+
+  @Override
+  public APIGroup getApiGroup(String name) {
+    return delegate.getApiGroup(name);
+  }
+
+  @Override
+  public APIResourceList getApiResources(String groupVersion) {
+    return delegate.getApiResources(groupVersion);
+  }
+
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
+      Class<T> resourceType, Class<L> listClass, Class<R> resourceClass) {
+    return delegate.resources(resourceType, listClass, resourceClass);
+  }
+
+  @Override
+  public HttpClient getHttpClient() {
+    return delegate.getHttpClient();
   }
 
 }

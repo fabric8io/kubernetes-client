@@ -27,34 +27,32 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
-
-  public RbacAPIGroupClient() {
-    super();
-  }
-
-  public RbacAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class RbacAPIGroupClient extends ClientAdapter<RbacAPIGroupClient> implements RbacAPIGroupDSL {
 
   @Override
   public MixedOperation<Role, RoleList, Resource<Role>> roles() {
-    return Handlers.getOperation(Role.class, RoleList.class, this);
+    return resources(Role.class, RoleList.class);
   }
 
   @Override
   public MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings() {
-    return Handlers.getOperation(RoleBinding.class, RoleBindingList.class, this);
+    return resources(RoleBinding.class, RoleBindingList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
-    return Handlers.getOperation(ClusterRole.class, ClusterRoleList.class, this);
+    return resources(ClusterRole.class, ClusterRoleList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
-    return Handlers.getOperation(ClusterRoleBinding.class, ClusterRoleBindingList.class, this);
+    return resources(ClusterRoleBinding.class, ClusterRoleBindingList.class);
+  }
+
+  @Override
+  public RbacAPIGroupClient newInstance() {
+    return new RbacAPIGroupClient();
   }
 }

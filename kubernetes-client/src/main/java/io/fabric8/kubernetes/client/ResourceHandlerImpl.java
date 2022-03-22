@@ -30,21 +30,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
 class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V>> implements ResourceHandler<T, V> {
-  
+
   private final ResourceDefinitionContext context;
   private final Class<T> type;
   private final Class<V> builderClass;
   private final Class<? extends KubernetesResourceList<T>> defaultListClass;
-  private final Function<ClientContext, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
-  
-  ResourceHandlerImpl(Class<T> type, Function<ClientContext, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
+  private final Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
+
+  ResourceHandlerImpl(Class<T> type, Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
     this.type = type;
     this.context = ResourceDefinitionContext.fromResourceType(type);
     this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
     this.defaultListClass = (Class<? extends KubernetesResourceList<T>>) KubernetesResourceUtil.inferListType(type);
     this.operationConstructor = operationConstructor;
   }
-  
+
   ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass, ResourceDefinitionContext context) {
     this.type = type;
     this.context = context;
@@ -52,7 +52,7 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
     this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
     this.operationConstructor = null;
   }
-  
+
   @Override
   public V edit(T item) {
     if (this.builderClass == null) {
@@ -67,19 +67,21 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   }
 
   @Override
-  public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(ClientContext clientContext, Class<L> listType) {
+  public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(Client client,
+      Class<L> listType) {
     if (operationConstructor != null) {
       if (listType != null && !listType.isAssignableFrom(defaultListClass)) {
-        throw new IllegalArgumentException(String.format("Handler type %s with list %s not compatible with %s", type, defaultListClass.getName(), listType.getName()));
+        throw new IllegalArgumentException(String.format("Handler type %s with list %s not compatible with %s", type,
+            defaultListClass.getName(), listType.getName()));
       }
-      return (HasMetadataOperation<T, L, Resource<T>>) operationConstructor.apply(clientContext);
+      return (HasMetadataOperation<T, L, Resource<T>>) operationConstructor.apply(client);
     }
-    return new HasMetadataOperationsImpl<>(clientContext, context, type, (Class)Utils.getNonNullOrElse(listType, defaultListClass));
+    return new HasMetadataOperationsImpl<>(client, context, type, (Class) Utils.getNonNullOrElse(listType, defaultListClass));
   }
-  
+
   @Override
   public boolean hasOperation() {
     return operationConstructor != null;
   }
-  
+
 }

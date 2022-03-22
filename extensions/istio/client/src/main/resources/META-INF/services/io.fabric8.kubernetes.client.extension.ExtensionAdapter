@@ -15,5 +15,3 @@
 #
 
 io.fabric8.istio.client.IstioExtensionAdapter
-io.fabric8.istio.client.V1beta1APIGroupExtensionAdapter
-io.fabric8.istio.client.V1alpha3APIGroupExtensionAdapter

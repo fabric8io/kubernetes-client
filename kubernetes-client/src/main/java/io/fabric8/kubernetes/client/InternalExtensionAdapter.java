@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.internal.patchmixins;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildSpec;
+package io.fabric8.kubernetes.client;
 
-public abstract class BuildMixIn extends Build {
-  @JsonIgnore
-  private BuildSpec spec;
+/**
+ * TODO: this can be removed if the extension api is opened up to whole operations
+ */
+public interface InternalExtensionAdapter {
 
-  @Override
-  @JsonIgnore
-  public abstract BuildSpec getSpec();
+  void registerHandlers(Handlers handlers);
+
 }

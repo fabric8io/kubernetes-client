@@ -19,15 +19,14 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfig;
-import io.fabric8.kubernetes.client.SimpleClientContext;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
@@ -164,20 +163,11 @@ import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
 import io.fabric8.openshift.client.dsl.internal.apps.DeploymentConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.authorization.ClusterRoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.authorization.RoleBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.authorization.RoleOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.core.NetworkAttachmentDefinitionOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAccessTokenOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAuthorizeTokenOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.oauth.OAuthClientOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstraintsOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 
@@ -198,11 +188,11 @@ import java.util.function.Supplier;
  */
 @Deprecated
 public class DefaultOpenShiftClient extends DefaultKubernetesClient
-    implements NamespacedOpenShiftClient, OpenshiftClientContext {
+    implements NamespacedOpenShiftClient {
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
-  private final URL openShiftUrl;
+  private URL openShiftUrl;
 
   public DefaultOpenShiftClient() {
     this(new OpenShiftConfigBuilder().build());
@@ -221,16 +211,16 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
   }
 
   public DefaultOpenShiftClient(HttpClient httpClient, OpenShiftConfig config) {
-    this(new SimpleClientContext(config, httpClient));
+    super(httpClient, config);
   }
 
-  public DefaultOpenShiftClient(ClientContext clientContext) {
-    super(clientContext);
-    try {
-      this.openShiftUrl = new URL(getConfiguration().getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Could not create client", e);
-    }
+  DefaultOpenShiftClient(Client client) {
+    super(client.getConfiguration(), client.adapt(BaseClient.class));
+  }
+
+  DefaultOpenShiftClient(Config config, DefaultOpenShiftClient client) {
+    super(config, client);
+    this.openShiftUrl = client.openShiftUrl;
   }
 
   public static DefaultOpenShiftClient fromConfig(String config) {
@@ -308,7 +298,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public MixedOperation<CredentialsRequest, CredentialsRequestList, Resource<CredentialsRequest>> credentialsRequests() {
-    return OpenShiftHandlers.getOperation(CredentialsRequest.class, CredentialsRequestList.class, this);
+    return resources(CredentialsRequest.class, CredentialsRequestList.class);
   }
 
   @Override
@@ -318,54 +308,54 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public MixedOperation<Group, GroupList, Resource<Group>> groups() {
-    return new GroupOperationsImpl(this);
+    return resources(Group.class, GroupList.class);
   }
 
   @Override
   public NonNamespaceOperation<HelmChartRepository, HelmChartRepositoryList, Resource<HelmChartRepository>> helmChartRepositories() {
-    return OpenShiftHandlers.getOperation(HelmChartRepository.class, HelmChartRepositoryList.class, this);
+    return resources(HelmChartRepository.class, HelmChartRepositoryList.class);
   }
 
   @Override
   public NonNamespaceOperation<Image, ImageList, Resource<Image>> images() {
-    return OpenShiftHandlers.getOperation(Image.class, ImageList.class, this);
+    return resources(Image.class, ImageList.class);
   }
 
   @Override
   public MixedOperation<ImageTag, ImageTagList, Resource<ImageTag>> imageTags() {
-    return OpenShiftHandlers.getOperation(ImageTag.class, ImageTagList.class, this);
+    return resources(ImageTag.class, ImageTagList.class);
   }
 
   @Override
   public MixedOperation<ImageStream, ImageStreamList, Resource<ImageStream>> imageStreams() {
-    return OpenShiftHandlers.getOperation(ImageStream.class, ImageStreamList.class, this);
+    return resources(ImageStream.class, ImageStreamList.class);
   }
 
   @Override
   public MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags() {
-    return OpenShiftHandlers.getOperation(ImageStreamTag.class, ImageStreamTagList.class, this);
+    return resources(ImageStreamTag.class, ImageStreamTagList.class);
   }
 
   @Override
   public NamespacedInOutCreateable<ImageStreamImport, ImageStreamImport> imageStreamImports() {
-    return Handlers.getNamespacedHasMetadataCreateOnlyOperation(ImageStreamImport.class, this);
+    return getHandlers().getNamespacedHasMetadataCreateOnlyOperation(ImageStreamImport.class, this);
   }
 
   @Override
   public NamespacedInOutCreateable<ImageStreamMapping, ImageStreamMapping> imageStreamMappings() {
-    return Handlers.getNamespacedHasMetadataCreateOnlyOperation(ImageStreamMapping.class, this);
+    return getHandlers().getNamespacedHasMetadataCreateOnlyOperation(ImageStreamMapping.class, this);
   }
 
   @Override
   public Namespaceable<Nameable<? extends Gettable<ImageStreamImage>>> imageStreamImages() {
-    HasMetadataOperation<ImageStreamImage, ?, Resource<ImageStreamImage>> operation = Handlers
+    HasMetadataOperation<ImageStreamImage, ?, Resource<ImageStreamImage>> operation = getHandlers()
         .getNonListingOperation(ImageStreamImage.class, this);
     return operation::inNamespace;
   }
 
   @Override
   public NameableCreateOrDeleteable imageSignatures() {
-    HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = Handlers
+    HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = getHandlers()
         .getNonListingOperation(ImageSignature.class, this);
     return new NameableCreateOrDeleteable() {
 
@@ -393,28 +383,28 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs() {
-    return OpenShiftHandlers.getOperation(io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config.class,
-        ConfigList.class, this);
+    return resources(io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config.class,
+        ConfigList.class);
   }
 
   @Override
   public MixedOperation<NetworkAttachmentDefinition, NetworkAttachmentDefinitionList, Resource<NetworkAttachmentDefinition>> networkAttachmentDefinitions() {
-    return new NetworkAttachmentDefinitionOperationsImpl(this);
+    return resources(NetworkAttachmentDefinition.class, NetworkAttachmentDefinitionList.class);
   }
 
   @Override
   public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, Resource<OAuthAccessToken>> oAuthAccessTokens() {
-    return new OAuthAccessTokenOperationsImpl(this);
+    return resources(OAuthAccessToken.class, OAuthAccessTokenList.class);
   }
 
   @Override
   public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, Resource<OAuthAuthorizeToken>> oAuthAuthorizeTokens() {
-    return new OAuthAuthorizeTokenOperationsImpl(this);
+    return resources(OAuthAuthorizeToken.class, OAuthAuthorizeTokenList.class);
   }
 
   @Override
   public NonNamespaceOperation<OAuthClient, OAuthClientList, Resource<OAuthClient>> oAuthClients() {
-    return new OAuthClientOperationsImpl(this);
+    return resources(OAuthClient.class, OAuthClientList.class);
   }
 
   @Override
@@ -424,17 +414,17 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<OAuthClientAuthorization, OAuthClientAuthorizationList, Resource<OAuthClientAuthorization>> oAuthClientAuthorizations() {
-    return OpenShiftHandlers.getOperation(OAuthClientAuthorization.class, OAuthClientAuthorizationList.class, this);
+    return resources(OAuthClientAuthorization.class, OAuthClientAuthorizationList.class);
   }
 
   @Override
   public MixedOperation<OperatorPKI, OperatorPKIList, Resource<OperatorPKI>> operatorPKIs() {
-    return OpenShiftHandlers.getOperation(OperatorPKI.class, OperatorPKIList.class, this);
+    return resources(OperatorPKI.class, OperatorPKIList.class);
   }
 
   @Override
   public MixedOperation<EgressRouter, EgressRouterList, Resource<EgressRouter>> egressRouters() {
-    return OpenShiftHandlers.getOperation(EgressRouter.class, EgressRouterList.class, this);
+    return resources(EgressRouter.class, EgressRouterList.class);
   }
 
   @Override
@@ -461,12 +451,12 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<RangeAllocation, RangeAllocationList, Resource<RangeAllocation>> rangeAllocations() {
-    return OpenShiftHandlers.getOperation(RangeAllocation.class, RangeAllocationList.class, this);
+    return resources(RangeAllocation.class, RangeAllocationList.class);
   }
 
   @Override
   public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, Resource<SecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(this);
+    return resources(SecurityContextConstraints.class, SecurityContextConstraintsList.class);
   }
 
   @Override
@@ -476,7 +466,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public MixedOperation<Role, RoleList, Resource<Role>> roles() {
-    return new RoleOperationsImpl(this);
+    return resources(Role.class, RoleList.class);
   }
 
   @Override
@@ -486,7 +476,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public MixedOperation<Route, RouteList, Resource<Route>> routes() {
-    return OpenShiftHandlers.getOperation(Route.class, RouteList.class, this);
+    return resources(Route.class, RouteList.class);
   }
 
   @Override
@@ -496,7 +486,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances() {
-    return OpenShiftHandlers.getOperation(TemplateInstance.class, TemplateInstanceList.class, this);
+    return resources(TemplateInstance.class, TemplateInstanceList.class);
   }
 
   @Override
@@ -506,27 +496,27 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<BrokerTemplateInstance, BrokerTemplateInstanceList, Resource<BrokerTemplateInstance>> brokerTemplateInstances() {
-    return OpenShiftHandlers.getOperation(BrokerTemplateInstance.class, BrokerTemplateInstanceList.class, this);
+    return resources(BrokerTemplateInstance.class, BrokerTemplateInstanceList.class);
   }
 
   @Override
   public MixedOperation<User, UserList, Resource<User>> users() {
-    return new UserOperationsImpl(this);
+    return resources(User.class, UserList.class);
   }
 
   @Override
   public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
-    return new ClusterRoleBindingOperationsImpl(this);
+    return resources(ClusterRoleBinding.class, ClusterRoleBindingList.class);
   }
 
   @Override
   public MixedOperation<RoleBindingRestriction, RoleBindingRestrictionList, Resource<RoleBindingRestriction>> roleBindingRestrictions() {
-    return OpenShiftHandlers.getOperation(RoleBindingRestriction.class, RoleBindingRestrictionList.class, this);
+    return resources(RoleBindingRestriction.class, RoleBindingRestrictionList.class);
   }
 
   @Override
   public NamespacedOpenShiftClient inNamespace(String namespace) {
-    return new DefaultOpenShiftClient(createInNamespaceContext(namespace, false));
+    return new DefaultOpenShiftClient(createInNamespaceConfig(namespace, false), this);
   }
 
   @Override
@@ -608,32 +598,32 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces() {
-    return OpenShiftHandlers.getOperation(NetNamespace.class, NetNamespaceList.class, this);
+    return resources(NetNamespace.class, NetNamespaceList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, Resource<ClusterNetwork>> clusterNetworks() {
-    return OpenShiftHandlers.getOperation(ClusterNetwork.class, ClusterNetworkList.class, this);
+    return resources(ClusterNetwork.class, ClusterNetworkList.class);
   }
 
   @Override
   public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies() {
-    return OpenShiftHandlers.getOperation(EgressNetworkPolicy.class, EgressNetworkPolicyList.class, this);
+    return resources(EgressNetworkPolicy.class, EgressNetworkPolicyList.class);
   }
 
   @Override
   public NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets() {
-    return OpenShiftHandlers.getOperation(HostSubnet.class, HostSubnetList.class, this);
+    return resources(HostSubnet.class, HostSubnetList.class);
   }
 
   @Override
   public NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts() {
-    return OpenShiftHandlers.getOperation(APIRequestCount.class, APIRequestCountList.class, this);
+    return resources(APIRequestCount.class, APIRequestCountList.class);
   }
 
   @Override
   public MixedOperation<BareMetalHost, BareMetalHostList, Resource<BareMetalHost>> bareMetalHosts() {
-    return OpenShiftHandlers.getOperation(BareMetalHost.class, BareMetalHostList.class, this);
+    return resources(BareMetalHost.class, BareMetalHostList.class);
   }
 
   @Override
@@ -676,7 +666,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
-    return OpenShiftHandlers.getOperation(ClusterRole.class, ClusterRoleList.class, this);
+    return resources(ClusterRole.class, ClusterRoleList.class);
   }
 
   /**
@@ -699,17 +689,17 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public NonNamespaceOperation<Identity, IdentityList, Resource<Identity>> identities() {
-    return OpenShiftHandlers.getOperation(Identity.class, IdentityList.class, this);
+    return resources(Identity.class, IdentityList.class);
   }
 
   @Override
   public InOutCreateable<UserIdentityMapping, UserIdentityMapping> userIdentityMappings() {
-    return Handlers.getNonListingOperation(UserIdentityMapping.class, this);
+    return getHandlers().getNonListingOperation(UserIdentityMapping.class, this);
   }
 
   @Override
   public NonNamespaceOperation<UserOAuthAccessToken, UserOAuthAccessTokenList, Resource<UserOAuthAccessToken>> userOAuthAccessTokens() {
-    return OpenShiftHandlers.getOperation(UserOAuthAccessToken.class, UserOAuthAccessTokenList.class, this);
+    return resources(UserOAuthAccessToken.class, UserOAuthAccessTokenList.class);
   }
 
   @Override
@@ -735,18 +725,24 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
   }
 
   @Override
-  protected void adaptState() {
+  protected void setDerivedFields() {
     OpenShiftConfig wrapped = OpenShiftConfig.wrap(config);
     this.config = wrapped;
     HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
     this.httpClient = builder
         .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, wrapped))
         .build();
+    try {
+      this.openShiftUrl = new URL(wrapped.getOpenShiftUrl());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Could not create client", e);
+    }
+    super.setDerivedFields();
   }
 
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
-    return new DefaultOpenShiftClient(createInNamespaceContext(null, true));
+    return new DefaultOpenShiftClient(createInNamespaceConfig(null, true), this);
   }
 
   /**

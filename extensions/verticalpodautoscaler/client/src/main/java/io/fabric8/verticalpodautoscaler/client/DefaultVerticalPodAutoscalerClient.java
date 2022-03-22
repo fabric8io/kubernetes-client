@@ -20,11 +20,11 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.verticalpodautoscaler.client.dsl.V1APIGroupDSL;
 
-public class DefaultVerticalPodAutoscalerClient extends ClientAdapter<NamespacedVerticalPodAutoscalerClient>
+public class DefaultVerticalPodAutoscalerClient extends ExtensionRootClientAdapter<DefaultVerticalPodAutoscalerClient>
     implements NamespacedVerticalPodAutoscalerClient, SupportTestingClient {
 
   public DefaultVerticalPodAutoscalerClient() {
@@ -40,7 +40,7 @@ public class DefaultVerticalPodAutoscalerClient extends ClientAdapter<Namespaced
   }
 
   @Override
-  protected NamespacedVerticalPodAutoscalerClient newInstance(Client client) {
+  protected DefaultVerticalPodAutoscalerClient newInstance(Client client) {
     return new DefaultVerticalPodAutoscalerClient(client);
   }
 

@@ -15,31 +15,30 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.tuned.v1.Profile;
 import io.fabric8.openshift.api.model.tuned.v1.ProfileList;
 import io.fabric8.openshift.api.model.tuned.v1.Tuned;
 import io.fabric8.openshift.api.model.tuned.v1.TunedList;
 import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 
-public class OpenShiftTunedAPIGroupClient extends BaseOpenShiftClient implements OpenShiftTunedAPIGroupDSL {
-  public OpenShiftTunedAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftTunedAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftTunedAPIGroupClient extends ClientAdapter<OpenShiftTunedAPIGroupClient>
+    implements OpenShiftTunedAPIGroupDSL {
 
   @Override
   public MixedOperation<Tuned, TunedList, Resource<Tuned>> tuneds() {
-    return OpenShiftHandlers.getOperation(Tuned.class, TunedList.class, this);
+    return resources(Tuned.class, TunedList.class);
   }
 
   @Override
   public MixedOperation<Profile, ProfileList, Resource<Profile>> profiles() {
-    return OpenShiftHandlers.getOperation(Profile.class, ProfileList.class, this);
+    return resources(Profile.class, ProfileList.class);
+  }
+
+  @Override
+  public OpenShiftTunedAPIGroupClient newInstance() {
+    return new OpenShiftTunedAPIGroupClient();
   }
 }

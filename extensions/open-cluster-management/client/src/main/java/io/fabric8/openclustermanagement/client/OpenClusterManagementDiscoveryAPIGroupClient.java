@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
@@ -25,19 +24,12 @@ import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryCo
 import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementDiscoveryAPIGroupDSL;
 
-public class OpenClusterManagementDiscoveryAPIGroupClient extends ClientAdapter<OpenClusterManagementDiscoveryAPIGroupDSL> implements OpenClusterManagementDiscoveryAPIGroupDSL {
-
-  public OpenClusterManagementDiscoveryAPIGroupClient() {
-    super();
-  }
-
-  public OpenClusterManagementDiscoveryAPIGroupClient(Client client) {
-    super(client);
-  }
+public class OpenClusterManagementDiscoveryAPIGroupClient extends ClientAdapter<OpenClusterManagementDiscoveryAPIGroupClient>
+    implements OpenClusterManagementDiscoveryAPIGroupDSL {
 
   @Override
-  protected OpenClusterManagementDiscoveryAPIGroupDSL newInstance(Client client) {
-    return new OpenClusterManagementDiscoveryAPIGroupClient(client);
+  public OpenClusterManagementDiscoveryAPIGroupClient newInstance() {
+    return new OpenClusterManagementDiscoveryAPIGroupClient();
   }
 
   @Override

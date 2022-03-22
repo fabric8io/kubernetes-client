@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.volcano.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
@@ -30,7 +30,7 @@ import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueList;
 
-public class DefaultVolcanoClient extends ClientAdapter<NamespacedVolcanoClient>
+public class DefaultVolcanoClient extends ExtensionRootClientAdapter<DefaultVolcanoClient>
     implements NamespacedVolcanoClient, SupportTestingClient {
 
   public DefaultVolcanoClient() {
@@ -46,7 +46,7 @@ public class DefaultVolcanoClient extends ClientAdapter<NamespacedVolcanoClient>
   }
 
   @Override
-  protected NamespacedVolcanoClient newInstance(Client client) {
+  protected DefaultVolcanoClient newInstance(Client client) {
     return new DefaultVolcanoClient(client);
   }
 

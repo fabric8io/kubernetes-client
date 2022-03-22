@@ -17,6 +17,7 @@ package io.fabric8.verticalpodautoscaler.client;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.verticalpodautoscaler.client.dsl.V1APIGroupDSL;
 
 public class VerticalPodAutoscalerExtensionAdapter implements ExtensionAdapter<VerticalPodAutoscalerClient> {
 
@@ -30,6 +31,11 @@ public class VerticalPodAutoscalerExtensionAdapter implements ExtensionAdapter<V
   @Override
   public VerticalPodAutoscalerClient adapt(Client client) {
     return new DefaultVerticalPodAutoscalerClient(client);
+  }
+
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(V1APIGroupDSL.class, new V1APIGroupClient());
   }
 
 }

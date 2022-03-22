@@ -22,16 +22,9 @@ import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroupDSL {
-
-  public NetworkAPIGroupClient() {
-    super();
-  }
-
-  public NetworkAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class NetworkAPIGroupClient extends ClientAdapter<NetworkAPIGroupClient> implements NetworkAPIGroupDSL {
 
   @Override
   public V1NetworkAPIGroupDSL v1() {
@@ -45,7 +38,7 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
 
   @Override
   public MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies() {
-    return Handlers.getOperation(NetworkPolicy.class, NetworkPolicyList.class, this);
+    return resources(NetworkPolicy.class, NetworkPolicyList.class);
   }
 
   @Override
@@ -55,6 +48,11 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
 
   @Override
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
-    return Handlers.getOperation(Ingress.class, IngressList.class, this);
+    return resources(Ingress.class, IngressList.class);
+  }
+
+  @Override
+  public NetworkAPIGroupClient newInstance() {
+    return new NetworkAPIGroupClient();
   }
 }

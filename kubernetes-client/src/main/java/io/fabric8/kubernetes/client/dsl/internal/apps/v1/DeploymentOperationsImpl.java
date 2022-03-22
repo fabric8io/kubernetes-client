@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -51,27 +51,28 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
-  implements TimeoutImageEditReplacePatchable<Deployment>  {
+public class DeploymentOperationsImpl
+    extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
+    implements TimeoutImageEditReplacePatchable<Deployment> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
 
-  public DeploymentOperationsImpl(ClientContext clientContext) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+  public DeploymentOperationsImpl(Client client) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public DeploymentOperationsImpl(RollingOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("apps")
-      .withApiGroupVersion("v1")
-      .withPlural("deployments"), Deployment.class, DeploymentList.class);
+        .withApiGroupVersion("v1")
+        .withPlural("deployments"), Deployment.class, DeploymentList.class);
   }
 
   @Override
   public DeploymentOperationsImpl newInstance(OperationContext context) {
     return new DeploymentOperationsImpl(rollingOperationContext, context);
   }
-  
+
   @Override
   public DeploymentOperationsImpl newInstance(RollingOperationContext context) {
     return new DeploymentOperationsImpl(context, this.context);
@@ -131,7 +132,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public RollingUpdater<Deployment, DeploymentList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new DeploymentRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new DeploymentRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
+        config.getLoggingInterval());
   }
 
   @Override
@@ -152,7 +154,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public long getObservedGeneration(Deployment current) {
     return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
+        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
   }
 
   @Override
@@ -163,7 +165,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       throw new KubernetesClientException("Existing replica set doesn't exist");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
-      throw new KubernetesClientException("updateImage(image) does not supported for multicontainer pods, use updateImage(Map<String, String>) instead");
+      throw new KubernetesClientException(
+          "updateImage(image) does not supported for multicontainer pods, use updateImage(Map<String, String>) instead");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
       throw new KubernetesClientException("Pod has no containers!");
@@ -193,7 +196,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     return sendPatchedObject(get(), deployment);
   }
 
-
   @Override
   public Deployment resume() {
     return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutResume());
@@ -222,7 +224,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     ReplicaSet latestReplicaSet = replicaSets.get(0);
     ReplicaSet previousRevisionReplicaSet = replicaSets.get(1);
     Deployment deployment = get();
-    deployment.getMetadata().getAnnotations().put(DEPLOYMENT_KUBERNETES_IO_REVISION, latestReplicaSet.getMetadata().getAnnotations().get(DEPLOYMENT_KUBERNETES_IO_REVISION));
+    deployment.getMetadata().getAnnotations().put(DEPLOYMENT_KUBERNETES_IO_REVISION,
+        latestReplicaSet.getMetadata().getAnnotations().get(DEPLOYMENT_KUBERNETES_IO_REVISION));
     deployment.getSpec().setTemplate(previousRevisionReplicaSet.getSpec().getTemplate());
 
     return sendPatchedObject(get(), deployment);
@@ -244,18 +247,22 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
           if (count == 0) {
             return true;
           }
-          throw new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available.");
+          throw new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: "
+              + checkName(getItem()) + " to scale. Resource is no longer available.");
         }
 
         replicasRef.set(deployment.getStatus().getReplicas());
         int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
         long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
-        long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
+        long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null
+            ? deployment.getStatus().getObservedGeneration()
+            : -1;
         if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
           return true;
         }
         LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
-          deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+            deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(),
+            namespace);
         return false;
       }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
@@ -282,7 +289,9 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
-      new RollingOperationContext(rollingOperationContext.getContainerId(), false, 0, null, rollingOperationContext.getLogWaitTimeout()), context.withName(null));
+        new RollingOperationContext(rollingOperationContext.getContainerId(), false, 0, null,
+            rollingOperationContext.getLogWaitTimeout()),
+        context.withName(null));
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
     for (ReplicaSet rs : rcList.getItems()) {
@@ -296,6 +305,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override
@@ -335,14 +345,15 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {
-    return new ReplicaSetOperationsImpl(context).inNamespace(getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
+    return new ReplicaSetOperationsImpl(context.getClient()).inNamespace(getNamespace())
+        .withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
   }
 
   static Map<String, String> getDeploymentSelectorLabels(Deployment deployment) {
     Map<String, String> labels = new HashMap<>();
     if (deployment != null && deployment.getSpec() != null &&
-      deployment.getSpec().getTemplate() != null &&
-      deployment.getSpec().getTemplate().getMetadata() != null) {
+        deployment.getSpec().getTemplate() != null &&
+        deployment.getSpec().getTemplate().getMetadata() != null) {
       labels.putAll(deployment.getSpec().getTemplate().getMetadata().getLabels());
     }
     return labels;

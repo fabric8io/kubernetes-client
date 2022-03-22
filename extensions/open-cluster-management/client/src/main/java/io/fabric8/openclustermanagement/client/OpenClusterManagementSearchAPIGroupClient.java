@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
@@ -25,19 +24,12 @@ import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.Search
 import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementSearchAPIGroupDSL;
 
-public class OpenClusterManagementSearchAPIGroupClient extends ClientAdapter<OpenClusterManagementSearchAPIGroupDSL> implements OpenClusterManagementSearchAPIGroupDSL {
-
-  public OpenClusterManagementSearchAPIGroupClient() {
-    super();
-  }
-
-  public OpenClusterManagementSearchAPIGroupClient(Client client) {
-    super(client);
-  }
+public class OpenClusterManagementSearchAPIGroupClient extends ClientAdapter<OpenClusterManagementSearchAPIGroupClient>
+    implements OpenClusterManagementSearchAPIGroupDSL {
 
   @Override
-  protected OpenClusterManagementSearchAPIGroupDSL newInstance(Client client) {
-    return new OpenClusterManagementSearchAPIGroupClient(client);
+  public OpenClusterManagementSearchAPIGroupClient newInstance() {
+    return new OpenClusterManagementSearchAPIGroupClient();
   }
 
   @Override

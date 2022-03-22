@@ -15,14 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
-public class AdmissionRegistrationAPIGroupClient extends BaseClient implements AdmissionRegistrationAPIGroupDSL {
-  public AdmissionRegistrationAPIGroupClient() {
-    super();
-  }
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-  public AdmissionRegistrationAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class AdmissionRegistrationAPIGroupClient extends ClientAdapter<AdmissionRegistrationAPIGroupClient>
+    implements AdmissionRegistrationAPIGroupDSL {
 
   @Override
   public V1AdmissionRegistrationAPIGroupDSL v1() {
@@ -32,5 +28,10 @@ public class AdmissionRegistrationAPIGroupClient extends BaseClient implements A
   @Override
   public V1beta1AdmissionRegistrationAPIGroupDSL v1beta1() {
     return adapt(V1beta1AdmissionRegistrationAPIGroupClient.class);
+  }
+
+  @Override
+  public AdmissionRegistrationAPIGroupClient newInstance() {
+    return new AdmissionRegistrationAPIGroupClient();
   }
 }

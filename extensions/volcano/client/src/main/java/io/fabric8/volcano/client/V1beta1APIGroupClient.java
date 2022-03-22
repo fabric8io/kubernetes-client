@@ -15,7 +15,6 @@
  */
 package io.fabric8.volcano.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
@@ -25,15 +24,11 @@ import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.scheduling.v1beta1.Queue;
 import io.fabric8.volcano.scheduling.v1beta1.QueueList;
 
-public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupDSL> implements V1beta1APIGroupDSL {
-
-  public V1beta1APIGroupClient(Client client) {
-    super(client);
-  }
+public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> implements V1beta1APIGroupDSL {
 
   @Override
-  protected V1beta1APIGroupDSL newInstance(Client client) {
-    return new V1beta1APIGroupClient(client);
+  public V1beta1APIGroupClient newInstance() {
+    return new V1beta1APIGroupClient();
   }
 
   @Override

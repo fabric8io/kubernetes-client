@@ -22,23 +22,23 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingW
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1AdmissionRegistrationAPIGroupClient extends BaseClient implements V1beta1AdmissionRegistrationAPIGroupDSL {
-  public V1beta1AdmissionRegistrationAPIGroupClient() {
-    super();
-  }
-
-  public V1beta1AdmissionRegistrationAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1beta1AdmissionRegistrationAPIGroupClient extends ClientAdapter<V1beta1AdmissionRegistrationAPIGroupClient>
+    implements V1beta1AdmissionRegistrationAPIGroupDSL {
 
   @Override
   public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
-    return Handlers.getOperation(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class, this);
+    return resources(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class);
   }
 
   @Override
   public NonNamespaceOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
-    return Handlers.getOperation(MutatingWebhookConfiguration.class, MutatingWebhookConfigurationList.class, this);
+    return resources(MutatingWebhookConfiguration.class, MutatingWebhookConfigurationList.class);
+  }
+
+  @Override
+  public V1beta1AdmissionRegistrationAPIGroupClient newInstance() {
+    return new V1beta1AdmissionRegistrationAPIGroupClient();
   }
 }

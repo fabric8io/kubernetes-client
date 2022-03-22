@@ -16,6 +16,9 @@
 
 package io.fabric8.openshift.client.osgi;
 
+import io.fabric8.kubernetes.api.model.APIGroup;
+import io.fabric8.kubernetes.api.model.APIGroupList;
+import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
@@ -29,6 +32,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
@@ -103,6 +107,8 @@ import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
@@ -259,7 +265,7 @@ import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYSTEM_P
 
 @Component(immediate = true, configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.OPTIONAL)
 @Service({ OpenShiftClient.class, NamespacedOpenShiftClient.class })
-public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
+public class ManagedOpenShiftClient implements NamespacedOpenShiftClient {
 
   private DefaultOpenShiftClient delegate;
 
@@ -1055,6 +1061,52 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public boolean isSupported() {
     return delegate.isSupported();
+  }
+
+  @Override
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    return delegate.isAdaptable(type);
+  }
+
+  @Override
+  public boolean supportsApiPath(String path) {
+    return delegate.supportsApiPath(path);
+  }
+
+  @Override
+  public APIGroupList getApiGroups() {
+    return delegate.getApiGroups();
+  }
+
+  @Override
+  public APIGroup getApiGroup(String name) {
+    return delegate.getApiGroup(name);
+  }
+
+  @Override
+  public APIResourceList getApiResources(String groupVersion) {
+    return delegate.getApiResources(groupVersion);
+  }
+
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
+      Class<T> resourceType, Class<L> listClass, Class<R> resourceClass) {
+    return delegate.resources(resourceType, listClass, resourceClass);
+  }
+
+  @Override
+  public HttpClient getHttpClient() {
+    return delegate.getHttpClient();
+  }
+
+  @Override
+  public <R extends KubernetesResource> boolean supports(Class<R> type) {
+    return delegate.supports(type);
+  }
+
+  @Override
+  public boolean hasApiGroup(String apiGroup, boolean exact) {
+    return delegate.hasApiGroup(apiGroup, exact);
   }
 
 }

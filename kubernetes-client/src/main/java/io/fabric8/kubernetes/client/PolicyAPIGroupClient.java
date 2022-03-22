@@ -24,21 +24,18 @@ import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDSL {
-
-  public PolicyAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class PolicyAPIGroupClient extends ClientAdapter<PolicyAPIGroupClient> implements PolicyAPIGroupDSL {
 
   @Override
   public MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> podDisruptionBudget() {
-    return Handlers.getOperation(PodDisruptionBudget.class, PodDisruptionBudgetList.class, this);
+    return resources(PodDisruptionBudget.class, PodDisruptionBudgetList.class);
   }
 
   @Override
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
-    return Handlers.getOperation(PodSecurityPolicy.class, PodSecurityPolicyList.class, this);
+    return resources(PodSecurityPolicy.class, PodSecurityPolicyList.class);
   }
 
   @Override
@@ -49,5 +46,10 @@ public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDS
   @Override
   public V1beta1PolicyAPIGroupDSL v1beta1() {
     return adapt(V1beta1PolicyAPIGroupClient.class);
+  }
+
+  @Override
+  public PolicyAPIGroupClient newInstance() {
+    return new PolicyAPIGroupClient();
   }
 }

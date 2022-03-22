@@ -26,18 +26,20 @@ public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuild
 
   /**
    * Edit the specified resource.
-   * @param item          The resource to edit.
-   * @return              The resource editor.
+   * 
+   * @param item The resource to edit.
+   * @return The resource editor.
    */
   V edit(T item);
 
   /**
    * Create the operation support for the current resource
-   * @param clientContext   The client state
-   * @param listType      The list type
-   * @return              The {@link HasMetadataOperation}
+   * 
+   * @param client The client state
+   * @param listType The list type
+   * @return The {@link HasMetadataOperation}
    */
-  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(ClientContext clientContext, Class<L> listType);
+  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(Client client, Class<L> listType);
 
   /**
    * @return true if there is a specialized operation associated with this handler

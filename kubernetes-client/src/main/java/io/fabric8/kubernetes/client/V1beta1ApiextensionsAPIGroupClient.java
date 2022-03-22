@@ -19,18 +19,18 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1ApiextensionsAPIGroupClient extends BaseClient implements V1beta1ApiextensionAPIGroupDSL {
-  public V1beta1ApiextensionsAPIGroupClient() {
-    super();
-  }
-
-  public V1beta1ApiextensionsAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1beta1ApiextensionsAPIGroupClient extends ClientAdapter<V1beta1ApiextensionsAPIGroupClient>
+    implements V1beta1ApiextensionAPIGroupDSL {
 
   @Override
   public MixedOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions() {
-    return Handlers.getOperation(CustomResourceDefinition.class, CustomResourceDefinitionList.class, this);
+    return resources(CustomResourceDefinition.class, CustomResourceDefinitionList.class);
+  }
+
+  @Override
+  public V1beta1ApiextensionsAPIGroupClient newInstance() {
+    return new V1beta1ApiextensionsAPIGroupClient();
   }
 }

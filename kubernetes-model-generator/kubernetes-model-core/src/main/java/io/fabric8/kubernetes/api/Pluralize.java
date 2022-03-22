@@ -29,7 +29,7 @@ public class Pluralize implements UnaryOperator<String> {
 
   private static final Pluralize INSTANCE = new Pluralize();
   private static final Set<String> UNCOUNTABLE = new HashSet<>(Arrays.asList("equipment", "fish",
-    "information", "money", "rice", "series", "sheep", "species", "news"));
+      "information", "money", "rice", "series", "sheep", "species", "news"));
   private static final Map<String, String> EXCEPTIONS = new HashMap<>();
 
   static {
@@ -41,35 +41,36 @@ public class Pluralize implements UnaryOperator<String> {
     EXCEPTIONS.put("die", "dice");
     EXCEPTIONS.put("podmetrics", "pods");
     EXCEPTIONS.put("nodemetrics", "nodes");
+    EXCEPTIONS.put("networkattachmentdefinition", "network-attachment-definitions");
   }
 
   private static final List<UnaryOperator<String>> PLURALS = Arrays.asList(
-    //Rules
-    new StringReplace("([^aeiouy]|qu)y$", "$1ies"),
-    new StringReplace("(x|ch|ss|sh)$", "$1es"),
-    new StringReplace("(s)?ex$", "$1exes"),
-    new StringReplace("(bus)$", "$1es"),
-    new StringReplace("(quiz)$", "$1zes"),
-    new StringReplace("(matr)ix$", "$1ices"),
-    new StringReplace("(vert|ind)ex$", "$1ices"),
-    new StringReplace("(alias|status)$", "$1es"),
-    new StringReplace("(octop|vir)us$", "$1us"),
-    new StringReplace("(cris|ax|test)is$", "$1es"),
-    new StringReplace("(o)$", "$1es"),
-    new StringReplace("([m|l])ouse$", "$1ice"),
-    new StringReplace("([lr])f$", "$1ves"),
-    new StringReplace("([^f])fe$", "$1ves"),
-    new StringReplace("(^analy)sis$", "$1sis"),
-    new StringReplace("((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$", "$1$2sis"),
-    new StringReplace("([ti])um$", "$1a"),
-    new StringReplace("(prometheus)$", "$1es"),
-    new StringReplace("(s|si|u)s$", "$1s")
-  );
+      //Rules
+      new StringReplace("([^aeiouy]|qu)y$", "$1ies"),
+      new StringReplace("(x|ch|ss|sh)$", "$1es"),
+      new StringReplace("(s)?ex$", "$1exes"),
+      new StringReplace("(bus)$", "$1es"),
+      new StringReplace("(quiz)$", "$1zes"),
+      new StringReplace("(matr)ix$", "$1ices"),
+      new StringReplace("(vert|ind)ex$", "$1ices"),
+      new StringReplace("(alias|status|dns)$", "$1es"),
+      new StringReplace("(octop|vir)us$", "$1us"),
+      new StringReplace("(cris|ax|test)is$", "$1es"),
+      new StringReplace("(o)$", "$1es"),
+      new StringReplace("([m|l])ouse$", "$1ice"),
+      new StringReplace("([lr])f$", "$1ves"),
+      new StringReplace("([^f])fe$", "$1ves"),
+      new StringReplace("(^analy)sis$", "$1sis"),
+      new StringReplace("((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$", "$1$2sis"),
+      new StringReplace("([ti])um$", "$1a"),
+      new StringReplace("(prometheus)$", "$1es"),
+      new StringReplace("(s|si|u)s$", "$1s"));
 
   public static String toPlural(String word) {
     return INSTANCE.apply(word);
   }
 
+  @Override
   public String apply(String word) {
     if (word == null || word.isEmpty() || UNCOUNTABLE.contains(word)) {
       return word;
@@ -112,12 +113,12 @@ public class Pluralize implements UnaryOperator<String> {
     private final String replacement;
     private final Pattern pattern;
 
-
     public StringReplace(String target, String replacement) {
       this.replacement = replacement;
       this.pattern = Pattern.compile(target, Pattern.CASE_INSENSITIVE);
     }
 
+    @Override
     public String apply(String word) {
       Matcher matcher = this.pattern.matcher(word);
       if (!matcher.find()) {

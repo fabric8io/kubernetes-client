@@ -26,16 +26,9 @@ import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL {
-
-  public BatchAPIGroupClient() {
-    super();
-  }
-
-  public BatchAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class BatchAPIGroupClient extends ClientAdapter<BatchAPIGroupClient> implements BatchAPIGroupDSL {
 
   @Override
   public MixedOperation<Job, JobList, ScalableResource<Job>> jobs() {
@@ -55,5 +48,10 @@ public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL 
   @Override
   public V1beta1BatchAPIGroupDSL v1beta1() {
     return adapt(V1beta1BatchAPIGroupClient.class);
+  }
+
+  @Override
+  public BatchAPIGroupClient newInstance() {
+    return new BatchAPIGroupClient();
   }
 }

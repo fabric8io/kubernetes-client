@@ -19,53 +19,43 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.inferListType;
 
-public class HasMetadataOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
+public class HasMetadataOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>>
+    extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
 
   protected final ResourceDefinitionContext rdc;
-  
-  public HasMetadataOperationsImpl(ClientContext clientContext, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
-    this(defaultContext(clientContext), rdc, type, listType);
+
+  public HasMetadataOperationsImpl(Client client, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
+    this(defaultContext(client), rdc, type, listType);
   }
-  
-  public static OperationContext defaultContext(ClientContext clientContext) {
-    return new OperationContext().withHttpClient(clientContext.getHttpClient()).withConfig(clientContext.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
+
+  public static OperationContext defaultContext(Client client) {
+    return new OperationContext().withClient(client).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
   }
 
   public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
     super(context.withApiGroupName(rdc.getGroup())
-      .withApiGroupVersion(rdc.getVersion())
-      .withPlural(rdc.getPlural()), type, listType != null ? listType : (Class) inferListType(type));
+        .withApiGroupVersion(rdc.getVersion())
+        .withPlural(rdc.getPlural()), type, listType != null ? listType : (Class) inferListType(type));
 
     this.rdc = rdc;
 
-    // use the group / version from the context, not from the item
-    // the item is allowed to differ as long as it can be parsed as the current type
-    this.apiGroupName = rdc.getGroup();
-    this.apiGroupVersion = rdc.getVersion();
-    this.apiVersion = ApiVersionUtil.joinApiGroupAndVersion(getAPIGroupName(), getAPIGroupVersion());
-
     if (!GenericKubernetesResource.class.isAssignableFrom(type)) {
-      // TODO: the static nature of these registrations is problematic, 
+      // TODO: the static nature of these registrations is problematic,
       // we should ensure that we aren't redefining an existing type
       KubernetesDeserializer.registerCustomKind(apiVersion, kind(rdc), type);
       if (KubernetesResource.class.isAssignableFrom(this.listType)) {
-        KubernetesDeserializer.registerCustomKind(this.listType.getSimpleName(), (Class<? extends KubernetesResource>) this.listType);
+        KubernetesDeserializer.registerCustomKind(this.listType.getSimpleName(),
+            (Class<? extends KubernetesResource>) this.listType);
       }
     }
-  }
-  
-  @Override
-  protected void validateOperation(Class<T> type) {
-    // don't validate
   }
 
   @Override
@@ -85,5 +75,5 @@ public class HasMetadataOperationsImpl<T extends HasMetadata, L extends Kubernet
   public OperationContext getOperationContext() {
     return this.context;
   }
-  
+
 }

@@ -24,8 +24,7 @@ import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -45,17 +44,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
-  implements TimeoutImageEditReplacePatchable<StatefulSet>
-{
-  public StatefulSetOperationsImpl(ClientContext clientContext) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+public class StatefulSetOperationsImpl
+    extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
+    implements TimeoutImageEditReplacePatchable<StatefulSet> {
+  public StatefulSetOperationsImpl(Client client) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public StatefulSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("apps")
-      .withApiGroupVersion("v1")
-      .withPlural("statefulsets"), StatefulSet.class, StatefulSetList.class);
+        .withApiGroupVersion("v1")
+        .withPlural("statefulsets"), StatefulSet.class, StatefulSetList.class);
   }
 
   @Override
@@ -75,7 +74,8 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
 
   @Override
   public RollingUpdater<StatefulSet, StatefulSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new StatefulSetRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new StatefulSetRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
+        config.getLoggingInterval());
   }
 
   @Override
@@ -91,7 +91,8 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   @Override
   public long getObservedGeneration(StatefulSet current) {
     return (current != null && current.getStatus() != null && current.getStatus().getObservedGeneration() != null)
-      ? current.getStatus().getObservedGeneration() : -1;
+        ? current.getStatus().getObservedGeneration()
+        : -1;
   }
 
   @Override
@@ -146,11 +147,13 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     StatefulSet statefulSet = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, statefulSet.getMetadata().getUid(),
-      getStatefulSetSelectorLabels(statefulSet), isPretty, rollingOperationContext.getLogWaitTimeout(), rollingOperationContext.getContainerId());
+        getStatefulSetSelectorLabels(statefulSet), isPretty, rollingOperationContext.getLogWaitTimeout(),
+        rollingOperationContext.getContainerId());
   }
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * 
    * @return Reader
    */
   @Override
@@ -221,14 +224,15 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   private ControllerRevisionList getControllerRevisionListForStatefulSet(StatefulSet statefulSet) {
-    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, this.context).inNamespace(namespace).withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
+    return this.context.getClient().resources(ControllerRevision.class, ControllerRevisionList.class).inNamespace(namespace)
+        .withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
   }
 
   static Map<String, String> getStatefulSetSelectorLabels(StatefulSet statefulSet) {
     Map<String, String> labels = new HashMap<>();
     if (statefulSet != null && statefulSet.getSpec() != null
-      && statefulSet.getSpec().getTemplate() != null
-      && statefulSet.getSpec().getTemplate().getMetadata() != null) {
+        && statefulSet.getSpec().getTemplate() != null
+        && statefulSet.getSpec().getTemplate().getMetadata() != null) {
       labels.putAll(statefulSet.getSpec().getTemplate().getMetadata().getLabels());
     }
     return labels;

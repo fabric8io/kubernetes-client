@@ -21,36 +21,36 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1AuthorizationAPIGroupClient extends BaseClient implements V1AuthorizationAPIGroupDSL {
+public class V1AuthorizationAPIGroupClient extends ClientAdapter<V1AuthorizationAPIGroupClient>
+    implements V1AuthorizationAPIGroupDSL {
   public static final String AUTHORIZATION_APIGROUP = "authorization.k8s.io";
   public static final String AUTHORIZATION_APIVERSION = "v1";
 
-  public V1AuthorizationAPIGroupClient() {
-    super();
-  }
-
-  public V1AuthorizationAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
-
   @Override
   public InOutCreateable<SelfSubjectAccessReview, SelfSubjectAccessReview> selfSubjectAccessReview() {
-    return Handlers.getNonListingOperation(SelfSubjectAccessReview.class, this);
+    return client.adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectAccessReview.class, this);
   }
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReview> subjectAccessReview() {
-    return Handlers.getNonListingOperation(SubjectAccessReview.class, this);
+    return client.adapt(BaseClient.class).getHandlers().getNonListingOperation(SubjectAccessReview.class, this);
   }
 
   @Override
   public NamespacedInOutCreateable<LocalSubjectAccessReview, LocalSubjectAccessReview> localSubjectAccessReview() {
-    return Handlers.getNamespacedHasMetadataCreateOnlyOperation(LocalSubjectAccessReview.class, this);
+    return client.adapt(BaseClient.class).getHandlers()
+        .getNamespacedHasMetadataCreateOnlyOperation(LocalSubjectAccessReview.class, this);
   }
 
   @Override
   public InOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReview() {
-    return Handlers.getNonListingOperation(SelfSubjectRulesReview.class, this);
+    return client.adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectRulesReview.class, this);
+  }
+
+  @Override
+  public V1AuthorizationAPIGroupClient newInstance() {
+    return new V1AuthorizationAPIGroupClient();
   }
 }

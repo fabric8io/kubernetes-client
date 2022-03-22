@@ -16,23 +16,26 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 
-public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O extends KubernetesResource> extends CreateOnlyResourceOperation<I, O> implements NamespacedInOutCreateable<I, O> {
-  
+public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O extends KubernetesResource>
+    extends CreateOnlyResourceOperation<I, O> implements NamespacedInOutCreateable<I, O> {
+
   private final ResourceDefinitionContext rdc;
   private Class<I> inputType;
-  
-  public CreateOnlyResourceOperationsImpl(ClientContext clientContext, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
-    this(HasMetadataOperationsImpl.defaultContext(clientContext), rdc, inputType, outputType);
+
+  public CreateOnlyResourceOperationsImpl(Client client, ResourceDefinitionContext rdc, Class<I> inputType,
+      Class<O> outputType) {
+    this(HasMetadataOperationsImpl.defaultContext(client), rdc, inputType, outputType);
   }
-  
-  public CreateOnlyResourceOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
+
+  public CreateOnlyResourceOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<I> inputType,
+      Class<O> outputType) {
     super(context.withApiGroupName(rdc.getGroup())
-      .withApiGroupVersion(rdc.getVersion())
-      .withPlural(rdc.getPlural()));
+        .withApiGroupVersion(rdc.getVersion())
+        .withPlural(rdc.getPlural()));
     this.inputType = inputType;
     this.type = outputType;
 
@@ -43,12 +46,12 @@ public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O ex
     this.apiGroupName = rdc.getGroup();
     this.apiGroupVersion = rdc.getVersion();
   }
-  
+
   @Override
   public boolean isResourceNamespaced() {
     return rdc.isNamespaceScoped();
   }
-  
+
   @Override
   public CreateOnlyResourceOperationsImpl<I, O> inNamespace(String name) {
     return new CreateOnlyResourceOperationsImpl<>(context.withNamespace(name), rdc, inputType, type);

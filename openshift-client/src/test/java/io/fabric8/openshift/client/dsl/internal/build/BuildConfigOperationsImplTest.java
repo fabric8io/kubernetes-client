@@ -15,13 +15,14 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.OpenshiftClientContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -72,18 +73,7 @@ class BuildConfigOperationsImplTest {
     // Given
     String eventMessage = "FailedScheduling demo-1-7zkjd.1619493da51f6b6f some error";
 
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientContext() {
-
-      @Override
-      public HttpClient getHttpClient() {
-        return httpClient;
-      }
-
-      @Override
-      public OpenShiftConfig getConfiguration() {
-        return config;
-      }
-    }) {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(mockClient()) {
       @Override
       protected String getRecentEvents() {
         return eventMessage;
@@ -93,7 +83,7 @@ class BuildConfigOperationsImplTest {
     // When
     ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[0]);
     KubernetesClientException exception = assertThrows(KubernetesClientException.class,
-      () -> impl.submitToApiServer(inputStream, 0));
+        () -> impl.submitToApiServer(inputStream, 0));
 
     // Then
     assertTrue(exception.getMessage().contains(eventMessage));
@@ -102,18 +92,7 @@ class BuildConfigOperationsImplTest {
   @Test
   void testWriteShouldCompleteSuccessfully() throws IOException {
     // Given
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientContext() {
-
-      @Override
-      public HttpClient getHttpClient() {
-        return httpClient;
-      }
-
-      @Override
-      public OpenShiftConfig getConfiguration() {
-        return config;
-      }
-    }) {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(mockClient()) {
       @Override
       protected String getRecentEvents() {
         throw new AssertionError();
@@ -128,5 +107,12 @@ class BuildConfigOperationsImplTest {
     impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0);
 
     Mockito.verify(response, Mockito.times(1)).body();
+  }
+
+  private Client mockClient() {
+    BaseClient result = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(result.getHttpClient()).thenReturn(httpClient);
+    Mockito.when(result.getConfiguration()).thenReturn(config);
+    return result;
   }
 }

@@ -17,6 +17,7 @@ package io.fabric8.volcano.client;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.volcano.client.dsl.V1beta1APIGroupDSL;
 
 public class VolcanoExtensionAdapter implements ExtensionAdapter<VolcanoClient> {
 
@@ -30,6 +31,11 @@ public class VolcanoExtensionAdapter implements ExtensionAdapter<VolcanoClient> 
   @Override
   public VolcanoClient adapt(Client client) {
     return new DefaultVolcanoClient(client);
+  }
+
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(V1beta1APIGroupDSL.class, new V1beta1APIGroupClient());
   }
 
 }

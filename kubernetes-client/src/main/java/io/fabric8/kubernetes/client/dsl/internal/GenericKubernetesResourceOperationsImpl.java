@@ -20,7 +20,8 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 public class GenericKubernetesResourceOperationsImpl
-  extends HasMetadataOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> {
+    extends
+    HasMetadataOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> {
 
   private final boolean resourceNamespaced;
 
@@ -28,14 +29,10 @@ public class GenericKubernetesResourceOperationsImpl
     super(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
     this.resourceNamespaced = resourceNamespaced;
   }
-  
-  @Override
-  protected void validateOperation(Class<GenericKubernetesResource> type) {
-    // don't validate generic
-  }
 
   @Override
-  public HasMetadataOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> newInstance(OperationContext context) {
+  public HasMetadataOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> newInstance(
+      OperationContext context) {
     return new GenericKubernetesResourceOperationsImpl(context, resourceNamespaced);
   }
 

@@ -23,8 +23,6 @@ import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
@@ -32,23 +30,11 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class DefaultServingV1Client extends ClientAdapter<NamespacedServingV1Client> implements NamespacedServingV1Client {
-
-  public DefaultServingV1Client() {
-    super();
-  }
-
-  public DefaultServingV1Client(Config configuration) {
-    super(configuration);
-  }
-
-  public DefaultServingV1Client(Client client) {
-    super(client);
-  }
+public class DefaultServingV1Client extends ClientAdapter<DefaultServingV1Client> implements NamespacedServingV1Client {
 
   @Override
-  protected NamespacedServingV1Client newInstance(Client client) {
-    return new DefaultServingV1Client(client);
+  public DefaultServingV1Client newInstance() {
+    return new DefaultServingV1Client();
   }
 
   @Override

@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheckList;
 import io.fabric8.openshift.api.model.operator.v1.Authentication;
@@ -68,132 +68,131 @@ import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 
-public class OpenShiftOperatorAPIGroupClient extends BaseOpenShiftClient implements OpenShiftOperatorAPIGroupDSL {
-  public OpenShiftOperatorAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftOperatorAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftOperatorAPIGroupClient extends ClientAdapter<OpenShiftOperatorAPIGroupClient>
+    implements OpenShiftOperatorAPIGroupDSL {
 
   @Override
   public NonNamespaceOperation<Etcd, EtcdList, Resource<Etcd>> etcds() {
-    return OpenShiftHandlers.getOperation(Etcd.class, EtcdList.class, this);
+    return resources(Etcd.class, EtcdList.class);
   }
 
   @Override
   public NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, Resource<KubeStorageVersionMigrator>> kubeStorageVersionMigrators() {
-    return OpenShiftHandlers.getOperation(KubeStorageVersionMigrator.class, KubeStorageVersionMigratorList.class, this);
+    return resources(KubeStorageVersionMigrator.class, KubeStorageVersionMigratorList.class);
   }
 
   @Override
   public NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, Resource<KubeControllerManager>> kubeControllerManagers() {
-    return OpenShiftHandlers.getOperation(KubeControllerManager.class, KubeControllerManagerList.class, this);
+    return resources(KubeControllerManager.class, KubeControllerManagerList.class);
   }
 
   @Override
   public NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, Resource<CSISnapshotController>> csiSnapshotControllers() {
-    return OpenShiftHandlers.getOperation(CSISnapshotController.class, CSISnapshotControllerList.class, this);
+    return resources(CSISnapshotController.class, CSISnapshotControllerList.class);
   }
 
   @Override
   public NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks() {
-    return OpenShiftHandlers.getOperation(Network.class, NetworkList.class, this);
+    return resources(Network.class, NetworkList.class);
   }
 
   @Override
   public NonNamespaceOperation<KubeScheduler, KubeSchedulerList, Resource<KubeScheduler>> kubeSchedulers() {
-    return OpenShiftHandlers.getOperation(KubeScheduler.class, KubeSchedulerList.class, this);
+    return resources(KubeScheduler.class, KubeSchedulerList.class);
   }
 
   @Override
   public NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles() {
-    return OpenShiftHandlers.getOperation(Console.class, ConsoleList.class, this);
+    return resources(Console.class, ConsoleList.class);
   }
 
   @Override
   public NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers() {
-    return OpenShiftHandlers.getOperation(ServiceCatalogControllerManager.class, ServiceCatalogControllerManagerList.class, this);
+    return resources(ServiceCatalogControllerManager.class, ServiceCatalogControllerManagerList.class);
   }
 
   @Override
   public NonNamespaceOperation<ServiceCA, ServiceCAList, Resource<ServiceCA>> serviceCAs() {
-    return OpenShiftHandlers.getOperation(ServiceCA.class, ServiceCAList.class, this);
+    return resources(ServiceCA.class, ServiceCAList.class);
   }
 
   @Override
   public NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, Resource<ImageContentSourcePolicy>> imageContentSourcePolicies() {
-    return OpenShiftHandlers.getOperation(ImageContentSourcePolicy.class, ImageContentSourcePolicyList.class, this);
+    return resources(ImageContentSourcePolicy.class, ImageContentSourcePolicyList.class);
   }
 
   @Override
   public NonNamespaceOperation<DNS, DNSList, Resource<DNS>> dnses() {
-    return OpenShiftHandlers.getOperation(DNS.class, DNSList.class, this);
+    return resources(DNS.class, DNSList.class);
   }
 
   @Override
   public MixedOperation<DNSRecord, DNSRecordList, Resource<DNSRecord>> dnsRecords() {
-    return OpenShiftHandlers.getOperation(DNSRecord.class, DNSRecordList.class, this);
+    return resources(DNSRecord.class, DNSRecordList.class);
   }
 
   @Override
   public NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, Resource<OpenShiftControllerManager>> openShiftControllerManagers() {
-    return OpenShiftHandlers.getOperation(OpenShiftControllerManager.class, OpenShiftControllerManagerList.class, this);
+    return resources(OpenShiftControllerManager.class, OpenShiftControllerManagerList.class);
   }
 
   @Override
   public NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, Resource<OpenShiftAPIServer>> openShiftAPIServers() {
-    return OpenShiftHandlers.getOperation(OpenShiftAPIServer.class, OpenShiftAPIServerList.class, this);
+    return resources(OpenShiftAPIServer.class, OpenShiftAPIServerList.class);
   }
 
   @Override
   public NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, Resource<KubeAPIServer>> kubeAPIServers() {
-    return OpenShiftHandlers.getOperation(KubeAPIServer.class, KubeAPIServerList.class, this);
+    return resources(KubeAPIServer.class, KubeAPIServerList.class);
   }
 
   @Override
   public MixedOperation<IngressController, IngressControllerList, Resource<IngressController>> ingressControllers() {
-    return OpenShiftHandlers.getOperation(IngressController.class, IngressControllerList.class, this);
+    return resources(IngressController.class, IngressControllerList.class);
   }
 
   @Override
   public NonNamespaceOperation<ImagePruner, ImagePrunerList, Resource<ImagePruner>> imagePruners() {
-    return OpenShiftHandlers.getOperation(ImagePruner.class, ImagePrunerList.class, this);
+    return resources(ImagePruner.class, ImagePrunerList.class);
   }
 
   @Override
   public MixedOperation<PodNetworkConnectivityCheck, PodNetworkConnectivityCheckList, Resource<PodNetworkConnectivityCheck>> podNetworkConnectivityChecks() {
-    return OpenShiftHandlers.getOperation(PodNetworkConnectivityCheck.class, PodNetworkConnectivityCheckList.class, this);
+    return resources(PodNetworkConnectivityCheck.class, PodNetworkConnectivityCheckList.class);
   }
 
   @Override
   public NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers() {
-    return OpenShiftHandlers.getOperation(ServiceCatalogAPIServer.class, ServiceCatalogAPIServerList.class, this);
+    return resources(ServiceCatalogAPIServer.class, ServiceCatalogAPIServerList.class);
   }
 
   @Override
   public NonNamespaceOperation<Storage, StorageList, Resource<Storage>> storages() {
-    return OpenShiftHandlers.getOperation(Storage.class, StorageList.class, this);
+    return resources(Storage.class, StorageList.class);
   }
 
   @Override
   public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
-    return OpenShiftHandlers.getOperation(Authentication.class, AuthenticationList.class, this);
+    return resources(Authentication.class, AuthenticationList.class);
   }
 
   @Override
   public NonNamespaceOperation<CloudCredential, CloudCredentialList, Resource<CloudCredential>> cloudCredentials() {
-    return OpenShiftHandlers.getOperation(CloudCredential.class, CloudCredentialList.class, this);
+    return resources(CloudCredential.class, CloudCredentialList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterCSIDriver, ClusterCSIDriverList, Resource<ClusterCSIDriver>> clusterCSIDrivers() {
-    return OpenShiftHandlers.getOperation(ClusterCSIDriver.class, ClusterCSIDriverList.class, this);
+    return resources(ClusterCSIDriver.class, ClusterCSIDriverList.class);
   }
 
   @Override
   public NonNamespaceOperation<io.fabric8.openshift.api.model.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.operator.v1.Config>> configs() {
-    return OpenShiftHandlers.getOperation(io.fabric8.openshift.api.model.operator.v1.Config.class, ConfigList.class, this);
+    return resources(io.fabric8.openshift.api.model.operator.v1.Config.class, ConfigList.class);
+  }
+
+  @Override
+  public OpenShiftOperatorAPIGroupClient newInstance() {
+    return new OpenShiftOperatorAPIGroupClient();
   }
 }

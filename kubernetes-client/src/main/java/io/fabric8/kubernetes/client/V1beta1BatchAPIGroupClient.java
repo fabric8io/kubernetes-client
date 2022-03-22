@@ -20,18 +20,17 @@ import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1BatchAPIGroupClient  extends BaseClient implements V1beta1BatchAPIGroupDSL {
-  public V1beta1BatchAPIGroupClient() {
-    super();
-  }
-
-  public V1beta1BatchAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1beta1BatchAPIGroupClient extends ClientAdapter<V1beta1BatchAPIGroupClient> implements V1beta1BatchAPIGroupDSL {
 
   @Override
   public MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs() {
     return resources(CronJob.class, CronJobList.class);
+  }
+
+  @Override
+  public V1beta1BatchAPIGroupClient newInstance() {
+    return new V1beta1BatchAPIGroupClient();
   }
 }

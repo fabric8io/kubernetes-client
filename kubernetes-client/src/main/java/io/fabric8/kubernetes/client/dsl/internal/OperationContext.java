@@ -15,9 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.SimpleClientContext;
+import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -29,7 +33,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class OperationContext extends SimpleClientContext {
+public class OperationContext {
 
   protected Object item;
   protected String resourceVersion;
@@ -57,24 +61,25 @@ public class OperationContext extends SimpleClientContext {
   protected Map<String, String[]> fieldsNot;
   protected String selectorAsString;
 
+  protected Client client;
+
   public OperationContext() {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
+    this(other.client, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
         other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace);
   }
 
-  public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
+  public OperationContext(Client client, String plural, String namespace, String name,
       String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
       boolean dryRun, String selectorAsString, boolean defaultNamespace) {
-    this.httpClient = client;
-    this.config = config;
+    this.client = client;
     this.item = item;
     this.plural = plural;
     setNamespace(namespace, defaultNamespace);
@@ -129,6 +134,7 @@ public class OperationContext extends SimpleClientContext {
   }
 
   private void setNamespace(String namespace, boolean defaultNamespace) {
+    Config config = getConfig();
     if (!defaultNamespace || Utils.isNotNullOrEmpty(namespace)) {
       this.namespace = namespace;
       this.defaultNamespace = defaultNamespace;
@@ -138,12 +144,22 @@ public class OperationContext extends SimpleClientContext {
     }
   }
 
-  public HttpClient getClient() {
-    return httpClient;
+  public Client getClient() {
+    return client;
+  }
+
+  public HttpClient getHttpClient() {
+    if (client == null) {
+      return null;
+    }
+    return client.getHttpClient();
   }
 
   public Config getConfig() {
-    return config;
+    if (client == null) {
+      return null;
+    }
+    return client.getConfiguration();
   }
 
   public String getPlural() {
@@ -284,21 +300,12 @@ public class OperationContext extends SimpleClientContext {
     return new OperationContext(this);
   }
 
-  public OperationContext withHttpClient(HttpClient client) {
-    if (this.httpClient == client) {
+  public OperationContext withClient(Client client) {
+    if (this.client == client) {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.httpClient = client;
-    return context;
-  }
-
-  public OperationContext withConfig(Config config) {
-    if (this.config == config) {
-      return this;
-    }
-    final OperationContext context = new OperationContext(this);
-    context.config = config;
+    context.client = client;
     return context;
   }
 
@@ -471,6 +478,10 @@ public class OperationContext extends SimpleClientContext {
     final OperationContext context = new OperationContext(this);
     context.selectorAsString = selectorAsString;
     return context;
+  }
+
+  <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> getHandler(T item) {
+    return getClient().adapt(BaseClient.class).getHandlers().get(item, getClient());
   }
 
 }

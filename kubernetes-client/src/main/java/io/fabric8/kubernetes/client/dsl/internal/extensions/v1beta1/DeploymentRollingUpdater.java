@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
@@ -28,27 +28,27 @@ import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 
 class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList> {
 
-  DeploymentRollingUpdater(ClientContext clientContext, String namespace) {
-    super(clientContext, namespace);
+  DeploymentRollingUpdater(Client client, String namespace) {
+    super(client, namespace);
   }
 
-  DeploymentRollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
-    super(clientContext, namespace, rollingTimeoutMillis, loggingIntervalMillis);
+  DeploymentRollingUpdater(Client client, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    super(client, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 
   @Override
   protected Deployment createClone(Deployment obj, String newName, String newDeploymentHash) {
     return new DeploymentBuilder(obj)
-      .editMetadata()
-      .withResourceVersion(null)
-      .withName(newName)
-      .endMetadata()
-      .editSpec()
-      .withReplicas(0)
-      .editSelector().addToMatchLabels(DEPLOYMENT_KEY, newDeploymentHash).endSelector()
-      .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, newDeploymentHash).endMetadata().endTemplate()
-      .endSpec()
-      .build();
+        .editMetadata()
+        .withResourceVersion(null)
+        .withName(newName)
+        .endMetadata()
+        .editSpec()
+        .withReplicas(0)
+        .editSelector().addToMatchLabels(DEPLOYMENT_KEY, newDeploymentHash).endSelector()
+        .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, newDeploymentHash).endMetadata().endTemplate()
+        .endSpec()
+        .build();
   }
 
   @Override
@@ -58,24 +58,24 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected Deployment updateDeploymentKey(String name, String hash) {
-     Deployment old = resources().inNamespace(namespace).withName(name).get();
-     Deployment updated = new DeploymentBuilder(old).editSpec()
-       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
-       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-       .endSpec()
-       .build();
-     return resources().inNamespace(namespace).withName(name).replace(updated);
+    Deployment old = resources().inNamespace(namespace).withName(name).get();
+    Deployment updated = new DeploymentBuilder(old).editSpec()
+        .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
+        .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
+        .endSpec()
+        .build();
+    return resources().inNamespace(namespace).withName(name).replace(updated);
   }
 
   @Override
   protected Deployment removeDeploymentKey(String name) {
-     Deployment old = resources().inNamespace(namespace).withName(name).get();
-     Deployment updated = new DeploymentBuilder(old).editSpec()
-       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
-       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-       .endSpec()
-       .build();
-     return resources().inNamespace(namespace).withName(name).replace(updated);
+    Deployment old = resources().inNamespace(namespace).withName(name).get();
+    Deployment updated = new DeploymentBuilder(old).editSpec()
+        .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
+        .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
+        .endSpec()
+        .build();
+    return resources().inNamespace(namespace).withName(name).replace(updated);
   }
 
   @Override
@@ -90,6 +90,6 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected Operation<Deployment, DeploymentList, RollableScalableResource<Deployment>> resources() {
-    return new DeploymentOperationsImpl(this.clientContext);
+    return new DeploymentOperationsImpl(this.client);
   }
 }

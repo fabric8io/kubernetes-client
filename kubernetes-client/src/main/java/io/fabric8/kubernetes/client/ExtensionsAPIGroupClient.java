@@ -37,21 +37,14 @@ import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
-
-  public ExtensionsAPIGroupClient() {
-    super();
-  }
-
-  public ExtensionsAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class ExtensionsAPIGroupClient extends ClientAdapter<ExtensionsAPIGroupClient> implements ExtensionsAPIGroupDSL {
 
   @Override
   @Deprecated
   public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
-    return Handlers.getOperation(DaemonSet.class, DaemonSetList.class, this);
+    return resources(DaemonSet.class, DaemonSetList.class);
   }
 
   @Override
@@ -68,7 +61,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   @Override
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
-    return Handlers.getOperation(Ingress.class, IngressList.class, this);
+    return resources(Ingress.class, IngressList.class);
   }
 
   @Override
@@ -80,7 +73,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   @Override
   @Deprecated
   public MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies() {
-    return Handlers.getOperation(NetworkPolicy.class, NetworkPolicyList.class, this);
+    return resources(NetworkPolicy.class, NetworkPolicyList.class);
   }
 
   @Override
@@ -89,13 +82,18 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
    * @deprecated Replaced by {@link PolicyAPIGroupClient#podSecurityPolicies()}
    */
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
-    return Handlers.getOperation(PodSecurityPolicy.class, PodSecurityPolicyList.class, this);
+    return resources(PodSecurityPolicy.class, PodSecurityPolicyList.class);
   }
 
   @Override
   @Deprecated
   public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(this);
+  }
+
+  @Override
+  public ExtensionsAPIGroupClient newInstance() {
+    return new ExtensionsAPIGroupClient();
   }
 
 }

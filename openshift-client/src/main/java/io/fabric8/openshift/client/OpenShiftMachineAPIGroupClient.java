@@ -15,9 +15,9 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheckList;
@@ -26,27 +26,26 @@ import io.fabric8.openshift.api.model.machine.v1beta1.MachineSet;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineSetList;
 import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
 
-public class OpenShiftMachineAPIGroupClient extends BaseOpenShiftClient implements OpenShiftMachineAPIGroupDSL {
-  public OpenShiftMachineAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftMachineAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftMachineAPIGroupClient extends ClientAdapter<OpenShiftMachineAPIGroupClient>
+    implements OpenShiftMachineAPIGroupDSL {
 
   @Override
   public MixedOperation<Machine, MachineList, Resource<Machine>> machines() {
-    return OpenShiftHandlers.getOperation(Machine.class, MachineList.class, this);
+    return resources(Machine.class, MachineList.class);
   }
 
   @Override
   public MixedOperation<MachineSet, MachineSetList, Resource<MachineSet>> machineSets() {
-    return OpenShiftHandlers.getOperation(MachineSet.class, MachineSetList.class, this);
+    return resources(MachineSet.class, MachineSetList.class);
   }
 
   @Override
   public MixedOperation<MachineHealthCheck, MachineHealthCheckList, Resource<MachineHealthCheck>> machineHealthChecks() {
-    return OpenShiftHandlers.getOperation(MachineHealthCheck.class, MachineHealthCheckList.class, this);
+    return resources(MachineHealthCheck.class, MachineHealthCheckList.class);
+  }
+
+  @Override
+  public OpenShiftMachineAPIGroupClient newInstance() {
+    return new OpenShiftMachineAPIGroupClient();
   }
 }

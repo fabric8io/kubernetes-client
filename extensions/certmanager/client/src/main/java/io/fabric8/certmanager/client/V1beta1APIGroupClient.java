@@ -28,24 +28,16 @@ import io.fabric8.certmanager.api.model.v1beta1.ClusterIssuerList;
 import io.fabric8.certmanager.api.model.v1beta1.Issuer;
 import io.fabric8.certmanager.api.model.v1beta1.IssuerList;
 import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupDSL> implements V1beta1APIGroupDSL {
-  public V1beta1APIGroupClient() {
-    super();
-  }
-
-  public V1beta1APIGroupClient(Client client) {
-    super(client);
-  }
+public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> implements V1beta1APIGroupDSL {
 
   @Override
-  protected V1beta1APIGroupDSL newInstance(Client client) {
-    return new V1beta1APIGroupClient(client);
+  public V1beta1APIGroupClient newInstance() {
+    return new V1beta1APIGroupClient();
   }
 
   @Override
