@@ -56,7 +56,7 @@ jobs:
           distribution: 'temurin'
       - name: Run Integration Tests
         run: |
-          mvn ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
+          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
 
   openshift:
     name: OpenShift
@@ -81,4 +81,4 @@ jobs:
           distribution: 'temurin'
       - name: Run Integration Tests
         run: |
-          mvn ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"
+          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"

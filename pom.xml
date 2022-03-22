@@ -1046,6 +1046,9 @@
             <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
             <exclude>**/it/**/expected/**/*.expected</exclude>
             <exclude>Jenkinsfile</exclude>
+            <exclude>.mvn/**/*</exclude>
+            <exclude>mvnw</exclude>
+            <exclude>mvnw.cmd</exclude>
           </excludes>
           <mapping>
             <go>JAVADOC_STYLE</go>

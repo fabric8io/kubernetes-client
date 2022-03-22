@@ -46,4 +46,4 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
       - name: Build Project
-        run: mvn ${MAVEN_ARGS} clean install
+        run: ./mvnw ${MAVEN_ARGS} clean install
