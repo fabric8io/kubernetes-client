@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
@@ -77,17 +78,13 @@ public class OperationSupport {
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   private final int requestRetryBackoffLimit;
 
-  public OperationSupport() {
-    this(new OperationContext());
-  }
-
-  public OperationSupport(HttpClient client, Config config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config));
+  public OperationSupport(Client client) {
+    this(new OperationContext().withClient(client));
   }
 
   public OperationSupport(OperationContext ctx) {
     this.context = ctx;
-    this.httpClient = ctx.getClient();
+    this.httpClient = ctx.getHttpClient();
     this.config = ctx.getConfig();
     this.resourceT = ctx.getPlural();
     this.namespace = ctx.getNamespace();

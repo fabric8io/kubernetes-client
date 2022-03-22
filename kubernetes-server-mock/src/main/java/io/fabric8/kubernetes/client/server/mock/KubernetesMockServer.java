@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -109,7 +110,26 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     return defaultKubernetesClient;
   }
 
-  void setUnsupported(String[] unsupported) {
+  /**
+   * Used to exclude support for the given apiGroups.
+   * <br>
+   * Each is a simple expression of the form: group[/version]
+   * <br>
+   * where * is a wildcard.
+   * <br>
+   * For example to exclude all openshift support, you would specify
+   * openshift.io
+   * <br>
+   * To exclude a specific apiVersion, you would fully specify
+   * route.openshift.io/v1
+   * <p>
+   * NOTE this affects calls to {@link Client#hasApiGroup(String, boolean)}
+   * and {@link Client#supports(Class)}. Other calls to get the full root path or other
+   * api group metadata will not return valid results in mock scenarios.
+   *
+   * @param unsupported apiGroup patterns
+   */
+  public void unsupported(String... unsupported) {
     this.unsupportedPatterns = new ArrayList<>(unsupported.length);
     for (int i = 0; i < unsupported.length; i++) {
       String asRegex = unsupported[i].replace(".", "\\.").replace("*", ".*");
@@ -141,6 +161,8 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   @Override
   public void reset() {
     clearExpectations();
+    onStart();
+    unsupportedPatterns.clear();
     if (this.dispatcher instanceof Resetable) {
       ((Resetable) this.dispatcher).reset();
     }

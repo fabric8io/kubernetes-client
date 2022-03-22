@@ -16,12 +16,12 @@
 package io.fabric8.volumesnapshot.examples;
 
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.volumesnapshot.client.DefaultVolumeSnapshotClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
 
-
 public class ClientFactory {
-  private ClientFactory() {}
+  private ClientFactory() {
+  }
 
   public static VolumeSnapshotClient newClient(String[] args) {
     ConfigBuilder config = new ConfigBuilder();
@@ -49,7 +49,7 @@ public class ClientFactory {
         config = config.withNamespace(value);
       }
     }
-    return new DefaultVolumeSnapshotClient(config.build());
+    return new KubernetesClientBuilder().withConfig(config.build()).build().adapt(VolumeSnapshotClient.class);
   }
 
   public static String getOptions(String[] args, String name, String defaultValue) {
@@ -63,4 +63,3 @@ public class ClientFactory {
     return defaultValue;
   }
 }
-

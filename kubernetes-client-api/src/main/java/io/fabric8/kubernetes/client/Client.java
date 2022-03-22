@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import java.io.Closeable;
 import java.net.URL;
 
-public interface Client extends ClientContext, Closeable {
+public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable {
 
   public enum Supports {
 

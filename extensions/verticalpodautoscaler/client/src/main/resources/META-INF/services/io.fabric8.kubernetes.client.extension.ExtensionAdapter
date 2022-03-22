@@ -15,4 +15,3 @@
 #
 
 io.fabric8.verticalpodautoscaler.client.VerticalPodAutoscalerExtensionAdapter
-io.fabric8.verticalpodautoscaler.client.V1APIGroupExtensionAdapter

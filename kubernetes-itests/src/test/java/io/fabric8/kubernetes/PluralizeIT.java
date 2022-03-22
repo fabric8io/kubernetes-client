@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIResource;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.GroupVersionForDiscovery;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
@@ -52,7 +51,7 @@ public class PluralizeIT {
     final List<APIResource> testCases;
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       // Core Resources
-      testCases = new ArrayList<>(new OperationSupport(client.getHttpClient(), client.getConfiguration())
+      testCases = new ArrayList<>(new OperationSupport(client)
         .restCall(APIResourceList.class, "api/v1").getResources());
       // Additional groups
       for (APIGroup group : client.getApiGroups().getGroups()) {

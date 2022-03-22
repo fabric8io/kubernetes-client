@@ -17,8 +17,9 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.events.v1.Event;
 import io.fabric8.kubernetes.api.model.events.v1.EventList;
+import io.fabric8.kubernetes.client.Client;
 
-public interface V1EventingAPIGroupDSL {
+public interface V1EventingAPIGroupDSL extends Client {
   /**
    * DSL Entrypoint for `events.k8s.io/v1` Event Object
    *

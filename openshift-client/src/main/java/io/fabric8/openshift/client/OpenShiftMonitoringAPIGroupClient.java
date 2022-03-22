@@ -15,9 +15,9 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
@@ -36,52 +36,51 @@ import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 
-public class OpenShiftMonitoringAPIGroupClient extends BaseOpenShiftClient implements OpenShiftMonitoringAPIGroupDSL {
-  public OpenShiftMonitoringAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftMonitoringAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftMonitoringAPIGroupClient extends ClientAdapter<OpenShiftMonitoringAPIGroupClient>
+    implements OpenShiftMonitoringAPIGroupDSL {
 
   @Override
   public MixedOperation<AlertmanagerConfig, AlertmanagerConfigList, Resource<AlertmanagerConfig>> alertmanagerConfigs() {
-    return OpenShiftHandlers.getOperation(AlertmanagerConfig.class, AlertmanagerConfigList.class, this);
+    return resources(AlertmanagerConfig.class, AlertmanagerConfigList.class);
   }
 
   @Override
   public MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses() {
-    return OpenShiftHandlers.getOperation(Prometheus.class, PrometheusList.class, this);
+    return resources(Prometheus.class, PrometheusList.class);
   }
 
   @Override
   public MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors() {
-    return OpenShiftHandlers.getOperation(PodMonitor.class, PodMonitorList.class, this);
+    return resources(PodMonitor.class, PodMonitorList.class);
   }
 
   @Override
   public MixedOperation<Probe, ProbeList, Resource<Probe>> probes() {
-    return OpenShiftHandlers.getOperation(Probe.class, ProbeList.class, this);
+    return resources(Probe.class, ProbeList.class);
   }
 
   @Override
   public MixedOperation<Alertmanager, AlertmanagerList, Resource<Alertmanager>> alertmanagers() {
-    return OpenShiftHandlers.getOperation(Alertmanager.class, AlertmanagerList.class, this);
+    return resources(Alertmanager.class, AlertmanagerList.class);
   }
 
   @Override
   public MixedOperation<PrometheusRule, PrometheusRuleList, Resource<PrometheusRule>> prometheusRules() {
-    return OpenShiftHandlers.getOperation(PrometheusRule.class, PrometheusRuleList.class, this);
+    return resources(PrometheusRule.class, PrometheusRuleList.class);
   }
 
   @Override
   public MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors() {
-    return OpenShiftHandlers.getOperation(ServiceMonitor.class, ServiceMonitorList.class, this);
+    return resources(ServiceMonitor.class, ServiceMonitorList.class);
   }
 
   @Override
   public MixedOperation<ThanosRuler, ThanosRulerList, Resource<ThanosRuler>> thanosRulers() {
-    return OpenShiftHandlers.getOperation(ThanosRuler.class, ThanosRulerList.class, this);
+    return resources(ThanosRuler.class, ThanosRulerList.class);
+  }
+
+  @Override
+  public OpenShiftMonitoringAPIGroupClient newInstance() {
+    return new OpenShiftMonitoringAPIGroupClient();
   }
 }

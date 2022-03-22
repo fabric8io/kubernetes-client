@@ -30,4 +30,10 @@ public class IstioExtensionAdapter implements ExtensionAdapter<IstioClient> {
     return new DefaultIstioClient(client);
   }
 
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(V1beta1APIGroupDSL.class, new V1beta1APIGroupClient());
+    factory.register(V1alpha3APIGroupDSL.class, new V1alpha3APIGroupClient());
+  }
+
 }

@@ -20,18 +20,17 @@ import io.fabric8.kubernetes.api.model.events.v1.EventList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1EventingAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1EventingAPIGroupClient extends BaseClient implements V1EventingAPIGroupDSL {
-  public V1EventingAPIGroupClient() {
-    super();
-  }
-
-  public V1EventingAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1EventingAPIGroupClient extends ClientAdapter<V1EventingAPIGroupClient> implements V1EventingAPIGroupDSL {
 
   @Override
   public MixedOperation<Event, EventList, Resource<Event>> events() {
-    return Handlers.getOperation(Event.class, EventList.class, this);
+    return resources(Event.class, EventList.class);
+  }
+
+  @Override
+  public V1EventingAPIGroupClient newInstance() {
+    return new V1EventingAPIGroupClient();
   }
 }

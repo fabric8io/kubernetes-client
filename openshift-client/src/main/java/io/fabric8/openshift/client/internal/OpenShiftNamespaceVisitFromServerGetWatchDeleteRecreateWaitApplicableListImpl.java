@@ -19,7 +19,7 @@ import com.mifmif.common.regex.Generex;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
@@ -33,20 +33,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl {
+public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl
+    extends NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl {
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(ClientContext clientContext, Object item) {
-    super(clientContext, item);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(Client client, Object item) {
+    super(client, item);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context,
+      NamespaceVisitOperationContext namespaceVisitOperationContext) {
     super(context, namespaceVisitOperationContext);
   }
 
   @Override
   protected List<HasMetadata> asHasMetadata(Object item) {
     if (item instanceof Template) {
-      return processTemplateList((Template)item, true);
+      return processTemplateList((Template) item, true);
     }
     return super.asHasMetadata(item);
   }
@@ -55,8 +57,8 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
     List<Parameter> parameters = template != null ? template.getParameters() : null;
     List<HasMetadata> objects = template != null ? template.getObjects() : Collections.emptyList();
     KubernetesList list = new KubernetesListBuilder()
-      .withItems(objects)
-      .build();
+        .withItems(objects)
+        .build();
 
     try {
       String json = OBJECT_MAPPER.writeValueAsString(list);
@@ -102,6 +104,7 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context,
       NamespaceVisitOperationContext namespaceVisitOperationContext) {
-    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context, namespaceVisitOperationContext);
+    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context,
+        namespaceVisitOperationContext);
   }
 }

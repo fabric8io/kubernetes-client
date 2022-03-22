@@ -16,16 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
@@ -42,23 +38,17 @@ import java.util.function.UnaryOperator;
 
 import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
 
-public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
+    extends BaseOperation<T, L, R> {
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
   private static final String REPLACE_OPERATION = "replace";
-  
+
   public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
     this.type = type;
     this.listType = listType;
-    validateOperation(type);
-  }
-  
-  protected void validateOperation(Class<T> type) {
-    if (Handlers.shouldRegister(type)) {
-      throw new AssertionError(String.format("%s needs registered with Handlers", getClass().getName()));
-    }
   }
 
   @Override
@@ -71,7 +61,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   private T clone(T item) {
     return Serialization.clone(item);
   }
-  
+
   @Override
   public T editStatus(UnaryOperator<T> function) {
     T item = getMandatory();
@@ -86,30 +76,27 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     consumer.accept(item);
     return patch(null, clone, item, false);
   }
-  
-  protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
-    ResourceHandler<T, V> handler = Handlers.get(item, new BaseClient(context));
-    return handler.edit(item);
-  }
-  
+
   @Override
   public T edit(Visitor... visitors) {
     T item = getMandatory();
     T clone = clone(item);
-    return patch(null, clone, createVisitableBuilder(item).accept(visitors).build(), false);
+    return patch(null, clone, context.getHandler(item).edit(item).accept(visitors).build(), false);
   }
 
   /**
    * Get the current item from the server
-   * <br>Will always return non-null or throw an exception.
+   * <br>
+   * Will always return non-null or throw an exception.
    */
   protected T requireFromServer() {
     return requireFromServer(null);
   }
-  
+
   /**
    * Get the current item from the server, consulting the metadata for the name if needed
-   * <br>Will always return non-null or throw an exception.
+   * <br>
+   * Will always return non-null or throw an exception.
    */
   protected T requireFromServer(ObjectMeta metadata) {
     try {
@@ -120,31 +107,32 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         String name = KubernetesResourceUtil.getName(getItem());
         if (Utils.isNotNullOrEmpty(name)) {
           return newInstance(context.withItem(null)).withName(name).require();
-        } 
+        }
       }
       if (metadata != null && Utils.isNotNullOrEmpty(metadata.getName())) {
         return newInstance(context.withItem(null)).withName(metadata.getName()).require();
       }
     } catch (ResourceNotFoundException e) {
       if (e.getCause() instanceof KubernetesClientException) {
-        throw (KubernetesClientException)e.getCause();
+        throw (KubernetesClientException) e.getCause();
       }
     }
     throw new KubernetesClientException("name not specified for an operation requiring one.");
   }
-  
+
   @Override
   public T replace(T item) {
     return replace(item, false);
   }
-  
+
   @Override
   public T replaceStatus(T item) {
     return replace(item, true);
   }
-  
+
   /**
    * Modify the item prior to a replace or a JSON patch diff
+   *
    * @param current item from the server
    * @param item to be modified
    * @return the modified item
@@ -216,7 +204,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     }
     throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), caught);
   }
-  
+
   protected T patch(PatchContext context, T base, T item, boolean status) {
     if (base == null && context != null && context.getPatchType() == PatchType.JSON) {
       base = requireFromServer(item.getMetadata());
@@ -224,7 +212,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         // prevent the resourceVersion from being modified in the patch
         if (item.getMetadata() == null) {
           item.setMetadata(new ObjectMeta());
-        }  
+        }
         item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());
       }
       final T current = base;
@@ -244,12 +232,12 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     };
     return visitor.apply(item);
   }
-  
+
   @Override
   public T patchStatus(T item) {
     return patch(PatchContext.of(PatchType.JSON_MERGE), null, clone(item), true);
   }
-  
+
   @Override
   public T patch(PatchContext patchContext, T item) {
     return patch(patchContext, null, clone(item), false);
@@ -267,10 +255,10 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
     }
   }
-  
+
   @Override
   public HasMetadataOperation<T, L, R> newInstance(OperationContext context) {
     return new HasMetadataOperation<>(context, type, listType);
   }
-  
+
 }

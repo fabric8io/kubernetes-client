@@ -15,11 +15,9 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.APIServer;
 import io.fabric8.openshift.api.model.APIServerList;
 import io.fabric8.openshift.api.model.Authentication;
@@ -49,85 +47,83 @@ import io.fabric8.openshift.api.model.ProxyList;
 import io.fabric8.openshift.api.model.Scheduler;
 import io.fabric8.openshift.api.model.SchedulerList;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.config.DNSOperationsImpl;
 
-public class OpenShiftConfigAPIGroupClient extends BaseOpenShiftClient implements OpenShiftConfigAPIGroupDSL {
-  public OpenShiftConfigAPIGroupClient() {
-    super();
-  }
+public class OpenShiftConfigAPIGroupClient extends ClientAdapter<OpenShiftConfigAPIGroupClient>
+    implements OpenShiftConfigAPIGroupDSL {
 
-  public OpenShiftConfigAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  @Override
+  public OpenShiftConfigAPIGroupClient newInstance() {
+    return new OpenShiftConfigAPIGroupClient();
   }
 
   @Override
   public NonNamespaceOperation<APIServer, APIServerList, Resource<APIServer>> apiServers() {
-    return OpenShiftHandlers.getOperation(APIServer.class, APIServerList.class, this);
+    return resources(APIServer.class, APIServerList.class);
   }
 
   @Override
   public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
-    return OpenShiftHandlers.getOperation(Authentication.class, AuthenticationList.class, this);
+    return resources(Authentication.class, AuthenticationList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterOperator, ClusterOperatorList, Resource<ClusterOperator>> clusterOperators() {
-    return OpenShiftHandlers.getOperation(ClusterOperator.class, ClusterOperatorList.class, this);
+    return resources(ClusterOperator.class, ClusterOperatorList.class);
   }
 
   @Override
   public NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles() {
-    return OpenShiftHandlers.getOperation(Console.class, ConsoleList.class, this);
+    return resources(Console.class, ConsoleList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterVersion, ClusterVersionList, Resource<ClusterVersion>> clusterVersions() {
-    return OpenShiftHandlers.getOperation(ClusterVersion.class, ClusterVersionList.class, this);
+    return resources(ClusterVersion.class, ClusterVersionList.class);
   }
 
   @Override
   public NonNamespaceOperation<DNS, DNSList, Resource<DNS>> dnses() {
-    return new DNSOperationsImpl(this);
+    return resources(DNS.class, DNSList.class);
   }
 
   @Override
   public NonNamespaceOperation<FeatureGate, FeatureGateList, Resource<FeatureGate>> featureGates() {
-    return OpenShiftHandlers.getOperation(FeatureGate.class, FeatureGateList.class, this);
+    return resources(FeatureGate.class, FeatureGateList.class);
   }
 
   @Override
   public NonNamespaceOperation<Infrastructure, InfrastructureList, Resource<Infrastructure>> infrastructures() {
-    return OpenShiftHandlers.getOperation(Infrastructure.class, InfrastructureList.class, this);
+    return resources(Infrastructure.class, InfrastructureList.class);
   }
 
   @Override
   public NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
-    return OpenShiftHandlers.getOperation(Ingress.class, IngressList.class, this);
+    return resources(Ingress.class, IngressList.class);
   }
 
   @Override
   public NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks() {
-    return OpenShiftHandlers.getOperation(Network.class, NetworkList.class, this);
+    return resources(Network.class, NetworkList.class);
   }
 
   @Override
   public NonNamespaceOperation<OAuth, OAuthList, Resource<OAuth>> oAuths() {
-    return OpenShiftHandlers.getOperation(OAuth.class, OAuthList.class, this);
+    return resources(OAuth.class, OAuthList.class);
   }
 
   @Override
   public NonNamespaceOperation<OperatorHub, OperatorHubList, Resource<OperatorHub>> operatorHubs() {
-    return OpenShiftHandlers.getOperation(OperatorHub.class, OperatorHubList.class, this);
+    return resources(OperatorHub.class, OperatorHubList.class);
   }
 
   @Override
   public NonNamespaceOperation<Proxy, ProxyList, Resource<Proxy>> proxies() {
-    return OpenShiftHandlers.getOperation(Proxy.class, ProxyList.class, this);
+    return resources(Proxy.class, ProxyList.class);
   }
 
   @Override
   public NonNamespaceOperation<Scheduler, SchedulerList, Resource<Scheduler>> schedulers() {
-    return OpenShiftHandlers.getOperation(Scheduler.class, SchedulerList.class, this);
+    return resources(Scheduler.class, SchedulerList.class);
   }
 
 }

@@ -18,16 +18,9 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class CertificatesAPIGroupClient extends BaseClient implements CertificatesAPIGroupDSL {
-
-  public CertificatesAPIGroupClient() {
-    super();
-  }
-
-  public CertificatesAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class CertificatesAPIGroupClient extends ClientAdapter<CertificatesAPIGroupClient> implements CertificatesAPIGroupDSL {
 
   @Override
   public V1CertificatesAPIGroupDSL v1() {
@@ -37,5 +30,10 @@ public class CertificatesAPIGroupClient extends BaseClient implements Certificat
   @Override
   public V1beta1CertificatesAPIGroupDSL v1beta1() {
     return adapt(V1beta1CertificatesAPIGroupClient.class);
+  }
+
+  @Override
+  public CertificatesAPIGroupClient newInstance() {
+    return new CertificatesAPIGroupClient();
   }
 }

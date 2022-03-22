@@ -20,18 +20,18 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultIstioClient extends ClientAdapter<NamespacedIstioClient>
+public class DefaultIstioClient extends ExtensionRootClientAdapter<DefaultIstioClient>
     implements NamespacedIstioClient, SupportTestingClient {
 
   public DefaultIstioClient() {
     super();
   }
 
-  public DefaultIstioClient(Config configuration) {
-    super(configuration);
+  public DefaultIstioClient(Config config) {
+    super(config);
   }
 
   public DefaultIstioClient(Client client) {
@@ -39,7 +39,7 @@ public class DefaultIstioClient extends ClientAdapter<NamespacedIstioClient>
   }
 
   @Override
-  protected NamespacedIstioClient newInstance(Client client) {
+  protected DefaultIstioClient newInstance(Client client) {
     return new DefaultIstioClient(client);
   }
 

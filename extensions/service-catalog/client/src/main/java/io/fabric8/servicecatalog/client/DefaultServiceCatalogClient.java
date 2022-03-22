@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
@@ -47,7 +47,7 @@ import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
-public class DefaultServiceCatalogClient extends ClientAdapter<DefaultServiceCatalogClient>
+public class DefaultServiceCatalogClient extends ExtensionRootClientAdapter<DefaultServiceCatalogClient>
     implements NamespacedServiceCatalogClient, SupportTestingClient {
 
   public DefaultServiceCatalogClient() {

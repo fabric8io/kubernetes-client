@@ -46,18 +46,18 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshClient>
+public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultChaosMeshClient>
     implements NamespacedChaosMeshClient, SupportTestingClient {
 
   public DefaultChaosMeshClient() {
     super();
   }
 
-  public DefaultChaosMeshClient(Config configuration) {
-    super(configuration);
+  public DefaultChaosMeshClient(Config config) {
+    super(config);
   }
 
   public DefaultChaosMeshClient(Client client) {
@@ -65,7 +65,7 @@ public class DefaultChaosMeshClient extends ClientAdapter<NamespacedChaosMeshCli
   }
 
   @Override
-  protected NamespacedChaosMeshClient newInstance(Client client) {
+  protected DefaultChaosMeshClient newInstance(Client client) {
     return new DefaultChaosMeshClient(client);
   }
 

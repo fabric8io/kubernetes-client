@@ -15,7 +15,6 @@
  */
 package io.fabric8.tekton.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -48,18 +47,11 @@ import io.fabric8.tekton.triggers.v1alpha1.TriggerList;
 import io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate;
 import io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateList;
 
-public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupDSL> implements V1alpha1APIGroupDSL {
-  public V1alpha1APIGroupClient() {
-    super();
-  }
-
-  public V1alpha1APIGroupClient(Client client) {
-    super(client);
-  }
+public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupClient> implements V1alpha1APIGroupDSL {
 
   @Override
-  protected V1alpha1APIGroupDSL newInstance(Client client) {
-    return new V1alpha1APIGroupClient(client);
+  public V1alpha1APIGroupClient newInstance() {
+    return new V1alpha1APIGroupClient();
   }
 
   @Override

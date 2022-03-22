@@ -15,31 +15,30 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
 
-public class OpenShiftQuotaAPIGroupClient extends BaseOpenShiftClient implements OpenShiftQuotaAPIGroupDSL {
-  public OpenShiftQuotaAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftQuotaAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftQuotaAPIGroupClient extends ClientAdapter<OpenShiftQuotaAPIGroupClient>
+    implements OpenShiftQuotaAPIGroupDSL {
 
   @Override
   public MixedOperation<AppliedClusterResourceQuota, AppliedClusterResourceQuotaList, Resource<AppliedClusterResourceQuota>> appliedClusterResourceQuotas() {
-    return OpenShiftHandlers.getOperation(AppliedClusterResourceQuota.class, AppliedClusterResourceQuotaList.class, this);
+    return resources(AppliedClusterResourceQuota.class, AppliedClusterResourceQuotaList.class);
   }
 
   @Override
   public MixedOperation<ClusterResourceQuota, ClusterResourceQuotaList, Resource<ClusterResourceQuota>> clusterResourceQuotas() {
-    return OpenShiftHandlers.getOperation(ClusterResourceQuota.class, ClusterResourceQuotaList.class, this);
+    return resources(ClusterResourceQuota.class, ClusterResourceQuotaList.class);
+  }
+
+  @Override
+  public OpenShiftQuotaAPIGroupClient newInstance() {
+    return new OpenShiftQuotaAPIGroupClient();
   }
 }

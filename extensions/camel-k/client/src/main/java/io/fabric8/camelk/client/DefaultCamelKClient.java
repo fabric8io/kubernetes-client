@@ -22,18 +22,18 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultCamelKClient extends ClientAdapter<DefaultCamelKClient>
+public class DefaultCamelKClient extends ExtensionRootClientAdapter<DefaultCamelKClient>
     implements NamespacedCamelKClient, SupportTestingClient {
 
   public DefaultCamelKClient() {
     super();
   }
 
-  public DefaultCamelKClient(Config configuration) {
-    super(configuration);
+  public DefaultCamelKClient(Config config) {
+    super(config);
   }
 
   public DefaultCamelKClient(Client client) {

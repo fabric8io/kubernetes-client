@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -36,19 +35,15 @@ import java.net.URL;
 /**
  * To be used as the base class for creating extension clients
  */
-public abstract class ClientAdapter<C extends Client> implements Client {
+public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Client {
 
   protected Client client;
 
-  protected ClientAdapter() {
-    this(new KubernetesClientBuilder().build());
+  public Client getClient() {
+    return client;
   }
 
-  protected ClientAdapter(Config configuration) {
-    this(new KubernetesClientBuilder().withConfig(configuration).build());
-  }
-
-  protected ClientAdapter(Client client) {
+  public void init(Client client) {
     this.client = client;
   }
 
@@ -134,13 +129,17 @@ public abstract class ClientAdapter<C extends Client> implements Client {
   }
 
   public C inAnyNamespace() {
-    return newInstance(client.adapt(NamespacedKubernetesClient.class).inAnyNamespace());
+    C result = newInstance();
+    result.init(client.adapt(NamespacedKubernetesClient.class).inAnyNamespace());
+    return result;
   }
 
   public C inNamespace(String namespace) {
-    return newInstance(client.adapt(NamespacedKubernetesClient.class).inNamespace(namespace));
+    C result = newInstance();
+    result.init(client.adapt(NamespacedKubernetesClient.class).inNamespace(namespace));
+    return result;
   }
 
-  protected abstract C newInstance(Client client);
+  public abstract C newInstance();
 
 }

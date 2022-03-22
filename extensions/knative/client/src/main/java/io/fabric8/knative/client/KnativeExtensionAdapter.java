@@ -15,6 +15,8 @@
  */
 package io.fabric8.knative.client;
 
+import io.fabric8.knative.client.serving.v1.DefaultServingV1Client;
+import io.fabric8.knative.client.serving.v1.ServingV1Client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
@@ -28,6 +30,11 @@ public class KnativeExtensionAdapter implements ExtensionAdapter<KnativeClient> 
   @Override
   public KnativeClient adapt(Client client) {
     return new DefaultKnativeClient(client);
+  }
+
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(ServingV1Client.class, new DefaultServingV1Client());
   }
 
 }

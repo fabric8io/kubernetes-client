@@ -15,16 +15,16 @@
  */
 package io.fabric8.kubernetes.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class PluralizeTest {
 
@@ -37,29 +37,29 @@ class PluralizeTest {
 
   static Stream<Arguments> toPluralInput() {
     return Stream.of(
-      arguments("", ""),
-      arguments(null, null),
-      arguments("equipment", "equipment"),
-      arguments("news", "news"),
-      arguments("people", "person"),
-      arguments("children", "child"),
-      arguments("shoes", "shoe"),
-      arguments("loves", "love"),
-      arguments("movies", "movie"),
-      arguments("lives", "life"),
-      arguments("chives", "chive"),
-      arguments("diminutives", "diminutive"),
-      arguments("dice", "die"),
-      arguments("scarves", "scarf"),
-      arguments("humans", "human"),
-      arguments("definitions", "definition"),
-      arguments("statuses", "status"),
-      arguments("endpoints", "endpoints"),
-      arguments("pods", "podmetrics"),
-      arguments("nodes", "nodemetrics"),
-      arguments("women", "woman"),
-      arguments("men", "man")
-    );
+        arguments("", ""),
+        arguments(null, null),
+        arguments("equipment", "equipment"),
+        arguments("news", "news"),
+        arguments("people", "person"),
+        arguments("children", "child"),
+        arguments("shoes", "shoe"),
+        arguments("loves", "love"),
+        arguments("movies", "movie"),
+        arguments("lives", "life"),
+        arguments("chives", "chive"),
+        arguments("diminutives", "diminutive"),
+        arguments("dice", "die"),
+        arguments("scarves", "scarf"),
+        arguments("humans", "human"),
+        arguments("definitions", "definition"),
+        arguments("statuses", "status"),
+        arguments("endpoints", "endpoints"),
+        arguments("pods", "podmetrics"),
+        arguments("nodes", "nodemetrics"),
+        arguments("women", "woman"),
+        arguments("men", "man"),
+        arguments("dnses", "dns"));
   }
 
 }

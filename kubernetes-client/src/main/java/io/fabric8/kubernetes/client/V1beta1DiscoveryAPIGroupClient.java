@@ -20,18 +20,18 @@ import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1DiscoveryAPIGroupClient extends BaseClient implements V1beta1DiscoveryAPIGroupDSL {
-  public V1beta1DiscoveryAPIGroupClient() {
-    super();
-  }
-
-  public V1beta1DiscoveryAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1beta1DiscoveryAPIGroupClient extends ClientAdapter<V1beta1DiscoveryAPIGroupClient>
+    implements V1beta1DiscoveryAPIGroupDSL {
 
   @Override
   public MixedOperation<EndpointSlice, EndpointSliceList, Resource<EndpointSlice>> endpointSlices() {
-    return Handlers.getOperation(EndpointSlice.class, EndpointSliceList.class, this);
+    return resources(EndpointSlice.class, EndpointSliceList.class);
+  }
+
+  @Override
+  public V1beta1DiscoveryAPIGroupClient newInstance() {
+    return new V1beta1DiscoveryAPIGroupClient();
   }
 }

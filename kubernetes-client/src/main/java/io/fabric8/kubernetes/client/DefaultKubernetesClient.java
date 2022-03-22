@@ -92,6 +92,19 @@ import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1EventingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1PolicyAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1FlowControlAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
@@ -111,6 +124,7 @@ import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
@@ -129,42 +143,82 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   public static final String KUBERNETES_VERSION_ENDPOINT = "version";
 
-  static {
-    Handlers.register(Pod.class, PodOperationsImpl::new);
-    Handlers.register(Job.class, JobOperationsImpl::new);
-    Handlers.register(Service.class, ServiceOperationsImpl::new);
-    Handlers.register(Deployment.class, DeploymentOperationsImpl::new);
-    Handlers.register(io.fabric8.kubernetes.api.model.extensions.Deployment.class,
-        io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
-    Handlers.register(ReplicaSet.class, ReplicaSetOperationsImpl::new);
-    Handlers.register(io.fabric8.kubernetes.api.model.extensions.ReplicaSet.class,
-        io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl::new);
-    Handlers.register(ReplicationController.class, ReplicationControllerOperationsImpl::new);
-    Handlers.register(StatefulSet.class, StatefulSetOperationsImpl::new);
-    Handlers.register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class,
-        CertificateSigningRequestOperationsImpl::new);
-    // trigger a load of the other client handlers and make KubernetesClient and DefaultKubernetesClient
-    Adapters.initializeHandlers(ResourcedHasMetadataOperation::register);
-  }
-
   public DefaultKubernetesClient() {
-    super();
+    this(new ConfigBuilder().build());
   }
 
   public DefaultKubernetesClient(String masterUrl) {
-    super(masterUrl);
+    this(new ConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   public DefaultKubernetesClient(Config config) {
-    super(config);
+    this(HttpClientUtils.createHttpClient(config), config);
   }
 
   public DefaultKubernetesClient(HttpClient httpClient, Config config) {
     super(httpClient, config);
+
+    this.getAdapters().registerClient(AppsAPIGroupDSL.class, new AppsAPIGroupClient());
+    this.getAdapters().registerClient(AdmissionRegistrationAPIGroupDSL.class, new AdmissionRegistrationAPIGroupClient());
+    this.getAdapters().registerClient(V1AdmissionRegistrationAPIGroupDSL.class, new V1AdmissionRegistrationAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1AdmissionRegistrationAPIGroupDSL.class,
+        new V1beta1AdmissionRegistrationAPIGroupClient());
+    this.getAdapters().registerClient(AutoscalingAPIGroupDSL.class, new AutoscalingAPIGroupClient());
+    this.getAdapters().registerClient(ApiextensionsAPIGroupDSL.class, new ApiextensionsAPIGroupClient());
+    this.getAdapters().registerClient(AuthorizationAPIGroupDSL.class, new AuthorizationAPIGroupClient());
+    this.getAdapters().registerClient(V1AutoscalingAPIGroupDSL.class, new V1AutoscalingAPIGroupClient());
+    this.getAdapters().registerClient(V2beta1AutoscalingAPIGroupDSL.class, new V2beta1AutoscalingAPIGroupClient());
+    this.getAdapters().registerClient(V2beta2AutoscalingAPIGroupDSL.class, new V2beta2AutoscalingAPIGroupClient());
+    this.getAdapters().registerClient(BatchAPIGroupDSL.class, new BatchAPIGroupClient());
+    this.getAdapters().registerClient(V1BatchAPIGroupDSL.class, new V1BatchAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1BatchAPIGroupDSL.class, new V1beta1BatchAPIGroupClient());
+    this.getAdapters().registerClient(ExtensionsAPIGroupDSL.class, new ExtensionsAPIGroupClient());
+    this.getAdapters().registerClient(EventingAPIGroupDSL.class, new EventingAPIGroupClient());
+    this.getAdapters().registerClient(V1EventingAPIGroupDSL.class, new V1EventingAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1EventingAPIGroupDSL.class, new V1beta1EventingAPIGroupClient());
+    this.getAdapters().registerClient(FlowControlAPIGroupDSL.class, new FlowControlAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1FlowControlAPIGroupDSL.class, new V1beta1FlowControlAPIGroupClient());
+    this.getAdapters().registerClient(MetricAPIGroupDSL.class, new MetricAPIGroupClient());
+    this.getAdapters().registerClient(NetworkAPIGroupDSL.class, new NetworkAPIGroupClient());
+    this.getAdapters().registerClient(PolicyAPIGroupDSL.class, new PolicyAPIGroupClient());
+    this.getAdapters().registerClient(V1PolicyAPIGroupDSL.class, new V1PolicyAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1PolicyAPIGroupDSL.class, new V1beta1PolicyAPIGroupClient());
+    this.getAdapters().registerClient(RbacAPIGroupDSL.class, new RbacAPIGroupClient());
+    this.getAdapters().registerClient(SchedulingAPIGroupDSL.class, new SchedulingAPIGroupClient());
+    this.getAdapters().registerClient(V1SchedulingAPIGroupDSL.class, new V1SchedulingAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1SchedulingAPIGroupDSL.class, new V1beta1SchedulingAPIGroupClient());
+    this.getAdapters().registerClient(StorageAPIGroupDSL.class, new StorageAPIGroupClient());
+    this.getAdapters().registerClient(V1APIGroupDSL.class, new V1APIGroupClient());
+    this.getAdapters().registerClient(V1ApiextensionAPIGroupDSL.class, new V1ApiextensionsAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1ApiextensionAPIGroupDSL.class, new V1beta1ApiextensionsAPIGroupClient());
+    this.getAdapters().registerClient(V1AuthorizationAPIGroupDSL.class, new V1AuthorizationAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1AuthorizationAPIGroupDSL.class, new V1beta1AuthorizationAPIGroupClient());
+    this.getAdapters().registerClient(V1NetworkAPIGroupDSL.class, new V1NetworkAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1NetworkAPIGroupDSL.class, new V1beta1NetworkAPIGroupClient());
+    this.getAdapters().registerClient(DiscoveryAPIGroupDSL.class, new DiscoveryAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1DiscoveryAPIGroupDSL.class, new V1beta1DiscoveryAPIGroupClient());
+    this.getAdapters().registerClient(V1DiscoveryAPIGroupDSL.class, new V1DiscoveryAPIGroupClient());
+    this.getAdapters().registerClient(CertificatesAPIGroupDSL.class, new CertificatesAPIGroupClient());
+    this.getAdapters().registerClient(V1CertificatesAPIGroupDSL.class, new V1CertificatesAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1CertificatesAPIGroupDSL.class, new V1beta1CertificatesAPIGroupClient());
+
+    this.getHandlers().register(Pod.class, PodOperationsImpl::new);
+    this.getHandlers().register(Job.class, JobOperationsImpl::new);
+    this.getHandlers().register(Service.class, ServiceOperationsImpl::new);
+    this.getHandlers().register(Deployment.class, DeploymentOperationsImpl::new);
+    this.getHandlers().register(io.fabric8.kubernetes.api.model.extensions.Deployment.class,
+        io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
+    this.getHandlers().register(ReplicaSet.class, ReplicaSetOperationsImpl::new);
+    this.getHandlers().register(io.fabric8.kubernetes.api.model.extensions.ReplicaSet.class,
+        io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl::new);
+    this.getHandlers().register(ReplicationController.class, ReplicationControllerOperationsImpl::new);
+    this.getHandlers().register(StatefulSet.class, StatefulSetOperationsImpl::new);
+    this.getHandlers().register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class,
+        CertificateSigningRequestOperationsImpl::new);
   }
 
-  public DefaultKubernetesClient(ClientContext clientContext) {
-    super(clientContext);
+  protected DefaultKubernetesClient(Config config, BaseClient client) {
+    super(config, client);
   }
 
   public static DefaultKubernetesClient fromConfig(String config) {
@@ -177,17 +231,17 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
-    return new DefaultKubernetesClient(createInNamespaceContext(name, false));
+    return new DefaultKubernetesClient(createInNamespaceConfig(name, false), this);
   }
 
-  protected ClientContext createInNamespaceContext(String name, boolean any) {
+  protected Config createInNamespaceConfig(String name, boolean any) {
     if (!any && name == null) {
       throw new KubernetesClientException("namespace cannot be null");
     }
     Config copy = configCopy();
     copy.setNamespace(name);
     copy.setDefaultNamespace(false);
-    return newState(copy);
+    return copy;
   }
 
   protected Config configCopy() {
@@ -260,7 +314,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public <T extends HasMetadata> NamespaceableResource<T> resource(T item) {
     // lookup the operation given the item
-    ResourceHandler<T, ?> resourceHandler = Handlers.get(item, this);
+    ResourceHandler<T, ?> resourceHandler = getHandlers().get(item, this);
     HasMetadataOperation<T, ?, ?> op = resourceHandler.operation(this, null);
     return new NamespaceableResourceAdapter<>(item, op);
   }
@@ -288,7 +342,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
-    return Handlers.getOperation(Endpoints.class, EndpointsList.class, this);
+    return resources(Endpoints.class, EndpointsList.class);
   }
 
   /**
@@ -296,7 +350,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
-    return Handlers.getOperation(Namespace.class, NamespaceList.class, this);
+    return resources(Namespace.class, NamespaceList.class);
   }
 
   /**
@@ -304,7 +358,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
-    return Handlers.getOperation(Node.class, NodeList.class, this);
+    return resources(Node.class, NodeList.class);
   }
 
   /**
@@ -312,7 +366,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
-    return Handlers.getOperation(PersistentVolume.class, PersistentVolumeList.class, this);
+    return resources(PersistentVolume.class, PersistentVolumeList.class);
   }
 
   /**
@@ -320,7 +374,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
-    return Handlers.getOperation(PersistentVolumeClaim.class, PersistentVolumeClaimList.class, this);
+    return resources(PersistentVolumeClaim.class, PersistentVolumeClaimList.class);
   }
 
   /**
@@ -344,7 +398,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
-    return Handlers.getOperation(ResourceQuota.class, ResourceQuotaList.class, this);
+    return resources(ResourceQuota.class, ResourceQuotaList.class);
   }
 
   /**
@@ -357,7 +411,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
-    return Handlers.getOperation(Secret.class, SecretList.class, this);
+    return resources(Secret.class, SecretList.class);
   }
 
   /**
@@ -373,7 +427,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
-    return Handlers.getOperation(ServiceAccount.class, ServiceAccountList.class, this);
+    return resources(ServiceAccount.class, ServiceAccountList.class);
   }
 
   /**
@@ -381,7 +435,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
-    return Handlers.getOperation(APIService.class, APIServiceList.class, this);
+    return resources(APIService.class, APIServiceList.class);
   }
 
   /**
@@ -389,7 +443,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
-    return Handlers.getOperation(ConfigMap.class, ConfigMapList.class, this);
+    return resources(ConfigMap.class, ConfigMapList.class);
   }
 
   /**
@@ -397,7 +451,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges() {
-    return Handlers.getOperation(LimitRange.class, LimitRangeList.class, this);
+    return resources(LimitRange.class, LimitRangeList.class);
   }
 
   /**
@@ -413,7 +467,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
-    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, this);
+    return resources(CertificateSigningRequest.class, CertificateSigningRequestList.class);
   }
 
   @Override
@@ -434,7 +488,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
-    return Handlers.getNonListingOperation(TokenReview.class, this);
+    return getHandlers().getNonListingOperation(TokenReview.class, this);
   }
 
   /**
@@ -458,7 +512,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       String apiVersion, String kind) {
-    ResourceDefinitionContext context = Handlers.getResourceDefinitionContext(apiVersion, kind, this);
+    ResourceDefinitionContext context = getHandlers().getResourceDefinitionContext(apiVersion, kind, this);
     if (context == null) {
       throw new KubernetesClientException(
           "Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
@@ -487,7 +541,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespacedKubernetesClient inAnyNamespace() {
-    return new DefaultKubernetesClient(createInNamespaceContext(null, true));
+    return new DefaultKubernetesClient(createInNamespaceConfig(null, true), this);
   }
 
   /**
@@ -617,7 +671,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public MixedOperation<Lease, LeaseList, Resource<Lease>> leases() {
-    return Handlers.getOperation(Lease.class, LeaseList.class, this);
+    return resources(Lease.class, LeaseList.class);
   }
 
   /**
@@ -633,7 +687,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
-    return Handlers.getOperation(RuntimeClass.class, RuntimeClassList.class, this);
+    return resources(RuntimeClass.class, RuntimeClassList.class);
   }
 
 }

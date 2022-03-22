@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
 // TODO: add type checking of the resource class
 // here that would be adapter.getClass, in the base HasMetadataOperationsImpl it would be this.getClass()
@@ -41,23 +40,13 @@ class ResourcedHasMetadataOperation<T extends HasMetadata, L extends KubernetesR
   @Override
   protected ExtensibleResourceAdapter<T> newResource(OperationContext context) {
     ExtensibleResourceAdapter<T> result = adapter.newInstance();
-    result.init(super.newInstance(context), new BaseClient(context));
+    result.init(super.newInstance(context), context.getClient());
     return result;
   }
 
   @Override
   public HasMetadataOperationsImpl<T, L> newInstance(OperationContext context) {
     return new ResourcedHasMetadataOperation<>(context, this.rdc, type, listType, adapter);
-  }
-
-  public static <T extends HasMetadata, R extends ExtensibleResourceAdapter<T>> void register(
-      Class<T> type, R target) {
-    ResourceDefinitionContext definitionContest = ResourceDefinitionContext.fromResourceType(type);
-    Class<? extends KubernetesResourceList> listType = KubernetesResourceUtil.inferListType(type);
-    Handlers.register(type,
-        c -> new ResourcedHasMetadataOperation<>(HasMetadataOperationsImpl.defaultContext(c),
-            definitionContest, type,
-            listType, target));
   }
 
 }

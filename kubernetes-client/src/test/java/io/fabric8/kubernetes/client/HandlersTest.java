@@ -23,31 +23,36 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.assertThat;
 
 public class HandlersTest {
-  
+
   static class MyPod extends Pod {
-    
+
   }
-  
+
   static class MyPodOperationsImpl extends HasMetadataOperation<MyPod, KubernetesResourceList<MyPod>, Resource<MyPod>> {
 
-    public MyPodOperationsImpl(ClientContext clientContext) {
-      super(new OperationContext(), MyPod.class, null);
+    public MyPodOperationsImpl(Client client) {
+      super(new OperationContext().withClient(client), MyPod.class, null);
     }
-    
+
   }
-  
+
   @Test
   public void testRegister() {
-    Handlers.register(MyPod.class, MyPodOperationsImpl::new);
+    Handlers handlers = new Handlers();
+    handlers.register(MyPod.class, MyPodOperationsImpl::new);
 
-    assertThat(Handlers.get(new MyPod(), null).operation(new SimpleClientContext(), null), Matchers.instanceOf(MyPodOperationsImpl.class));
-    
-    Handlers.unregister(MyPod.class);
-    
-    assertThat(Handlers.get(new MyPod(), null).operation(new SimpleClientContext(), null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
+    BaseClient mock = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(mock.adapt(BaseClient.class).getHandlers()).thenReturn(handlers);
+
+    assertThat(handlers.get(new MyPod(), null).operation(mock, null), Matchers.instanceOf(MyPodOperationsImpl.class));
+
+    handlers.unregister(MyPod.class);
+
+    assertThat(handlers.get(new MyPod(), null).operation(mock, null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
   }
 }

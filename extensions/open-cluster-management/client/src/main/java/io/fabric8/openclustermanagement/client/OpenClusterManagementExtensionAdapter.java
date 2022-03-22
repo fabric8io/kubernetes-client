@@ -17,6 +17,14 @@ package io.fabric8.openclustermanagement.client;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAgentAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAppsAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementClustersAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementDiscoveryAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementObservabilityAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementOperatorAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAPIGroupDSL;
+import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementSearchAPIGroupDSL;
 
 public class OpenClusterManagementExtensionAdapter implements ExtensionAdapter<OpenClusterManagementClient> {
 
@@ -28,5 +36,18 @@ public class OpenClusterManagementExtensionAdapter implements ExtensionAdapter<O
   @Override
   public OpenClusterManagementClient adapt(Client client) {
     return new DefaultOpenClusterManagementClient(client);
+  }
+
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(OpenClusterManagementAppsAPIGroupDSL.class, new OpenClusterManagementAppsAPIGroupClient());
+    factory.register(OpenClusterManagementAgentAPIGroupDSL.class, new OpenClusterManagementAgentAPIGroupClient());
+    factory.register(OpenClusterManagementClustersAPIGroupDSL.class, new OpenClusterManagementClustersAPIGroupClient());
+    factory.register(OpenClusterManagementDiscoveryAPIGroupDSL.class, new OpenClusterManagementDiscoveryAPIGroupClient());
+    factory.register(OpenClusterManagementObservabilityAPIGroupDSL.class,
+        new OpenClusterManagementObservabilityAPIGroupClient());
+    factory.register(OpenClusterManagementOperatorAPIGroupDSL.class, new OpenClusterManagementOperatorAPIGroupClient());
+    factory.register(OpenClusterManagementPolicyAPIGroupDSL.class, new OpenClusterManagementPolicyAPIGroupClient());
+    factory.register(OpenClusterManagementSearchAPIGroupDSL.class, new OpenClusterManagementSearchAPIGroupClient());
   }
 }

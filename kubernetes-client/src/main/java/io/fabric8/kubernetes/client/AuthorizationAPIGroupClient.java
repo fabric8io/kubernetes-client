@@ -16,15 +16,10 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class AuthorizationAPIGroupClient extends BaseClient implements AuthorizationAPIGroupDSL {
-  public AuthorizationAPIGroupClient() {
-    super();
-  }
-
-  public AuthorizationAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class AuthorizationAPIGroupClient extends ClientAdapter<AuthorizationAPIGroupClient>
+    implements AuthorizationAPIGroupDSL {
 
   @Override
   public V1AuthorizationAPIGroupDSL v1() {
@@ -34,5 +29,10 @@ public class AuthorizationAPIGroupClient extends BaseClient implements Authoriza
   @Override
   public V1beta1AuthorizationAPIGroupDSL v1beta1() {
     return adapt(V1beta1AuthorizationAPIGroupClient.class);
+  }
+
+  @Override
+  public AuthorizationAPIGroupClient newInstance() {
+    return new AuthorizationAPIGroupClient();
   }
 }

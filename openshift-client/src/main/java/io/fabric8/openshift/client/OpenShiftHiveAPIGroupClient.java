@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.hive.v1.Checkpoint;
 import io.fabric8.openshift.api.model.hive.v1.CheckpointList;
 import io.fabric8.openshift.api.model.hive.v1.ClusterClaim;
@@ -55,97 +55,96 @@ import io.fabric8.openshift.api.model.hive.v1.SyncSet;
 import io.fabric8.openshift.api.model.hive.v1.SyncSetList;
 import io.fabric8.openshift.client.dsl.OpenShiftHiveAPIGroupDSL;
 
-public class OpenShiftHiveAPIGroupClient extends BaseOpenShiftClient implements OpenShiftHiveAPIGroupDSL {
-  public OpenShiftHiveAPIGroupClient() {
-    super();
-  }
+public class OpenShiftHiveAPIGroupClient extends ClientAdapter<OpenShiftHiveAPIGroupClient>
+    implements OpenShiftHiveAPIGroupDSL {
 
-  public OpenShiftHiveAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
+  @Override
+  public OpenShiftHiveAPIGroupClient newInstance() {
+    return new OpenShiftHiveAPIGroupClient();
   }
 
   @Override
   public MixedOperation<Checkpoint, CheckpointList, Resource<Checkpoint>> checkpoints() {
-    return OpenShiftHandlers.getOperation(Checkpoint.class, CheckpointList.class, this);
+    return resources(Checkpoint.class, CheckpointList.class);
   }
 
   @Override
   public MixedOperation<ClusterClaim, ClusterClaimList, Resource<ClusterClaim>> clusterClaims() {
-    return OpenShiftHandlers.getOperation(ClusterClaim.class, ClusterClaimList.class, this);
+    return resources(ClusterClaim.class, ClusterClaimList.class);
   }
 
   @Override
   public MixedOperation<ClusterDeployment, ClusterDeploymentList, Resource<ClusterDeployment>> clusterDeployments() {
-    return OpenShiftHandlers.getOperation(ClusterDeployment.class, ClusterDeploymentList.class, this);
+    return resources(ClusterDeployment.class, ClusterDeploymentList.class);
   }
 
   @Override
   public MixedOperation<ClusterDeprovision, ClusterDeprovisionList, Resource<ClusterDeprovision>> clusterDeprovisions() {
-    return OpenShiftHandlers.getOperation(ClusterDeprovision.class, ClusterDeprovisionList.class, this);
+    return resources(ClusterDeprovision.class, ClusterDeprovisionList.class);
   }
 
   @Override
   public MixedOperation<ClusterProvision, ClusterProvisionList, Resource<ClusterProvision>> clusterProvisions() {
-    return OpenShiftHandlers.getOperation(ClusterProvision.class, ClusterProvisionList.class, this);
+    return resources(ClusterProvision.class, ClusterProvisionList.class);
   }
 
   @Override
   public NonNamespaceOperation<ClusterImageSet, ClusterImageSetList, Resource<ClusterImageSet>> clusterImageSets() {
-    return OpenShiftHandlers.getOperation(ClusterImageSet.class, ClusterImageSetList.class, this);
+    return resources(ClusterImageSet.class, ClusterImageSetList.class);
   }
 
   @Override
   public MixedOperation<ClusterPool, ClusterPoolList, Resource<ClusterPool>> clusterPools() {
-    return OpenShiftHandlers.getOperation(ClusterPool.class, ClusterPoolList.class, this);
+    return resources(ClusterPool.class, ClusterPoolList.class);
   }
 
   @Override
   public MixedOperation<ClusterRelocate, ClusterRelocateList, Resource<ClusterRelocate>> clusterRelocates() {
-    return OpenShiftHandlers.getOperation(ClusterRelocate.class, ClusterRelocateList.class, this);
+    return resources(ClusterRelocate.class, ClusterRelocateList.class);
   }
 
   @Override
   public MixedOperation<ClusterState, ClusterStateList, Resource<ClusterState>> clusterStates() {
-    return OpenShiftHandlers.getOperation(ClusterState.class, ClusterStateList.class, this);
+    return resources(ClusterState.class, ClusterStateList.class);
   }
 
   @Override
   public MixedOperation<DNSZone, DNSZoneList, Resource<DNSZone>> dnsZones() {
-    return OpenShiftHandlers.getOperation(DNSZone.class, DNSZoneList.class, this);
+    return resources(DNSZone.class, DNSZoneList.class);
   }
 
   @Override
   public NonNamespaceOperation<HiveConfig, HiveConfigList, Resource<HiveConfig>> hiveConfigs() {
-    return OpenShiftHandlers.getOperation(HiveConfig.class, HiveConfigList.class, this);
+    return resources(HiveConfig.class, HiveConfigList.class);
   }
 
   @Override
   public MixedOperation<MachinePoolNameLease, MachinePoolNameLeaseList, Resource<MachinePoolNameLease>> machinePoolNameLeases() {
-    return OpenShiftHandlers.getOperation(MachinePoolNameLease.class, MachinePoolNameLeaseList.class, this);
+    return resources(MachinePoolNameLease.class, MachinePoolNameLeaseList.class);
   }
 
   @Override
   public MixedOperation<MachinePool, MachinePoolList, Resource<MachinePool>> machinePools() {
-    return OpenShiftHandlers.getOperation(MachinePool.class, MachinePoolList.class, this);
+    return resources(MachinePool.class, MachinePoolList.class);
   }
 
   @Override
   public NonNamespaceOperation<SelectorSyncIdentityProvider, SelectorSyncIdentityProviderList, Resource<SelectorSyncIdentityProvider>> selectorSyncIdentityProviders() {
-    return OpenShiftHandlers.getOperation(SelectorSyncIdentityProvider.class, SelectorSyncIdentityProviderList.class, this);
+    return resources(SelectorSyncIdentityProvider.class, SelectorSyncIdentityProviderList.class);
   }
 
   @Override
   public NonNamespaceOperation<SelectorSyncSet, SelectorSyncSetList, Resource<SelectorSyncSet>> selectorSyncSets() {
-    return OpenShiftHandlers.getOperation(SelectorSyncSet.class, SelectorSyncSetList.class, this);
+    return resources(SelectorSyncSet.class, SelectorSyncSetList.class);
   }
 
   @Override
   public MixedOperation<SyncIdentityProvider, SyncIdentityProviderList, Resource<SyncIdentityProvider>> syncIdentityProviders() {
-    return OpenShiftHandlers.getOperation(SyncIdentityProvider.class, SyncIdentityProviderList.class, this);
+    return resources(SyncIdentityProvider.class, SyncIdentityProviderList.class);
   }
 
   @Override
   public MixedOperation<SyncSet, SyncSetList, Resource<SyncSet>> syncSets() {
-    return OpenShiftHandlers.getOperation(SyncSet.class, SyncSetList.class, this);
+    return resources(SyncSet.class, SyncSetList.class);
   }
 }

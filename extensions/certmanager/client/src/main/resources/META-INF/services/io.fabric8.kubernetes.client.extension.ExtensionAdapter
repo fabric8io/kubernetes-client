@@ -15,7 +15,3 @@
 #
 
 io.fabric8.certmanager.client.CertManagerExtensionAdapter
-io.fabric8.certmanager.client.V1alpha2APIGroupExtensionAdapter
-io.fabric8.certmanager.client.V1alpha3APIGroupExtensionAdapter
-io.fabric8.certmanager.client.V1beta1APIGroupExtensionAdapter
-io.fabric8.certmanager.client.V1APIGroupExtensionAdapter

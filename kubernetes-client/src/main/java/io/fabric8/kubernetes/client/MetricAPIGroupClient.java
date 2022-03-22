@@ -18,15 +18,9 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.NodeMetricOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PodMetricOperationsImpl;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class MetricAPIGroupClient extends BaseClient implements MetricAPIGroupDSL {
-  public MetricAPIGroupClient() {
-    super();
-  }
-
-  public MetricAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class MetricAPIGroupClient extends ClientAdapter<MetricAPIGroupClient> implements MetricAPIGroupDSL {
 
   @Override
   public PodMetricOperationsImpl pods() {
@@ -36,6 +30,11 @@ public class MetricAPIGroupClient extends BaseClient implements MetricAPIGroupDS
   @Override
   public NodeMetricOperationsImpl nodes() {
     return new NodeMetricOperationsImpl(this);
+  }
+
+  @Override
+  public MetricAPIGroupClient newInstance() {
+    return new MetricAPIGroupClient();
   }
 
 }

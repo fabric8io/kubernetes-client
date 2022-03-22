@@ -14,28 +14,51 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.server.mock;
+package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient(unsupported = "openshift.io")
-class SupportTest {
+@EnableKubernetesMockClient(crud = true)
+class KubernetesMockServerTest {
 
   KubernetesClient client;
+  KubernetesMockServer server;
 
   @Test
-  void testOpenShiftNotSupported() {
+  void testReset() {
+    client.configMaps().create(new ConfigMapBuilder().withNewMetadata().withName("x").endMetadata().build());
+    VersionInfo info = client.getKubernetesVersion();
+    assertEquals("0", info.getMajor());
+
+    server.reset();
+
+    info = client.getKubernetesVersion();
+    assertEquals("0", info.getMajor());
+    assertNull(client.configMaps().withName("x").get());
+  }
+
+  @Test
+  void testOpenShiftSupport() {
+    server.unsupported("openshift.io");
     assertFalse(client.isAdaptable(OpenShiftClient.class));
+    assertFalse(client.adapt(OpenShiftClient.class).isSupported());
     assertFalse(client.supports(Route.class));
     assertTrue(client.supports(Pod.class));
+    server.reset();
+    assertTrue(client.adapt(OpenShiftClient.class).isSupported());
   }
 
 }

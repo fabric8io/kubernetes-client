@@ -15,6 +15,8 @@
  */
 package io.fabric8.camelk.client;
 
+import io.fabric8.camelk.client.dsl.V1APIGroupDSL;
+import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 
@@ -28,6 +30,12 @@ public class CamelKExtensionAdapter implements ExtensionAdapter<CamelKClient> {
   @Override
   public CamelKClient adapt(Client client) {
     return new DefaultCamelKClient(client);
+  }
+
+  @Override
+  public void registerClients(ClientFactory factory) {
+    factory.register(V1APIGroupDSL.class, new V1APIGroupClient());
+    factory.register(V1alpha1APIGroupDSL.class, new V1alpha1APIGroupClient());
   }
 
 }

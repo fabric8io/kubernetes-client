@@ -15,31 +15,31 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolList;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservationList;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 
-public class OpenShiftWhereaboutsAPIGroupClient  extends BaseOpenShiftClient implements OpenShiftWhereaboutsAPIGroupDSL {
-  public OpenShiftWhereaboutsAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftWhereaboutsAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftWhereaboutsAPIGroupClient extends ClientAdapter<OpenShiftWhereaboutsAPIGroupClient>
+    implements OpenShiftWhereaboutsAPIGroupDSL {
 
   @Override
   public MixedOperation<IPPool, IPPoolList, Resource<IPPool>> ippools() {
-    return OpenShiftHandlers.getOperation(IPPool.class, IPPoolList.class, this);
+    return resources(IPPool.class, IPPoolList.class);
   }
 
   @Override
   public MixedOperation<OverlappingRangeIPReservation, OverlappingRangeIPReservationList, Resource<OverlappingRangeIPReservation>> overlappingRangeIpReservations() {
-    return OpenShiftHandlers.getOperation(OverlappingRangeIPReservation.class, OverlappingRangeIPReservationList.class, this);
+    return resources(OverlappingRangeIPReservation.class, OverlappingRangeIPReservationList.class);
   }
+
+  @Override
+  public OpenShiftWhereaboutsAPIGroupClient newInstance() {
+    return new OpenShiftWhereaboutsAPIGroupClient();
+  }
+
 }

@@ -24,16 +24,17 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 
-public class DefaultCertManagerClient extends ClientAdapter<NamespacedCertManagerClient> implements NamespacedCertManagerClient {
+public class DefaultCertManagerClient extends ExtensionRootClientAdapter<DefaultCertManagerClient>
+    implements NamespacedCertManagerClient {
 
   public DefaultCertManagerClient() {
     super();
   }
 
-  public DefaultCertManagerClient(Config configuration) {
-    super(configuration);
+  public DefaultCertManagerClient(Config config) {
+    super(config);
   }
 
   public DefaultCertManagerClient(Client client) {
@@ -41,7 +42,7 @@ public class DefaultCertManagerClient extends ClientAdapter<NamespacedCertManage
   }
 
   @Override
-  protected NamespacedCertManagerClient newInstance(Client client) {
+  protected DefaultCertManagerClient newInstance(Client client) {
     return new DefaultCertManagerClient(client);
   }
 
@@ -51,7 +52,9 @@ public class DefaultCertManagerClient extends ClientAdapter<NamespacedCertManage
   }
 
   @Override
-  public V1APIGroupDSL v1() { return adapt(V1APIGroupClient.class); }
+  public V1APIGroupDSL v1() {
+    return adapt(V1APIGroupClient.class);
+  }
 
   @Override
   public V1alpha2APIGroupDSL v1alpha2() {

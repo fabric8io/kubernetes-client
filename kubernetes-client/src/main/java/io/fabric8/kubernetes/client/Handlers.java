@@ -38,60 +38,58 @@ import java.util.function.Function;
 
 public final class Handlers {
 
-  private static final Map<Class<?>, ResourceHandler<?, ?>> RESOURCE_HANDLER_MAP = new ConcurrentHashMap<>();
-  private static final Map<List<String>, ResourceDefinitionContext> GENERIC_RESOURCE_HANDLER_MAP = new ConcurrentHashMap<>();
-  
-  private Handlers() {
-    //Utility
-  }
+  private final Map<Class<?>, ResourceHandler<?, ?>> resourceHandlers = new ConcurrentHashMap<>();
+  private final Map<List<String>, ResourceDefinitionContext> genericDefinitions = new ConcurrentHashMap<>();
 
-  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(Class<T> type, Function<ClientContext, HasMetadataOperation<T, L, R>> operationConstructor) {
-    if (RESOURCE_HANDLER_MAP.put(type, new ResourceHandlerImpl(type, operationConstructor)) != null) {
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(Class<T> type,
+      Function<Client, HasMetadataOperation<T, L, R>> operationConstructor) {
+    if (resourceHandlers.put(type, new ResourceHandlerImpl(type, operationConstructor)) != null) {
       throw new AssertionError(String.format("%s already registered", type.getName()));
     }
   }
-  
-  public static <T extends HasMetadata> void unregister(Class<T> type) {
-    RESOURCE_HANDLER_MAP.remove(type);
+
+  public <T extends HasMetadata> void unregister(Class<T> type) {
+    resourceHandlers.remove(type);
   }
-  
+
   /**
-   * Returns a {@link ResourceHandler} for the given item.  The client is optional, if it is supplied, then the server can be 
-   * consulted for resource metadata if a generic item is passed in. 
+   * Returns a {@link ResourceHandler} for the given item. The client is optional, if it is supplied, then the server can be
+   * consulted for resource metadata if a generic item is passed in.
    * 
    * @return the handler
    * @throws KubernetesClientException if a handler cannot be found
    */
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(T meta, BaseClient client) {
-    Class<T> type = (Class<T>)meta.getClass();
-    
+  public <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(T meta, Client client) {
+    Class<T> type = (Class<T>) meta.getClass();
+
     if (type.equals(GenericKubernetesResource.class)) {
-      ResourceDefinitionContext rdc = getResourceDefinitionContext((GenericKubernetesResource)meta, client);
-      
+      ResourceDefinitionContext rdc = getResourceDefinitionContext((GenericKubernetesResource) meta, client);
+
       if (rdc != null) {
         return new ResourceHandlerImpl(GenericKubernetesResource.class, GenericKubernetesResourceList.class, rdc);
       }
     }
-    
+
     ResourceHandler<T, V> result = get(type);
     if (result == null) {
-        throw new KubernetesClientException("Could not find a registered handler for item: [" + meta + "].");
+      throw new KubernetesClientException("Could not find a registered handler for item: [" + meta + "].");
     }
     return result;
   }
-  
-  public static ResourceDefinitionContext getResourceDefinitionContext(String apiVersion, String kind, BaseClient client) {
+
+  public ResourceDefinitionContext getResourceDefinitionContext(String apiVersion, String kind, BaseClient client) {
     GenericKubernetesResource resource = new GenericKubernetesResource();
     resource.setKind(kind);
     resource.setApiVersion(apiVersion);
     return getResourceDefinitionContext(resource, client);
   }
 
-  public static <T extends HasMetadata> ResourceDefinitionContext getResourceDefinitionContext(GenericKubernetesResource meta, BaseClient client) {
+  public <T extends HasMetadata> ResourceDefinitionContext getResourceDefinitionContext(GenericKubernetesResource meta,
+      Client client) {
     // check if it's built-in
     Object value = Serialization.unmarshal(Serialization.asJson(meta));
     Class<T> parsedType = (Class<T>) value.getClass();
-    
+
     ResourceDefinitionContext rdc = null;
     if (!parsedType.equals(GenericKubernetesResource.class)) {
       rdc = ResourceDefinitionContext.fromResourceType(parsedType);
@@ -108,7 +106,7 @@ public final class Handlers {
       }
       String version = ApiVersionUtil.trimVersion(apiVersion);
       // assume that resource metadata won't change for the lifetime of the client
-      rdc = GENERIC_RESOURCE_HANDLER_MAP.computeIfAbsent(Arrays.asList(kind, apiVersion), k -> {
+      rdc = genericDefinitions.computeIfAbsent(Arrays.asList(kind, apiVersion), k -> {
         APIResourceList resourceList = client.getApiResources(apiVersion);
         if (resourceList == null) {
           return null;
@@ -124,38 +122,35 @@ public final class Handlers {
                 .withVersion(version)
                 .build())
             .orElse(null);
-      });        
+      });
     }
     return rdc;
   }
 
-  private static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(Class<T> type) {
+  private <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(Class<T> type) {
     if (type.equals(GenericKubernetesResource.class)) {
       return null;
     }
-    return (ResourceHandler<T, V>) RESOURCE_HANDLER_MAP.computeIfAbsent(type, k -> new ResourceHandlerImpl<>(type, null));
+    return (ResourceHandler<T, V>) resourceHandlers.computeIfAbsent(type, k -> new ResourceHandlerImpl<>(type, null));
   }
-  
-  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(Class<T> type, Class<L> listType, ClientContext clientContext) {
+
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(
+      Class<T> type, Class<L> listType, Client client) {
     ResourceHandler<T, ?> resourceHandler = get(type);
     if (resourceHandler == null) {
       throw new IllegalStateException();
     }
-    return (HasMetadataOperation<T, L, R>) resourceHandler.operation(clientContext, listType);
-  }
-  
-  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getNonListingOperation(Class<T> type, ClientContext clientContext) {
-    return getOperation(type, KubernetesResourceUtil.inferListType(type), clientContext);
-  }
-  
-  public static <T extends HasMetadata> boolean shouldRegister(Class<T> type) {
-    ResourceHandler<?, ?> handler = RESOURCE_HANDLER_MAP.get(type);
-    return !RESOURCE_HANDLER_MAP.isEmpty() && (handler == null || !handler.hasOperation());
+    return (HasMetadataOperation<T, L, R>) resourceHandler.operation(client, listType);
   }
 
-  public static <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type, ClientContext clientContext) {
-    HasMetadataOperation<T, ?, Resource<T>> operation = getNonListingOperation(type, clientContext);
+  public <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getNonListingOperation(Class<T> type, Client client) {
+    return getOperation(type, KubernetesResourceUtil.inferListType(type), client);
+  }
+
+  public <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type,
+      Client client) {
+    HasMetadataOperation<T, ?, Resource<T>> operation = getNonListingOperation(type, client);
     return operation::inNamespace;
   }
-  
+
 }

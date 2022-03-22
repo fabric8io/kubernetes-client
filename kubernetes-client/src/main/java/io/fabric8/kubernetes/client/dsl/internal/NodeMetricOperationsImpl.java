@@ -17,24 +17,25 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.NodeMetricOperation;
 
 import java.util.Map;
 
-public class NodeMetricOperationsImpl extends MetricOperationsImpl<NodeMetrics, NodeMetricsList> implements NodeMetricOperation {
-	
-  public NodeMetricOperationsImpl(ClientContext clientContext) {
-		this(HasMetadataOperationsImpl.defaultContext(clientContext));
-	}
-  
+public class NodeMetricOperationsImpl extends MetricOperationsImpl<NodeMetrics, NodeMetricsList>
+    implements NodeMetricOperation {
+
+  public NodeMetricOperationsImpl(Client client) {
+    this(HasMetadataOperationsImpl.defaultContext(client));
+  }
+
   public NodeMetricOperationsImpl(OperationContext context) {
     super(context.withPlural("nodes"), NodeMetrics.class, NodeMetricsList.class);
   }
-  
+
   @Override
   public NodeMetrics metrics(String nodeName) {
-	  return withName(nodeName).metric();
+    return withName(nodeName).metric();
   }
 
   @Override
@@ -46,7 +47,7 @@ public class NodeMetricOperationsImpl extends MetricOperationsImpl<NodeMetrics, 
   public NodeMetricOperation withName(String name) {
     return new NodeMetricOperationsImpl(context.withName(name));
   }
-  
+
   @Override
   public boolean isResourceNamespaced() {
     return false; // workaround until the class metadata is fixed

@@ -74,18 +74,18 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
-public class DefaultKnativeClient extends ClientAdapter<NamespacedKnativeClient>
+public class DefaultKnativeClient extends ExtensionRootClientAdapter<DefaultKnativeClient>
     implements NamespacedKnativeClient, SupportTestingClient {
 
   public DefaultKnativeClient() {
     super();
   }
 
-  public DefaultKnativeClient(Config configuration) {
-    super(configuration);
+  public DefaultKnativeClient(Config config) {
+    super(config);
   }
 
   public DefaultKnativeClient(Client client) {
@@ -93,7 +93,7 @@ public class DefaultKnativeClient extends ClientAdapter<NamespacedKnativeClient>
   }
 
   @Override
-  protected NamespacedKnativeClient newInstance(Client client) {
+  protected DefaultKnativeClient newInstance(Client client) {
     return new DefaultKnativeClient(client);
   }
 

@@ -20,19 +20,18 @@ import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1SchedulingAPIGroupClient extends BaseClient implements V1beta1SchedulingAPIGroupDSL {
-
-  public V1beta1SchedulingAPIGroupClient() {
-    super();
-  }
-
-  public V1beta1SchedulingAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1beta1SchedulingAPIGroupClient extends ClientAdapter<V1beta1SchedulingAPIGroupClient>
+    implements V1beta1SchedulingAPIGroupDSL {
 
   @Override
   public NonNamespaceOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClasses() {
-    return Handlers.getOperation(PriorityClass.class, PriorityClassList.class, this);
+    return resources(PriorityClass.class, PriorityClassList.class);
+  }
+
+  @Override
+  public V1beta1SchedulingAPIGroupClient newInstance() {
+    return new V1beta1SchedulingAPIGroupClient();
   }
 }

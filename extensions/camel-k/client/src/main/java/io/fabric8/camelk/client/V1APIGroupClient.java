@@ -26,24 +26,15 @@ import io.fabric8.camelk.v1.IntegrationKitList;
 import io.fabric8.camelk.v1.IntegrationList;
 import io.fabric8.camelk.v1.IntegrationPlatform;
 import io.fabric8.camelk.v1.IntegrationPlatformList;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
 public class V1APIGroupClient extends ClientAdapter<V1APIGroupClient> implements V1APIGroupDSL {
 
-  public V1APIGroupClient() {
-    super();
-  }
-
-  public V1APIGroupClient(Client client) {
-    super(client);
-  }
-
   @Override
-  public V1APIGroupClient newInstance(Client client) {
-    return new V1APIGroupClient(client);
+  public V1APIGroupClient newInstance() {
+    return new V1APIGroupClient();
   }
 
   @Override

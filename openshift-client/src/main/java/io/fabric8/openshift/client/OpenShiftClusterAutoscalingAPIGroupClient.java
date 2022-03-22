@@ -15,20 +15,13 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.V1ClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.V1beta1ClusterAutoscalingAPIGroupDSL;
 
-public class OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient implements OpenShiftClusterAutoscalingAPIGroupDSL {
-  public OpenShiftClusterAutoscalingAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftClusterAutoscalingAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftClusterAutoscalingAPIGroupClient extends ClientAdapter<OpenShiftClusterAutoscalingAPIGroupClient>
+    implements OpenShiftClusterAutoscalingAPIGroupDSL {
 
   @Override
   public V1ClusterAutoscalingAPIGroupDSL v1() {
@@ -38,5 +31,10 @@ public class OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient implem
   @Override
   public V1beta1ClusterAutoscalingAPIGroupDSL v1beta1() {
     return adapt(V1beta1OpenShiftClusterAutoscalingAPIGroupClient.class);
+  }
+
+  @Override
+  public OpenShiftClusterAutoscalingAPIGroupClient newInstance() {
+    return new OpenShiftClusterAutoscalingAPIGroupClient();
   }
 }

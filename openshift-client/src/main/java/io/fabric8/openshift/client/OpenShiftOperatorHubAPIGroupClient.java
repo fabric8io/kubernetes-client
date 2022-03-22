@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
 import io.fabric8.openshift.api.model.operatorhub.v1.Operator;
@@ -37,52 +37,51 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
 
-public class OpenShiftOperatorHubAPIGroupClient extends BaseOpenShiftClient implements OpenShiftOperatorHubAPIGroupDSL {
-  public OpenShiftOperatorHubAPIGroupClient() {
-    super();
-  }
-
-  public OpenShiftOperatorHubAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class OpenShiftOperatorHubAPIGroupClient extends ClientAdapter<OpenShiftOperatorHubAPIGroupClient>
+    implements OpenShiftOperatorHubAPIGroupDSL {
 
   @Override
   public MixedOperation<CatalogSource, CatalogSourceList, Resource<CatalogSource>> catalogSources() {
-    return OpenShiftHandlers.getOperation(CatalogSource.class, CatalogSourceList.class, this);
+    return resources(CatalogSource.class, CatalogSourceList.class);
   }
 
   @Override
   public MixedOperation<OperatorGroup, OperatorGroupList, Resource<OperatorGroup>> operatorGroups() {
-    return OpenShiftHandlers.getOperation(OperatorGroup.class, OperatorGroupList.class, this);
+    return resources(OperatorGroup.class, OperatorGroupList.class);
   }
 
   @Override
   public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
-    return OpenShiftHandlers.getOperation(Subscription.class, SubscriptionList.class, this);
+    return resources(Subscription.class, SubscriptionList.class);
   }
 
   @Override
   public MixedOperation<InstallPlan, InstallPlanList, Resource<InstallPlan>> installPlans() {
-    return OpenShiftHandlers.getOperation(InstallPlan.class, InstallPlanList.class, this);
+    return resources(InstallPlan.class, InstallPlanList.class);
   }
 
   @Override
   public MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, Resource<ClusterServiceVersion>> clusterServiceVersions() {
-    return OpenShiftHandlers.getOperation(ClusterServiceVersion.class, ClusterServiceVersionList.class, this);
+    return resources(ClusterServiceVersion.class, ClusterServiceVersionList.class);
   }
 
   @Override
   public MixedOperation<PackageManifest, PackageManifestList, Resource<PackageManifest>> packageManifests() {
-    return OpenShiftHandlers.getOperation(PackageManifest.class, PackageManifestList.class, this);
+    return resources(PackageManifest.class, PackageManifestList.class);
   }
 
   @Override
   public MixedOperation<OperatorCondition, OperatorConditionList, Resource<OperatorCondition>> operatorConditions() {
-    return OpenShiftHandlers.getOperation(OperatorCondition.class, OperatorConditionList.class, this);
+    return resources(OperatorCondition.class, OperatorConditionList.class);
   }
 
   @Override
   public NonNamespaceOperation<Operator, OperatorList, Resource<Operator>> operators() {
-    return OpenShiftHandlers.getOperation(Operator.class, OperatorList.class, this);
+    return resources(Operator.class, OperatorList.class);
+  }
+
+  @Override
+  public OpenShiftOperatorHubAPIGroupClient newInstance() {
+    return new OpenShiftOperatorHubAPIGroupClient();
   }
 }

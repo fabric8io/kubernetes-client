@@ -49,11 +49,14 @@ class NamespacedItemTest {
 
   @Test
   void testClientExplicitNamespace() {
-    ConfigMap created = this.client.adapt(NamespacedKubernetesClient.class)
-        .inNamespace("explicit")
+    NamespacedKubernetesClient inNamespace = this.client.adapt(NamespacedKubernetesClient.class)
+        .inNamespace("explicit");
+    ConfigMap created = inNamespace
         .configMaps()
         .withItem(configmap)
         .create();
+
+    assertEquals("explicit", inNamespace.getNamespace());
 
     // should create in the explicit, rather than the item - no exception
     assertEquals("explicit", created.getMetadata().getNamespace());

@@ -18,6 +18,7 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -26,7 +27,6 @@ import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 
 import java.io.IOException;
@@ -38,13 +38,13 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 // TODO: Check why this class does not extend OpenshiftOperation, then the getRoot method can be removed
 public class ProjectRequestsOperationImpl extends OperationSupport implements ProjectRequestOperation {
 
-  public ProjectRequestsOperationImpl(OpenshiftClientContext clientContext) {
-    this(HasMetadataOperationsImpl.defaultContext(clientContext));
+  public ProjectRequestsOperationImpl(Client client) {
+    this(HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public ProjectRequestsOperationImpl(OperationContext context) {
     super(context.withApiGroupName(PROJECT)
-      .withPlural("projectrequests"));
+        .withPlural("projectrequests"));
   }
 
   @Override
@@ -85,7 +85,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
       } else {
         return handleCreate(updateApiVersion(getItem()), ProjectRequest.class);
       }
-    }  catch (InterruptedException ie) {
+    } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     } catch (IOException e) {
@@ -94,10 +94,9 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
 
   }
 
-
   @Override
   public ProjectRequest create(ProjectRequest resource) {
-    return create(new ProjectRequest[]{resource});
+    return create(new ProjectRequest[] { resource });
   }
 
   @Override
@@ -114,10 +113,10 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   public Status list(ListOptions listOptions) {
     try {
       URLBuilder urlBuilder = new URLBuilder(getNamespacedUrl().toString());
-      if(listOptions.getLimit() != null) {
+      if (listOptions.getLimit() != null) {
         urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
       }
-      if(listOptions.getContinue() != null) {
+      if (listOptions.getContinue() != null) {
         urlBuilder.addQueryParameter("continue", listOptions.getContinue());
       }
 
@@ -141,7 +140,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
         urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
       }
       return handleGet(urlBuilder.build(), Status.class);
-    }  catch (InterruptedException ie) {
+    } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     } catch (IOException e) {

@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -26,19 +25,12 @@ import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityopera
 import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementObservabilityAPIGroupDSL;
 
-public class OpenClusterManagementObservabilityAPIGroupClient extends ClientAdapter<OpenClusterManagementObservabilityAPIGroupDSL> implements OpenClusterManagementObservabilityAPIGroupDSL {
-
-  public OpenClusterManagementObservabilityAPIGroupClient() {
-    super();
-  }
-
-  public OpenClusterManagementObservabilityAPIGroupClient(Client client) {
-    super(client);
-  }
+public class OpenClusterManagementObservabilityAPIGroupClient extends
+    ClientAdapter<OpenClusterManagementObservabilityAPIGroupClient> implements OpenClusterManagementObservabilityAPIGroupDSL {
 
   @Override
-  protected OpenClusterManagementObservabilityAPIGroupDSL newInstance(Client client) {
-    return new OpenClusterManagementObservabilityAPIGroupClient(client);
+  public OpenClusterManagementObservabilityAPIGroupClient newInstance() {
+    return new OpenClusterManagementObservabilityAPIGroupClient();
   }
 
   @Override

@@ -32,39 +32,37 @@ import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
-
-  public AppsAPIGroupClient() {
-    super();
-  }
-
-  public AppsAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class AppsAPIGroupClient extends ClientAdapter<AppsAPIGroupClient> implements AppsAPIGroupDSL {
 
   @Override
   public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
-    return Handlers.getOperation(DaemonSet.class, DaemonSetList.class, this);
+    return resources(DaemonSet.class, DaemonSetList.class);
   }
 
   @Override
   public MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments() {
-    return new DeploymentOperationsImpl(this);
+    return new DeploymentOperationsImpl(this.client);
   }
 
   @Override
   public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {
-    return new ReplicaSetOperationsImpl(this);
+    return new ReplicaSetOperationsImpl(this.client);
   }
 
   @Override
   public MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> statefulSets() {
-    return new StatefulSetOperationsImpl(this);
+    return new StatefulSetOperationsImpl(this.client);
   }
 
   @Override
   public MixedOperation<ControllerRevision, ControllerRevisionList, Resource<ControllerRevision>> controllerRevisions() {
-    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, this);
+    return resources(ControllerRevision.class, ControllerRevisionList.class);
+  }
+
+  @Override
+  public AppsAPIGroupClient newInstance() {
+    return new AppsAPIGroupClient();
   }
 }

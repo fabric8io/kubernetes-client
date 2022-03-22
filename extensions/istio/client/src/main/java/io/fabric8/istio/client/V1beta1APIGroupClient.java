@@ -34,28 +34,23 @@ import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationList;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthentication;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthenticationList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupDSL> implements V1beta1APIGroupDSL {
+public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> implements V1beta1APIGroupDSL {
 
   public V1beta1APIGroupClient() {
     super();
   }
 
-  public V1beta1APIGroupClient(Config configuration) {
-    super(configuration);
-  }
-
-  public V1beta1APIGroupClient(Client client) {
-    super(client);
+  V1beta1APIGroupClient(Client client) {
+    init(client);
   }
 
   @Override
-  protected V1beta1APIGroupDSL newInstance(Client client) {
-    return new V1beta1APIGroupClient(client);
+  public V1beta1APIGroupClient newInstance() {
+    return new V1beta1APIGroupClient();
   }
 
   // networking

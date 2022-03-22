@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAgentAPIGroupDSL;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAppsAPIGroupDSL;
@@ -30,14 +30,15 @@ import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementOperator
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAPIGroupDSL;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementSearchAPIGroupDSL;
 
-public class DefaultOpenClusterManagementClient extends ClientAdapter<NamespacedOpenClusterManagementClient>
+public class DefaultOpenClusterManagementClient extends ExtensionRootClientAdapter<DefaultOpenClusterManagementClient>
     implements NamespacedOpenClusterManagementClient, SupportTestingClient {
+
   public DefaultOpenClusterManagementClient() {
     super();
   }
 
-  public DefaultOpenClusterManagementClient(Config configuration) {
-    super(configuration);
+  public DefaultOpenClusterManagementClient(Config config) {
+    super(config);
   }
 
   public DefaultOpenClusterManagementClient(Client client) {
@@ -45,7 +46,7 @@ public class DefaultOpenClusterManagementClient extends ClientAdapter<Namespaced
   }
 
   @Override
-  protected NamespacedOpenClusterManagementClient newInstance(Client client) {
+  protected DefaultOpenClusterManagementClient newInstance(Client client) {
     return new DefaultOpenClusterManagementClient(client);
   }
 

@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -108,6 +109,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.resourceVersion = ctx.getResourceVersion();
     this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
     this.propagationPolicy = ctx.getPropagationPolicy();
+    this.apiVersion = ApiVersionUtil.joinApiGroupAndVersion(getAPIGroupName(), getAPIGroupVersion());
   }
 
   public BaseOperation<T, L, R> newInstance(OperationContext context) {

@@ -20,19 +20,22 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.client.dsl.CertificateSigningRequestResource;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.V1CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class V1CertificatesAPIGroupClient extends BaseClient implements V1CertificatesAPIGroupDSL {
-  public V1CertificatesAPIGroupClient() {
-    super();
-  }
-
-  public V1CertificatesAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class V1CertificatesAPIGroupClient extends ClientAdapter<V1CertificatesAPIGroupClient>
+    implements V1CertificatesAPIGroupDSL {
 
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> certificateSigningRequests() {
-    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, this);
+    // we need the cast to satisfy java 8
+    return (NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>>) resources(
+        CertificateSigningRequest.class, CertificateSigningRequestList.class,
+        CertificateSigningRequestResource.class);
+  }
+
+  @Override
+  public V1CertificatesAPIGroupClient newInstance() {
+    return new V1CertificatesAPIGroupClient();
   }
 
 }

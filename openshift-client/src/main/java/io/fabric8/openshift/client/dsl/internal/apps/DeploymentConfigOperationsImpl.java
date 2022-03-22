@@ -17,12 +17,14 @@ package io.fabric8.openshift.client.dsl.internal.apps;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -32,9 +34,7 @@ import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +54,7 @@ import java.util.function.UnaryOperator;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
 public class DeploymentConfigOperationsImpl
-    extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>>
+    extends HasMetadataOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>>
     implements DeployableScalableResource<DeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
@@ -62,8 +62,8 @@ public class DeploymentConfigOperationsImpl
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
   private final RollingOperationContext rollingOperationContext;
 
-  public DeploymentConfigOperationsImpl(OpenshiftClientContext clientContext) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+  public DeploymentConfigOperationsImpl(Client client) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -215,7 +215,7 @@ public class DeploymentConfigOperationsImpl
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override

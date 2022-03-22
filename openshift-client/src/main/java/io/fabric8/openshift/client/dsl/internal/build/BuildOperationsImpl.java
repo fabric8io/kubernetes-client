@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -25,18 +25,16 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
-import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -48,7 +46,7 @@ import java.util.Map;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
-public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, BuildResource<Build, LogWatch>> implements
+public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, BuildResource<Build, LogWatch>> implements
     BuildResource<Build, LogWatch> {
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
@@ -64,8 +62,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Bu
   private Integer podLogWaitTimeout;
   private final BuildOperationContext buildOperationContext;
 
-  public BuildOperationsImpl(OpenshiftClientContext clientContext) {
-    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
+  public BuildOperationsImpl(Client client) {
+    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {
@@ -204,11 +202,6 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Bu
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
     return new BuildOperationsImpl(getContext().withTimestamps(true), context);
-  }
-
-  @Override
-  protected VisitableBuilder<Build, ?> createVisitableBuilder(Build item) {
-    return new BuildBuilder(item);
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {

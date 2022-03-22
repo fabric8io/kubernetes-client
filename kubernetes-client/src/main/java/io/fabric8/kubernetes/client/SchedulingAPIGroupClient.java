@@ -22,15 +22,13 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
-  public SchedulingAPIGroupClient(ClientContext clientContext) {
-    super(clientContext);
-  }
+public class SchedulingAPIGroupClient extends ClientAdapter<SchedulingAPIGroupClient> implements SchedulingAPIGroupDSL {
 
   @Override
   public MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass() {
-    return Handlers.getOperation(PriorityClass.class, PriorityClassList.class, this);
+    return resources(PriorityClass.class, PriorityClassList.class);
   }
 
   @Override
@@ -41,5 +39,10 @@ public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAP
   @Override
   public V1beta1SchedulingAPIGroupDSL v1beta1() {
     return adapt(V1beta1SchedulingAPIGroupClient.class);
+  }
+
+  @Override
+  public SchedulingAPIGroupClient newInstance() {
+    return new SchedulingAPIGroupClient();
   }
 }

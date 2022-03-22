@@ -32,14 +32,14 @@ import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BaseClient extends SimpleClientContext implements Client {
+public abstract class BaseClient implements Client {
 
   public static final String APIS = "/apis";
 
@@ -47,39 +47,42 @@ public class BaseClient extends SimpleClientContext implements Client {
   private String apiVersion;
   private String namespace;
   private Predicate<String> matchingGroupPredicate;
+  private Adapters adapters;
+  private Handlers handlers;
+  protected Config config;
+  protected HttpClient httpClient;
+  private OperationSupport operationSupport;
 
-  public BaseClient() {
-    this(new ConfigBuilder().build());
-  }
-
-  public BaseClient(String masterUrl) {
-    this(new ConfigBuilder().withMasterUrl(masterUrl).build());
-  }
-
-  public BaseClient(final Config config) {
-    this(HttpClientUtils.createHttpClient(config), config);
+  public BaseClient(Config config, BaseClient baseClient) {
+    this.config = config;
+    this.httpClient = baseClient.httpClient;
+    this.adapters = baseClient.adapters;
+    this.handlers = baseClient.handlers;
+    this.matchingGroupPredicate = baseClient.matchingGroupPredicate;
+    setDerivedFields();
   }
 
   public BaseClient(final HttpClient httpClient, Config config) {
-    this(new SimpleClientContext(config, httpClient));
+    this.config = config;
+    this.httpClient = httpClient;
+    this.handlers = new Handlers();
+    this.adapters = new Adapters(this.handlers);
+    setDerivedFields();
   }
 
-  public BaseClient(ClientContext clientContext) {
+  protected void setDerivedFields() {
+    this.namespace = config.getNamespace();
+    this.apiVersion = config.getApiVersion();
+    if (config.getMasterUrl() == null) {
+      throw new KubernetesClientException("Unknown Kubernetes master URL - " +
+          "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY
+          + "\"" +
+          " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY)
+          + "\"");
+    }
     try {
-      this.config = clientContext.getConfiguration();
-      this.httpClient = clientContext.getHttpClient();
-      adaptState();
-      this.namespace = config.getNamespace();
-      this.apiVersion = config.getApiVersion();
-      if (config.getMasterUrl() == null) {
-        throw new KubernetesClientException("Unknown Kubernetes master URL - " +
-            "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY
-            + "\"" +
-            " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY)
-            + "\"");
-      }
       this.masterUrl = new URL(config.getMasterUrl());
-    } catch (Exception e) {
+    } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -150,10 +153,7 @@ public class BaseClient extends SimpleClientContext implements Client {
     }
 
     String kind = HasMetadata.getKind(type);
-    // TODO: we eventually don't want this to be static
-    // but it is currently because resources expects HasMetadata, and this could
-    // be some other non-rest endpoint like LocalResourceAccessReview
-    return Handlers.getResourceDefinitionContext(apiVersion, kind, this) != null;
+    return handlers.getResourceDefinitionContext(apiVersion, kind, this) != null;
   }
 
   @Override
@@ -161,7 +161,7 @@ public class BaseClient extends SimpleClientContext implements Client {
     if (type.isAssignableFrom(this.getClass())) {
       return (C) this;
     }
-    ExtensionAdapter<C> adapter = Adapters.get(type);
+    ExtensionAdapter<C> adapter = adapters.get(type);
     if (adapter == null) {
       throw new IllegalStateException("No adapter available for type:" + type);
     }
@@ -170,7 +170,7 @@ public class BaseClient extends SimpleClientContext implements Client {
 
   @Override
   public RootPaths rootPaths() {
-    return new OperationSupport(httpClient, config).restCall(RootPaths.class);
+    return getOperationSupport().restCall(RootPaths.class);
   }
 
   @Override
@@ -191,32 +191,28 @@ public class BaseClient extends SimpleClientContext implements Client {
 
   @Override
   public APIGroupList getApiGroups() {
-    return new OperationSupport(httpClient, config).restCall(APIGroupList.class, APIS);
+    return getOperationSupport().restCall(APIGroupList.class, APIS);
   }
 
   @Override
   public APIGroup getApiGroup(String name) {
-    return new OperationSupport(httpClient, config).restCall(APIGroup.class, APIS, name);
+    return getOperationSupport().restCall(APIGroup.class, APIS, name);
+  }
+
+  private OperationSupport getOperationSupport() {
+    if (operationSupport == null) {
+      this.operationSupport = new OperationSupport(this);
+    }
+    return this.operationSupport;
   }
 
   @Override
   public APIResourceList getApiResources(String groupVersion) {
-    return new OperationSupport(httpClient, config).restCall(APIResourceList.class, APIS, groupVersion);
+    return getOperationSupport().restCall(APIResourceList.class, APIS, groupVersion);
   }
 
   protected VersionInfo getVersionInfo(String path) {
-    return new OperationSupport(this.httpClient, this.getConfiguration()).restCall(VersionInfo.class, path);
-  }
-
-  /**
-   * For subclasses to adapt the client state
-   */
-  protected void adaptState() {
-    // nothing by default
-  }
-
-  protected SimpleClientContext newState(Config updated) {
-    return new SimpleClientContext(updated, httpClient);
+    return getOperationSupport().restCall(VersionInfo.class, path);
   }
 
   @Override
@@ -227,7 +223,7 @@ public class BaseClient extends SimpleClientContext implements Client {
     }
     try {
       // TODO: check the Resource class type
-      return Handlers.getOperation(resourceType, listClass, this);
+      return handlers.getOperation(resourceType, listClass, this);
     } catch (Exception e) {
       //may be the wrong list type, try more general - may still fail if the resource is not properly annotated
       if (resourceClass == null || Resource.class.equals(resourceClass)) {
@@ -241,6 +237,24 @@ public class BaseClient extends SimpleClientContext implements Client {
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> newHasMetadataOperation(
       ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
     return new HasMetadataOperationsImpl<>(this, rdContext, resourceType, listClass);
+  }
+
+  @Override
+  public Config getConfiguration() {
+    return config;
+  }
+
+  @Override
+  public HttpClient getHttpClient() {
+    return httpClient;
+  }
+
+  public Adapters getAdapters() {
+    return adapters;
+  }
+
+  public Handlers getHandlers() {
+    return handlers;
   }
 
 }

@@ -15,4 +15,3 @@
 #
 
 io.fabric8.knative.client.KnativeExtensionAdapter
-io.fabric8.knative.client.serving.v1.ServingV1ExtensionAdapter

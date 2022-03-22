@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.server.mock;
 
-import io.fabric8.kubernetes.client.Client;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
@@ -41,24 +40,4 @@ public @interface EnableKubernetesMockClient {
 
   boolean crud() default false;
 
-  /**
-   * Used to exclude support for the given apiGroups.
-   * <br>
-   * Each is a simple expression of the form: group[/version]
-   * <br>
-   * where * is a wildcard.
-   * <br>
-   * For example to exclude all openshift support, you would specify
-   * openshift.io
-   * <br>
-   * To exclude a specific apiVersion, you would fully specify
-   * route.openshift.io/v1
-   * <p>
-   * NOTE this affects calls to {@link Client#hasApiGroup(String, boolean)}
-   * and {@link Client#supports(Class)}. Other calls to get the full root path or other
-   * api group metadata will not return valid results in mock scenarios.
-   * 
-   * @return the list of unsupported patterns
-   */
-  String[] unsupported() default {};
 }
