@@ -26,15 +26,27 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public interface HttpRequest extends HttpHeaders {
-  
-  public interface Builder extends BasicBuilder {
+
+  interface Builder extends BasicBuilder {
 
     HttpRequest build();
 
+    /**
+     * Sets the target URI for this request.
+     * 
+     * @param uri the URI as String.
+     * @return the builder.
+     */
     Builder uri(String uri);
 
+    /**
+     * Sets the target {@link URL} for this request.
+     * 
+     * @param url the URL.
+     * @return the builder.
+     */
     Builder url(URL url);
-    
+
     @Override
     Builder uri(URI uri);
 
@@ -45,27 +57,27 @@ public interface HttpRequest extends HttpHeaders {
     default Builder post(String contentType, String writeValueAsString) {
       return method("POST", contentType, writeValueAsString);
     }
-    
+
     Builder post(String contentType, byte[] writeValueAsBytes);
-    
+
     Builder post(String contentType, InputStream stream, long length);
 
     default Builder delete(String contentType, String writeValueAsString) {
       return method("DELETE", contentType, writeValueAsString);
     }
-    
+
     default Builder patch(String contentType, String patchForUpdate) {
       return method("PATCH", contentType, patchForUpdate);
     }
-    
+
     Builder method(String method, String contentType, String body);
 
     @Override
     Builder header(String k, String v);
-    
+
     @Override
     Builder setHeader(String k, String v);
-    
+
     default Builder post(Map<String, String> formData) {
       return post("application/x-www-form-urlencoded",
           formData.entrySet()
@@ -77,7 +89,7 @@ public interface HttpRequest extends HttpHeaders {
     Builder expectContinue();
 
   }
-  
+
   static String formURLEncode(String value) {
     try {
       return URLEncoder.encode(value, StandardCharsets.UTF_8.displayName());
@@ -89,12 +101,13 @@ public interface HttpRequest extends HttpHeaders {
   URI uri();
 
   String method();
-  
+
   /**
    * Return the body as a string, but only if one of the String valued {@link Builder} methods were used
    * otherwise null
+   * 
    * @return the body
    */
   String bodyString();
-  
+
 }

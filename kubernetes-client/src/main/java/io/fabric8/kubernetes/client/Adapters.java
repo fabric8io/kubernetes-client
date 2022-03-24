@@ -33,11 +33,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Holds the registration of {@link ExtensionAdapter}s and their associated Clients and Resources
- * 
+ *
  * TODO: the design matches the old - a flat hierarcy. However there are really two types of
  * of clients extension roots, and then client adapters under that. We could be more hierarchical
  * about this - such as only allowing adapting to the sub when already a parent type (or automatically converting)
- * 
+ *
  */
 public final class Adapters {
 
@@ -58,7 +58,7 @@ public final class Adapters {
     if (target.getClient() != null) {
       throw new IllegalArgumentException("The client adapter should already be initialized");
     }
-    ExtensionAdapter adapter = new ExtensionAdapter() {
+    ExtensionAdapter<C> adapter = new ExtensionAdapter<C>() {
 
       @Override
       public Class getExtensionType() {
@@ -66,7 +66,7 @@ public final class Adapters {
       }
 
       @Override
-      public Client adapt(Client client) {
+      public C adapt(Client client) {
         C result = target.newInstance();
         result.init(client);
         return result;

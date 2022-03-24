@@ -38,7 +38,7 @@ import java.net.URL;
  */
 public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Client {
 
-  protected Client client;
+  private Client client;
 
   public Client getClient() {
     return client;
@@ -59,7 +59,7 @@ public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Clien
   }
 
   @Override
-  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+  public <A extends Client> Boolean isAdaptable(Class<A> type) {
     return client.isAdaptable(type);
   }
 

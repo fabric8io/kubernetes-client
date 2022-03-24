@@ -50,7 +50,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
 
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final VersionInfo versionInfo;
-  private Dispatcher dispatcher;
+  private final Dispatcher dispatcher;
   private List<Pattern> unsupportedPatterns = Collections.emptyList();
 
   public KubernetesMockServer() {
