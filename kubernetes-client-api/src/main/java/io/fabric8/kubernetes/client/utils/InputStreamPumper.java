@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class InputStreamPumper {
-  
+
   private InputStreamPumper() {
   }
 
@@ -44,10 +44,10 @@ public class InputStreamPumper {
     return new InputStream() {
 
       @Override
-      public int read() throws IOException {
+      public int read() {
         throw new UnsupportedOperationException();
       }
-      
+
       @Override
       public int read(byte[] b, int off, int len) throws IOException {
         while (!Thread.currentThread().isInterrupted()) {
@@ -81,14 +81,17 @@ public class InputStreamPumper {
 
   /**
    * Pumps the given {@link InputStream} into the {@link Writable} target via a task started in the given {@link Executor}.
-   * <br>The input is not closed by this call.
-   * <br>If the {@link InputStream} is not interruptible, such as System.in, use {@link #asInterruptible(InputStream)} to decorate the stream for this call.
+   * <br>
+   * The input is not closed by this call.
+   * <br>
+   * If the {@link InputStream} is not interruptible, such as System.in, use {@link #asInterruptible(InputStream)} to decorate
+   * the stream for this call.
    */
   public static CompletableFuture<?> pump(InputStream in, Writable out, Executor executor) {
     return CompletableFuture.runAsync(() -> {
       try {
         InputStreamPumper.transferTo(in, out);
-      } catch (InterruptedIOException e){
+      } catch (InterruptedIOException e) {
         LOGGER.debug("Interrupted while pumping stream.", e);
       } catch (Exception e) {
         if (!Thread.currentThread().isInterrupted()) {
@@ -99,5 +102,5 @@ public class InputStreamPumper {
       }
     }, executor);
   }
-  
+
 }
