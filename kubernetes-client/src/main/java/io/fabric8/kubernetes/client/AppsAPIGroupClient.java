@@ -43,17 +43,17 @@ public class AppsAPIGroupClient extends ClientAdapter<AppsAPIGroupClient> implem
 
   @Override
   public MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments() {
-    return new DeploymentOperationsImpl(this.client);
+    return new DeploymentOperationsImpl(getClient());
   }
 
   @Override
   public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {
-    return new ReplicaSetOperationsImpl(this.client);
+    return new ReplicaSetOperationsImpl(getClient());
   }
 
   @Override
   public MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> statefulSets() {
-    return new StatefulSetOperationsImpl(this.client);
+    return new StatefulSetOperationsImpl(getClient());
   }
 
   @Override

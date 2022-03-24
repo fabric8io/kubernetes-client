@@ -34,15 +34,15 @@ import java.net.URL;
 import java.util.List;
 
 class OkHttpRequestImpl implements HttpRequest {
-  
+
   static class BuilderImpl implements Builder {
-    
-    private Request.Builder builder;
-    
+
+    private final Request.Builder builder;
+
     public BuilderImpl() {
       this(new Request.Builder());
     }
-    
+
     public BuilderImpl(Request.Builder builder) {
       this.builder = builder;
     }
@@ -63,7 +63,7 @@ class OkHttpRequestImpl implements HttpRequest {
       builder.url(resourceUrl);
       return this;
     }
-    
+
     @Override
     public Builder method(String method, String contentType, String body) {
       builder.method(method, RequestBody.create(OkHttpClientImpl.parseMediaType(contentType), body));
@@ -75,24 +75,24 @@ class OkHttpRequestImpl implements HttpRequest {
       builder.post(RequestBody.create(OkHttpClientImpl.parseMediaType(contentType), writeValueAsBytes));
       return this;
     }
-    
+
     @Override
     public Builder post(String contentType, InputStream inputStream, long length) {
       builder.post(new RequestBody() {
-        
+
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
           try (final BufferedInputStream bis = new BufferedInputStream(inputStream);
               final Source source = Okio.source(bis)) {
-           sink.writeAll(source);
-         }
+            sink.writeAll(source);
+          }
         }
-        
+
         @Override
         public MediaType contentType() {
           return OkHttpClientImpl.parseMediaType(contentType);
         }
-        
+
         @Override
         public long contentLength() throws IOException {
           return length;
@@ -122,15 +122,15 @@ class OkHttpRequestImpl implements HttpRequest {
       }
       return this;
     }
-    
+
     @Override
     public Builder expectContinue() {
       builder.header("Expect", "100-continue");
       return this;
     }
-    
+
   }
-  
+
   private Request request;
 
   public OkHttpRequestImpl(Request request) {
@@ -150,7 +150,7 @@ class OkHttpRequestImpl implements HttpRequest {
   public Request getRequest() {
     return request;
   }
-  
+
   @Override
   public List<String> headers(String key) {
     return request.headers(key);
@@ -169,5 +169,5 @@ class OkHttpRequestImpl implements HttpRequest {
     }
     return buffer.readUtf8();
   }
-  
+
 }

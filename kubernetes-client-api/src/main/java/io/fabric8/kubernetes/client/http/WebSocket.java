@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface WebSocket {
 
-  public interface Listener {
+  interface Listener {
 
     default void onOpen(WebSocket webSocket) {
     }
@@ -41,7 +41,7 @@ public interface WebSocket {
 
   }
 
-  public interface Builder extends BasicBuilder {
+  interface Builder extends BasicBuilder {
 
     /**
      * Builds a new WebSocket connection and waits asynchronously until the connection is opened.
@@ -67,14 +67,14 @@ public interface WebSocket {
 
   /**
    * Send some data
-   * 
+   *
    * @return true if the message was successfully enqueued.
    */
   boolean send(ByteBuffer buffer);
 
   /**
    * Send a close message
-   * 
+   *
    * @return true if the message was successfully enqueued.
    */
   boolean sendClose(int code, String reason);

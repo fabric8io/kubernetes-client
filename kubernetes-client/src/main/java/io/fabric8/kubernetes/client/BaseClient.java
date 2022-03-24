@@ -47,13 +47,13 @@ public abstract class BaseClient implements Client {
   private String apiVersion;
   private String namespace;
   private Predicate<String> matchingGroupPredicate;
-  private Adapters adapters;
-  private Handlers handlers;
+  private final Adapters adapters;
+  private final Handlers handlers;
   protected Config config;
   protected HttpClient httpClient;
   private OperationSupport operationSupport;
 
-  public BaseClient(Config config, BaseClient baseClient) {
+  BaseClient(Config config, BaseClient baseClient) {
     this.config = config;
     this.httpClient = baseClient.httpClient;
     this.adapters = baseClient.adapters;
@@ -62,7 +62,7 @@ public abstract class BaseClient implements Client {
     setDerivedFields();
   }
 
-  public BaseClient(final HttpClient httpClient, Config config) {
+  BaseClient(final HttpClient httpClient, Config config) {
     this.config = config;
     this.httpClient = httpClient;
     this.handlers = new Handlers();
@@ -111,10 +111,6 @@ public abstract class BaseClient implements Client {
     this.matchingGroupPredicate = unsupportedApiGroups;
   }
 
-  public Predicate<String> getMatchingGroupPredicate() {
-    return matchingGroupPredicate;
-  }
-
   @Override
   public boolean hasApiGroup(String apiGroup, boolean exact) {
     if (matchingGroupPredicate != null) {
@@ -146,14 +142,14 @@ public abstract class BaseClient implements Client {
 
   @Override
   public <R extends KubernetesResource> boolean supports(Class<R> type) {
-    String apiVersion = HasMetadata.getApiVersion(type);
+    String typeApiVersion = HasMetadata.getApiVersion(type);
 
     if (matchingGroupPredicate != null) {
-      return matchingGroupPredicate.test(apiVersion);
+      return matchingGroupPredicate.test(typeApiVersion);
     }
 
     String kind = HasMetadata.getKind(type);
-    return handlers.getResourceDefinitionContext(apiVersion, kind, this) != null;
+    return handlers.getResourceDefinitionContext(typeApiVersion, kind, this) != null;
   }
 
   @Override
