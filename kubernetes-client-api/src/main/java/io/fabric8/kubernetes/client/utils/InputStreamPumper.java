@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -87,6 +88,8 @@ public class InputStreamPumper {
     return CompletableFuture.runAsync(() -> {
       try {
         InputStreamPumper.transferTo(in, out);
+      } catch (InterruptedIOException e){
+        LOGGER.debug("Interrupted while pumping stream.", e);
       } catch (Exception e) {
         if (!Thread.currentThread().isInterrupted()) {
           LOGGER.error("Error while pumping stream.", e);
