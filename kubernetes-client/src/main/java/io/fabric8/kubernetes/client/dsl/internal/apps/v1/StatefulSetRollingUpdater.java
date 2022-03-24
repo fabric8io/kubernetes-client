@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 
@@ -51,7 +52,7 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
   }
 
   @Override
-  protected WatchListDeletable<Pod, PodList> selectedPodLister(StatefulSet obj) {
+  protected WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(StatefulSet obj) {
     return selectedPodLister(obj.getSpec().getSelector());
   }
 

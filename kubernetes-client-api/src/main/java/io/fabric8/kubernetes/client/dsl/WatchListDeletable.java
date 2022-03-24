@@ -19,10 +19,20 @@ import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.Watcher;
 
-public interface WatchListDeletable<T, L> extends Watchable<Watcher<T>>, Versionable<WatchAndWaitable<T>>, Listable<L>, Deletable,
-                                                        GracePeriodConfigurable<Deletable>,
-                                                        PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
-                                                        StatusUpdatable<T>,
-                                                        Informable<T>
-{
+import java.util.stream.Stream;
+
+public interface WatchListDeletable<T, L, R>
+    extends Watchable<Watcher<T>>, Versionable<WatchAndWaitable<T>>, Listable<L>, Deletable,
+    GracePeriodConfigurable<Deletable>,
+    PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
+    StatusUpdatable<T>,
+    Informable<T> {
+
+  /**
+   * Perform a list operation and return the items as a stream of {@link Resource}s
+   *
+   * @return the {@link Resource} steam
+   */
+  Stream<R> resources();
+
 }

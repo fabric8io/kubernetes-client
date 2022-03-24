@@ -314,7 +314,7 @@ public class ManagedKubernetesClient implements NamespacedKubernetesClient {
   }
 
   @Override
-  public MixedOperation<Pod, PodList, PodResource<Pod>> pods() {
+  public MixedOperation<Pod, PodList, PodResource> pods() {
     return delegate.pods();
   }
 

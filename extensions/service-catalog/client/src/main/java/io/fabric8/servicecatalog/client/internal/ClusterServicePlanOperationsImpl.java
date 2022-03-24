@@ -65,7 +65,7 @@ public class ClusterServicePlanOperationsImpl extends ExtensibleResourceAdapter<
   @Override
   public ServiceInstanceResource instantiateAnd(String... args) {
     ServiceInstance item = instantiate(args);
-    return client.adapt(ServiceCatalogClient.class).serviceInstances().withItem(item);
+    return client.adapt(ServiceCatalogClient.class).serviceInstances().resource(item);
   }
 
 }

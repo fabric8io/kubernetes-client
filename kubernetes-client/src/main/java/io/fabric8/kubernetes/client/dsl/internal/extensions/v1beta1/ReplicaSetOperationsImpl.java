@@ -159,14 +159,14 @@ public class ReplicaSetOperationsImpl
   @Override
   public String getLog(boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    List<PodResource<Pod>> podOperationList = doGetLog(isPretty);
-    for (PodResource<Pod> podOperation : podOperationList) {
+    List<PodResource> podOperationList = doGetLog(isPretty);
+    for (PodResource podOperation : podOperationList) {
       stringBuilder.append(podOperation.getLog(isPretty));
     }
     return stringBuilder.toString();
   }
 
-  private List<PodResource<Pod>> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog(boolean isPretty) {
     ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
         getReplicaSetSelectorLabels(replicaSet), isPretty, rollingOperationContext.getLogWaitTimeout(),

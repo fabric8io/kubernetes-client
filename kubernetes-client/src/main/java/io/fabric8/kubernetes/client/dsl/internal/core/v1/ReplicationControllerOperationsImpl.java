@@ -141,7 +141,7 @@ public class ReplicationControllerOperationsImpl extends
     return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
 
-  private List<PodResource<Pod>> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog(boolean isPretty) {
     ReplicationController rc = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),

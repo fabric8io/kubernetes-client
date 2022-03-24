@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 
@@ -51,7 +52,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
   }
 
   @Override
-  protected WatchListDeletable<Pod, PodList> selectedPodLister(Deployment obj) {
+  protected WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(Deployment obj) {
     return selectedPodLister(obj.getSpec().getSelector());
   }
 

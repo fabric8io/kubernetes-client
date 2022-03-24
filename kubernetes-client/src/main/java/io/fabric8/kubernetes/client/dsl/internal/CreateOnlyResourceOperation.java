@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class CreateOnlyResourceOperation<I, O> extends OperationSupport implements InOutCreateable<I, O> {
   protected Class<O> type;
-  
+
   protected CreateOnlyResourceOperation(OperationContext ctx) {
     super(ctx);
   }
@@ -31,7 +31,7 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
   public Class<O> getType() {
     return type;
   }
-  
+
   protected O handleCreate(I resource) throws ExecutionException, InterruptedException, IOException {
     return handleCreate(resource, getType());
   }
@@ -39,19 +39,12 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
   @SafeVarargs
   @Override
   public final O create(I... resources) {
-    try {
-      if (resources.length > 1) {
-        throw new IllegalArgumentException("Too many items to create.");
-      } else if (resources.length == 1) {
-        return handleCreate(resources[0]);
-      } else {
-        return handleCreate(getItem());
-      }
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
+    if (resources.length > 1) {
+      throw new IllegalArgumentException("Too many items to create.");
+    } else if (resources.length == 1) {
+      return create(resources[0]);
+    } else {
+      return create(getItem());
     }
   }
 
@@ -70,5 +63,5 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
   public I getItem() {
     return (I) context.getItem();
   }
-  
+
 }

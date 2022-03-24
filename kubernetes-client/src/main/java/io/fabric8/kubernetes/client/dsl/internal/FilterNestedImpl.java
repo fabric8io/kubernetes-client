@@ -31,8 +31,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> implements FilterNested<FilterWatchListDeletable<T, L>> {
-  
+final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
+    implements FilterNested<FilterWatchListDeletable<T, L, R>> {
+
   private static final String INVOLVED_OBJECT_NAME = "involvedObject.name";
   private static final String INVOLVED_OBJECT_NAMESPACE = "involvedObject.namespace";
   private static final String INVOLVED_OBJECT_KIND = "involvedObject.kind";
@@ -40,7 +41,7 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   private static final String INVOLVED_OBJECT_RESOURCE_VERSION = "involvedObject.resourceVersion";
   private static final String INVOLVED_OBJECT_API_VERSION = "involvedObject.apiVersion";
   private static final String INVOLVED_OBJECT_FIELD_PATH = "involvedObject.fieldPath";
-  
+
   private final BaseOperation<T, L, R> baseOperation;
   private OperationContext context;
 
@@ -61,39 +62,39 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withLabels(Map<String, String> labels) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withLabels(Map<String, String> labels) {
     this.context.labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withoutLabels(Map<String, String> labels) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withoutLabels(Map<String, String> labels) {
     // Re-use "withoutLabel" to convert values from String to String[]
     labels.forEach(this::withoutLabel);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withLabelIn(String key, String... values) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withLabelIn(String key, String... values) {
     context.labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withLabelNotIn(String key, String... values) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withLabelNotIn(String key, String... values) {
     context.labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withLabel(String key, String value) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withLabel(String key, String value) {
     context.labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withoutLabel(String key, String value) {
-    context.labelsNot.merge(key, new String[]{value}, (oldList, newList) -> {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withoutLabel(String key, String value) {
+    context.labelsNot.merge(key, new String[] { value }, (oldList, newList) -> {
       final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
       System.arraycopy(oldList, 0, concatList, 0, oldList.length);
       System.arraycopy(newList, 0, concatList, oldList.length, newList.length);
@@ -103,27 +104,27 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withFields(Map<String, String> fields) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withFields(Map<String, String> fields) {
     this.context.fields.putAll(fields);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withField(String key, String value) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withField(String key, String value) {
     this.context.fields.put(key, value);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withoutFields(Map<String, String> fields) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withoutFields(Map<String, String> fields) {
     // Re-use "withoutField" to convert values from String to String[]
     fields.forEach(this::withoutField);
     return this;
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withoutField(String key, String value) {
-    context.fieldsNot.merge(key, new String[]{value}, (oldList, newList) -> {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withoutField(String key, String value) {
+    context.fieldsNot.merge(key, new String[] { value }, (oldList, newList) -> {
       if (Utils.isNotNullOrEmpty(newList[0])) { // Only add new values when not null
         final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
         System.arraycopy(oldList, 0, concatList, 0, oldList.length);
@@ -137,7 +138,7 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withLabelSelector(LabelSelector selector) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withLabelSelector(LabelSelector selector) {
     Map<String, String> matchLabels = selector.getMatchLabels();
     if (matchLabels != null) {
       withLabels(matchLabels);
@@ -149,10 +150,10 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
         String key = req.getKey();
         switch (operator) {
           case "In":
-            withLabelIn(key, req.getValues().toArray(new String[]{}));
+            withLabelIn(key, req.getValues().toArray(new String[] {}));
             break;
           case "NotIn":
-            withLabelNotIn(key, req.getValues().toArray(new String[]{}));
+            withLabelNotIn(key, req.getValues().toArray(new String[] {}));
             break;
           case "DoesNotExist":
             withoutLabel(key);
@@ -169,7 +170,7 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withInvolvedObject(ObjectReference objectReference) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference.getName() != null) {
       context.fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
     }
@@ -195,13 +196,12 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> and() {
+  public FilterWatchListDeletable<T, L, R> and() {
     return this.baseOperation.newInstance(context);
   }
 
-
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withLabelSelector(String selectorAsString) {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withLabelSelector(String selectorAsString) {
     this.context.selectorAsString = selectorAsString;
     return this;
   }

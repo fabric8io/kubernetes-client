@@ -79,7 +79,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   protected abstract T createClone(T obj, String newName, String newDeploymentHash);
 
-  protected abstract WatchListDeletable<Pod, PodList> selectedPodLister(T obj);
+  protected abstract WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(T obj);
 
   protected abstract T updateDeploymentKey(String name, String hash);
 
@@ -264,11 +264,11 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   protected abstract Operation<T, L, RollableScalableResource<T>> resources();
 
-  protected Operation<Pod, PodList, PodResource<Pod>> pods() {
+  protected Operation<Pod, PodList, PodResource> pods() {
     return new PodOperationsImpl(client);
   }
 
-  protected FilterWatchListDeletable<Pod, PodList> selectedPodLister(LabelSelector selector) {
+  protected FilterWatchListDeletable<Pod, PodList, PodResource> selectedPodLister(LabelSelector selector) {
     return pods().inNamespace(namespace).withLabelSelector(selector);
   }
 

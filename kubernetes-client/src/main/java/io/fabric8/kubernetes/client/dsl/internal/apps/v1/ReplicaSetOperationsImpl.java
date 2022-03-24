@@ -159,7 +159,7 @@ public class ReplicaSetOperationsImpl
     return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
 
-  private List<PodResource<Pod>> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog(boolean isPretty) {
     ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
         getReplicaSetSelectorLabels(replicaSet), isPretty, rollingOperationContext.getLogWaitTimeout(),

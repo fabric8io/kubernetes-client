@@ -15,6 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface FilterWatchListMultiDeletable<T, L> extends FilterWatchListDeletable<T, L>, MultiDeleteable<T> {
+public interface FilterWatchListMultiDeletable<T, L, R> extends FilterWatchListDeletable<T, L, R>, MultiDeleteable<T> {
 
 }

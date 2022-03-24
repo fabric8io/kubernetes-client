@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
@@ -118,14 +117,14 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   @Override
   public String getLog(boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    List<PodResource<Pod>> podOperationList = doGetLog(false);
-    for (PodResource<Pod> podOperation : podOperationList) {
+    List<PodResource> podOperationList = doGetLog(false);
+    for (PodResource podOperation : podOperationList) {
       stringBuilder.append(podOperation.getLog(isPretty));
     }
     return stringBuilder.toString();
   }
 
-  private List<PodResource<Pod>> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog(boolean isPretty) {
     Job job = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),

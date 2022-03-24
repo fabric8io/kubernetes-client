@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableOpenShiftMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class NamespacedItemTest {
   private OpenShiftClient client;
 
@@ -40,7 +41,7 @@ class NamespacedItemTest {
   void testDefaultNamespace() {
     ConfigMap created = this.client
         .configMaps()
-        .withItem(configmap)
+        .resource(configmap)
         .create();
 
     // should create in the item namespace rather than the default - no exception
@@ -53,7 +54,7 @@ class NamespacedItemTest {
         .inNamespace("explicit");
     ConfigMap created = inNamespace
         .configMaps()
-        .withItem(configmap)
+        .resource(configmap)
         .create();
 
     assertEquals("explicit", inNamespace.getNamespace());
@@ -67,7 +68,7 @@ class NamespacedItemTest {
     ConfigMap created = this.client
         .configMaps()
         .inNamespace("explicit")
-        .withItem(configmap)
+        .resource(configmap)
         .create();
 
     // should create in the explicit, rather than the item - no exception
@@ -76,7 +77,7 @@ class NamespacedItemTest {
     ConfigMap modified = this.client
         .configMaps()
         .inNamespace("explicit")
-        .withItem(configmap)
+        .resource(configmap)
         .get();
 
     // should create in the explicit, rather than the item - no exception
