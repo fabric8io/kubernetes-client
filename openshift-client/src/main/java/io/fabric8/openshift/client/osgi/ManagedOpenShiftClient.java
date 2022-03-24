@@ -64,10 +64,10 @@ import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
@@ -107,7 +107,6 @@ import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
-import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -267,7 +266,7 @@ import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYSTEM_P
 @Service({ OpenShiftClient.class, NamespacedOpenShiftClient.class })
 public class ManagedOpenShiftClient implements NamespacedOpenShiftClient {
 
-  private DefaultOpenShiftClient delegate;
+  private NamespacedOpenShiftClient delegate;
 
   @Activate
   public void activate(Map<String, Object> properties) {
@@ -354,7 +353,7 @@ public class ManagedOpenShiftClient implements NamespacedOpenShiftClient {
           Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
     }
 
-    delegate = new DefaultOpenShiftClient(builder.build());
+    delegate = new KubernetesClientBuilder().withConfig(builder.build()).build().adapt(NamespacedOpenShiftClient.class);
   }
 
   @Deactivate
@@ -589,7 +588,7 @@ public class ManagedOpenShiftClient implements NamespacedOpenShiftClient {
 
   @Override
   public MixedOperation<RoleBindingRestriction, RoleBindingRestrictionList, Resource<RoleBindingRestriction>> roleBindingRestrictions() {
-    return null;
+    return delegate.roleBindingRestrictions();
   }
 
   @Override

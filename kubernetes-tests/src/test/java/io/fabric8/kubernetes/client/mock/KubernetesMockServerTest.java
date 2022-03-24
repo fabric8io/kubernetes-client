@@ -52,7 +52,7 @@ class KubernetesMockServerTest {
 
   @Test
   void testOpenShiftSupport() {
-    server.unsupported("openshift.io");
+    server.setUnsupported("openshift.io");
     assertFalse(client.isAdaptable(OpenShiftClient.class));
     assertFalse(client.adapt(OpenShiftClient.class).isSupported());
     assertFalse(client.supports(Route.class));

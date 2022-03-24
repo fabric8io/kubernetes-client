@@ -129,7 +129,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
    *
    * @param unsupported apiGroup patterns
    */
-  public void unsupported(String... unsupported) {
+  public void setUnsupported(String... unsupported) {
     this.unsupportedPatterns = new ArrayList<>(unsupported.length);
     for (int i = 0; i < unsupported.length; i++) {
       String asRegex = unsupported[i].replace(".", "\\.").replace("*", ".*");
