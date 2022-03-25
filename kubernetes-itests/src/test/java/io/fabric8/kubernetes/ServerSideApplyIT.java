@@ -64,7 +64,7 @@ public class ServerSideApplyIT {
       .endSpec()
       .build();
 
-    Resource<Service> resource = client.services().inNamespace(session.getNamespace()).withItem(service);
+    Resource<Service> resource = client.services().inNamespace(session.getNamespace()).resource(service);
     resource.delete();
 
     // 1st apply - create must be a server side apply - otherwise the later operations will need to force

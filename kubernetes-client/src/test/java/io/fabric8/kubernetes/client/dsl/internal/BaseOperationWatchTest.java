@@ -41,12 +41,12 @@ import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SuppressWarnings({"rawtypes", "FieldCanBeLocal"})
+@SuppressWarnings({ "rawtypes", "FieldCanBeLocal" })
 class BaseOperationWatchTest {
 
   private Watcher<Pod> watcher;
   private OperationContext operationContext;
-  private BaseOperation<Pod, PodList, PodResource<Pod>> baseOperation;
+  private BaseOperation<Pod, PodList, PodResource> baseOperation;
 
   @SuppressWarnings("unchecked")
   @BeforeEach
@@ -59,25 +59,26 @@ class BaseOperationWatchTest {
   @Test
   @DisplayName("watch, with exception on connection open, should throw Exception and close WatchConnectionManager")
   void watchWithExceptionOnOpen() {
-    try (final MockedConstruction<WatchConnectionManager> m = mockConstruction(WatchConnectionManager.class, (mock, context) -> {
-      // Given
-      doThrow(new KubernetesClientException("Mocked Connection Error")).when(mock).waitUntilReady();
-    })) {
+    try (
+        final MockedConstruction<WatchConnectionManager> m = mockConstruction(WatchConnectionManager.class, (mock, context) -> {
+          // Given
+          doThrow(new KubernetesClientException("Mocked Connection Error")).when(mock).waitUntilReady();
+        })) {
       // When
       final KubernetesClientException result = assertThrows(KubernetesClientException.class,
-        () -> {
-          baseOperation.watch(watcher);
-          fail();
-        });
+          () -> {
+            baseOperation.watch(watcher);
+            fail();
+          });
       // Then
       assertThat(result).hasMessage("Mocked Connection Error");
       assertThat(m.constructed())
-        .hasSize(1)
-        .element(0)
-        .matches(wcm -> {
-          verify(wcm, times(1)).close();
-          return true;
-        });
+          .hasSize(1)
+          .element(0)
+          .matches(wcm -> {
+            verify(wcm, times(1)).close();
+            return true;
+          });
     }
   }
 
@@ -85,23 +86,22 @@ class BaseOperationWatchTest {
   @DisplayName("watch, with retryable exception on connection open, should close initial WatchConnectionManager and retry")
   void watchWithRetryableExceptionOnOpen() {
     try (
-      final MockedConstruction<WatchConnectionManager> m = mockConstruction(WatchConnectionManager.class, (mock, context) -> {
-        // Given
-        doThrow(new KubernetesClientException(new StatusBuilder().withCode(503).build())).when(mock).waitUntilReady();
-      });
-      final MockedConstruction<WatchHTTPManager> mHttp = mockConstruction(WatchHTTPManager.class)
-    ) {
+        final MockedConstruction<WatchConnectionManager> m = mockConstruction(WatchConnectionManager.class, (mock, context) -> {
+          // Given
+          doThrow(new KubernetesClientException(new StatusBuilder().withCode(503).build())).when(mock).waitUntilReady();
+        });
+        final MockedConstruction<WatchHTTPManager> mHttp = mockConstruction(WatchHTTPManager.class)) {
       // When
       final Watch result = baseOperation.watch(watcher);
       // Then
       assertThat(result).isInstanceOf(WatchHTTPManager.class).isSameAs(mHttp.constructed().get(0));
       assertThat(m.constructed())
-        .hasSize(1)
-        .element(0)
-        .matches(wcm -> {
-          verify(wcm, times(1)).close();
-          return true;
-        });
+          .hasSize(1)
+          .element(0)
+          .matches(wcm -> {
+            verify(wcm, times(1)).close();
+            return true;
+          });
     }
   }
 }

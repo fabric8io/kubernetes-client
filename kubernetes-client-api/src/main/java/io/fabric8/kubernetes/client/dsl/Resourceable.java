@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Itemable<T, R> {
+public interface Resourceable<T, R> {
 
-  R withItem(T item);
+  R resource(T item);
 
 }

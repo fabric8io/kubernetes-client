@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 
@@ -51,7 +52,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected WatchListDeletable<Pod, PodList> selectedPodLister(ReplicaSet obj) {
+  protected WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(ReplicaSet obj) {
     return selectedPodLister(obj.getSpec().getSelector());
   }
 

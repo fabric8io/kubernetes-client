@@ -36,7 +36,9 @@ import java.util.concurrent.TimeUnit;
 
 public class PodOperationUtil {
   private static final Logger LOG = LoggerFactory.getLogger(PodOperationUtil.class);
-  private PodOperationUtil() { }
+
+  private PodOperationUtil() {
+  }
 
   /**
    * Gets PodOperations for Pods specific to a controller
@@ -46,8 +48,9 @@ public class PodOperationUtil {
    * @param controllerUid UID of Controller
    * @return returns list of PodOperations with pods whose owner's UID is of the provided controller
    */
-  public static List<PodResource<Pod>> getFilteredPodsForLogs(PodOperationsImpl podOperations, PodList controllerPodList, String controllerUid) {
-    List<PodResource<Pod>> pods = new ArrayList<>();
+  public static List<PodResource> getFilteredPodsForLogs(PodOperationsImpl podOperations, PodList controllerPodList,
+      String controllerUid) {
+    List<PodResource> pods = new ArrayList<>();
     for (Pod pod : controllerPodList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
       if (ownerReference != null && ownerReference.getUid().equals(controllerUid)) {
@@ -57,20 +60,24 @@ public class PodOperationUtil {
     return pods;
   }
 
-  public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
+  public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout,
+      String containerId) {
     return new PodOperationsImpl(new PodOperationContext(containerId,
-      null, null, null, null, null,
-      null, null, null, false, false,
-      false, null, null, null, isPretty,
-      null, null, null,
-      null, null, podLogWaitTimeout), context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
+        null, null, null, null, null,
+        null, null, null, false, false,
+        false, null, null, null, isPretty,
+        null, null, null,
+        null, null, podLogWaitTimeout), context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
   }
 
-  public static List<PodResource<Pod>> getPodOperationsForController(OperationContext context, String controllerUid, Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
-    return getPodOperationsForController(PodOperationUtil.getGenericPodOperations(context, isPretty, podLogWaitTimeout, containerId), controllerUid, selectorLabels);
+  public static List<PodResource> getPodOperationsForController(OperationContext context, String controllerUid,
+      Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
+    return getPodOperationsForController(
+        PodOperationUtil.getGenericPodOperations(context, isPretty, podLogWaitTimeout, containerId), controllerUid,
+        selectorLabels);
   }
 
-  public static LogWatch watchLog(List<PodResource<Pod>> podResources, OutputStream out) {
+  public static LogWatch watchLog(List<PodResource> podResources, OutputStream out) {
     if (!podResources.isEmpty()) {
       if (podResources.size() > 1) {
         LOG.debug("Found {} pods, Using first one to watch logs", podResources.size());
@@ -80,7 +87,7 @@ public class PodOperationUtil {
     return null;
   }
 
-  public static Reader getLogReader(List<PodResource<Pod>> podResources) {
+  public static Reader getLogReader(List<PodResource> podResources) {
     if (!podResources.isEmpty()) {
       if (podResources.size() > 1) {
         LOG.debug("Found {} pods, Using first one to get log reader", podResources.size());
@@ -90,21 +97,22 @@ public class PodOperationUtil {
     return null;
   }
 
-  public static String getLog(List<PodResource<Pod>> podOperationList, Boolean isPretty) {
+  public static String getLog(List<PodResource> podOperationList, Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    for (PodResource<Pod> podOperation : podOperationList) {
+    for (PodResource podOperation : podOperationList) {
       stringBuilder.append(podOperation.getLog(isPretty));
     }
     return stringBuilder.toString();
   }
 
-  public static List<PodResource<Pod>> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid, Map<String, String> selectorLabels) {
+  public static List<PodResource> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid,
+      Map<String, String> selectorLabels) {
     PodList controllerPodList = podOperations.withLabels(selectorLabels).list();
 
     return PodOperationUtil.getFilteredPodsForLogs(podOperations, controllerPodList, controllerUid);
   }
 
-  public static void waitUntilReadyBeforeFetchingLogs(PodResource<Pod> podOperation, Integer logWaitTimeout) {
+  public static void waitUntilReadyBeforeFetchingLogs(PodResource podOperation, Integer logWaitTimeout) {
     try {
       // Wait for Pod to become ready
       Pod pod = podOperation.fromServer().get();

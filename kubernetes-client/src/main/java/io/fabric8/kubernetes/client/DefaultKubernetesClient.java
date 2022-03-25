@@ -135,7 +135,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Class for Default Kubernetes Client implementing KubernetesClient interface.
  * It is thread safe.
- * 
+ *
  * @deprecated direct usage should no longer be needed. Please use the {@link KubernetesClientBuilder} instead.
  */
 @Deprecated
@@ -381,7 +381,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public MixedOperation<Pod, PodList, PodResource<Pod>> pods() {
+  public MixedOperation<Pod, PodList, PodResource> pods() {
     return new PodOperationsImpl(this);
   }
 

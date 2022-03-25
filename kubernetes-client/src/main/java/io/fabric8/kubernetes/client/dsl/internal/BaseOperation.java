@@ -73,6 +73,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends CreateOnlyResourceOperation<T, T>
@@ -257,7 +258,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R load(InputStream is) {
-    return withItem(unmarshal(is, type));
+    return resource(unmarshal(is, type));
   }
 
   @Override
@@ -297,7 +298,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       throw new IllegalArgumentException("Too many items to create.");
     } else if (items.length == 1) {
       itemToCreateOrReplace = items[0];
-      resource = withItem(itemToCreateOrReplace);
+      resource = resource(itemToCreateOrReplace);
     } else {
       itemToCreateOrReplace = getItem();
       resource = this;
@@ -317,57 +318,57 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, R> withLabels(Map<String, String> labels) {
     return withNewFilter().withLabels(labels).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withLabelSelector(LabelSelector selector) {
+  public FilterWatchListDeletable<T, L, R> withLabelSelector(LabelSelector selector) {
     return withNewFilter().withLabelSelector(selector).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withoutLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, R> withoutLabels(Map<String, String> labels) {
     return withNewFilter().withoutLabels(labels).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withLabelIn(String key, String... values) {
+  public FilterWatchListDeletable<T, L, R> withLabelIn(String key, String... values) {
     return withNewFilter().withLabelIn(key, values).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withLabelNotIn(String key, String... values) {
+  public FilterWatchListDeletable<T, L, R> withLabelNotIn(String key, String... values) {
     return withNewFilter().withLabelNotIn(key, values).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L, R> withLabel(String key, String value) {
     return withNewFilter().withLabel(key, value).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withoutLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L, R> withoutLabel(String key, String value) {
     return withNewFilter().withoutLabel(key, value).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withLabelSelector(String selectorAsString) {
+  public FilterWatchListDeletable<T, L, R> withLabelSelector(String selectorAsString) {
     return withNewFilter().withLabelSelector(selectorAsString).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withFields(Map<String, String> fields) {
+  public FilterWatchListDeletable<T, L, R> withFields(Map<String, String> fields) {
     return withNewFilter().withFields(fields).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withField(String key, String value) {
+  public FilterWatchListDeletable<T, L, R> withField(String key, String value) {
     return withNewFilter().withField(key, value).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withInvolvedObject(ObjectReference objectReference) {
+  public FilterWatchListDeletable<T, L, R> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference != null) {
       return withNewFilter().withInvolvedObject(objectReference).endFilter();
     }
@@ -375,17 +376,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterNested<FilterWatchListDeletable<T, L>> withNewFilter() {
+  public FilterNested<FilterWatchListDeletable<T, L, R>> withNewFilter() {
     return new FilterNestedImpl<>(this);
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withoutFields(Map<String, String> fields) {
+  public FilterWatchListDeletable<T, L, R> withoutFields(Map<String, String> fields) {
     return withNewFilter().withoutFields(fields).endFilter();
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withoutField(String key, String value) {
+  public FilterWatchListDeletable<T, L, R> withoutField(String key, String value) {
     return withNewFilter().withoutField(key, value).endFilter();
   }
 
@@ -478,7 +479,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         updateApiVersion(toDelete);
 
         try {
-          deleted &= withItem(toDelete).delete();
+          deleted &= resource(toDelete).delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
@@ -509,7 +510,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public R withItem(T item) {
+  public R resource(T item) {
     // set the name, namespace, and item - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example
     item = correctNamespace(item);
@@ -1009,6 +1010,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
     }
     return urlBuilder.build();
+  }
+
+  @Override
+  public Stream<R> resources() {
+    return list().getItems().stream().map(this::resource);
   }
 
 }

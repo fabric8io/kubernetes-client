@@ -274,7 +274,7 @@ public class PodIT {
   }
 
   private void assertUploaded(Pod pod1, final Path tmpFile, String filename) throws IOException {
-    PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
+    PodResource podResource = client.pods().inNamespace(session.getNamespace())
         .withName(pod1.getMetadata().getName());
 
     podResource.file(filename).upload(tmpFile);
@@ -301,7 +301,7 @@ public class PodIT {
       Files.write(Files.createFile(file), Arrays.asList("I'm uploaded", fileName));
     }
 
-    PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
+    PodResource podResource = client.pods().inNamespace(session.getNamespace())
         .withName(pod1.getMetadata().getName());
 
     podResource.dir("/tmp/uploadDir").upload(tmpDir);
@@ -325,7 +325,7 @@ public class PodIT {
 
     final Path tmpDir = Files.createTempDirectory("copyFile");
 
-    PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
+    PodResource podResource = client.pods().inNamespace(session.getNamespace())
         .withName(pod1.getMetadata().getName());
     podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt");
     podResource.file("/msg.txt").copy(tmpDir);

@@ -68,10 +68,10 @@ public class CreatePod {
         return;
       }
       HasMetadata resource = resources.get(0);
-      if (resource instanceof Pod){
+      if (resource instanceof Pod) {
         Pod pod = (Pod) resource;
         logger.info("Creating pod in namespace {}", namespace);
-        NonNamespaceOperation<Pod, PodList, PodResource<Pod>> pods = client.pods().inNamespace(namespace);
+        NonNamespaceOperation<Pod, PodList, PodResource> pods = client.pods().inNamespace(namespace);
         Pod result = pods.create(pod);
         logger.info("Created pod {}", result.getMetadata().getName());
       } else {

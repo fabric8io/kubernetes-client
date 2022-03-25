@@ -65,7 +65,7 @@ public class ClusterServiceClassOperationsImpl extends ExtensibleResourceAdapter
           + " and ClusterServiceClass: " + item.getSpec().getExternalName() + ".");
     }
     ClusterServicePlan plan = list.get(0);
-    return client.adapt(ServiceCatalogClient.class).clusterServicePlans().withItem(plan);
+    return client.adapt(ServiceCatalogClient.class).clusterServicePlans().resource(plan);
   }
 
   @Override

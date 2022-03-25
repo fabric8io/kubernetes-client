@@ -75,7 +75,7 @@ class PatchTest {
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo")
-      .patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
+        .patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
     verify(mockClient, times(2)).send(any(), any());
@@ -87,12 +87,12 @@ class PatchTest {
   void testJsonMergePatch() throws IOException {
     // Given
     PatchContext patchContext = new PatchContext.Builder()
-      .withPatchType(PatchType.JSON_MERGE)
-      .build();
+        .withPatchType(PatchType.JSON_MERGE)
+        .build();
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo")
-      .patch(patchContext, "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
+        .patch(patchContext, "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
     verify(mockClient, times(2)).send(any(), any());
@@ -120,7 +120,7 @@ class PatchTest {
     when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
 
     // When
-    PodResource<Pod> podResource = kubernetesClient.pods()
+    PodResource podResource = kubernetesClient.pods()
         .inNamespace("ns1")
         .withName("foo");
     KubernetesClientException e = assertThrows(KubernetesClientException.class,
@@ -139,7 +139,8 @@ class PatchTest {
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo")
-      .patch(patchContext, "[{\"op\": \"replace\", \"path\":\"/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
+        .patch(patchContext,
+            "[{\"op\": \"replace\", \"path\":\"/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
 
     // Then
     verify(mockClient, times(2)).send(any(), any());
@@ -153,21 +154,22 @@ class PatchTest {
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo")
-      .patch(new PatchContext.Builder()
-        .withFieldManager("fabric8")
-        .withDryRun(Collections.singletonList("All"))
-        .build(), "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
+        .patch(new PatchContext.Builder()
+            .withFieldManager("fabric8")
+            .withDryRun(Collections.singletonList("All"))
+            .build(), "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
     verify(mockClient, times(2)).send(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", "fieldManager=fabric8&dryRun=All", OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", "fieldManager=fabric8&dryRun=All",
+        OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
   }
 
   private void assertRequest(String method, String url, String queryParam) {
     assertRequest(0, method, url, queryParam, null);
   }
-  
+
   private void assertRequest(int index, String method, String url, String queryParam, String contentType) {
     ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
     Builder mock = builders.get(index);
@@ -176,33 +178,32 @@ class PatchTest {
     assertEquals(url, capturedURL.getPath());
 
     validateMethod(method, contentType, mock);
-    
+
     assertEquals(queryParam, capturedURL.getQuery());
   }
 
   static void validateMethod(String method, String contentType, Builder mock) {
     ArgumentCaptor<String> contentTypeCaptor = ArgumentCaptor.forClass(String.class);
     switch (method) {
-    case "DELETE":
-      Mockito.verify(mock).delete(contentTypeCaptor.capture(), any());
-      break;
-    case "POST":
-      Mockito.verify(mock).post(contentTypeCaptor.capture(), any(String.class));
-      break;
-    case "PUT":
-      Mockito.verify(mock).put(contentTypeCaptor.capture(), any());
-      break;
-    case "PATCH":
-      Mockito.verify(mock).patch(contentTypeCaptor.capture(), any());
-      break;
-    default:
-      break; //TODO: validate GET, but that explicit call was removed
+      case "DELETE":
+        Mockito.verify(mock).delete(contentTypeCaptor.capture(), any());
+        break;
+      case "POST":
+        Mockito.verify(mock).post(contentTypeCaptor.capture(), any(String.class));
+        break;
+      case "PUT":
+        Mockito.verify(mock).put(contentTypeCaptor.capture(), any());
+        break;
+      case "PATCH":
+        Mockito.verify(mock).patch(contentTypeCaptor.capture(), any());
+        break;
+      default:
+        break; //TODO: validate GET, but that explicit call was removed
     }
-    
+
     if (contentType != null) {
       assertEquals(contentType, contentTypeCaptor.getValue());
     }
   }
-  
-  
+
 }

@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,31 +42,31 @@ class DeploymentCrudTest {
   void testCrud() {
 
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
-      .withName("deployment1")
-      .withNamespace("ns1")
-      .addToLabels("testKey", "testValue")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withName("deployment1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
 
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata()
-      .withName("deployment2")
-      .withNamespace("ns1")
-      .addToLabels("testKey", "testValue")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withName("deployment2")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
 
     Deployment deployment3 = new DeploymentBuilder().withNewMetadata()
-      .withName("deployment3")
-      .addToLabels("testKey", "testValue")
-      .withNamespace("ns2")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withName("deployment3")
+        .addToLabels("testKey", "testValue")
+        .withNamespace("ns2")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
 
     client.apps().deployments().inNamespace("ns1").create(deployment1);
     client.apps().deployments().inNamespace("ns1").create(deployment2);
@@ -78,23 +80,23 @@ class DeploymentCrudTest {
     assertNotNull(aDeploymentList);
     assertEquals(2, aDeploymentList.getItems().size());
 
-    aDeploymentList = client.apps()
-      .deployments()
-      .inAnyNamespace()
-      .withLabels(Collections.singletonMap("testKey", "testValue"))
-      .list();
+    FilterWatchListDeletable<Deployment, DeploymentList, RollableScalableResource<Deployment>> withLabels = client.apps()
+        .deployments()
+        .inAnyNamespace()
+        .withLabels(Collections.singletonMap("testKey", "testValue"));
+    aDeploymentList = withLabels.list();
     assertNotNull(aDeploymentList);
     assertEquals(3, aDeploymentList.getItems().size());
 
+    assertEquals(3, withLabels.resources().count());
 
     boolean bDeleted = client.apps().deployments().inNamespace("ns2").withName("deployment3").delete();
     assertTrue(bDeleted);
 
-
     deployment2 = client.apps().deployments()
-      .inNamespace("ns1").withName("deployment2").edit(d -> new DeploymentBuilder(d)
-      .editMetadata().addToLabels("key1", "value1").endMetadata()
-      .build());
+        .inNamespace("ns1").withName("deployment2").edit(d -> new DeploymentBuilder(d)
+            .editMetadata().addToLabels("key1", "value1").endMetadata()
+            .build());
 
     assertNotNull(deployment2);
     assertEquals("value1", deployment2.getMetadata().getLabels().get("key1"));
@@ -105,13 +107,13 @@ class DeploymentCrudTest {
   void testReplace() {
     // Given
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
-      .withName("d1")
-      .withNamespace("ns1")
-      .addToLabels("testKey", "testValue")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
     deployment1 = client.apps().deployments().inNamespace("ns1").create(deployment1);
 
     // When
@@ -125,4 +127,3 @@ class DeploymentCrudTest {
     assertEquals("one", replacedDeployment.getMetadata().getLabels().get("testKey"));
   }
 }
-

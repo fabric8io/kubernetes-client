@@ -69,7 +69,7 @@ public class ClusterServiceBrokerOperationsImpl extends ExtensibleResourceAdapte
           + "found for ClusterServiceBroker: " + item.getMetadata().getName());
     }
     ClusterServiceClass c = list.get(0);
-    return client.adapt(ServiceCatalogClient.class).clusterServiceClasses().withItem(c);
+    return client.adapt(ServiceCatalogClient.class).clusterServiceClasses().resource(c);
   }
 
 }

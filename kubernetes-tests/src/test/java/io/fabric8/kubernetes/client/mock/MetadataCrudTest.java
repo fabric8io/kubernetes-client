@@ -40,7 +40,7 @@ class MetadataCrudTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").addToLabels("testKey", "testValue").endMetadata().build();
 
-    NonNamespaceOperation<Pod, PodList, PodResource<Pod>> podClient = client.pods().inNamespace("ns1");
+    NonNamespaceOperation<Pod, PodList, PodResource> podClient = client.pods().inNamespace("ns1");
     pod1 = podClient.create(pod1);
     pod2 = podClient.create(pod2);
 
@@ -55,7 +55,7 @@ class MetadataCrudTest {
     assertEquals("1", pod1.getMetadata().getResourceVersion());
 
     // should increment
-    pod1 = podClient.withName("pod1").editStatus(p->new PodBuilder(p).withStatus(new PodStatus()).build());
+    pod1 = podClient.withName("pod1").editStatus(p -> new PodBuilder(p).withStatus(new PodStatus()).build());
     assertEquals("3", pod1.getMetadata().getResourceVersion());
   }
 

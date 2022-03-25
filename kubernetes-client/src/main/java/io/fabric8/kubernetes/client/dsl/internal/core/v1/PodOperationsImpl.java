@@ -85,8 +85,8 @@ import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource<Pod>>
-    implements PodResource<Pod>, CopyOrReadable<InputStream> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource>
+    implements PodResource, CopyOrReadable<InputStream> {
 
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;

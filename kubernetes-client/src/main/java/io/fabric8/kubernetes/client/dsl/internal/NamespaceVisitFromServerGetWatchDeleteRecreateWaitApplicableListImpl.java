@@ -63,6 +63,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl
     implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
@@ -120,10 +121,13 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public List<NamespaceableResource<io.fabric8.kubernetes.api.model.HasMetadata>> getResources() {
+  public Stream<NamespaceableResource<HasMetadata>> resources() {
     return getItems().stream()
-        .map(this::getResource)
-        .collect(Collectors.toList());
+        .map(this::getResource);
+  }
+
+  public List<NamespaceableResource<io.fabric8.kubernetes.api.model.HasMetadata>> getResources() {
+    return resources().collect(Collectors.toList());
   }
 
   /**

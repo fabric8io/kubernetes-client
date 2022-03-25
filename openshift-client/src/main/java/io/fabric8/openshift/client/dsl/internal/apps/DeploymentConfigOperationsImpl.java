@@ -259,15 +259,15 @@ public class DeploymentConfigOperationsImpl
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
     Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
-    List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context,
+    List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
         deploymentConfig.getMetadata().getUid(),
         getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, rollingOperationContext.getContainerId());
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
 
-  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod>> podOps, Integer podLogWaitTimeout) {
-    for (PodResource<Pod> podOp : podOps) {
+  private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
+    for (PodResource podOp : podOps) {
       PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
     }
   }

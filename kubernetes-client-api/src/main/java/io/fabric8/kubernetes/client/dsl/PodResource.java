@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 
@@ -25,10 +26,10 @@ import java.io.PipedOutputStream;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
-public interface PodResource<T> extends Resource<T>,
-        Loggable<LogWatch>,
-        Containerable<String, ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream>>,
-        ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream>,
-        PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel>,
-        Evictable{
+public interface PodResource extends Resource<Pod>,
+    Loggable<LogWatch>,
+    Containerable<String, ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream>>,
+    ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream>,
+    PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel>,
+    Evictable {
 }

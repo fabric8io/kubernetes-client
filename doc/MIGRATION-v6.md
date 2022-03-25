@@ -13,7 +13,7 @@
 - [Adapt Changes](#adapt-changes)
 - [Deprecations](#deprecations)
 - [Object sorting](#object-sorting)
-- [Boolean Changes](#boolean-changes)
+- [DSL Interface Changes](#dsl-interface-changes)
 - [evict Changes](#evict-changes)
 
 ## Namespace Changes
@@ -192,10 +192,15 @@ Client.adapt will no longer perform the isAdaptable check - that is you may free
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
 
-## Boolean Changes
+## DSL Interface Changes
 
-The usage of Boolean in the api was removed where it was not a nullable value.  Please expect a boolean primitive from methods such as delete, copy, or as an argument in Loggable.getLog
+- The usage of Boolean in the api was removed where it was not a nullable value.  Please expect a boolean primitive from methods such as delete, copy, or as an argument in Loggable.getLog
+
+- WatchListDeletable now takes three type parameters to include the Resource type.
+
+- PodResource is no longer generic.
 
 ## Evict Changes
 
 Evictable.evict will throw an exception rather than returning false if the pod is not found.  This ensures that false strictly means that the evict failed.
+

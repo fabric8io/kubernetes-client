@@ -136,7 +136,7 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override
@@ -205,14 +205,14 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {
-    List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
+    List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
         getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout, null);
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
 
-  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod>> podOps, Integer podLogWaitTimeout) {
-    for (PodResource<Pod> podOp : podOps) {
+  private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
+    for (PodResource podOp : podOps) {
       PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
     }
   }

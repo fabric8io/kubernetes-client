@@ -70,7 +70,11 @@ class ResourceTest {
   void testCreateOrReplace() {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_CREATED, pod1)
+        .once();
 
     // When
     HasMetadata response = client.resource(pod1).createOrReplace();
@@ -83,7 +87,11 @@ class ResourceTest {
   void testCreateOrReplaceString() {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_CREATED, pod1)
+        .once();
 
     // When
     HasMetadata response = client.resource(Serialization.asYaml(pod1)).createOrReplace();
@@ -94,17 +102,22 @@ class ResourceTest {
 
   @Test
   void testGenericResourceFails() {
-    assertThrows(KubernetesClientException.class, () -> client.resource(Serialization.unmarshal("apiVersion: example.io/v1\n"
-        + "kind: GenericThatFails\n"
-        + "metadata:\n"
-        + "  name: failure\n", GenericKubernetesResource.class)));
+    assertThrows(KubernetesClientException.class,
+        () -> client.resource(Serialization.unmarshal("apiVersion: example.io/v1\n"
+            + "kind: GenericThatFails\n"
+            + "metadata:\n"
+            + "  name: failure\n", GenericKubernetesResource.class)));
   }
 
   @Test
   void testCreateOrReplaceWhenCreateFails() {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1)
+        .once();
 
     NamespaceableResource<Pod> podOperation = client.resource(pod1);
 
@@ -116,7 +129,11 @@ class ResourceTest {
   void testCreateWithExplicitNamespace() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/ns1/pods")
+        .andReturn(HttpURLConnection.HTTP_CREATED, pod1)
+        .once();
 
     HasMetadata response = client.resource(pod1).inNamespace("ns1").createOrReplace();
     assertEquals(pod1, response);
@@ -126,8 +143,16 @@ class ResourceTest {
   void testCreateOrReplaceWithDeleteExisting() throws Exception {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-    server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+    server.expect()
+        .delete()
+        .withPath("/api/v1/namespaces/ns1/pods/pod1")
+        .andReturn(HttpURLConnection.HTTP_OK, pod1)
+        .once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/ns1/pods")
+        .andReturn(HttpURLConnection.HTTP_CREATED, pod1)
+        .once();
 
     Resource<Pod> resource = client.resource(pod1).inNamespace("ns1");
     resource.delete();
@@ -144,8 +169,16 @@ class ResourceTest {
   void itPassesPropagationPolicyWithDeleteExisting() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-    server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+    server.expect()
+        .delete()
+        .withPath("/api/v1/namespaces/ns1/pods/pod1")
+        .andReturn(HttpURLConnection.HTTP_OK, pod1)
+        .once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/ns1/pods")
+        .andReturn(HttpURLConnection.HTTP_CREATED, pod1)
+        .once();
 
     Resource<Pod> resource = client.resource(pod1).inNamespace("ns1");
     resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
@@ -169,9 +202,21 @@ class ResourceTest {
   void testCreateOrReplaceWithDeleteExistingWithCreateFailed() {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
-    server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/ns1/pods")
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, pod1)
+        .once();
+    server.expect()
+        .delete()
+        .withPath("/api/v1/namespaces/ns1/pods/pod1")
+        .andReturn(HttpURLConnection.HTTP_OK, pod1)
+        .once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/ns1/pods")
+        .andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1)
+        .once();
     Resource<Pod> podOperation = client.resource(pod1).inNamespace("ns1");
     podOperation.delete();
     // When
@@ -180,8 +225,12 @@ class ResourceTest {
 
   @Test
   void testRequire() {
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
-    PodResource<Pod> podOp = client.pods().inNamespace("ns1").withName("pod1");
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/ns1/pods/pod1")
+        .andReturn(HttpURLConnection.HTTP_NOT_FOUND, "")
+        .once();
+    PodResource podOp = client.pods().inNamespace("ns1").withName("pod1");
 
     Assertions.assertThrows(ResourceNotFoundException.class, podOp::require);
   }
@@ -209,16 +258,20 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, pod1).once();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
 
-    server.expect().get()
+    server.expect()
+        .get()
         .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(1000).andEmit(new WatchEvent(pod1, "DELETED"))
+        .waitFor(1000)
+        .andEmit(new WatchEvent(pod1, "DELETED"))
         .done()
         .always();
 
@@ -244,18 +297,23 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "2");
     Pod ready = createReadyFrom(pod1, "True", "3");
 
     list(noReady);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
+        .waitFor(500)
+        .andEmit(new WatchEvent(ready, "MODIFIED"))
         .done()
         .always();
 
@@ -282,20 +340,28 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "1");
     Pod ready = createReadyFrom(pod1, "True", "2");
 
     // and again so that "periodicWatchUntilReady" successfully begins
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1").andReturn(200, noReady)
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
+        .andReturn(200, noReady)
         .times(2);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
+        .waitFor(100)
+        .andEmit(new WatchEvent(ready, "MODIFIED"))
         .done()
         .always();
 
@@ -308,12 +374,16 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "1");
     Pod ready = createReadyFrom(pod1, "True", "3");
 
-    Pod withConditionBeingFalse = new PodBuilder(pod1).editMetadata().withResourceVersion("2").endMetadata()
+    Pod withConditionBeingFalse = new PodBuilder(pod1).editMetadata()
+        .withResourceVersion("2")
+        .endMetadata()
         .withNewStatus()
         .addNewCondition()
         .withType("Ready")
@@ -326,7 +396,9 @@ class ResourceTest {
         .endStatus()
         .build();
 
-    Pod withConditionBeingTrue = new PodBuilder(pod1).editMetadata().withResourceVersion("4").endMetadata()
+    Pod withConditionBeingTrue = new PodBuilder(pod1).editMetadata()
+        .withResourceVersion("4")
+        .endMetadata()
         .withNewStatus()
         .addNewCondition()
         .withType("Ready")
@@ -342,21 +414,29 @@ class ResourceTest {
     // at first the pod is non-ready
     list(noReady);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
-        .waitFor(2000).andEmit(new WatchEvent(withConditionBeingFalse, "MODIFIED"))
-        .waitFor(2500).andEmit(new WatchEvent(withConditionBeingTrue, "MODIFIED"))
+        .waitFor(1000)
+        .andEmit(new WatchEvent(ready, "MODIFIED"))
+        .waitFor(2000)
+        .andEmit(new WatchEvent(withConditionBeingFalse, "MODIFIED"))
+        .waitFor(2500)
+        .andEmit(new WatchEvent(withConditionBeingTrue, "MODIFIED"))
         .done()
         .always();
 
-    Pod p = client.pods().withName("pod1").waitUntilCondition(
-        r -> r.getStatus().getConditions()
-            .stream()
-            .anyMatch(c -> "Dummy".equals(c.getType()) && "True".equals(c.getStatus())),
-        8, SECONDS);
+    Pod p = client.pods()
+        .withName("pod1")
+        .waitUntilCondition(
+            r -> r.getStatus()
+                .getConditions()
+                .stream()
+                .anyMatch(c -> "Dummy".equals(c.getType()) && "True".equals(c.getStatus())),
+            8, SECONDS);
 
     assertThat(p.getStatus().getConditions())
         .extracting("type", "status")
@@ -368,7 +448,9 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "2");
     Pod ready = createReadyFrom(pod1, "True", "3");
@@ -380,12 +462,16 @@ class ResourceTest {
     // once not ready, to begin watch
     list(noReady);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
-        .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
+        .waitFor(500)
+        .andEmit(new WatchEvent(status, "ERROR"))
+        .waitFor(500)
+        .andEmit(new WatchEvent(ready, "MODIFIED"))
         .done()
         .once();
 
@@ -398,7 +484,9 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "2");
     Pod ready = createReadyFrom(pod1, "True", "3");
@@ -410,19 +498,25 @@ class ResourceTest {
     // once not ready, to begin watch
     list(noReady);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
+        .waitFor(500)
+        .andEmit(new WatchEvent(status, "ERROR"))
         .done()
         .once();
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
+        .waitFor(500)
+        .andEmit(new WatchEvent(ready, "MODIFIED"))
         .done()
         .once();
 
@@ -435,7 +529,9 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "2");
     Pod ready = createReadyFrom(pod1, "True", "3");
@@ -452,7 +548,9 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "2");
     Pod ready = createReadyFrom(pod1, "True", "3");
@@ -464,11 +562,14 @@ class ResourceTest {
     // once not ready, to begin watch
     list(noReady);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
+        .waitFor(500)
+        .andEmit(new WatchEvent(status, "ERROR"))
         .done()
         .once();
 
@@ -482,7 +583,9 @@ class ResourceTest {
     Pod ready = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().withNewStatus()
+        .withNamespace("test")
+        .and()
+        .withNewStatus()
         .addNewCondition()
         .withType("Ready")
         .withStatus("True")
@@ -492,11 +595,14 @@ class ResourceTest {
 
     list(ready);
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(1000).andEmit(new WatchEvent(ready, "DELETED"))
+        .waitFor(1000)
+        .andEmit(new WatchEvent(ready, "DELETED"))
         .done()
         .once();
 
@@ -509,7 +615,9 @@ class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
-        .withNamespace("test").and().build();
+        .withNamespace("test")
+        .and()
+        .build();
 
     Pod noReady = createReadyFrom(pod1, "False", "2");
     Pod ready = createReadyFrom(pod1, "True", "3");
@@ -517,11 +625,14 @@ class ResourceTest {
     list(noReady);
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
 
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+        .waitFor(1000)
+        .andEmit(new WatchEvent(ready, "MODIFIED"))
         .done()
         .always();
 
@@ -555,7 +666,8 @@ class ResourceTest {
         .withNamespace("test")
         .withResourceVersion("1")
         .addToLabels("CONDITION", "NOT_MET")
-        .endMetadata().build();
+        .endMetadata()
+        .build();
     final Pod conditionMetPod = new PodBuilder().withNewMetadata()
         .withName("pod")
         .withNamespace("test")
@@ -564,11 +676,16 @@ class ResourceTest {
         .endMetadata()
         .build();
     list(conditionNotMetPod);
-    server.expect().get().withPath(
-        "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&resourceVersion=1&allowWatchBookmarks=true&watch=true")
-        .andUpgradeToWebSocket().open()
-        .immediately().andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
-        .waitFor(10).andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .immediately()
+        .andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
+        .waitFor(10)
+        .andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))
         .done()
         .once();
     // When

@@ -130,13 +130,13 @@ public interface KubernetesClient extends Client {
    * specific to CustomResource.
    *
    * <p>
-   *   Note: your CustomResource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * Note: your CustomResource POJO (T in this context) must implement
+   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for CustomResource
    * @param <T> T type represents CustomResource type. If it's a namespaced resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    * @deprecated use {@link #resources(Class)} instead
    */
@@ -147,14 +147,15 @@ public interface KubernetesClient extends Client {
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
    * <p>
-   *   Note: your resource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * Note: your resource POJO (T in this context) must implement
+   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for resource
    * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
-   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
+   * @return returns a MixedOperation object with which you can do basic resource operations. If the class is a known type the
+   *         dsl operation logic will be used.
    */
   default <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources(Class<T> resourceType) {
     return resources(resourceType, null);
@@ -166,20 +167,21 @@ public interface KubernetesClient extends Client {
    * specific to CustomResource.
    *
    * <p>
-   *   Note: your CustomResource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * Note: your CustomResource POJO (T in this context) must implement
+   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
    * @param <T> T type represents CustomResource type. If it's a namespace-scoped resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @param <L> L type represents CustomResourceList type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    * @deprecated use {@link #resources(Class, Class)} instead
    */
   @Deprecated
-  <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass);
+  <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      Class<T> resourceType, Class<L> listClass);
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -187,10 +189,11 @@ public interface KubernetesClient extends Client {
    * specific to CustomResource.
    *
    * <p>
-   *   Note: your CustomResource POJO (T in this context) must implement
-   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
-   *     io.fabric8.kubernetes.api.model.Namespaced
-   *   </a> if it is a Namespaced scoped resource.
+   * Note: your CustomResource POJO (T in this context) must implement
+   * <a href=
+   * "https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   * io.fabric8.kubernetes.api.model.Namespaced
+   * </a> if it is a Namespaced scoped resource.
    * </p>
    *
    * @deprecated Since 5.x versions of client {@link CustomResourceDefinitionContext} is now configured via annotations
@@ -199,12 +202,13 @@ public interface KubernetesClient extends Client {
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
    * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
-   *           io.fabric8.kubernetes.api.model.Namespaced
+   *        io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> L type represents CustomResourceList type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
   @Deprecated
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(ResourceDefinitionContext context, Class<T> resourceType, Class<L> listClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      ResourceDefinitionContext context, Class<T> resourceType, Class<L> listClass);
 
   /**
    * Semi-Typed API for managing {@link GenericKubernetesResource}s which can represent any resource.
@@ -226,7 +230,8 @@ public interface KubernetesClient extends Client {
    * @param kind the resource kind
    * @return returns a MixedOperation object with which you can do basic resource operations.
    */
-  MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(String apiVersion, String kind);
+  MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      String apiVersion, String kind);
 
   /**
    * Discovery API entrypoint for APIGroup discovery.k8s.io
@@ -389,7 +394,8 @@ public interface KubernetesClient extends Client {
    * @param items a collection containing HasMetadata values
    * @return operations object for Kubernetes list
    */
-  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<? extends HasMetadata> items);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(
+      Collection<? extends HasMetadata> items);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as a HasMetadata object and do
@@ -429,7 +435,7 @@ public interface KubernetesClient extends Client {
    *
    * @return NonNamespaceOperation object for Namespace related operations
    */
-  NonNamespaceOperation< Namespace, NamespaceList, Resource<Namespace>> namespaces();
+  NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces();
 
   /**
    * API entrypoint for node related operations in Kubernetes. Node (core/v1)
@@ -457,7 +463,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for Pod related operations
    */
-  MixedOperation<Pod, PodList, PodResource<Pod>> pods();
+  MixedOperation<Pod, PodList, PodResource> pods();
 
   /**
    * API entrypoint for ReplicationController related operations. ReplicationController (core/v1)
