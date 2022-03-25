@@ -24,8 +24,8 @@ public class JPrimitive extends AbstractJSONSchema2Pojo {
 
   private static final GeneratorResult empty = new GeneratorResult(new ArrayList<>(), new ArrayList<>());
 
-  public JPrimitive(String type, Config config, String description) {
-    super(config, description);
+  public JPrimitive(String type, Config config, String description, final boolean isNullable) {
+    super(config, description, isNullable);
     this.type = type;
   }
 

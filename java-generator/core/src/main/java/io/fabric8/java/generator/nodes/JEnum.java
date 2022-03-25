@@ -38,8 +38,8 @@ public class JEnum extends AbstractJSONSchema2Pojo {
   // TODO: handle number enum
   private final List<String> values;
 
-  public JEnum(String type, List<JsonNode> values, Config config, String description) {
-    super(config, description);
+  public JEnum(String type, List<JsonNode> values, Config config, String description, final boolean isNullable) {
+    super(config, description, isNullable);
     this.type = AbstractJSONSchema2Pojo.sanitizeString(
         type.substring(0, 1).toUpperCase() + type.substring(1));
     this.values = values.stream().map(JsonNode::asText).collect(Collectors.toList());

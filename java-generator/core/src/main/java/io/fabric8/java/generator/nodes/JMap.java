@@ -25,10 +25,11 @@ import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
 public class JMap extends AbstractJSONSchema2Pojo {
 
   private final String type;
+
   private final AbstractJSONSchema2Pojo nested;
 
-  public JMap(AbstractJSONSchema2Pojo nested, Config config, String description) {
-    super(config, description);
+  public JMap(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable) {
+    super(config, description, isNullable);
     this.type = new ClassOrInterfaceType()
         .setName(JAVA_UTIL_MAP)
         .setTypeArguments(

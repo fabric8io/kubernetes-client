@@ -115,7 +115,7 @@ System properties are preferred over environment variables. The following system
 | `kubernetes.truststore.passphrase` / `KUBERNETES_TRUSTSTORE_PASSPHRASE` | | |
 | `kubernetes.keystore.file` / `KUBERNETES_KEYSTORE_FILE` | | |
 | `kubernetes.keystore.passphrase` / `KUBERNETES_KEYSTORE_PASSPHRASE` | | |
-| `kubernetes.backwardsCompatibilityInterceptor.disable` / `KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE` | `Disable BackwardsCompatibilityInterceptor`| `false` |
+| `kubernetes.backwardsCompatibilityInterceptor.disable` / `KUBERNETES_BACKWARDSCOMPATIBILITYINTERCEPTOR_DISABLE` | `Disable BackwardsCompatibilityInterceptor`| `false` |
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 

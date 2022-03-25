@@ -186,6 +186,8 @@ Client.adapt will no longer perform the isAdaptable check - that is you may free
 - Extension specific EnableXXXMockClient and XXXMockServer classes have been deprecated.  You can simply use EnableKubernetesMockClient and KubernetesMockServer instead. Dependencies on the xxx-mock jar are then no longer needed, just a dependency to kubernetes-server-mock.
 - Client.supportsApiPath and Client.isAdaptable have been deprecated.  Please use Client.supports and Client.hasApiGroup as needed.
 
+- Informable.withIndexers has been deprecated.  Indexers can be added/removed after the creation of the informer.
+
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.

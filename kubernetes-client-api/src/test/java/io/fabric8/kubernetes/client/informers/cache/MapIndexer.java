@@ -55,6 +55,11 @@ public class MapIndexer<T> implements Indexer<T> {
   }
 
   @Override
+  public void removeIndexer(String name) {
+
+  }
+
+  @Override
   public List<T> list() {
     return map.values().stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
   }
@@ -81,5 +86,10 @@ public class MapIndexer<T> implements Indexer<T> {
 
   protected void put(String index, String key, T object) {
     map.compute(index, (k, v) -> v == null ? new HashMap<>() : v).put(key, object);
+  }
+
+  @Override
+  public String getKey(T object) {
+    return null;
   }
 }

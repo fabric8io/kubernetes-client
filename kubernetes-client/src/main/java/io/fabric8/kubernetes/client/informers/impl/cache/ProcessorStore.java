@@ -45,8 +45,9 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
   public void update(T obj) {
     T oldObj = this.cache.put(obj);
     if (oldObj != null) {
-      this.processor.distribute(new ProcessorListener.UpdateNotification<>(oldObj, obj),
-          Objects.equals(oldObj.getMetadata().getResourceVersion(), obj.getMetadata().getResourceVersion()));
+      if (!Objects.equals(oldObj.getMetadata().getResourceVersion(), obj.getMetadata().getResourceVersion())) {
+        this.processor.distribute(new ProcessorListener.UpdateNotification<>(oldObj, obj), false);
+      }
     } else {
       this.processor.distribute(new ProcessorListener.AddNotification<>(obj), false);
     }
@@ -91,11 +92,11 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
       String key = cache.getKey(v);
       if (!nextKeys.contains(key)) {
         cache.remove(v);
-        this.processor.distribute(new ProcessorListener.DeleteNotification<>(v, true), false);        
+        this.processor.distribute(new ProcessorListener.DeleteNotification<>(v, true), false);
       }
     });
   }
-  
+
   @Override
   public String getKey(T obj) {
     return cache.getKey(obj);

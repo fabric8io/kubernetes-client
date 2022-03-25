@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 
 import java.util.List;
@@ -32,6 +33,23 @@ public interface SharedIndexInformer<T> extends SharedInformer<T> {
    * @param indexers indexers
    */
   void addIndexers(Map<String, Function<T, List<String>>> indexers);
+
+  /**
+   * Remove the namesapce index
+   *
+   * @return this
+   */
+  default SharedIndexInformer<T> removeNamespaceIndex() {
+    return removeIndexer(Cache.NAMESPACE_INDEX);
+  }
+
+  /**
+   * Remove the named index
+   *
+   * @param name
+   * @return this
+   */
+  SharedIndexInformer<T> removeIndexer(String name);
 
   /**
    * returns the internal indexer store.

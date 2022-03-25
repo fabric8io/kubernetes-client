@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers.impl.cache;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.utils.ReflectUtils;
@@ -29,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 /**
@@ -37,7 +37,7 @@ import java.util.function.Function;
  *
  * @param <T> type for cache object
  */
-public class CacheImpl<T> implements Cache<T> {
+public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   // Defines how to map objects into indices
   private Function<T, String> keyFunc;
 
@@ -48,25 +48,18 @@ public class CacheImpl<T> implements Cache<T> {
   private final Map<String, Function<T, List<String>>> indexers = new HashMap<>();
 
   // items stores object instances
-  private volatile ConcurrentHashMap<String, T> items = new ConcurrentHashMap<>();
+  private final Map<String, T> items = new ConcurrentHashMap<>();
 
   // indices stores objects' key by their indices
   private final Map<String, Map<String, Set<String>>> indices = new HashMap<>();
-  
-  private BooleanSupplier isRunning = () -> false;
 
   public CacheImpl() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
   }
 
   public CacheImpl(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
-    this.indexers.put(indexName, indexFunc);
     this.keyFunc = keyFunc;
-    this.indices.put(indexName, new HashMap<>());
-  }
-  
-  public void setIsRunning(BooleanSupplier isRunning) {
-    this.isRunning = isRunning;
+    addIndexFunc(indexName, indexFunc);
   }
 
   /**
@@ -81,13 +74,6 @@ public class CacheImpl<T> implements Cache<T> {
 
   @Override
   public synchronized void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
-    if (isRunning.getAsBoolean()) {
-      throw new IllegalStateException("Cannot add indexers to a running informer.");
-    }  
-    if (!items.isEmpty()) {
-      throw new IllegalStateException("Cannot add indexers to a Cache which is not empty");
-    }
-
     Set<String> intersection = new HashSet<>(indexers.keySet());
     intersection.retainAll(indexersNew.keySet());
     if (!intersection.isEmpty()) {
@@ -131,31 +117,6 @@ public class CacheImpl<T> implements Cache<T> {
   }
 
   /**
-   * Replace the content in the cache completely.
-   * 
-   * Return a copy of the old cache contents
-   *
-   * @param list list of objects
-   * @return the old contents
-   */
-  public synchronized Map<String, T> replace(List<T> list) {
-    ConcurrentHashMap<String, T> newItems = new ConcurrentHashMap<>();
-    for (T item : list) {
-      String key = getKey(item);
-      newItems.put(key, item);
-    }
-    Map<String, T> result = new HashMap<>(items);
-    this.items = newItems;
-
-    // rebuild any index
-    this.indices.values().stream().forEach(Map::clear);
-    for (Map.Entry<String, T> itemEntry : items.entrySet()) {
-      this.updateIndices(null, itemEntry.getValue(), itemEntry.getKey());
-    }
-    return result;
-  }
-
-  /**
    * List keys
    *
    * @return the list of keys
@@ -180,6 +141,7 @@ public class CacheImpl<T> implements Cache<T> {
   /**
    * Get the key for the given object
    */
+  @Override
   public String getKey(T obj) {
     String result = this.keyFunc.apply(obj);
     return result == null ? "" : result;
@@ -203,7 +165,7 @@ public class CacheImpl<T> implements Cache<T> {
    */
   @Override
   public T getByKey(String key) {
-      return this.items.get(key);
+    return this.items.get(key);
   }
 
   /**
@@ -303,12 +265,15 @@ public class CacheImpl<T> implements Cache<T> {
     for (Map.Entry<String, Function<T, List<String>>> indexEntry : indexers.entrySet()) {
       String indexName = indexEntry.getKey();
       Function<T, List<String>> indexFunc = indexEntry.getValue();
-      List<String> indexValues = indexFunc.apply(newObj);
-      if (indexValues == null || indexValues.isEmpty()) {
-        continue;
-      }
-
       Map<String, Set<String>> index = this.indices.get(indexName);
+
+      updateIndex(key, newObj, indexFunc, index);
+    }
+  }
+
+  private void updateIndex(String key, T newObj, Function<T, List<String>> indexFunc, Map<String, Set<String>> index) {
+    List<String> indexValues = indexFunc.apply(newObj);
+    if (indexValues != null && !indexValues.isEmpty()) {
       for (String indexValue : indexValues) {
         Set<String> indexSet = index.computeIfAbsent(indexValue, k -> new HashSet<>());
         indexSet.add(key);
@@ -351,9 +316,15 @@ public class CacheImpl<T> implements Cache<T> {
    * @param indexName the index name
    * @param indexFunc the index func
    */
-  public synchronized void addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
-    this.indices.put(indexName, new HashMap<>());
+  public synchronized CacheImpl<T> addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
+    HashMap<String, Set<String>> index = new HashMap<>();
+    this.indices.put(indexName, index);
     this.indexers.put(indexName, indexFunc);
+
+    for (String key : items.keySet()) {
+      updateIndex(key, items.get(key), indexFunc, index);
+    }
+    return this;
   }
 
   /**
@@ -366,11 +337,11 @@ public class CacheImpl<T> implements Cache<T> {
    */
   public static String metaNamespaceKeyFunc(Object obj) {
     try {
-      if( obj == null ) {
+      if (obj == null) {
         return "";
       }
       ObjectMeta metadata;
-      if(obj instanceof String) {
+      if (obj instanceof String) {
         return (String) obj;
       } else if (obj instanceof ObjectMeta) {
         metadata = (ObjectMeta) obj;
@@ -413,5 +384,11 @@ public class CacheImpl<T> implements Cache<T> {
       throw new RuntimeException(e);
     }
   }
-}
 
+  @Override
+  public synchronized void removeIndexer(String name) {
+    this.indices.remove(name);
+    this.indexers.remove(name);
+  }
+
+}
