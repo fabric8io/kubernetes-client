@@ -15,8 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-import java.util.function.Function;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
+
+import java.util.function.Function;
 
 public class WithRequestCallable<C extends Client> implements FunctionCallable<C> {
 
@@ -30,11 +31,8 @@ public class WithRequestCallable<C extends Client> implements FunctionCallable<C
 
   @Override
   public <O> O call(Function<C, O> function) {
-    try {
-      RequestConfigHolder.set(requestConfig);
-      return function.apply(client);
-    } finally {
-      RequestConfigHolder.remove();
+    try (C newClient = (C) this.client.newClient(requestConfig).adapt(this.client.getClass())) {
+      return function.apply(newClient);
     }
   }
 }

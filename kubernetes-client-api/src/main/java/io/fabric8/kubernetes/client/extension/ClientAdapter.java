@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -138,6 +139,11 @@ public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Clien
     C result = newInstance();
     result.init(client.adapt(NamespacedKubernetesClient.class).inNamespace(namespace));
     return result;
+  }
+
+  @Override
+  public Client newClient(RequestConfig requestConfig) {
+    return client.newClient(requestConfig);
   }
 
   public abstract C newInstance();

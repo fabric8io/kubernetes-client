@@ -86,9 +86,11 @@ class OkHttpClientBuilderImpl implements Builder {
 
   private boolean streaming;
   private OkHttpClient.Builder builder;
+  private OkHttpClientFactory factory;
 
-  public OkHttpClientBuilderImpl(okhttp3.OkHttpClient.Builder newBuilder) {
+  public OkHttpClientBuilderImpl(okhttp3.OkHttpClient.Builder newBuilder, OkHttpClientFactory factory) {
     this.builder = newBuilder;
+    this.factory = factory;
   }
 
   @Override
@@ -106,7 +108,7 @@ class OkHttpClientBuilderImpl implements Builder {
       }
     }
 
-    return new OkHttpClientImpl(client);
+    return new OkHttpClientImpl(client, factory);
   }
 
   @Override

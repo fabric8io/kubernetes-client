@@ -31,10 +31,6 @@ import java.net.URL;
 
 public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable {
 
-  public enum Supports {
-
-  }
-
   /**
    * Checks if the client can be adapted to an other client type and if that target client is supported.
    *
@@ -158,4 +154,15 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
       Class<T> resourceType, Class<L> listClass) {
     return resources(resourceType, listClass, null);
   }
+
+  /**
+   * Creates a new client based upon the current except with a different
+   * {@link RequestConfig}. This client will use independent resources,
+   * and should be closed appropriately
+   *
+   * @param requestConfig
+   * @return a new client
+   */
+  Client newClient(RequestConfig requestConfig);
+
 }

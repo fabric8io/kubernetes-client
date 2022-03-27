@@ -18,14 +18,37 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class JdkHttpClientFactory implements HttpClient.Factory {
 
+  static class ShutdownableExecutor implements Executor {
+
+    private ExecutorService es;
+
+    public ShutdownableExecutor(ExecutorService es) {
+      this.es = es;
+    }
+
+    @Override
+    public void execute(Runnable command) {
+      es.execute(command);
+    }
+
+    public void shutdownNow() {
+      es.shutdownNow();
+    }
+
+  }
+
   @Override
   public HttpClient createHttpClient(Config config) {
-    JdkHttpClientBuilderImpl builderWrapper = new JdkHttpClientBuilderImpl(this);
+    JdkHttpClientBuilderImpl builderWrapper = newBuilder();
 
     HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
 
@@ -33,12 +56,13 @@ public class JdkHttpClientFactory implements HttpClient.Factory {
   }
 
   @Override
-  public Builder newBuilder() {
+  public JdkHttpClientBuilderImpl newBuilder() {
     return new JdkHttpClientBuilderImpl(this);
   }
 
   /**
    * Additional configuration to be applied to the builder after the {@link Config} has been processed.
+   *
    * @param builder
    */
   protected void additionalConfig(java.net.http.HttpClient.Builder builder) {
@@ -47,18 +71,23 @@ public class JdkHttpClientFactory implements HttpClient.Factory {
 
   /**
    * Create a new builder. This can be overridden to modify the builder prior to the {@link Config} being processed.
+   *
    * @return the builder
    */
   protected java.net.http.HttpClient.Builder createNewHttpClientBuilder() {
-    return java.net.http.HttpClient.newBuilder();
+    ExecutorService ex = Executors.newCachedThreadPool(Utils.daemonThreadFactory(this));
+
+    return java.net.http.HttpClient.newBuilder().executor(new ShutdownableExecutor(ex));
   }
 
   /**
    * Cleanup hook called by {@link HttpClient#close()}
+   *
    * @param jdkHttpClientImpl
    */
   protected void closeHttpClient(JdkHttpClientImpl jdkHttpClientImpl) {
-    // no default implementation
+    jdkHttpClientImpl.getHttpClient().executor().filter(ShutdownableExecutor.class::isInstance)
+        .map(ShutdownableExecutor.class::cast).ifPresent(ShutdownableExecutor::shutdownNow);
   }
 
 }

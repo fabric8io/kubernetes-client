@@ -46,6 +46,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   /**
    * Subclasses may use this to apply additional configuration after the Config has been applied
    * This method is only called for clients constructed using the Config.
+   * 
    * @param builder
    */
   protected void additionalConfig(OkHttpClient.Builder builder) {
@@ -54,11 +55,12 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
   @Override
   public Builder newBuilder() {
-    return new OkHttpClientBuilderImpl(newOkHttpClientBuilder());
+    return new OkHttpClientBuilderImpl(newOkHttpClientBuilder(), this);
   }
 
   /**
    * Creates an HTTP client configured to access the Kubernetes API.
+   * 
    * @param config Kubernetes API client config
    * @return returns an HTTP client
    */
@@ -89,7 +91,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         httpClientBuilder.dispatcher(dispatcher);
       }
 
-      OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder);
+      OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder, this);
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
 
@@ -113,7 +115,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
    * @see <a href="https://github.com/fabric8io/kubernetes-client/issues/2212">#2212</a>
    */
   protected boolean shouldDisableHttp2() {
-      return System.getProperty("java.version", "").startsWith("1.8");
+    return System.getProperty("java.version", "").startsWith("1.8");
   }
 
 }

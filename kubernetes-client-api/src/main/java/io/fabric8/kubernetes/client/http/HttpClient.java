@@ -19,13 +19,10 @@ package io.fabric8.kubernetes.client.http;
 import io.fabric8.kubernetes.client.Config;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
@@ -143,46 +140,6 @@ public interface HttpClient extends AutoCloseable {
   DerivedClientBuilder newBuilder();
 
   /**
-   * Send a request an wait for the result
-   * <br>
-   * A Reader or InputStream result must be closed by the caller to properly cleanup resources.
-   * <br>
-   * Implementors only have to override if there is specialized blocking logic or the read timeout
-   * is not automatically enforced
-   *
-   * @param <T> return type
-   * @param request
-   * @param type one of InputStream, Reader, String
-   * @return
-   * @throws IOException
-   *
-   * @deprecated use async instead
-   */
-  @Deprecated
-  default <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
-    try {
-      // readTimeout should be enforced
-      return sendAsync(request, type).get();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
-    } catch (ExecutionException e) {
-      Throwable t = e;
-      if (e.getCause() != null) {
-        t = e.getCause();
-      }
-      if (t instanceof IOException) {
-        throw (IOException) t;
-      }
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
-    }
-  }
-
-  /**
    * Send an async request
    * <br>
    * A Reader or InputStream result must be closed by the caller to properly cleanup resources.
@@ -192,7 +149,7 @@ public interface HttpClient extends AutoCloseable {
    *
    * @param <T> return type
    * @param request
-   * @param type one of InputStream, Reader, String
+   * @param type one of InputStream, Reader, String, byte[]
    * @return
    */
   <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
@@ -218,5 +175,7 @@ public interface HttpClient extends AutoCloseable {
   WebSocket.Builder newWebSocketBuilder();
 
   HttpRequest.Builder newHttpRequestBuilder();
+
+  HttpClient.Factory getFactory();
 
 }
