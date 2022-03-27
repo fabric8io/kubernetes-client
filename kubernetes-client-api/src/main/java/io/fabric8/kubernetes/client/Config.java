@@ -1321,8 +1321,11 @@ public class Config {
   }
 
   public RequestConfig getRequestConfig() {
-    RequestConfig rc = RequestConfigHolder.get();
-    return rc != null ? rc : this.requestConfig;
+    return this.requestConfig;
+  }
+
+  public static void setRequestConfig(Config config, RequestConfig requestConfig) {
+    config.requestConfig = requestConfig;
   }
 
   public void setTrustStorePassphrase(String trustStorePassphrase) {

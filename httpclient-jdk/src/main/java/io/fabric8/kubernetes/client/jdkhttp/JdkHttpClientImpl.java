@@ -46,7 +46,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * TODO:
- * - executorservice
  * - Mapping to a Reader is always UTF-8
  * - determine if write timeout should be implemented
  */
@@ -165,14 +164,17 @@ public class JdkHttpClientImpl implements HttpClient {
 
   @Override
   public void close() {
-    // nothing to do by default, but a custom factory may want to
-    // take action
+    if (this.httpClient == null) {
+      return;
+    }
     builder.clientFactory.closeHttpClient(this);
+    // help with default cleanup, which is based upon garbarge collection
+    this.httpClient = null;
   }
 
   @Override
   public DerivedClientBuilder newBuilder() {
-    return this.builder.copy(httpClient);
+    return this.builder.copy(getHttpClient());
   }
 
   @Override
@@ -198,6 +200,8 @@ public class JdkHttpClientImpl implements HttpClient {
       bodyHandler = (BodyHandler<T>) BodyHandlers.ofInputStream();
     } else if (type == String.class) {
       bodyHandler = (BodyHandler<T>) BodyHandlers.ofString();
+    } else if (type == byte[].class) {
+      bodyHandler = (BodyHandler<T>) BodyHandlers.ofByteArray();
     } else {
       bodyHandler = responseInfo -> {
         BodySubscriber<InputStream> upstream = BodyHandlers.ofInputStream().apply(responseInfo);
@@ -219,14 +223,15 @@ public class JdkHttpClientImpl implements HttpClient {
       jdkRequest = builderImpl.build();
     }
 
-    CompletableFuture<java.net.http.HttpResponse<T>> cf = this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
+    CompletableFuture<java.net.http.HttpResponse<T>> cf = this.getHttpClient().sendAsync(builderImpl.build().request,
+        bodyHandler);
 
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
         if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
           return interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response)).thenCompose(b -> {
             if (b) {
-              return this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
+              return this.getHttpClient().sendAsync(builderImpl.build().request, bodyHandler);
             }
             return CompletableFuture.completedFuture(response);
           });
@@ -313,7 +318,7 @@ public class JdkHttpClientImpl implements HttpClient {
   public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder,
       Listener listener) {
     java.net.http.HttpRequest request = webSocketBuilder.asRequest();
-    java.net.http.WebSocket.Builder newBuilder = this.httpClient.newWebSocketBuilder();
+    java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();
     request.headers().map().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
     if (webSocketBuilder.subprotocol != null) {
       newBuilder.subprotocols(webSocketBuilder.subprotocol);
@@ -354,6 +359,18 @@ public class JdkHttpClientImpl implements HttpClient {
 
   public JdkHttpClientBuilderImpl getBuilder() {
     return builder;
+  }
+
+  java.net.http.HttpClient getHttpClient() {
+    if (httpClient == null) {
+      throw new IllegalStateException("Client already closed");
+    }
+    return httpClient;
+  }
+
+  @Override
+  public Factory getFactory() {
+    return builder.clientFactory;
   }
 
 }

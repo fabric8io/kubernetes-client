@@ -769,4 +769,9 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
         || hasApiGroup(BASE_API_GROUP, false);
   }
 
+  @Override
+  protected DefaultOpenShiftClient newInstance(Config config) {
+    return new DefaultOpenShiftClient(config, this);
+  }
+
 }

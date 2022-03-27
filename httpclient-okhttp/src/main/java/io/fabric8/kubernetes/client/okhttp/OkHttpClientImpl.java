@@ -126,6 +126,8 @@ public class OkHttpClientImpl implements HttpClient {
           body = (T) responseBody.string();
         } else if (type == Reader.class) {
           body = (T) responseBody.charStream();
+        } else if (type == byte[].class) {
+          body = (T) responseBody.bytes();
         } else {
           body = (T) responseBody.byteStream();
         }
@@ -166,9 +168,11 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   private final okhttp3.OkHttpClient httpClient;
+  private final OkHttpClientFactory factory;
 
-  public OkHttpClientImpl(OkHttpClient httpClient) {
+  public OkHttpClientImpl(OkHttpClient httpClient, OkHttpClientFactory factory) {
     this.httpClient = httpClient;
+    this.factory = factory;
   }
 
   @Override
@@ -191,13 +195,8 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
-    return new OkHttpResponseImpl<>(httpClient.newCall(((OkHttpRequestImpl) request).getRequest()).execute(), type);
-  }
-
-  @Override
   public Builder newBuilder() {
-    return new OkHttpClientBuilderImpl(httpClient.newBuilder());
+    return new OkHttpClientBuilderImpl(httpClient.newBuilder(), this.factory);
   }
 
   @Override
@@ -288,6 +287,11 @@ public class OkHttpClientImpl implements HttpClient {
   @Override
   public HttpRequest.Builder newHttpRequestBuilder() {
     return new OkHttpRequestImpl.BuilderImpl();
+  }
+
+  @Override
+  public Factory getFactory() {
+    return this.factory;
   }
 
 }

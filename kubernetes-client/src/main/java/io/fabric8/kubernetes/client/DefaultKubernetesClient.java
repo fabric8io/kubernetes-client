@@ -231,7 +231,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
-    return new DefaultKubernetesClient(createInNamespaceConfig(name, false), this);
+    return newInstance(createInNamespaceConfig(name, false));
   }
 
   protected Config createInNamespaceConfig(String name, boolean any) {
@@ -541,7 +541,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespacedKubernetesClient inAnyNamespace() {
-    return new DefaultKubernetesClient(createInNamespaceConfig(null, true), this);
+    return newInstance(createInNamespaceConfig(null, true));
+  }
+
+  protected DefaultKubernetesClient newInstance(Config config) {
+    return new DefaultKubernetesClient(config, this);
   }
 
   /**
@@ -688,6 +692,17 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return resources(RuntimeClass.class, RuntimeClassList.class);
+  }
+
+  @Override
+  public Client newClient(RequestConfig requestConfig) {
+    Config copyConfig = configCopy();
+    Config.setRequestConfig(copyConfig, requestConfig);
+    HttpClient client = this.httpClient.getFactory().createHttpClient(copyConfig);
+    DefaultKubernetesClient result = newInstance(copyConfig);
+    result.httpClient = client;
+    result.setDerivedFields();
+    return result;
   }
 
 }
