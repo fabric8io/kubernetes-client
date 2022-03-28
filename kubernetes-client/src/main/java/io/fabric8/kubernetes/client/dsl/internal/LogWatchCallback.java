@@ -98,24 +98,22 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
       }).join();
     } else {
       // we need to write the bytes to the given output
-      clone.consumeBytes(request, (buffers, a) -> {
-        serialExecutor.execute(() -> {
-          // we don't kwow if the write will be blocking, so hand it off to another thread
-          for (ByteBuffer byteBuffer : buffers) {
-            try {
-              outChannel.write(byteBuffer);
-            } catch (IOException e1) {
-              onFailure(e1);
-              break;
-            }
+      clone.consumeBytes(request, (buffers, a) -> serialExecutor.execute(() -> {
+        // we don't kwow if the write will be blocking, so hand it off to another thread
+        for (ByteBuffer byteBuffer : buffers) {
+          try {
+            outChannel.write(byteBuffer);
+          } catch (IOException e1) {
+            onFailure(e1);
+            break;
           }
-          if (!closed.get()) {
-            a.consume();
-          } else {
-            a.cancel();
-          }
-        });
-      }).whenComplete((a, e) -> {
+        }
+        if (!closed.get()) {
+          a.consume();
+        } else {
+          a.cancel();
+        }
+      })).whenComplete((a, e) -> {
         if (e != null) {
           onFailure(e);
         }

@@ -102,22 +102,22 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 
-public class NamespacedKubernetesClientAdapter<T extends NamespacedKubernetesClient>
-    extends ClientAdapter<NamespacedKubernetesClientAdapter<T>> implements NamespacedKubernetesClient {
+public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesClient>
+    extends ClientAdapter<NamespacedKubernetesClientAdapter<N>> implements NamespacedKubernetesClient {
 
-  private Class<T> type;
+  private Class<N> type;
 
-  public NamespacedKubernetesClientAdapter(Class<T> type) {
+  public NamespacedKubernetesClientAdapter(Class<N> type) {
     this.type = type;
   }
 
   @Override
-  public NamespacedKubernetesClientAdapter<T> newInstance() {
+  public NamespacedKubernetesClientAdapter<N> newInstance() {
     return new NamespacedKubernetesClientAdapter<>(type);
   }
 
   @Override
-  public T getClient() {
+  public N getClient() {
     return super.getClient().adapt(type);
   }
 

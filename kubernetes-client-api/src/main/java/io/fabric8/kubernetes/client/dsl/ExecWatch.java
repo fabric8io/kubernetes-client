@@ -43,7 +43,8 @@ public interface ExecWatch extends Closeable {
    * <p>
    * Will be -1 if the exit code can't be determined.
    * <p>
-   * Can be used as an alternative to {@link ExecListener#onFailure(Throwable, io.fabric8.kubernetes.client.dsl.ExecListener.Response)}
+   * Can be used as an alternative to
+   * {@link ExecListener#onFailure(Throwable, io.fabric8.kubernetes.client.dsl.ExecListener.Response)}
    * and {@link ExecListener#onExit(int, io.fabric8.kubernetes.api.model.Status)} methods.
    *
    * @return the exit code future

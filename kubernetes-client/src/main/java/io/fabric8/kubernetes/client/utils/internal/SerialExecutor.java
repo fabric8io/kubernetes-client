@@ -23,7 +23,8 @@ import java.util.concurrent.Executor;
 /**
  * See {@link Executor} docs
  *
- * <br>Effectively creates a derived single thread executor
+ * <br>
+ * Effectively creates a derived single thread executor
  */
 public class SerialExecutor implements Executor {
   final Queue<Runnable> tasks = new ArrayDeque<>();

@@ -501,7 +501,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   private Future<?> readTo(OutputStream out, String... cmd) {
     try {
-      CompletableFuture<Void> cp = new CompletableFuture<>();
       ExecWatch w = writingOutput(out).exec(cmd);
       CompletableFuture<Integer> result = w.exitCode();
       result.whenComplete((i, t) -> {
@@ -512,7 +511,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
         }
         w.close();
       });
-      return cp;
+      return result;
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
