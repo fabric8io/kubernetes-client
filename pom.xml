@@ -1384,6 +1384,7 @@
       </activation>
       <modules>
         <module>httpclient-jdk</module>
+        <module>httpclient-tests</module>
       </modules>
     </profile>
     <profile>
