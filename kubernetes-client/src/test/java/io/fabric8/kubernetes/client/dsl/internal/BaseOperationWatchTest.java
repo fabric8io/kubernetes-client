@@ -22,20 +22,18 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
-import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
-import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
+
+import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.times;
@@ -62,7 +60,8 @@ class BaseOperationWatchTest {
     try (
         final MockedConstruction<WatchConnectionManager> m = mockConstruction(WatchConnectionManager.class, (mock, context) -> {
           // Given
-          doThrow(new KubernetesClientException("Mocked Connection Error")).when(mock).waitUntilReady();
+          Mockito.when(mock.getWebsocketFuture())
+              .thenReturn(failedFuture(new KubernetesClientException("Mocked Connection Error")));
         })) {
       // When
       final KubernetesClientException result = assertThrows(KubernetesClientException.class,
@@ -88,7 +87,8 @@ class BaseOperationWatchTest {
     try (
         final MockedConstruction<WatchConnectionManager> m = mockConstruction(WatchConnectionManager.class, (mock, context) -> {
           // Given
-          doThrow(new KubernetesClientException(new StatusBuilder().withCode(503).build())).when(mock).waitUntilReady();
+          Mockito.when(mock.getWebsocketFuture())
+              .thenReturn(failedFuture(new KubernetesClientException(new StatusBuilder().withCode(503).build())));
         });
         final MockedConstruction<WatchHTTPManager> mHttp = mockConstruction(WatchHTTPManager.class)) {
       // When
@@ -103,5 +103,11 @@ class BaseOperationWatchTest {
             return true;
           });
     }
+  }
+
+  private CompletableFuture failedFuture(KubernetesClientException kubernetesClientException) {
+    CompletableFuture result = new CompletableFuture();
+    result.completeExceptionally(kubernetesClientException);
+    return result;
   }
 }

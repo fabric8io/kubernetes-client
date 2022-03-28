@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -250,19 +251,22 @@ class BaseOperationTest {
     HttpRequest request = MockHttpClientUtils.buildRequest();
     when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
     when(mockRequestBuilder.build()).thenReturn(request);
-    when(mockClient.send(Mockito.any(), Mockito.eq(InputStream.class))).thenAnswer(
+    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class))).thenAnswer(
         invocation -> {
           int count = httpExecutionCounter.getAndIncrement();
           if (count < numFailures) {
             // Altering the type of the error for each call:
             // even numbered calls (including the first call) fail with an IOException and odd numbered calls fail with HTTP response 500
             if (count % 2 == 0) {
-              throw new IOException("For example java.net.ConnectException");
+              CompletableFuture<HttpResponse<InputStream>> result = new CompletableFuture<>();
+              result.completeExceptionally(new IOException("For example java.net.ConnectException"));
+              return result;
             }
-            return MockHttpClientUtils.buildResponse(500);
+            return CompletableFuture.completedFuture(MockHttpClientUtils.buildResponse(500));
           }
           Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-          return MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, Serialization.asJson(podNoLabels));
+          return CompletableFuture
+              .completedFuture(MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, Serialization.asJson(podNoLabels)));
         });
     return mockClient;
   }
@@ -296,7 +300,7 @@ class BaseOperationTest {
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
         .withClient(mockClient(mockClient,
             new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
-                .withRequestRetryBackoffLimit(3).build()))
+                .withRequestRetryBackoffLimit(3).withRequestRetryBackoffInterval(100).build()))
         .withPlural("pods")
         .withName("test-pod"));
     baseOp.setType(Pod.class);

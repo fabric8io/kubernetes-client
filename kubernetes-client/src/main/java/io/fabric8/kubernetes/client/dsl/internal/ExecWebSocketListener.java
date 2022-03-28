@@ -21,8 +21,8 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
-import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
@@ -31,7 +31,12 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +45,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -106,6 +112,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
+    private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
+
     private ObjectMapper objectMapper;
 
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener, Integer bufferSize) {
@@ -129,6 +137,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
 
     private void close(int code, String reason) {
+      if (!exitCode.isDone()) {
+        exitCode.completeExceptionally(new KubernetesClientException("Closed before exit code recieved"));
+      }
       closeWebSocketOnce(code, reason);
       onClosed(code, reason);
     }
@@ -213,18 +224,24 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         LOGGER.error("Exec Failure", t);
         cleanUpOnce();
       } finally {
-        if (listener != null) {
-          ExecListener.Response execResponse = null;
-          if (response != null) {
-            execResponse = new SimpleResponse(response);
+        try {
+          if (listener != null) {
+            ExecListener.Response execResponse = null;
+            if (response != null) {
+              execResponse = new SimpleResponse(response);
+            }
+            listener.onFailure(t, execResponse);
           }
-          listener.onFailure(t, execResponse);
+        } finally {
+          exitCode.completeExceptionally(t);
         }
       }
     }
 
   @Override
   public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
+    // TODO: these could be blocking writes and may need moved to another thread
+    // if we do that, we'll need to make the exit code wait on the final write
         try {
             byte streamID = bytes.get(0);
             bytes.position(1);
@@ -241,7 +258,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
                         handleExitStatus(bytes);
                         writeAndFlush(errChannel, byteString);
                         // once the process is done, we can proactively close
-                        this.close(); 
+                        this.close();
                         break;
                     default:
                         throw new IOException("Unknown stream ID " + streamID);
@@ -265,8 +282,12 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     } catch (Exception e) {
       LOGGER.warn("Could not determine exit code", e);
     }
-    if (this.listener != null) {
-      this.listener.onExit(code, status);
+    try {
+      if (this.listener != null) {
+        this.listener.onExit(code, status);
+      }
+    } finally {
+      this.exitCode.complete(code);
     }
   }
 
@@ -375,7 +396,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             return null;
         }
     }
-    
+
     public static int parseExitCode(Status status) {
       if (STATUS_SUCCESS.equals(status.getStatus())) {
         return 0;
@@ -396,6 +417,11 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             .orElse(-1);
       }
       return -1;
+    }
+
+    @Override
+    public CompletableFuture<Integer> exitCode() {
+      return exitCode;
     }
 
  }

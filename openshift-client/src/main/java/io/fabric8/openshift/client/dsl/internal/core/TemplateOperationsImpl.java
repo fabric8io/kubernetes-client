@@ -264,14 +264,8 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  protected Template handleGet(URL resourceUrl) throws InterruptedException, IOException {
-    return super.handleGet(resourceUrl, getType(), this.parameters);
-  }
-
-  @Override
-  protected <T> T handleResponse(Builder requestBuilder, Class<T> type)
-      throws InterruptedException, IOException {
-    return handleResponse(requestBuilder, type, parameters);
+  public Map<String, String> getParameters() {
+    return parameters;
   }
 
 }

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl;
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.CompletableFuture;
 
 public interface ExecWatch extends Closeable {
 
@@ -32,8 +33,21 @@ public interface ExecWatch extends Closeable {
   /**
    * Close the Watch.
    */
+  @Override
   void close();
 
   void resize(int cols, int rows);
+
+  /**
+   * Get a future that will be completed with the exit code.
+   * <p>
+   * Will be -1 if the exit code can't be determined.
+   * <p>
+   * Can be used as an alternative to {@link ExecListener#onFailure(Throwable, io.fabric8.kubernetes.client.dsl.ExecListener.Response)}
+   * and {@link ExecListener#onExit(int, io.fabric8.kubernetes.api.model.Status)} methods.
+   *
+   * @return the exit code future
+   */
+  CompletableFuture<Integer> exitCode();
 
 }

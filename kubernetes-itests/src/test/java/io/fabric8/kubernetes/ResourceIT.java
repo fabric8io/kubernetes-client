@@ -36,13 +36,10 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentSpecBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -67,13 +64,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
-public class ResourceIT {
-
-  @ArquillianResource
-  KubernetesClient client;
-
-  @ArquillianResource
-  Session session;
+public class ResourceIT extends BaseITest {
 
   private String deploymentName;
   private Deployment deployment;

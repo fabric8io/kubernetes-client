@@ -41,10 +41,10 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -67,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -119,26 +120,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected R newResource(OperationContext context) {
     return (R) newInstance(context);
-  }
-
-  /**
-   * Helper method for list() and list(limit, continue) methods
-   *
-   * @param url
-   * @return list of corresponding Kubernetes Resources
-   */
-  private L listRequestHelper(URL url) {
-    try {
-      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(url);
-      L answer = handleResponse(requestBuilder, listType);
-      updateApiVersion(answer);
-      return answer;
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("list"), ie);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
-    }
   }
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) {
@@ -409,11 +390,25 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public CompletableFuture<L> submitList(ListOptions listOptions) {
+    try {
+      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(fetchListUrl);
+      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listType, getParameters());
+      return futureAnswer.thenApply(l -> {
+        updateApiVersion(l);
+        return l;
+      });
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
+
+  @Override
   public L list(ListOptions listOptions) {
     try {
-      return listRequestHelper(
-          fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
-    } catch (MalformedURLException e) {
+      return waitForResult(submitList(listOptions));
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
   }
@@ -560,54 +555,66 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Watch watch(ListOptions options, final Watcher<T> watcher) {
+    CompletableFuture<Watch> startedFuture = submitWatch(options, watcher);
+    Utils.waitUntilReadyOrFail(startedFuture, -1, TimeUnit.SECONDS);
+    return startedFuture.join();
+  }
+
+  @Override
+  public CompletableFuture<Watch> submitWatch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
-    options = defaultListOptions(options, true);
-    WatchConnectionManager<T, L> watch = null;
+    ListOptions optionsToUse = defaultListOptions(options, true);
+    WatchConnectionManager<T, L> watch;
     try {
       watch = new WatchConnectionManager<>(
           httpClient,
           this,
-          options,
+          optionsToUse,
           watcherToggle,
           config.getWatchReconnectInterval(),
           config.getWatchReconnectLimit(),
           config.getWebsocketTimeout());
-      watch.waitUntilReady();
-      return watch;
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
-    } catch (KubernetesClientException ke) {
-      List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
-      if (!furtherProcessedCodes.contains(ke.getCode())) {
-        if (watch != null) {
-          //release the watch
+    }
+    return watch.getWebsocketFuture().handle((w, t) -> {
+      if (t != null) {
+        try {
+          if (t instanceof CompletionException) {
+            t = t.getCause();
+          }
+          if (t instanceof KubernetesClientException) {
+            KubernetesClientException ke = (KubernetesClientException) t;
+            List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
+            if (!furtherProcessedCodes.contains(ke.getCode())) {
+              throw ke;
+            }
+
+            //release the watch after disabling the watcher (to avoid premature call to onClose)
+            watcherToggle.disable();
+
+            // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
+            // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+            // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
+            try {
+              return new WatchHTTPManager<>(
+                  httpClient,
+                  this,
+                  optionsToUse,
+                  watcher,
+                  config.getWatchReconnectInterval(),
+                  config.getWatchReconnectLimit());
+            } catch (MalformedURLException e) {
+              throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
+            }
+          }
+        } finally {
           watch.close();
         }
-
-        throw ke;
       }
+      return watch;
+    });
 
-      if (watch != null) {
-        //release the watch after disabling the watcher (to avoid premature call to onClose)
-        watcherToggle.disable();
-        watch.close();
-      }
-
-      // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
-      // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
-      // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
-      try {
-        return new WatchHTTPManager<>(
-            httpClient,
-            this,
-            options,
-            watcher,
-            config.getWatchReconnectInterval(),
-            config.getWatchReconnectLimit());
-      } catch (MalformedURLException e) {
-        throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
-      }
-    }
   }
 
   @Override
@@ -1010,6 +1017,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
     }
     return urlBuilder.build();
+  }
+
+  @Override
+  public int getWatchReconnectInterval() {
+    return config.getWatchReconnectInterval();
   }
 
   @Override

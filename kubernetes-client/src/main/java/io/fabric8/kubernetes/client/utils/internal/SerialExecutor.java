@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 
 /**
  * See {@link Executor} docs
- * 
+ *
  * <br>Effectively creates a derived single thread executor
  */
 public class SerialExecutor implements Executor {
@@ -34,6 +34,7 @@ public class SerialExecutor implements Executor {
     this.executor = executor;
   }
 
+  @Override
   public synchronized void execute(final Runnable r) {
     tasks.offer(() -> {
       try {
@@ -51,5 +52,9 @@ public class SerialExecutor implements Executor {
     if ((active = tasks.poll()) != null) {
       executor.execute(active);
     }
+  }
+
+  public synchronized void shutdownNow() {
+    tasks.clear();
   }
 }

@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,22 +26,25 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultSharedIndexInformerResyncTest {
-  private abstract static class AbstractPodListerWatcher implements ListerWatcher<Pod, PodList> {};
+  private abstract static class AbstractPodListerWatcher implements ListerWatcher<Pod, PodList> {
+  };
+
   private static final Long WAIT_TIME = 500L;
-  private final ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class, Mockito.RETURNS_DEEP_STUBS);
+  private final ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class,
+      Mockito.RETURNS_DEEP_STUBS);
   DefaultSharedIndexInformer<Pod, PodList> defaultSharedIndexInformer;
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
     defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, Runnable::run);
     return defaultSharedIndexInformer;
   }
-  
+
   @AfterEach
   void afterEach() {
     if (defaultSharedIndexInformer != null) {
@@ -94,11 +96,11 @@ class DefaultSharedIndexInformerResyncTest {
     // Given + When
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(1);
     controller.run();
-    
+
     assertNotNull(controller.getResyncFuture());
-    
+
     controller.stop();
-    
+
     assertNull(controller.getResyncFuture());
   }
 
@@ -112,7 +114,7 @@ class DefaultSharedIndexInformerResyncTest {
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(fullResyncPeriod);
     controller.scheduleResync(() -> {
       countDown.countDown();
-      if( countDown.getCount() == 2 ) {
+      if (countDown.getCount() == 2) {
         throw new RuntimeException("make it fail");
       }
       return true;
@@ -129,7 +131,7 @@ class DefaultSharedIndexInformerResyncTest {
     // Given + When
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(0);
     controller.run();
-    
+
     // Then
     assertNull(controller.getResyncFuture());
   }
@@ -142,7 +144,10 @@ class DefaultSharedIndexInformerResyncTest {
     int numberOfResyncs = 10;
     final CountDownLatch countDown = new CountDownLatch(numberOfResyncs);
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(fullResyncPeriod);
-    controller.scheduleResync(() -> {countDown.countDown(); return true;});
+    controller.scheduleResync(() -> {
+      countDown.countDown();
+      return true;
+    });
     // We give an extra cycle to avoid clock inaccurracy interruptions
     countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS);
     controller.stop();
@@ -158,7 +163,10 @@ class DefaultSharedIndexInformerResyncTest {
     int count = 10;
     final CountDownLatch countDown = new CountDownLatch(count);
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(0);
-    controller.scheduleResync(() -> {countDown.countDown(); return true;});
+    controller.scheduleResync(() -> {
+      countDown.countDown();
+      return true;
+    });
     countDown.await(1000, TimeUnit.MILLISECONDS);
     controller.stop();
     // Then

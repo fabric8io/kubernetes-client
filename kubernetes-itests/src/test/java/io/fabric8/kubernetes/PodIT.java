@@ -27,16 +27,13 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpecBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,6 +51,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -67,13 +65,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
-public class PodIT {
-
-  @ArquillianResource
-  public KubernetesClient client;
-
-  @ArquillianResource
-  public Session session;
+public class PodIT extends BaseITest {
 
   private static final int POD_READY_WAIT_IN_SECONDS = 60;
 
@@ -239,6 +231,7 @@ public class PodIT {
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), session.getNamespace());
     await().atMost(60, TimeUnit.SECONDS).until(podReady);
     ExecWatch watch = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+    assertEquals(0, watch.exitCode().join().intValue());
     try (InputStream is = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).file("/msg").read())  {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("hello", result);
@@ -251,7 +244,12 @@ public class PodIT {
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), session.getNamespace());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-    ExecWatch watch = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
+    // to prevent a timing issue, we need to make sure the first exec completes
+    CompletableFuture<Void> complete = new CompletableFuture<>();
+    ExecWatch watch = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).writingOutput(System.out)
+        .exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
+    assertEquals(0, watch.exitCode().join().intValue());
+    complete.join();
     try (InputStream is = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).file("/msg").read())  {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("H$ll* (W&RLD}", result);
@@ -327,7 +325,7 @@ public class PodIT {
 
     PodResource podResource = client.pods().inNamespace(session.getNamespace())
         .withName(pod1.getMetadata().getName());
-    podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt");
+    assertEquals(0, podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt").exitCode().join().intValue());
     podResource.file("/msg.txt").copy(tmpDir);
 
     Path msg = tmpDir.resolve("msg.txt");
