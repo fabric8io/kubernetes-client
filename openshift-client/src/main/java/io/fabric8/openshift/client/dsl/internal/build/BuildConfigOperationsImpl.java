@@ -268,10 +268,7 @@ public class BuildConfigOperationsImpl
           .post("application/octet-stream", inputStream, contentLength)
           .expectContinue()
           .uri(getQueryParameters());
-      return handleResponse(newClient, requestBuilder, Build.class);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e);
+      return waitForResult(handleResponse(newClient, requestBuilder, Build.class, null));
     } catch (Throwable e) {
       // TODO: better determine which exception this should occur on
       // otherwise we need to have the httpclient api open up to the notion

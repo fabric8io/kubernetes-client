@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.informers;
+package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * ListerWatcher is any object that knows how to perform an initial list and
@@ -27,11 +29,13 @@ import io.fabric8.kubernetes.client.Watcher;
  * @param <L> list for that type
  */
 public interface ListerWatcher<T, L> {
-  Watch watch(ListOptions params, Watcher<T> watcher);
+  CompletableFuture<Watch> submitWatch(ListOptions params, Watcher<T> watcher);
 
-  L list(ListOptions listOptions);
-  
+  CompletableFuture<L> submitList(ListOptions listOptions);
+
   Long getLimit();
 
   String getNamespace();
+
+  int getWatchReconnectInterval();
 }

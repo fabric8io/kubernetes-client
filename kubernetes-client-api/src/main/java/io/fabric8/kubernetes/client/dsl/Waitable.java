@@ -33,10 +33,19 @@ public interface Waitable<T, P> {
 
   T waitUntilReady(long amount, TimeUnit timeUnit);
 
+  /**
+   * Wait for the given condition to be true. Only non-blocking conditions should be used.
+   * 
+   * @param condition
+   * @param amount
+   * @param timeUnit
+   * @return the result that passes the given condition
+   */
   T waitUntilCondition(Predicate<P> condition, long amount, TimeUnit timeUnit);
 
   /**
    * Configure the backoff strategy to use when waiting for conditions, in case the watcher encounters a retryable error.
+   * 
    * @param initialBackoff the value for the initial backoff on first error
    * @param backoffUnit the TimeUnit for the initial backoff value
    * @param backoffMultiplier what to multiply the backoff by on each subsequent error

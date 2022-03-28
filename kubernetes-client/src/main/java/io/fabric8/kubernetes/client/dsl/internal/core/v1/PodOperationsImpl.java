@@ -78,7 +78,6 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -296,7 +295,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
           .post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
-      handleResponse(requestBuilder, null, Collections.emptyMap());
+      handleResponse(requestBuilder, null);
       return true;
     } catch (KubernetesClientException e) {
       if (e.getCode() != HTTP_TOO_MANY_REQUESTS) {
@@ -503,37 +502,15 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   private Future<?> readTo(OutputStream out, String... cmd) {
     try {
       CompletableFuture<Void> cp = new CompletableFuture<>();
-      ExecWatch w = writingOutput(out).usingListener(new ExecListener() {
-        @Override
-        public void onClose(int code, String reason) {
-          try {
-            out.flush();
-            out.close();
-            cp.complete(null);
-          } catch (IOException e) {
-            cp.completeExceptionally(e);
-            throw KubernetesClientException.launderThrowable(e);
-          }
+      ExecWatch w = writingOutput(out).exec(cmd);
+      CompletableFuture<Integer> result = w.exitCode();
+      result.whenComplete((i, t) -> {
+        try {
+          out.close();
+        } catch (Exception e) {
+          result.obtrudeException(e);
         }
-
-        @Override
-        public void onFailure(Throwable t, Response failureResponse) {
-          try {
-            out.flush();
-            out.close();
-            cp.completeExceptionally(t);
-          } catch (IOException e) {
-            e.addSuppressed(t);
-            cp.completeExceptionally(e);
-            throw KubernetesClientException.launderThrowable(e);
-          }
-        }
-      }).exec(cmd);
-
-      cp.whenComplete((o, t) -> {
-        if (cp.isCancelled()) {
-          w.close();
-        }
+        w.close();
       });
       return cp;
     } catch (Exception e) {

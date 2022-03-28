@@ -30,8 +30,8 @@ import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -99,11 +99,11 @@ class BuildConfigOperationsImplTest {
       };
     };
 
-    HttpResponse<InputStream> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+    HttpResponse<byte[]> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
     when(response.code()).thenReturn(200);
-    when(response.body()).thenReturn(new ByteArrayInputStream(new byte[0]));
+    when(response.body()).thenReturn(new byte[0]);
 
-    when(httpClient.send(any(), eq(InputStream.class))).thenReturn(response);
+    when(httpClient.sendAsync(any(), eq(byte[].class))).thenReturn(CompletableFuture.completedFuture(response));
     impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0);
 
     Mockito.verify(response, Mockito.times(1)).body();

@@ -20,19 +20,17 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.HttpStatusMessage;
 import org.mockito.Mockito;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.Mockito.when;
 
 public class MockHttpClientUtils {
-  
-  public static HttpResponse<InputStream> buildResponse(int code, String body) {
-    HttpResponse<InputStream> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+
+  public static HttpResponse<byte[]> buildResponse(int code, String body) {
+    HttpResponse<byte[]> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
     when(response.code()).thenReturn(code);
-    when(response.body()).thenReturn(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+    when(response.body()).thenReturn(body.getBytes(StandardCharsets.UTF_8));
     HttpRequest mockRequest = buildRequest();
     when(response.request()).thenReturn(mockRequest);
     return response;
@@ -43,8 +41,8 @@ public class MockHttpClientUtils {
     when(mockRequest.uri()).thenReturn(URI.create("http://mock:8443"));
     return mockRequest;
   }
-  
-  public static HttpResponse<InputStream> buildResponse(int code) {
-    return buildResponse(code, "{\"kind\":\"Status\",\"status\":\""+HttpStatusMessage.getMessageForStatus(code)+"\"}");
+
+  public static HttpResponse<byte[]> buildResponse(int code) {
+    return buildResponse(code, "{\"kind\":\"Status\",\"status\":\"" + HttpStatusMessage.getMessageForStatus(code) + "\"}");
   }
 }

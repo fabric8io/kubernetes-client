@@ -44,8 +44,10 @@ import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCal
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,6 +55,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OperationSupport {
 
@@ -300,7 +307,7 @@ public class OperationSupport {
 
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
-    handleResponse(requestBuilder, null, Collections.<String, String> emptyMap());
+    handleResponse(requestBuilder, null);
   }
 
   /**
@@ -320,7 +327,7 @@ public class OperationSupport {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .post(JSON, JSON_MAPPER.writeValueAsString(resource))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
-    return handleResponse(requestBuilder, outputType, Collections.<String, String> emptyMap());
+    return handleResponse(requestBuilder, outputType);
   }
 
   /**
@@ -336,34 +343,16 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws InterruptedException, IOException {
-    return handleUpdate(updated, type, Collections.<String, String> emptyMap(), status);
-  }
-
-  /**
-   * Update a resource, optionally performing placeholder substitution to the response.
-   *
-   * @param updated updated object
-   * @param type type of object provided
-   * @param parameters a HashMap containing parameters for processing object
-   * @param status if this is only the status subresource
-   * @param <T> template argument provided
-   *
-   * @return returns de-serialized version of api server response.
-   * @throws InterruptedException Interrupted Exception
-   * @throws IOException IOException
-   */
-  protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status)
-      throws InterruptedException, IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
-    return handleResponse(requestBuilder, type, parameters);
+    return handleResponse(requestBuilder, type, getParameters());
   }
 
   /**
    * Send an http patch and handle the response.
-   * 
+   *
    * If current is not null and patchContext does not specify a patch type, then a JSON patch is assumed. Otherwise a STRATEGIC
    * MERGE is assumed.
    *
@@ -443,7 +432,7 @@ public class OperationSupport {
         .patch(bodyContentType, patchForUpdate)
         .url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status),
             patchContext));
-    return handleResponse(requestBuilder, type, Collections.emptyMap());
+    return handleResponse(requestBuilder, type);
   }
 
   /**
@@ -491,7 +480,12 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws InterruptedException, IOException {
-    return handleGet(resourceUrl, type, Collections.<String, String> emptyMap());
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
+    return handleResponse(requestBuilder, type, getParameters());
+  }
+
+  protected Map<String, String> getParameters() {
+    return null;
   }
 
   /**
@@ -502,27 +496,35 @@ public class OperationSupport {
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
     HttpRequest request = requestBuilder.build();
-    HttpResponse<T> response = httpClient.send(request, type);
+    HttpResponse<T> response = waitForResult(httpClient.sendAsync(request, type));
     assertResponseCode(request, response);
     return response.body();
   }
 
-  /**
-   * Send an http, optionally performing placeholder substitution to the response.
-   *
-   * @param resourceUrl resource URL to be processed
-   * @param type type of resource
-   * @param parameters A HashMap of strings containing parameters to be passed in request
-   * @param <T> template argument provided
-   *
-   * @return Returns a deserialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
-   * @throws IOException IOException
-   */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters)
-      throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
-    return handleResponse(requestBuilder, type, parameters);
+  protected <T> T waitForResult(CompletableFuture<T> future) throws IOException {
+    try {
+      // readTimeout should be enforced
+      return future.get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      InterruptedIOException ie = new InterruptedIOException();
+      ie.initCause(e);
+      throw ie;
+    } catch (ExecutionException e) {
+      Throwable t = e;
+      if (e.getCause() != null) {
+        t = e.getCause();
+      }
+      if (t instanceof IOException) {
+        throw (IOException) t;
+      }
+      if (t instanceof RuntimeException) {
+        throw (RuntimeException) t;
+      }
+      InterruptedIOException ie = new InterruptedIOException();
+      ie.initCause(e);
+      throw ie;
+    }
   }
 
   /**
@@ -537,7 +539,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws InterruptedException, IOException {
-    return handleResponse(requestBuilder, type, Collections.<String, String> emptyMap());
+    return handleResponse(requestBuilder, type, getParameters());
   }
 
   /**
@@ -552,26 +554,9 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters)
+  private <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters)
       throws InterruptedException, IOException {
-    return handleResponse(httpClient, requestBuilder, type, parameters);
-  }
-
-  /**
-   * Send an http request and handle the response.
-   *
-   * @param client the client
-   * @param requestBuilder request builder
-   * @param type type of object
-   * @param <T> template argument provided
-   *
-   * @return Returns a de-serialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
-   * @throws IOException IOException
-   */
-  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type)
-      throws InterruptedException, IOException {
-    return handleResponse(client, requestBuilder, type, Collections.<String, String> emptyMap());
+    return waitForResult(handleResponse(httpClient, requestBuilder, type, parameters));
   }
 
   /**
@@ -587,55 +572,85 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type,
-      Map<String, String> parameters) throws InterruptedException, IOException {
+  protected <T> CompletableFuture<T> handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type,
+      Map<String, String> parameters) {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
-    HttpResponse<InputStream> response = retryWithExponentialBackoff(client, request);
-    try (InputStream bodyInputStream = response.body()) {
-      assertResponseCode(request, response);
-      if (type != null) {
-        return Serialization.unmarshal(bodyInputStream, type, parameters);
-      } else {
-        return null;
+    CompletableFuture<HttpResponse<byte[]>> futureResponse = retryWithExponentialBackoff(new AtomicInteger(),
+        Utils.getNonNullOrElse(client, httpClient), request);
+
+    return futureResponse.thenApply(response -> {
+      try {
+        assertResponseCode(request, response);
+        if (type != null) {
+          return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type, parameters);
+        } else {
+          return null;
+        }
+      } catch (Exception e) {
+        if (e instanceof KubernetesClientException) {
+          throw e;
+        }
+        throw requestException(request, e);
       }
-    } catch (Exception e) {
-      if (e instanceof KubernetesClientException) {
-        throw e;
+    });
+  }
+
+  // used a holder so that we can use thenCompose
+  private static class ResponseOrException<T> {
+    HttpResponse<T> response;
+    Throwable throwable;
+
+    public ResponseOrException(HttpResponse<T> response, Throwable exception) {
+      this.response = response;
+      if (exception instanceof CompletionException) {
+        exception = exception.getCause();
       }
-      throw requestException(request, e);
+      this.throwable = exception;
     }
   }
 
-  protected HttpResponse<InputStream> retryWithExponentialBackoff(HttpClient client, HttpRequest request)
-      throws InterruptedException, IOException {
-    int numRetries = 0;
-    long retryInterval;
-    while (true) {
-      try {
-        HttpResponse<InputStream> response = client.send(request, InputStream.class);
-        if (numRetries < requestRetryBackoffLimit && response.code() >= 500) {
-          retryInterval = retryIntervalCalculator.getInterval(numRetries);
-          LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-              request.uri(), response.code(), retryInterval);
-          if (response.body() != null) {
-            response.body().close();
+  protected CompletableFuture<HttpResponse<byte[]>> retryWithExponentialBackoff(AtomicInteger numRetries,
+      HttpClient client, HttpRequest request) {
+    return client.sendAsync(request, byte[].class)
+        .handle((response, t) -> new ResponseOrException<>(response, t)).thenCompose(r -> {
+          int retries = numRetries.getAndIncrement();
+          CompletableFuture<HttpResponse<byte[]>> result = new CompletableFuture<>();
+          if (retries < requestRetryBackoffLimit) {
+            long retryInterval = retryIntervalCalculator.getInterval(retries);
+            boolean retry = false;
+            if (r.response != null) {
+              if (r.response.code() >= 500) {
+                LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+                    request.uri(), r.response.code(), retryInterval);
+                retry = true;
+              }
+            }
+            if (r.throwable instanceof IOException) {
+              LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
+                  request.uri(), retryInterval), r.throwable);
+              retry = true;
+            }
+            if (retry) {
+              Utils.schedule(Utils.getCommonExecutorSerive(), () -> {
+                retryWithExponentialBackoff(numRetries, client, request).whenComplete((fr, rt) -> {
+                  if (rt != null) {
+                    result.completeExceptionally(rt);
+                  } else {
+                    result.complete(fr);
+                  }
+                });
+              }, retryInterval, TimeUnit.MILLISECONDS);
+              return result;
+            }
           }
-        } else {
-          return response;
-        }
-      } catch (IOException ie) {
-        if (numRetries < requestRetryBackoffLimit) {
-          retryInterval = retryIntervalCalculator.getInterval(numRetries);
-          LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-              request.uri(), retryInterval), ie);
-        } else {
-          throw ie;
-        }
-      }
-      Thread.sleep(retryInterval);
-      numRetries++;
-    }
+          if (r.throwable != null) {
+            result.completeExceptionally(r.throwable);
+          } else {
+            result.complete(r.response);
+          }
+          return result;
+        });
   }
 
   /**

@@ -26,59 +26,58 @@ import java.nio.charset.StandardCharsets;
 
 class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Listener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
-  
+
   // don't allow for concurrent failure and message processing
   // if something is holding the message thread, this can lead to concurrent processing on the watcher
   // or worse additional reconnection attempts while the previous threads are still held
   private final Object reconnectLock = new Object();
-  
+
   protected final AbstractWatchManager<T> manager;
-  
+
   protected WatcherWebSocketListener(AbstractWatchManager<T> manager) {
     this.manager = manager;
   }
-  
+
   @Override
   public void onOpen(final WebSocket webSocket) {
     logger.debug("WebSocket successfully opened");
     manager.resetReconnectAttempts();
   }
-  
-  
+
   @Override
   public void onError(WebSocket webSocket, Throwable t) {
     if (manager.isForceClosed()) {
       logger.debug("Ignoring onFailure for already closed/closing websocket", t);
       return;
     }
-    
+
     if (manager.cannotReconnect()) {
       manager.close(new WatcherException("Connection failure", t));
       return;
     }
-    
+
     synchronized (reconnectLock) {
       manager.scheduleReconnect();
     }
   }
-  
+
   @Override
   public void onMessage(WebSocket webSocket, String text) {
     synchronized (reconnectLock) {
       manager.onMessage(text);
     }
   }
-  
+
   @Override
   public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
     onMessage(webSocket, StandardCharsets.UTF_8.decode(bytes).toString());
   }
-  
+
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
     logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
     webSocket.sendClose(code, reason);
     manager.scheduleReconnect();
   }
-  
+
 }

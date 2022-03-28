@@ -30,13 +30,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -56,8 +56,9 @@ class PatchTest {
     builders.clear();
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, "{}");
-    when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
+    HttpResponse<byte[]> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, "{}");
+    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
+        .thenReturn(CompletableFuture.completedFuture(mockResponse));
     kubernetesClient = new DefaultKubernetesClient(mockClient, config);
     Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
@@ -78,7 +79,7 @@ class PatchTest {
         .patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
-    verify(mockClient, times(2)).send(any(), any());
+    verify(mockClient, times(2)).sendAsync(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
   }
@@ -95,7 +96,7 @@ class PatchTest {
         .patch(patchContext, "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
-    verify(mockClient, times(2)).send(any(), any());
+    verify(mockClient, times(2)).sendAsync(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.JSON_MERGE_PATCH);
   }
@@ -108,7 +109,7 @@ class PatchTest {
     kubernetesClient.pods().inNamespace("ns1").withName("foo").patch("metadata:\n  annotations:\n    bob: martin");
 
     // Then
-    verify(mockClient, times(2)).send(any(), any());
+    verify(mockClient, times(2)).sendAsync(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
   }
@@ -116,8 +117,9 @@ class PatchTest {
   @Test
   void testPatchThrowExceptionWhenResourceNotFound() throws IOException {
     // Given
-    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_NOT_FOUND, "{}");
-    when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
+    HttpResponse<byte[]> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_NOT_FOUND, "{}");
+    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
+        .thenReturn(CompletableFuture.completedFuture(mockResponse));
 
     // When
     PodResource podResource = kubernetesClient.pods()
@@ -127,7 +129,7 @@ class PatchTest {
         () -> podResource.patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}"));
 
     // Then
-    verify(mockClient).send(any(), any());
+    verify(mockClient).sendAsync(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getCode());
   }
@@ -143,7 +145,7 @@ class PatchTest {
             "[{\"op\": \"replace\", \"path\":\"/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
 
     // Then
-    verify(mockClient, times(2)).send(any(), any());
+    verify(mockClient, times(2)).sendAsync(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.JSON_PATCH);
   }
@@ -160,7 +162,7 @@ class PatchTest {
             .build(), "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
-    verify(mockClient, times(2)).send(any(), any());
+    verify(mockClient, times(2)).sendAsync(any(), any());
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", "fieldManager=fabric8&dryRun=All",
         OperationSupport.STRATEGIC_MERGE_JSON_PATCH);

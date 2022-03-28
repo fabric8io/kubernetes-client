@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.informers.impl;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
@@ -34,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -135,14 +135,13 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return this.reflector.getLastSyncResourceVersion();
   }
 
-  @Override
-  public void run() {
+  public CompletableFuture<Void> start() {
     if (stopped) {
       throw new IllegalStateException("Cannot restart a stopped informer");
     }
     synchronized (this) {
       if (!started.compareAndSet(false, true)) {
-        return;
+        return CompletableFuture.completedFuture(null);
       }
     }
 
@@ -150,7 +149,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     scheduleResync(processor::shouldResync);
 
-    reflector.listSyncAndWatch();
+    return reflector.start();
+  }
+
+  @Override
+  public void run() {
+    Utils.waitUntilReadyOrFail(start(), -1, TimeUnit.MILLISECONDS);
     // stop called while run is called could be ineffective, check for it afterwards
     synchronized (this) {
       if (stopped) {

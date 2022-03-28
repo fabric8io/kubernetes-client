@@ -22,9 +22,12 @@ import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,26 +39,27 @@ class ReflectorTest {
   void testStateFlags() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
-    Mockito.when(mock.list(Mockito.any())).thenReturn(list);
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector =
-        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
+    Reflector<Pod, PodList> reflector = new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
 
     // throw an exception, then watch normally
-    Mockito.when(mock.watch(Mockito.any(),Mockito.any()))
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
         .thenThrow(new KubernetesClientException("error"))
-        .thenReturn(Mockito.mock(Watch.class));
+        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(Watch.class)));
 
-    assertThrows(KubernetesClientException.class, reflector::listSyncAndWatch);
+    CompletableFuture<Void> future = reflector.start();
+
+    assertThrows(CompletionException.class, future::join);
 
     // running but watch failed
     assertFalse(reflector.isWatching());
     assertTrue(reflector.isRunning());
 
-    reflector.listSyncAndWatch();
+    reflector.listSyncAndWatch().join();
 
     assertTrue(reflector.isWatching());
     assertTrue(reflector.isRunning());
@@ -70,12 +74,14 @@ class ReflectorTest {
   void testNonHttpGone() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
-    Mockito.when(mock.list(Mockito.any())).thenReturn(list);
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector =
-        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
+    Reflector<Pod, PodList> reflector = new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
 
-    reflector.listSyncAndWatch();
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(Watch.class)));
+
+    reflector.start();
 
     assertTrue(reflector.isWatching());
     assertTrue(reflector.isRunning());

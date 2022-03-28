@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Builder;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,16 +42,17 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 /**
  * Manages a WebSocket and listener per request
  */
-public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
-  
+public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>>
+    extends AbstractWatchManager<T> {
+
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
-  
+
   protected WatcherWebSocketListener<T> listener;
   private CompletableFuture<WebSocket> websocketFuture;
   private WebSocket websocket;
 
   private volatile boolean ready;
-  
+
   static void closeWebSocket(WebSocket webSocket) {
     if (webSocket != null) {
       logger.debug("Closing websocket {}", webSocket);
@@ -65,18 +65,22 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       }
     }
   }
-  
-  public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
+
+  public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation,
+      final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
+      long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, () -> client.newBuilder()
-            .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
-            .build());
+        .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
+        .build());
   }
-  
-  public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
+
+  public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation,
+      final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
+      long websocketTimeout) throws MalformedURLException {
     // Default max 32x slowdown from base interval
     this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5);
   }
-  
+
   @Override
   protected synchronized void closeRequest() {
     closeWebSocket(websocket);
@@ -90,27 +94,25 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     }
   }
 
-  public void waitUntilReady() {
-    Utils.waitUntilReadyOrFail(websocketFuture, -1, TimeUnit.SECONDS);
-    ready = true;
-    this.websocket = websocketFuture.getNow(null);
-  }
-
   synchronized WatcherWebSocketListener<T> getListener() {
     return listener;
   }
-  
+
+  public CompletableFuture<WebSocket> getWebsocketFuture() {
+    return websocketFuture;
+  }
+
   @Override
   protected void run(URL url, Map<String, String> headers) {
     this.listener = new WatcherWebSocketListener<>(this);
     Builder builder = client.newWebSocketBuilder();
     headers.forEach(builder::header);
     builder.uri(URI.create(url.toString()));
-    
+
     this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {
       if (t != null) {
         if (t instanceof WebSocketHandshakeException) {
-          WebSocketHandshakeException wshe = (WebSocketHandshakeException)t;
+          WebSocketHandshakeException wshe = (WebSocketHandshakeException) t;
           HttpResponse<?> response = wshe.getResponse();
           final int code = response.code();
           // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
@@ -118,8 +120,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
           Status status = OperationSupport.createStatus(response);
           if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
-            throw OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status, "Received " + code + " on websocket");
-          } 
+            throw OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status,
+                "Received " + code + " on websocket");
+          }
           logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
           t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status);
         }
@@ -130,8 +133,12 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         }
         throw KubernetesClientException.launderThrowable(t);
       }
+      if (w != null) {
+        this.ready = true;
+        this.websocket = w;
+      }
       return w;
     });
   }
-  
+
 }

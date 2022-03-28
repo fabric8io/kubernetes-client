@@ -15,12 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -59,19 +62,19 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   final AtomicInteger currentReconnectAttempt;
   private ScheduledFuture<?> reconnectAttempt;
-  
+
   protected final HttpClient client;
   private BaseOperation<T, ?, ?> baseOperation;
   private ListOptions listOptions;
   private URL requestUrl;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
-  
+
   private final boolean receiveBookmarks;
 
   AbstractWatchManager(
-    Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, Supplier<HttpClient> clientSupplier
-  ) throws MalformedURLException {
+      Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
+      int reconnectInterval, int maxIntervalExponent, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
@@ -79,7 +82,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
     this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
-    // opt into bookmarks by default 
+    // opt into bookmarks by default
     if (listOptions.getAllowWatchBookmarks() == null) {
       listOptions.setAllowWatchBookmarks(true);
     }
@@ -87,32 +90,26 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.requestUrl = baseOperation.getNamespacedUrl();
     this.listOptions = listOptions;
     this.client = clientSupplier.get();
-    
+
     runWatch();
   }
-  
+
   protected abstract void run(URL url, Map<String, String> headers);
-  
+
   protected abstract void closeRequest();
-  
+
   final void close(WatcherException cause) {
-    // proactively close the request (it will be called again in close)
-    // for reconnecting watchers, we may not complete onClose for a while
-    closeRequest();  
-    if (forceClosed.get()) {
+    if (!forceClosed.compareAndSet(false, true)) {
       logger.debug("Ignoring duplicate firing of onClose event");
-    } else { 
-      boolean success = false;
+    } else {
+      // proactively close the request (it will be called again in close)
+      closeRequest();
       try {
         watcher.onClose(cause);
-        success = true;
       } finally {
-        if (success || !watcher.reconnecting()) {
-          forceClosed.set(true);
-        }
+        close();
       }
     }
-    close();
   }
 
   final void closeEvent() {
@@ -128,27 +125,27 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       reconnectAttempt.cancel(true);
     }
   }
-  
+
   void scheduleReconnect() {
     if (!reconnectPending.compareAndSet(false, true)) {
       logger.debug("Reconnect already scheduled");
       return;
     }
-    
+
     if (isForceClosed()) {
       logger.debug("Ignoring error for already closed/closing connection");
       return;
     }
-    
+
     if (cannotReconnect()) {
       close(new WatcherException("Exhausted reconnects"));
       return;
     }
-    
+
     logger.debug("Scheduling reconnect task");
-    
+
     long delay = nextReconnectInterval();
-    
+
     synchronized (this) {
       reconnectAttempt = Utils.schedule(Utils.getCommonExecutorSerive(), () -> {
         try {
@@ -180,32 +177,32 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
     return ret;
   }
-  
+
   void resetReconnectAttempts() {
     currentReconnectAttempt.set(0);
   }
-  
+
   boolean isForceClosed() {
     return forceClosed.get();
   }
-  
+
   void eventReceived(Watcher.Action action, HasMetadata resource) {
     if (!receiveBookmarks && action == Action.BOOKMARK) {
       // the user didn't ask for bookmarks, just filter them
-      return; 
+      return;
     }
     // the WatchEvent deserialization is not specifically typed
     // modify the type here if needed
     if (resource != null && !baseOperation.getType().isAssignableFrom(resource.getClass())) {
       resource = Serialization.jsonMapper().convertValue(resource, baseOperation.getType());
     }
-    watcher.eventReceived(action, (T)resource);
+    watcher.eventReceived(action, (T) resource);
   }
-  
+
   void updateResourceVersion(final String newResourceVersion) {
     resourceVersion.set(newResourceVersion);
   }
-  
+
   protected void runWatch() {
     listOptions.setResourceVersion(resourceVersion.get());
     URL url = BaseOperation.appendListOptionParams(requestUrl, listOptions);
@@ -217,13 +214,13 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Origin", origin);
-    
+
     logger.debug("Watching {}...", url);
-  
+
     closeRequest(); // only one can be active at a time
     run(url, headers);
   }
-  
+
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
@@ -253,7 +250,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       }
     }
   }
-  
+
   protected WatchEvent readWatchEvent(String messageSource) {
     WatchEvent event = contextAwareWatchEventDeserializer(messageSource);
     KubernetesResource object = null;
@@ -277,7 +274,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
     return event;
   }
-  
+
   protected void onMessage(String message) {
     try {
       WatchEvent event = readWatchEvent(message);
@@ -314,7 +311,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       logger.error("Unhandled exception encountered in watcher event handler", e);
     }
   }
-  
+
   protected boolean onStatus(Status status) {
     // The resource version no longer exists - this has to be handled by the caller.
     if (status.getCode() == HTTP_GONE) {

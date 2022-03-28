@@ -99,7 +99,7 @@ public class GenericResourceIT {
     assertNotNull(result);
 
     // ensure the namespace can be manipulated
-    client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("x").endMetadata().build());
+    client.namespaces().createOrReplace(new NamespaceBuilder().withNewMetadata().withName("x").endMetadata().build());
     result = resource.inNamespace("x").createOrReplace();
     assertEquals("x", result.getMetadata().getNamespace());
 

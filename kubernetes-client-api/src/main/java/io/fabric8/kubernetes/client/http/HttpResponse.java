@@ -44,7 +44,7 @@ public interface HttpResponse<T> extends HttpHeaders {
 
   /**
    * Get the body. If the body is {@link Closeable}, it should be closed by the caller.
-   * 
+   *
    * @return the body
    */
   T body();
@@ -53,7 +53,7 @@ public interface HttpResponse<T> extends HttpHeaders {
    * Return the body as a String. Or an empty String if there was no body (possibly discarded).
    * <br>
    * If the body is an {@link InputStream}, it will be read as UTF-8.
-   * 
+   *
    * @return the body
    * @throws IOException
    */
@@ -67,6 +67,9 @@ public interface HttpResponse<T> extends HttpHeaders {
     }
     if (body instanceof Reader) {
       return IOHelpers.readFully((Reader) body);
+    }
+    if (body instanceof byte[]) {
+      return new String((byte[]) body, UTF_8);
     }
     return IOHelpers.readFully((InputStream) body, UTF_8);
   }

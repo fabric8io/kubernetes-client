@@ -18,10 +18,13 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedOutputStream;
@@ -46,6 +49,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private final Set<Closeable> toClose = new LinkedHashSet<>();
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
+  private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
 
   public LogWatchCallback(OutputStream out) {
     this.out = out;
@@ -74,7 +78,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     if (!closed.compareAndSet(false, true)) {
       return;
     }
-
+    serialExecutor.shutdownNow();
     closeQuietly(toClose);
   }
 
@@ -95,12 +99,22 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     } else {
       // we need to write the bytes to the given output
       clone.consumeBytes(request, (buffers, a) -> {
-        // assuming non-blocking - which may not be valid
-        // if we need to change this, then we'll have to delegate this to an executor
-        for (ByteBuffer byteBuffer : buffers) {
-          outChannel.write(byteBuffer);
-        }
-        a.consume();
+        serialExecutor.execute(() -> {
+          // we don't kwow if the write will be blocking, so hand it off to another thread
+          for (ByteBuffer byteBuffer : buffers) {
+            try {
+              outChannel.write(byteBuffer);
+            } catch (IOException e1) {
+              onFailure(e1);
+              break;
+            }
+          }
+          if (!closed.get()) {
+            a.consume();
+          } else {
+            a.cancel();
+          }
+        });
       }).whenComplete((a, e) -> {
         if (e != null) {
           onFailure(e);
