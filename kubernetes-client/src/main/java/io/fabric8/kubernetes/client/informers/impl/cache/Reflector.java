@@ -215,7 +215,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
             if (t != null) {
               watchStopped();
               // start a whole new list/watch cycle
-              reconnectFuture = Utils.schedule(Utils.getCommonExecutorSerive(), () -> listSyncAndWatch(),
+              reconnectFuture = Utils.schedule(Utils.getCommonExecutorSerive(), Reflector.this::listSyncAndWatch,
                   listerWatcher.getWatchReconnectInterval(), TimeUnit.MILLISECONDS);
             }
           });

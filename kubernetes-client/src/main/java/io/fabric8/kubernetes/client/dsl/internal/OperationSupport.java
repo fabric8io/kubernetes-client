@@ -485,7 +485,7 @@ public class OperationSupport {
   }
 
   protected Map<String, String> getParameters() {
-    return null;
+    return Collections.emptyMap();
   }
 
   /**
@@ -551,11 +551,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
   private <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters)
-      throws InterruptedException, IOException {
+      throws IOException {
     return waitForResult(handleResponse(httpClient, requestBuilder, type, parameters));
   }
 
@@ -569,8 +568,6 @@ public class OperationSupport {
    * @param <T> Template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
-   * @throws IOException IOException
    */
   protected <T> CompletableFuture<T> handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type,
       Map<String, String> parameters) {
@@ -597,11 +594,11 @@ public class OperationSupport {
   }
 
   // used a holder so that we can use thenCompose
-  private static class ResponseOrException<T> {
+  private static class ResponseHolder<T> {
     HttpResponse<T> response;
     Throwable throwable;
 
-    public ResponseOrException(HttpResponse<T> response, Throwable exception) {
+    public ResponseHolder(HttpResponse<T> response, Throwable exception) {
       this.response = response;
       if (exception instanceof CompletionException) {
         exception = exception.getCause();
@@ -613,34 +610,30 @@ public class OperationSupport {
   protected CompletableFuture<HttpResponse<byte[]>> retryWithExponentialBackoff(AtomicInteger numRetries,
       HttpClient client, HttpRequest request) {
     return client.sendAsync(request, byte[].class)
-        .handle((response, t) -> new ResponseOrException<>(response, t)).thenCompose(r -> {
+        .handle(ResponseHolder::new).thenCompose(r -> {
           int retries = numRetries.getAndIncrement();
           CompletableFuture<HttpResponse<byte[]>> result = new CompletableFuture<>();
           if (retries < requestRetryBackoffLimit) {
             long retryInterval = retryIntervalCalculator.getInterval(retries);
             boolean retry = false;
-            if (r.response != null) {
-              if (r.response.code() >= 500) {
-                LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                    request.uri(), r.response.code(), retryInterval);
-                retry = true;
-              }
-            }
-            if (r.throwable instanceof IOException) {
+            if (r.response != null && r.response.code() >= 500) {
+              LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+                  request.uri(), r.response.code(), retryInterval);
+              retry = true;
+            } else if (r.throwable instanceof IOException) {
               LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
                   request.uri(), retryInterval), r.throwable);
               retry = true;
             }
             if (retry) {
-              Utils.schedule(Utils.getCommonExecutorSerive(), () -> {
-                retryWithExponentialBackoff(numRetries, client, request).whenComplete((fr, rt) -> {
-                  if (rt != null) {
-                    result.completeExceptionally(rt);
-                  } else {
-                    result.complete(fr);
-                  }
-                });
-              }, retryInterval, TimeUnit.MILLISECONDS);
+              Utils.schedule(Utils.getCommonExecutorSerive(),
+                  () -> retryWithExponentialBackoff(numRetries, client, request).whenComplete((fr, rt) -> {
+                    if (rt != null) {
+                      result.completeExceptionally(rt);
+                    } else {
+                      result.complete(fr);
+                    }
+                  }), retryInterval, TimeUnit.MILLISECONDS);
               return result;
             }
           }
