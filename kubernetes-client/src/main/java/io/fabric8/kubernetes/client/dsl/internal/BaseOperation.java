@@ -444,46 +444,32 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
         return false;
       }
-    } else {
-      try {
-        deleteList();
-        return true;
-      } catch (KubernetesClientException e) {
-        if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-          throw e;
-        }
-        return false;
-      }
     }
+    return delete(list().getItems());
   }
 
-  @SafeVarargs
   @Override
-  public final boolean delete(T... items) {
-    return delete(Arrays.asList(items));
+  public boolean delete(T item) {
+    return resource(item).delete();
   }
 
   @Override
   public boolean delete(List<T> items) {
-    boolean deleted = true;
     if (items != null) {
       for (T toDelete : items) {
         if (toDelete == null) {
           continue;
         }
-        updateApiVersion(toDelete);
-
         try {
-          deleted &= resource(toDelete).delete();
+          resource(toDelete).delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
           }
-          return false;
         }
       }
     }
-    return deleted;
+    return true;
   }
 
   @Override
@@ -530,10 +516,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
     }
-  }
-
-  void deleteList() {
-    delete(list().getItems());
   }
 
   @Override

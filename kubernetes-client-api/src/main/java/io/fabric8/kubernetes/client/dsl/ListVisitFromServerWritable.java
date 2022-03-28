@@ -20,10 +20,10 @@ import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 
 import java.util.List;
 
-public interface ListVisitFromServerWritable<T> extends RecreateApplicable<List<T>, T>,
-  CascadingDeletable<List<T>>,
-  GracePeriodConfigurable<CascadingDeletable<List<T>>>,
-  PropagationPolicyConfigurable<CascadingDeletable<List<T>>> {
+public interface ListVisitFromServerWritable<T> extends
+    CascadingDeletable<T>,
+    GracePeriodConfigurable<CascadingDeletable<T>>,
+    PropagationPolicyConfigurable<CascadingDeletable<T>> {
 
   List<T> create();
 }

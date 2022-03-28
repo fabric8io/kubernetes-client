@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -46,7 +47,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -302,11 +305,12 @@ public class CreateOrReplaceIT {
       .build());
 
     // When
-    List<HasMetadata> listCreated = client.resourceList(listToCreate).inNamespace(session.getNamespace()).createOrReplace();
-    resourceList = client.resourceList(listToCreate)
-      .inNamespace(session.getNamespace())
-      .deletingExisting()
-      .createOrReplace();
+    ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> op = client.resourceList(listToCreate)
+      .inNamespace(session.getNamespace());
+    List<HasMetadata> listCreated = op.createOrReplace();
+    op.delete();
+    op.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    resourceList = op.createOrReplace();
 
     // Then
     assertNotNull(listCreated);

@@ -158,9 +158,6 @@ public class ResourceIT {
         assertTrue(((ConfigMap)object).getData().containsKey("test"));
       }
     });
-
-    // Cleanup
-    client.resourceList(list).inNamespace(session.getNamespace()).deletingExisting();
   }
 
   @Test

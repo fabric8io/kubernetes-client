@@ -16,19 +16,13 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 public class NamespaceVisitOperationContext {
-  private boolean deletingExisting;
   private String explicitNamespace;
 
-  public NamespaceVisitOperationContext(boolean deletingExisting, String explicitNamespace) {
-    this.deletingExisting = deletingExisting;
+  public NamespaceVisitOperationContext(String explicitNamespace) {
     this.explicitNamespace = explicitNamespace;
   }
 
   public NamespaceVisitOperationContext() {
-  }
-
-  public boolean isDeletingExisting() {
-    return deletingExisting;
   }
 
   public String getExplicitNamespace() {
@@ -36,10 +30,7 @@ public class NamespaceVisitOperationContext {
   }
 
   public NamespaceVisitOperationContext withExplicitNamespace(String explicitNamespace) {
-    return new NamespaceVisitOperationContext(deletingExisting, explicitNamespace);
+    return new NamespaceVisitOperationContext(explicitNamespace);
   }
 
-  public NamespaceVisitOperationContext withDeletingExisting(boolean deletingExisting) {
-    return new NamespaceVisitOperationContext(deletingExisting, explicitNamespace);
-  }
 }

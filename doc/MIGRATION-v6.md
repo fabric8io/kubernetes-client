@@ -15,6 +15,7 @@
 - [Object sorting](#object-sorting)
 - [DSL Interface Changes](#dsl-interface-changes)
 - [evict Changes](#evict-changes)
+- [Delete Behavior](#delete-behavior)
 
 ## Namespace Changes
 
@@ -98,6 +99,7 @@ The group on the object being deserialized is not required to match the prospect
 - Removed DefaultKubernetesClient and DefaultOpenShiftClient constructors directly referencing OkHttp - use OkHttpClientImpl to wrap the OkHttpClient, or the OkHttpClientFactory instead.
 - Removed the AutoAdaptableKubernetesClient, use the new KubernetesClientBuilder instead
 - Removed OpenShiftConfig OpenshiftApiGroupsEnabled methods
+- Removed Recreateable, RecreateApplicable, and ApplicableAnd from the hierarchy of ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable
 
 ### Extension Development
 
@@ -122,6 +124,10 @@ var resource = client.resource(deployment).inNamespace(session.getNamespace());
 resource.delete();
 resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
 resource.create();
+
+Similarly ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable had the Recreateable interface removed, which requires the same logic as above to implement the deletingExisting behavior
+
+If you are simply trying to emulate the kubectl apply feature, consider instead using an edit or the new server side apply feature.
 
 ## lists Removal
 
@@ -188,6 +194,8 @@ Client.adapt will no longer perform the isAdaptable check - that is you may free
 
 - Informable.withIndexers has been deprecated.  Indexers can be added/removed after the creation of the informer.
 
+- The methods provided by MultiDeleteable have moved to FilterWatchListMultiDeletable and have been deprecated.  You may use KubernetesClient.resourceList, or the individual resource methods to delete the items.
+
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
@@ -204,3 +212,6 @@ KubernetesList and Template will no longer automatically sort their objects by d
 
 Evictable.evict will throw an exception rather than returning false if the pod is not found.  This ensures that false strictly means that the evict failed.
 
+## Delete Behavior
+
+Deleting a collection / list will always return true and 404s on individual items will simply be ignored.

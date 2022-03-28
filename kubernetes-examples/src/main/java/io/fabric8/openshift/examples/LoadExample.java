@@ -50,23 +50,22 @@ public class LoadExample {
 
       //noinspection Convert2Lambda
       final List<HasMetadata> visitedList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
-        .accept(new Visitor<ObjectMetaBuilder>(){
-          @Override
-          public void visit(ObjectMetaBuilder item) {
-            item.addToLabels("visitorkey", "visitorvalue");
-          }
-        }).get();
+          .accept(new Visitor<ObjectMetaBuilder>() {
+            @Override
+            public void visit(ObjectMetaBuilder item) {
+              item.addToLabels("visitorkey", "visitorvalue");
+            }
+          }).get();
       logger.info("Visited: {} items.", visitedList.size());
       visitedList.stream().map(LoadExample::display).forEach(logger::info);
 
-
-      final List<HasMetadata> fromServerList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).fromServer().get();
+      final List<HasMetadata> fromServerList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
+          .fromServer().get();
       logger.info("Found on server: {} items.", fromServerList.size());
       fromServerList.stream().map(LoadExample::display).forEach(logger::info);
 
       final List<HasMetadata> appliedList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
-        .deletingExisting()
-        .createOrReplace();
+          .createOrReplace();
       logger.info("Applied: {} items.", appliedList.size());
       appliedList.stream().map(LoadExample::display).forEach(logger::info);
 
