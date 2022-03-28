@@ -16,12 +16,15 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.VersionInfo;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
@@ -58,22 +61,26 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     this(new MockWebServer(), new HashMap<>(), useHttps);
   }
 
-  public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
+  public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+      boolean useHttps) {
     this(context, server, responses, useHttps);
   }
 
-  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+  public KubernetesMockServer(Context context, MockWebServer server,
+      Map<ServerRequest, Queue<ServerResponse>> responses,
       boolean useHttps) {
     this(context, server, responses, new MockDispatcher(responses), useHttps);
   }
 
-  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+  public KubernetesMockServer(Context context, MockWebServer server,
+      Map<ServerRequest, Queue<ServerResponse>> responses,
       Dispatcher dispatcher, boolean useHttps) {
     this(context, server, responses, dispatcher, useHttps,
         new VersionInfo.Builder().withMajor("0").withMinor("0").build());
   }
 
-  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
+  public KubernetesMockServer(Context context, MockWebServer server,
+      Map<ServerRequest, Queue<ServerResponse>> responses,
       Dispatcher dispatcher, boolean useHttps, VersionInfo versionInfo) {
     super(context, server, responses, dispatcher, useHttps);
     this.dispatcher = dispatcher;
@@ -104,10 +111,15 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   public NamespacedKubernetesClient createClient() {
-    Config config = getMockConfiguration();
-    DefaultKubernetesClient defaultKubernetesClient = new DefaultKubernetesClient(config);
-    defaultKubernetesClient.setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
-    return defaultKubernetesClient;
+    return createClient(null);
+  }
+
+  public NamespacedKubernetesClient createClient(HttpClient.Factory factory) {
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(getMockConfiguration()).withHttpClientFactory(factory)
+        .build();
+    client.adapt(BaseClient.class)
+        .setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
+    return client.adapt(NamespacedKubernetesClient.class);
   }
 
   /**
