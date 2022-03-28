@@ -34,7 +34,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,25 +46,23 @@ public class KubernetesListTest {
   Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
   Service service1 = new ServiceBuilder().withNewMetadata().withName("service1").withNamespace("test").and().build();
   ReplicationController replicationController1 = new ReplicationControllerBuilder()
-    .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
-    .withNewSpec().withReplicas(1).endSpec()
-    .withNewStatus().withReplicas(1).endStatus()
-    .build();
+      .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
+      .withNewSpec().withReplicas(1).endSpec()
+      .withNewStatus().withReplicas(1).endStatus()
+      .build();
 
   KubernetesList list = new KubernetesListBuilder().withItems(pod1, service1, replicationController1).build();
 
-
   @Test
   public void testCreate() {
-   server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
-   server.expect().withPath("/api/v1/namespaces/test/services").andReturn(201, service1).once();
-   server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).once();
+    server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
+    server.expect().withPath("/api/v1/namespaces/test/services").andReturn(201, service1).once();
+    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).once();
 
     List<HasMetadata> result = client.resourceList(list.getItems()).inNamespace("test").create();
 
     assertNotNull(result);
     assertEquals(3, result.size());
-
 
     assertTrue(result.contains(pod1));
     assertTrue(result.contains(service1));
@@ -74,7 +71,7 @@ public class KubernetesListTest {
 
   @Test
   public void testLoadAndCreate() {
-   server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).times(2);
+    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).times(2);
 
     InputStream is = KubernetesListTest.class.getResourceAsStream("/test-rclist.json");
     List<HasMetadata> result = client.load(is).inNamespace("test").create();
@@ -85,13 +82,15 @@ public class KubernetesListTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).always();
-   server.expect().withPath("/api/v1/namespaces/test/services/service1").andReturn(200, service1).always();
-   server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, replicationController1).once();
-   server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder(replicationController1)
-      .editSpec().withReplicas(0).and()
-      .editStatus().withReplicas(0).and().build()
-    ).times(5);
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).always();
+    server.expect().withPath("/api/v1/namespaces/test/services/service1").andReturn(200, service1).always();
+    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, replicationController1)
+        .once();
+    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1")
+        .andReturn(200, new ReplicationControllerBuilder(replicationController1)
+            .editSpec().withReplicas(0).and()
+            .editStatus().withReplicas(0).and().build())
+        .times(5);
 
     Boolean result = client.resourceList(list).delete();
 
@@ -102,6 +101,6 @@ public class KubernetesListTest {
   public void testDeleteWithMismatch() {
     Boolean result = client.resourceList(list).inNamespace("test1").delete();
 
-    assertFalse(result);
+    assertTrue(result);
   }
 }

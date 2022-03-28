@@ -18,8 +18,11 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Deletable {
 
   /**
-   * Deletes resource and all managed resources, returns null or false if not found.
-   * @return value indicating object was deleted or not
+   * If this is at a single item context, deletes resource and all managed resources, returns false if not found.
+   * <br>
+   * If this is at a list/collection context, it will always return true
+   *
+   * @return value false only if in a single item context the item is not deleted
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */
   boolean delete();

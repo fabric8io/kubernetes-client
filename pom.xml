@@ -1380,7 +1380,7 @@
     <profile>
       <id>java-11</id>
       <activation>
-        <jdk>11</jdk>
+        <jdk>[11,)</jdk>
       </activation>
       <modules>
         <module>httpclient-jdk</module>

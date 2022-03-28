@@ -43,6 +43,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
@@ -53,7 +55,6 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -129,7 +130,8 @@ public class ResourceListTest {
 
     //Now we expect pod3 to fail.
     deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete();
-    assertFalse(deleted);
+    // always return true
+    assertTrue(deleted);
   }
 
   @Test
@@ -166,7 +168,11 @@ public class ResourceListTest {
     server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HTTP_OK, updatedService).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HTTP_OK, updatedConfigMap).once();
 
-    client.resourceList(resourcesToUpdate).inNamespace("ns1").deletingExisting().createOrReplace();
+    ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList = client.resourceList(resourcesToUpdate)
+        .inNamespace("ns1");
+    resourceList.delete();
+    resourceList.waitUntilCondition(Objects::isNull, 10, TimeUnit.SECONDS);
+    resourceList.createOrReplace();
 
     assertEquals(6, server.getRequestCount());
     RecordedRequest request = server.getLastRequest();
