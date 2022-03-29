@@ -44,7 +44,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +57,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -148,42 +146,49 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     if (operations.isEmpty()) {
       return Collections.emptyList();
     }
-    // this strategy is very costly in terms of threads - by not exposing the underlying futures
-    // we have to create a thread for each item that mostly waits
-    final ExecutorService executor = Executors.newFixedThreadPool(operations.size(), Utils.daemonThreadFactory(this));
-    try {
-      List<HasMetadata> items = operations.stream().map(Resource::get).collect(Collectors.toList());
-      final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
-      for (final Resource<HasMetadata> impl : operations) {
-        futures.add(CompletableFuture.supplyAsync(() -> impl.waitUntilCondition(condition, amount, timeUnit)));
-      }
-
-      final List<HasMetadata> results = new ArrayList<>();
-      final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
-
-      for (int i = 0; i < items.size(); i++) {
-        final HasMetadata meta = items.get(i);
-        try {
-          CompletableFuture<HasMetadata> future = futures.get(i);
-          // just get each result as the timeout is enforced below
-          results.add(future.get());
-        } catch (ExecutionException e) {
-          itemsWithConditionNotMatched.add(meta);
-          logAsNotReady(e.getCause(), meta);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-          throw KubernetesClientException.launderThrowable(e);
+    List<HasMetadata> items = operations.stream().map(Resource::get).collect(Collectors.toList());
+    final List<CompletableFuture<List<HasMetadata>>> futures = new ArrayList<>(items.size());
+    for (final Resource<HasMetadata> impl : operations) {
+      CompletableFuture<List<HasMetadata>> futureCondition = impl.informOnCondition(l -> {
+        if (l.isEmpty()) {
+          return condition.test(null);
         }
-      }
+        return condition.test(l.get(0));
+      });
 
-      if (!itemsWithConditionNotMatched.isEmpty()) {
-        throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
-      }
-
-      return results;
-    } finally {
-      executor.shutdownNow();
+      futures.add(futureCondition);
     }
+
+    final List<HasMetadata> results = new ArrayList<>();
+    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
+
+    long finish = System.nanoTime() + timeUnit.toNanos(amount);
+
+    for (int i = 0; i < items.size(); i++) {
+      final HasMetadata meta = items.get(i);
+      CompletableFuture<List<HasMetadata>> future = futures.get(i);
+      try {
+        results.add(future.thenApply(l -> l.isEmpty() ? null : l.get(0)).get(Math.max(0, finish - System.nanoTime()),
+            TimeUnit.NANOSECONDS));
+      } catch (TimeoutException e) {
+        itemsWithConditionNotMatched.add(meta);
+        logAsNotReady(e, meta);
+      } catch (ExecutionException e) {
+        itemsWithConditionNotMatched.add(meta);
+        logAsNotReady(e.getCause(), meta);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable(e);
+      } finally {
+        future.cancel(true);
+      }
+    }
+
+    if (!itemsWithConditionNotMatched.isEmpty()) {
+      throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
+    }
+
+    return results;
   }
 
   private static void logAsNotReady(Throwable t, HasMetadata meta) {

@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -46,14 +48,14 @@ public class SharedProcessor<T> {
 
   private final List<ProcessorListener<T>> listeners = new ArrayList<>();
   private final List<ProcessorListener<T>> syncingListeners = new ArrayList<>();
-  private final Executor executor;
+  private final SerialExecutor executor;
 
   public SharedProcessor() {
     this(Runnable::run);
   }
 
   public SharedProcessor(Executor executor) {
-    this.executor = executor;
+    this.executor = new SerialExecutor(executor);
   }
 
   /**
@@ -99,15 +101,19 @@ public class SharedProcessor<T> {
     } finally {
       lock.readLock().unlock();
     }
-    executor.execute(() -> {
-      for (ProcessorListener<T> listener : toCall) {
-        try {
-          operation.accept(listener);
-        } catch (Exception ex) {
-          log.error("Failed invoking {} event handler: {}", listener.getHandler(), ex.getMessage(), ex);
+    try {
+      executor.execute(() -> {
+        for (ProcessorListener<T> listener : toCall) {
+          try {
+            operation.accept(listener);
+          } catch (Exception ex) {
+            log.error("Failed invoking {} event handler: {}", listener.getHandler(), ex.getMessage(), ex);
+          }
         }
-      }
-    });
+      });
+    } catch (RejectedExecutionException e) {
+      // do nothing
+    }
   }
 
   public boolean shouldResync() {
@@ -131,6 +137,7 @@ public class SharedProcessor<T> {
   }
 
   public void stop() {
+    executor.shutdownNow();
     lock.writeLock().lock();
     try {
       syncingListeners.clear();

@@ -18,9 +18,11 @@ package io.fabric8.kubernetes.client.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
+import java.io.OutputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -101,6 +103,30 @@ public class InputStreamPumper {
         }
       }
     }, executor);
+  }
+
+  static class WritableOutputStream extends OutputStream {
+
+    Writable writer;
+
+    WritableOutputStream(Writable writer) {
+      this.writer = writer;
+    }
+
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+      writer.write(b, off, len);
+    }
+
+    @Override
+    public void write(int b) throws IOException {
+      throw new UnsupportedOperationException();
+    }
+
+  }
+
+  public static OutputStream writableOutputStream(Writable writer) {
+    return new BufferedOutputStream(new WritableOutputStream(writer));
   }
 
 }

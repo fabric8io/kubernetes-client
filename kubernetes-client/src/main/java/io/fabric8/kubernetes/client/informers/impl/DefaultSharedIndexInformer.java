@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.impl.cache.Reflector;
 import io.fabric8.kubernetes.client.informers.impl.cache.SharedProcessor;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +79,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     this.informerExecutor = informerExecutor;
     // reuse the informer executor, but ensure serial processing
-    this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
+    this.processor = new SharedProcessor<>(informerExecutor);
     this.indexer = new CacheImpl<>();
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
@@ -135,6 +134,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return this.reflector.getLastSyncResourceVersion();
   }
 
+  @Override
   public CompletableFuture<Void> start() {
     if (stopped) {
       throw new IllegalStateException("Cannot restart a stopped informer");
@@ -149,18 +149,19 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     scheduleResync(processor::shouldResync);
 
-    return reflector.start();
+    return reflector.start().whenComplete((v, t) -> {
+      // stop called while run is called could be ineffective, check for it afterwards
+      synchronized (this) {
+        if (stopped) {
+          stop();
+        }
+      }
+    });
   }
 
   @Override
   public void run() {
     Utils.waitUntilReadyOrFail(start(), -1, TimeUnit.MILLISECONDS);
-    // stop called while run is called could be ineffective, check for it afterwards
-    synchronized (this) {
-      if (stopped) {
-        stop();
-      }
-    }
   }
 
   @Override

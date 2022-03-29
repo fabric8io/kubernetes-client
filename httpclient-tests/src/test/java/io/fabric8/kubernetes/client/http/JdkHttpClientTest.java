@@ -19,7 +19,7 @@ package io.fabric8.kubernetes.client.http;
 import io.fabric8.kubernetes.client.http.HttpClient.Factory;
 import io.fabric8.kubernetes.client.jdkhttp.JdkHttpClientFactory;
 
-public class JdkHttpClientTest extends OkHttpTest {
+public class JdkHttpClientTest extends OkHttpClientTest {
 
   @Override
   protected Factory getHttpClientFactory() {

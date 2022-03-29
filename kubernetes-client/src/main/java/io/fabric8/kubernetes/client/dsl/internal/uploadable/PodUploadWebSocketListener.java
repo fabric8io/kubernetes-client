@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
@@ -110,7 +111,10 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
     byte[] toSend = new byte[length + 1];
     toSend[0] = FLAG_STDIN;
     System.arraycopy(data, offset, toSend, 1, length);
-    webSocketRef.getNow(null).send(ByteBuffer.wrap(toSend));
+    if (!webSocketRef.getNow(null).send(ByteBuffer.wrap(toSend))) {
+      this.completeFuture.completeExceptionally(new IOException("could not send"));
+      checkError();
+    }
   }
 
   final void waitForQueue(int length) {
@@ -119,7 +123,7 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
         checkError();
         Thread.sleep(50L);
       }
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();
     }
   }
