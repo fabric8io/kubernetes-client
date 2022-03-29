@@ -76,8 +76,9 @@ public class OkHttpClientImpl implements HttpClient {
             if (!source.exhausted() && !done.isDone()) {
               T value = process(source);
               consumer.consume(value, this);
+            } else {
+              done.complete(null);
             }
-            done.complete(null);
           } catch (Exception e) {
             Utils.closeQuietly(source);
             done.completeExceptionally(e);

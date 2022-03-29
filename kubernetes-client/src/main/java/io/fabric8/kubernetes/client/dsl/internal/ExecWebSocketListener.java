@@ -192,6 +192,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       webSocketRef.set(webSocket);
       if (in != null && !executorService.isShutdown()) {
         // the task will be cancelled via shutdownNow
+        // TODO: this does not work if the inputstream does not support available
         InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::send, executorService);
       }
     } catch (IOException e) {

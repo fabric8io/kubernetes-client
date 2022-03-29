@@ -16,20 +16,26 @@
 
 package io.fabric8.kubernetes.client.utils.internal;
 
-import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * See {@link Executor} docs
  *
  * <br>
  * Effectively creates a derived single thread executor
+ * <br>
+ * Added shutdown support
  */
 public class SerialExecutor implements Executor {
-  final Queue<Runnable> tasks = new ArrayDeque<>();
+  final Queue<Runnable> tasks = new LinkedBlockingDeque<>();
   final Executor executor;
   Runnable active;
+  private volatile boolean shutdown;
+  private Thread thread;
+  private final Object threadLock = new Object();
 
   public SerialExecutor(Executor executor) {
     this.executor = executor;
@@ -37,10 +43,23 @@ public class SerialExecutor implements Executor {
 
   @Override
   public synchronized void execute(final Runnable r) {
+    if (shutdown) {
+      throw new RejectedExecutionException();
+    }
     tasks.offer(() -> {
       try {
+        if (shutdown) {
+          return;
+        }
+        synchronized (threadLock) {
+          thread = Thread.currentThread();
+        }
         r.run();
       } finally {
+        synchronized (threadLock) {
+          thread = null;
+        }
+        Thread.interrupted();
         scheduleNext();
       }
     });
@@ -55,7 +74,17 @@ public class SerialExecutor implements Executor {
     }
   }
 
-  public synchronized void shutdownNow() {
+  public void shutdownNow() {
+    this.shutdown = true;
     tasks.clear();
+    synchronized (threadLock) {
+      if (thread != null) {
+        thread.interrupt();
+      }
+    }
+  }
+
+  public boolean isShutdown() {
+    return shutdown;
   }
 }

@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.http.HttpClient.AsyncBody;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -28,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests a {@link HttpClient} at or below the {@link KubernetesClient} level.
  */
-class OkHttpTest {
+class OkHttpClientTest {
 
   protected HttpClient.Factory getHttpClientFactory() {
     return new OkHttpClientFactory();
@@ -111,6 +114,45 @@ class OkHttpTest {
     });
 
     startedFuture.get(10, TimeUnit.SECONDS);
+  }
+
+  @Test
+  void testAsyncBody() throws Exception {
+    server.expect().withPath("/async").andReturn(200, "hello world").always();
+
+    CompletableFuture<Boolean> consumed = new CompletableFuture<>();
+
+    CompletableFuture<HttpResponse<AsyncBody>> responseFuture = client.getHttpClient().consumeBytes(
+        client.getHttpClient().newHttpRequestBuilder().uri(URI.create(client.getConfiguration().getMasterUrl() + "async"))
+            .build(),
+        new HttpClient.BodyConsumer<List<ByteBuffer>>() {
+
+          @Override
+          public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
+            consumed.complete(true);
+            asyncBody.consume();
+          }
+
+        });
+
+    responseFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        consumed.completeExceptionally(t);
+      }
+      if (r != null) {
+        r.body().consume();
+        r.body().done().whenComplete((v, ex) -> {
+          if (ex != null) {
+            consumed.completeExceptionally(ex);
+          }
+          if (v != null) {
+            consumed.complete(false);
+          }
+        });
+      }
+    });
+
+    assertTrue(consumed.get(5, TimeUnit.SECONDS));
   }
 
   @Test

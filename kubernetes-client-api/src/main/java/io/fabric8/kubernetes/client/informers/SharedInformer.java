@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.client.informers.cache.Store;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 /**
@@ -100,7 +101,7 @@ public interface SharedInformer<T> extends AutoCloseable {
 
   /**
    * Return the Store associated with this informer
-   * 
+   *
    * @return the store
    */
   Store<T> getStore();
@@ -111,8 +112,15 @@ public interface SharedInformer<T> extends AutoCloseable {
    * relevant delete and update events, rather than just adds.
    * <br>
    * Can only be called before the informer is running
-   * 
+   *
    * @param items
    */
   SharedIndexInformer<T> initialState(Stream<T> items);
+
+  /**
+   * A non-blocking alternative to run. Starts the shared informer, which will be stopped when {@link #stop()} is called.
+   * <br>
+   * Only one start attempt is made - subsequent calls will not re-start the informer.
+   */
+  CompletableFuture<Void> start();
 }

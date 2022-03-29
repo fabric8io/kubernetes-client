@@ -98,8 +98,8 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
       }).join();
     } else {
       // we need to write the bytes to the given output
+      // we don't know if the write will be blocking, so hand it off to another thread
       clone.consumeBytes(request, (buffers, a) -> serialExecutor.execute(() -> {
-        // we don't kwow if the write will be blocking, so hand it off to another thread
         for (ByteBuffer byteBuffer : buffers) {
           try {
             outChannel.write(byteBuffer);
