@@ -26,8 +26,11 @@ public interface NonNamespaceOperation<T, L, R> extends
   Nameable<R>,
   FilterWatchListMultiDeletable<T, L>,
   Createable<T>,
+  Deletable,
   CreateOrReplaceable<T>,
   DryRunable<WritableOperation<T>>,
+  Replaceable<T>,
+  StatusReplaceable<T>,
   Loadable<R> {
 }
 
