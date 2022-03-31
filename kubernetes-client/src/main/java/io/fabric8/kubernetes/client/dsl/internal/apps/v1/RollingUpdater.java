@@ -26,10 +26,9 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.internal.PatchUtils.Format;
@@ -79,7 +78,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   protected abstract T createClone(T obj, String newName, String newDeploymentHash);
 
-  protected abstract WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(T obj);
+  protected abstract FilterWatchListDeletable<Pod, PodList, PodResource> selectedPodLister(T obj);
 
   protected abstract T updateDeploymentKey(String name, String hash);
 
@@ -262,9 +261,9 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     return String.format("%1$032x", i);
   }
 
-  protected abstract Operation<T, L, RollableScalableResource<T>> resources();
+  protected abstract MixedOperation<T, L, RollableScalableResource<T>> resources();
 
-  protected Operation<Pod, PodList, PodResource> pods() {
+  protected MixedOperation<Pod, PodList, PodResource> pods() {
     return new PodOperationsImpl(client);
   }
 

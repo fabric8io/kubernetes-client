@@ -15,17 +15,25 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.FromServerGettable;
+import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
+
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
- * This is intended to act as the common denominator of resource operations. To accommodate resources with more specialized operations, this interface should be used as a base.
- * @param <T>   The resource type.
+ * This is intended to act as the common denominator of resource operations. To accommodate resources with more specialized
+ * operations, this interface should be used as a base.
+ *
+ * @param <T> The resource type.
  */
 public interface Resource<T> extends CreateOrReplaceable<T>,
-  CreateFromServerGettable<T>,
-  CascadingEditReplacePatchDeletable<T>,
-  VersionWatchAndWaitable<T>,
-  WritableOperation<T>,
-  DryRunable<WritableOperation<T>>,
-  Requirable<T>, Readiable, Informable<T>,
-  CreateOrDeleteable<T> {
+    Createable<T>, FromServerGettable<T>,
+    EditReplacePatchDeletable<T>,
+    Cascading<EditReplacePatchDeletable<T>>,
+    PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
+    Lockable<ReplaceDeletable<T>>,
+    WatchAndWaitable<T>, Versionable<WatchAndWaitable<T>>,
+    WritableOperation<T>,
+    DryRunable<WritableOperation<T>>,
+    Requirable<T>, Readiable, Informable<T>,
+    CreateOrDeleteable<T> {
 }
