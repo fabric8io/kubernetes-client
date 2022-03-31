@@ -25,7 +25,7 @@ package io.fabric8.kubernetes.client.dsl;
  * @param <R> The resource operations.
  */
 public interface MixedOperation<T, L, R extends Resource<T>>
-    extends AnyNamespaceable<FilterWatchListMultiDeletable<T, L, R>>,
+    extends AnyNamespaceable<AnyNamespaceOperation<T, L, R>>,
     Namespaceable<NonNamespaceOperation<T, L, R>>,
     NonNamespaceOperation<T, L, R> {
 }

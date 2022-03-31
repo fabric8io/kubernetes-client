@@ -20,7 +20,8 @@ import java.util.stream.Stream;
 
 public interface NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T> extends
     ListVisitFromServerGetDeleteRecreateWaitApplicable<T>,
-    Namespaceable<ListVisitFromServerGetDeleteRecreateWaitApplicable<T>> {
+    Namespaceable<ListVisitFromServerGetDeleteRecreateWaitApplicable<T>>,
+    AnyNamespaceable<ListVisitFromServerGetDeleteRecreateWaitApplicable<T>> {
 
   @Override
   Stream<NamespaceableResource<T>> resources();

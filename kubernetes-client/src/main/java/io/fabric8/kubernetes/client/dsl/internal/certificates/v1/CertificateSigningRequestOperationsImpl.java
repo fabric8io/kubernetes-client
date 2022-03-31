@@ -42,7 +42,6 @@ public class CertificateSigningRequestOperationsImpl extends
   CertificateSigningRequestOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("certificates.k8s.io")
         .withApiGroupVersion("v1")
-        .withCascading(true)
         .withPlural("certificatesigningrequests"), CertificateSigningRequest.class, CertificateSigningRequestList.class);
   }
 

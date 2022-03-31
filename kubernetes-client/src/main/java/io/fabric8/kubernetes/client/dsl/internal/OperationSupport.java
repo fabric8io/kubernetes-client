@@ -278,13 +278,13 @@ public class OperationSupport {
   }
 
   protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-      String resourceVersion, boolean cascading) throws InterruptedException, IOException {
+      String resourceVersion) throws InterruptedException, IOException {
     handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))),
-        gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
+        gracePeriodSeconds, propagationPolicy, resourceVersion);
   }
 
   protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-      String resourceVersion, boolean cascading) throws InterruptedException, IOException {
+      String resourceVersion) throws InterruptedException, IOException {
     DeleteOptions deleteOptions = new DeleteOptions();
     if (gracePeriodSeconds >= 0) {
       deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
@@ -292,13 +292,8 @@ public class OperationSupport {
     if (resourceVersion != null) {
       deleteOptions.setPreconditions(new Preconditions(resourceVersion, null));
     }
-    /*
-     * Either the propagation policy or the orphan dependent (deprecated) property must be set, but not both.
-     */
     if (propagationPolicy != null) {
       deleteOptions.setPropagationPolicy(propagationPolicy.toString());
-    } else {
-      deleteOptions.setOrphanDependents(!cascading);
     }
 
     if (dryRun) {

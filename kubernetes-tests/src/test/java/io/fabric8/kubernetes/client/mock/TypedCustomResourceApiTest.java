@@ -103,7 +103,7 @@ class TypedCustomResourceApiTest {
 
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
   }
 
   @Test
@@ -123,6 +123,7 @@ class TypedCustomResourceApiTest {
   @Test
   void testStatusUpdate() throws InterruptedException {
     PodSet updatedPodSet = getPodSet();
+    updatedPodSet.getMetadata().setResourceVersion("1");
     PodSetStatus podSetStatus = new PodSetStatus();
     podSetStatus.setAvailableReplicas(4);
     updatedPodSet.setStatus(podSetStatus);
@@ -133,7 +134,7 @@ class TypedCustomResourceApiTest {
     podSetClient.inNamespace("test").updateStatus(updatedPodSet);
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PUT", recordedRequest.getMethod());
-    assertEquals("{\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"kind\":\"PodSet\",\"metadata\":{\"name\":\"example-podset\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"kind\":\"PodSet\",\"metadata\":{\"name\":\"example-podset\",\"resourceVersion\":\"1\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
   }
 
   private PodSet getPodSet() {

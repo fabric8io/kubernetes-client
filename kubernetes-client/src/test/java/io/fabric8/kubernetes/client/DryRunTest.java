@@ -104,7 +104,7 @@ class DryRunTest {
     // Given
 
     // When
-    Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").dryRun().createOrReplace(getPod("pod1"));
+    Pod pod = kubernetesClient.pods().inNamespace("ns1").dryRun().createOrReplace(getPod("pod1"));
 
     // Then
     verify(mockClient).sendAsync(any(), any());

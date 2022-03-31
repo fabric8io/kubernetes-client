@@ -74,11 +74,6 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   @Override
-  public ProjectRequest create() {
-    return create(getItem());
-  }
-
-  @Override
   public ProjectRequest create(ProjectRequest resource) {
     if (resource == null) {
       throw new IllegalArgumentException("Nothing to create.");

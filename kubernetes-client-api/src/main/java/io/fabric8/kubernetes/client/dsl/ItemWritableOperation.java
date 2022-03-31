@@ -13,9 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface StatusUpdatable<T> {
+public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemReplacable<T> {
+
+  T createOrReplace(T item);
+
+  T create(T item);
+
+  boolean delete(T item);
+
   /**
    * When the status subresource is enabled, the /status subresource for the custom resource is exposed.
    * It does a PUT requests to the /status subresource take a resource object and ignore changes
@@ -23,8 +31,9 @@ public interface StatusUpdatable<T> {
    *
    * @param item kubernetes object
    * @return updated object
-   * @deprecated please use one of patchStatus, editStatus, or replaceStatus
+   * @deprecated please use one of patchStatus, editStatus, or replaceStatus, or a locked replace {@link Lockable#lockResourceVersion(String)}
    */
   @Deprecated
   T updateStatus(T item);
+
 }

@@ -143,6 +143,7 @@ class CustomResourceCrudTest {
     labels.put("app", "core");
 
     cronTab.getMetadata().setLabels(labels);
+    cronTab.getMetadata().setResourceVersion("1");
 
     result = cronTabClient.replace(cronTab);
 

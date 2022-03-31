@@ -30,8 +30,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.NamespaceableResourceAdapter;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.CascadingDeletable;
-import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
@@ -209,11 +207,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public List<HasMetadata> apply() {
-    return createOrReplace();
-  }
-
-  @Override
   public List<HasMetadata> createOrReplace() {
     List<? extends Resource<HasMetadata>> operations = getResources();
 
@@ -236,6 +229,9 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
+    if (explicitNamespace == null) {
+      throw new KubernetesClientException("namespace cannot be null");
+    }
     return newInstance(context.withNamespace(explicitNamespace),
         namespaceVisitOperationContext.withExplicitNamespace(explicitNamespace));
   }
@@ -253,24 +249,13 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public CascadingDeletable<HasMetadata> withGracePeriod(long gracePeriodSeconds) {
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds), namespaceVisitOperationContext);
   }
 
   @Override
-  public CascadingDeletable<HasMetadata> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy), namespaceVisitOperationContext);
-  }
-
-  @Override
-  public Waitable<List<HasMetadata>, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit,
-      double backoffMultiplier) {
-    return this;
-  }
-
-  @Override
-  public Deletable cascading(boolean cascading) {
-    return newInstance(context.withCascading(cascading), namespaceVisitOperationContext);
   }
 
   protected Readiness getReadiness() {
@@ -321,6 +306,17 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   @Override
   public List<HasMetadata> create() {
     return getResources().stream().map(Resource::create).collect(Collectors.toList());
+  }
+
+  @Override
+  public ListVisitFromServerWritable<HasMetadata> dryRun() {
+    return dryRun(true);
+  }
+
+  @Override
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inAnyNamespace() {
+    return newInstance(context.withNamespace(null),
+        namespaceVisitOperationContext.withExplicitNamespace(null));
   }
 
 }

@@ -27,9 +27,11 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -51,6 +53,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
@@ -228,14 +231,14 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-      .inNamespace("ns1").withName("example-hello").cascading(true).delete();
+      .inNamespace("ns1").withName("example-hello").cascading(false).delete();
 
     // Then
     assertTrue(result);
 
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}",
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
       request.getBody().readUtf8());
   }
 
@@ -309,7 +312,12 @@ class CustomResourceTest {
     String objectAsJsonString = "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}";
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
 
-    GenericKubernetesResource result = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1").withName("example-hello").updateStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class));
+    Resource<GenericKubernetesResource> withName = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1").withName("example-hello");
+    GenericKubernetesResource obj = Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class);
+    assertThrows(KubernetesClientException.class, () -> withName.updateStatus(obj));
+
+    obj.getMetadata().setResourceVersion("1");
+    GenericKubernetesResource result = withName.updateStatus(obj);
     assertEquals("Success", result.get("status"));
   }
 

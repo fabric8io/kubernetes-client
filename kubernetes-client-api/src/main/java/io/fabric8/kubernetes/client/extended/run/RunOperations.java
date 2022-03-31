@@ -76,7 +76,7 @@ public class RunOperations {
    * @return Pod which got created from the operation
    */
   public Pod done() {
-    return client.pods().create(convertRunConfigIntoPod());
+    return client.pods().resource(convertRunConfigIntoPod()).create();
   }
 
   Pod convertRunConfigIntoPod() {

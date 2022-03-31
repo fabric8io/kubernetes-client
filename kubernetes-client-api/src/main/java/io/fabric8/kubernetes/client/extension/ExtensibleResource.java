@@ -17,11 +17,11 @@
 package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -32,9 +32,6 @@ public interface ExtensibleResource<T> extends Resource<T> {
 
   @Override
   ExtensibleResource<T> lockResourceVersion(String resourceVersion);
-
-  @Override
-  ExtensibleResource<T> cascading(boolean enabled);
 
   @Override
   ExtensibleResource<T> dryRun(boolean isDryRun);
@@ -52,12 +49,19 @@ public interface ExtensibleResource<T> extends Resource<T> {
   ExtensibleResource<T> withPropagationPolicy(DeletionPropagation propagationPolicy);
 
   @Override
-  ExtensibleResource<T> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier);
-
-  @Override
   ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
 
   @Override
   ExtensibleResource<T> withLimit(Long limit);
+
+  @Override
+  ExtensibleResource<T> lockResourceVersion();
+
+  /**
+   * Return the current item, which may be null if the resource was created
+   * using {@link Nameable#withName(String)}
+   * @return the item
+   */
+  T getItem();
 
 }

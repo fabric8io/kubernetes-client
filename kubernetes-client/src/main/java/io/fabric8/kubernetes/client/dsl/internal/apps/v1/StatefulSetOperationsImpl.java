@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
@@ -69,7 +68,7 @@ public class StatefulSetOperationsImpl
 
   @Override
   public StatefulSet withReplicas(int count) {
-    return cascading(false).accept(s -> s.getSpec().setReplicas(count));
+    return accept(s -> s.getSpec().setReplicas(count));
   }
 
   @Override
@@ -153,7 +152,7 @@ public class StatefulSetOperationsImpl
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override

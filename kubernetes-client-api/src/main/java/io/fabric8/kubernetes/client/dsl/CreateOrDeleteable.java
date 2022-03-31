@@ -16,6 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CreateOrDeleteable<T> extends Createable<T>, Deletable {
+public interface CreateOrDeleteable<T> extends InOutCreateable<T, T>, Deletable {
 
 }

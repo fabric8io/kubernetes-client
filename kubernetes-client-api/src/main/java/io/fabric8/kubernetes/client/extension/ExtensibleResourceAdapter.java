@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.Client;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -53,11 +52,6 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   }
 
   @Override
-  public ExtensibleResource<T> cascading(boolean enabled) {
-    return newInstance().init(resource.cascading(enabled), client);
-  }
-
-  @Override
   public ExtensibleResource<T> withResourceVersion(String resourceVersion) {
     return newInstance().init(resource.withResourceVersion(resourceVersion), client);
   }
@@ -78,11 +72,6 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   }
 
   @Override
-  public ExtensibleResource<T> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return newInstance().init(resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier), client);
-  }
-
-  @Override
   public ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     return newInstance().init(resource.withIndexers(indexers), client);
   }
@@ -95,6 +84,16 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   @Override
   public ExtensibleResource<T> withLimit(Long limit) {
     return newInstance().init(resource.withLimit(limit), client);
+  }
+
+  @Override
+  public ExtensibleResource<T> lockResourceVersion() {
+    return newInstance().init(resource.lockResourceVersion(), client);
+  }
+
+  @Override
+  public T getItem() {
+    return resource.getItem();
   }
 
 }

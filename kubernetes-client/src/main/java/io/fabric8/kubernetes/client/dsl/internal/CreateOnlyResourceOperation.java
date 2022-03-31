@@ -37,11 +37,6 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
   }
 
   @Override
-  public final O create() {
-    return create(getItem());
-  }
-
-  @Override
   public O create(I item) {
     try {
       return handleCreate(item);
@@ -51,10 +46,6 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     }
-  }
-
-  public I getItem() {
-    return (I) context.getItem();
   }
 
 }

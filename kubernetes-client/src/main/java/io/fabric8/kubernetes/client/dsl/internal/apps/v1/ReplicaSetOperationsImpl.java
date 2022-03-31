@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
@@ -124,7 +123,7 @@ public class ReplicaSetOperationsImpl
 
   @Override
   public ReplicaSet withReplicas(int count) {
-    return cascading(false).accept(r -> r.getSpec().setReplicas(count));
+    return accept(r -> r.getSpec().setReplicas(count));
   }
 
   @Override
@@ -168,7 +167,7 @@ public class ReplicaSetOperationsImpl
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override

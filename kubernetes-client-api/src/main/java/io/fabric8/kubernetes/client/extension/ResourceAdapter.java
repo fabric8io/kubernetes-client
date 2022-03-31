@@ -19,16 +19,16 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.GracePeriodConfigurable;
+import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Deletable;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.WatchAndWaitable;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
@@ -82,23 +82,8 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public EditReplacePatchDeletable<T> cascading(boolean enabled) {
-    return resource.cascading(enabled);
-  }
-
-  @Override
   public WritableOperation<T> dryRun() {
     return resource.dryRun();
-  }
-
-  @Override
-  public T replace(T item) {
-    return resource.replace(item);
-  }
-
-  @Override
-  public T updateStatus(T item) {
-    return resource.updateStatus(item);
   }
 
   @Override
@@ -112,8 +97,8 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public T replaceStatus(T item) {
-    return resource.replaceStatus(item);
+  public T replaceStatus() {
+    return resource.replaceStatus();
   }
 
   @Override
@@ -122,18 +107,13 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public Deletable withGracePeriod(long gracePeriodSeconds) {
+  public PropagationPolicyConfigurable<? extends Deletable> withGracePeriod(long gracePeriodSeconds) {
     return resource.withGracePeriod(gracePeriodSeconds);
   }
 
   @Override
   public T createOrReplace() {
     return resource.createOrReplace();
-  }
-
-  @Override
-  public T create(T item) {
-    return resource.create(item);
   }
 
   @Override
@@ -147,7 +127,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public EditReplacePatchDeletable<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public GracePeriodConfigurable<? extends Deletable> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return resource.withPropagationPolicy(propagationPolicy);
   }
 
@@ -184,11 +164,6 @@ public class ResourceAdapter<T> implements Resource<T> {
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit) {
     return resource.waitUntilCondition(condition, amount, timeUnit);
-  }
-
-  @Override
-  public Waitable<T, T> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier);
   }
 
   @Override
@@ -267,8 +242,43 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
+  public T replace() {
+    return resource.replace();
+  }
+
+  @Override
+  public T create(T item) {
+    return resource.create(item);
+  }
+
+  @Override
+  public T replace(T item) {
+    return resource.replace(item);
+  }
+
+  @Override
   public T createOrReplace(T item) {
     return resource.createOrReplace(item);
+  }
+
+  @Override
+  public T replaceStatus(T item) {
+    return resource.replaceStatus(item);
+  }
+
+  @Override
+  public boolean delete(T item) {
+    return resource.delete(item);
+  }
+
+  @Override
+  public T updateStatus(T item) {
+    return resource.updateStatus(item);
+  }
+
+  @Override
+  public ReplaceDeletable<T> lockResourceVersion() {
+    return resource.lockResourceVersion();
   }
 
 }

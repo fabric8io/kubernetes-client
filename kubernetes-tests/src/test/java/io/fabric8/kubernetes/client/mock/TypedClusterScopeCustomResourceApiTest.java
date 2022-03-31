@@ -22,14 +22,12 @@ import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.Star;
 import io.fabric8.kubernetes.client.mock.crd.StarSpec;
 import io.fabric8.kubernetes.client.mock.crd.StarStatus;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -46,13 +44,6 @@ class TypedClusterScopeCustomResourceApiTest {
     KubernetesClient client;
 
     private MixedOperation<Star, KubernetesResourceList<Star>, Resource<Star>> starClient;
-
-    private CustomResourceDefinitionContext crdContext;
-
-    @BeforeEach
-    void setupCrd() {
-      crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Star.class);
-    }
 
     @Test
     void create() {
@@ -111,7 +102,7 @@ class TypedClusterScopeCustomResourceApiTest {
       assertTrue(isDeleted);
       RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("DELETE", recordedRequest.getMethod());
-      assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}", recordedRequest.getBody().readUtf8());
+      assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
     }
 
     @Test

@@ -15,8 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.FromServerGettable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
+import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
@@ -27,12 +28,25 @@ import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
  */
 public interface Resource<T> extends
     FromServerGettable<T>,
-    Cascading<EditReplacePatchDeletable<T>>,
-    PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
     Lockable<ReplaceDeletable<T>>,
     WatchAndWaitable<T>, Versionable<WatchAndWaitable<T>>,
     WritableOperation<T>,
     DryRunable<WritableOperation<T>>,
     Requirable<T>, Readiable, Informable<T> {
+
+  /**
+   * deletes dependent resources. Sets `orphanDependents` field to `false` when set `true`
+   *
+   * @deprecated Please Use {@link io.fabric8.kubernetes.client.PropagationPolicyConfigurable} instead. This field has been deprecated since 1.7.
+   * @param enabled whether dependents should be orphaned or not.
+   * @return resource
+   */
+  @Deprecated
+  default GracePeriodConfigurable<? extends Deletable> cascading(boolean enabled) {
+    if (!enabled) {
+      return withPropagationPolicy(DeletionPropagation.ORPHAN);
+    }
+    return this;
+  }
 
 }

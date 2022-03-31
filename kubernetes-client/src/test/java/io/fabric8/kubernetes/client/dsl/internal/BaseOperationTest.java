@@ -26,9 +26,9 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.MockHttpClientUtils;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -121,7 +121,7 @@ class BaseOperationTest {
   @Test
   void testChainingGracePeriodAndPropagationPolicy() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
-    EditReplacePatchDeletable<?> operationWithPropagationPolicy = operation
+    ExtensibleResource operationWithPropagationPolicy = operation
         .withPropagationPolicy(DeletionPropagation.FOREGROUND);
     assertThat(operationWithPropagationPolicy, is(notNullValue()));
     assertNotNull(operationWithPropagationPolicy.withGracePeriod(10));

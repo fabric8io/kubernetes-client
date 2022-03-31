@@ -78,38 +78,6 @@ public class DeploymentConfigOperationsImpl
   }
 
   @Override
-  public DeploymentConfig edit(UnaryOperator<DeploymentConfig> function) {
-    if (isCascading()) {
-      return cascading(false).edit(function);
-    }
-    return super.edit(function);
-  }
-
-  @Override
-  public DeploymentConfig accept(Consumer<DeploymentConfig> consumer) {
-    if (isCascading()) {
-      return cascading(false).accept(consumer);
-    }
-    return super.accept(consumer);
-  }
-
-  @Override
-  public DeploymentConfig replace(DeploymentConfig item) {
-    if (isCascading()) {
-      return cascading(false).replace(item);
-    }
-    return super.replace(item);
-  }
-
-  @Override
-  public DeploymentConfig patch(PatchContext patchContext, DeploymentConfig item) {
-    if (isCascading()) {
-      return cascading(false).patch(patchContext, item);
-    }
-    return super.patch(patchContext, item);
-  }
-
-  @Override
   public DeploymentConfig deployLatest() {
     return deployLatest(false);
   }
@@ -121,7 +89,7 @@ public class DeploymentConfigOperationsImpl
       currentVersion = 1L;
     }
     final Long latestVersion = currentVersion + 1;
-    DeploymentConfig deployment = cascading(false).accept(d -> d.getStatus().setLatestVersion(latestVersion));
+    DeploymentConfig deployment = accept(d -> d.getStatus().setLatestVersion(latestVersion));
     if (wait) {
       waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
       deployment = getMandatory();
@@ -136,7 +104,7 @@ public class DeploymentConfigOperationsImpl
 
   @Override
   public DeploymentConfig scale(int count, boolean wait) {
-    DeploymentConfig deployment = cascading(false).accept(d -> d.getSpec().setReplicas(count));
+    DeploymentConfig deployment = accept(d -> d.getSpec().setReplicas(count));
     if (wait) {
       waitUntilDeploymentConfigIsScaled(count);
       deployment = getMandatory();

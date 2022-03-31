@@ -15,7 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public interface GracePeriodConfigurable<T>
+import io.fabric8.kubernetes.client.dsl.Deletable;
+
+public interface GracePeriodConfigurable<T> extends Deletable
 {
   /**
    * The duration in seconds before the object should be deleted. Value must be non-negative integer.

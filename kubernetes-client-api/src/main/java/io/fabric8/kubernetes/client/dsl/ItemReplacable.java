@@ -16,14 +16,26 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Cascading<T> {
+public interface ItemReplacable<T> {
+
   /**
-   * deletes dependent resources. Sets `orphanDependents` field to `false` when set `true`
+   * Similar to calling resource(item).replaceStatus()
+   * <br>
+   * See {@link Replaceable#replace()}
    *
-   * @deprecated Please Use {@link io.fabric8.kubernetes.client.PropagationPolicyConfigurable} instead. This field has been deprecated since 1.7.
-   * @param enabled whether dependents should be orphaned or not.
-   * @return resource
+   * @param item replacement
+   * @return the replaced item from the api server
    */
-  @Deprecated
-  T cascading(boolean enabled);
+  T replaceStatus(T item);
+
+  /**
+   * Similar to calling resource(item).replace()
+   * <br>
+   * See {@link Replaceable#replace()}
+   *
+   * @param item replacement
+   * @return the replaced item from the api server
+   */
+  T replace(T item);
+
 }

@@ -69,7 +69,6 @@ class OperationContextTest {
         .withApiGroupVersion("v1")
         .withPlural("jobs")
         .withItem(new JobBuilder().withNewMetadata().withName("testItem").endMetadata().build())
-        .withCascading(false)
         .withLabels(Collections.singletonMap("test", "labels"))
         .withLabelsIn(Collections.singletonMap("test", new String[] { "labelsIn1", "labelsIn2" }))
         .withLabelsNot(Collections.singletonMap("test", new String[] { "labelsNot" }))
@@ -90,7 +89,6 @@ class OperationContextTest {
     assertEquals("jobs", operationContext.getPlural());
     assertNotNull(operationContext.getItem());
     assertTrue(operationContext.getItem() instanceof Job);
-    assertFalse(operationContext.getCascading());
     assertEquals("labels", operationContext.getLabels().get("test"));
     assertArrayEquals(new String[] { "labelsIn1", "labelsIn2" }, operationContext.getLabelsIn().get("test"));
     assertArrayEquals(new String[] { "labelsNot" }, operationContext.getLabelsNot().get("test"));

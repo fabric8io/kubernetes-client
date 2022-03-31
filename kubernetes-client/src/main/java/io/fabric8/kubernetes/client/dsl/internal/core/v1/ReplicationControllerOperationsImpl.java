@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
@@ -67,7 +66,7 @@ public class ReplicationControllerOperationsImpl extends
 
   @Override
   public ReplicationController withReplicas(int count) {
-    return cascading(false).accept(r -> r.getSpec().setReplicas(count));
+    return accept(r -> r.getSpec().setReplicas(count));
   }
 
   @Override
@@ -151,7 +150,7 @@ public class ReplicationControllerOperationsImpl extends
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override

@@ -15,18 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.Watcher;
 
 import java.util.stream.Stream;
 
 public interface FilterWatchListDeletable<T, L, R>
     extends Filterable<FilterWatchListDeletable<T, L, R>>, Watchable<Watcher<T>>, Versionable<WatchAndWaitable<T>>, Listable<L>,
-    Deletable,
-    GracePeriodConfigurable<Deletable>,
-    PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
-    StatusUpdatable<T>,
+    DeletableWithOptions,
     Informable<T> {
 
   /**

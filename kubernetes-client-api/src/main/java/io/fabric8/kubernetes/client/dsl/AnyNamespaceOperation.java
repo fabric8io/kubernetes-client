@@ -13,9 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface DryRunable<T> {
+import io.fabric8.kubernetes.client.KubernetesClient;
+
+import java.util.Arrays;
+import java.util.List;
+
+public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable<T, L, R>,
+    ItemWritableOperation<T>,
+    Loadable<R>,
+    Resourceable<T, R> {
+
   /**
    * Indicates that modifications should not be persisted. All dry run stages will be processed. the request is still
    * processed as typical request: the fields are defaulted, the object is validated, it goes through the validation
@@ -24,7 +34,7 @@ public interface DryRunable<T> {
    *
    * @return write operations which are applicable for dry run
    */
-  T dryRun();
+  ItemWritableOperation<T> dryRun();
 
   /**
    * Indicates whether modifications should not be persisted or not. If enabled, All dry run stages will be processed.
@@ -35,5 +45,31 @@ public interface DryRunable<T> {
    * @param isDryRun whether dry run is enabled or disabled
    * @return write operations which are applicable for dry run
    */
-  T dryRun(boolean isDryRun);
+  ItemWritableOperation<T> dryRun(boolean isDryRun);
+
+  /**
+   * Delete the given items.
+   *
+   * @param items
+   * @return true
+   *
+   * @deprecated use {@link KubernetesClient#resourceList(java.util.Collection)} delete instead
+   *
+   */
+  @Deprecated
+  default boolean delete(T... items) {
+    return delete(Arrays.asList(items));
+  }
+
+  /**
+   * Delete the given items.
+   *
+   * @param items
+   * @return true
+   *
+   * @deprecated use {@link KubernetesClient#resourceList(java.util.Collection)} delete instead
+   */
+  @Deprecated
+  boolean delete(List<T> items);
+
 }

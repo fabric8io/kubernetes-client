@@ -15,13 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
-
 public interface WritableOperation<T> extends
-  CreateOrReplaceable<T>,
-  CreateOrDeleteable<T>,
-  EditReplacePatchDeletable<T>,
-  GracePeriodConfigurable<Deletable>,
-  PropagationPolicyConfigurable<EditReplacePatchDeletable<T>> {
+    CreateOrReplaceable<T>,
+    Createable<T>,
+    CreateOrDeleteable<T>,
+    EditReplacePatchable<T>,
+    ReplaceDeletable<T>,
+    ItemWritableOperation<T> {
 }

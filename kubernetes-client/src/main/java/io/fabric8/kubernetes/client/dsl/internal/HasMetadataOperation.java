@@ -121,13 +121,13 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   @Override
-  public T replace(T item) {
-    return replace(item, false);
+  public T replace() {
+    return replace(getItem(), false);
   }
 
   @Override
-  public T replaceStatus(T item) {
-    return replace(item, true);
+  public T replaceStatus() {
+    return replace(getItem(), true);
   }
 
   /**

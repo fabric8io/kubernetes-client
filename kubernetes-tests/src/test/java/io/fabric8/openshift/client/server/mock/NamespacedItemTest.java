@@ -19,9 +19,11 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -125,6 +127,26 @@ class NamespacedItemTest {
     Resource<ConfigMap> op = client.adapt(NamespacedKubernetesClient.class).inAnyNamespace().configMaps().withName("x");
     KubernetesClientException e = assertThrows(KubernetesClientException.class, () -> op.get());
     assertTrue(e.getMessage().contains("namespace not"));
+  }
+
+  @Test
+  void testResourceList() {
+    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList = this.client.adapt(NamespacedKubernetesClient.class)
+        .inNamespace("explicit")
+        .resourceList(configmap);
+
+    HasMetadata created = resourceList.create().get(0);
+
+    assertEquals("explicit", created.getMetadata().getNamespace());
+
+    assertThrows(KubernetesClientException.class, () -> resourceList.inNamespace(null));
+
+    created = this.client.adapt(NamespacedKubernetesClient.class)
+        .resourceList(configmap)
+        .inAnyNamespace()
+        .create().get(0);
+
+    assertEquals("item", created.getMetadata().getNamespace());
   }
 
 }

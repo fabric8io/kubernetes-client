@@ -110,7 +110,7 @@ public class ResourceListTest {
 
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HTTP_CREATED, pod1).once();
 
-    List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).inNamespace("ns1").apply();
+    List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).inNamespace("ns1").createOrReplace();
     assertTrue(response.contains(pod1));
   }
 
