@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 
-import java.util.Arrays;
 import java.util.List;
 
 public interface FilterWatchListMultiDeletable<T, L, R> extends FilterWatchListDeletable<T, L, R>, Deletable {
@@ -30,20 +29,6 @@ public interface FilterWatchListMultiDeletable<T, L, R> extends FilterWatchListD
    *
    */
   boolean delete(T item);
-
-  /**
-   * Delete the given items.
-   *
-   * @param items
-   * @return true
-   *
-   * @deprecated use {@link KubernetesClient#resourceList(java.util.Collection)} delete instead
-   *
-   */
-  @Deprecated
-  default boolean delete(T... items) {
-    return delete(Arrays.asList(items));
-  }
 
   /**
    * Delete the given items.

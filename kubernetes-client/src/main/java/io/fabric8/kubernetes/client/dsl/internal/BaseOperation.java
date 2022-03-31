@@ -270,24 +270,19 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return newInstance(context.withReloadingFromServer(true));
   }
 
-  @SafeVarargs
   @Override
-  public final T createOrReplace(T... items) {
-    final T itemToCreateOrReplace;
-    Resource<T> resource;
-    if (items.length > 1) {
-      throw new IllegalArgumentException("Too many items to create.");
-    } else if (items.length == 1) {
-      itemToCreateOrReplace = items[0];
-      resource = resource(itemToCreateOrReplace);
-    } else {
-      itemToCreateOrReplace = getItem();
-      resource = this;
-    }
+  public T createOrReplace(T item) {
+    return resource(item).createOrReplace();
+  }
 
-    if (itemToCreateOrReplace == null) {
+  @Override
+  public final T createOrReplace() {
+    T item = getItem();
+
+    if (item == null) {
       throw new IllegalArgumentException("Nothing to create.");
     }
+    R resource = resource(item);
 
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
         resource::create,
@@ -295,7 +290,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
         m -> resource.fromServer().get());
 
-    return createOrReplaceHelper.createOrReplace(itemToCreateOrReplace);
+    return createOrReplaceHelper.createOrReplace(item);
   }
 
   @Override

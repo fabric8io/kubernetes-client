@@ -24,6 +24,7 @@ public interface CreateOrReplaceable<T> {
    * @param item to create or replace
    * @return created item returned in kubernetes api response
    */
-  T createOrReplace(T... item);
+  T createOrReplace(T item);
 
+  T createOrReplace();
 }

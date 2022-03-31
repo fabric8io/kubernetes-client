@@ -36,16 +36,9 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
     return handleCreate(resource, getType());
   }
 
-  @SafeVarargs
   @Override
-  public final O create(I... resources) {
-    if (resources.length > 1) {
-      throw new IllegalArgumentException("Too many items to create.");
-    } else if (resources.length == 1) {
-      return create(resources[0]);
-    } else {
-      return create(getItem());
-    }
+  public final O create() {
+    return create(getItem());
   }
 
   @Override

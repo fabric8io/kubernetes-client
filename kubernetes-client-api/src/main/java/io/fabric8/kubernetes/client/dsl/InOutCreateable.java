@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface InOutCreateable<I,O>  {
 
-  O create(I... item);
+  O create();
 
   O create(I item);
 

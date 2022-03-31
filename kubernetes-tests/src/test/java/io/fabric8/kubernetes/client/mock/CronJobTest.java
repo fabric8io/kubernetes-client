@@ -218,7 +218,7 @@ class CronJobTest {
       .editStatus().endStatus().build()).times(5);
 
 
-    Boolean deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
+    Boolean deleted = client.resourceList(cronjob1, cronjob2).delete();
     assertTrue(deleted);
 
     deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob3);

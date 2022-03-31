@@ -117,8 +117,8 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public T create(T... item) {
-    return resource.create(item);
+  public T create() {
+    return resource.create();
   }
 
   @Override
@@ -127,8 +127,8 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public T createOrReplace(T... item) {
-    return resource.createOrReplace(item);
+  public T createOrReplace() {
+    return resource.createOrReplace();
   }
 
   @Override
@@ -264,6 +264,11 @@ public class ResourceAdapter<T> implements Resource<T> {
   @Override
   public CompletableFuture<List<T>> informOnCondition(Predicate<List<T>> condition) {
     return resource.informOnCondition(condition);
+  }
+
+  @Override
+  public T createOrReplace(T item) {
+    return resource.createOrReplace(item);
   }
 
 }

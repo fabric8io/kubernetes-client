@@ -25,15 +25,14 @@ import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
  *
  * @param <T> The resource type.
  */
-public interface Resource<T> extends CreateOrReplaceable<T>,
-    Createable<T>, FromServerGettable<T>,
-    EditReplacePatchDeletable<T>,
+public interface Resource<T> extends
+    FromServerGettable<T>,
     Cascading<EditReplacePatchDeletable<T>>,
     PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
     Lockable<ReplaceDeletable<T>>,
     WatchAndWaitable<T>, Versionable<WatchAndWaitable<T>>,
     WritableOperation<T>,
     DryRunable<WritableOperation<T>>,
-    Requirable<T>, Readiable, Informable<T>,
-    CreateOrDeleteable<T> {
+    Requirable<T>, Readiable, Informable<T> {
+
 }
