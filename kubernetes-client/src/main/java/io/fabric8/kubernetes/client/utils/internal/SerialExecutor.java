@@ -55,6 +55,8 @@ public class SerialExecutor implements Executor {
           thread = Thread.currentThread();
         }
         r.run();
+      } catch (Throwable t) {
+        thread.getUncaughtExceptionHandler().uncaughtException(thread, t);
       } finally {
         synchronized (threadLock) {
           thread = null;
