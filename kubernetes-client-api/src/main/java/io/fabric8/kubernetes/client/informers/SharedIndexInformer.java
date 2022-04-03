@@ -17,22 +17,26 @@ package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
+import io.fabric8.kubernetes.client.informers.cache.ItemStore;
+import io.fabric8.kubernetes.client.informers.cache.Store;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * SharedInxedInformer extends SharedInformer and provides indexer operability additionally.
  */
-public interface SharedIndexInformer<T> extends SharedInformer<T> {
+public interface SharedIndexInformer<T> extends AutoCloseable {
 
   /**
    * Add indexers
    *
    * @param indexers indexers
    */
-  void addIndexers(Map<String, Function<T, List<String>>> indexers);
+  SharedIndexInformer<T> addIndexers(Map<String, Function<T, List<String>>> indexers);
 
   /**
    * Remove the namesapce index
@@ -57,4 +61,102 @@ public interface SharedIndexInformer<T> extends SharedInformer<T> {
    * @return the internal indexer store
    */
   Indexer<T> getIndexer();
+
+  /**
+   * Add event handler
+   *
+   * @param handler event handler
+   */
+  SharedIndexInformer<T> addEventHandler(ResourceEventHandler<? super T> handler);
+
+  /**
+   * Adds an event handler to the shared informer using the specified resync period.
+   * Events to a single handler are delivered sequentially, but there is no
+   * coordination between different handlers.
+   *
+   * @param handle the event handler
+   * @param resyncPeriod the specific resync period
+   */
+  SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handle, long resyncPeriod);
+
+  /**
+   * Starts the shared informer, which will be stopped when {@link #stop()} is called.
+   *
+   * <br>
+   * Only one start attempt is made - subsequent calls will not re-start the informer.
+   *
+   * <br>
+   * If the informer is not already running, this is a blocking call
+   */
+  SharedIndexInformer<T> run();
+
+  /**
+   * Stops the shared informer. The informer cannot be started again.
+   */
+  void stop();
+
+  @Override
+  default void close() {
+    stop();
+  }
+
+  /**
+   * Return true if the informer has ever synced
+   */
+  default boolean hasSynced() {
+    return lastSyncResourceVersion() != null;
+  }
+
+  /**
+   * The resource version observed when last synced with the underlying store.
+   * The value returned is not synchronized with access to the underlying store
+   * and is not thread-safe.
+   *
+   * @return string value or null if never synced
+   */
+  String lastSyncResourceVersion();
+
+  /**
+   * Return true if the informer is running
+   */
+  boolean isRunning();
+
+  /**
+   * Return the class this informer is watching
+   */
+  Class<T> getApiTypeClass();
+
+  /**
+   * Return true if the informer is actively watching
+   * <br>
+   * Will return false when {@link #isRunning()} is true when the watch needs to be re-established.
+   */
+  boolean isWatching();
+
+  /**
+   * Return the Store associated with this informer
+   *
+   * @return the store
+   */
+  Store<T> getStore();
+
+  /**
+   * Sets the initial state of the informer store, which will
+   * be replaced by the initial list operation. This will emit
+   * relevant delete and update events, rather than just adds.
+   * <br>
+   * Can only be called before the informer is running
+   *
+   * @param items
+   */
+  SharedIndexInformer<T> initialState(Stream<T> items);
+
+  SharedIndexInformer<T> itemStore(ItemStore<T> itemStore);
+
+  /**
+   * A non-blocking alternative to run. Starts the shared informer, which will be stopped when {@link #stop()} is called.
+   * <br>
+   * Only one start attempt is made - subsequent calls will not re-start the informer.
+   */
+  CompletableFuture<Void> start();
 }

@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
+import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 import io.fabric8.kubernetes.client.informers.cache.Store;
 import io.fabric8.kubernetes.client.informers.impl.cache.CacheImpl;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorStore;
@@ -59,7 +60,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private final Reflector<T, L> reflector;
   private final Class<T> apiTypeClass;
   private final ProcessorStore<T> processorStore;
-  private final CacheImpl<T> indexer;
+  private final CacheImpl<T> indexer = new CacheImpl<>();
   private final SharedProcessor<T> processor;
   private final Executor informerExecutor;
 
@@ -67,6 +68,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private volatile boolean stopped = false;
 
   private ScheduledFuture<?> resyncFuture;
+
+  private Stream<T> initialState;
 
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
       Executor informerExecutor) {
@@ -80,7 +83,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.informerExecutor = informerExecutor;
     // reuse the informer executor, but ensure serial processing
     this.processor = new SharedProcessor<>(informerExecutor);
-    this.indexer = new CacheImpl<>();
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
     this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore);
@@ -92,15 +94,17 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
    * @param handler event handler
    */
   @Override
-  public void addEventHandler(ResourceEventHandler<? super T> handler) {
+  public SharedIndexInformer<T> addEventHandler(ResourceEventHandler<? super T> handler) {
     addEventHandlerWithResyncPeriod(handler, defaultEventHandlerResyncPeriod);
+    return this;
   }
 
   @Override
-  public void addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handler, long resyncPeriodMillis) {
+  public SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handler,
+      long resyncPeriodMillis) {
     if (stopped) {
       log.info("DefaultSharedIndexInformer#Handler was not added to shared informer because it has stopped already");
-      return;
+      return this;
     }
 
     if (resyncPeriodMillis > 0) {
@@ -127,6 +131,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     this.processor.addProcessorListener(handler,
         determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis), this.indexer::list);
+
+    return this;
   }
 
   @Override
@@ -142,6 +148,10 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     synchronized (this) {
       if (!started.compareAndSet(false, true)) {
         return CompletableFuture.completedFuture(null);
+      }
+
+      if (initialState != null) {
+        initialState.forEach(indexer::put);
       }
     }
 
@@ -160,8 +170,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
-  public void run() {
+  public SharedIndexInformer<T> run() {
     Utils.waitUntilReadyOrFail(start(), -1, TimeUnit.MILLISECONDS);
+    return this;
   }
 
   @Override
@@ -180,8 +191,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
-  public void addIndexers(Map<String, Function<T, List<String>>> indexers) {
+  public SharedIndexInformer<T> addIndexers(Map<String, Function<T, List<String>>> indexers) {
     indexer.addIndexers(indexers);
+    return this;
   }
 
   @Override
@@ -250,7 +262,16 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     if (started.get()) {
       throw new KubernetesClientException("Informer cannot be running when initial state is added");
     }
-    items.forEach(i -> this.indexer.put(i));
+    this.initialState = items;
+    return this;
+  }
+
+  @Override
+  public synchronized SharedIndexInformer<T> itemStore(ItemStore<T> itemStore) {
+    if (started.get()) {
+      throw new KubernetesClientException("Informer cannot be running when setting item store");
+    }
+    this.indexer.setItemStore(itemStore);
     return this;
   }
 
