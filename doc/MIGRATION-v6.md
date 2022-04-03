@@ -214,6 +214,8 @@ KubernetesList and Template will no longer automatically sort their objects by d
 - WatchListDeletable now takes three type parameters to include the Resource type.
 
 - PodResource is no longer generic.
+- 
+- SharedInformer was removed, there is now only SharedIndexInformer
 
 - The following interfaces were removed: 
 * CascadingEditReplacePatchDeletable

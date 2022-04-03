@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.informers.SharedInformer;
 
 import java.util.List;
 import java.util.Map;
@@ -31,8 +30,8 @@ import java.util.function.Predicate;
 public interface Informable<T> {
 
   /**
-   * The indexers to add to {@link SharedInformer}s created by subsequent inform calls;
-   * 
+   * The indexers to add to {@link SharedIndexInformer}s created by subsequent inform calls;
+   *
    * @param indexers to customize the indexing
    * @return the current {@link Informable}
    * @deprecated please use methods on the {@link SharedIndexInformer} to add/remove indexes
@@ -52,7 +51,7 @@ public interface Informable<T> {
    * WARNING As noted in the go client: "paginated lists are always served directly from
    * etcd, which is significantly less efficient and may lead to serious performance and
    * scalability problems."
-   * 
+   *
    * @param limit of a items in a list fetch
    * @return the current {@link Informable}
    */
@@ -132,7 +131,7 @@ public interface Informable<T> {
    * Return a {@link Future} when the list at this context satisfies the given {@link Predicate}.
    * The predicate will be tested against the state of the underlying informer store on every event.
    * The returned future should be cancelled by the caller if not waiting for completion to close the underlying informer
-   * 
+   *
    * @param condition the {@link Predicate} to test
    * @return a {@link CompletableFuture} of the list of items after the condition is met
    */

@@ -17,7 +17,9 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.informers.cache.BasicItemStore;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
+import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 import io.fabric8.kubernetes.client.utils.ReflectUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
@@ -29,8 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * It basically saves and indexes all the entries.
@@ -38,9 +40,6 @@ import java.util.function.Function;
  * @param <T> type for cache object
  */
 public class CacheImpl<T extends HasMetadata> implements Cache<T> {
-  // Defines how to map objects into indices
-  private Function<T, String> keyFunc;
-
   // NAMESPACE_INDEX is the default index function for caching objects
   public static final String NAMESPACE_INDEX = "namespace";
 
@@ -48,7 +47,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   private final Map<String, Function<T, List<String>>> indexers = new HashMap<>();
 
   // items stores object instances
-  private final Map<String, T> items = new ConcurrentHashMap<>();
+  private ItemStore<T> items;
 
   // indices stores objects' key by their indices
   private final Map<String, Map<String, Set<String>>> indices = new HashMap<>();
@@ -58,8 +57,12 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   }
 
   public CacheImpl(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
-    this.keyFunc = keyFunc;
+    this.items = new BasicItemStore<>(keyFunc);
     addIndexFunc(indexName, indexFunc);
+  }
+
+  public void setItemStore(ItemStore<T> items) {
+    this.items = items;
   }
 
   /**
@@ -123,7 +126,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<String> listKeys() {
-    return new ArrayList<>(this.items.keySet());
+    return this.items.keySet().collect(Collectors.toList());
   }
 
   /**
@@ -143,7 +146,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public String getKey(T obj) {
-    String result = this.keyFunc.apply(obj);
+    String result = this.items.getKey(obj);
     return result == null ? "" : result;
   }
 
@@ -154,7 +157,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<T> list() {
-    return new ArrayList<>(this.items.values());
+    return this.items.values().collect(Collectors.toList());
   }
 
   /**
@@ -321,9 +324,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     this.indices.put(indexName, index);
     this.indexers.put(indexName, indexFunc);
 
-    for (String key : items.keySet()) {
-      updateIndex(key, items.get(key), indexFunc, index);
-    }
+    items.values().forEach(v -> updateIndex(getKey(v), v, indexFunc, index));
     return this;
   }
 

@@ -11,7 +11,7 @@
 * Fix #1285: removed references to manually calling registerCustomKind
 * Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 * Fix #3969: relist will not trigger sync events
-* Fix #3968: SharedInformer.initialState can be used to set the store state before the informer starts. 
+* Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts. 
 SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
 And Store.getKey can be used rather than directly referencing static Cache functions.
 
@@ -27,6 +27,7 @@ And Store.getKey can be used rather than directly referencing static Cache funct
 * Fix #3407 #3973: Added Resourceable.resource to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
 There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
 This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
+* Fix #3472 #3587: Allowing for customization of the Informer store/cache key function and how state is stored.  See BasicItemStore and ReducedStateItemStore and the SharedIndexInformer.itemStore function.
 
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)

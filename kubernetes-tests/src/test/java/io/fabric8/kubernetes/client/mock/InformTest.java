@@ -24,10 +24,14 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.cache.BasicItemStore;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
+import io.fabric8.kubernetes.client.informers.cache.ReducedStateItemStore;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
@@ -38,6 +42,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,8 +58,12 @@ class InformTest {
   @Test
   void testInformPodWithLabel() throws InterruptedException {
     // Given
-    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-        .withResourceVersion("1").endMetadata().build();
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .build();
 
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label")
@@ -62,7 +72,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -153,7 +164,8 @@ class InformTest {
         .withPlural("dummies")
         .build();
 
-    SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context).withLabel("my-label")
+    SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context)
+        .withLabel("my-label")
         .inform(handler);
 
     assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
@@ -168,8 +180,12 @@ class InformTest {
   @Test
   void testGenericWithKnownType() throws InterruptedException {
     // Given
-    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-        .withResourceVersion("1").endMetadata().build();
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .build();
 
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
@@ -216,7 +232,8 @@ class InformTest {
         .withPlural("pods")
         .build();
 
-    SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context).withName("pod1")
+    SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context)
+        .withName("pod1")
         .inform(handler);
 
     assertTrue(deleteLatch.await(1000, TimeUnit.SECONDS));
@@ -228,8 +245,12 @@ class InformTest {
   @Test
   void testRunnableInformer() throws InterruptedException {
     // Given
-    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-        .withResourceVersion("1").endMetadata().build();
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .build();
 
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label")
@@ -238,7 +259,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -283,16 +305,28 @@ class InformTest {
   @Test
   void testListLimit() throws InterruptedException {
     // Given
-    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-        .withResourceVersion("1").endMetadata().build();
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .build();
 
-    Pod pod2 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod2")
-        .withResourceVersion("2").endMetadata().build();
+    Pod pod2 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod2")
+        .withResourceVersion("2")
+        .endMetadata()
+        .build();
 
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?limit=1")
         .andReturn(HttpURLConnection.HTTP_OK,
-            new PodListBuilder().withNewMetadata().withResourceVersion("2").withContinue("x").endMetadata().withItems(pod1)
+            new PodListBuilder().withNewMetadata()
+                .withResourceVersion("2")
+                .withContinue("x")
+                .endMetadata()
+                .withItems(pod1)
                 .build())
         .once();
 
@@ -331,6 +365,137 @@ class InformTest {
     SharedIndexInformer<Pod> informer = client.pods().withLimit(1L).inform(handler);
 
     assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+
+    informer.stop();
+  }
+
+  @Test
+  void testInformWithAlternativeKeyFunction() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withUid("uid")
+        .endMetadata()
+        .build();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
+
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+
+      @Override
+      public void onAdd(Pod obj) {
+        addLatch.countDown();
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+
+      }
+
+    };
+    // When
+    SharedIndexInformer<Pod> informer = client.pods()
+        .runnableInformer(0)
+        .itemStore(new BasicItemStore<>(Cache::metaUidKeyFunc))
+        .removeNamespaceIndex()
+        .addEventHandler(handler)
+        .run();
+
+    assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+    assertTrue(informer.getIndexer().getIndexers().isEmpty());
+    assertEquals(Arrays.asList("uid"), informer.getStore().listKeys());
+
+    informer.stop();
+  }
+
+  @Test
+  void testInformWithMinimalState() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withUid("uid")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
+
+    pod1.addOwnerReference(new ReplicaSetBuilder().withNewMetadata()
+        .withUid("owner")
+        .withName("rs")
+        .withNamespace("test")
+        .endMetadata()
+        .build());
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
+
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+
+      @Override
+      public void onAdd(Pod obj) {
+        addLatch.countDown();
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+
+      }
+
+    };
+    // When
+    SharedIndexInformer<Pod> informer = client.pods()
+        .runnableInformer(0)
+        .itemStore(
+            new ReducedStateItemStore<>(ReducedStateItemStore.NAME_KEY_STATE, Pod.class, "metadata.ownerReferences"))
+        .removeNamespaceIndex()
+        .addEventHandler(handler)
+        .run();
+
+    assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+    assertTrue(informer.getIndexer().getIndexers().isEmpty());
+    // still using the namespace key
+    assertEquals(Arrays.asList("test/pod1"), informer.getStore().listKeys());
+    Pod byKey = informer.getStore().getByKey("test/pod1");
+    assertEquals("pod1", byKey.getMetadata().getName());
+    assertEquals("test", byKey.getMetadata().getNamespace());
+    assertEquals("1", byKey.getMetadata().getResourceVersion());
+    assertEquals(1, byKey.getMetadata().getOwnerReferences().size());
+    assertNull(byKey.getSpec());
 
     informer.stop();
   }

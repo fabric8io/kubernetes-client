@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers.cache;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.ReflectUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -42,11 +43,11 @@ public interface Cache<T> extends Indexer<T> {
    */
   public static String metaNamespaceKeyFunc(Object obj) {
     try {
-      if( obj == null ) {
+      if (obj == null) {
         return "";
       }
       ObjectMeta metadata;
-      if(obj instanceof String) {
+      if (obj instanceof String) {
         return (String) obj;
       } else if (obj instanceof ObjectMeta) {
         metadata = (ObjectMeta) obj;
@@ -61,6 +62,14 @@ public interface Cache<T> extends Indexer<T> {
     } catch (ReflectiveOperationException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static String metaUidKeyFunc(HasMetadata obj) {
+    if (obj == null || obj.getMetadata() == null) {
+      return "";
+    }
+    String result = obj.getMetadata().getUid();
+    return Utils.getNonNullOrElse(result, "");
   }
 
   /**
@@ -90,4 +99,3 @@ public interface Cache<T> extends Indexer<T> {
     }
   }
 }
-
