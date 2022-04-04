@@ -18,11 +18,11 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.File;
-import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -31,7 +31,6 @@ import java.util.Objects;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_KUBECONFIG_FILE;
-import static io.fabric8.kubernetes.client.MockHttpClientUtils.buildResponse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -52,7 +51,7 @@ class TokenRefreshInterceptorTest {
 
       // Call
       boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null)
-          .afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
+          .afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
     } finally {
@@ -78,7 +77,7 @@ class TokenRefreshInterceptorTest {
 
       // Write new value to token file to simulate renewal.
       Files.write(tokenFile.toPath(), "renewed".getBytes());
-      boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
+      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
@@ -115,7 +114,7 @@ class TokenRefreshInterceptorTest {
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 
       TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class));
-      boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo")).get();
+      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
