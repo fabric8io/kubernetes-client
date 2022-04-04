@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
-import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -41,13 +40,13 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
 
   private final SettableBeanProperty delegate;
   private final SettableAnyProperty anySetter;
-  private final transient Supplier<Boolean> restrictToTemplates;
+  private final transient Supplier<Boolean> useAnySetter;
 
-  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter, Supplier<Boolean> restrictToTemplates) {
+  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter, Supplier<Boolean> useAnySetter) {
     super(delegate);
     this.delegate = delegate;
     this.anySetter = anySetter;
-    this.restrictToTemplates = restrictToTemplates;
+    this.useAnySetter = useAnySetter;
   }
 
   /**
@@ -55,7 +54,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
-    return new SettableBeanPropertyDelegate(delegate.withValueDeserializer(deser), anySetter, restrictToTemplates);
+    return new SettableBeanPropertyDelegate(delegate.withValueDeserializer(deser), anySetter, useAnySetter);
   }
 
   /**
@@ -63,7 +62,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withName(PropertyName newName) {
-    return new SettableBeanPropertyDelegate(delegate.withName(newName), anySetter, restrictToTemplates);
+    return new SettableBeanPropertyDelegate(delegate.withName(newName), anySetter, useAnySetter);
   }
 
   /**
@@ -71,7 +70,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withNullProvider(NullValueProvider nva) {
-    return new SettableBeanPropertyDelegate(delegate.withNullProvider(nva), anySetter, restrictToTemplates);
+    return new SettableBeanPropertyDelegate(delegate.withNullProvider(nva), anySetter, useAnySetter);
   }
 
   /**
@@ -171,9 +170,6 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
     if (anySetter == null) {
       return false;
     }
-    if (Boolean.TRUE.equals(restrictToTemplates.get()) ) {
-      return KubernetesDeserializer.isInTemplate();
-    }
-    return true;
+    return Boolean.TRUE.equals(useAnySetter.get());
   }
 }

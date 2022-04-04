@@ -40,6 +40,8 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
   private boolean logWarnings;
   private boolean restrictToTemplates;
 
+  private static final ThreadLocal<Boolean> IN_TEMPLATE = ThreadLocal.withInitial(() -> false);
+
   public UnmatchedFieldTypeModule() {
     this(true, true);
   }
@@ -52,7 +54,7 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
       @Override
       public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc, BeanDeserializerBuilder builder) {
         builder.getProperties().forEachRemaining(p ->
-          builder.addOrReplaceProperty(new SettableBeanPropertyDelegate(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::isRestrictToTemplates) {
+          builder.addOrReplaceProperty(new SettableBeanPropertyDelegate(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::useAnySetter) {
           }, true));
         return builder;
       }
@@ -85,6 +87,10 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
     return restrictToTemplates;
   }
 
+  boolean useAnySetter() {
+    return !restrictToTemplates || isInTemplate();
+  }
+
   /**
    * Sets if the DeserializerModifier should only be applied to Templates or object trees contained in Templates.
    *
@@ -93,4 +99,17 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
   public void setRestrictToTemplates(boolean restrictToTemplates) {
     this.restrictToTemplates = restrictToTemplates;
   }
+
+  public static boolean isInTemplate() {
+    return Boolean.TRUE.equals(IN_TEMPLATE.get());
+  }
+
+  public static void setInTemplate() {
+    IN_TEMPLATE.set(true);
+  }
+
+  public static void removeInTemplate() {
+    IN_TEMPLATE.remove();
+  }
+
 }

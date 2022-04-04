@@ -21,9 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,16 +42,53 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-
 public class Serialization {
   private Serialization() { }
 
+  private static final String TEMPLATE_CLASS_NAME = "io.fabric8.openshift.api.model.Template";
+
   public static final UnmatchedFieldTypeModule UNMATCHED_FIELD_TYPE_MODULE = new UnmatchedFieldTypeModule();
 
-  private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+  private interface ExceptionalSupplier<T> {
+    public T get() throws IOException;
+  }
+
+  private static final ObjectMapper JSON_MAPPER = new ObjectMapper() {
+    @Override
+    protected Object _readValue(com.fasterxml.jackson.databind.DeserializationConfig cfg,
+        com.fasterxml.jackson.core.JsonParser p, com.fasterxml.jackson.databind.JavaType valueType) throws IOException {
+      return templateAware(() -> super._readValue(cfg, p, valueType), valueType);
+    }
+
+    @Override
+    protected Object _readMapAndClose(com.fasterxml.jackson.core.JsonParser p0,
+        com.fasterxml.jackson.databind.JavaType valueType) throws IOException {
+      return templateAware(() -> super._readMapAndClose(p0, valueType), valueType);
+    }
+
+    protected Object templateAware(ExceptionalSupplier<Object> function, com.fasterxml.jackson.databind.JavaType valueType)
+        throws IOException {
+      boolean inTemplate = false;
+      if (!UnmatchedFieldTypeModule.isInTemplate()
+          && TEMPLATE_CLASS_NAME.equals(valueType.getRawClass().getName())) {
+        UnmatchedFieldTypeModule.setInTemplate();
+        inTemplate = true;
+      }
+      try {
+        return function.get();
+      } finally {
+        if (inTemplate) {
+          UnmatchedFieldTypeModule.removeInTemplate();
+        }
+      }
+    }
+
+    @Override
+    protected void _checkInvalidCopy(java.lang.Class<?> exp) {
+
+    }
+
+  };
   static {
     JSON_MAPPER.registerModules(new JavaTimeModule(), UNMATCHED_FIELD_TYPE_MODULE);
   }
@@ -407,14 +447,8 @@ public class Serialization {
     // if full serialization seems too expensive, there is also
     //return (T) JSON_MAPPER.convertValue(resource, resource.getClass());
     try {
-      return JSON_MAPPER.readValue(
-        JSON_MAPPER.writeValueAsString(resource), new TypeReference<T>() {
-          @Override
-          public Type getType() {
-            // Force KubernetesResource so that the KubernetesDeserializer takes over any resource configured deserializer
-            return resource instanceof GenericKubernetesResource ? resource.getClass() : KubernetesResource.class;
-          }
-        });
+      return (T) JSON_MAPPER.readValue(
+          JSON_MAPPER.writeValueAsString(resource), resource.getClass());
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
     }
