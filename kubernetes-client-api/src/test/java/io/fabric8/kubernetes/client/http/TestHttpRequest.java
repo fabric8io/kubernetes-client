@@ -41,6 +41,10 @@ public class TestHttpRequest extends TestHttpHeaders<TestHttpRequest> implements
     return bodyString;
   }
 
+  public TestHttpRequest withUri(String uri) {
+    return withUri(URI.create(uri));
+  }
+
   public TestHttpRequest withUri(URI uri) {
     this.uri = uri;
     return this;

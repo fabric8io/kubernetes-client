@@ -25,13 +25,14 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
-import io.fabric8.kubernetes.client.MockHttpClientUtils;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.TestHttpRequest;
+import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -40,7 +41,6 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -244,13 +244,11 @@ class BaseOperationTest {
     assertEquals("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo", result.toString());
   }
 
-  private HttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures)
-      throws IOException {
+  private HttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures) {
     HttpClient mockClient = mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     HttpRequest.Builder mockRequestBuilder = mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
-    HttpRequest request = MockHttpClientUtils.buildRequest();
     when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
-    when(mockRequestBuilder.build()).thenReturn(request);
+    when(mockRequestBuilder.build()).thenReturn(new TestHttpRequest().withUri("https://k8s.example.com"));
     when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class))).thenAnswer(
         invocation -> {
           int count = httpExecutionCounter.getAndIncrement();
@@ -262,17 +260,17 @@ class BaseOperationTest {
               result.completeExceptionally(new IOException("For example java.net.ConnectException"));
               return result;
             }
-            return CompletableFuture.completedFuture(MockHttpClientUtils.buildResponse(500));
+            return CompletableFuture.completedFuture(new TestHttpResponse<>().withCode(500));
           }
           Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-          return CompletableFuture
-              .completedFuture(MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, Serialization.asJson(podNoLabels)));
+          return CompletableFuture.completedFuture(
+              TestHttpResponse.from(200, Serialization.asJson(podNoLabels)));
         });
     return mockClient;
   }
 
   @Test
-  void testNoHttpRetryWithDefaultConfig() throws MalformedURLException, IOException {
+  void testNoHttpRetryWithDefaultConfig() {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
@@ -294,7 +292,7 @@ class BaseOperationTest {
   }
 
   @Test
-  void testHttpRetryWithMoreFailuresThanRetries() throws MalformedURLException, IOException {
+  void testHttpRetryWithMoreFailuresThanRetries() {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
@@ -317,7 +315,7 @@ class BaseOperationTest {
   }
 
   @Test
-  void testHttpRetryWithLessFailuresThanRetries() throws MalformedURLException, IOException {
+  void testHttpRetryWithLessFailuresThanRetries() {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
@@ -337,7 +335,7 @@ class BaseOperationTest {
   }
 
   @Test
-  void testMissingNamespace() throws MalformedURLException, IOException {
+  void testMissingNamespace() {
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<>(new OperationContext()
         .withClient(mockClient(null, new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build()))
         .withNamespace(null)
@@ -346,16 +344,14 @@ class BaseOperationTest {
     baseOp.setType(Pod.class);
 
     // When
-    Exception exception = assertThrows(KubernetesClientException.class, () -> {
-      baseOp.get();
-    });
+    Exception exception = assertThrows(KubernetesClientException.class, baseOp::get);
 
     // Then
     assertTrue(exception.getMessage().contains("namespace"), exception.getMessage());
   }
 
   @Test
-  void testWaitUntilFailureCompletion() throws MalformedURLException, IOException {
+  void testWaitUntilFailureCompletion() {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
     CompletableFuture<List<Pod>> future = new CompletableFuture<>();

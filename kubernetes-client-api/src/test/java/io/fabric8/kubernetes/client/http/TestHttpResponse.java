@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
  * Basic {@link HttpResponse} implementation to be used in tests instead of mocks or real responses.
- * 
+ *
  * @param <T> type of the response body.
  */
 public class TestHttpResponse<T> extends TestHttpHeaders<TestHttpResponse<T>> implements HttpResponse<T> {
@@ -53,7 +54,7 @@ public class TestHttpResponse<T> extends TestHttpHeaders<TestHttpResponse<T>> im
     return code;
   }
 
-  public HttpResponse<T> withCode(int code) {
+  public TestHttpResponse<T> withCode(int code) {
     this.code = code;
     return this;
   }
@@ -62,7 +63,7 @@ public class TestHttpResponse<T> extends TestHttpHeaders<TestHttpResponse<T>> im
     return body;
   }
 
-  public HttpResponse<T> withBody(T body) {
+  public TestHttpResponse<T> withBody(T body) {
     this.body = body;
     return this;
   }
@@ -79,5 +80,9 @@ public class TestHttpResponse<T> extends TestHttpHeaders<TestHttpResponse<T>> im
   public HttpResponse<T> withPreviousResponse(HttpResponse<T> previousResponse) {
     this.previousResponse = previousResponse;
     return this;
+  }
+
+  public static TestHttpResponse<byte[]> from(int code, String body) {
+    return new TestHttpResponse<byte[]>().withCode(code).withBody(body.getBytes(StandardCharsets.UTF_8));
   }
 }
