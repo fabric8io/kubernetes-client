@@ -30,7 +30,7 @@ import javax.net.ssl.TrustManager;
 
 public interface HttpClient extends AutoCloseable {
 
-  public interface Factory {
+  interface Factory {
 
     HttpClient createHttpClient(Config config);
 
@@ -48,7 +48,7 @@ public interface HttpClient extends AutoCloseable {
 
   }
 
-  public interface DerivedClientBuilder {
+  interface DerivedClientBuilder {
 
     HttpClient build();
 
@@ -63,7 +63,7 @@ public interface HttpClient extends AutoCloseable {
     DerivedClientBuilder addOrReplaceInterceptor(String name, Interceptor interceptor);
   }
 
-  public interface Builder extends DerivedClientBuilder {
+  interface Builder extends DerivedClientBuilder {
 
     @Override
     HttpClient build();
@@ -103,7 +103,7 @@ public interface HttpClient extends AutoCloseable {
    * <br>
    * The body should be consumed until the end or cancelled.
    */
-  public interface AsyncBody {
+  interface AsyncBody {
     /**
      * Called to deliver results to the {@link BodyConsumer}
      */
@@ -123,7 +123,7 @@ public interface HttpClient extends AutoCloseable {
    * A functional interface for consuming async result bodies
    */
   @FunctionalInterface
-  public interface BodyConsumer<T> {
+  interface BodyConsumer<T> {
     void consume(T value, AsyncBody asyncBody) throws Exception;
   }
 
@@ -148,26 +148,27 @@ public interface HttpClient extends AutoCloseable {
    * as that will hijack a client thread.
    *
    * @param <T> return type
-   * @param request
+   * @param request the HttpRequest to send asynchronously
    * @param type one of InputStream, Reader, String, byte[]
-   * @return
+   * @return a CompletableFuture that returns the resulting HttpResponse when complete
    */
   <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
 
   /**
-   * Consume the lines of a the body using the same logic as {@link BufferedReader} to break up the lines.
+   * Send a request and consume the lines of the response body using the same logic as {@link BufferedReader} to
+   * break up the lines.
    *
-   * @param request
-   * @param consumer
+   * @param request the HttpRequest to send
+   * @param consumer the response body consumer
    * @return the future which will be ready after the headers have been read
    */
   CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer);
 
   /**
-   * Consume the bytes of a the body
+   * Send a request and consume the bytes of the resulting response body
    *
-   * @param request
-   * @param consumer
+   * @param request the HttpRequest to send
+   * @param consumer the response body consumer
    * @return the future which will be ready after the headers have been read
    */
   CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer);

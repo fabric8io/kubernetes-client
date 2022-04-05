@@ -55,6 +55,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -71,7 +72,7 @@ public class OperationSupport {
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
-  private static final int maxRetryIntervalExponent = 5;
+  private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
 
   protected OperationContext context;
   protected final HttpClient httpClient;
@@ -115,7 +116,7 @@ public class OperationSupport {
       this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
     }
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval,
-        maxRetryIntervalExponent);
+        MAX_RETRY_INTERVAL_EXPONENT);
   }
 
   public String getAPIGroupName() {
@@ -145,9 +146,9 @@ public class OperationSupport {
   public URL getRootUrl() {
     try {
       if (!Utils.isNullOrEmpty(apiGroupName)) {
-        return new URL(URLUtils.join(config.getMasterUrl().toString(), "apis", apiGroupName, apiGroupVersion));
+        return new URL(URLUtils.join(config.getMasterUrl(), "apis", apiGroupName, apiGroupVersion));
       }
-      return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", apiGroupVersion));
+      return new URL(URLUtils.join(config.getMasterUrl(), "api", apiGroupVersion));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -265,7 +266,7 @@ public class OperationSupport {
       return operationName;
     } else if (Utils.isNullOrEmpty(operationName)) {
       return itemName;
-    } else if (itemName.equals(operationName)) {
+    } else if (Objects.equals(itemName, operationName)) {
       return itemName;
     }
     throw new KubernetesClientException("Name mismatch. Item name:" + itemName + ". Operation name:" + operationName + ".");
@@ -334,10 +335,9 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
-   * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws InterruptedException, IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
@@ -364,7 +364,7 @@ public class OperationSupport {
    */
   protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status)
       throws InterruptedException, IOException {
-    String patchForUpdate = null;
+    String patchForUpdate;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
       // we can't omit status unless this is not a status operation and we know this has a status subresource
       patchForUpdate = PatchUtils.jsonDiff(current, updated, false);
@@ -496,6 +496,14 @@ public class OperationSupport {
     return response.body();
   }
 
+  /**
+   * Waits for the provided {@link CompletableFuture} to complete and returns the result in case of success.
+   *
+   * @param future the CompletableFuture to wait for
+   * @param <T> the type of the result
+   * @return the result of the completed future
+   * @throws IOException in case there's an I/O problem
+   */
   protected <T> T waitForResult(CompletableFuture<T> future) throws IOException {
     try {
       // readTimeout should be enforced
@@ -579,10 +587,9 @@ public class OperationSupport {
         } else {
           return null;
         }
+      } catch (KubernetesClientException e) {
+        throw e;
       } catch (Exception e) {
-        if (e instanceof KubernetesClientException) {
-          throw e;
-        }
         throw requestException(request, e);
       }
     });
@@ -792,8 +799,9 @@ public class OperationSupport {
     return Serialization.unmarshal(is, type);
   }
 
-  protected static <T> Map getObjectValueAsMap(T object) {
-    return JSON_MAPPER.convertValue(object, Map.class);
+  protected static <T> Map<String, Object> getObjectValueAsMap(T object) {
+    return JSON_MAPPER.convertValue(object, new TypeReference<Map<String, Object>>() {
+    });
   }
 
   public Config getConfig() {

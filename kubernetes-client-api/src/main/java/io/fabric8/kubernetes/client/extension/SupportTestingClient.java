@@ -19,7 +19,7 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.client.Client;
 
 /**
- * Marks the client as being able to test for it's own support.
+ * Marks the client as being able to test for its own support.
  * <p>
  * Moving forward only clients with special support needs, such as
  * the openshift client should implement this interface. For those classes,
@@ -32,7 +32,7 @@ public interface SupportTestingClient extends Client {
    * <br>
    * Implementations will use
    * {@link Client#hasApiGroup(String, boolean)} to be compatible with mock support
-   * 
+   *
    * @return true if supported
    */
   boolean isSupported();

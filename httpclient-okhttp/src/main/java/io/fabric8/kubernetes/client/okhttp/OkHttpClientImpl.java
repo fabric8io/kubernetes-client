@@ -33,7 +33,7 @@ import okio.BufferedSource;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -218,7 +218,7 @@ public class OkHttpClientImpl implements HttpClient {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
       @Override
       protected List<ByteBuffer> process(BufferedSource source) throws IOException {
-        return Arrays.asList(ByteBuffer.wrap(source.readByteArray()));
+        return Collections.singletonList(ByteBuffer.wrap(source.readByteArray()));
       }
     };
     return sendAsync(request, handler);

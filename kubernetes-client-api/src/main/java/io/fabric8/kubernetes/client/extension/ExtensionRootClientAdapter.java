@@ -40,8 +40,8 @@ public abstract class ExtensionRootClientAdapter<C extends ClientAdapter<C>> ext
   }
 
   @Override
-  final public C newInstance() {
-    return newInstance(client);
+  public final C newInstance() {
+    return newInstance(getClient());
   }
 
   /**

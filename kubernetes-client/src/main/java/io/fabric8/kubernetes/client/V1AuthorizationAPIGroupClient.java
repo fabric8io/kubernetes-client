@@ -30,23 +30,23 @@ public class V1AuthorizationAPIGroupClient extends ClientAdapter<V1Authorization
 
   @Override
   public InOutCreateable<SelfSubjectAccessReview, SelfSubjectAccessReview> selfSubjectAccessReview() {
-    return client.adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectAccessReview.class, this);
+    return getClient().adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectAccessReview.class, this);
   }
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReview> subjectAccessReview() {
-    return client.adapt(BaseClient.class).getHandlers().getNonListingOperation(SubjectAccessReview.class, this);
+    return getClient().adapt(BaseClient.class).getHandlers().getNonListingOperation(SubjectAccessReview.class, this);
   }
 
   @Override
   public NamespacedInOutCreateable<LocalSubjectAccessReview, LocalSubjectAccessReview> localSubjectAccessReview() {
-    return client.adapt(BaseClient.class).getHandlers()
+    return getClient().adapt(BaseClient.class).getHandlers()
         .getNamespacedHasMetadataCreateOnlyOperation(LocalSubjectAccessReview.class, this);
   }
 
   @Override
   public InOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReview() {
-    return client.adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectRulesReview.class, this);
+    return getClient().adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectRulesReview.class, this);
   }
 
   @Override

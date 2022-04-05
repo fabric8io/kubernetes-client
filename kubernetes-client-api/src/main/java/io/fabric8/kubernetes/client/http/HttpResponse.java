@@ -32,10 +32,15 @@ public interface HttpResponse<T> extends HttpHeaders {
     return isSuccessful(code());
   }
 
-  public static boolean isSuccessful(int code) {
+  static boolean isSuccessful(int code) {
     return code >= 200 && code < 300;
   }
 
+  /**
+   * Returns the HTTP status code.
+   * 
+   * @return the HTTP status code.
+   */
   int code();
 
   default String message() {
@@ -55,7 +60,7 @@ public interface HttpResponse<T> extends HttpHeaders {
    * If the body is an {@link InputStream}, it will be read as UTF-8.
    *
    * @return the body
-   * @throws IOException
+   * @throws IOException in case there's an I/O problem
    */
   default String bodyString() throws IOException {
     Object body = body();
@@ -74,8 +79,13 @@ public interface HttpResponse<T> extends HttpHeaders {
     return IOHelpers.readFully((InputStream) body, UTF_8);
   }
 
+  /**
+   * The original {@link HttpRequest} that initiated this response.
+   * 
+   * @return the HTTP request.
+   */
   HttpRequest request();
 
-  public Optional<HttpResponse<?>> previousResponse();
+  Optional<HttpResponse<?>> previousResponse();
 
 }

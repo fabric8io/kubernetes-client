@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
@@ -23,7 +22,8 @@ import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
-import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.TestHttpRequest;
+import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +31,6 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,30 +47,27 @@ import static org.mockito.Mockito.when;
 class PatchTest {
   private HttpClient mockClient;
   private KubernetesClient kubernetesClient;
-  private List<HttpRequest.Builder> builders = new ArrayList<>();
+  private List<HttpRequest.Builder> builders;
 
   @BeforeEach
   public void setUp() throws IOException {
     // TODO: fully mocking makes this logic more difficult and basically copied in other tests, we may want to rely on an actual implementation instead
-    builders.clear();
+    builders = new ArrayList<>();
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    HttpResponse<byte[]> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, "{}");
     when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
-        .thenReturn(CompletableFuture.completedFuture(mockResponse));
+        .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, "{}")));
+    Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
     kubernetesClient = new DefaultKubernetesClient(mockClient, config);
-    Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
+    when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
-      HttpRequest request = Mockito.mock(HttpRequest.class, Mockito.RETURNS_DEEP_STUBS);
-      Mockito.when(request.uri()).thenReturn(URI.create("https://localhost:8443/"));
-      Mockito.when(result.build()).thenReturn(request);
+      when(result.build()).thenReturn(new TestHttpRequest().withUri("https://localhost:8443/"));
       builders.add(result);
       return result;
     });
   }
 
   @Test
-  void testJsonPatch() throws IOException {
+  void testJsonPatch() {
     // Given
 
     // When
@@ -85,7 +81,7 @@ class PatchTest {
   }
 
   @Test
-  void testJsonMergePatch() throws IOException {
+  void testJsonMergePatch() {
     // Given
     PatchContext patchContext = new PatchContext.Builder()
         .withPatchType(PatchType.JSON_MERGE)
@@ -102,7 +98,7 @@ class PatchTest {
   }
 
   @Test
-  void testYamlPatchConvertedToJson() throws IOException {
+  void testYamlPatchConvertedToJson() {
     // Given
 
     // When
@@ -115,11 +111,10 @@ class PatchTest {
   }
 
   @Test
-  void testPatchThrowExceptionWhenResourceNotFound() throws IOException {
+  void testPatchThrowExceptionWhenResourceNotFound() {
     // Given
-    HttpResponse<byte[]> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_NOT_FOUND, "{}");
     when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
-        .thenReturn(CompletableFuture.completedFuture(mockResponse));
+        .thenReturn(CompletableFuture.completedFuture(new TestHttpResponse<byte[]>().withCode(404)));
 
     // When
     PodResource podResource = kubernetesClient.pods()
@@ -135,7 +130,7 @@ class PatchTest {
   }
 
   @Test
-  void testJsonPatchWithPositionalArrays() throws IOException {
+  void testJsonPatchWithPositionalArrays() {
     // Given
     PatchContext patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
 
@@ -151,7 +146,7 @@ class PatchTest {
   }
 
   @Test
-  void testPatchWithPatchOptions() throws IOException {
+  void testPatchWithPatchOptions() {
     // Given
 
     // When

@@ -26,11 +26,11 @@ import io.fabric8.kubernetes.client.Client;
  */
 public interface ExtensionAdapter<C extends Client> {
 
-  public interface ResourceFactory {
+  interface ResourceFactory {
     <T extends HasMetadata> void register(Class<T> type, ExtensibleResourceAdapter<T> target);
   }
 
-  public interface ClientFactory {
+  interface ClientFactory {
     <T extends Client, C extends ClientAdapter<C>> void register(Class<T> type, ClientAdapter<C> target);
   }
 
@@ -52,7 +52,7 @@ public interface ExtensionAdapter<C extends Client> {
   /**
    * Extensions should override to inject {@link ExtensibleResourceAdapter} usage into the {@link ResourceFactory}
    *
-   * @param factory
+   * @param factory ResourceFactory for custom registration of resources.
    */
   default void registerResources(ResourceFactory factory) {
   }
@@ -60,7 +60,7 @@ public interface ExtensionAdapter<C extends Client> {
   /**
    * Extensions should override to inject {@link ClientAdapter} usage into the {@link ClientFactory}
    *
-   * @param factory
+   * @param factory ClientFactory for custom registration of clients.
    */
   default void registerClients(ClientFactory factory) {
   }
