@@ -100,7 +100,7 @@ public class PriorityClassTest {
       .build()).once();
 
 
-    Boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete();
+    boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete().size() == 1;
     assertNotNull(deleted);
     assertTrue(deleted);
   }

@@ -137,13 +137,13 @@ class ReplicaSetTest {
       .build()).times(5);
 
 
-    Boolean deleted = client.apps().replicaSets().withName("repl1").delete();
+    boolean deleted = client.apps().replicaSets().withName("repl1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().replicaSets().withName("repl2").delete();
+    deleted = client.apps().replicaSets().withName("repl2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete();
+    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete().size() == 1;
     assertTrue(deleted);
   }
 

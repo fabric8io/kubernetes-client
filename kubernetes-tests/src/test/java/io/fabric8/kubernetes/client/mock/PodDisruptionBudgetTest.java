@@ -125,7 +125,7 @@ public class PodDisruptionBudgetTest {
       .build()).once();
 
 
-    Boolean deleted = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").delete();
+    boolean deleted = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").delete().size() == 1;
     assertNotNull(deleted);
     assertTrue(deleted);
   }
@@ -134,7 +134,7 @@ public class PodDisruptionBudgetTest {
   public void testDeleteWithNamespaceMismatch() {
     PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
 
-    Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
+    Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1).size() == 1;
     assertFalse(deleted);
   }
 

@@ -105,7 +105,7 @@ class FlowSchemaTest {
       .once();
 
     // When
-    Boolean isDeleted = client.flowControl().v1beta1().flowSchema().withName("flowschema1").delete();
+    boolean isDeleted = client.flowControl().v1beta1().flowSchema().withName("flowschema1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

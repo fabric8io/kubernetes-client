@@ -74,7 +74,7 @@ class CredentialsRequestTest {
       .once();
 
     // When
-    Boolean isDeleted = client.credentialsRequests().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.credentialsRequests().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -78,7 +78,7 @@ class ClusterClaimTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().clusterClaims().inNamespace("ns1").withName("clusterclaim1").delete();
+    boolean isDeleted = client.hive().clusterClaims().inNamespace("ns1").withName("clusterclaim1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

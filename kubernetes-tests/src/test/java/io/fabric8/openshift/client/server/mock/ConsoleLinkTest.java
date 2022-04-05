@@ -93,7 +93,7 @@ class ConsoleLinkTest {
       .once();
 
     // When
-    Boolean deleted = client.console().consoleLinks().withName("foo").delete();
+    boolean deleted = client.console().consoleLinks().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

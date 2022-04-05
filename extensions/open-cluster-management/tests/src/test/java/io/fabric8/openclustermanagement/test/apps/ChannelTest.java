@@ -76,7 +76,7 @@ class ChannelTest {
         .once();
 
     // When
-    Boolean isDeleted = client.apps().channels().inNamespace("ns1").withName("sample-channel").delete();
+    boolean isDeleted = client.apps().channels().inNamespace("ns1").withName("sample-channel").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

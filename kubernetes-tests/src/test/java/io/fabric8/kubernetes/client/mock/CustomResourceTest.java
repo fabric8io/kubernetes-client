@@ -225,7 +225,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1")
-        .withName("example-hello").delete();
+        .withName("example-hello").delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -246,7 +246,7 @@ class CustomResourceTest {
 
     // When
     boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1")
-        .withName("idontexist").delete();
+        .withName("idontexist").delete().size() == 1;
 
     // Then
     assertFalse(isDeleted);
@@ -262,7 +262,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-        .inNamespace("ns1").withName("example-hello").cascading(false).delete();
+        .inNamespace("ns1").withName("example-hello").cascading(false).delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -283,7 +283,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -311,7 +311,7 @@ class CustomResourceTest {
         .withName("example-hello")
         .withPropagationPolicy(DeletionPropagation.ORPHAN)
         .withGracePeriod(0L)
-        .delete();
+        .delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -329,10 +329,10 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
 
     // Then
-    assertTrue(result);
+    assertFalse(result);
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
@@ -342,7 +342,7 @@ class CustomResourceTest {
   @Test
   void testDeleteWithNonExistentResource() throws IOException {
     assertThat(client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns2").withName("example-hello")
-        .delete())
+        .delete().size() == 1)
             .isFalse();
   }
 

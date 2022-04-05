@@ -141,13 +141,13 @@ class TemplateTest {
     server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder().build()).once();
 
 
-    Boolean deleted = client.templates().withName("tmpl1").delete();
+    boolean deleted = client.templates().withName("tmpl1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.templates().withName("tmpl2").delete();
+    deleted = client.templates().withName("tmpl2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.templates().inNamespace("ns1").withName("tmpl2").delete();
+    deleted = client.templates().inNamespace("ns1").withName("tmpl2").delete().size() == 1;
     assertTrue(deleted);
   }
 

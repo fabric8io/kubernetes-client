@@ -120,7 +120,7 @@ class NetworkPolicyCrudTest {
 
 
     //test of deletion
-    boolean deleted = client.network().networkPolicies().delete();
+    boolean deleted = client.network().networkPolicies().delete().size() == 1;
     assertTrue(deleted);
     networkPolicyList = client.network().networkPolicies().list();
     assertEquals(0,networkPolicyList.getItems().size());

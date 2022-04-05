@@ -137,13 +137,13 @@ class ReplicationControllerTest {
       .build()).times(5);
 
 
-    Boolean deleted = client.replicationControllers().withName("repl1").delete();
+    boolean deleted = client.replicationControllers().withName("repl1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.replicationControllers().withName("repl2").delete();
+    deleted = client.replicationControllers().withName("repl2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.replicationControllers().inNamespace("ns1").withName("repl2").delete();
+    deleted = client.replicationControllers().inNamespace("ns1").withName("repl2").delete().size() == 1;
     assertTrue(deleted);
   }
 

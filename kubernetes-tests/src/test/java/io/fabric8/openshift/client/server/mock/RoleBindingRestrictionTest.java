@@ -74,7 +74,7 @@ class RoleBindingRestrictionTest {
       .once();
 
     // When
-    Boolean isDeleted = client.roleBindingRestrictions().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.roleBindingRestrictions().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

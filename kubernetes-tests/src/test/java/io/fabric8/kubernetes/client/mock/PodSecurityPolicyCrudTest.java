@@ -95,7 +95,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of deletion
-    boolean deleted = client.policy().v1beta1().podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.policy().v1beta1().podSecurityPolicies().delete(podSecurityPolicy).size() == 1;
     assertTrue(deleted);
     podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());

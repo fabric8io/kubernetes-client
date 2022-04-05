@@ -76,7 +76,7 @@ class GitOpsClusterTest {
         .once();
 
     // When
-    Boolean isDeleted = client.apps().gitOpsClusters().inNamespace("ns1").withName("sample-goc").delete();
+    boolean isDeleted = client.apps().gitOpsClusters().inNamespace("ns1").withName("sample-goc").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

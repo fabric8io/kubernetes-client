@@ -74,7 +74,7 @@ class HostSubnetTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hostSubnets().withName("test-delete").delete();
+    boolean isDeleted = client.hostSubnets().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

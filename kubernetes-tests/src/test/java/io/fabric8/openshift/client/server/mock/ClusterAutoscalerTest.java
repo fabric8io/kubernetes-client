@@ -74,7 +74,7 @@ class ClusterAutoscalerTest {
       .once();
 
     // When
-    Boolean isDeleted = client.clusterAutoscaling().v1().clusterAutoscalers().withName("cluster").delete();
+    boolean isDeleted = client.clusterAutoscaling().v1().clusterAutoscalers().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

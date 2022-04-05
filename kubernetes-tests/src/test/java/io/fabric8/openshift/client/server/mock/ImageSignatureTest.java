@@ -54,7 +54,7 @@ class ImageSignatureTest {
       .once();
 
     // When
-    Boolean isDeleted = client.imageSignatures().withName("test-delete").delete();
+    boolean isDeleted = client.imageSignatures().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

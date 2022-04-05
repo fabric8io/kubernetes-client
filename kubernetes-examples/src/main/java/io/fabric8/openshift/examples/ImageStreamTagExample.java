@@ -48,7 +48,7 @@ public class ImageStreamTagExample {
       logger.info("ImageStreamTags in {}:", project);
       client.imageStreamTags().inNamespace(project).list().getItems().forEach(ist ->
         logger.info(" - {}", ist.getMetadata().getName()));
-      final boolean deletedIsTag = client.imageStreamTags().withName(isTagName).delete();
+      final boolean deletedIsTag = client.imageStreamTags().withName(isTagName).delete().size() == 1;
       logger.info("Deleted ImageStreamTag: {}", deletedIsTag);
     }
   }

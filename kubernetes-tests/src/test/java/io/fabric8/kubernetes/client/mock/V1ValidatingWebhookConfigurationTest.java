@@ -113,7 +113,7 @@ public class V1ValidatingWebhookConfigurationTest {
 
     // When
     Boolean isDeleted = client.admissionRegistration().v1().validatingWebhookConfigurations()
-        .withName("validatingWebhookConfiguration1").delete();
+        .withName("validatingWebhookConfiguration1").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

@@ -76,7 +76,7 @@ class SelectorSyncSetTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().selectorSyncSets().withName("selectorsyncset1").delete();
+    boolean isDeleted = client.hive().selectorSyncSets().withName("selectorsyncset1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

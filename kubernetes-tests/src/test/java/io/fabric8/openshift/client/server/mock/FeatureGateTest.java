@@ -93,7 +93,7 @@ class FeatureGateTest {
       .once();
 
     // When
-    Boolean deleted = client.config().featureGates().withName("foo").delete();
+    boolean deleted = client.config().featureGates().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

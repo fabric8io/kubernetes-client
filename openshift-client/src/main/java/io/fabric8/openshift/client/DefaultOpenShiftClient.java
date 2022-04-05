@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
@@ -360,7 +361,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
     return new NameableCreateOrDeleteable() {
 
       @Override
-      public boolean delete() {
+      public List<StatusDetails> delete() {
         return operation.delete();
       }
 

@@ -122,7 +122,7 @@ public class V1CustomResourceDefinitionTest {
         .andReturn(HttpURLConnection.HTTP_OK, customResourceDefinition).once();
 
     Boolean deleted = client.apiextensions().v1().customResourceDefinitions().withName("sparkclusters.radanalytics.io")
-        .delete();
+        .delete().size() == 1;
     assertTrue(deleted);
   }
 

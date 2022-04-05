@@ -74,7 +74,7 @@ class DNSTest {
       .once();
 
     // When
-    Boolean isDeleted = client.config().dnses().withName("cluster").delete();
+    boolean isDeleted = client.config().dnses().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

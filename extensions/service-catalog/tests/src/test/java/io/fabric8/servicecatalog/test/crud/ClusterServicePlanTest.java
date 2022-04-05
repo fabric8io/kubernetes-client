@@ -89,7 +89,7 @@ class ClusterServicePlanTest {
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.clusterServicePlans().withName("plan1").delete());
+    assertTrue(client.clusterServicePlans().withName("plan1").delete().size() == 1);
     assertNull(client.clusterServicePlans().withName("plan1").get());
   }
 }

@@ -74,7 +74,7 @@ class OverlappingRangeIPReservationTest {
       .once();
 
     // When
-    Boolean isDeleted = client.whereabouts().overlappingRangeIpReservations().inNamespace("ns1").withName("orir").delete();
+    boolean isDeleted = client.whereabouts().overlappingRangeIpReservations().inNamespace("ns1").withName("orir").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

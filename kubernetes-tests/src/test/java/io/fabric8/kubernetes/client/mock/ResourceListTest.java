@@ -126,12 +126,11 @@ public class ResourceListTest {
     server.expect().withPath("/api/v1/namespaces/any/pods/pod3").andReturn(HTTP_OK, pod3).times(1);
 
     //First time all items should be deleted.
-    Boolean deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete();
+    Boolean deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete().size() == 3;
     assertTrue(deleted);
 
     //Now we expect pod3 to fail.
-    deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete();
-    // always return true
+    deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete().size() == 2;
     assertTrue(deleted);
   }
 

@@ -79,13 +79,13 @@ class OAuthClientTest {
    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
 
 
-    Boolean deleted = client.oAuthClients().withName("client1").delete();
+    boolean deleted = client.oAuthClients().withName("client1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.oAuthClients().withName("client2").delete();
+    deleted = client.oAuthClients().withName("client2").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.oAuthClients().withName("client3").delete();
+    deleted = client.oAuthClients().withName("client3").delete().size() == 1;
     assertFalse(deleted);
   }
 }

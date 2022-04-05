@@ -133,16 +133,27 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
     if (detectWatchMode(path)) {
       return handleWatch(path);
     }
+    return handle(path, null);
+  }
+
+  private interface EventProcessor {
+    void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes);
+  }
+
+  private MockResponse handle(String path, EventProcessor eventProcessor) {
     MockResponse response = new MockResponse();
     List<String> items = new ArrayList<>();
     AttributeSet query = attributeExtractor.fromPath(path);
 
     synchronized (map) {
-      map.entrySet().stream()
+      new ArrayList<>(map.entrySet()).stream()
           .filter(entry -> entry.getKey().matches(query))
           .forEach(entry -> {
             LOGGER.debug("Entry found for query {} : {}", query, entry);
             items.add(entry.getValue());
+            if (eventProcessor != null) {
+              eventProcessor.processEvent(path, query, entry.getKey());
+            }
           });
     }
 
@@ -262,7 +273,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
    */
   @Override
   public MockResponse handleDelete(String path) {
-    return new MockResponse().setResponseCode(doDelete(path));
+    return handle(path, (p, a, o) -> processEvent(path, a, o, null));
   }
 
   /**
@@ -326,17 +337,6 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
       }
     }
     return name.isEmpty() ? null : name;
-  }
-
-  private int doDelete(String path) {
-    AttributeSet fromPath = attributeExtractor.fromPath(path);
-    List<AttributeSet> items = findItems(fromPath);
-
-    if (items.isEmpty())
-      return HttpURLConnection.HTTP_NOT_FOUND;
-
-    items.forEach(item -> processEvent(path, fromPath, item, null));
-    return HttpURLConnection.HTTP_OK;
   }
 
   private void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes, String newState) {

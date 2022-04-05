@@ -74,7 +74,7 @@ class MachineConfigPoolTest {
       .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().machineConfigPools().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().machineConfigPools().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

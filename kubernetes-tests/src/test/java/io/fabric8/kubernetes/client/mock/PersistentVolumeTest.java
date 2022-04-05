@@ -93,7 +93,7 @@ public class PersistentVolumeTest {
   @Test
   public void testDelete() {
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, new PersistentVolumeBuilder().build()).once();
-    Boolean deleted = client.persistentVolumes().withName("persistentvolume1").delete();
+    boolean deleted = client.persistentVolumes().withName("persistentvolume1").delete().size() == 1;
     assertTrue(deleted);
   }
 

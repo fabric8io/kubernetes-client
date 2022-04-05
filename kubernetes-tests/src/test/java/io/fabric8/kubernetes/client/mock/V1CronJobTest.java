@@ -176,11 +176,11 @@ class V1CronJobTest {
       .endSpec()
       .build()).once();
 
-    Boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").delete();
+    boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").delete().size() == 1;
     assertNotNull(deleted);
     assertTrue(deleted);
 
-    deleted = client.batch().v1().cronjobs().withName("cronJob2").delete();
+    deleted = client.batch().v1().cronjobs().withName("cronJob2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -219,7 +219,7 @@ class V1CronJobTest {
     Boolean deleted = client.batch().v1().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
     assertTrue(deleted);
 
-    deleted = client.batch().v1().cronjobs().inAnyNamespace().delete(cronjob3);
+    deleted = client.batch().v1().cronjobs().inAnyNamespace().delete(cronjob3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -227,7 +227,7 @@ class V1CronJobTest {
   void testDeleteWithNamespaceMismatch() {
     CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
     NonNamespaceOperation<CronJob, CronJobList, Resource<CronJob>> cronJobOp = client.batch().v1().cronjobs().inNamespace("test1");
-    assertFalse(cronJobOp.delete(cronjob1));
+    assertFalse(cronJobOp.delete(cronjob1).size() == 1);
   }
 
   @Test

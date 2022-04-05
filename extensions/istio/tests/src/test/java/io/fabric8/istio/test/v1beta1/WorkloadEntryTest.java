@@ -86,7 +86,7 @@ class WorkloadEntryTest {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/workloadentries/service3")
         .andReturn(HttpURLConnection.HTTP_OK, new WorkloadEntryBuilder().build())
         .once();
-    Boolean deleted = client.v1beta1().workloadEntries().inNamespace("ns3").withName("service3").delete();
+    boolean deleted = client.v1beta1().workloadEntries().inNamespace("ns3").withName("service3").delete().size() == 1;
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
@@ -101,7 +101,7 @@ class WorkloadEntryTest {
         .andReturn(HttpURLConnection.HTTP_OK, new WorkloadEntryBuilder().build())
         .once();
     Boolean deleted = client.v1beta1().workloadEntries().inNamespace("ns3").withName("service3")
-        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();

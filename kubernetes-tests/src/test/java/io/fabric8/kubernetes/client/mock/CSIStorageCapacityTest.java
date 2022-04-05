@@ -85,7 +85,7 @@ class CSIStorageCapacityTest {
       .once();
 
     // When
-    Boolean isDeleted = client.storage().csiStorageCapacities().inNamespace("default").withName("c1").delete();
+    boolean isDeleted = client.storage().csiStorageCapacities().inNamespace("default").withName("c1").delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

@@ -131,7 +131,7 @@ class SecurityContextConstraintsCrudTest {
     assertEquals("admin-group", scc.getGroups().get(0));
 
     //test of deletion
-    boolean deleted = client.securityContextConstraints().delete(scc);
+    boolean deleted = client.securityContextConstraints().delete(scc).size() == 1;
     assertTrue(deleted);
     sccList = client.securityContextConstraints().list();
     assertEquals(0,sccList.getItems().size());

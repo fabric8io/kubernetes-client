@@ -74,7 +74,7 @@ class ConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operator().configs().withName("cluster").delete();
+    boolean isDeleted = client.operator().configs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

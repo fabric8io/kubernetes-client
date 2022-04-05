@@ -76,7 +76,7 @@ class ClusterDeprovisionTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().clusterDeprovisions().inNamespace("ns1").withName("clusterdeprovision1").delete();
+    boolean isDeleted = client.hive().clusterDeprovisions().inNamespace("ns1").withName("clusterdeprovision1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

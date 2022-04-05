@@ -80,7 +80,7 @@ class KlusterletAddonConfigTest {
 
     // When
     Boolean isDeleted = client.agents().klusterletAddonConfigs().inNamespace("ns1").withName("sample-klusterletaddonconfig")
-        .delete();
+        .delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

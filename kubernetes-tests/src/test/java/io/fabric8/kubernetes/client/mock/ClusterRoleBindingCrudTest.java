@@ -122,7 +122,7 @@ class ClusterRoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesClusterRoleBinding.getRoleRef().getApiGroup());
 
     //test of deletion
-    boolean deleted = client.rbac().clusterRoleBindings().delete();
+    boolean deleted = client.rbac().clusterRoleBindings().delete().size() == 1;
 
     assertTrue(deleted);
     kubernetesClusterRoleBindingList = client.rbac().clusterRoleBindings().list();

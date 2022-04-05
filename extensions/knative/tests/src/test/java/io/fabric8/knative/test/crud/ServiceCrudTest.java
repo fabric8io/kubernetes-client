@@ -78,7 +78,7 @@ class ServiceCrudTest {
     Service service3 = new ServiceBuilder().withNewMetadata().withName("service3").endMetadata().build();
 
     client.services().inNamespace("ns3").create(service3);
-    Boolean deleted = client.services().inNamespace("ns3").withName("service3").delete();
+    boolean deleted = client.services().inNamespace("ns3").withName("service3").delete().size() == 1;
     assertTrue(deleted);
   }
 }

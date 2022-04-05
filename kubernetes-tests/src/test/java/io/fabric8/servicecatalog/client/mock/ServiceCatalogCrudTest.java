@@ -153,7 +153,7 @@ class ServiceCatalogCrudTest {
 
     client.clusterServiceBrokers().create(broker);
 
-    assertTrue(client.clusterServiceBrokers().withName("broker").delete());
+    assertTrue(client.clusterServiceBrokers().withName("broker").delete().size() == 1);
     assertNull(client.clusterServiceBrokers().withName("broker").get());
   }
 

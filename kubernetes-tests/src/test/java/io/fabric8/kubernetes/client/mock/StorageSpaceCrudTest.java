@@ -79,7 +79,7 @@ public class StorageSpaceCrudTest {
     assertEquals(1, storageClass.getMetadata().getLabels().size());
 
     //test delete
-    boolean result = client.storage().storageClasses().delete(storageClass);
+    boolean result = client.storage().storageClasses().delete(storageClass).size() == 1;
     assertEquals(true, result);
     StorageClassList storageClassList2 = client.storage().storageClasses().list();
     assertEquals(0, storageClassList2.getItems().size());

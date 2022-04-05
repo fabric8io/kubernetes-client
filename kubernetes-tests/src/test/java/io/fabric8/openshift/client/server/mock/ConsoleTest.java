@@ -74,7 +74,7 @@ class ConsoleTest {
       .once();
 
     // When
-    Boolean isDeleted = client.config().consoles().withName("cluster").delete();
+    boolean isDeleted = client.config().consoles().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

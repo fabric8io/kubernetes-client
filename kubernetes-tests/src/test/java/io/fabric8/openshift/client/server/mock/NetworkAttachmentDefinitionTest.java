@@ -74,7 +74,7 @@ class NetworkAttachmentDefinitionTest {
       .once();
 
     // When
-    Boolean isDeleted = client.networkAttachmentDefinitions().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.networkAttachmentDefinitions().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

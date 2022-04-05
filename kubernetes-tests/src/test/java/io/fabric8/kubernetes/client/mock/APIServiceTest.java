@@ -97,7 +97,7 @@ class APIServiceTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apiServices().withName("v1alpha1.demo.fabric8.io").delete();
+    boolean isDeleted = client.apiServices().withName("v1alpha1.demo.fabric8.io").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

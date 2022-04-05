@@ -74,7 +74,7 @@ class StorageTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operator().storages().withName("cluster").delete();
+    boolean isDeleted = client.operator().storages().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

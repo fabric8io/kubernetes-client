@@ -20,8 +20,6 @@ public class RemoveBroker {
 
   public static void main(String[] args) {
       ServiceCatalogClient client = ClientFactory.newClient(args);
-      if(client.clusterServiceBrokers().withName("my-broker").delete()) {
-          System.out.println("Broker successfully deleted!");
-     }
+      client.clusterServiceBrokers().withName("my-broker").delete();
   }
 }

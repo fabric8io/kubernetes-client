@@ -74,7 +74,7 @@ class PodNetworkConnectivityCheckTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operator().podNetworkConnectivityChecks().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.operator().podNetworkConnectivityChecks().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

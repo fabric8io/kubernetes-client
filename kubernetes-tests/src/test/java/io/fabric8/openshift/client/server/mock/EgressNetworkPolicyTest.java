@@ -93,7 +93,7 @@ class EgressNetworkPolicyTest {
       .once();
 
     // When
-    Boolean deleted = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

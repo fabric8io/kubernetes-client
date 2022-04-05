@@ -15,16 +15,21 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.StatusDetails;
+
+import java.util.List;
+
 public interface Deletable {
 
   /**
-   * If this is at a single item context, deletes resource and all managed resources, returns false if not found.
-   * <br>
-   * If this is at a list/collection context, it will always return true
+   * Deletes the resources at this context and returns the {@link StatusDetails} of resources marked for deletion
+   * as determined by the api server response(s).
+   * <p>
+   * It is not guaranteed that the returned list will contain all values marked for deletion
+   * - see  <a href="#{@link}">{@link https://github.com/fabric8io/kubernetes-client/pull/3058}</a>
    *
-   * @return value false only if in a single item context the item is not deleted
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */
-  boolean delete();
+  List<StatusDetails> delete();
 
 }

@@ -63,7 +63,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.configMaps().inNamespace("ns1").withName("myconfigMap").delete();
+    boolean isDeleted = client.configMaps().inNamespace("ns1").withName("myconfigMap").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -79,7 +79,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.configMaps().inNamespace("ns1").withName("myconfigMap").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    boolean isDeleted = client.configMaps().inNamespace("ns1").withName("myconfigMap").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -95,7 +95,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.services().inNamespace("ns1").withName("myservice").delete();
+    boolean isDeleted = client.services().inNamespace("ns1").withName("myservice").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -111,7 +111,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.services().inNamespace("ns1").withName("myservice").delete();
+    boolean isDeleted = client.services().inNamespace("ns1").withName("myservice").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -127,7 +127,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.secrets().inNamespace("ns1").withName("mysecret").delete();
+    boolean isDeleted = client.secrets().inNamespace("ns1").withName("mysecret").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -143,7 +143,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.secrets().inNamespace("ns1").withName("mysecret").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    boolean isDeleted = client.secrets().inNamespace("ns1").withName("mysecret").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -159,7 +159,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").delete();
+    boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -175,7 +175,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -191,7 +191,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
+    boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -207,7 +207,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apps().statefulSets().inNamespace("ns1").withName("mystatefulset").delete();
+    boolean isDeleted = client.apps().statefulSets().inNamespace("ns1").withName("mystatefulset").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -223,7 +223,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apps().statefulSets().inNamespace("ns1").withName("mystatefulset").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    boolean isDeleted = client.apps().statefulSets().inNamespace("ns1").withName("mystatefulset").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -240,7 +240,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.replicationControllers().inNamespace("ns1").withName("myreplicationcontroller").delete();
+    boolean isDeleted = client.replicationControllers().inNamespace("ns1").withName("myreplicationcontroller").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -257,7 +257,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.replicationControllers().inNamespace("ns1").withName("myreplicationcontroller").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    boolean isDeleted = client.replicationControllers().inNamespace("ns1").withName("myreplicationcontroller").withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -274,7 +274,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").delete();
+    boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -291,7 +291,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -309,7 +309,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.resource(testPod).inNamespace("foo").delete();
+    Boolean isDeleted = client.resource(testPod).inNamespace("foo").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -327,7 +327,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -345,7 +345,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(5L).delete();
+    Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(5L).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -363,7 +363,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").delete();
+    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -381,7 +381,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -399,7 +399,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withGracePeriod(10L).withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withGracePeriod(10L).withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -422,7 +422,7 @@ class PropagationPolicyTest {
       .withScope("Namespaced")
       .withVersion("v1alpha1")
       .build())
-        .inNamespace("ns1").withName("example-hello").delete();
+        .inNamespace("ns1").withName("example-hello").delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -439,7 +439,7 @@ class PropagationPolicyTest {
       .customResources(PodSet.class);
 
     // When
-    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete();
+    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -453,7 +453,7 @@ class PropagationPolicyTest {
     KubernetesClient kubernetesClient = setMockExpectationsForFilterDeletionAndGetClient("labelSelector=myLabel");
 
     // When
-    Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withLabel("myLabel").withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withLabel("myLabel").withPropagationPolicy(DeletionPropagation.BACKGROUND).delete().size() == 2;
 
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -468,7 +468,7 @@ class PropagationPolicyTest {
     KubernetesClient kubernetesClient = setMockExpectationsForFilterDeletionAndGetClient("labelSelector=" + Utils.toUrlEncoded("foo=bar"));
 
     // When
-    Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withLabels(Collections.singletonMap("foo", "bar")).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withLabels(Collections.singletonMap("foo", "bar")).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete().size() == 2;
 
     // Then
     assertTrue(isDeleted);
@@ -483,7 +483,7 @@ class PropagationPolicyTest {
     KubernetesClient kubernetesClient = setMockExpectationsForFilterDeletionAndGetClient("fieldSelector=" + Utils.toUrlEncoded("status.phase=Running"));
 
     // When
-    Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withField("status.phase", "Running").withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withField("status.phase", "Running").withPropagationPolicy(DeletionPropagation.BACKGROUND).delete().size() == 2;
 
     // Then
     assertTrue(isDeleted);
@@ -496,14 +496,8 @@ class PropagationPolicyTest {
   private KubernetesClient setMockExpectationsForFilterDeletionAndGetClient(String filter) {
     Service svc1 = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
     Service svc2 = new ServiceBuilder().withNewMetadata().withName("svc2").endMetadata().build();
-    server.expect().get().withPath("/api/v1/namespaces/myNameSpace/services?" + filter)
+    server.expect().delete().withPath("/api/v1/namespaces/myNameSpace/services?" + filter)
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceListBuilder().addToItems(svc1, svc2).build())
-      .once();
-    server.expect().delete().withPath("/api/v1/namespaces/myNameSpace/services/svc1")
-      .andReturn(HttpURLConnection.HTTP_OK, svc1)
-      .once();
-    server.expect().delete().withPath("/api/v1/namespaces/myNameSpace/services/svc2")
-      .andReturn(HttpURLConnection.HTTP_OK, svc2)
       .once();
     return client;
   }

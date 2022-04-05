@@ -74,7 +74,7 @@ class KubeletConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().kubeletConfigs().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().kubeletConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -73,7 +73,7 @@ public class SecretCrudTest {
     assertNotNull(aSecretList);
     assertEquals(2, aSecretList.getItems().size());
 
-    boolean bDeleted = client.secrets().inNamespace("ns1").withName("secret1").delete();
+    boolean bDeleted = client.secrets().inNamespace("ns1").withName("secret1").delete().size() == 1;
     aSecretList = client.secrets().inNamespace("ns1").list();
     assertTrue(bDeleted);
     assertNotNull(aSecretList);

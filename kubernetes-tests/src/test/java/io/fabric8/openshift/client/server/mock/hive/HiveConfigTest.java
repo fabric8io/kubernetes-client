@@ -76,7 +76,7 @@ class HiveConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().hiveConfigs().withName("hiveconfig1").delete();
+    boolean isDeleted = client.hive().hiveConfigs().withName("hiveconfig1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

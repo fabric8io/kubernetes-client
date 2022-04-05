@@ -74,7 +74,7 @@ class ProfileTest {
       .once();
 
     // When
-    Boolean isDeleted = client.tuned().profiles().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.tuned().profiles().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

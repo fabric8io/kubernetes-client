@@ -87,13 +87,13 @@ class UserTest {
    server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
 
 
-    Boolean deleted = client.users().withName("user1").delete();
+    boolean deleted = client.users().withName("user1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.users().withName("User2").delete();
+    deleted = client.users().withName("User2").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.users().withName("User3").delete();
+    deleted = client.users().withName("User3").delete().size() == 1;
     assertFalse(deleted);
   }
 }

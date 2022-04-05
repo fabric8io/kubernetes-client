@@ -244,7 +244,7 @@ Once the resource is loaded, you can treat it as you would, had you created it y
 For example lets read a pod, from a yml file and work with it:
 
     Pod refreshed = client.load('/path/to/a/pod.yml').fromServer().get();
-    Boolean deleted = client.load('/workspace/pod.yml').delete();
+    client.load('/workspace/pod.yml').delete();
     LogWatch handle = client.load('/workspace/pod.yml').watchLog(System.out);
 
 ### Passing a reference of a resource to the client
@@ -254,7 +254,7 @@ In the same spirit you can use an object created externally (either a reference 
 For example:
 
     Pod pod = someThirdPartyCodeThatCreatesAPod();
-    Boolean deleted = client.resource(pod).delete();
+    client.resource(pod).delete();
 
 ### Adapting the client
 

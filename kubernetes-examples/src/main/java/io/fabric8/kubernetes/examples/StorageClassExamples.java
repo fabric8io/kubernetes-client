@@ -67,8 +67,7 @@ public class StorageClassExamples {
       logger.info("Updated storage class details:\n{}", updatedStorageClass);
 
       //delete storage class
-      boolean isDeleteSuccessful = client.storage().storageClasses().delete(storageClass);
-      logger.info("Storage Class resource successfully deleted: {}", isDeleteSuccessful);
+      client.resource(storageClass).delete();
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

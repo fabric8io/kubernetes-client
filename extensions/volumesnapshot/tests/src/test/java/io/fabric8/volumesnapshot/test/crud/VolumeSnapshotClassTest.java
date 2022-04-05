@@ -86,7 +86,7 @@ class VolumeSnapshotClassTest {
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(scr1.delete());
+    assertTrue(scr1.delete().size() == 1);
     assertNull(scr1.get());
   }
 }

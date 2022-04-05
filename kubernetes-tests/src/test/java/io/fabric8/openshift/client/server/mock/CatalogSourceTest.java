@@ -93,7 +93,7 @@ class CatalogSourceTest {
       .once();
 
     // When
-    Boolean deleted = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

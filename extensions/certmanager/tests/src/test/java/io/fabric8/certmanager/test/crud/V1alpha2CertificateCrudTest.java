@@ -57,7 +57,7 @@ class V1alpha2CertificateCrudTest {
 
     Certificate certificate3 = new CertificateBuilder().withNewMetadata().withName("cert3").endMetadata().build();
     client.v1alpha2().certificates().inNamespace("ns3").create(certificate3);
-    Boolean deleted = client.v1alpha2().certificates().inNamespace("ns3").withName("cert3").delete();
+    boolean deleted = client.v1alpha2().certificates().inNamespace("ns3").withName("cert3").delete().size() == 1;
     assertTrue(deleted);
   }
 

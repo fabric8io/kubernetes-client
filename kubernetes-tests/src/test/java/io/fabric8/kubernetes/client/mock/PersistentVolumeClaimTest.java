@@ -118,13 +118,13 @@ class PersistentVolumeClaimTest {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
 
-    Boolean deleted = client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim1").delete();
+    boolean deleted = client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").delete();
+    deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").delete();
+    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -140,7 +140,7 @@ class PersistentVolumeClaimTest {
     Boolean deleted = client.persistentVolumeClaims().inAnyNamespace().delete(persistentVolumeClaim1, persistentVolumeClaim2);
     assertTrue(deleted);
 
-    deleted = client.persistentVolumeClaims().inAnyNamespace().delete(persistentVolumeClaim3);
+    deleted = client.persistentVolumeClaims().inAnyNamespace().delete(persistentVolumeClaim3).size() == 1;
     assertFalse(deleted);
   }
 

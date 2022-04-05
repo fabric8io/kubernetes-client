@@ -76,7 +76,7 @@ class ClusterRelocateTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().clusterRelocates().inNamespace("ns1").withName("clusterrelocate1").delete();
+    boolean isDeleted = client.hive().clusterRelocates().inNamespace("ns1").withName("clusterrelocate1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

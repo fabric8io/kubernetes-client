@@ -78,7 +78,7 @@ class SyncIdentityProviderTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().syncIdentityProviders().inNamespace("ns1").withName("syncidentityprovider1").delete();
+    boolean isDeleted = client.hive().syncIdentityProviders().inNamespace("ns1").withName("syncidentityprovider1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

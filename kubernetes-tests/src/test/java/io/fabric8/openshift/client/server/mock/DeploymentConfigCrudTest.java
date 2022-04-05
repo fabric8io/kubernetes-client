@@ -100,7 +100,7 @@ class DeploymentConfigCrudTest {
     assertEquals(2, deploymentConfig3.getMetadata().getLabels().size());
 
     // ! Doesn't work
-    // boolean bDeleted = client.deploymentConfigs().inNamespace("ns1").withName("deploymentConfig2").delete();
+    // boolean bDeleted = client.deploymentConfigs().inNamespace("ns1").withName("deploymentConfig2").delete().size() == 1;
     // assertTrue(bDeleted);
   }
 }

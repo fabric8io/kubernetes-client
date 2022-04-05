@@ -71,8 +71,7 @@ public class SecretExamples {
       logger.info("Updated Secret details:\n{}", updatedSecret);
 
       //delete Secret
-      boolean isDeleteSuccessful = client.secrets().inNamespace(namespace).delete(secret);
-      logger.info("Secret resource successfully deleted: {}", isDeleteSuccessful);
+      client.resource(secret).inNamespace(namespace).delete();
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

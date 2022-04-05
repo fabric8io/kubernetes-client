@@ -93,7 +93,7 @@ class ImageContentSourcePolicyTest {
       .once();
 
     // When
-    Boolean deleted = client.operator().imageContentSourcePolicies().withName("foo").delete();
+    boolean deleted = client.operator().imageContentSourcePolicies().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

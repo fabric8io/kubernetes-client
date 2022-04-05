@@ -74,7 +74,7 @@ class ClusterRoleTest {
       .once();
 
     // When
-    Boolean isDeleted = client.clusterRoles().withName("cluster").delete();
+    boolean isDeleted = client.clusterRoles().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

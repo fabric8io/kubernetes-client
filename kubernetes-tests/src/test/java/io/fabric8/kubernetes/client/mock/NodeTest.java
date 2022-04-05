@@ -74,14 +74,14 @@ public class NodeTest {
    server.expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
 
 
-    Boolean deleted = client.nodes().withName("node1").delete();
+    boolean deleted = client.nodes().withName("node1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.nodes().withName("node2").delete();
+    deleted = client.nodes().withName("node2").delete().size() == 1;
     assertTrue(deleted);
 
 
-    deleted = client.nodes().withName("node3").delete();
+    deleted = client.nodes().withName("node3").delete().size() == 1;
     assertFalse(deleted);
   }
 

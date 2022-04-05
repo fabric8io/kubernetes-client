@@ -140,8 +140,8 @@ class V1IngressClassTest {
     server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
 
     // When
-    Boolean result1 = client.network().v1().ingressClasses().withName("ingressClass1").delete();
-    Boolean result2 = client.network().v1().ingressClasses().withName("ingressClass2").delete();
+    boolean result1 = client.network().v1().ingressClasses().withName("ingressClass1").delete().size() == 1;
+    boolean result2 = client.network().v1().ingressClasses().withName("ingressClass2").delete().size() == 1;
 
     // Then
     assertTrue(result1);

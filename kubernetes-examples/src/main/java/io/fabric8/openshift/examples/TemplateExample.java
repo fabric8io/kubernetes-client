@@ -83,7 +83,7 @@ public class TemplateExample {
         List<HasMetadata> l = client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
         logger.info("{}", l.size());
 
-        final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete();
+        final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete().size() == 1;
         logger.info("Template {} was {}deleted", DEFAULT_NAME_OF_TEMPLATE, templateDeleted ? "" : "**NOT** ");
         client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).inNamespace(NAMESPACE).create();
       } finally {

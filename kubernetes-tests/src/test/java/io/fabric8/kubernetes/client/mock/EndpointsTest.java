@@ -119,13 +119,13 @@ public class EndpointsTest {
     server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint1").andReturn(200, new EndpointsBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, new EndpointsBuilder().build()).once();
 
-    Boolean deleted = client.endpoints().inNamespace("test").withName("endpoint1").delete();
+    boolean deleted = client.endpoints().inNamespace("test").withName("endpoint1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.endpoints().withName("endpoint2").delete();
+    deleted = client.endpoints().withName("endpoint2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.endpoints().inNamespace("ns1").withName("endpoint2").delete();
+    deleted = client.endpoints().inNamespace("ns1").withName("endpoint2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -141,7 +141,7 @@ public class EndpointsTest {
     Boolean deleted = client.endpoints().inAnyNamespace().delete(endpoint1, endpoint2);
     assertTrue(deleted);
 
-    deleted = client.endpoints().inAnyNamespace().delete(endpoint3);
+    deleted = client.endpoints().inAnyNamespace().delete(endpoint3).size() == 1;
     assertFalse(deleted);
   }
 

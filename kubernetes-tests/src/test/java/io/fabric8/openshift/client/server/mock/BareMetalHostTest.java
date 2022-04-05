@@ -74,7 +74,7 @@ class BareMetalHostTest {
       .once();
 
     // When
-    Boolean isDeleted = client.bareMetalHosts().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.bareMetalHosts().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -75,7 +75,7 @@ class OperatorConditionTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operatorHub().operatorConditions().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.operatorHub().operatorConditions().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

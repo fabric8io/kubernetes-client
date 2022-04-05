@@ -74,7 +74,7 @@ class AlertmanagerConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.monitoring().alertmanagerConfigs().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.monitoring().alertmanagerConfigs().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -111,7 +111,7 @@ class V1PriorityClassTest {
       .build()).once();
 
     // When
-    Boolean deleted = client.scheduling().v1().priorityClasses().withName("priorityclass1").delete();
+    boolean deleted = client.scheduling().v1().priorityClasses().withName("priorityclass1").delete().size() == 1;
 
     // Then
     assertNotNull(deleted);

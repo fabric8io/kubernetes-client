@@ -97,13 +97,13 @@ class SecurityContextConstraintsTest {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
 
-    Boolean deleted = client.securityContextConstraints().withName("scc1").delete();
+    boolean deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.securityContextConstraints().withName("scc1").delete();
+    deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.securityContextConstraints().withName("scc2").delete();
+    deleted = client.securityContextConstraints().withName("scc2").delete().size() == 1;
     assertTrue(deleted);
   }
 

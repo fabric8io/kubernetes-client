@@ -65,7 +65,7 @@ class ManagedClusterCrudTest {
     client.clusters().managedClusters().create(createNewManagedCluster("test-delete"));
 
     // When
-    Boolean isDeleted = client.clusters().managedClusters().withName("test-delete").delete();
+    boolean isDeleted = client.clusters().managedClusters().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -77,7 +77,7 @@ class MachineHealthCheckTest {
       .once();
 
     // When
-    Boolean isDeleted = client.machine().machineHealthChecks().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.machine().machineHealthChecks().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

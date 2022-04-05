@@ -125,7 +125,7 @@ class V1PodDisruptionBudgetTest {
       .endSpec()
       .build()).once();
 
-    Boolean deleted = client.policy().v1().podDisruptionBudget().withName("poddisruptionbudget1").delete();
+    boolean deleted = client.policy().v1().podDisruptionBudget().withName("poddisruptionbudget1").delete().size() == 1;
     assertNotNull(deleted);
     assertTrue(deleted);
   }
@@ -135,7 +135,7 @@ class V1PodDisruptionBudgetTest {
     PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
     NonNamespaceOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> pdrOp = client.policy().v1().podDisruptionBudget().inNamespace("test1");
 
-    assertFalse(pdrOp.delete(podDisruptionBudget1));
+    assertFalse(pdrOp.delete(podDisruptionBudget1).size() == 1);
   }
 
   @Test

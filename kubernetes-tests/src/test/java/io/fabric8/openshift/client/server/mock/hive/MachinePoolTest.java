@@ -76,7 +76,7 @@ class MachinePoolTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().machinePools().inNamespace("ns1").withName("machinepool1").delete();
+    boolean isDeleted = client.hive().machinePools().inNamespace("ns1").withName("machinepool1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

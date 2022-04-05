@@ -75,7 +75,7 @@ class TemplateInstanceTest {
       .once();
 
     // When
-    Boolean isDeleted = client.templateInstances().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.templateInstances().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

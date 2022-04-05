@@ -76,7 +76,7 @@ class ClusterManagerTest {
         .once();
 
     // When
-    Boolean isDeleted = client.operator().clusterManagers().withName("sample-cm").delete();
+    boolean isDeleted = client.operator().clusterManagers().withName("sample-cm").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

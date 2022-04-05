@@ -76,7 +76,7 @@ class ClusterImageSetTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().clusterImageSets().withName("clusterimageset1").delete();
+    boolean isDeleted = client.hive().clusterImageSets().withName("clusterimageset1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -138,7 +138,7 @@ public class PodTemplateTest {
       .once();
 
     // When
-    Boolean isDeleted = client.v1().podTemplates().inNamespace("test").withName("pt1").delete();
+    boolean isDeleted = client.v1().podTemplates().inNamespace("test").withName("pt1").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

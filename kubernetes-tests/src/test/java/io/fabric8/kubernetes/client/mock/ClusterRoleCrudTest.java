@@ -147,7 +147,7 @@ class ClusterRoleCrudTest {
     assertEquals("list", kubernetesClusterRole.getRules().get(0).getVerbs().get(2));
 
     //test of deletion
-    boolean deleted = client.rbac().clusterRoles().delete();
+    boolean deleted = client.rbac().clusterRoles().delete().size() == 1;
 
     assertTrue(deleted);
     kubernetesClusterRoleList = client.rbac().clusterRoles().list();

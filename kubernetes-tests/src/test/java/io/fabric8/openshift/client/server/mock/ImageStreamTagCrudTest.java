@@ -96,7 +96,7 @@ class ImageStreamTagCrudTest {
     assertEquals(false, istag.getTag().getReference());
     assertEquals(2, istag.getGeneration().intValue());
 
-    boolean deleted = client.imageStreamTags().withName("bar1:1.0.12").delete();
+    boolean deleted = client.imageStreamTags().withName("bar1:1.0.12").delete().size() == 1;
     assertTrue(deleted);
     istagList = client.imageStreamTags().list();
     assertEquals(0, istagList.getItems().size());

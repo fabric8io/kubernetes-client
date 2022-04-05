@@ -93,7 +93,7 @@ class DNSRecordTest {
       .once();
 
     // When
-    Boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

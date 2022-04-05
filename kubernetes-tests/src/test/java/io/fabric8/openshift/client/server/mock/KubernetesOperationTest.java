@@ -37,10 +37,10 @@ class KubernetesOperationTest {
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
 
-    Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
+    boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.pods().withName("pod1").cascading(false).delete();
+    deleted = client.pods().withName("pod1").cascading(false).delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -61,18 +61,18 @@ class KubernetesOperationTest {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
+    boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.pods().withName("pod1").cascading(false).delete();
+    deleted = client.pods().withName("pod1").cascading(false).delete().size() == 1;
     assertTrue(deleted);
 
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
 
-    deleted = oclient.buildConfigs().withName("bc1").cascading(false).delete();
+    deleted = oclient.buildConfigs().withName("bc1").cascading(false).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = oclient.pods().withName("pod1").cascading(false).delete();
+    deleted = oclient.pods().withName("pod1").cascading(false).delete().size() == 1;
     assertTrue(deleted);
   }
 

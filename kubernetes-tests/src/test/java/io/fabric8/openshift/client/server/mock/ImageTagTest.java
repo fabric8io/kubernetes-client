@@ -93,7 +93,7 @@ class ImageTagTest {
       .once();
 
     // When
-    Boolean deleted = client.imageTags().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.imageTags().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

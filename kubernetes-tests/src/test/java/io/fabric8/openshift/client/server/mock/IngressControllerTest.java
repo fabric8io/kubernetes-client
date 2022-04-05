@@ -93,7 +93,7 @@ class IngressControllerTest {
       .once();
 
     // When
-    Boolean deleted = client.operator().ingressControllers().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operator().ingressControllers().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

@@ -99,13 +99,13 @@ class GroupTest {
    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 
 
-    Boolean deleted = client.groups().withName("group1").delete();
+    boolean deleted = client.groups().withName("group1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.groups().withName("Group2").delete();
+    deleted = client.groups().withName("Group2").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.groups().withName("Group3").delete();
+    deleted = client.groups().withName("Group3").delete().size() == 1;
     assertFalse(deleted);
   }
 
@@ -115,13 +115,13 @@ class GroupTest {
     server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 
 
-    Boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.groups().withName("Group3").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    deleted = client.groups().withName("Group3").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
     assertFalse(deleted);
   }
 }

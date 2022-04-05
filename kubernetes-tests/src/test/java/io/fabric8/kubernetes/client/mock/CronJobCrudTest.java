@@ -124,7 +124,7 @@ class CronJobCrudTest {
     assertNotNull(cronJobList);
     assertEquals(1, cronJobList.getItems().size());
 
-    boolean bDeleted = client.batch().cronjobs().inNamespace("ns1").withName("cronJob1").delete();
+    boolean bDeleted = client.batch().cronjobs().inNamespace("ns1").withName("cronJob1").delete().size() == 1;
     cronJobList = client.batch().cronjobs().inNamespace("ns1").list();
     assertTrue(bDeleted);
     assertEquals(0, cronJobList.getItems().size());

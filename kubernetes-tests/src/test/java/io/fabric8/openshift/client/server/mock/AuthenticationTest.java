@@ -74,7 +74,7 @@ class AuthenticationTest {
       .once();
 
     // When
-    Boolean isDeleted = client.config().authentications().withName("cluster").delete();
+    boolean isDeleted = client.config().authentications().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

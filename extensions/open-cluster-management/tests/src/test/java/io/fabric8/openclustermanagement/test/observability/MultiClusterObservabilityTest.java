@@ -79,7 +79,7 @@ class MultiClusterObservabilityTest {
         .once();
 
     // When
-    Boolean isDeleted = client.observability().multiClusterObservailities().withName("sample-mch").delete();
+    boolean isDeleted = client.observability().multiClusterObservailities().withName("sample-mch").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

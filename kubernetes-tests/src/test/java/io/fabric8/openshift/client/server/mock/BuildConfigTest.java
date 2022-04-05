@@ -181,13 +181,13 @@ class BuildConfigTest {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds?labelSelector=openshift.io%2Fbuild-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
 
 
-    Boolean deleted = client.buildConfigs().withName("bc1").delete();
+    boolean deleted = client.buildConfigs().withName("bc1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.buildConfigs().withName("bc2").delete();
+    deleted = client.buildConfigs().withName("bc2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.buildConfigs().inNamespace("ns1").withName("bc2").delete();
+    deleted = client.buildConfigs().inNamespace("ns1").withName("bc2").delete().size() == 1;
     assertTrue(deleted);
   }
 

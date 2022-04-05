@@ -118,13 +118,13 @@ public class IngressTest {
    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
 
-    Boolean deleted = client.extensions().ingress().withName("ingress1").delete();
+    boolean deleted = client.extensions().ingress().withName("ingress1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.extensions().ingress().withName("ingress2").delete();
+    deleted = client.extensions().ingress().withName("ingress2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.extensions().ingress().inNamespace("ns1").withName("ingress2").delete();
+    deleted = client.extensions().ingress().inNamespace("ns1").withName("ingress2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -142,7 +142,7 @@ public class IngressTest {
     Boolean deleted = client.extensions().ingress().inAnyNamespace().delete(ingress1, ingress2);
     assertTrue(deleted);
 
-    deleted = client.extensions().ingress().inAnyNamespace().delete(ingress3);
+    deleted = client.extensions().ingress().inAnyNamespace().delete(ingress3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -150,7 +150,7 @@ public class IngressTest {
   public void testDeleteWithNamespaceMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
 
-    Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
+    Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1).size() == 1;
     assertFalse(deleted);
   }
 

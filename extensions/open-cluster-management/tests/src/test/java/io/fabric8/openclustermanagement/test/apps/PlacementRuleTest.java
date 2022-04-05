@@ -76,7 +76,7 @@ class PlacementRuleTest {
         .once();
 
     // When
-    Boolean isDeleted = client.apps().placementRules().inNamespace("ns1").withName("towhichcluster").delete();
+    boolean isDeleted = client.apps().placementRules().inNamespace("ns1").withName("towhichcluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

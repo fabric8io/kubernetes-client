@@ -181,13 +181,13 @@ class PodTest {
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
 
-    Boolean deleted = client.pods().withName("pod1").delete();
+    boolean deleted = client.pods().withName("pod1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.pods().withName("pod2").delete();
+    deleted = client.pods().withName("pod2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.pods().inNamespace("ns1").withName("pod2").cascading(false).delete();
+    deleted = client.pods().inNamespace("ns1").withName("pod2").cascading(false).delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -203,7 +203,7 @@ class PodTest {
     Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
     assertTrue(deleted);
 
-    deleted = client.pods().inAnyNamespace().delete(pod3);
+    deleted = client.pods().inAnyNamespace().delete(pod3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -214,7 +214,7 @@ class PodTest {
 
     // When + Then
     NonNamespaceOperation<Pod, PodList, PodResource> podOp = client.pods().inNamespace("test1");
-    assertFalse(podOp.delete(pod1));
+    assertFalse(podOp.delete(pod1).size() == 1);
   }
 
   @Test
@@ -223,7 +223,7 @@ class PodTest {
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
 
     Boolean deleted = client.pods().inNamespace("test").withName("pod1").withPropagationPolicy(DeletionPropagation.FOREGROUND)
-        .delete();
+        .delete().size() == 1;
     assertTrue(deleted);
   }
 

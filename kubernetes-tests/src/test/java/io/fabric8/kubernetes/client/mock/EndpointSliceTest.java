@@ -105,7 +105,7 @@ class EndpointSliceTest {
       .once();
 
     // When
-    Boolean isDeleted = client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").delete();
+    boolean isDeleted = client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

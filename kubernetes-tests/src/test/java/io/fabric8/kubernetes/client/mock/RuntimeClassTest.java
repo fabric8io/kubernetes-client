@@ -109,7 +109,7 @@ class RuntimeClassTest {
       .once();
 
     // When
-    Boolean isDeleted = client.runtimeClasses().withName("test-class").delete();
+    boolean isDeleted = client.runtimeClasses().withName("test-class").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

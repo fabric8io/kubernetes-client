@@ -115,7 +115,7 @@ class CustomResourceDefinitionTest {
   void testDelete() {
     server.expect().delete().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     
-    Boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
+    boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete().size() == 1;
     assertTrue(deleted);
   }
 

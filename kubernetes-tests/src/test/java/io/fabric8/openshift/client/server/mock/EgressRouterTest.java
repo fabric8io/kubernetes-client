@@ -74,7 +74,7 @@ class EgressRouterTest {
       .once();
 
     // When
-    Boolean isDeleted = client.egressRouters().inNamespace("ns1").withName("egressrouter1").delete();
+    boolean isDeleted = client.egressRouters().inNamespace("ns1").withName("egressrouter1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

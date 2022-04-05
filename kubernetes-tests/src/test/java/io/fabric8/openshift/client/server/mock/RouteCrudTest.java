@@ -67,7 +67,7 @@ class RouteCrudTest {
     assertNotNull(aRouteList);
     assertEquals(3, aRouteList.getItems().size());
 
-    boolean bDeleted = client.routes().inNamespace("ns1").delete();
+    boolean bDeleted = client.routes().inNamespace("ns1").delete().size() == 2;
     aRouteList = client.routes().inNamespace("ns1").list();
     assertTrue(bDeleted);
     assertEquals(0, aRouteList.getItems().size());

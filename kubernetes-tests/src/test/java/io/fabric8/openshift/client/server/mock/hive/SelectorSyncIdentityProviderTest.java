@@ -78,7 +78,7 @@ class SelectorSyncIdentityProviderTest {
       .once();
 
     // When
-    Boolean isDeleted = client.hive().selectorSyncIdentityProviders().withName("selectorsyncidentityprovider1").delete();
+    boolean isDeleted = client.hive().selectorSyncIdentityProviders().withName("selectorsyncidentityprovider1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

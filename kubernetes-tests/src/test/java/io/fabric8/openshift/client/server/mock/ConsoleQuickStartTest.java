@@ -75,7 +75,7 @@ class ConsoleQuickStartTest {
       .once();
 
     // When
-    Boolean isDeleted = client.console().consoleQuickStarts().withName("cluster").delete();
+    boolean isDeleted = client.console().consoleQuickStarts().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

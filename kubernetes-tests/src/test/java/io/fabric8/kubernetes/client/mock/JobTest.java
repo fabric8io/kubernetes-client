@@ -170,10 +170,10 @@ public class JobTest {
       .build()).times(5);
 
 
-    Boolean deleted = client.batch().v1().jobs().withName("job1").delete();
+    boolean deleted = client.batch().v1().jobs().withName("job1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.batch().v1().jobs().withName("job2").delete();
+    deleted = client.batch().v1().jobs().withName("job2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -217,7 +217,7 @@ public class JobTest {
     Boolean deleted = client.batch().v1().jobs().inAnyNamespace().delete(job1, job2);
     assertTrue(deleted);
 
-    deleted = client.batch().v1().jobs().inAnyNamespace().delete(job3);
+    deleted = client.batch().v1().jobs().inAnyNamespace().delete(job3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -225,7 +225,7 @@ public class JobTest {
   void testDeleteWithNamespaceMismatch() {
     Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
 
-    Boolean deleted = client.batch().v1().jobs().inNamespace("test1").delete(job1);
+    Boolean deleted = client.batch().v1().jobs().inNamespace("test1").delete(job1).size() == 1;
     assertFalse(deleted);
   }
 

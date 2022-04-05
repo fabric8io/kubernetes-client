@@ -124,7 +124,7 @@ class V1CertificateSigningRequestTest {
       .once();
 
     // When
-    Boolean isDeleted = client.certificates().v1().certificateSigningRequests().withName(name).delete();
+    boolean isDeleted = client.certificates().v1().certificateSigningRequests().withName(name).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

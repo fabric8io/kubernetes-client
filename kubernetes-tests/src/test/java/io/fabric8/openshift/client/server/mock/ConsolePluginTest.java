@@ -74,7 +74,7 @@ class ConsolePluginTest {
       .once();
 
     // When
-    Boolean isDeleted = client.console().consolePlugins().withName("cluster").delete();
+    boolean isDeleted = client.console().consolePlugins().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

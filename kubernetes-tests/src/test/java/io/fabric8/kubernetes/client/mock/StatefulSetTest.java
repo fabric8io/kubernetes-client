@@ -143,13 +143,13 @@ public class StatefulSetTest {
       .build()).times(5);
 
 
-    Boolean deleted = client.apps().statefulSets().withName("repl1").delete();
+    boolean deleted = client.apps().statefulSets().withName("repl1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().statefulSets().withName("repl2").delete();
+    deleted = client.apps().statefulSets().withName("repl2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().statefulSets().inNamespace("ns1").withName("repl2").delete();
+    deleted = client.apps().statefulSets().inNamespace("ns1").withName("repl2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -160,7 +160,7 @@ public class StatefulSetTest {
 
 
     Deletable items = client.load(getClass().getResourceAsStream("/test-statefulset.yml"));
-    assertTrue(items.delete());
+    assertTrue(items.delete().size() == 1);
   }
 
   @Test

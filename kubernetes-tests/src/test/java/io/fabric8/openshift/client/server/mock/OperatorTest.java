@@ -74,7 +74,7 @@ class OperatorTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operatorHub().operators().withName("cluster").delete();
+    boolean isDeleted = client.operatorHub().operators().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

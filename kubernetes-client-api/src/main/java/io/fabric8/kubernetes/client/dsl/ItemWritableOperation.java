@@ -16,6 +16,10 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.StatusDetails;
+
+import java.util.List;
+
 public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemReplacable<T> {
 
   /**
@@ -29,7 +33,7 @@ public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemRepl
 
   T create(T item);
 
-  boolean delete(T item);
+  List<StatusDetails> delete(T item);
 
   /**
    * When the status subresource is enabled, the /status subresource for the custom resource is exposed.

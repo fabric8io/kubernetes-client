@@ -74,7 +74,7 @@ class NetworkTest {
       .once();
 
     // When
-    Boolean isDeleted = client.config().networks().withName("cluster").delete();
+    boolean isDeleted = client.config().networks().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

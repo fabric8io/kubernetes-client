@@ -69,7 +69,7 @@ class PipelineTest {
         .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
         .once();
 
-    Boolean isDeleted = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline").delete();
+    boolean isDeleted = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline").delete().size() == 1;
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
@@ -85,7 +85,7 @@ class PipelineTest {
         .once();
 
     Boolean isDeleted = client.v1beta1().pipelines().inNamespace("ns1").withName("pipeline")
-        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.takeRequest();

@@ -105,7 +105,7 @@ class ServiceMonitorTest {
       .once();
 
     // When
-    Boolean deleted = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

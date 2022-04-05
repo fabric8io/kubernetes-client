@@ -74,7 +74,7 @@ class UserOAuthAccessTokenTest {
       .once();
 
     // When
-    Boolean isDeleted = client.userOAuthAccessTokens().withName("test-delete").delete();
+    boolean isDeleted = client.userOAuthAccessTokens().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

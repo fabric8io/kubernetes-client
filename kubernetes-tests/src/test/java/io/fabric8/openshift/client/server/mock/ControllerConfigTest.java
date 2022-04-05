@@ -75,7 +75,7 @@ class ControllerConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().controllerConfigs().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().controllerConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

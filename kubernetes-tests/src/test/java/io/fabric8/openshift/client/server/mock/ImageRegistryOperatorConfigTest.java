@@ -76,7 +76,7 @@ class ImageRegistryOperatorConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.imageRegistryOperatorConfigs().withName("cluster").delete();
+    boolean isDeleted = client.imageRegistryOperatorConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

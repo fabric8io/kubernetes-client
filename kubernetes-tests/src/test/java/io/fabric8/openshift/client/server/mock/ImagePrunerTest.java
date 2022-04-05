@@ -93,7 +93,7 @@ class ImagePrunerTest {
       .once();
 
     // When
-    Boolean deleted = client.operator().imagePruners().withName("foo").delete();
+    boolean deleted = client.operator().imagePruners().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

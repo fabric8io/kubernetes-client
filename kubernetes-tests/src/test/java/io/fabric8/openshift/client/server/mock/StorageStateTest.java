@@ -74,7 +74,7 @@ class StorageStateTest {
       .once();
 
     // When
-    Boolean isDeleted = client.kubeStorageVersionMigrator().storageStates().withName("cluster").delete();
+    boolean isDeleted = client.kubeStorageVersionMigrator().storageStates().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

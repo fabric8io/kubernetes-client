@@ -106,7 +106,7 @@ class PriorityLevelConfigurationTest {
       .once();
 
     // When
-    Boolean isDeleted = client.flowControl().v1beta1().priorityLevelConfigurations().withName("prioritylevelconfiguration1").delete();
+    boolean isDeleted = client.flowControl().v1beta1().priorityLevelConfigurations().withName("prioritylevelconfiguration1").delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

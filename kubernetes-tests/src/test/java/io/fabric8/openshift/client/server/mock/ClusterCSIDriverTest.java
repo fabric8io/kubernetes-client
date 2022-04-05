@@ -74,7 +74,7 @@ class ClusterCSIDriverTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operator().clusterCSIDrivers().withName("cluster").delete();
+    boolean isDeleted = client.operator().clusterCSIDrivers().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

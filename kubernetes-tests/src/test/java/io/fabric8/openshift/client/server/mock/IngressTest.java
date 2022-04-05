@@ -86,7 +86,7 @@ class IngressTest {
       .once();
 
     // When
-    Boolean isDeleted = client.config().ingresses().withName("cluster").delete();
+    boolean isDeleted = client.config().ingresses().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

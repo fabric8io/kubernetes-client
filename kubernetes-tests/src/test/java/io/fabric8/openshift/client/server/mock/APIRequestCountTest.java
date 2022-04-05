@@ -75,7 +75,7 @@ class APIRequestCountTest {
       .once();
 
     // When
-    Boolean isDeleted = client.apiRequestCounts().withName("secrets.v1").delete();
+    boolean isDeleted = client.apiRequestCounts().withName("secrets.v1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

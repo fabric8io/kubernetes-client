@@ -161,12 +161,12 @@ class DeploymentConfigTest {
    server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, dc2).times(5);
 
 
-    Boolean deleted = client.deploymentConfigs().withName("dc1").delete();
+    boolean deleted = client.deploymentConfigs().withName("dc1").delete().size() == 1;
     assertNotNull(deleted);
-    deleted = client.deploymentConfigs().withName("dc2").delete();
+    deleted = client.deploymentConfigs().withName("dc2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.deploymentConfigs().inNamespace("ns1").withName("dc2").delete();
+    deleted = client.deploymentConfigs().inNamespace("ns1").withName("dc2").delete().size() == 1;
     assertTrue(deleted);
 
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", server.getLastRequest().getBody().readUtf8());
@@ -179,7 +179,7 @@ class DeploymentConfigTest {
       .andReturn(200, new DeploymentConfigBuilder().build())
       .once();
 
-    Boolean isDeleted = client.deploymentConfigs().inNamespace("test").withName("dc1").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    boolean isDeleted = client.deploymentConfigs().inNamespace("test").withName("dc1").withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(isDeleted);
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", server.getLastRequest().getBody().readUtf8());
   }

@@ -84,13 +84,13 @@ class ProjectTest {
    server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
 
 
-    Boolean deleted = client.projects().withName("project1").delete();
+    boolean deleted = client.projects().withName("project1").delete().size() == 1;
     assertNotNull(deleted);
 
-    deleted = client.projects().withName("project2").delete();
+    deleted = client.projects().withName("project2").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.projects().withName("project3").delete();
+    deleted = client.projects().withName("project3").delete().size() == 1;
     assertFalse(deleted);
   }
 

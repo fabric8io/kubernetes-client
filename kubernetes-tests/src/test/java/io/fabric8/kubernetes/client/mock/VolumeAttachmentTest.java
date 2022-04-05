@@ -84,7 +84,7 @@ class VolumeAttachmentTest {
       .once();
 
     // When
-    Boolean isDeleted = client.storage().volumeAttachments().withName("va1").delete();
+    boolean isDeleted = client.storage().volumeAttachments().withName("va1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

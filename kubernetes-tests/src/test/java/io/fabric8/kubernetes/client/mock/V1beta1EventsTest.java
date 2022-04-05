@@ -78,7 +78,7 @@ class V1beta1EventsTest {
       .once();
 
     // When
-    Boolean isDeleted = client.events().v1beta1().events().inNamespace("default").withName("e1").delete();
+    boolean isDeleted = client.events().v1beta1().events().inNamespace("default").withName("e1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

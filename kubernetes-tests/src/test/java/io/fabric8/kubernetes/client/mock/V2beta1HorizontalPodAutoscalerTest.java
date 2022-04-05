@@ -112,13 +112,13 @@ public class V2beta1HorizontalPodAutoscalerTest {
     server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
     server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
-    Boolean deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").delete();
+    boolean deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete();
+    deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2").delete();
+    deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -134,7 +134,7 @@ public class V2beta1HorizontalPodAutoscalerTest {
     Boolean deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler1, horizontalPodAutoscaler2);
     assertTrue(deleted);
 
-    deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3);
+    deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3).size() == 1;
     assertFalse(deleted);
   }
 

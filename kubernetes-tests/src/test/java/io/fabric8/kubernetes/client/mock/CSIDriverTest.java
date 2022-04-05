@@ -84,7 +84,7 @@ class CSIDriverTest {
       .once();
 
     // When
-    Boolean isDeleted = client.storage().csiDrivers().withName("c1").delete();
+    boolean isDeleted = client.storage().csiDrivers().withName("c1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

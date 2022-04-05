@@ -93,7 +93,7 @@ class RangeAllocationTest {
       .once();
 
     // When
-    Boolean deleted = client.rangeAllocations().withName("foo").delete();
+    boolean deleted = client.rangeAllocations().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

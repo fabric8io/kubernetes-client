@@ -74,7 +74,7 @@ class MachineSetTest {
       .once();
 
     // When
-    Boolean isDeleted = client.machine().machineSets().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.machine().machineSets().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

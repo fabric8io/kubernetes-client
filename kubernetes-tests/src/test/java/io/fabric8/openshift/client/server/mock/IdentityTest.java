@@ -74,7 +74,7 @@ class IdentityTest {
       .once();
 
     // When
-    Boolean isDeleted = client.identities().withName("developer:developer").delete();
+    boolean isDeleted = client.identities().withName("developer:developer").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

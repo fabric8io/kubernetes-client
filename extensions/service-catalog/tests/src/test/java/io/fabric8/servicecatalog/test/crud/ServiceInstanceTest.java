@@ -109,7 +109,7 @@ class ServiceInstanceTest {
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.serviceInstances().inNamespace("testns").withName("instance1").delete());
+    assertTrue(client.serviceInstances().inNamespace("testns").withName("instance1").delete().size() == 1);
     assertNull(client.serviceInstances().inNamespace("testns").withName("instance1").get());
   }
 }

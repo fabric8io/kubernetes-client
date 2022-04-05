@@ -89,7 +89,7 @@ class ClusterServiceBrokerTest {
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.clusterServiceBrokers().withName("broker1").delete());
+    assertTrue(client.clusterServiceBrokers().withName("broker1").delete().size() == 1);
     assertNull(client.clusterServiceBrokers().withName("broker1").get());
   }
 }

@@ -76,7 +76,7 @@ class PlacementBindingTest {
         .once();
 
     // When
-    Boolean isDeleted = client.policy().placementBindings().inNamespace("ns1").withName("sample-pb").delete();
+    boolean isDeleted = client.policy().placementBindings().inNamespace("ns1").withName("sample-pb").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -74,7 +74,7 @@ class CloudCredentialTest {
       .once();
 
     // When
-    Boolean isDeleted = client.operator().cloudCredentials().withName("cluster").delete();
+    boolean isDeleted = client.operator().cloudCredentials().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

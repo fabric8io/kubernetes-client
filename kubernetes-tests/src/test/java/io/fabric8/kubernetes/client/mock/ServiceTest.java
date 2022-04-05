@@ -144,7 +144,7 @@ class ServiceTest {
       .andReturn(200, service)
       .once();
 
-    boolean isDeleted = client.services().inNamespace("test").withName("httpbin").delete();
+    boolean isDeleted = client.services().inNamespace("test").withName("httpbin").delete().size() == 1;
     assertTrue(isDeleted);
   }
 

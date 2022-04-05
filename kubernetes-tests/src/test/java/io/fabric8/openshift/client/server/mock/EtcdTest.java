@@ -93,7 +93,7 @@ class EtcdTest {
       .once();
 
     // When
-    Boolean deleted = client.operator().etcds().withName("foo").delete();
+    boolean deleted = client.operator().etcds().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

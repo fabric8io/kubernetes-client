@@ -143,13 +143,13 @@ class NetworkingV1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2")
         .andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
 
-    Boolean deleted = client.network().v1().ingresses().withName("ingress1").delete();
+    boolean deleted = client.network().v1().ingresses().withName("ingress1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.network().v1().ingresses().withName("ingress2").delete();
+    deleted = client.network().v1().ingresses().withName("ingress2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.network().v1().ingresses().inNamespace("ns1").withName("ingress2").delete();
+    deleted = client.network().v1().ingresses().inNamespace("ns1").withName("ingress2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -167,7 +167,7 @@ class NetworkingV1IngressTest {
     Boolean deleted = client.network().v1().ingresses().inAnyNamespace().delete(ingress1, ingress2);
     assertTrue(deleted);
 
-    deleted = client.network().v1().ingresses().inAnyNamespace().delete(ingress3);
+    deleted = client.network().v1().ingresses().inAnyNamespace().delete(ingress3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -179,7 +179,7 @@ class NetworkingV1IngressTest {
         .v1()
         .ingresses().inNamespace("test1");
 
-    assertFalse(ingressOp.delete(ingress1));
+    assertFalse(ingressOp.delete(ingress1).size() == 1);
   }
 
   @Test

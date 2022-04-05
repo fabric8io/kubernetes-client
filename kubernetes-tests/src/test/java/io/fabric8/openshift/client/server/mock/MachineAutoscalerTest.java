@@ -80,7 +80,7 @@ class MachineAutoscalerTest {
     // When
     Boolean isDeleted = client.clusterAutoscaling().v1beta1().machineAutoscalers()
       .inNamespace("ns1")
-      .withName("ma").delete();
+      .withName("ma").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

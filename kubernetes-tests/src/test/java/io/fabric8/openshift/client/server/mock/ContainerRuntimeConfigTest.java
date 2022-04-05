@@ -74,7 +74,7 @@ class ContainerRuntimeConfigTest {
       .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().containerRuntimeConfigs().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().containerRuntimeConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

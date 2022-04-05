@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -217,9 +218,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public boolean delete() {
-    resources().forEach(Resource::delete);
-    return true;
+  public List<StatusDetails> delete() {
+    return resources().flatMap(r -> r.delete().stream()).collect(Collectors.toList());
   }
 
   @Override

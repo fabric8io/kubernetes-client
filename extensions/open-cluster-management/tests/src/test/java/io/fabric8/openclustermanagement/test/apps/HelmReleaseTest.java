@@ -76,7 +76,7 @@ class HelmReleaseTest {
         .once();
 
     // When
-    Boolean isDeleted = client.apps().helmReleases().inNamespace("ns1").withName("sample-hr").delete();
+    boolean isDeleted = client.apps().helmReleases().inNamespace("ns1").withName("sample-hr").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

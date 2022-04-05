@@ -97,7 +97,7 @@ class ClusterResourceQuotaTest {
       .once();
 
     // When
-    Boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").delete();
+    boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

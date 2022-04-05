@@ -75,7 +75,7 @@ class BrokerTemplateInstanceTest {
       .once();
 
     // When
-    Boolean isDeleted = client.brokerTemplateInstances().withName("test-delete").delete();
+    boolean isDeleted = client.brokerTemplateInstances().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

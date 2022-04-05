@@ -82,13 +82,13 @@ public class ResourceQuotaTest {
     server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, new ResourceQuotaBuilder().build()).once();
 
 
-    Boolean deleted = client.resourceQuotas().withName("resourcequota1").delete();
+    boolean deleted = client.resourceQuotas().withName("resourcequota1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.resourceQuotas().withName("resourcequota2").delete();
+    deleted = client.resourceQuotas().withName("resourcequota2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.resourceQuotas().inNamespace("ns1").withName("resourcequota2").delete();
+    deleted = client.resourceQuotas().inNamespace("ns1").withName("resourcequota2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -105,7 +105,7 @@ public class ResourceQuotaTest {
     Boolean deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota1, resourcequota2);
     assertTrue(deleted);
 
-    deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota3);
+    deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota3).size() == 1;
     assertFalse(deleted);
   }
 
