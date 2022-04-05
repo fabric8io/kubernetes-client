@@ -69,9 +69,9 @@ import java.util.Map;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
-@Group("")
+@Group("template.openshift.io")
 @TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
+  @TemplateTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })
 public class Template implements HasMetadata, Namespaced {
 
