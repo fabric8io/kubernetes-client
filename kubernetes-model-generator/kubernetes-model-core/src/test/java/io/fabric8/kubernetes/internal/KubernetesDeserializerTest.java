@@ -116,7 +116,7 @@ class KubernetesDeserializerTest {
   @Test
   void shouldLoadClassInPackage() {
     // given
-    TypeKey key = mapping.createKey("42", Pod.class.getSimpleName());
+    TypeKey key = mapping.getKeyFromClass(Pod.class);
     // when
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     // then
@@ -144,13 +144,13 @@ class KubernetesDeserializerTest {
   }
 
   @Test
-  void shouldLoadClassIfKeyOnlyHasKind() {
-    // given Quantity is not a KubernetesResource
+  void shouldNotLoadClassIfKeyOnlyHasKind() {
+    // given
     TypeKey key = mapping.createKey(null, Pod.class.getSimpleName());
     // when
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     // then
-    assertThat(clazz).isEqualTo(Pod.class);
+    assertThat(clazz).isNull();
   }
 
   private KubernetesResourceMappingProvider createProvider(Pair<String, Class<? extends KubernetesResource>>... mappings) {

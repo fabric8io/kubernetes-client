@@ -189,17 +189,4 @@ public class V1HorizontalPodAutoscalerTest {
     assertNotNull(horizontalPodAutoscaler);
   }
 
-  @Test
-  void testHorizontalPodAutoscalerLoadWithNoApiVersion() {
-    // Given
-
-    // When
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-hpa-no-apiversion.yml")).get();
-
-    // Then
-    assertNotNull(items);
-    assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof HorizontalPodAutoscaler);
-  }
-
 }

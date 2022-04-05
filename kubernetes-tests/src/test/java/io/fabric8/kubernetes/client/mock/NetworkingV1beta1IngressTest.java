@@ -179,19 +179,6 @@ class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  void testIngressLoadWithoutApiVersion() {
-    // Given
-
-    // When
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-ingress-no-apiversion.yml")).get();
-
-    // Then
-    assertNotNull(items);
-    assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof io.fabric8.kubernetes.api.model.networking.v1.Ingress);
-  }
-
-  @Test
   void testCreateOrReplaceWhenAnnotationUpdated() {
     // Given
     Ingress ingressFromServer = new IngressBuilder().withNewMetadata().withName("ing1").endMetadata().build();

@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -108,18 +106,6 @@ public class V1ValidatingWebhookConfigurationTest {
 
     // Then
     assertTrue(isDeleted);
-  }
-
-  @Test
-  void testValidatingWebhookConfigurationLoadWithNoApiVersion() {
-
-    // When
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-vwc-no-apiversion.yml")).get();
-
-    // Then
-    assertNotNull(items);
-    assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof ValidatingWebhookConfiguration);
   }
 
   public ValidatingWebhookConfiguration getValidatingWebhookConfigurationSample() {
