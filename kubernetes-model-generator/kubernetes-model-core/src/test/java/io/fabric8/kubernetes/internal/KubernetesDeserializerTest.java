@@ -82,7 +82,7 @@ class KubernetesDeserializerTest {
     TypeKey key = mapping.createKey("42", "Hitchhiker");
     assertThat(mapping.getForKey(key)).isNull();
     KubernetesResourceMappingProvider provider = createProvider(
-      Pair.of("42#Hitchhiker", SmurfResource.class));
+        Pair.of("42#Hitchhiker", SmurfResource.class));
     // when
     mapping.registerProvider(provider);
     // then
@@ -155,7 +155,7 @@ class KubernetesDeserializerTest {
 
   private KubernetesResourceMappingProvider createProvider(Pair<String, Class<? extends KubernetesResource>>... mappings) {
     return () -> Stream.of(mappings)
-      .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
   }
 
   public static final class TestableMapping extends KubernetesDeserializer.Mapping {
