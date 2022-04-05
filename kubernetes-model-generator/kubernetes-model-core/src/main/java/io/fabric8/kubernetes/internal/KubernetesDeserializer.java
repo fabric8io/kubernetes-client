@@ -272,27 +272,19 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                     return clazz;
                 }
             }
-            // if there are internal types matching kind, look for matching groups and versions
-            // but use first version seen (in PACKAGES order)
-            TypeKey bestMatch = null;
-            for (TypeKey typeKey : defaults) {
-                if (key.apiGroup != null) {
-                    if (!key.apiGroup.equals(typeKey.apiGroup)) {
-                        continue;
-                    }
-                    bestMatch = typeKey;
-                    break;
-                }
-                if (key.version != null && key.version.equals(typeKey.apiGroup)) {
-                    bestMatch = typeKey;
-                    break;
-                }
-                if (bestMatch == null) {
-                    bestMatch = typeKey;
-                }
+
+            // version is required
+            if (key.version == null) {
+              return null;
             }
-            if (bestMatch != null) {
-                return mappings.get(bestMatch);
+
+            // if there are internal types matching kind, look for matching groups and versions
+            for (TypeKey typeKey : defaults) {
+                if ((key.apiGroup == null || key.apiGroup.equals(typeKey.apiGroup))
+                    && key.version.equals(typeKey.version)
+                    && (typeKey.apiGroup == null || typeKey.apiGroup.endsWith(".openshift.io"))) {
+                    return mappings.get(typeKey);
+                }
             }
             return null;
         }
@@ -372,7 +364,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
             return ordering;
         }
 
-        private TypeKey getKeyFromClass(Class<? extends KubernetesResource> clazz) {
+        TypeKey getKeyFromClass(Class<? extends KubernetesResource> clazz) {
           String apiGroup = Helper.getAnnotationValue(clazz, Group.class);
           String apiVersion = Helper.getAnnotationValue(clazz, Version.class);
           if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {

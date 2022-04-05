@@ -708,21 +708,6 @@ class DeploymentTest {
     assertEquals("hello", log);
   }
 
-  @Test
-  void testDeploymentLoadWithoutApiVersion() {
-    // Given
-
-    // When
-    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/valid-deployment-without-apiversion.json")).get();
-    Deployment deployment = (Deployment) list.get(0);
-
-    // Then
-    assertNotNull(deployment);
-    assertEquals("test", deployment.getMetadata().getName());
-    assertEquals(1, deployment.getSpec().getReplicas());
-    assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
-  }
-
   private DeploymentBuilder createDeploymentBuilder() {
     return new DeploymentBuilder()
       .withNewMetadata()
