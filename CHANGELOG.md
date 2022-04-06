@@ -2,18 +2,10 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
-* Fix #3880: Synchronize access to map in KubernetesCrudDispatcher
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
-* Fix #3848: Supports Queue (cluster) API for Volcano extension
-* Fix #3582: SSL truststore can be loaded in FIPS enabled environments
-* Fix #3818: adding missing throws to launderThrowable
-* Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
-* Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
-* Fix #3957: Lister `onOpen` should be called before marking the connection as open
 
 #### Improvements
-* Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
