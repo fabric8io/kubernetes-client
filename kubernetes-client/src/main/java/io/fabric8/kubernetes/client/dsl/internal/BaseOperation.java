@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -961,19 +960,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public <C extends Client> C inWriteContext(Class<C> clazz) {
-    // other than namespace these do not have values on the config, so we need to associate a default
-    // operationcontext
-    OperationContext newContext = HasMetadataOperationsImpl.defaultContext(context.client)
-        .withDryRun(context.getDryRun()).withCascading(context.getCascading())
-        .withGracePeriodSeconds(context.getGracePeriodSeconds()).withPropagationPolicy(context.getPropagationPolicy());
-
-    // check before setting to prevent flipping the default flag
-    if (!Objects.equals(context.getNamespace(), newContext.getNamespace())
-        || context.isDefaultNamespace() ^ newContext.isDefaultNamespace()) {
-      newContext = newContext.withNamespace(context.getNamespace());
-    }
-
-    return context.getClient().adapt(BaseClient.class).newClient(newContext).adapt(clazz);
+    return context.clientInWriteContext(clazz);
   }
 
   @Override

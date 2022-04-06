@@ -127,8 +127,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
    * The namespacing is the same - use the item namespace if available
    */
   NamespaceableResource<HasMetadata> getResource(HasMetadata meta) {
-    return context.getClient().adapt(BaseClient.class).newClient(context.withItem(null)).adapt(KubernetesClient.class)
-        .resource(meta);
+    return context.clientInWriteContext(KubernetesClient.class).resource(meta);
   }
 
   @Override
