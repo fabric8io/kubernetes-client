@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("template.openshift.io")
 @TemplateTransformations({
-  @TemplateTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })
 public class Template implements HasMetadata, Namespaced
 {
