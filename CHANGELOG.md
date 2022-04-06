@@ -39,6 +39,18 @@ This allows you to implement composite operations easily with lambda: client.sec
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)
 
+### 5.12.2 (2022-04-06)
+* Fix #3582: SSL truststore can be loaded in FIPS enabled environments
+* Fix #3797: Implement SchemaSwap; generate CRD from model not owned
+* Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
+* Fix #3818: adding missing throws to launderThrowable
+* Fix #3848: Supports Queue (cluster) API for Volcano extension
+* Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
+* Fix #3880: Synchronize access to map in KubernetesCrudDispatcher
+* Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
+* Fix #3957: Lister `onOpen` should be called before marking the connection as open
+* Fix #4022: Reintroduce `Deletable` interface in `NonNamespaceOperation`
+
 ### 5.12.1 (2022-02-04)
 
 #### Bugs
