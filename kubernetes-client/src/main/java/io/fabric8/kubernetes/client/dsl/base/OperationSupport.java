@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
 
@@ -59,7 +60,7 @@ public class OperationSupport {
   public static final String JSON_PATCH = "application/json-patch+json";
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
   public static final String JSON_MERGE_PATCH = "application/merge-patch+json";
-  
+
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
@@ -170,7 +171,7 @@ public class OperationSupport {
   public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
     return getResourceUrl(namespace, name, false);
   }
-  
+
   public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
     if (name == null) {
       if (status) {
@@ -344,7 +345,7 @@ public class OperationSupport {
 
   /**
    * Send an http patch and handle the response.
-   * 
+   *
    * If current is not null and patchContext does not specify a patch type, then a JSON patch is assumed.  Otherwise a STRATEGIC MERGE is assumed.
    *
    * @param patchContext patch options for patch request
@@ -456,7 +457,7 @@ public class OperationSupport {
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws InterruptedException, IOException {
     return handleGet(resourceUrl, type, Collections.<String, String>emptyMap());
   }
-  
+
   /**
    * Send a raw get - where the type should be one of String, Reader, InputStream
    * <br>
@@ -628,7 +629,7 @@ public class OperationSupport {
     int statusCode = response != null ? response.code() : 0;
     if (response == null) {
       statusMessage = "No response";
-    } else { 
+    } else {
       try {
         String bodyString = response.bodyString();
         if (Utils.isNotNullOrEmpty(bodyString)) {
@@ -666,7 +667,7 @@ public class OperationSupport {
     if(message != null && !message.isEmpty()) {
       sb.append(message).append(". ");
     }
-    
+
     sb.append("Failure executing: ").append(request.method())
       .append(" at: ").append(request.uri()).append(".");
 
@@ -687,7 +688,7 @@ public class OperationSupport {
     if (message != null && !message.isEmpty()) {
       sb.append(message).append(". ");
     }
-    
+
     sb.append("Error executing: ").append(request.method())
       .append(" at: ").append(request.uri())
       .append(". Cause: ").append(e.getMessage());
@@ -699,7 +700,7 @@ public class OperationSupport {
   public static KubernetesClientException requestException(HttpRequest request, Exception e) {
     return requestException(request, e, null);
   }
-  
+
   private static class RequestMetadata {
     private final String group;
     private final String version;
@@ -715,7 +716,8 @@ public class OperationSupport {
     }
 
     static RequestMetadata from(HttpRequest request) {
-      final List<String> segments = Arrays.asList(request.uri().getRawPath().split("\\/"));
+      final List<String> segments = Arrays.stream(request.uri().getRawPath().split("/"))
+        .filter(s -> !s.isEmpty()).collect(Collectors.toList());
       switch (segments.size()) {
         case 4:
           // cluster URL
@@ -755,7 +757,7 @@ public class OperationSupport {
     }
     return STRATEGIC_MERGE_JSON_PATCH;
   }
-  
+
   public <R1> R1 restCall(Class<R1> result, String... path) {
     try {
       URL requestUrl = new URL(config.getMasterUrl());
@@ -777,5 +779,5 @@ public class OperationSupport {
       throw KubernetesClientException.launderThrowable(e);
     }
  }
-  
+
 }
