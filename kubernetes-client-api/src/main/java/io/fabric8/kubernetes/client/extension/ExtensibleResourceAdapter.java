@@ -87,6 +87,11 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   }
 
   @Override
+  public <C extends Client> C inWriteContext(Class<C> clazz) {
+    return resource.inWriteContext(clazz);
+  }
+
+  @Override
   public ExtensibleResource<T> lockResourceVersion() {
     return newInstance().init(resource.lockResourceVersion(), client);
   }

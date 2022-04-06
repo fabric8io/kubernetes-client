@@ -28,8 +28,6 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
-import io.fabric8.kubernetes.client.NamespaceableResourceAdapter;
-import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
@@ -129,9 +127,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
    * The namespacing is the same - use the item namespace if available
    */
   NamespaceableResource<HasMetadata> getResource(HasMetadata meta) {
-    OperationContext ctx = context.withItem(null);
-    ResourceHandler<HasMetadata, ?> handler = context.getHandler(meta);
-    return new NamespaceableResourceAdapter<>(meta, handler.operation(ctx.getClient(), null).newInstance(ctx));
+    return context.getClient().adapt(BaseClient.class).newClient(context.withItem(null)).adapt(KubernetesClient.class)
+        .resource(meta);
   }
 
   @Override
