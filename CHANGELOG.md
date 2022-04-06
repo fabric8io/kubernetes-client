@@ -32,6 +32,8 @@ This allows you to implement composite operations easily with lambda: client.sec
 Please see the [migration guide](doc/MIGRATION-v6.md)
 
 ### 5.12.2 (2022-04-06)
+
+#### Bugs
 * Fix #3582: SSL truststore can be loaded in FIPS enabled environments
 * Fix #3797: Implement SchemaSwap; generate CRD from model not owned
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
