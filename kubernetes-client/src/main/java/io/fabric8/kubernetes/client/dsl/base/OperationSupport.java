@@ -38,6 +38,7 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.zjsonpatch.JsonDiff;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -715,7 +716,8 @@ public class OperationSupport {
     }
 
     static RequestMetadata from(HttpRequest request) {
-      final List<String> segments = Arrays.asList(request.uri().getRawPath().split("\\/"));
+      final List<String> segments = Arrays.stream(request.uri().getRawPath().split("/"))
+        .filter(s -> !s.isEmpty()).collect(Collectors.toList());
       switch (segments.size()) {
         case 4:
           // cluster URL
