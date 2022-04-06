@@ -27,6 +27,7 @@ The end result is that exceptions refering to mismatched namespaces will no long
 
 Consider the following examples:
 
+```
 // inNamespace called at the client level with load
 // Prior behavior - exception if item has a namespace that is not monitoring.  
 // New behavior - the item namespace is monitoring
@@ -51,6 +52,7 @@ this.kubernetesClient.configMaps().create(item);
 // Prior behavior - exception if item has a namespace that does not match the context.  
 // New behavior - item will be loaded with its namespace, or the default if missing
 this.kubernetesClient.configMaps().load(item)...
+```
 
 To track the namespace handling at the client level the Config has an additional boolean field defaultNamespace, you may set that to false to have the Client treat subsequent calls as if inNamespace had been called explicitly.
 

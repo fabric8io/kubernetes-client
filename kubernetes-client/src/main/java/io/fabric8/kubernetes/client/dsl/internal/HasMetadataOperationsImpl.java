@@ -19,10 +19,12 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.inferListType;
@@ -37,7 +39,9 @@ public class HasMetadataOperationsImpl<T extends HasMetadata, L extends Kubernet
   }
 
   public static OperationContext defaultContext(Client client) {
-    return new OperationContext().withClient(client).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
+    return Utils.getNonNullOrElse(
+        client.adapt(BaseClient.class).getOperationContext(),
+        new OperationContext().withClient(client).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {

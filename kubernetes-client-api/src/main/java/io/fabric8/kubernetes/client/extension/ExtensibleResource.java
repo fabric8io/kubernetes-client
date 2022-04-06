@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
@@ -51,6 +52,15 @@ public interface ExtensibleResource<T> extends Resource<T> {
   @Override
   ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
 
+  /**
+   * Should be used to obtain a client in the same write context as the given resource
+   * - dryRun, DeletionPropagation, etc.
+   *
+   * @param clazz client type
+   * @return the client in the write context
+   */
+  <C extends Client> C inWriteContext(Class<C> clazz);
+
   @Override
   ExtensibleResource<T> withLimit(Long limit);
 
@@ -60,7 +70,7 @@ public interface ExtensibleResource<T> extends Resource<T> {
   /**
    * Return the current item, which may be null if the resource was created
    * using {@link Nameable#withName(String)}
-   * 
+   *
    * @return the item
    */
   T getItem();
