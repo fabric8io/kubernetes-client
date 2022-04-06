@@ -21,7 +21,7 @@
     <bundle dependency='true'>mvn:com.google.code.findbugs/jsr305/${jsr305.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.bundle.version}</bundle>
-    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson.databind.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
