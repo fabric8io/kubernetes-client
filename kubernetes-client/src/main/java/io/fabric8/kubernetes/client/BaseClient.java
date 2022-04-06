@@ -55,7 +55,7 @@ public abstract class BaseClient implements Client {
   private OperationSupport operationSupport;
 
   private OperationContext operationContext;
-  
+
   BaseClient(Config config, BaseClient baseClient) {
     this.config = config;
     this.httpClient = baseClient.httpClient;
