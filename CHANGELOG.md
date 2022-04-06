@@ -43,6 +43,9 @@ Please see the [migration guide](doc/MIGRATION-v6.md)
 * Fix #3957: Lister `onOpen` should be called before marking the connection as open
 * Fix #4022: Reintroduce `Deletable` interface in `NonNamespaceOperation`
 
+#### _**Note**_:
+- `Config#autoConfigure(String context)`: Has been changed to only trigger the autoConfigure method once. Previously, providing a wrong context argument would not be a problem since an initial context-less autoConfigure would have already been invoked to provide a valid initial Config.
+
 ### 5.12.1 (2022-02-04)
 
 #### Bugs
@@ -51,6 +54,9 @@ Please see the [migration guide](doc/MIGRATION-v6.md)
 * Fix #3796: Limit usage of YAML Serializer
 * Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
 * Fix #3477: Handle exit code status messages with pod uploads
+
+#### _**Note**_:
+- `Config#autoConfigure(String context)`: Has been changed to only trigger the autoConfigure method once. Previously, providing a wrong context argument would not be a problem since an initial context-less autoConfigure would have already been invoked to provide a valid initial Config.
 
 ### 5.12.0 (2022-01-24)
 
