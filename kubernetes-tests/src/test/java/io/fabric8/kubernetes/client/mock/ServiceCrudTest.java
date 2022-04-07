@@ -41,8 +41,10 @@ public class ServiceCrudTest {
   public void testCrud() {
 
     Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").and().withNewSpec().and().build();
-    Service service2 = new ServiceBuilder().withNewMetadata().withName("svc2").addToLabels("foo", "bar").and().withNewSpec().and().build();
-    Service service3 = new ServiceBuilder().withNewMetadata().withName("svc3").addToLabels("foo", "bar").and().withNewSpec().and().build();
+    Service service2 = new ServiceBuilder().withNewMetadata().withName("svc2").addToLabels("foo", "bar").and().withNewSpec()
+        .and().build();
+    Service service3 = new ServiceBuilder().withNewMetadata().withName("svc3").addToLabels("foo", "bar").and().withNewSpec()
+        .and().build();
 
     // try to patch/replace before the service exists
     ServiceResource<Service> serviceOp = client.services().inNamespace("ns2").withName("svc2");
@@ -79,7 +81,7 @@ public class ServiceCrudTest {
     assertEquals(2, aServiceList.getItems().size());
 
     Service service2edit = client.services().inNamespace("ns2").withName("svc2").edit(s -> new ServiceBuilder(s)
-                     .editMetadata().addToLabels("key1", "value1").endMetadata().build());
+        .editMetadata().addToLabels("key1", "value1").endMetadata().build());
 
     assertNotNull(service2edit);
     assertEquals("value1", service2edit.getMetadata().getLabels().get("key1"));
@@ -87,7 +89,8 @@ public class ServiceCrudTest {
 
   @Test
   public void shouldFindServiceByName() {
-    Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").addToLabels("foo", "bar").and().withNewSpec().and().build();
+    Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").addToLabels("foo", "bar").and().withNewSpec()
+        .and().build();
 
     client.services().inNamespace("ns1").create(service1);
 

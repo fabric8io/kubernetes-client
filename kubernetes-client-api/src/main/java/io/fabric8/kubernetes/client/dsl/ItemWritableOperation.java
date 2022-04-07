@@ -18,6 +18,13 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemReplacable<T> {
 
+  /**
+   * Creates a provided resource in a Kubernetes Cluster. If creation
+   * fails with a HTTP_CONFLICT, it tries to replace resource.
+   *
+   * @param item to create or replace
+   * @return created or replaced item returned in kubernetes api response
+   */
   T createOrReplace(T item);
 
   T create(T item);
@@ -31,7 +38,8 @@ public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemRepl
    *
    * @param item kubernetes object
    * @return updated object
-   * @deprecated please use one of patchStatus, editStatus, or replaceStatus, or a locked replace {@link Lockable#lockResourceVersion(String)}
+   * @deprecated please use one of patchStatus, editStatus, or replaceStatus, or a locked replace
+   *             {@link Lockable#lockResourceVersion(String)}
    */
   @Deprecated
   T updateStatus(T item);

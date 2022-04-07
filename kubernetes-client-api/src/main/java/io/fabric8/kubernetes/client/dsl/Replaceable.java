@@ -20,11 +20,13 @@ public interface Replaceable<T> {
   /**
    * Replace the server's state with the given item.
    *
-   * <p>If {@link Lockable#lockResourceVersion(String)} has been used to lock the resourceVersion,
+   * <p>
+   * If {@link Lockable#lockResourceVersion(String)} has been used to lock the resourceVersion,
    * this operation is effectively a single update attempt against that version.
-   * <p>If {@link Lockable#lockResourceVersion(String)} has not been called, this operation
-   * will be retried a number of times in the event of a conflict.  If a resourceVersion has been set
-   * on the item, the first update attempt will be made against that version.  Subsequent attempts will fetch
+   * <p>
+   * If {@link Lockable#lockResourceVersion(String)} has not been called, this operation
+   * will be retried a number of times in the event of a conflict. If a resourceVersion has been set
+   * on the item, the first update attempt will be made against that version. Subsequent attempts will fetch
    * the latest resourceVersion from the server.
    *
    * @return returns deserialized version of api server response

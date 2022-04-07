@@ -268,8 +268,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public final T createOrReplace() {
-    T item = getItem();
-
     if (item == null) {
       throw new IllegalArgumentException("Nothing to create.");
     }
@@ -668,7 +666,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T getItem() {
+  public final T getItem() {
     return item;
   }
 

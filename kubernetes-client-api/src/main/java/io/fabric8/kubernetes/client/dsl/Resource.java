@@ -37,7 +37,8 @@ public interface Resource<T> extends
   /**
    * deletes dependent resources. Sets `orphanDependents` field to `false` when set `true`
    *
-   * @deprecated Please Use {@link io.fabric8.kubernetes.client.PropagationPolicyConfigurable} instead. This field has been deprecated since 1.7.
+   * @deprecated Please Use {@link io.fabric8.kubernetes.client.PropagationPolicyConfigurable} instead. This field has been
+   *             deprecated since 1.7.
    * @param enabled whether dependents should be orphaned or not.
    * @return resource
    */

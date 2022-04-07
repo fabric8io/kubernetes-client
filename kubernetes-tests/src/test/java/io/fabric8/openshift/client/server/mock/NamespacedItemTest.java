@@ -131,7 +131,8 @@ class NamespacedItemTest {
 
   @Test
   void testResourceList() {
-    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList = this.client.adapt(NamespacedKubernetesClient.class)
+    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList = this.client
+        .adapt(NamespacedKubernetesClient.class)
         .inNamespace("explicit")
         .resourceList(configmap);
 

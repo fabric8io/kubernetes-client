@@ -254,7 +254,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withPropagationPolicy(
+      DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy), namespaceVisitOperationContext);
   }
 

@@ -60,6 +60,7 @@ public interface ExtensibleResource<T> extends Resource<T> {
   /**
    * Return the current item, which may be null if the resource was created
    * using {@link Nameable#withName(String)}
+   * 
    * @return the item
    */
   T getItem();
