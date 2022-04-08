@@ -19,30 +19,23 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.MicroTimeBuilder;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class EventsIT {
-  @ArquillianResource
+class EventsIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
   @Test
-  public void listAllNamespaceEvents() {
+  void listAllNamespaceEvents() {
     // Given + When
     EventList eventList = client.v1().events().inAnyNamespace().list();
 
@@ -52,12 +45,12 @@ public class EventsIT {
   }
 
   @Test
-  public void create() {
+  void create() {
     // Given
     Event event = createEvent("custom-event-create");
 
     // When
-    Event createdEvent = client.v1().events().inNamespace(session.getNamespace()).create(event);
+    Event createdEvent = client.v1().events().inNamespace(namespace.getMetadata().getName()).create(event);
 
     // Then
     assertNotNull(createdEvent);
@@ -66,13 +59,13 @@ public class EventsIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     // Given
     Event event = createEvent("custom-event-delete");
 
     // When
-    Event createdEvent = client.v1().events().inNamespace(session.getNamespace()).create(event);
-    Boolean isDeleted = client.v1().events().inNamespace(session.getNamespace()).withName("custom-event-delete").delete();
+    Event createdEvent = client.v1().events().inNamespace(namespace.getMetadata().getName()).create(event);
+    Boolean isDeleted = client.v1().events().inNamespace(namespace.getMetadata().getName()).withName("custom-event-delete").delete();
 
     // Then
     assertNotNull(createdEvent);
@@ -86,7 +79,7 @@ public class EventsIT {
       .withInvolvedObject(new ObjectReferenceBuilder()
         .withKind("Pod")
         .withName("test-pod")
-        .withNamespace(session.getNamespace())
+        .withNamespace(namespace.getMetadata().getName())
         .build())
       .withReason("Custom Event")
       .withEventTime(new MicroTimeBuilder().withTime("2021-07-06T16:38:47.986439Z").build())

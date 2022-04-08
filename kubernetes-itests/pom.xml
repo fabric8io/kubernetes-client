@@ -31,24 +31,23 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <!-- Arquillian is still not compatible with Junit 5, so using Junit 4 here -->
-      <version>${junit.compatible-with-arquillian.version}</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>${commons-compress.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-client</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.cube</groupId>
-      <artifactId>arquillian-cube-requirement</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.cube</groupId>
-      <artifactId>arquillian-cube-openshift-starter</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

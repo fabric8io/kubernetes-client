@@ -15,37 +15,26 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.AssumingK8sVersionAtLeast;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class CustomResourceDefinitionIT {
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
+class CustomResourceDefinitionIT {
 
-  @ArquillianResource
   KubernetesClient client;
-
-  @ClassRule
-  public static final AssumingK8sVersionAtLeast assumingK8sVersion =
-    new AssumingK8sVersionAtLeast("1", "16");
 
   private String name;
   private String singular;
@@ -53,7 +42,7 @@ public class CustomResourceDefinitionIT {
   private String group;
   private CustomResourceDefinition crd;
 
-  @Before
+  @BeforeEach
   public void setUp(){
     singular = "a" + UUID.randomUUID().toString().replace("-", "");
     plural = singular + "s";
@@ -62,13 +51,13 @@ public class CustomResourceDefinitionIT {
     crd = createCRD();
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     deleteCRD();
   }
 
   @Test
-  public void load() {
+  void load() {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
       .load(getClass().getResourceAsStream("/test-crd.yml")).get();
@@ -77,7 +66,7 @@ public class CustomResourceDefinitionIT {
   }
 
   @Test
-  public void get() {
+  void get() {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
       .withName(name).get();
@@ -86,7 +75,7 @@ public class CustomResourceDefinitionIT {
   }
 
   @Test
-  public void list() {
+  void list() {
     // When
     final CustomResourceDefinitionList result = client.apiextensions().v1().customResourceDefinitions()
       .list();
@@ -97,7 +86,7 @@ public class CustomResourceDefinitionIT {
   }
 
   @Test
-  public void create() {
+  void create() {
     // Then
     assertThat(crd)
       .hasFieldOrPropertyWithValue("metadata.name", name)
@@ -106,7 +95,7 @@ public class CustomResourceDefinitionIT {
   }
 
   @Test
-  public void update() {
+  void update() {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
       .withName(name).edit(c -> new CustomResourceDefinitionBuilder(c)
@@ -117,7 +106,7 @@ public class CustomResourceDefinitionIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     // When
     final boolean result = client.apiextensions().v1().customResourceDefinitions()
       .withName(name).delete();

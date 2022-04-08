@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReviewBuilder;
-import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview;
-import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReviewBuilder;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
@@ -29,37 +29,24 @@ import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class K8sAuthorizationOnOpenShiftIT {
-  @ArquillianResource
+@RequireK8sSupport(Project.class)
+class K8sAuthorizationOnOpenShiftIT {
+
   OpenShiftClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @Before
-  public void initialCall() {
-    client.pods().inNamespace(session.getNamespace()).list();
-  }
+  Namespace namespace;
 
   @Test
-  public void createRoleK8s() {
+  void createRoleK8s() {
     // Given
     String name = "create-role-k8s";
     Role role = new RoleBuilder()
@@ -72,17 +59,17 @@ public class K8sAuthorizationOnOpenShiftIT {
       .build();
 
     // When
-    Role createdRole = client.rbac().roles().inNamespace(session.getNamespace()).create(role);
+    Role createdRole = client.rbac().roles().inNamespace(namespace.getMetadata().getName()).create(role);
 
     // Then
     assertNotNull(createdRole);
     assertNotNull(createdRole.getMetadata().getUid());
     assertEquals(name, createdRole.getMetadata().getName());
-    client.rbac().roles().inNamespace(session.getNamespace()).withName(name).delete();
+    client.rbac().roles().inNamespace(namespace.getMetadata().getName()).withName(name).delete();
   }
 
   @Test
-  public void createRoleBindingK8s() {
+  void createRoleBindingK8s() {
     // Given
     String name = "create-rolebinding-k8s";
     RoleBinding roleBinding = new RoleBindingBuilder()
@@ -100,17 +87,17 @@ public class K8sAuthorizationOnOpenShiftIT {
       .build();
 
     // When
-    RoleBinding createdRoleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).create(roleBinding);
+    RoleBinding createdRoleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).create(roleBinding);
 
     // Then
     assertNotNull(createdRoleBinding);
     assertNotNull(createdRoleBinding.getMetadata().getUid());
     assertEquals(name, createdRoleBinding.getMetadata().getName());
-    client.rbac().roleBindings().inNamespace(session.getNamespace()).withName(name).delete();
+    client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName(name).delete();
   }
 
   @Test
-  public void createClusterRoleBindingK8s() {
+  void createClusterRoleBindingK8s() {
     // Given
     String name = "create-clusterrolebinding-k8s";
     ClusterRoleBinding clusterRoleBinding = new ClusterRoleBindingBuilder()
@@ -138,7 +125,7 @@ public class K8sAuthorizationOnOpenShiftIT {
   }
 
   @Test
-  public void createClusterRoleK8s() {
+  void createClusterRoleK8s() {
     // Given
     String name = "create-clusterrole-k8s";
     ClusterRole clusterRole = new ClusterRoleBuilder()
@@ -161,15 +148,15 @@ public class K8sAuthorizationOnOpenShiftIT {
   }
 
   @Test
-  public void createLocalSubjectAccessReview() {
+  void createLocalSubjectAccessReview() {
     // Given
     User currentUser = client.currentUser();
-    String namespace = session.getNamespace();
+    String ns = namespace.getMetadata().getName();
     LocalSubjectAccessReview lsar = new LocalSubjectAccessReviewBuilder()
-      .withNewMetadata().withNamespace(namespace).endMetadata()
+      .withNewMetadata().withNamespace(ns).endMetadata()
       .withNewSpec()
       .withNewResourceAttributes()
-      .withNamespace(namespace)
+      .withNamespace(ns)
       .withVerb("get")
       .withGroup("apps")
       .withResource("Deployment")
@@ -179,7 +166,7 @@ public class K8sAuthorizationOnOpenShiftIT {
       .build();
 
     // When
-    LocalSubjectAccessReview createdLsar = client.authorization().v1().localSubjectAccessReview().inNamespace(namespace).create(lsar);
+    LocalSubjectAccessReview createdLsar = client.authorization().v1().localSubjectAccessReview().inNamespace(ns).create(lsar);
 
     // Then
     assertNotNull(createdLsar);
@@ -187,13 +174,13 @@ public class K8sAuthorizationOnOpenShiftIT {
   }
 
   @Test
-  public void createSubjectAccessReview() {
+  void createSubjectAccessReview() {
     // Given
     String user = client.currentUser().getMetadata().getName();
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
       .withNewSpec()
       .withNewResourceAttributes()
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .withVerb("get")
       .withResource("pods")
       .endResourceAttributes()
@@ -208,6 +195,5 @@ public class K8sAuthorizationOnOpenShiftIT {
     assertNotNull(createSar);
     assertTrue(createSar.getStatus().getAllowed());
   }
-
 
 }

@@ -16,69 +16,58 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.AssumingK8sVersionAtLeast;
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class IngressIT {
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
+class IngressIT {
 
-  @ClassRule
-  public static final AssumingK8sVersionAtLeast assumingK8sVersion =
-    new AssumingK8sVersionAtLeast("1", "16");
+  static KubernetesClient client;
 
-  @ArquillianResource
-  KubernetesClient client;
-
-  @ArquillianResource
-  Session session;
-
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(IngressIT.class.getResourceAsStream("/ingress-it.yml"));
+    client.load(IngressIT.class.getResourceAsStream("/ingress-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(IngressIT.class.getResourceAsStream("/ingress-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void load() {
-    Ingress aIngress = client.network().v1().ingresses().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-ingress.yml")).get();
+  void load() {
+    Ingress aIngress = client.network().v1().ingresses().load(getClass().getResourceAsStream("/test-ingress.yml")).get();
     assertThat(aIngress).isNotNull();
     assertEquals("test-multiple-paths", aIngress.getMetadata().getName());
   }
 
   @Test
-  public void get() {
-    Ingress ingress = client.network().v1().ingresses().inNamespace(session.getNamespace()).withName("ingress-get").get();
+  void get() {
+    Ingress ingress = client.network().v1().ingresses().withName("ingress-get").get();
     assertThat(ingress).isNotNull();
   }
 
   @Test
-  public void list() {
-    IngressList aIngressList = client.network().v1().ingresses().inNamespace(session.getNamespace()).list();
+  void list() {
+    IngressList aIngressList = client.network().v1().ingresses().list();
     assertNotNull(aIngressList);
     assertTrue(aIngressList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    Ingress ingress = client.network().v1().ingresses().inNamespace(session.getNamespace()).withName("ingress-update").edit(i -> new IngressBuilder(i)
+  void update() {
+    Ingress ingress = client.network().v1().ingresses().withName("ingress-update").edit(i -> new IngressBuilder(i)
                     .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(ingress);
@@ -86,12 +75,8 @@ public class IngressIT {
   }
 
   @Test
-  public void delete() {
-    assertTrue(client.network().v1().ingresses().inNamespace(session.getNamespace()).withName("ingress-delete").delete());
+  void delete() {
+    assertTrue(client.network().v1().ingresses().withName("ingress-delete").delete());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(IngressIT.class.getResourceAsStream("/ingress-it.yml"));
-  }
 }

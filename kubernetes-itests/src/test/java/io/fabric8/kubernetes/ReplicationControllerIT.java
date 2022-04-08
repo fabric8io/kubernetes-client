@@ -16,41 +16,38 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-
-import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class ReplicationControllerIT {
-  @ArquillianResource
-  KubernetesClient client;
+class ReplicationControllerIT {
 
-  @ArquillianResource
-  Session session;
+  static KubernetesClient client;
 
-  @BeforeClass
+  Namespace namespace;
+
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml"));
+    client.load(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void load() {
-    ReplicationController aReplicationController = client.replicationControllers().inNamespace(session.getNamespace())
+  void load() {
+    ReplicationController aReplicationController = client.replicationControllers().inNamespace(namespace.getMetadata().getName())
       .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
 
     assertThat(aReplicationController).isNotNull();
@@ -59,31 +56,27 @@ public class ReplicationControllerIT {
   }
 
   @Test
-  public void get() {
-    ReplicationController rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-get").get();
+  void get() {
+    ReplicationController rc1 = client.replicationControllers().inNamespace(namespace.getMetadata().getName()).withName("rc-get").get();
     assertNotNull(rc1);
   }
 
   @Test
-  public void list() {
-    ReplicationControllerList aRcList = client.replicationControllers().inNamespace(session.getNamespace()).list();
+  void list() {
+    ReplicationControllerList aRcList = client.replicationControllers().inNamespace(namespace.getMetadata().getName()).list();
     assertThat(aRcList).isNotNull();
     assertTrue(aRcList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    ReplicationController rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-update").scale(5);
+  void update() {
+    ReplicationController rc1 = client.replicationControllers().inNamespace(namespace.getMetadata().getName()).withName("rc-update").scale(5);
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
   }
 
   @Test
-  public void delete() {
-    assertTrue(client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-delete").delete());
+  void delete() {
+    assertTrue(client.replicationControllers().inNamespace(namespace.getMetadata().getName()).withName("rc-delete").delete());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml"));
-  }
 }

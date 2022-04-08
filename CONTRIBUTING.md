@@ -52,13 +52,13 @@ To run regression tests, you need to run a OpenShift/Kubernetes Cluster and afte
 For Kubernetes,
 
 ```
-mvn clean verify -Pitests-kubernetes
+mvn clean verify -Pitests -Dtest="io.fabric8.kubernetes.**"
 ```
 
 For OpenShift (Login as Admin),
 
 ```
-mvn clean verify -Pitests-openshift
+mvn clean verify -Pitests -Dtest="io.fabric8.openshift.**"
 ```
 
 #### * Other Requirements

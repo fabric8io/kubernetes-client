@@ -95,7 +95,6 @@
 
     <!-- Testing versions -->
     <assertj.core.version>3.22.0</assertj.core.version>
-    <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>15.1.2</approvaltests.version>
 
@@ -110,9 +109,7 @@
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>5.8.2</junit.version>
-    <junit.compatible-with-arquillian.version>4.13.2</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
-    <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.36</slf4j.version>
     <mockito.version>4.5.0</mockito.version>
     <lombok.version>1.18.24</lombok.version>
@@ -795,20 +792,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.arquillian.cube</groupId>
-        <artifactId>arquillian-cube-requirement</artifactId>
-        <version>${arquillian.cube.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.arquillian.cube</groupId>
-        <artifactId>arquillian-cube-openshift-starter</artifactId>
-        <version>${arquillian.cube.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>${validation-api.version}</version>
@@ -1271,7 +1254,7 @@
       </build>
     </profile>
     <profile>
-      <id>itests-kubernetes</id>
+      <id>itests</id>
       <modules>
         <module>kubernetes-itests</module>
       </modules>
@@ -1283,37 +1266,6 @@
             <version>${maven.surefire.plugin.version}</version>
             <configuration>
               <skipTests>false</skipTests>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${maven.surefire.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>itests-openshift</id>
-      <modules>
-        <module>kubernetes-itests</module>
-      </modules>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>${maven.surefire.plugin.version}</version>
-            <configuration>
-              <skipTests>true</skipTests>
             </configuration>
           </plugin>
           <plugin>

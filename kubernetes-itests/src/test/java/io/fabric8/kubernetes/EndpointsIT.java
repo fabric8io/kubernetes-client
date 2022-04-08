@@ -16,57 +16,54 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@Ignore
-@RequiresKubernetes
-public class EndpointsIT {
-  @ArquillianResource
-  KubernetesClient client;
+@Disabled
+class EndpointsIT {
 
-  @ArquillianResource
-  Session session;
+  static KubernetesClient client;
 
-  @BeforeClass
+  Namespace namespace;
+
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml"));
+    client.load(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void get() {
-    Endpoints endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-get").get();
+  void get() {
+    Endpoints endpoints = client.endpoints().inNamespace(namespace.getMetadata().getName()).withName("endpoints-get").get();
     assertThat(endpoints).isNotNull();
   }
 
   @Test
-  public void list() {
-    EndpointsList aEndpointList = client.endpoints().inNamespace(session.getNamespace()).list();
+  void list() {
+    EndpointsList aEndpointList = client.endpoints().inNamespace(namespace.getMetadata().getName()).list();
     assertNotNull(aEndpointList);
     assertTrue(aEndpointList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    Endpoints endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
+  void update() {
+    Endpoints endpoints = client.endpoints().inNamespace(namespace.getMetadata().getName()).withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(endpoints);
@@ -74,12 +71,8 @@ public class EndpointsIT {
   }
 
   @Test
-  public void delete() {
-    assertTrue(client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-delete").delete());
+  void delete() {
+    assertTrue(client.endpoints().inNamespace(namespace.getMetadata().getName()).withName("endpoints-delete").delete());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml"));
-  }
 }

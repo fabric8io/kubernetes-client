@@ -15,54 +15,50 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class RoleIT {
+class RoleIT {
 
-  @ArquillianResource
-  KubernetesClient client;
+  static KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
   private String currentNamespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(RoleIT.class.getResourceAsStream("/role-it.yml"));
+    client.load(RoleIT.class.getResourceAsStream("/role-it.yml")).create();
   }
 
-  @Before
+  @AfterAll
+  public static void cleanup() {
+    client.load(RoleIT.class.getResourceAsStream("/role-it.yml")).withGracePeriod(0L).delete();
+  }
+
+  @BeforeEach
   public void initNamespace() {
-    this.currentNamespace = session.getNamespace();
+    this.currentNamespace = namespace.getMetadata().getName();
   }
 
   @Test
-  public void get() {
+  void get() {
 
     Role role = client.rbac().roles().inNamespace(currentNamespace).withName("role-get").get();
 
@@ -89,7 +85,7 @@ public class RoleIT {
   }
 
   @Test
-  public void load() {
+  void load() {
 
     Role aRole = client.rbac().roles().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).get();
@@ -120,7 +116,7 @@ public class RoleIT {
   }
 
   @Test
-  public void list() {
+  void list() {
 
     RoleList roleList = client.rbac().roles().inNamespace(currentNamespace).list();
 
@@ -153,7 +149,7 @@ public class RoleIT {
   }
 
   @Test
-  public void update() {
+  void update() {
 
     Role role = client.rbac().roles().inNamespace(currentNamespace).withName("role-update").edit(r -> new RoleBuilder(r)
                  .editRule(0).addToApiGroups(1, "extensions").endRule().build());
@@ -182,7 +178,7 @@ public class RoleIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
 
     int countBeforeDeletion = client.rbac().roles().inNamespace(currentNamespace).list().getItems().size();
     boolean deleted = client.rbac().roles().inNamespace(currentNamespace).withName("role-delete").delete();
@@ -196,8 +192,4 @@ public class RoleIT {
     assertEquals(countBeforeDeletion - 1,roleList.getItems().size());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(RoleIT.class.getResourceAsStream("/role-it.yml"));
-  }
 }

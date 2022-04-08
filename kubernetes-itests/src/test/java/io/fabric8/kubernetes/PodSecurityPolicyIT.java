@@ -16,44 +16,40 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class PodSecurityPolicyIT {
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-  @ArquillianResource
-  KubernetesClient client;
+class PodSecurityPolicyIT {
 
-  @BeforeClass
+  static KubernetesClient client;
+
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml"));
+    client.load(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void load() {
+  void load() {
 
     PodSecurityPolicy loadedPodSecurityPolicy = client.policy().podSecurityPolicies()
       .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
@@ -68,7 +64,7 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void get() {
+  void get() {
     PodSecurityPolicy getPodSecurityPolicy = client.policy().podSecurityPolicies()
       .withName("psp-get").get();
     assertNotNull(getPodSecurityPolicy);
@@ -76,8 +72,7 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void list() {
-
+  void list() {
     PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
@@ -90,7 +85,7 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void update(){
+  void update(){
 
     PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
       .editSpec().withPrivileged(true).endSpec()
@@ -106,7 +101,7 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void delete(){
+  void delete(){
     boolean deleted = client.policy().podSecurityPolicies().withName("psp-delete").delete();
     assertTrue(deleted);
 
@@ -114,9 +109,5 @@ public class PodSecurityPolicyIT {
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml"));
-  }
 
 }

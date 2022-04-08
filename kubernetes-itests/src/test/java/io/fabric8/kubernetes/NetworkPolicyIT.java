@@ -16,47 +16,43 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class NetworkPolicyIT {
+class NetworkPolicyIT {
 
-  @ArquillianResource
-  KubernetesClient client;
+  static KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(NetworkPolicyIT.class.getResourceAsStream("/networkpolicy-it.yml"));
+    client.load(NetworkPolicyIT.class.getResourceAsStream("/networkpolicy-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(NetworkPolicyIT.class.getResourceAsStream("/networkpolicy-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void load() {
+  void load() {
     NetworkPolicy loadedNetworkPolicy = client.network().v1().networkPolicies()
       .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
 
@@ -72,7 +68,7 @@ public class NetworkPolicyIT {
   }
 
   @Test
-  public void get() {
+  void get() {
     NetworkPolicy getNetworkPolicy = client.network().v1().networkPolicies()
       .withName("networkpolicy-get").get();
     assertNotNull(getNetworkPolicy);
@@ -88,7 +84,7 @@ public class NetworkPolicyIT {
   }
 
   @Test
-  public void list() {
+  void list() {
 
     NetworkPolicyList networkPolicyList = client.network().v1().networkPolicies()
       .withLabels(Collections.singletonMap("test","list")).list();
@@ -109,8 +105,8 @@ public class NetworkPolicyIT {
   }
 
   @Test
-  public void update() {
-    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-update", session.getNamespace());
+  void update() {
+    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-update", namespace.getMetadata().getName());
     NetworkPolicy networkPolicy = client.network().v1().networkPolicies()
       .withName("networkpolicy-update").edit(n -> new NetworkPolicyBuilder(n)
       .editMetadata().addToLabels("bar", "foo").endMetadata()
@@ -131,19 +127,15 @@ public class NetworkPolicyIT {
   }
 
   @Test
-  public void delete() {
-    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", session.getNamespace());
+  void delete() {
+    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
-    boolean deleted = client.network().v1().networkPolicies().inNamespace(session.getNamespace()).withName("networkpolicy-delete").delete();
+    boolean deleted = client.network().v1().networkPolicies().inNamespace(namespace.getMetadata().getName()).withName("networkpolicy-delete").delete();
 
     assertTrue(deleted);
 
-    DeleteEntity<NetworkPolicy> deleteEntity = new DeleteEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", session.getNamespace());
+    DeleteEntity<NetworkPolicy> deleteEntity = new DeleteEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(NetworkPolicyIT.class.getResourceAsStream("/networkpolicy-it.yml"));
-  }
 }

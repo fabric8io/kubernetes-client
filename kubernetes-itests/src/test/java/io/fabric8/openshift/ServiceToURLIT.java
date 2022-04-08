@@ -15,38 +15,34 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
+import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static junit.framework.TestCase.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class ServiceToURLIT {
-  @ArquillianResource
+@RequireK8sSupport(Route.class)
+class ServiceToURLIT {
+
   OpenShiftClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
   private String currentNamespace;
 
-  @Before
+  @BeforeEach
   public void init() {
-    currentNamespace = session.getNamespace();
+    currentNamespace = namespace.getMetadata().getName();
     Service svc1 = new ServiceBuilder()
       .withNewMetadata()
       .withName("svc1")
@@ -88,7 +84,7 @@ public class ServiceToURLIT {
   }
 
   @Test
-  public void getURL() {
+  void getURL() {
     // Testing NodePort Impl
     String url = client.services().inNamespace(currentNamespace).withName("svc1").getURL("http");
     assertNotNull(url);

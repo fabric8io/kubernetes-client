@@ -15,43 +15,39 @@
  */
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.openshift.api.model.*;
+import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
+import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class ImageStreamTagIT {
+@RequireK8sSupport(ImageStreamTag.class)
+class ImageStreamTagIT {
 
-  @ArquillianResource
-  OpenShiftClient client;
+  static OpenShiftClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(ImageStreamTagIT.class.getResourceAsStream("/imagestreamtag-it.yml"));
+    client.load(ImageStreamTagIT.class.getResourceAsStream("/imagestreamtag-it.yml")).create();
   }
 
   @Test
-  public void load() {
+  void load() {
     ImageStreamTag loadedIST = client.imageStreamTags()
       .load(getClass().getResourceAsStream("/test-ist.yml")).get();
 
@@ -62,11 +58,11 @@ public class ImageStreamTagIT {
   }
 
   @Test
-  public void get() {
+  void get() {
 
-    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "get:1.0.12", session.getNamespace());
+    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "get:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
-    ImageStreamTag getIST = client.imageStreamTags().inNamespace(session.getNamespace())
+    ImageStreamTag getIST = client.imageStreamTags().inNamespace(namespace.getMetadata().getName())
       .withName("get:1.0.12").get();
 
     assertNotNull(getIST);
@@ -77,9 +73,9 @@ public class ImageStreamTagIT {
   }
 
   @Test
-  public void list() {
+  void list() {
 
-    ImageStreamTagList istagList = client.imageStreamTags().inNamespace(session.getNamespace()).list();
+    ImageStreamTagList istagList = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).list();
 
     assertNotNull(istagList);
     assertTrue(istagList.getItems().size() >= 1);
@@ -91,9 +87,9 @@ public class ImageStreamTagIT {
   }
 
   @Test
-  public void update() {
+  void update() {
 
-    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "update:1.0.12", session.getNamespace());
+    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "update:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
     ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("update:1.0.12").endMetadata()
       .withNewTag()
@@ -103,7 +99,7 @@ public class ImageStreamTagIT {
       .endFrom()
       .endTag()
       .build();
-    ImageStreamTag istag = client.imageStreamTags().inNamespace(session.getNamespace()).withName("update:1.0.12").patch(istag2);
+    ImageStreamTag istag = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).withName("update:1.0.12").patch(istag2);
 
     assertNotNull(istag);
     assertEquals("update:1.0.12", istag.getMetadata().getName());
@@ -112,13 +108,13 @@ public class ImageStreamTagIT {
   }
 
   @Test
-  public void delete() {
-    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "delete:1.0.12", session.getNamespace());
+  void delete() {
+    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "delete:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
-    ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().inNamespace(session.getNamespace()).list();
-    boolean deleted = client.imageStreamTags().inNamespace(session.getNamespace()).withName("delete:1.0.12").delete();
+    ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).list();
+    boolean deleted = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).withName("delete:1.0.12").delete();
     assertTrue(deleted);
-    DeleteEntity<ImageStreamTag> deleteEntity = new DeleteEntity<>(ImageStreamTag.class, client, "delete:1.0.12", session.getNamespace());
+    DeleteEntity<ImageStreamTag> deleteEntity = new DeleteEntity<>(ImageStreamTag.class, client, "delete:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }
 
