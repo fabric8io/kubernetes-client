@@ -17,3 +17,6 @@ Further more you will also have choices in the HttpClient that is utilized.
 By default kubenetes-client has a runtime dependency on OkHttp (kubernetes-httpclient-okhttp).  If you need to directly manipulate OkHttp, you add a compile dependency to kubernetes-httpclient-okhttp.  
 
 If you wish to use another HttpClient implementation typically you will exclude kubernetes-httpclient-okhttp and include the other runtime dependency instead.
+
+### What is Bouncy Castle optional dependency and when is it required?
+BouncyCastle is a Java library that complements the default Java Cryptographic Extension (JCE) and it is required while using JcaPEMKeyConverter. To use support for EC Keys you must explicitly add this dependency to classpath. This should be added at the extension level. Having to add bouncy castle dependencies would not have been an issue. Especially as the Documentation tells to do so here: https://quarkus.io/guides/security-customization.
