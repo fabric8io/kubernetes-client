@@ -15,8 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.AssumingK8sVersionAtLeast;
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.crd.pet.Pet;
 import io.fabric8.crd.pet.PetSpec;
 import io.fabric8.crd.pet.PetStatus;
@@ -32,39 +31,30 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class TypedCustomResourceIT {
-  @ArquillianResource
-  KubernetesClient client;
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
+class TypedCustomResourceIT {
 
-  @ArquillianResource
-  Session session;
+  static KubernetesClient client;
 
-  private String currentNamespace;
+  private static MixedOperation<Pet, KubernetesResourceList<Pet>, Resource<Pet>> petClient;
 
-  private static final CustomResourceDefinition petCrd = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(Pet.class)
+  private static final CustomResourceDefinition petCrd = CustomResourceDefinitionContext
+    .v1CRDFromCustomResourceType(Pet.class)
     .editSpec().editVersion(0)
     .withNewSubresources()
     .withNewStatus().endStatus()
@@ -90,70 +80,63 @@ public class TypedCustomResourceIT {
     .endSpec()
     .build();
 
-  private MixedOperation<Pet, KubernetesResourceList<Pet>, Resource<Pet>> petClient;
 
-  @ClassRule
-  public static final AssumingK8sVersionAtLeast assumingK8sVersion = new AssumingK8sVersionAtLeast("1", "16");
-
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(petCrd);
+    client.resource(petCrd).create();
+    client.apiextensions().v1().customResourceDefinitions()
+        .withName("pets.testing.fabric8.io")
+        .waitUntilCondition(c -> c.getStatus() != null && c.getStatus().getConditions()!= null && c.getStatus().getConditions().stream()
+            .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
+            10L, TimeUnit.SECONDS);
+    petClient = client.customResources(Pet.class);
   }
 
-  @Before
-  public void initPetClientAndCurrentNamespace() {
-    petClient = client.customResources(Pet.class);
-    currentNamespace = session.getNamespace();
+  @AfterAll
+  public static void cleanup() {
+    client.resource(petCrd).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void create() {
+  void create() {
     // Given
     Pet pet = createNewPet("pet-create", "Dog", null);
-
     // When
-    Pet createdPet = petClient.inNamespace(currentNamespace).create(pet);
-
+    Pet createdPet = petClient.create(pet);
     // Then
     assertPet(createdPet, "pet-create", "Dog", null);
   }
 
   @Test
-  public void createOrReplace() {
+  void createOrReplace() {
     // Given
     Pet pet = createNewPet("pet-createorreplace", "Dog", null);
-
     // When
-    Pet createdPet = petClient.inNamespace(currentNamespace).create(pet);
+    Pet createdPet = petClient.create(pet);
     createdPet.getSpec().setType("Buffalo");
-    Pet replacedPet = petClient.inNamespace(currentNamespace).createOrReplace(createdPet);
-
+    Pet replacedPet = petClient.createOrReplace(createdPet);
     // Then
     assertPet(replacedPet, "pet-createorreplace", "Buffalo", null);
   }
 
   @Test
-  public void get() {
+  void get() {
     // Given
     Pet pet = createNewPet("pet-get", "Cow", null);
-
     // When
-    petClient.inNamespace(currentNamespace).create(pet);
-    Pet petFromServer = petClient.inNamespace(currentNamespace).withName("pet-get").get();
-
+    petClient.create(pet);
+    Pet petFromServer = petClient.withName("pet-get").get();
     // Then
     assertPet(petFromServer, "pet-get", "Cow", null);
   }
 
   @Test
-  public void list() {
+  void list() {
     // Given
     Pet pet = createNewPet("pet-list", "Parrot", null);
-
     // When
-    petClient.inNamespace(currentNamespace).create(pet);
-    KubernetesResourceList<Pet> petList = petClient.inNamespace(currentNamespace).list();
-
+    petClient.create(pet);
+    KubernetesResourceList<Pet> petList = petClient.list();
     // Then
     assertNotNull(petList);
     assertNotNull(petList.getItems());
@@ -161,19 +144,17 @@ public class TypedCustomResourceIT {
   }
 
   @Test
-  public void update() {
+  void update() {
     // Given
     Pet pet = createNewPet("pet-update", "Pigeon", null);
-
     // When
-    petClient.inNamespace(currentNamespace).create(pet);
+    petClient.create(pet);
     await().atMost(5, TimeUnit.SECONDS)
-      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-update").get() != null);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).withName("pet-update").edit(pet1 -> {
+      .until(() -> petClient.withName("pet-update").get() != null);
+    Pet updatedPet = petClient.withName("pet-update").edit(pet1 -> {
       pet1.getMetadata().setAnnotations(Collections.singletonMap("first", "1"));
       return pet1;
     });
-
     // Then
     assertPet(updatedPet, "pet-update", "Pigeon", null);
     assertNotNull(updatedPet.getMetadata().getAnnotations());
@@ -182,94 +163,83 @@ public class TypedCustomResourceIT {
   }
 
   @Test
-  public void updateStatusSubresource() {
+  @SuppressWarnings("deprecation")
+  void updateStatusSubresource() {
     // Given
-    Pet pet = createNewPet("pet-updatestatus", "Pigeon", null);
+    Pet pet = createNewPet("pet-update-status", "Pigeon", null);
     PetStatus petStatusToUpdate = new PetStatus();
     petStatusToUpdate.setCurrentStatus("Sleeping");
-
     // When
-    pet = petClient.inNamespace(currentNamespace).create(pet);
-    await().atMost(5, TimeUnit.SECONDS)
-      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-updatestatus").get() != null);
+    pet = petClient.create(pet);
+    petClient.withName("pet-update-status")
+      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
     pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).updateStatus(pet);
-
+    Pet updatedPet = petClient.updateStatus(pet);
     // Then
-    assertPet(updatedPet, "pet-updatestatus", "Pigeon", "Sleeping");
+    assertPet(updatedPet, "pet-update-status", "Pigeon", "Sleeping");
   }
 
   @Test
-  public void replaceStatusSubresource() {
+  void replaceStatusSubresource() {
     // Given
-    Pet pet = createNewPet("pet-replacestatus", "Pigeon", null);
+    Pet pet = createNewPet("pet-replace-status", "Pigeon", null);
     PetStatus petStatusToUpdate = new PetStatus();
     petStatusToUpdate.setCurrentStatus("Sleeping");
-
     // When
-    petClient.inNamespace(currentNamespace).create(pet);
-    await().atMost(5, TimeUnit.SECONDS)
-      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-replacestatus").get() != null);
+    petClient.create(pet);
+    petClient.withName("pet-replace-status")
+      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    pet.getSpec().setType("shouldn't change");
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet = petClient.replaceStatus(pet);
+    // Then
+    assertPet(updatedPet, "pet-replace-status", "Pigeon", "Sleeping");
+  }
+
+  @Test
+  void patchStatusSubresource() {
+    // Given
+    Pet pet = createNewPet("pet-apply-status", "Pigeon", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Sleeping");
+    // When
+    petClient.create(pet);
+    petClient.withName("pet-apply-status")
+      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
     // use the original pet, no need to pick up the resourceVersion
     pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).replaceStatus(pet);
-
+    Pet updatedPet = petClient.withName(pet.getMetadata().getName()).patchStatus(pet);
     // Then
-    assertPet(updatedPet, "pet-replacestatus", "Pigeon", "Sleeping");
+    assertPet(updatedPet, "pet-apply-status", "Pigeon", "Sleeping");
   }
 
   @Test
-  public void patchStatusSubresource() {
+  void editStatusSubresource() {
     // Given
-    Pet pet = createNewPet("pet-applystatus", "Pigeon", null);
+    Pet pet = createNewPet("pet-edit-status", "Pigeon", null);
     PetStatus petStatusToUpdate = new PetStatus();
     petStatusToUpdate.setCurrentStatus("Sleeping");
-
     // When
-    petClient.inNamespace(currentNamespace).create(pet);
-    await().atMost(5, TimeUnit.SECONDS)
-      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-applystatus").get() != null);
-    // use the original pet, no need to pick up the resourceVersion
-    pet.getSpec().setType("shouldn't change");
-    pet.setStatus(petStatusToUpdate);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).withName(pet.getMetadata().getName()).patchStatus(pet);
-
-    // Then
-    assertPet(updatedPet, "pet-applystatus", "Pigeon", "Sleeping");
-  }
-
-  @Test
-  public void editStatusSubresource() {
-    // Given
-    Pet pet = createNewPet("pet-editstatus", "Pigeon", null);
-    PetStatus petStatusToUpdate = new PetStatus();
-    petStatusToUpdate.setCurrentStatus("Sleeping");
-
-    // When
-    petClient.inNamespace(currentNamespace).create(pet);
-    await().atMost(5, TimeUnit.SECONDS)
-      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-editstatus").get() != null);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).withName("pet-editstatus").editStatus(p->{
+    petClient.create(pet);
+    petClient.withName("pet-edit-status")
+      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    Pet updatedPet = petClient.withName("pet-edit-status").editStatus(p-> {
       Pet clone = Serialization.clone(pet);
       clone.setStatus(petStatusToUpdate);
       clone.getSpec().setType("shouldn't change");
       return clone;
     });
-
     // Then
-    assertPet(updatedPet, "pet-editstatus", "Pigeon", "Sleeping");
+    assertPet(updatedPet, "pet-edit-status", "Pigeon", "Sleeping");
   }
 
   @Test
-  public void watch() throws InterruptedException {
-    // Given
+  void watch() throws InterruptedException {
     Pet pet = createNewPet("pet-watch", "Hamster", null);
-
-    // When
     CountDownLatch creationEventReceived = new CountDownLatch(1);
-    Watch petWatch = petClient.inNamespace(currentNamespace).watch(new Watcher<Pet>() {
+    try (Watch ignore = petClient.watch(new Watcher<Pet>() {
       @Override
       public void eventReceived(Action action, Pet resource) {
         if (resource.getMetadata().getName().equals("pet-watch")) {
@@ -279,57 +249,48 @@ public class TypedCustomResourceIT {
 
       @Override
       public void onClose(WatcherException cause) { }
-    });
-    petClient.inNamespace(currentNamespace).createOrReplace(pet);
-
-    // Then
-    assertTrue(creationEventReceived.await(1, TimeUnit.SECONDS));
-    petWatch.close();
+    })) {
+      petClient.createOrReplace(pet);
+      assertTrue(creationEventReceived.await(1, TimeUnit.SECONDS));
+    }
   }
 
   @Test
-  public void delete() {
+  void delete() {
     // Given
     Pet pet = createNewPet("pet-delete", "Cow", "Eating");
-
     // When
-    petClient.inNamespace(currentNamespace).create(pet);
-    Boolean isDeleted = petClient.inNamespace(currentNamespace).withName("pet-delete").delete();
-
+    petClient.create(pet);
+    boolean isDeleted = petClient.withName("pet-delete").delete();
     // Then
-    assertNotNull(isDeleted);
     assertTrue(isDeleted);
   }
 
   @Test
-  public void dryRunCreate() {
+  void dryRunCreate() {
     // Given
     Pet parrot = createNewPet("dry-run-create", "Parrot", "Chirping");
-
     // When
-    Pet createdParrot = petClient.inNamespace(currentNamespace).dryRun().create(parrot);
-
+    Pet createdParrot = petClient.dryRun().create(parrot);
     // Then
     assertNotNull(createdParrot);
     assertNotNull(createdParrot.getMetadata());
     assertNotNull(createdParrot.getMetadata().getUid());
     assertNotNull(createdParrot.getMetadata().getCreationTimestamp());
-    Pet parrotFromServer = petClient.inNamespace(currentNamespace).withName("dry-run-create").get();
+    Pet parrotFromServer = petClient.withName("dry-run-create").get();
     assertNull(parrotFromServer);
   }
 
   @Test
-  public void dryRunDelete() {
+  void dryRunDelete() {
     // Given
     Pet duck = createNewPet("dry-run-delete", "Duck", "Quacking");
-    petClient.inNamespace(currentNamespace).createOrReplace(duck);
-
+    petClient.createOrReplace(duck);
     // When
-    boolean isDeleted = petClient.inNamespace(currentNamespace).withName("dry-run-delete").dryRun().delete();
-
+    boolean isDeleted = petClient.withName("dry-run-delete").dryRun().delete();
     // Then
     assertTrue(isDeleted);
-    Pet duckFromServer = petClient.inNamespace(currentNamespace).withName("dry-run-delete").get();
+    Pet duckFromServer = petClient.withName("dry-run-delete").get();
     assertNotNull(duckFromServer);
   }
 
@@ -342,10 +303,6 @@ public class TypedCustomResourceIT {
     }
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(petCrd);
-  }
 
   private Pet createNewPet(String name, String type, String currentStatus) {
     Pet pet = new Pet();

@@ -23,7 +23,7 @@ spec:
   containers:
     - name: busybox
       image: busybox
-      command: ["sleep", "36000"]
+      command: ["sleep", "3600"]
 ---
 apiVersion: v1
 kind: Pod
@@ -33,4 +33,4 @@ spec:
   containers:
     - name: busybox
       image: busybox
-      command: ["sleep", "36000"]
+      command: ["sleep", "3600"]

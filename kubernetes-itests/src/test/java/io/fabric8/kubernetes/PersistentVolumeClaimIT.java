@@ -15,58 +15,55 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class PersistentVolumeClaimIT {
-  @ArquillianResource
-  KubernetesClient client;
+class PersistentVolumeClaimIT {
 
-  @ArquillianResource
-  Session session;
+  static KubernetesClient client;
 
-  @BeforeClass
+  Namespace namespace;
+
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(PersistentVolumeClaimIT.class.getResourceAsStream("/persistentvolumeclaims-it.yml"));
+    client.load(PersistentVolumeClaimIT.class.getResourceAsStream("/persistentvolumeclaims-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(PersistentVolumeClaimIT.class.getResourceAsStream("/persistentvolumeclaims-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void get() {
-    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-get").get();
+  void get() {
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(namespace.getMetadata().getName()).withName("persistentvolumeclaims-get").get();
     assertThat(persistentVolumeClaim).isNotNull();
   }
 
   @Test
-  public void list() {
-    PersistentVolumeClaimList aEndpointList = client.persistentVolumeClaims().inNamespace(session.getNamespace()).list();
+  void list() {
+    PersistentVolumeClaimList aEndpointList = client.persistentVolumeClaims().inNamespace(namespace.getMetadata().getName()).list();
     assertNotNull(aEndpointList);
     assertTrue(aEndpointList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
+  void update() {
     PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims()
-        .inNamespace(session.getNamespace())
+        .inNamespace(namespace.getMetadata().getName())
         .withName("persistentvolumeclaims-update")
         .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new PersistentVolumeClaimBuilder()
             .withNewMetadata()
@@ -79,12 +76,8 @@ public class PersistentVolumeClaimIT {
   }
 
   @Test
-  public void delete() {
-    assertTrue(client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-delete").delete());
+  void delete() {
+    assertTrue(client.persistentVolumeClaims().inNamespace(namespace.getMetadata().getName()).withName("persistentvolumeclaims-delete").delete());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(PersistentVolumeClaimIT.class.getResourceAsStream("/persistentvolumeclaims-it.yml"));
-  }
 }

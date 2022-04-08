@@ -16,66 +16,63 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobBuilder;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class CronJobIT {
-  @ArquillianResource
-  KubernetesClient client;
+class CronJobIT {
 
-  @ArquillianResource
-  Session session;
+  static KubernetesClient client;
+
+  Namespace namespace;
 
   private String currentNamespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(CronJobIT.class.getResourceAsStream("/cronjob-it.yml"));
+    client.load(CronJobIT.class.getResourceAsStream("/cronjob-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(CronJobIT.class.getResourceAsStream("/cronjob-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void load() {
+  void load() {
     CronJob aCronJob = client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
     assertNotNull(aCronJob);
     assertEquals("hello", aCronJob.getMetadata().getName());
   }
 
   @Test
-  public void get() {
-    currentNamespace = session.getNamespace();
+  void get() {
+    currentNamespace = namespace.getMetadata().getName();
     CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-get").get();
     assertThat(cronJob1).isNotNull();
   }
 
   @Test
-  public void list() {
-    currentNamespace = session.getNamespace();
+  void list() {
+    currentNamespace = namespace.getMetadata().getName();
     CronJobList cronJobList = client.batch().cronjobs().inNamespace(currentNamespace).list();
     assertNotNull(cronJobList);
     assertTrue(cronJobList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    currentNamespace = session.getNamespace();
+  void update() {
+    currentNamespace = namespace.getMetadata().getName();
     CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-update")
       .edit(c -> new CronJobBuilder(c)
       .editSpec()
@@ -86,13 +83,8 @@ public class CronJobIT {
   }
 
   @Test
-  public void delete() {
-    currentNamespace = session.getNamespace();
+  void delete() {
+    currentNamespace = namespace.getMetadata().getName();
     assertTrue(client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-delete").delete());
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(CronJobIT.class.getResourceAsStream("/cronjob-it.yml"));
   }
 }

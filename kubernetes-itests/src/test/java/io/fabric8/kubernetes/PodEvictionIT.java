@@ -15,81 +15,69 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.AssumingK8sVersionAtLeast;
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Evictable;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class PodEvictionIT {
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 22)
+class PodEvictionIT {
 
-  @ArquillianResource
-  public KubernetesClient client;
+  static KubernetesClient client;
 
-  @ArquillianResource
-  public Session session;
+  Namespace namespace;
 
-
-  @ClassRule
-  public static final AssumingK8sVersionAtLeast assumingK8sVersion = new AssumingK8sVersionAtLeast("1", "22");
-
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(PodIT.class.getResourceAsStream("/podeviction-it.yml"));
+    client.load(PodIT.class.getResourceAsStream("/podeviction-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(NetworkPolicyIT.class.getResourceAsStream("/podeviction-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void evictWithV1PolicyEviction() {
+  void evictWithV1PolicyEviction() {
     // Given
     String podName = "podeviction-it-with-v1-policy-eviction";
     Eviction eviction = new EvictionBuilder()
       .withNewMetadata()
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .withName(podName)
       .endMetadata()
       .build();
 
     // When
-    boolean evicted = client.pods().inNamespace(session.getNamespace()).withName(podName).evict(eviction);
+    boolean evicted = client.pods().inNamespace(namespace.getMetadata().getName()).withName(podName).evict(eviction);
 
     // Then
     assertTrue(evicted);
   }
 
   @Test
-  public void evictWithV1PolicyEvictionNonExistentPod() {
+  void evictWithV1PolicyEvictionNonExistentPod() {
     // Given
     String podName = "podit-evict-non-existent-pod";
     Eviction eviction = new EvictionBuilder()
       .withNewMetadata()
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .withName(podName)
       .endMetadata()
       .build();
-    final Evictable podOps = client.pods().inNamespace(session.getNamespace()).withName(podName);
+    final Evictable podOps = client.pods().inNamespace(namespace.getMetadata().getName()).withName(podName);
 
     // When + Then
     assertThrows(KubernetesClientException.class, () -> podOps.evict(eviction));
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(NetworkPolicyIT.class.getResourceAsStream("/podeviction-it.yml"));
-  }
 }

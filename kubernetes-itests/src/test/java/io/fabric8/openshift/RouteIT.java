@@ -16,75 +16,69 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class RouteIT {
-  @ArquillianResource
-  OpenShiftClient client;
+@RequireK8sSupport(Route.class)
+class RouteIT {
 
-  @ArquillianResource
-  Session session;
+  static OpenShiftClient client;
+
+  Namespace namespace;
 
   private Route route1;
 
   private String currentNamespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(RouteIT.class.getResourceAsStream("/route-it.yml"));
+    client.load(RouteIT.class.getResourceAsStream("/route-it.yml")).create();
   }
 
-  @Before
+  @BeforeEach
   public void before() {
-    currentNamespace = ClusterEntity.getArquillianNamespace();
+    currentNamespace = namespace.getMetadata().getName();
   }
 
   @Test
-  public void load() {
+  void load() {
     Route aRoute = client.routes().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-route.yml")).get();
     assertThat(aRoute).isNotNull();
     assertEquals("host-route", aRoute.getMetadata().getName());
   }
 
   @Test
-  public void get() {
+  void get() {
     route1 = client.routes().inNamespace(currentNamespace).withName("route-get").get();
     assertNotNull(route1);
   }
 
   @Test
-  public void list() {
+  void list() {
     RouteList aRouteList = client.routes().inNamespace(currentNamespace).list();
     assertThat(aRouteList).isNotNull();
     assertTrue(aRouteList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
+  void update() {
     ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-update", this.currentNamespace);
     route1 = client.routes().inNamespace(currentNamespace).withName("route-update").edit(r -> new RouteBuilder (r)
                    .editSpec().withPath("/test").endSpec().build());
@@ -94,7 +88,7 @@ public class RouteIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-delete", this.currentNamespace);
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route-delete").delete();
@@ -102,7 +96,7 @@ public class RouteIT {
   }
 
   @Test
-  public void createOrReplace() {
+  void createOrReplace() {
     // Given
     Route route = client.routes().inNamespace(currentNamespace).withName("route-createorreplace").get();
 

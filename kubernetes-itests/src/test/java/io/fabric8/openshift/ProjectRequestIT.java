@@ -15,32 +15,28 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class ProjectRequestIT {
-  @ArquillianResource
+@RequireK8sSupport(ProjectRequest.class)
+class ProjectRequestIT {
+
   OpenShiftClient client;
 
   @Test
-  public void create() {
+  void create() {
     // Given
     String name = "projectrequestit-create";
     ProjectRequest projectRequest = new ProjectRequestBuilder()

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -27,12 +28,7 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,24 +36,20 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class WatchIT {
+class WatchIT {
 
-  @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
   private static final Logger logger = LoggerFactory.getLogger(WatchIT.class);
 
   @Test
-  public void testWatch() throws InterruptedException {
-    String currentNamespace = session.getNamespace();
+  void testWatch() throws InterruptedException {
+    String currentNamespace = namespace.getMetadata().getName();
     Pod pod1 = new PodBuilder()
       .withNewMetadata().withName("sample-watch-pod").endMetadata()
       .withNewSpec()
@@ -108,8 +100,8 @@ public class WatchIT {
   }
 
   @Test
-  public void testWatchFailureHandling() throws InterruptedException {
-    String currentNamespace = session.getNamespace();
+  void testWatchFailureHandling() throws InterruptedException {
+    String currentNamespace = namespace.getMetadata().getName();
     String name = "sample-configmap-watch";
 
     Resource<ConfigMap> configMapClient = client.configMaps().inNamespace(currentNamespace).withName(name);

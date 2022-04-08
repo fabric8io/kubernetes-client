@@ -15,69 +15,62 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import static junit.framework.TestCase.assertNotNull;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class StorageClassIT {
-  @ArquillianResource
-  KubernetesClient client;
+class StorageClassIT {
 
-  @BeforeClass
+  static KubernetesClient client;
+
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(StorageClassIT.class.getResourceAsStream("/storageclass-it.yml"));
+    client.load(StorageClassIT.class.getResourceAsStream("/storageclass-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(StorageClassIT.class.getResourceAsStream("/storageclass-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void load() {
+  void load() {
     StorageClass storageClassLoaded = client.storage().storageClasses().load(getClass().getResourceAsStream("/test-storageclass.yml")).get();
     assertNotNull(storageClassLoaded);
     assertEquals("gluster-vol-default", storageClassLoaded.getMetadata().getName());
   }
 
   @Test
-  public void get() {
+  void get() {
     StorageClass storageClass = client.storage().storageClasses().withName("storageclass-get").get();
     assertNotNull(storageClass);
   }
 
   @Test
-  public void list() {
+  void list() {
     StorageClassList storageClassList = client.storage().storageClasses().list();
     assertNotNull(storageClassList);
     assertTrue(storageClassList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
+  void update() {
     StorageClass storageClass = client.storage().storageClasses().withName("storageclass-update").edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
     assertNotNull(storageClass);
     assertEquals("testLabelValue", storageClass.getMetadata().getLabels().get("testLabel"));
   }
 
   @Test
-  public void delete() {
+  void delete() {
     assertTrue(client.storage().storageClasses().withName("storageclass-delete").delete());
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(StorageClassIT.class.getResourceAsStream("/storageclass-it.yml"));
   }
 
 }

@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.AssumingK8sVersionAtLeast;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -30,15 +30,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.clnt.v4_0.utils.Serialization;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.awaitility.Awaitility;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -47,26 +41,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class GenericResourceIT {
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
+class GenericResourceIT {
 
-  @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @ClassRule
-  public static final AssumingK8sVersionAtLeast assumingK8sVersion =
-    new AssumingK8sVersionAtLeast("1", "16");
-
   @Test
-  public void testGenericBuiltinResourceWithoutMetadata() {
+  void testGenericBuiltinResourceWithoutMetadata() {
     GenericKubernetesResource configMap = new GenericKubernetesResource();
     configMap.setKind("ConfigMap");
     configMap.setApiVersion("v1");
@@ -81,7 +66,7 @@ public class GenericResourceIT {
   }
 
   @Test
-  public void testGenericCustomResourceWithoutMetadata() {
+  void testGenericCustomResourceWithoutMetadata() {
     CustomResourceDefinition crd1 = client.apiextensions().v1().customResourceDefinitions().createOrReplace(createCRD());
 
     assertThat(crd1).isNotNull();

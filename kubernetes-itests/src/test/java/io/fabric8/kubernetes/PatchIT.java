@@ -15,52 +15,49 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class PatchIT {
-  @ArquillianResource
-  KubernetesClient client;
+class PatchIT {
 
-  @ArquillianResource
-  Session session;
+  static KubernetesClient client;
+
+  Namespace namespace;
 
   private String currentNamespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(PatchIT.class.getResourceAsStream("/patch-it.yml"));
+    client.load(PatchIT.class.getResourceAsStream("/patch-it.yml")).create();
   }
 
-  @Before
+  @AfterAll
+  public static void cleanup() {
+    client.load(CronJobIT.class.getResourceAsStream("/patch-it.yml")).withGracePeriod(0L).delete();
+  }
+
+  @BeforeEach
   public void initNamespace() {
-    this.currentNamespace = session.getNamespace();
+    this.currentNamespace = namespace.getMetadata().getName();
   }
 
   @Test
-  public void testJsonPatch() {
+  void testJsonPatch() {
     // Given
     String name = "patchit-testjsonpatch";
 
@@ -74,7 +71,7 @@ public class PatchIT {
   }
 
   @Test
-  public void testJsonMergePatch() {
+  void testJsonMergePatch() {
     // Given
     String name = "patchit-testjsonmergepatch";
     PatchContext patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build();
@@ -89,7 +86,7 @@ public class PatchIT {
   }
 
   @Test
-  public void testJsonPatchWithPositionalArrays() {
+  void testJsonPatchWithPositionalArrays() {
     // Given
     String name = "patchit-testjsonpatchpositionalarray";
     PatchContext patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
@@ -105,7 +102,7 @@ public class PatchIT {
   }
 
   @Test
-  public void testYamlPatch() {
+  void testYamlPatch() {
     // Given
     String name = "patchit-testyamlpatch";
 
@@ -121,7 +118,7 @@ public class PatchIT {
   }
 
   @Test
-  public void testFullObjectPatch() {
+  void testFullObjectPatch() {
     // Given
     String name = "patchit-fullobjectpatch";
 
@@ -136,7 +133,7 @@ public class PatchIT {
   }
 
   @Test
-  public void testFullObjectPatchWithConcurrentChange() {
+  void testFullObjectPatchWithConcurrentChange() {
     // Given
     String name = "patchit-fullobjectpatch";
 
@@ -162,8 +159,4 @@ public class PatchIT {
     client.configMaps().inNamespace(currentNamespace).withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2);
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(CronJobIT.class.getResourceAsStream("/patch-it.yml"));
-  }
 }

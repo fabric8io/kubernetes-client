@@ -15,48 +15,44 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class RoleBindingIT {
+class RoleBindingIT {
 
-  @ArquillianResource
-  KubernetesClient client;
+  static KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml"));
+    client.load(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void get() {
+  void get() {
 
-    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-get").get();
+    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName("rb-get").get();
 
     assertNotNull(roleBinding);
     assertEquals("RoleBinding", roleBinding.getKind());
@@ -75,9 +71,9 @@ public class RoleBindingIT {
   }
 
   @Test
-  public void load() {
+  void load() {
 
-    RoleBinding aRoleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace())
+    RoleBinding aRoleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName())
       .load(getClass().getResourceAsStream("/test-kubernetesrolebinding.yml")).get();
     assertNotNull(aRoleBinding);
     assertEquals("RoleBinding", aRoleBinding.getKind());
@@ -96,9 +92,9 @@ public class RoleBindingIT {
   }
 
   @Test
-  public void list() {
+  void list() {
 
-    RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(session.getNamespace()).withLabels(Collections.singletonMap("type", "io.fabric8.roleBindingIT")).list();
+    RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withLabels(Collections.singletonMap("type", "io.fabric8.roleBindingIT")).list();
 
     assertNotNull(roleBindingList);
     assertNotNull(roleBindingList.getItems());
@@ -120,9 +116,9 @@ public class RoleBindingIT {
   }
 
   @Test
-  public void update() {
+  void update() {
 
-    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-update").edit(r -> new RoleBindingBuilder(r)
+    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName("rb-update").edit(r -> new RoleBindingBuilder(r)
                         .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);
@@ -142,22 +138,18 @@ public class RoleBindingIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
 
-    int initialCountBeforeDeletion = client.rbac().roleBindings().inNamespace(session.getNamespace()).list().getItems().size();
-    boolean deleted = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-delete").delete();
+    int initialCountBeforeDeletion = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).list().getItems().size();
+    boolean deleted = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName("rb-delete").delete();
 
     assertTrue(deleted);
 
-    DeleteEntity<RoleBinding> deleteEntity = new DeleteEntity<>(RoleBinding.class, client, "read-jobs", session.getNamespace());
+    DeleteEntity<RoleBinding> deleteEntity = new DeleteEntity<>(RoleBinding.class, client, "read-jobs", namespace.getMetadata().getName());
     await().atMost(60, TimeUnit.SECONDS).until(deleteEntity);
 
-    RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(session.getNamespace()).list();
+    RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).list();
     assertEquals(initialCountBeforeDeletion - 1,roleBindingList.getItems().size());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml"));
-  }
 }

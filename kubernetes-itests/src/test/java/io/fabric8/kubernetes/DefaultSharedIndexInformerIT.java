@@ -23,11 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -35,16 +31,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class DefaultSharedIndexInformerIT {
-  @ArquillianResource
+class DefaultSharedIndexInformerIT {
+
   KubernetesClient client;
 
   private static final long RESYNC_PERIOD = 1000L;
 
   @Test
-  public void testPodSharedIndexInformerGetsEvents() throws InterruptedException {
+  void testPodSharedIndexInformerGetsEvents() throws InterruptedException {
     // Given
     CountDownLatch addEvents = new CountDownLatch(1);
     CountDownLatch updateEvents = new CountDownLatch(0);
@@ -62,7 +56,7 @@ public class DefaultSharedIndexInformerIT {
   }
 
   @Test
-  public void testSharedIndexInformerGetsSingleUpdates() throws InterruptedException {
+  void testSharedIndexInformerGetsSingleUpdates() throws InterruptedException {
     client.configMaps().withName("my-map").delete();
 
     CountDownLatch addEvents = new CountDownLatch(1);
@@ -88,7 +82,7 @@ public class DefaultSharedIndexInformerIT {
   }
 
   @Test
-  public void testLimit() throws Exception {
+  void testLimit() throws Exception {
     client.configMaps().delete();
 
     client.configMaps().create(new ConfigMapBuilder().withNewMetadata().withName("my-map1").endMetadata().build());

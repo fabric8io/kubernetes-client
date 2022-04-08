@@ -23,14 +23,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /*
+          - path: /fabric8-ingress-it/load/*
             pathType: Prefix
             backend:
               service:
                 name: web
                 port:
                   number: 8080
-          - path: /v2/*
+          - path: /fabric8-ingress-it/load/v2/*
             pathType: Prefix
             backend:
               service:
@@ -46,14 +46,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /*
+          - path: /fabric8-ingress-it/get/*
             pathType: Prefix
             backend:
               service:
                 name: web
                 port:
                   number: 8080
-          - path: /v2/*
+          - path: /fabric8-ingress-it/get/v2/*
             pathType: Prefix
             backend:
               service:
@@ -69,14 +69,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /*
+          - path: /fabric8-ingress-it/list/*
             pathType: Prefix
             backend:
               service:
                 name: web
                 port:
                   number: 8080
-          - path: /v2/*
+          - path: /fabric8-ingress-it/list/v2/*
             pathType: Prefix
             backend:
               service:
@@ -92,14 +92,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /*
+          - path: /fabric8-ingress-it/update/*
             pathType: Prefix
             backend:
               service:
                 name: web
                 port:
                   number: 8080
-          - path: /v2/*
+          - path: /fabric8-ingress-it/update/v2/*
             pathType: Prefix
             backend:
               service:
@@ -115,14 +115,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /*
+          - path: /fabric8-ingress-it/delete/*
             pathType: Prefix
             backend:
               service:
                 name: web
                 port:
                   number: 8080
-          - path: /v2/*
+          - path: /fabric8-ingress-it/delete/v2/*
             pathType: Prefix
             backend:
               service:

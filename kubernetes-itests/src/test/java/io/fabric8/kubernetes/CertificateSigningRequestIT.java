@@ -15,52 +15,50 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestBuilder;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@Ignore
-@RequiresKubernetes
-public class CertificateSigningRequestIT {
-  @ArquillianResource
-  KubernetesClient client;
+@Disabled
+class CertificateSigningRequestIT {
 
-  @BeforeClass
+  static KubernetesClient client;
+
+  @BeforeAll
   public static void init() {
-    ClusterEntity.apply(CertificateSigningRequestIT.class.getResourceAsStream("/certificatesigningrequest-it.yml"));
+    client.load(CertificateSigningRequestIT.class.getResourceAsStream("/certificatesigningrequest-it.yml")).create();
+  }
+
+  @AfterAll
+  public static void cleanup() {
+    client.load(CertificateSigningRequestIT.class.getResourceAsStream("/certificatesigningrequest-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test
-  public void get() {
+  void get() {
     CertificateSigningRequest certificateSigningRequest = client.certificates().v1beta1().certificateSigningRequests().withName("csr-get").get();
     assertThat(certificateSigningRequest).isNotNull();
   }
 
   @Test
-  public void list() {
+  void list() {
     CertificateSigningRequestList certificateSigningRequestList = client.certificates().v1beta1().certificateSigningRequests().list();
     assertNotNull(certificateSigningRequestList);
     assertTrue(certificateSigningRequestList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
+  void update() {
     CertificateSigningRequest certificateSigningRequest = client.certificates().v1beta1().certificateSigningRequests().withName("csr-update").edit(c -> new CertificateSigningRequestBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
@@ -69,12 +67,8 @@ public class CertificateSigningRequestIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     assertTrue(client.certificates().v1beta1().certificateSigningRequests().withName("csr-delete").delete());
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(CertificateSigningRequestIT.class.getResourceAsStream("/certificatesigningrequest-it.yml"));
-  }
 }
