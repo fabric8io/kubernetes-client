@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,6 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -54,8 +55,8 @@ class PodOperationUtilTest {
 
   @BeforeEach
   void setUp() {
-    this.podOperations = Mockito.mock(PodOperationsImpl.class, Mockito.RETURNS_DEEP_STUBS);
-    this.operationContext = Mockito.mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
+    this.podOperations = mock(PodOperationsImpl.class, Mockito.RETURNS_DEEP_STUBS);
+    this.operationContext = mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
   }
 
   @Test
@@ -85,22 +86,11 @@ class PodOperationUtilTest {
   }
 
   @Test
-  void testWaitUntilReadyBeforeFetchingLogs() throws InterruptedException {
-    // Given
-    Pod pod = new PodBuilder()
-        .withNewMetadata().withName("foo").endMetadata()
-        .withNewStatus().withPhase("Pending").endStatus()
-        .build();
-    ExtensibleResource<Pod> gettablePod = Mockito.mock(ExtensibleResource.class);
-    when(gettablePod.get()).thenReturn(pod);
-    when(podOperations.fromServer()).thenReturn(gettablePod);
-    when(podOperations.waitUntilReady(5, TimeUnit.SECONDS)).thenReturn(pod);
-
+  void testWaitUntilReadyBeforeFetchingLogs() {
     // When
     PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOperations, 5);
-
     // Then
-    verify(podOperations, times(1)).waitUntilReady(5, TimeUnit.SECONDS);
+    verify(podOperations, times(1)).waitUntilCondition(any(), eq(5L), eq(TimeUnit.SECONDS));
   }
 
   @Test
@@ -123,8 +113,8 @@ class PodOperationUtilTest {
   @Test
   void testWatchLogSinglePod() {
     // Given
-    PodResource podResource = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    ByteArrayOutputStream byteArrayOutputStream = Mockito.mock(ByteArrayOutputStream.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource podResource = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    ByteArrayOutputStream byteArrayOutputStream = mock(ByteArrayOutputStream.class, Mockito.RETURNS_DEEP_STUBS);
 
     // When
     LogWatch logWatch = PodOperationUtil.watchLog(createMockPodResourceList(podResource), byteArrayOutputStream);
@@ -137,9 +127,9 @@ class PodOperationUtilTest {
   @Test
   void testWatchLogMultiplePodReplicasPicksFirstPod() {
     // Given
-    PodResource p1 = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    PodResource p2 = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    ByteArrayOutputStream byteArrayOutputStream = Mockito.mock(ByteArrayOutputStream.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p1 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p2 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    ByteArrayOutputStream byteArrayOutputStream = mock(ByteArrayOutputStream.class, Mockito.RETURNS_DEEP_STUBS);
 
     // When
     LogWatch logWatch = PodOperationUtil.watchLog(createMockPodResourceList(p1, p2), byteArrayOutputStream);
@@ -163,8 +153,8 @@ class PodOperationUtilTest {
   @Test
   void testGetLogReaderMultiplePodReplicasPicksFirstPod() {
     // Given
-    PodResource p1 = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    PodResource p2 = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p1 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p2 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
 
     // When
     Reader reader = PodOperationUtil.getLogReader(createMockPodResourceList(p1, p2));
@@ -178,8 +168,8 @@ class PodOperationUtilTest {
   @Test
   void testGetLog() {
     // Given
-    PodResource p1 = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    PodResource p2 = Mockito.mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p1 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p2 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
     when(p1.getLog(anyBoolean())).thenReturn("p1-log");
     when(p2.getLog(anyBoolean())).thenReturn("p2-log");
 
@@ -209,7 +199,7 @@ class PodOperationUtilTest {
   }
 
   private FilterWatchListDeletable<Pod, PodList, PodResource> getMockPodFilterOperation(String controllerUid) {
-    FilterWatchListDeletable<Pod, PodList, PodResource> result = Mockito.mock(FilterWatchListDeletable.class);
+    FilterWatchListDeletable<Pod, PodList, PodResource> result = mock(FilterWatchListDeletable.class);
     Mockito.when(result.list()).then(new Answer<PodList>() {
       @Override
       public PodList answer(InvocationOnMock invocation) throws Throwable {
