@@ -60,7 +60,7 @@ class RoleIT {
   @Test
   void get() {
 
-    Role role = client.rbac().roles().inNamespace(currentNamespace).withName("role-get").get();
+    Role role = client.rbac().roles().withName("role-get").get();
 
     assertNotNull(role);
     assertEquals("Role", role.getKind());
@@ -87,7 +87,7 @@ class RoleIT {
   @Test
   void load() {
 
-    Role aRole = client.rbac().roles().inNamespace(currentNamespace)
+    Role aRole = client.rbac().roles()
       .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).get();
 
     assertNotNull(aRole);
@@ -118,7 +118,7 @@ class RoleIT {
   @Test
   void list() {
 
-    RoleList roleList = client.rbac().roles().inNamespace(currentNamespace).list();
+    RoleList roleList = client.rbac().roles().list();
 
     assertNotNull(roleList);
     assertNotNull(roleList.getItems());
@@ -151,7 +151,7 @@ class RoleIT {
   @Test
   void update() {
 
-    Role role = client.rbac().roles().inNamespace(currentNamespace).withName("role-update").edit(r -> new RoleBuilder(r)
+    Role role = client.rbac().roles().withName("role-update").edit(r -> new RoleBuilder(r)
                  .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(role);
@@ -180,15 +180,15 @@ class RoleIT {
   @Test
   void delete() {
 
-    int countBeforeDeletion = client.rbac().roles().inNamespace(currentNamespace).list().getItems().size();
-    boolean deleted = client.rbac().roles().inNamespace(currentNamespace).withName("role-delete").delete();
+    int countBeforeDeletion = client.rbac().roles().list().getItems().size();
+    boolean deleted = client.rbac().roles().withName("role-delete").delete();
 
     assertTrue(deleted);
 
     DeleteEntity<Role> deleteEntity = new DeleteEntity<>(Role.class, client, "role-delete", currentNamespace);
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
 
-    RoleList roleList = client.rbac().roles().inNamespace(currentNamespace).list();
+    RoleList roleList = client.rbac().roles().list();
     assertEquals(countBeforeDeletion - 1,roleList.getItems().size());
   }
 

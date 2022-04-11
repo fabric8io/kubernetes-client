@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
@@ -35,8 +34,6 @@ class DaemonSetIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml")).create();
@@ -49,20 +46,20 @@ class DaemonSetIT {
 
   @Test
   void get() {
-    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(namespace.getMetadata().getName()).withName("daemonset-get").get();
+    DaemonSet daemonSet = client.apps().daemonSets().withName("daemonset-get").get();
     assertThat(daemonSet).isNotNull();
   }
 
   @Test
   void list() {
-    DaemonSetList aDaemonSetList = client.apps().daemonSets().inNamespace(namespace.getMetadata().getName()).list();
+    DaemonSetList aDaemonSetList = client.apps().daemonSets().list();
     assertNotNull(aDaemonSetList);
     assertTrue(aDaemonSetList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(namespace.getMetadata().getName()).withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
+    DaemonSet daemonSet = client.apps().daemonSets().withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
       .editSpec().editTemplate().editSpec().editContainer(0)
       .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
       .endContainer().endSpec().endTemplate().endSpec()
@@ -74,6 +71,6 @@ class DaemonSetIT {
 
   @Test
   void delete() {
-    assertTrue(client.apps().daemonSets().inNamespace(namespace.getMetadata().getName()).withName("daemonset-delete").delete());
+    assertTrue(client.apps().daemonSets().withName("daemonset-delete").delete());
   }
 }

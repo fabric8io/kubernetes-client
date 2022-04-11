@@ -130,7 +130,7 @@ class NetworkPolicyIT {
   void delete() {
     ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
-    boolean deleted = client.network().v1().networkPolicies().inNamespace(namespace.getMetadata().getName()).withName("networkpolicy-delete").delete();
+    boolean deleted = client.network().v1().networkPolicies().withName("networkpolicy-delete").delete();
 
     assertTrue(deleted);
 

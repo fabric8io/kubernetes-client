@@ -51,7 +51,7 @@ class PodSecurityPolicyIT {
   @Test
   void load() {
 
-    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().podSecurityPolicies()
+    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
       .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
 
     assertNotNull(loadedPodSecurityPolicy);
@@ -65,7 +65,7 @@ class PodSecurityPolicyIT {
 
   @Test
   void get() {
-    PodSecurityPolicy getPodSecurityPolicy = client.policy().podSecurityPolicies()
+    PodSecurityPolicy getPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
       .withName("psp-get").get();
     assertNotNull(getPodSecurityPolicy);
     assertEquals("psp-get", getPodSecurityPolicy.getMetadata().getName());
@@ -73,7 +73,7 @@ class PodSecurityPolicyIT {
 
   @Test
   void list() {
-    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies()
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
@@ -87,7 +87,7 @@ class PodSecurityPolicyIT {
   @Test
   void update(){
 
-    PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
+    PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
       .editSpec().withPrivileged(true).endSpec()
       .build());
 
@@ -102,7 +102,7 @@ class PodSecurityPolicyIT {
 
   @Test
   void delete(){
-    boolean deleted = client.policy().podSecurityPolicies().withName("psp-delete").delete();
+    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete();
     assertTrue(deleted);
 
     DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "psp-delete", null);

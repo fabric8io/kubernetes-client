@@ -83,39 +83,39 @@ class PodIT {
 
   @Test
   void load() {
-    Pod aPod = client.pods().inNamespace(namespace.getMetadata().getName()).load(getClass().getResourceAsStream("/test-pod.yml")).get();
+    Pod aPod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
     assertThat(aPod).isNotNull();
     assertEquals("nginx", aPod.getMetadata().getName());
   }
 
   @Test
   void get() {
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     assertNotNull(pod1);
   }
 
   @Test
   void list() {
-    PodList podList = client.pods().inNamespace(namespace.getMetadata().getName()).list();
+    PodList podList = client.pods().list();
     assertThat(podList).isNotNull();
     assertTrue(podList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").edit(p -> new PodBuilder(p)
+    Pod pod1 = client.pods().withName("pod-standard").edit(p -> new PodBuilder(p)
                  .editMetadata().addToLabels("foo", "bar").endMetadata().build());
     assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
   }
 
   @Test
   void delete() {
-    assertTrue(client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-delete").delete());
+    assertTrue(client.pods().withName("pod-delete").delete());
   }
 
   @Test
   void evict() {
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     String pdbScope = pod1.getMetadata().getLabels().get("pdb-scope");
     assertNotNull("pdb-scope label is null. is pod1 misconfigured?", pdbScope);
 
@@ -149,53 +149,53 @@ class PodIT {
       .withSpec(pod1.getSpec())
       .build();
 
-    client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName())
+    client.pods().withName(pod1.getMetadata().getName())
       .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
-    client.pods().inNamespace(namespace.getMetadata().getName()).createOrReplace(pod2);
-    client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod2.getMetadata().getName())
+    client.pods().createOrReplace(pod2);
+    client.pods().withName(pod2.getMetadata().getName())
       .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
-    client.policy().v1beta1().podDisruptionBudget().inNamespace(namespace.getMetadata().getName()).createOrReplace(pdb);
+    client.policy().v1beta1().podDisruptionBudget().createOrReplace(pdb);
 
     // the server needs to process the pdb before the eviction can proceed, so we'll need to wait here
     await().atMost(5, TimeUnit.MINUTES)
-        .until(() -> client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod2.getMetadata().getName()).evict());
+        .until(() -> client.pods().withName(pod2.getMetadata().getName()).evict());
 
     // cant evict because only one left
-    assertFalse(client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).evict());
+    assertFalse(client.pods().withName(pod1.getMetadata().getName()).evict());
     // ensure it really is still up
-    assertTrue(Readiness.getInstance().isReady(client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).fromServer().get()));
+    assertTrue(Readiness.getInstance().isReady(client.pods().withName(pod1.getMetadata().getName()).fromServer().get()));
 
     // create another pod to satisfy PDB
-    client.pods().inNamespace(namespace.getMetadata().getName()).createOrReplace(pod3);
-    client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod3.getMetadata().getName())
+    client.pods().createOrReplace(pod3);
+    client.pods().withName(pod3.getMetadata().getName())
       .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     // can now evict
-    assertTrue(client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).evict());
+    assertTrue(client.pods().withName(pod1.getMetadata().getName()).evict());
   }
 
   @Test
   void log() {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-    String log = client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).getLog();
+    String log = client.pods().withName(pod1.getMetadata().getName()).getLog();
     assertNotNull(log);
   }
 
   @Test
   void exec() throws InterruptedException, IOException {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     int[] exitCode = new int[] {Integer.MAX_VALUE};
-    ExecWatch execWatch = client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName())
+    ExecWatch execWatch = client.pods().withName(pod1.getMetadata().getName())
       .writingOutput(out)
       .redirectingErrorChannel()
       .withTTY().usingListener(new ExecListener() {
@@ -232,11 +232,11 @@ class PodIT {
   @Test
   void readFile() throws IOException {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
     await().atMost(60, TimeUnit.SECONDS).until(podReady);
-    ExecWatch watch = client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
-    try (InputStream is = client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).file("/msg").read())  {
+    ExecWatch watch = client.pods().withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+    try (InputStream is = client.pods().withName(pod1.getMetadata().getName()).file("/msg").read())  {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("hello", result);
     }
@@ -245,11 +245,11 @@ class PodIT {
   @Test
   void readFileEscapedParams() throws IOException {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-    ExecWatch watch = client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
-    try (InputStream is = client.pods().inNamespace(namespace.getMetadata().getName()).withName(pod1.getMetadata().getName()).file("/msg").read())  {
+    ExecWatch watch = client.pods().withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
+    try (InputStream is = client.pods().withName(pod1.getMetadata().getName()).file("/msg").read())  {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("H$ll* (W&RLD}", result);
     }
@@ -258,7 +258,7 @@ class PodIT {
   @Test
   void uploadFile() throws IOException {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
         namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
@@ -271,7 +271,7 @@ class PodIT {
   }
 
   private void assertUploaded(Pod pod1, final Path tmpFile, String filename) throws IOException {
-    PodResource podResource = client.pods().inNamespace(namespace.getMetadata().getName())
+    PodResource podResource = client.pods()
         .withName(pod1.getMetadata().getName());
 
     podResource.file(filename).upload(tmpFile);
@@ -286,7 +286,7 @@ class PodIT {
   @Test
   void uploadDir() throws IOException {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
         namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
@@ -298,7 +298,7 @@ class PodIT {
       Files.write(Files.createFile(file), Arrays.asList("I'm uploaded", fileName));
     }
 
-    PodResource podResource = client.pods().inNamespace(namespace.getMetadata().getName())
+    PodResource podResource = client.pods()
         .withName(pod1.getMetadata().getName());
 
     podResource.dir("/tmp/uploadDir").upload(tmpDir);
@@ -315,14 +315,14 @@ class PodIT {
   @Test
   void copyFile() throws IOException {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
         namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
 
     final Path tmpDir = Files.createTempDirectory("copyFile");
 
-    PodResource podResource = client.pods().inNamespace(namespace.getMetadata().getName())
+    PodResource podResource = client.pods()
         .withName(pod1.getMetadata().getName());
     podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt");
     podResource.file("/msg.txt").copy(tmpDir);
@@ -340,11 +340,11 @@ class PodIT {
   @Test
   void listFromServer() {
     // Wait for resources to get ready
-    Pod pod1 = client.pods().inNamespace(namespace.getMetadata().getName()).withName("pod-standard").get();
+    Pod pod1 = client.pods().withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
 
-    List<HasMetadata> resources = client.resourceList(pod1).inNamespace(namespace.getMetadata().getName()).fromServer().get();
+    List<HasMetadata> resources = client.resourceList(pod1).fromServer().get();
 
     assertNotNull(resources);
     assertEquals(1, resources.size());

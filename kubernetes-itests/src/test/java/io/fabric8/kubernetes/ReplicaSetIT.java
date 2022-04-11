@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
@@ -37,8 +36,6 @@ class ReplicaSetIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(ReplicaSetIT.class.getResourceAsStream("/replicaset-it.yml")).create();
@@ -51,7 +48,7 @@ class ReplicaSetIT {
 
   @Test
   void load() {
-    ReplicaSet replicaSet = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName())
+    ReplicaSet replicaSet = client.apps().replicaSets()
       .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();
     assertThat(replicaSet).isNotNull();
     assertEquals("frontend", replicaSet.getMetadata().getName());
@@ -59,13 +56,13 @@ class ReplicaSetIT {
 
   @Test
   void get() {
-    ReplicaSet replicaset1 = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName("replicaset-get").get();
+    ReplicaSet replicaset1 = client.apps().replicaSets().withName("replicaset-get").get();
     assertNotNull(replicaset1);
   }
 
   @Test
   void list() {
-    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).list();
+    ReplicaSetList replicaSetList = client.apps().replicaSets().list();
     assertThat(replicaSetList).isNotNull();
     assertTrue(replicaSetList.getItems().size() >= 1);
   }
@@ -74,7 +71,7 @@ class ReplicaSetIT {
   void update() {
     client.apps().replicaSets().withName("replicaset-update")
       .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    ReplicaSet replicaset1 = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
+    ReplicaSet replicaset1 = client.apps().replicaSets().withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
                         .editSpec().withReplicas(2).endSpec().build());
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
@@ -84,7 +81,7 @@ class ReplicaSetIT {
   void delete() {
     client.apps().replicaSets().withName("replicaset-delete")
       .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName("replicaset-delete").delete();
+    boolean bDeleted = client.apps().replicaSets().withName("replicaset-delete").delete();
     assertTrue(bDeleted);
   }
 

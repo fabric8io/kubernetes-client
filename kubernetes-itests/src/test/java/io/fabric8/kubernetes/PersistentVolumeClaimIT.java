@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
@@ -35,8 +34,6 @@ class PersistentVolumeClaimIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(PersistentVolumeClaimIT.class.getResourceAsStream("/persistentvolumeclaims-it.yml")).create();
@@ -49,13 +46,13 @@ class PersistentVolumeClaimIT {
 
   @Test
   void get() {
-    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(namespace.getMetadata().getName()).withName("persistentvolumeclaims-get").get();
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().withName("persistentvolumeclaims-get").get();
     assertThat(persistentVolumeClaim).isNotNull();
   }
 
   @Test
   void list() {
-    PersistentVolumeClaimList aEndpointList = client.persistentVolumeClaims().inNamespace(namespace.getMetadata().getName()).list();
+    PersistentVolumeClaimList aEndpointList = client.persistentVolumeClaims().list();
     assertNotNull(aEndpointList);
     assertTrue(aEndpointList.getItems().size() >= 1);
   }
@@ -63,7 +60,7 @@ class PersistentVolumeClaimIT {
   @Test
   void update() {
     PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims()
-        .inNamespace(namespace.getMetadata().getName())
+
         .withName("persistentvolumeclaims-update")
         .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new PersistentVolumeClaimBuilder()
             .withNewMetadata()
@@ -77,7 +74,7 @@ class PersistentVolumeClaimIT {
 
   @Test
   void delete() {
-    assertTrue(client.persistentVolumeClaims().inNamespace(namespace.getMetadata().getName()).withName("persistentvolumeclaims-delete").delete());
+    assertTrue(client.persistentVolumeClaims().withName("persistentvolumeclaims-delete").delete());
   }
 
 }

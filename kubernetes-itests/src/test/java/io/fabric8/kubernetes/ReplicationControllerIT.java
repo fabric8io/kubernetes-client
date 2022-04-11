@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -33,8 +32,6 @@ class ReplicationControllerIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml")).create();
@@ -47,7 +44,7 @@ class ReplicationControllerIT {
 
   @Test
   void load() {
-    ReplicationController aReplicationController = client.replicationControllers().inNamespace(namespace.getMetadata().getName())
+    ReplicationController aReplicationController = client.replicationControllers()
       .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
 
     assertThat(aReplicationController).isNotNull();
@@ -57,26 +54,26 @@ class ReplicationControllerIT {
 
   @Test
   void get() {
-    ReplicationController rc1 = client.replicationControllers().inNamespace(namespace.getMetadata().getName()).withName("rc-get").get();
+    ReplicationController rc1 = client.replicationControllers().withName("rc-get").get();
     assertNotNull(rc1);
   }
 
   @Test
   void list() {
-    ReplicationControllerList aRcList = client.replicationControllers().inNamespace(namespace.getMetadata().getName()).list();
+    ReplicationControllerList aRcList = client.replicationControllers().list();
     assertThat(aRcList).isNotNull();
     assertTrue(aRcList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    ReplicationController rc1 = client.replicationControllers().inNamespace(namespace.getMetadata().getName()).withName("rc-update").scale(5);
+    ReplicationController rc1 = client.replicationControllers().withName("rc-update").scale(5);
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
   }
 
   @Test
   void delete() {
-    assertTrue(client.replicationControllers().inNamespace(namespace.getMetadata().getName()).withName("rc-delete").delete());
+    assertTrue(client.replicationControllers().withName("rc-delete").delete());
   }
 
 }

@@ -17,7 +17,6 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -36,8 +35,6 @@ class ServerSideApplyIT {
 
   KubernetesClient client;
 
-  Namespace namespace;
-
   @Test
   void testServerSideApply() {
     Service service = new ServiceBuilder()
@@ -52,7 +49,7 @@ class ServerSideApplyIT {
       .endSpec()
       .build();
 
-    Resource<Service> resource = client.services().inNamespace(namespace.getMetadata().getName()).resource(service);
+    Resource<Service> resource = client.services().resource(service);
     resource.delete();
 
     // 1st apply - create must be a server side apply - otherwise the later operations will need to force
