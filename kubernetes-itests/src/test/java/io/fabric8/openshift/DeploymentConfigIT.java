@@ -17,13 +17,13 @@
 package io.fabric8.openshift;
 
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -35,16 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(DeploymentConfig.class)
+@LoadKubernetesManifests("/deploymentconfig-it.yml")
 class DeploymentConfigIT {
 
-  static OpenShiftClient client;
+  OpenShiftClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(DeploymentConfigIT.class.getResourceAsStream("/deploymentconfig-it.yml")).create();
-  }
 
   @Test
   void load() {

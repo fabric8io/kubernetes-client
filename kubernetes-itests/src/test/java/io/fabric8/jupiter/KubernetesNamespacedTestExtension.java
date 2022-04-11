@@ -73,7 +73,7 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
     client.close();
   }
 
-  private static KubernetesClient getClient(ExtensionContext context) {
+  static KubernetesClient getClient(ExtensionContext context) {
     final KubernetesClient client = context.getStore(EXT_NAMESPACE).get(KubernetesClient.class, KubernetesClient.class);
     if (client == null) {
       throw new IllegalStateException("No KubernetesClient found");

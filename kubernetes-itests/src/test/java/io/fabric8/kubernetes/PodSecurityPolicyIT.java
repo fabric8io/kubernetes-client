@@ -17,12 +17,11 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.DeleteEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -34,19 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/podsecuritypolicy-it.yml")
 class PodSecurityPolicyIT {
 
-  static KubernetesClient client;
-
-  @BeforeAll
-  public static void init() {
-    client.load(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml")).withGracePeriod(0L).delete();
-  }
+  KubernetesClient client;
 
   @Test
   void load() {

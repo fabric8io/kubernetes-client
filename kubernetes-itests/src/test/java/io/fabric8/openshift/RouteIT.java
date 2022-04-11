@@ -17,13 +17,13 @@
 package io.fabric8.openshift;
 
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,20 +37,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(Route.class)
+@LoadKubernetesManifests("/route-it.yml")
 class RouteIT {
 
-  static OpenShiftClient client;
+  OpenShiftClient client;
 
   Namespace namespace;
 
   private Route route1;
 
   private String currentNamespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(RouteIT.class.getResourceAsStream("/route-it.yml")).create();
-  }
 
   @BeforeEach
   public void before() {

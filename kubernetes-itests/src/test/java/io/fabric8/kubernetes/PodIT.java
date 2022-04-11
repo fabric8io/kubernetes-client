@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -33,8 +34,6 @@ import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,26 +59,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/pod-it.yml")
 class PodIT {
 
   private static final int POD_READY_WAIT_IN_SECONDS = 60;
 
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
-
-
-  @BeforeAll
-  public static void init() {
-    client.load(PodIT.class.getResourceAsStream("/pod-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(NetworkPolicyIT.class.getResourceAsStream("/pod-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @Test
   void load() {

@@ -17,13 +17,13 @@
 package io.fabric8.openshift;
 
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -35,16 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(ImageStream.class)
+@LoadKubernetesManifests("/imagestream-it.yml")
 class ImageStreamIT {
 
-  static OpenShiftClient client;
+  OpenShiftClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(ImageStreamIT.class.getResourceAsStream("/imagestream-it.yml")).create();
-  }
 
   @Test
   void load() {

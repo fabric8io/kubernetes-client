@@ -17,6 +17,7 @@
 package io.fabric8.openshift;
 
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -25,7 +26,6 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -38,16 +38,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(Template.class)
+@LoadKubernetesManifests("/template-it.yml")
 class TemplateIT {
 
-  static OpenShiftClient client;
+  OpenShiftClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(TemplateIT.class.getResourceAsStream("/template-it.yml")).create();
-  }
 
   @Test
   void load() {

@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -23,8 +24,6 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.readiness.Readiness;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,21 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/deployment-it.yml")
 class DeploymentIT {
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(DeploymentIT.class.getResourceAsStream("/deployment-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(ClusterRoleBindingIT.class.getResourceAsStream("/deployment-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @Test
   void load() {

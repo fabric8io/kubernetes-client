@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.Watch;
@@ -25,36 +26,31 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getName;
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getOrCreateAnnotations;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(BuildConfig.class)
+@LoadKubernetesManifests("/ruby-new-app.yml")
 class BuildConfigWatchIT {
 
-  static OpenShiftClient client;
+  OpenShiftClient client;
 
   Namespace namespace;
 
   @BeforeEach
   public void initOcNewApp() {
-    client.load(getClass().getResourceAsStream("/ruby-new-app.yml")).inNamespace(namespace.getMetadata().getName()).createOrReplace();
-    await().atMost(10, TimeUnit.SECONDS).until(() -> client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).withName("ruby-25-centos7:latest").get() != null);
-  }
-
-  @AfterEach
-  public void cleanOcNewApp() {
-    client.load(getClass().getResourceAsStream("/ruby-new-app.yml")).inNamespace(namespace.getMetadata().getName()).delete();
+    client.imageStreamTags().withName("ruby-25-centos7:latest")
+      .waitUntilCondition(Objects::nonNull, 10, TimeUnit.SECONDS);
   }
 
   @Test

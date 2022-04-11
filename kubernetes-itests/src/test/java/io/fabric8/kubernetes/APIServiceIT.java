@@ -15,33 +15,23 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceBuilder;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@LoadKubernetesManifests("/apiservice-it.yml")
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
 class APIServiceIT {
 
-  static KubernetesClient client;
-
-  @BeforeAll
-  public static void init() {
-    client.load(APIServiceIT.class.getResourceAsStream("/apiservice-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(APIServiceIT.class.getResourceAsStream("/apiservice-it.yml")).withGracePeriod(0L).delete();
-  }
+  KubernetesClient client;
 
   @Test
   void get() {
