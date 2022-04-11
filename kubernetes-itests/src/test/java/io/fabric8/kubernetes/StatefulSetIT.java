@@ -17,12 +17,11 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -33,21 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/statefulset-it.yml")
 class StatefulSetIT {
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @Test
   void load() {

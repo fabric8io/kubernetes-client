@@ -15,12 +15,11 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -30,19 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Disabled
+@LoadKubernetesManifests("/daemonset-it.yml")
 class DaemonSetIT {
 
-  static KubernetesClient client;
-
-  @BeforeAll
-  public static void init() {
-    client.load(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml")).withGracePeriod(0L).delete();
-  }
+  KubernetesClient client;
 
   @Test
   void get() {

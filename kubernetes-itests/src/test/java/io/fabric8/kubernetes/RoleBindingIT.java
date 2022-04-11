@@ -16,13 +16,12 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.DeleteEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -33,21 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/rolebinding-it.yml")
 class RoleBindingIT {
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @Test
   void get() {

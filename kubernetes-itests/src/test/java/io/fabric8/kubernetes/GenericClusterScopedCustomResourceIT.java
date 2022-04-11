@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
+@LoadKubernetesManifests("/rawclusterscopedcustomresource-it.yml")
 class GenericClusterScopedCustomResourceIT {
 
   static KubernetesClient client;
@@ -46,18 +47,12 @@ class GenericClusterScopedCustomResourceIT {
 
   @BeforeAll
   public static void initCrd() {
-    // Create a Custom Resource Definition Animals:
-    client.load(GenericClusterScopedCustomResourceIT.class.getResourceAsStream("/rawclusterscopedcustomresource-it.yml")).create();
+    // Wait for CRD to be deployed and ready
     client.apiextensions().v1().customResourceDefinitions()
       .withName("satellites.demos.fabric8.io")
       .waitUntilCondition(c -> c.getStatus() != null && c.getStatus().getConditions()!= null && c.getStatus().getConditions().stream()
           .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
         10L, TimeUnit.SECONDS);
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(GenericClusterScopedCustomResourceIT.class.getResourceAsStream("/rawclusterscopedcustomresource-it.yml")).withGracePeriod(0L).delete();
   }
 
   @Test

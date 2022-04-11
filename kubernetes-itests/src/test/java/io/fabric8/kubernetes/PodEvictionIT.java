@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
@@ -22,29 +23,18 @@ import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Evictable;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 22)
+@LoadKubernetesManifests("/podeviction-it.yml")
 class PodEvictionIT {
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(PodIT.class.getResourceAsStream("/podeviction-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(NetworkPolicyIT.class.getResourceAsStream("/podeviction-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @Test
   void evictWithV1PolicyEviction() {

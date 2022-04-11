@@ -16,6 +16,7 @@
 package io.fabric8.openshift;
 
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
@@ -32,16 +33,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(SecurityContextConstraints.class)
+@LoadKubernetesManifests("/securitycontextconstraints-it.yml")
 class SecurityContextConstraintsIT {
 
-  static OpenShiftClient client;
+  OpenShiftClient client;
 
   private SecurityContextConstraints scc;
-
-  @BeforeAll
-  public static void init() {
-    client.load(SecurityContextConstraintsIT.class.getResourceAsStream("/securitycontextconstraints-it.yml")).create();
-  }
 
   @Test
   void load() {

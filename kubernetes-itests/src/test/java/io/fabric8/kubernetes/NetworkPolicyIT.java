@@ -17,14 +17,13 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.DeleteEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -35,21 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/networkpolicy-it.yml")
 class NetworkPolicyIT {
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(NetworkPolicyIT.class.getResourceAsStream("/networkpolicy-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(NetworkPolicyIT.class.getResourceAsStream("/networkpolicy-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @Test
   void load() {

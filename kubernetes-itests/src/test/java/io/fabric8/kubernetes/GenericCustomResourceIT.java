@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
@@ -26,7 +27,6 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
+@LoadKubernetesManifests("/test-rawcustomresource-definition.yml")
 class GenericCustomResourceIT {
 
   static KubernetesClient client;
@@ -54,8 +55,7 @@ class GenericCustomResourceIT {
 
   @BeforeAll
   public static void initCrd() {
-    // Create a Custom Resource Definition Animals:
-    client.load(GenericCustomResourceIT.class.getResourceAsStream("/test-rawcustomresource-definition.yml")).create();
+    // Wait for CRD to be deployed and ready
     client.apiextensions().v1().customResourceDefinitions()
       .withName("animals.jungle.example.com")
       .waitUntilCondition(c -> c.getStatus() != null && c.getStatus().getConditions()!= null && c.getStatus().getConditions().stream()
@@ -69,11 +69,6 @@ class GenericCustomResourceIT {
       .withScope("Namespaced")
       .build();
     resourceClient = client.genericKubernetesResources(customResourceDefinitionContext);
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(GenericCustomResourceIT.class.getResourceAsStream("/test-rawcustomresource-definition.yml")).withGracePeriod(0L).delete();
   }
 
   @Test

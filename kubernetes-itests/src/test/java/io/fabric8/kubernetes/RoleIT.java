@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.DeleteEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
@@ -34,23 +35,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/role-it.yml")
 class RoleIT {
 
-  static KubernetesClient client;
+  KubernetesClient client;
 
   Namespace namespace;
 
   private String currentNamespace;
-
-  @BeforeAll
-  public static void init() {
-    client.load(RoleIT.class.getResourceAsStream("/role-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(RoleIT.class.getResourceAsStream("/role-it.yml")).withGracePeriod(0L).delete();
-  }
 
   @BeforeEach
   public void initNamespace() {

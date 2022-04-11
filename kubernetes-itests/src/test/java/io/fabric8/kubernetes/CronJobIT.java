@@ -16,12 +16,11 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobBuilder;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -29,19 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/cronjob-it.yml")
 class CronJobIT {
 
-  static KubernetesClient client;
-
-  @BeforeAll
-  public static void init() {
-    client.load(CronJobIT.class.getResourceAsStream("/cronjob-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(CronJobIT.class.getResourceAsStream("/cronjob-it.yml")).withGracePeriod(0L).delete();
-  }
+  KubernetesClient client;
 
   @Test
   void load() {

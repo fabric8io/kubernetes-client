@@ -16,12 +16,11 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -31,19 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LoadKubernetesManifests("/serviceaccount-it.yml")
 class ServiceAccountIT {
 
-  static KubernetesClient client;
-
-  @BeforeAll
-  public static void init() {
-    client.load(ServiceAccountIT.class.getResourceAsStream("/serviceaccount-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(ServiceAccountIT.class.getResourceAsStream("/serviceaccount-it.yml")).withGracePeriod(0L).delete();
-  }
+  KubernetesClient client;
 
   @Test
   void load() {

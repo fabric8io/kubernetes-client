@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
@@ -22,8 +23,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -31,19 +30,10 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@LoadKubernetesManifests("/patch-it.yml")
 class PatchIT {
 
-  static KubernetesClient client;
-
-  @BeforeAll
-  public static void init() {
-    client.load(PatchIT.class.getResourceAsStream("/patch-it.yml")).create();
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    client.load(CronJobIT.class.getResourceAsStream("/patch-it.yml")).withGracePeriod(0L).delete();
-  }
+  KubernetesClient client;
 
   @Test
   void testJsonPatch() {
