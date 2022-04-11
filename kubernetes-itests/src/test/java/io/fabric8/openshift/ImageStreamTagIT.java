@@ -15,22 +15,17 @@
  */
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ImageStreamTagIT {
 
   OpenShiftClient client;
-
-  Namespace namespace;
 
   @Test
   void load() {
@@ -56,17 +49,16 @@ class ImageStreamTagIT {
 
   @Test
   void get() {
-
-    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "get:1.0.12", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
-    ImageStreamTag getIST = client.imageStreamTags()
-      .withName("get:1.0.12").get();
+    client.imageStreams().withName("get").waitUntilCondition(is ->
+      is != null && is.getStatus() != null &&
+        is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
+      30, TimeUnit.SECONDS);
+    ImageStreamTag getIST = client.imageStreamTags().withName("get:1.0.12").get();
 
     assertNotNull(getIST);
     assertEquals("get:1.0.12", getIST.getMetadata().getName());
     assertEquals("DockerImage", getIST.getTag().getFrom().getKind());
     assertEquals("busybox:latest", getIST.getTag().getFrom().getName());
-
   }
 
   @Test
@@ -85,9 +77,10 @@ class ImageStreamTagIT {
 
   @Test
   void update() {
-
-    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "update:1.0.12", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
+    client.imageStreams().withName("update").waitUntilCondition(is ->
+        is != null && is.getStatus() != null &&
+          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
+      30, TimeUnit.SECONDS);
     ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("update:1.0.12").endMetadata()
       .withNewTag()
       .withNewFrom()
@@ -106,9 +99,10 @@ class ImageStreamTagIT {
 
   @Test
   void delete() {
-    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "delete:1.0.12", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
-    ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().list();
+    client.imageStreams().withName("delete").waitUntilCondition(is ->
+        is != null && is.getStatus() != null &&
+          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
+      30, TimeUnit.SECONDS);
     boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete();
     assertTrue(deleted);
     client.imageStreamTags().withName("delete:1.0.12")

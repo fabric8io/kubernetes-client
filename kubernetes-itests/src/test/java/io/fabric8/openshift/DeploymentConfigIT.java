@@ -16,20 +16,18 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -39,8 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DeploymentConfigIT {
 
   OpenShiftClient client;
-
-  Namespace namespace;
 
   @Test
   void load() {
@@ -64,18 +60,15 @@ class DeploymentConfigIT {
 
   @Test
   void update() {
-    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-update", namespace.getMetadata().getName());
-    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().withName("dc-update").edit(d -> new DeploymentConfigBuilder(d)
-                                               .editSpec().withReplicas(3).endSpec().build());
-    await().atMost(60, TimeUnit.SECONDS).until(deploymentConfigReady);
+    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().withName("dc-update")
+        .edit(d -> new DeploymentConfigBuilder(d).editSpec().withReplicas(3).endSpec().build());
     assertThat(deploymentConfig1).isNotNull();
     assertEquals(3, deploymentConfig1.getSpec().getReplicas().intValue());
   }
 
   @Test
   void delete() {
-    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-delete", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(deploymentConfigReady);
+    client.deploymentConfigs().withName("dc-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.deploymentConfigs().withName("dc-delete").delete();
     assertTrue(bDeleted);
   }
