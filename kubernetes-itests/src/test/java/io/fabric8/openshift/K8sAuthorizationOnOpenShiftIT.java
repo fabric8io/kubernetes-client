@@ -59,13 +59,13 @@ class K8sAuthorizationOnOpenShiftIT {
       .build();
 
     // When
-    Role createdRole = client.rbac().roles().inNamespace(namespace.getMetadata().getName()).create(role);
+    Role createdRole = client.rbac().roles().create(role);
 
     // Then
     assertNotNull(createdRole);
     assertNotNull(createdRole.getMetadata().getUid());
     assertEquals(name, createdRole.getMetadata().getName());
-    client.rbac().roles().inNamespace(namespace.getMetadata().getName()).withName(name).delete();
+    client.rbac().roles().withName(name).delete();
   }
 
   @Test
@@ -87,13 +87,13 @@ class K8sAuthorizationOnOpenShiftIT {
       .build();
 
     // When
-    RoleBinding createdRoleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).create(roleBinding);
+    RoleBinding createdRoleBinding = client.rbac().roleBindings().create(roleBinding);
 
     // Then
     assertNotNull(createdRoleBinding);
     assertNotNull(createdRoleBinding.getMetadata().getUid());
     assertEquals(name, createdRoleBinding.getMetadata().getName());
-    client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName(name).delete();
+    client.rbac().roleBindings().withName(name).delete();
   }
 
   @Test

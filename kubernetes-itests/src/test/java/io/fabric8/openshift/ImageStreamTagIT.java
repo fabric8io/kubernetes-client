@@ -58,7 +58,7 @@ class ImageStreamTagIT {
 
     ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "get:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
-    ImageStreamTag getIST = client.imageStreamTags().inNamespace(namespace.getMetadata().getName())
+    ImageStreamTag getIST = client.imageStreamTags()
       .withName("get:1.0.12").get();
 
     assertNotNull(getIST);
@@ -71,7 +71,7 @@ class ImageStreamTagIT {
   @Test
   void list() {
 
-    ImageStreamTagList istagList = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).list();
+    ImageStreamTagList istagList = client.imageStreamTags().list();
 
     assertNotNull(istagList);
     assertTrue(istagList.getItems().size() >= 1);
@@ -95,7 +95,7 @@ class ImageStreamTagIT {
       .endFrom()
       .endTag()
       .build();
-    ImageStreamTag istag = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).withName("update:1.0.12").patch(istag2);
+    ImageStreamTag istag = client.imageStreamTags().withName("update:1.0.12").patch(istag2);
 
     assertNotNull(istag);
     assertEquals("update:1.0.12", istag.getMetadata().getName());
@@ -107,8 +107,8 @@ class ImageStreamTagIT {
   void delete() {
     ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "delete:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
-    ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).list();
-    boolean deleted = client.imageStreamTags().inNamespace(namespace.getMetadata().getName()).withName("delete:1.0.12").delete();
+    ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().list();
+    boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete();
     assertTrue(deleted);
     DeleteEntity<ImageStreamTag> deleteEntity = new DeleteEntity<>(ImageStreamTag.class, client, "delete:1.0.12", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);

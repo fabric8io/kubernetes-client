@@ -55,20 +55,20 @@ class RouteIT {
 
   @Test
   void load() {
-    Route aRoute = client.routes().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-route.yml")).get();
+    Route aRoute = client.routes().load(getClass().getResourceAsStream("/test-route.yml")).get();
     assertThat(aRoute).isNotNull();
     assertEquals("host-route", aRoute.getMetadata().getName());
   }
 
   @Test
   void get() {
-    route1 = client.routes().inNamespace(currentNamespace).withName("route-get").get();
+    route1 = client.routes().withName("route-get").get();
     assertNotNull(route1);
   }
 
   @Test
   void list() {
-    RouteList aRouteList = client.routes().inNamespace(currentNamespace).list();
+    RouteList aRouteList = client.routes().list();
     assertThat(aRouteList).isNotNull();
     assertTrue(aRouteList.getItems().size() >= 1);
   }
@@ -76,7 +76,7 @@ class RouteIT {
   @Test
   void update() {
     ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-update", this.currentNamespace);
-    route1 = client.routes().inNamespace(currentNamespace).withName("route-update").edit(r -> new RouteBuilder (r)
+    route1 = client.routes().withName("route-update").edit(r -> new RouteBuilder (r)
                    .editSpec().withPath("/test").endSpec().build());
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     assertThat(route1).isNotNull();
@@ -87,19 +87,19 @@ class RouteIT {
   void delete() {
     ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-delete", this.currentNamespace);
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
-    boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route-delete").delete();
+    boolean bDeleted = client.routes().withName("route-delete").delete();
     assertTrue(bDeleted);
   }
 
   @Test
   void createOrReplace() {
     // Given
-    Route route = client.routes().inNamespace(currentNamespace).withName("route-createorreplace").get();
+    Route route = client.routes().withName("route-createorreplace").get();
 
     // When
     route.getMetadata().setAnnotations(Collections.singletonMap("foo", "bar"));
     route.getSpec().setHost("test.fabric8.io");
-    route = client.routes().inNamespace(currentNamespace).createOrReplace(route);
+    route = client.routes().createOrReplace(route);
 
     // Then
     assertNotNull(route);

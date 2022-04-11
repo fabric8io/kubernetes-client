@@ -161,11 +161,11 @@ class OpenShiftAuthorizationIT {
       .build();
 
     // When
-    RoleBindingRestriction createdRoleBindingRestriction = client.roleBindingRestrictions().inNamespace(namespace.getMetadata().getName()).create(roleBindingRestriction);
+    RoleBindingRestriction createdRoleBindingRestriction = client.roleBindingRestrictions().create(roleBindingRestriction);
 
     // Then
     assertNotNull(createdRoleBindingRestriction);
     assertNotNull(createdRoleBindingRestriction.getMetadata().getUid());
-    client.roleBindingRestrictions().inNamespace(namespace.getMetadata().getName()).withName(name).delete();
+    client.roleBindingRestrictions().withName(name).delete();
   }
 }

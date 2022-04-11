@@ -17,7 +17,6 @@ package io.fabric8.openshift;
 
 import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
@@ -36,13 +35,8 @@ class ServiceToURLIT {
 
   OpenShiftClient client;
 
-  Namespace namespace;
-
-  private String currentNamespace;
-
   @BeforeEach
   public void init() {
-    currentNamespace = namespace.getMetadata().getName();
     Service svc1 = new ServiceBuilder()
       .withNewMetadata()
       .withName("svc1")
@@ -79,25 +73,25 @@ class ServiceToURLIT {
       .endStatus()
       .build();
 
-    client.services().inNamespace(currentNamespace).createOrReplace(svc1);
-    client.services().inNamespace(currentNamespace).createOrReplace(svc2);
+    client.services().createOrReplace(svc1);
+    client.services().createOrReplace(svc2);
   }
 
   @Test
   void getURL() {
     // Testing NodePort Impl
-    String url = client.services().inNamespace(currentNamespace).withName("svc1").getURL("http");
+    String url = client.services().withName("svc1").getURL("http");
     assertNotNull(url);
 
     // Testing Ingress Impl
     Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress-extensions.yml")).get();
-    client.extensions().ingresses().inNamespace(currentNamespace).create(ingress);
+    client.extensions().ingresses().create(ingress);
 
-    url = client.services().inNamespace(currentNamespace).withName("svc2").getURL("80");
+    url = client.services().withName("svc2").getURL("80");
     assertNotNull(url);
 
     // Testing OpenShift Route Impl
-    Service svc3 = client.services().inNamespace(currentNamespace).create(new ServiceBuilder()
+    Service svc3 = client.services().create(new ServiceBuilder()
       .withNewMetadata().withName("svc3").endMetadata()
       .withNewSpec()
       .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
@@ -105,7 +99,7 @@ class ServiceToURLIT {
       .build());
 
     OpenShiftClient openshiftClient = client.adapt(OpenShiftClient.class);
-    openshiftClient.routes().inNamespace(currentNamespace).create(new RouteBuilder()
+    openshiftClient.routes().create(new RouteBuilder()
       .withNewMetadata().withName(svc3.getMetadata().getName()).endMetadata()
       .withNewSpec()
       .withHost("www.example.com")
@@ -113,7 +107,7 @@ class ServiceToURLIT {
       .endSpec()
       .build());
 
-    url = client.services().inNamespace(currentNamespace).withName("svc3").getURL("80");
+    url = client.services().withName("svc3").getURL("80");
     assertNotNull(url);
   }
 }

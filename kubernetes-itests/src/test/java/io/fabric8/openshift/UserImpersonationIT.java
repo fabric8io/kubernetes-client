@@ -39,6 +39,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -59,11 +60,9 @@ class UserImpersonationIT {
   private ClusterRole impersonatorRole;
   private ClusterRoleBinding impersonatorRoleBinding;
 
-  private String currentNamespace;
 
   @BeforeEach
   public void init() {
-    currentNamespace = namespace.getMetadata().getName();
     // Create impersonator cluster role
     impersonatorRole = new ClusterRoleBuilder()
       .withNewMetadata()
@@ -82,7 +81,7 @@ class UserImpersonationIT {
     serviceAccount1 = new ServiceAccountBuilder()
       .withNewMetadata().withName(SERVICE_ACCOUNT).endMetadata()
       .build();
-    client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount1);
+    client.serviceAccounts().create(serviceAccount1);
 
     // Bind Impersonator Role to current user
     impersonatorRoleBinding = new ClusterRoleBindingBuilder()
@@ -93,7 +92,7 @@ class UserImpersonationIT {
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("User")
         .withName(client.currentUser().getMetadata().getName())
-        .withNamespace(currentNamespace)
+        .withNamespace(namespace.getMetadata().getName())
         .build()
       )
       .withRoleRef(new RoleRefBuilder()
@@ -117,19 +116,22 @@ class UserImpersonationIT {
 
     // DeleteEntity Cluster Role
     client.rbac().clusterRoles().delete(impersonatorRole);
-    await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleIsDeleted());
+    client.rbac().clusterRoles().withName("impersonator")
+      .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
 
     // DeleteEntity Cluster Role binding
     client.rbac().clusterRoleBindings().delete(impersonatorRoleBinding);
-    await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleBindingIsDeleted());
+    client.rbac().clusterRoleBindings().withName("impersonator-role")
+      .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
 
     // DeleteEntity project
     client.projects().withName(NEW_PROJECT).delete();
     await().atMost(30, TimeUnit.SECONDS).until(projectIsDeleted());
 
     // DeleteEntity ServiceAccounts
-    client.serviceAccounts().inNamespace(currentNamespace).delete(serviceAccount1);
-    await().atMost(30, TimeUnit.SECONDS).until(serviceAccountIsDeleted());
+    client.serviceAccounts().delete(serviceAccount1);
+    client.serviceAccounts().withName(serviceAccount1.getMetadata().getName())
+      .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
   }
 
   @Test
@@ -163,21 +165,10 @@ class UserImpersonationIT {
     assertThat(requester).isEqualTo(SERVICE_ACCOUNT);
   }
 
-  private Callable<Boolean> serviceAccountIsDeleted() {
-    return () -> client.serviceAccounts().inNamespace(currentNamespace).withName(serviceAccount1.getMetadata().getName()).get() == null;
-  }
-
   private Callable<Boolean> projectIsDeleted() {
     return () -> client.projects().withName(NEW_PROJECT).get() == null;
   }
 
-  private Callable<Boolean> kubernetesClusterRoleBindingIsDeleted() {
-    return () -> client.rbac().clusterRoleBindings().withName("impersonator-role").get() == null;
-  }
-
-  private Callable<Boolean> kubernetesClusterRoleIsDeleted() {
-    return () -> client.rbac().clusterRoles().withName("impersonator").get() == null;
-  }
 
 
 }

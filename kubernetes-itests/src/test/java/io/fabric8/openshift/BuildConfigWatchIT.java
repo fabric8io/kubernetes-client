@@ -17,7 +17,6 @@ package io.fabric8.openshift;
 
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -26,7 +25,6 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -40,33 +38,32 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(BuildConfig.class)
-@LoadKubernetesManifests("/ruby-new-app.yml")
+@LoadKubernetesManifests("/build-config-watch.yml")
 class BuildConfigWatchIT {
 
   OpenShiftClient client;
 
-  Namespace namespace;
-
-  @BeforeEach
-  public void initOcNewApp() {
-    client.imageStreamTags().withName("ruby-25-centos7:latest")
-      .waitUntilCondition(Objects::nonNull, 10, TimeUnit.SECONDS);
-  }
-
   @Test
-  void instantiateAndWatchBuild() throws InterruptedException {
+  void instantiateAndWatchBuild() throws Exception {
     // Given
-    BuildRequest buildRequest = new BuildRequestBuilder().withNewMetadata().withName("ruby-hello-world").endMetadata().build();
+    client.imageStreams().withName("fabric8-build-config-watch").waitUntilCondition(is ->
+        is != null && is.getStatus() != null &&
+          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.33.7")),
+      30, TimeUnit.SECONDS);
+    client.buildConfigs().withName("fabric8-build-config-watch")
+      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    BuildRequest buildRequest = new BuildRequestBuilder().withNewMetadata()
+      .withName("fabric8-build-config-watch").endMetadata().build();
     CountDownLatch buildEventReceivedLatch = new CountDownLatch(1);
 
     // When
-    Build startedBuild = client.buildConfigs().inNamespace(namespace.getMetadata().getName()).withName("ruby-hello-world").instantiate(buildRequest);
+    Build startedBuild = client.buildConfigs().withName("fabric8-build-config-watch").instantiate(buildRequest);
     TestBuildWatcher testBuildWatcher = new TestBuildWatcher(buildEventReceivedLatch, getName(startedBuild));
-    Watch watcher = client.builds().inNamespace(namespace.getMetadata().getName()).withName(getName(startedBuild)).watch(testBuildWatcher);
+    Watch watcher = client.builds().withName(getName(startedBuild)).watch(testBuildWatcher);
 
     // Then
     assertNotNull(startedBuild);
-    assertEquals("ruby-hello-world", getOrCreateAnnotations(startedBuild).get("openshift.io/build-config.name"));
+    assertEquals("fabric8-build-config-watch", getOrCreateAnnotations(startedBuild).get("openshift.io/build-config.name"));
     assertTrue(buildEventReceivedLatch.await(5, TimeUnit.SECONDS));
     watcher.close();
   }
