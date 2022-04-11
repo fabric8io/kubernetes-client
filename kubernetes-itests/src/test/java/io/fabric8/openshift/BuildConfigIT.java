@@ -45,7 +45,7 @@ class BuildConfigIT {
 
   @Test
   void load() {
-    BuildConfig aBuildConfig = client.buildConfigs().inNamespace(namespace.getMetadata().getName())
+    BuildConfig aBuildConfig = client.buildConfigs()
       .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
     assertThat(aBuildConfig).isNotNull();
     assertEquals("ruby-sample-build", aBuildConfig.getMetadata().getName());
@@ -53,12 +53,12 @@ class BuildConfigIT {
 
   @Test
   void get() {
-    assertNotNull(client.buildConfigs().inNamespace(namespace.getMetadata().getName()).withName("bc-get").get());
+    assertNotNull(client.buildConfigs().withName("bc-get").get());
   }
 
   @Test
   void list() {
-    BuildConfigList bcList = client.buildConfigs().inNamespace(namespace.getMetadata().getName()).list();
+    BuildConfigList bcList = client.buildConfigs().list();
     assertThat(bcList).isNotNull();
     assertTrue(bcList.getItems().size() >= 1);
   }
@@ -66,7 +66,7 @@ class BuildConfigIT {
   @Test
   void update() {
     ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc-update", namespace.getMetadata().getName());
-    BuildConfig buildConfig1 = client.buildConfigs().inNamespace(namespace.getMetadata().getName()).withName("bc-update").edit(b -> new BuildConfigBuilder(b)
+    BuildConfig buildConfig1 = client.buildConfigs().withName("bc-update").edit(b -> new BuildConfigBuilder(b)
                                      .editSpec().withFailedBuildsHistoryLimit(5).endSpec().build());
     await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
     assertEquals(5, buildConfig1.getSpec().getFailedBuildsHistoryLimit().intValue());
@@ -76,14 +76,14 @@ class BuildConfigIT {
   void delete() {
     ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc-delete", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
-    boolean bDeleted = client.buildConfigs().inNamespace(namespace.getMetadata().getName()).withName("bc-delete").delete();
+    boolean bDeleted = client.buildConfigs().withName("bc-delete").delete();
     assertTrue(bDeleted);
   }
 
   @Test
   void createOrReplace() {
     // Given
-    BuildConfig buildConfig = client.buildConfigs().inNamespace(namespace.getMetadata().getName()).withName("bc-createorreplace").get();
+    BuildConfig buildConfig = client.buildConfigs().withName("bc-createorreplace").get();
 
     // When
     buildConfig.getSpec().setSource(new BuildSourceBuilder()
@@ -91,7 +91,7 @@ class BuildConfigIT {
       .withUri("https://github.com/openshift/test2")
       .endGit()
       .build());
-    buildConfig = client.buildConfigs().inNamespace(namespace.getMetadata().getName()).createOrReplace(buildConfig);
+    buildConfig = client.buildConfigs().createOrReplace(buildConfig);
 
     // Then
     assertNotNull(buildConfig);

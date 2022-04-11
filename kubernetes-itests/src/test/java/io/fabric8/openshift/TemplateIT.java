@@ -49,7 +49,7 @@ class TemplateIT {
   void load() {
     Template template = client.templates()
       .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
-      .inNamespace(namespace.getMetadata().getName())
+      
       .load(getClass().getResourceAsStream("/test-template.yml")).get();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());
@@ -57,13 +57,13 @@ class TemplateIT {
 
   @Test
   void get() {
-    Template template1 = client.templates().inNamespace(namespace.getMetadata().getName()).withName("template-get").get();
+    Template template1 = client.templates().withName("template-get").get();
     assertNotNull(template1);
   }
 
   @Test
   void list() {
-    TemplateList aList = client.templates().inNamespace(namespace.getMetadata().getName()).list();
+    TemplateList aList = client.templates().list();
     assertThat(aList).isNotNull();
     assertTrue(aList.getItems().size() >= 1);
   }
@@ -72,7 +72,7 @@ class TemplateIT {
   void delete() {
     ReadyEntity<Template> template1Ready = new ReadyEntity<>(Template.class, client, "template-delete", this.namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(template1Ready);
-    boolean bDeleted = client.templates().inNamespace(namespace.getMetadata().getName()).withName("template-delete").delete();
+    boolean bDeleted = client.templates().withName("template-delete").delete();
     assertTrue(bDeleted);
   }
 
@@ -112,7 +112,7 @@ class TemplateIT {
     // When
     // Set v1 Api
     template.setApiVersion("v1");
-    template = client.templates().inNamespace(namespace.getMetadata().getName()).create(template);
+    template = client.templates().create(template);
     assertNotNull(template);
     assertEquals("template.openshift.io/v1", template.getApiVersion());
   }

@@ -16,7 +16,6 @@
 package io.fabric8.openshift;
 
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
@@ -25,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +34,7 @@ class ProjectRequestIT {
   OpenShiftClient client;
 
   @Test
-  void create() {
+  void create() throws Exception {
     // Given
     String name = "projectrequestit-create";
     ProjectRequest projectRequest = new ProjectRequestBuilder()
@@ -49,9 +47,11 @@ class ProjectRequestIT {
     client.projectrequests().create(projectRequest);
 
     // Then
-    Resource<Project> projectOp = client.projects().withName(name);
-    await().atMost(1, TimeUnit.SECONDS).until(() -> projectOp.get() != null);
-    Project createdProject = projectOp.get();
+    client.projects()
+      .withName(name)
+      .informOnCondition(pl -> pl.stream().anyMatch(p -> p.getMetadata().getName().equals(name)))
+      .get(1, TimeUnit.SECONDS);
+    final Project createdProject = client.projects().withName(name).get();
     assertNotNull(createdProject);
     assertEquals(name, createdProject.getMetadata().getName());
     assertEquals("Testing", createdProject.getMetadata().getAnnotations().get("openshift.io/description"));

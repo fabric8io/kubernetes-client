@@ -44,7 +44,7 @@ class DeploymentConfigIT {
 
   @Test
   void load() {
-    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(namespace.getMetadata().getName())
+    DeploymentConfig deploymentConfig = client.deploymentConfigs()
       .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
     assertThat(deploymentConfig).isNotNull();
     assertEquals("frontend", deploymentConfig.getMetadata().getName());
@@ -52,12 +52,12 @@ class DeploymentConfigIT {
 
   @Test
   void get() {
-    assertNotNull(client.deploymentConfigs().inNamespace(namespace.getMetadata().getName()).withName("dc-get").get());
+    assertNotNull(client.deploymentConfigs().withName("dc-get").get());
   }
 
   @Test
   void list() {
-    DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().inNamespace(namespace.getMetadata().getName()).list();
+    DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().list();
     assertThat(aDeploymentConfigList).isNotNull();
     assertTrue(aDeploymentConfigList.getItems().size() >= 1);
   }
@@ -65,7 +65,7 @@ class DeploymentConfigIT {
   @Test
   void update() {
     ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-update", namespace.getMetadata().getName());
-    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(namespace.getMetadata().getName()).withName("dc-update").edit(d -> new DeploymentConfigBuilder(d)
+    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().withName("dc-update").edit(d -> new DeploymentConfigBuilder(d)
                                                .editSpec().withReplicas(3).endSpec().build());
     await().atMost(60, TimeUnit.SECONDS).until(deploymentConfigReady);
     assertThat(deploymentConfig1).isNotNull();
@@ -76,18 +76,18 @@ class DeploymentConfigIT {
   void delete() {
     ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-delete", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(deploymentConfigReady);
-    boolean bDeleted = client.deploymentConfigs().inNamespace(namespace.getMetadata().getName()).withName("dc-delete").delete();
+    boolean bDeleted = client.deploymentConfigs().withName("dc-delete").delete();
     assertTrue(bDeleted);
   }
 
   @Test
   void createOrReplace() {
     // Given
-    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(namespace.getMetadata().getName()).withName("dc-createorreplace").get();
+    DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc-createorreplace").get();
 
     // When
     deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).setImage("openshift/hello-openshift:v3.8");
-    deploymentConfig = client.deploymentConfigs().inNamespace(namespace.getMetadata().getName()).createOrReplace(deploymentConfig);
+    deploymentConfig = client.deploymentConfigs().createOrReplace(deploymentConfig);
 
     // Then
     assertNotNull(deploymentConfig);

@@ -44,7 +44,7 @@ class ImageStreamIT {
 
   @Test
   void load() {
-    ImageStream aImageStream = client.imageStreams().inNamespace(namespace.getMetadata().getName())
+    ImageStream aImageStream = client.imageStreams()
       .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
     assertThat(aImageStream).isNotNull();
     assertEquals("my-ruby", aImageStream.getMetadata().getName());
@@ -52,12 +52,12 @@ class ImageStreamIT {
 
   @Test
   void get() {
-    assertNotNull(client.imageStreams().inNamespace(namespace.getMetadata().getName()).withName("is-get").get());
+    assertNotNull(client.imageStreams().withName("is-get").get());
   }
 
   @Test
   void list() {
-    ImageStreamList aImageStreamList = client.imageStreams().inNamespace(namespace.getMetadata().getName()).list();
+    ImageStreamList aImageStreamList = client.imageStreams().list();
     assertThat(aImageStreamList).isNotNull();
     assertTrue(aImageStreamList.getItems().size() >= 1);
   }
@@ -66,7 +66,7 @@ class ImageStreamIT {
   void update() {
     ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-update", this.namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
-    ImageStream imageStream1 = client.imageStreams().inNamespace(namespace.getMetadata().getName()).withName("is-update").edit(i -> new ImageStreamBuilder(i)
+    ImageStream imageStream1 = client.imageStreams().withName("is-update").edit(i -> new ImageStreamBuilder(i)
       .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
       .build());
     assertThat(imageStream1).isNotNull();
@@ -77,18 +77,18 @@ class ImageStreamIT {
   void delete() {
     ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-delete", this.namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
-    boolean bDeleted = client.imageStreams().inNamespace(namespace.getMetadata().getName()).withName("is-delete").delete();
+    boolean bDeleted = client.imageStreams().withName("is-delete").delete();
     assertTrue(bDeleted);
   }
 
   @Test
   void createOrReplace() {
     // Given
-    ImageStream imageStream = client.imageStreams().inNamespace(namespace.getMetadata().getName()).withName("is-createorreplace").get();
+    ImageStream imageStream = client.imageStreams().withName("is-createorreplace").get();
 
     // When
     imageStream.getSpec().setDockerImageRepository("docker.io/openshift/ruby-centos-2");
-    imageStream = client.imageStreams().inNamespace(namespace.getMetadata().getName()).createOrReplace(imageStream);
+    imageStream = client.imageStreams().createOrReplace(imageStream);
 
     // Then
     assertNotNull(imageStream);
