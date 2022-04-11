@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
@@ -27,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -95,8 +93,8 @@ class PodSecurityPolicyIT {
     boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete();
     assertTrue(deleted);
 
-    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "psp-delete", null);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    client.policy().v1beta1().podSecurityPolicies().withName("psp-delete")
+      .waitUntilCondition(psp -> psp == null || psp.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
 

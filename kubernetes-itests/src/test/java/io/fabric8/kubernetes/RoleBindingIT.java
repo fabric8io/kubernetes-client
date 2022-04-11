@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
@@ -27,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -135,8 +133,8 @@ class RoleBindingIT {
 
     assertTrue(deleted);
 
-    DeleteEntity<RoleBinding> deleteEntity = new DeleteEntity<>(RoleBinding.class, client, "read-jobs", namespace.getMetadata().getName());
-    await().atMost(60, TimeUnit.SECONDS).until(deleteEntity);
+    client.rbac().roleBindings().withName("rb-delete")
+      .waitUntilCondition(rb -> rb == null || rb.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
 
     RoleBindingList roleBindingList = client.rbac().roleBindings().list();
     assertEquals(initialCountBeforeDeletion - 1,roleBindingList.getItems().size());
