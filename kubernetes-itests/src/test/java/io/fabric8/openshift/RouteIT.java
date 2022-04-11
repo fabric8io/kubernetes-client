@@ -16,22 +16,19 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,17 +39,6 @@ class RouteIT {
 
   OpenShiftClient client;
 
-  Namespace namespace;
-
-  private Route route1;
-
-  private String currentNamespace;
-
-  @BeforeEach
-  public void before() {
-    currentNamespace = namespace.getMetadata().getName();
-  }
-
   @Test
   void load() {
     Route aRoute = client.routes().load(getClass().getResourceAsStream("/test-route.yml")).get();
@@ -62,7 +48,7 @@ class RouteIT {
 
   @Test
   void get() {
-    route1 = client.routes().withName("route-get").get();
+    final Route route1 = client.routes().withName("route-get").get();
     assertNotNull(route1);
   }
 
@@ -75,18 +61,15 @@ class RouteIT {
 
   @Test
   void update() {
-    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-update", this.currentNamespace);
-    route1 = client.routes().withName("route-update").edit(r -> new RouteBuilder (r)
-                   .editSpec().withPath("/test").endSpec().build());
-    await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
-    assertThat(route1).isNotNull();
-    assertEquals("/test", route1.getSpec().getPath());
+    final Route route = client.routes().withName("route-update").edit(r -> new RouteBuilder(r)
+        .editSpec().withPath("/test").endSpec().build());
+    assertThat(route).isNotNull();
+    assertEquals("/test", route.getSpec().getPath());
   }
 
   @Test
   void delete() {
-    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-delete", this.currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
+    client.routes().withName("route-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.routes().withName("route-delete").delete();
     assertTrue(bDeleted);
   }

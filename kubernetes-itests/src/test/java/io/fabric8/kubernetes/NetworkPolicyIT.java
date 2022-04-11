@@ -16,9 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
@@ -26,9 +24,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class NetworkPolicyIT {
 
   KubernetesClient client;
-
-  Namespace namespace;
 
   @Test
   void load() {
@@ -95,13 +91,11 @@ class NetworkPolicyIT {
 
   @Test
   void update() {
-    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-update", namespace.getMetadata().getName());
     NetworkPolicy networkPolicy = client.network().v1().networkPolicies()
       .withName("networkpolicy-update").edit(n -> new NetworkPolicyBuilder(n)
       .editMetadata().addToLabels("bar", "foo").endMetadata()
       .build());
 
-    await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
     assertNotNull(networkPolicy);
     assertEquals("networkpolicy-update", networkPolicy.getMetadata().getName());
     assertEquals(1, networkPolicy.getMetadata().getLabels().size());
@@ -117,8 +111,8 @@ class NetworkPolicyIT {
 
   @Test
   void delete() {
-    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
+    client.network().v1().networkPolicies().withName("networkpolicy-delete")
+      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean deleted = client.network().v1().networkPolicies().withName("networkpolicy-delete").delete();
 
     assertTrue(deleted);

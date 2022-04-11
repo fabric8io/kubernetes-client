@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -167,24 +166,18 @@ class PodIT {
 
   @Test
   void log() {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-    String log = client.pods().withName(pod1.getMetadata().getName()).getLog();
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    String log = client.pods().withName("pod-standard").getLog();
     assertNotNull(log);
   }
 
   @Test
   void exec() throws InterruptedException, IOException {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     int[] exitCode = new int[] {Integer.MAX_VALUE};
-    ExecWatch execWatch = client.pods().withName(pod1.getMetadata().getName())
+    ExecWatch execWatch = client.pods().withName("pod-standard")
       .writingOutput(out)
       .redirectingErrorChannel()
       .withTTY().usingListener(new ExecListener() {
@@ -220,12 +213,11 @@ class PodIT {
 
   @Test
   void readFile() throws IOException {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
-    await().atMost(60, TimeUnit.SECONDS).until(podReady);
-    ExecWatch watch = client.pods().withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
-    try (InputStream is = client.pods().withName(pod1.getMetadata().getName()).file("/msg").read())  {
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    try (
+      ExecWatch ignore = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+      InputStream is = client.pods().withName("pod-standard").file("/msg").read()
+    )  {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("hello", result);
     }
@@ -233,12 +225,11 @@ class PodIT {
 
   @Test
   void readFileEscapedParams() throws IOException {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-    ExecWatch watch = client.pods().withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
-    try (InputStream is = client.pods().withName(pod1.getMetadata().getName()).file("/msg").read())  {
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    try (
+      ExecWatch watch = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
+      InputStream is = client.pods().withName("pod-standard").file("/msg").read()
+    )  {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("H$ll* (W&RLD}", result);
     }
@@ -246,22 +237,17 @@ class PodIT {
 
   @Test
   void uploadFile() throws IOException {
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
-        namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-
     final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
     Files.write(tmpFile, Arrays.asList("I'm uploaded"));
 
-    assertUploaded(pod1, tmpFile, "/tmp/toBeUploaded");
-    assertUploaded(pod1, tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");
+    assertUploaded("pod-standard", tmpFile, "/tmp/toBeUploaded");
+    assertUploaded("pod-standard", tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");
   }
 
-  private void assertUploaded(Pod pod1, final Path tmpFile, String filename) throws IOException {
-    PodResource podResource = client.pods()
-        .withName(pod1.getMetadata().getName());
+  private void assertUploaded(String podName, final Path tmpFile, String filename) throws IOException {
+    PodResource podResource = client.pods().withName(podName);
 
     podResource.file(filename).upload(tmpFile);
 
@@ -274,12 +260,7 @@ class PodIT {
 
   @Test
   void uploadDir() throws IOException {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
-        namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final String[] files = new String[] { "1", "2", "a", "b", "c" };
     final Path tmpDir = Files.createTempDirectory("uploadDir");
     for (String fileName : files) {
@@ -287,8 +268,7 @@ class PodIT {
       Files.write(Files.createFile(file), Arrays.asList("I'm uploaded", fileName));
     }
 
-    PodResource podResource = client.pods()
-        .withName(pod1.getMetadata().getName());
+    PodResource podResource = client.pods().withName("pod-standard");
 
     podResource.dir("/tmp/uploadDir").upload(tmpDir);
 
@@ -303,16 +283,11 @@ class PodIT {
 
   @Test
   void copyFile() throws IOException {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
-        namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     final Path tmpDir = Files.createTempDirectory("copyFile");
 
-    PodResource podResource = client.pods()
-        .withName(pod1.getMetadata().getName());
+    PodResource podResource = client.pods().withName("pod-standard");
     podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt");
     podResource.file("/msg.txt").copy(tmpDir);
 
@@ -328,11 +303,8 @@ class PodIT {
 
   @Test
   void listFromServer() {
-    // Wait for resources to get ready
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), namespace.getMetadata().getName());
-    await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
-
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    final Pod pod1 = client.pods().withName("pod-standard").get();
     List<HasMetadata> resources = client.resourceList(pod1).fromServer().get();
 
     assertNotNull(resources);

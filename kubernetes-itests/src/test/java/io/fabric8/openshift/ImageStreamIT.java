@@ -16,20 +16,18 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -39,8 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ImageStreamIT {
 
   OpenShiftClient client;
-
-  Namespace namespace;
 
   @Test
   void load() {
@@ -64,8 +60,7 @@ class ImageStreamIT {
 
   @Test
   void update() {
-    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-update", this.namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
+    client.imageStreams().withName("is-update").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     ImageStream imageStream1 = client.imageStreams().withName("is-update").edit(i -> new ImageStreamBuilder(i)
       .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
       .build());
@@ -75,8 +70,7 @@ class ImageStreamIT {
 
   @Test
   void delete() {
-    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-delete", this.namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
+    client.imageStreams().withName("is-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.imageStreams().withName("is-delete").delete();
     assertTrue(bDeleted);
   }

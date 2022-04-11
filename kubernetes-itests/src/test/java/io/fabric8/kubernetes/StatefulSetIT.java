@@ -16,18 +16,16 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StatefulSetIT {
 
   KubernetesClient client;
-
-  Namespace namespace;
 
   @Test
   void load() {
@@ -62,17 +58,14 @@ class StatefulSetIT {
 
   @Test
   void update() {
-    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-update", namespace.getMetadata().getName());
     StatefulSet ss1 = client.apps().statefulSets().withName("ss-update").scale(5);
-    await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
   }
 
   @Test
   void delete() {
-    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-delete", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
-    boolean bDeleted = client.apps().statefulSets().withName("ss-delete ").delete();
+    client.apps().statefulSets().withName("ss-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    boolean bDeleted = client.apps().statefulSets().withName("ss-delete").delete();
     assertTrue(bDeleted);
   }
 

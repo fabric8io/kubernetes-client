@@ -16,10 +16,8 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.openshift.api.model.Template;
@@ -29,10 +27,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,13 +41,11 @@ class TemplateIT {
 
   OpenShiftClient client;
 
-  Namespace namespace;
-
   @Test
   void load() {
     Template template = client.templates()
       .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
-      
+
       .load(getClass().getResourceAsStream("/test-template.yml")).get();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());
@@ -70,8 +66,7 @@ class TemplateIT {
 
   @Test
   void delete() {
-    ReadyEntity<Template> template1Ready = new ReadyEntity<>(Template.class, client, "template-delete", this.namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(template1Ready);
+    client.templates().withName("template-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.templates().withName("template-delete").delete();
     assertTrue(bDeleted);
   }

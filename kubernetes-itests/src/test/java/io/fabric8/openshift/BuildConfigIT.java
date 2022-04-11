@@ -16,10 +16,8 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -27,10 +25,10 @@ import io.fabric8.openshift.api.model.BuildSourceBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,8 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BuildConfigIT {
 
   OpenShiftClient client;
-
-  Namespace namespace;
 
   @Test
   void load() {
@@ -65,17 +61,14 @@ class BuildConfigIT {
 
   @Test
   void update() {
-    ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc-update", namespace.getMetadata().getName());
     BuildConfig buildConfig1 = client.buildConfigs().withName("bc-update").edit(b -> new BuildConfigBuilder(b)
-                                     .editSpec().withFailedBuildsHistoryLimit(5).endSpec().build());
-    await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
+        .editSpec().withFailedBuildsHistoryLimit(5).endSpec().build());
     assertEquals(5, buildConfig1.getSpec().getFailedBuildsHistoryLimit().intValue());
   }
 
   @Test
   void delete() {
-    ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc-delete", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
+    client.buildConfigs().withName("bc-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.buildConfigs().withName("bc-delete").delete();
     assertTrue(bDeleted);
   }
