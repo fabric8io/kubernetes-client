@@ -52,7 +52,7 @@ class RoleBindingIT {
   @Test
   void get() {
 
-    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName("rb-get").get();
+    RoleBinding roleBinding = client.rbac().roleBindings().withName("rb-get").get();
 
     assertNotNull(roleBinding);
     assertEquals("RoleBinding", roleBinding.getKind());
@@ -73,7 +73,7 @@ class RoleBindingIT {
   @Test
   void load() {
 
-    RoleBinding aRoleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName())
+    RoleBinding aRoleBinding = client.rbac().roleBindings()
       .load(getClass().getResourceAsStream("/test-kubernetesrolebinding.yml")).get();
     assertNotNull(aRoleBinding);
     assertEquals("RoleBinding", aRoleBinding.getKind());
@@ -94,7 +94,7 @@ class RoleBindingIT {
   @Test
   void list() {
 
-    RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withLabels(Collections.singletonMap("type", "io.fabric8.roleBindingIT")).list();
+    RoleBindingList roleBindingList = client.rbac().roleBindings().withLabels(Collections.singletonMap("type", "io.fabric8.roleBindingIT")).list();
 
     assertNotNull(roleBindingList);
     assertNotNull(roleBindingList.getItems());
@@ -118,7 +118,7 @@ class RoleBindingIT {
   @Test
   void update() {
 
-    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName("rb-update").edit(r -> new RoleBindingBuilder(r)
+    RoleBinding roleBinding = client.rbac().roleBindings().withName("rb-update").edit(r -> new RoleBindingBuilder(r)
                         .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);
@@ -140,15 +140,15 @@ class RoleBindingIT {
   @Test
   void delete() {
 
-    int initialCountBeforeDeletion = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).list().getItems().size();
-    boolean deleted = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).withName("rb-delete").delete();
+    int initialCountBeforeDeletion = client.rbac().roleBindings().list().getItems().size();
+    boolean deleted = client.rbac().roleBindings().withName("rb-delete").delete();
 
     assertTrue(deleted);
 
     DeleteEntity<RoleBinding> deleteEntity = new DeleteEntity<>(RoleBinding.class, client, "read-jobs", namespace.getMetadata().getName());
     await().atMost(60, TimeUnit.SECONDS).until(deleteEntity);
 
-    RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(namespace.getMetadata().getName()).list();
+    RoleBindingList roleBindingList = client.rbac().roleBindings().list();
     assertEquals(initialCountBeforeDeletion - 1,roleBindingList.getItems().size());
   }
 

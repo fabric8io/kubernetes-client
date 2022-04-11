@@ -18,7 +18,6 @@ package io.fabric8.kubernetes;
 import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.AfterAll;
@@ -35,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DryRunIT {
 
   static KubernetesClient client;
-
-  Namespace namespace;
 
   @BeforeAll
   public static void init() {
@@ -55,14 +52,14 @@ class DryRunIT {
     ConfigMap configMap = createConfigMap(name);
 
     // When
-    ConfigMap createdConfigMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).dryRun().create(configMap);
+    ConfigMap createdConfigMap = client.configMaps().dryRun().create(configMap);
 
     // Then
     assertNotNull(createdConfigMap);
     assertNotNull(createdConfigMap.getMetadata());
     assertNotNull(createdConfigMap.getMetadata().getCreationTimestamp());
     assertNotNull(createdConfigMap.getMetadata().getUid());
-    ConfigMap configMapQueriedFromServer = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMapQueriedFromServer = client.configMaps().withName(name).get();
     assertNull(configMapQueriedFromServer);
   }
 
@@ -72,16 +69,16 @@ class DryRunIT {
     String name = "dryrunit-replace";
 
     // When
-    ConfigMap configMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMap = client.configMaps().withName(name).get();
     configMap.getMetadata().setLabels(Collections.singletonMap("foo", "bar"));
-    ConfigMap replacedConfigMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).dryRun().createOrReplace(configMap);
+    ConfigMap replacedConfigMap = client.configMaps().dryRun().createOrReplace(configMap);
 
     // Then
     assertNotNull(replacedConfigMap);
     assertNotNull(replacedConfigMap.getMetadata());
     assertNotNull(replacedConfigMap.getMetadata().getCreationTimestamp());
     assertNotNull(replacedConfigMap.getMetadata().getUid());
-    ConfigMap configMapQueriedFromServer = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMapQueriedFromServer = client.configMaps().withName(name).get();
     assertNull(configMapQueriedFromServer.getMetadata().getLabels());
   }
 
@@ -91,11 +88,11 @@ class DryRunIT {
     String name = "dryrunit-delete";
 
     // When
-    boolean deletionResult = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).dryRun().delete();
+    boolean deletionResult = client.configMaps().withName(name).dryRun().delete();
 
     // Then
     assertTrue(deletionResult);
-    ConfigMap configMapFromServer = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMapFromServer = client.configMaps().withName(name).get();
     assertNotNull(configMapFromServer);
   }
 
@@ -106,14 +103,14 @@ class DryRunIT {
     ConfigMap configMap = createConfigMap(name);
 
     // When
-    ConfigMap createdConfigMap = client.resource(configMap).inNamespace(namespace.getMetadata().getName()).dryRun().createOrReplace();
+    ConfigMap createdConfigMap = client.resource(configMap).dryRun().createOrReplace();
 
     // Then
     assertNotNull(createdConfigMap);
     assertNotNull(createdConfigMap.getMetadata());
     assertNotNull(createdConfigMap.getMetadata().getCreationTimestamp());
     assertNotNull(createdConfigMap.getMetadata().getUid());
-    ConfigMap configMapQueriedFromServer = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMapQueriedFromServer = client.configMaps().withName(name).get();
     assertNull(configMapQueriedFromServer);
   }
 
@@ -121,14 +118,14 @@ class DryRunIT {
   void resourceDelete() {
     // Given
     String name = "dryrunit-resource-delete";
-    ConfigMap configMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMap = client.configMaps().withName(name).get();
 
     // When
-    Boolean isDeleted = client.resource(configMap).inNamespace(namespace.getMetadata().getName()).dryRun().delete();
+    Boolean isDeleted = client.resource(configMap).dryRun().delete();
 
     // Then
     assertTrue(isDeleted);
-    ConfigMap configMapQueriedFromServer = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMapQueriedFromServer = client.configMaps().withName(name).get();
     assertNotNull(configMapQueriedFromServer);
   }
 
@@ -136,16 +133,16 @@ class DryRunIT {
   void resourceListDelete() {
     // Given
     String name = "dryrunit-resourcelist-delete";
-    ConfigMap configMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    Service svc = client.services().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMap = client.configMaps().withName(name).get();
+    Service svc = client.services().withName(name).get();
 
     // When
-    boolean isDeleted = client.resourceList(configMap, svc).inNamespace(namespace.getMetadata().getName()).dryRun().delete();
+    boolean isDeleted = client.resourceList(configMap, svc).dryRun().delete();
 
     // Then
     assertTrue(isDeleted);
-    ConfigMap configMapQueriedFromServer = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    Service serviceQueriedFromServer = client.services().inNamespace(namespace.getMetadata().getName()).withName(name).get();
+    ConfigMap configMapQueriedFromServer = client.configMaps().withName(name).get();
+    Service serviceQueriedFromServer = client.services().withName(name).get();
     assertNotNull(configMapQueriedFromServer);
     assertNotNull(serviceQueriedFromServer);
   }

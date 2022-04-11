@@ -18,7 +18,6 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -43,13 +42,10 @@ class WatchIT {
 
   KubernetesClient client;
 
-  Namespace namespace;
-
   private static final Logger logger = LoggerFactory.getLogger(WatchIT.class);
 
   @Test
   void testWatch() throws InterruptedException {
-    String currentNamespace = namespace.getMetadata().getName();
     Pod pod1 = new PodBuilder()
       .withNewMetadata().withName("sample-watch-pod").endMetadata()
       .withNewSpec()
@@ -57,12 +53,12 @@ class WatchIT {
       .endSpec()
       .build();
 
-    client.pods().inNamespace(currentNamespace).create(pod1);
+    client.pods().create(pod1);
 
     final CountDownLatch eventLatch = new CountDownLatch(1);
     final CountDownLatch modifyLatch = new CountDownLatch(1);
     final CountDownLatch closeLatch = new CountDownLatch(1);
-    Watch watch = client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").watch(new Watcher<Pod>() {
+    Watch watch = client.pods().withName("sample-watch-pod").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod pod) {
         eventLatch.countDown();
@@ -85,7 +81,7 @@ class WatchIT {
     });
 
     client.pods()
-        .inNamespace(currentNamespace)
+
         .withName("sample-watch-pod")
         .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new PodBuilder()
             .withNewMetadata()
@@ -101,10 +97,9 @@ class WatchIT {
 
   @Test
   void testWatchFailureHandling() throws InterruptedException {
-    String currentNamespace = namespace.getMetadata().getName();
     String name = "sample-configmap-watch";
 
-    Resource<ConfigMap> configMapClient = client.configMaps().inNamespace(currentNamespace).withName(name);
+    Resource<ConfigMap> configMapClient = client.configMaps().withName(name);
 
     configMapClient.create(new ConfigMapBuilder().withNewMetadata().withName(name).endMetadata().build());
 

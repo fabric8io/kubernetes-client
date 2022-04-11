@@ -19,7 +19,6 @@ package io.fabric8.kubernetes;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,8 +33,6 @@ class ConfigMapIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml")).create();
@@ -48,27 +45,27 @@ class ConfigMapIT {
 
   @Test
   void load() {
-    ConfigMap aConfigMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
+    ConfigMap aConfigMap = client.configMaps().load(getClass().getResourceAsStream("/test-configmap.yml")).get();
     assertThat(aConfigMap).isNotNull();
     assertEquals("game-config", aConfigMap.getMetadata().getName());
   }
 
   @Test
   void get() {
-    ConfigMap configMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName("configmap-get").get();
+    ConfigMap configMap = client.configMaps().withName("configmap-get").get();
     assertThat(configMap).isNotNull();
   }
 
   @Test
   void list() {
-    ConfigMapList aConfigMapList = client.configMaps().inNamespace(namespace.getMetadata().getName()).list();
+    ConfigMapList aConfigMapList = client.configMaps().list();
     assertNotNull(aConfigMapList);
     assertTrue(aConfigMapList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    ConfigMap configMap = client.configMaps().inNamespace(namespace.getMetadata().getName()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
+    ConfigMap configMap = client.configMaps().withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
                       .addToData("MSSQL", "Microsoft Database").build());
 
     assertNotNull(configMap);
@@ -77,6 +74,6 @@ class ConfigMapIT {
 
   @Test
   void delete() {
-    assertTrue(client.configMaps().inNamespace(namespace.getMetadata().getName()).withName("configmap-delete").delete());
+    assertTrue(client.configMaps().withName("configmap-delete").delete());
   }
 }

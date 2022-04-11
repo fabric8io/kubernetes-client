@@ -50,7 +50,7 @@ class EventsIT {
     Event event = createEvent("custom-event-create");
 
     // When
-    Event createdEvent = client.v1().events().inNamespace(namespace.getMetadata().getName()).create(event);
+    Event createdEvent = client.v1().events().create(event);
 
     // Then
     assertNotNull(createdEvent);
@@ -64,8 +64,8 @@ class EventsIT {
     Event event = createEvent("custom-event-delete");
 
     // When
-    Event createdEvent = client.v1().events().inNamespace(namespace.getMetadata().getName()).create(event);
-    Boolean isDeleted = client.v1().events().inNamespace(namespace.getMetadata().getName()).withName("custom-event-delete").delete();
+    Event createdEvent = client.v1().events().create(event);
+    Boolean isDeleted = client.v1().events().withName("custom-event-delete").delete();
 
     // Then
     assertNotNull(createdEvent);

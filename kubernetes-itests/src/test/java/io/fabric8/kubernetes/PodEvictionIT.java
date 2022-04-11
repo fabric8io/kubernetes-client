@@ -58,7 +58,7 @@ class PodEvictionIT {
       .build();
 
     // When
-    boolean evicted = client.pods().inNamespace(namespace.getMetadata().getName()).withName(podName).evict(eviction);
+    boolean evicted = client.pods().withName(podName).evict(eviction);
 
     // Then
     assertTrue(evicted);
@@ -74,7 +74,7 @@ class PodEvictionIT {
       .withName(podName)
       .endMetadata()
       .build();
-    final Evictable podOps = client.pods().inNamespace(namespace.getMetadata().getName()).withName(podName);
+    final Evictable podOps = client.pods().withName(podName);
 
     // When + Then
     assertThrows(KubernetesClientException.class, () -> podOps.evict(eviction));

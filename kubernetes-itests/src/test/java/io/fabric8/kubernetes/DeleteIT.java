@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
@@ -37,8 +36,6 @@ class DeleteIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(ClusterRoleIT.class.getResourceAsStream("/delete-it.yml")).create();
@@ -54,7 +51,7 @@ class DeleteIT {
     // Given
     String podName = "i-dont-exist";
     // When
-    boolean isDeleted = client.pods().inNamespace(namespace.getMetadata().getName()).withName(podName).delete();
+    boolean isDeleted = client.pods().withName(podName).delete();
     // Then
     assertFalse(isDeleted);
   }
@@ -64,7 +61,7 @@ class DeleteIT {
     // Given
     String name = "deleteit-existent";
     // When
-    boolean isDeleted = client.secrets().inNamespace(namespace.getMetadata().getName()).withName(name).delete();
+    boolean isDeleted = client.secrets().withName(name).delete();
     // Then
     assertTrue(isDeleted);
     client.secrets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -75,7 +72,7 @@ class DeleteIT {
     // Given
     String name = "deleteit-existent-graceperiod";
     // When
-    boolean isDeleted = client.secrets().inNamespace(namespace.getMetadata().getName()).withName(name)
+    boolean isDeleted = client.secrets().withName(name)
       .withGracePeriod(0).delete();
     // Then
     assertTrue(isDeleted);
@@ -87,7 +84,7 @@ class DeleteIT {
     // Given
     String name = "deleteit-existent-cascading";
     // When
-    boolean isDeleted = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name).cascading(true).delete();
+    boolean isDeleted = client.apps().replicaSets().withName(name).cascading(true).delete();
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -98,7 +95,7 @@ class DeleteIT {
     // Given
     String name = "deleteit-existent-foreground";
     // When
-    boolean isDeleted = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name)
+    boolean isDeleted = client.apps().replicaSets().withName(name)
       .withPropagationPolicy(DeletionPropagation.FOREGROUND)
       .delete();
     // Then
@@ -111,7 +108,7 @@ class DeleteIT {
     // Given
     String name = "deleteit-existent-background";
     // When
-    boolean isDeleted = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name)
+    boolean isDeleted = client.apps().replicaSets().withName(name)
       .withPropagationPolicy(DeletionPropagation.BACKGROUND)
       .delete();
     // Then
@@ -124,15 +121,15 @@ class DeleteIT {
     // Given
     String name = "deleteit-existent-orphan";
     // When
-    boolean isDeleted = client.apps().deployments().inNamespace(namespace.getMetadata().getName()).withName(name)
+    boolean isDeleted = client.apps().deployments().withName(name)
       .withPropagationPolicy(DeletionPropagation.ORPHAN)
       .delete();
     // Then
-    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withLabel("test", name).list();
+    ReplicaSetList replicaSetList = client.apps().replicaSets().withLabel("test", name).list();
     assertTrue(isDeleted);
     assertNotNull(replicaSetList);
     assertEquals(1, replicaSetList.getItems().size());
-    assertTrue(client.resource(replicaSetList.getItems().get(0)).inNamespace(namespace.getMetadata().getName()).delete());
+    assertTrue(client.resource(replicaSetList.getItems().get(0)).delete());
   }
 
   @Test
@@ -140,8 +137,8 @@ class DeleteIT {
     // Given
     String name = "deleteit-resource";
     // When
-    ReplicaSet replicaSet = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    boolean isDeleted = client.resource(replicaSet).inNamespace(namespace.getMetadata().getName()).delete();
+    ReplicaSet replicaSet = client.apps().replicaSets().withName(name).get();
+    boolean isDeleted = client.resource(replicaSet).delete();
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -152,8 +149,8 @@ class DeleteIT {
     // Given
     String name = "deleteit-resource-cascading";
     // When
-    ReplicaSet replicaSet = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    boolean isDeleted = client.resource(replicaSet).inNamespace(namespace.getMetadata().getName()).cascading(true).delete();
+    ReplicaSet replicaSet = client.apps().replicaSets().withName(name).get();
+    boolean isDeleted = client.resource(replicaSet).cascading(true).delete();
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -164,8 +161,8 @@ class DeleteIT {
     // Given
     String name = "deleteit-resource-background";
     // When
-    ReplicaSet replicaSet = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    boolean isDeleted = client.resource(replicaSet).inNamespace(namespace.getMetadata().getName())
+    ReplicaSet replicaSet = client.apps().replicaSets().withName(name).get();
+    boolean isDeleted = client.resource(replicaSet)
       .withPropagationPolicy(DeletionPropagation.BACKGROUND)
       .delete();
     // Then
@@ -178,8 +175,8 @@ class DeleteIT {
     // Given
     String name = "deleteit-resource-foreground";
     // When
-    ReplicaSet replicaSet = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    boolean isDeleted = client.resource(replicaSet).inNamespace(namespace.getMetadata().getName())
+    ReplicaSet replicaSet = client.apps().replicaSets().withName(name).get();
+    boolean isDeleted = client.resource(replicaSet)
       .withPropagationPolicy(DeletionPropagation.FOREGROUND)
       .delete();
     // Then
@@ -192,15 +189,15 @@ class DeleteIT {
     // Given
     String name = "deleteit-resource-orphan";
     // When
-    Deployment deploy = client.apps().deployments().inNamespace(namespace.getMetadata().getName()).withName(name).get();
-    boolean isDeleted = client.resource(deploy).inNamespace(namespace.getMetadata().getName())
+    Deployment deploy = client.apps().deployments().withName(name).get();
+    boolean isDeleted = client.resource(deploy)
       .withPropagationPolicy(DeletionPropagation.ORPHAN)
       .delete();
     // Then
-    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(namespace.getMetadata().getName()).withLabel("test", name).list();
+    ReplicaSetList replicaSetList = client.apps().replicaSets().withLabel("test", name).list();
     assertTrue(isDeleted);
     assertNotNull(replicaSetList);
     assertEquals(1, replicaSetList.getItems().size());
-    assertTrue(client.resource(replicaSetList.getItems().get(0)).inNamespace(namespace.getMetadata().getName()).delete());
+    assertTrue(client.resource(replicaSetList.getItems().get(0)).delete());
   }
 }

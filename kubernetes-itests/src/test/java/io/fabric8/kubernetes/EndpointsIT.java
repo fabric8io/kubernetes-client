@@ -19,7 +19,6 @@ package io.fabric8.kubernetes;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,8 +35,6 @@ class EndpointsIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml")).create();
@@ -50,20 +47,20 @@ class EndpointsIT {
 
   @Test
   void get() {
-    Endpoints endpoints = client.endpoints().inNamespace(namespace.getMetadata().getName()).withName("endpoints-get").get();
+    Endpoints endpoints = client.endpoints().withName("endpoints-get").get();
     assertThat(endpoints).isNotNull();
   }
 
   @Test
   void list() {
-    EndpointsList aEndpointList = client.endpoints().inNamespace(namespace.getMetadata().getName()).list();
+    EndpointsList aEndpointList = client.endpoints().list();
     assertNotNull(aEndpointList);
     assertTrue(aEndpointList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    Endpoints endpoints = client.endpoints().inNamespace(namespace.getMetadata().getName()).withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
+    Endpoints endpoints = client.endpoints().withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(endpoints);
@@ -72,7 +69,7 @@ class EndpointsIT {
 
   @Test
   void delete() {
-    assertTrue(client.endpoints().inNamespace(namespace.getMetadata().getName()).withName("endpoints-delete").delete());
+    assertTrue(client.endpoints().withName("endpoints-delete").delete());
   }
 
 }

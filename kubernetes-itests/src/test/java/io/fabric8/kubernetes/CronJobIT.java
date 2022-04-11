@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobBuilder;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
@@ -34,10 +33,6 @@ class CronJobIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
-  private String currentNamespace;
-
   @BeforeAll
   public static void init() {
     client.load(CronJobIT.class.getResourceAsStream("/cronjob-it.yml")).create();
@@ -50,30 +45,27 @@ class CronJobIT {
 
   @Test
   void load() {
-    CronJob aCronJob = client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
+    CronJob aCronJob = client.batch().v1beta1().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
     assertNotNull(aCronJob);
     assertEquals("hello", aCronJob.getMetadata().getName());
   }
 
   @Test
   void get() {
-    currentNamespace = namespace.getMetadata().getName();
-    CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-get").get();
+    CronJob cronJob1 = client.batch().v1beta1().cronjobs().withName("hello-get").get();
     assertThat(cronJob1).isNotNull();
   }
 
   @Test
   void list() {
-    currentNamespace = namespace.getMetadata().getName();
-    CronJobList cronJobList = client.batch().cronjobs().inNamespace(currentNamespace).list();
+    CronJobList cronJobList = client.batch().v1beta1().cronjobs().list();
     assertNotNull(cronJobList);
     assertTrue(cronJobList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    currentNamespace = namespace.getMetadata().getName();
-    CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-update")
+    CronJob cronJob1 = client.batch().v1beta1().cronjobs().withName("hello-update")
       .edit(c -> new CronJobBuilder(c)
       .editSpec()
       .withSchedule("*/1 * * * *")
@@ -84,7 +76,6 @@ class CronJobIT {
 
   @Test
   void delete() {
-    currentNamespace = namespace.getMetadata().getName();
-    assertTrue(client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-delete").delete());
+    assertTrue(client.batch().v1beta1().cronjobs().withName("hello-delete").delete());
   }
 }

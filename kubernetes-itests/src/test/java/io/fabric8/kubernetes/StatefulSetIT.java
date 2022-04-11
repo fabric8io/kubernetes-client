@@ -51,7 +51,7 @@ class StatefulSetIT {
 
   @Test
   void load() {
-    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(namespace.getMetadata().getName())
+    StatefulSet aStatefulSet = client.apps().statefulSets()
       .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
     assertThat(aStatefulSet).isNotNull();
     assertEquals("web", aStatefulSet.getMetadata().getName());
@@ -59,13 +59,13 @@ class StatefulSetIT {
 
   @Test
   void get() {
-    StatefulSet ss1 = client.apps().statefulSets().inNamespace(namespace.getMetadata().getName()).withName("ss-get").get();
+    StatefulSet ss1 = client.apps().statefulSets().withName("ss-get").get();
     assertNotNull(ss1);
   }
 
   @Test
   void list() {
-    StatefulSetList statefulSetList = client.apps().statefulSets().inNamespace(namespace.getMetadata().getName()).list();
+    StatefulSetList statefulSetList = client.apps().statefulSets().list();
     assertThat(statefulSetList).isNotNull();
     assertTrue(statefulSetList.getItems().size() >= 1);
   }
@@ -73,7 +73,7 @@ class StatefulSetIT {
   @Test
   void update() {
     ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-update", namespace.getMetadata().getName());
-    StatefulSet ss1 = client.apps().statefulSets().inNamespace(namespace.getMetadata().getName()).withName("ss-update").scale(5);
+    StatefulSet ss1 = client.apps().statefulSets().withName("ss-update").scale(5);
     await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
   }
@@ -82,7 +82,7 @@ class StatefulSetIT {
   void delete() {
     ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-delete", namespace.getMetadata().getName());
     await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
-    boolean bDeleted = client.apps().statefulSets().inNamespace(namespace.getMetadata().getName()).withName("ss-delete ").delete();
+    boolean bDeleted = client.apps().statefulSets().withName("ss-delete ").delete();
     assertTrue(bDeleted);
   }
 

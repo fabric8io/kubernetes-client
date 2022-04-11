@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList;
@@ -35,8 +34,6 @@ class HorizontalPodAutoscalerIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(HorizontalPodAutoscalerIT.class.getResourceAsStream("/horizontalpodautoscaler-it.yml")).create();
@@ -50,14 +47,14 @@ class HorizontalPodAutoscalerIT {
   @Test
   void get() {
     HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers()
-        .inNamespace(namespace.getMetadata().getName()).withName("horizontalpodautoscaler-get").get();
+        .withName("horizontalpodautoscaler-get").get();
     assertThat(horizontalPodAutoscaler).isNotNull();
   }
 
   @Test
   void list() {
     HorizontalPodAutoscalerList aEndpointList = client.autoscaling().v1().horizontalPodAutoscalers()
-        .inNamespace(namespace.getMetadata().getName()).list();
+        .list();
     assertNotNull(aEndpointList);
     assertTrue(aEndpointList.getItems().size() >= 1);
   }
@@ -65,7 +62,7 @@ class HorizontalPodAutoscalerIT {
   @Test
   void update() {
     HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers()
-        .inNamespace(namespace.getMetadata().getName()).withName("horizontalpodautoscaler-update")
+        .withName("horizontalpodautoscaler-update")
         .edit(c -> new HorizontalPodAutoscalerBuilder(c)
             .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
@@ -75,7 +72,7 @@ class HorizontalPodAutoscalerIT {
 
   @Test
   void delete() {
-    assertTrue(client.autoscaling().v1().horizontalPodAutoscalers().inNamespace(namespace.getMetadata().getName())
+    assertTrue(client.autoscaling().v1().horizontalPodAutoscalers()
         .withName("horizontalpodautoscaler-delete").delete());
   }
 }

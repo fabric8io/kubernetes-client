@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
@@ -33,8 +32,6 @@ class ResourceQuotaIT {
 
   static KubernetesClient client;
 
-  Namespace namespace;
-
   @BeforeAll
   public static void init() {
     client.load(ResourceQuotaIT.class.getResourceAsStream("/resourcequota-it.yml")).create();
@@ -47,20 +44,20 @@ class ResourceQuotaIT {
 
   @Test
   void get() {
-    ResourceQuota resourceQuota = client.resourceQuotas().inNamespace(namespace.getMetadata().getName()).withName("resourcequota-get").get();
+    ResourceQuota resourceQuota = client.resourceQuotas().withName("resourcequota-get").get();
     assertThat(resourceQuota).isNotNull();
   }
 
   @Test
   void list() {
-    ResourceQuotaList aEndpointList = client.resourceQuotas().inNamespace(namespace.getMetadata().getName()).list();
+    ResourceQuotaList aEndpointList = client.resourceQuotas().list();
     assertNotNull(aEndpointList);
     assertTrue(aEndpointList.getItems().size() >= 1);
   }
 
   @Test
   void update() {
-    ResourceQuota resourceQuota = client.resourceQuotas().inNamespace(namespace.getMetadata().getName()).withName("resourcequota-update").edit(c -> new ResourceQuotaBuilder(c)
+    ResourceQuota resourceQuota = client.resourceQuotas().withName("resourcequota-update").edit(c -> new ResourceQuotaBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(resourceQuota);
@@ -69,7 +66,7 @@ class ResourceQuotaIT {
 
   @Test
   void delete() {
-    assertTrue(client.resourceQuotas().inNamespace(namespace.getMetadata().getName()).withName("resourcequota-delete").delete());
+    assertTrue(client.resourceQuotas().withName("resourcequota-delete").delete());
   }
 
 }
