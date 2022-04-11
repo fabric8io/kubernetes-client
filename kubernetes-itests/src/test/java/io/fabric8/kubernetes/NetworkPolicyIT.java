@@ -16,9 +16,8 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
@@ -124,8 +123,8 @@ class NetworkPolicyIT {
 
     assertTrue(deleted);
 
-    DeleteEntity<NetworkPolicy> deleteEntity = new DeleteEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    client.network().v1().networkPolicies().withName("networkpolicy-delete")
+      .waitUntilCondition(np -> np == null || np.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
 }

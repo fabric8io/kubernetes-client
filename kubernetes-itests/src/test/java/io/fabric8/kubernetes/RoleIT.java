@@ -15,22 +15,16 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -39,15 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class RoleIT {
 
   KubernetesClient client;
-
-  Namespace namespace;
-
-  private String currentNamespace;
-
-  @BeforeEach
-  public void initNamespace() {
-    this.currentNamespace = namespace.getMetadata().getName();
-  }
 
   @Test
   void get() {
@@ -177,8 +162,8 @@ class RoleIT {
 
     assertTrue(deleted);
 
-    DeleteEntity<Role> deleteEntity = new DeleteEntity<>(Role.class, client, "role-delete", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    client.rbac().roles().withName("role-delete")
+      .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
 
     RoleList roleList = client.rbac().roles().list();
     assertEquals(countBeforeDeletion - 1,roleList.getItems().size());

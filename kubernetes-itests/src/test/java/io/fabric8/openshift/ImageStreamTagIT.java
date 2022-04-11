@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift;
 
-import io.fabric8.commons.DeleteEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.jupiter.api.RequireK8sSupport;
@@ -24,6 +23,8 @@ import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -110,8 +111,8 @@ class ImageStreamTagIT {
     ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().list();
     boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete();
     assertTrue(deleted);
-    DeleteEntity<ImageStreamTag> deleteEntity = new DeleteEntity<>(ImageStreamTag.class, client, "delete:1.0.12", namespace.getMetadata().getName());
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    client.imageStreamTags().withName("delete:1.0.12")
+      .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
 }
