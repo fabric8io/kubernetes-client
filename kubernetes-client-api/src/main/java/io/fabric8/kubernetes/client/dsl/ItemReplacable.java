@@ -19,23 +19,23 @@ package io.fabric8.kubernetes.client.dsl;
 public interface ItemReplacable<T> {
 
   /**
-   * Similar to calling resource(item).replaceStatus()
-   * <br>
    * See {@link Replaceable#replace()}
    *
    * @param item replacement
    * @return the replaced item from the api server
+   * @deprecated use resource(item).replaceStatus()
    */
+  @Deprecated
   T replaceStatus(T item);
 
   /**
-   * Similar to calling resource(item).replace()
-   * <br>
    * See {@link Replaceable#replace()}
    *
    * @param item replacement
    * @return the replaced item from the api server
+   * @deprecated use resource(item).replace()
    */
+  @Deprecated
   T replace(T item);
 
 }

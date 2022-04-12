@@ -20,6 +20,4 @@ import java.util.List;
 public interface ListVisitFromServerWritable<T> extends
     DeletableWithOptions, CreateOrReplaceable<List<T>> {
 
-  List<T> create();
-
 }

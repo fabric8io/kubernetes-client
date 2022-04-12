@@ -285,4 +285,9 @@ public class ResourceAdapter<T> implements Resource<T> {
     return resource.lockResourceVersion();
   }
 
+  @Override
+  public T patchStatus() {
+    return resource.patchStatus();
+  }
+
 }

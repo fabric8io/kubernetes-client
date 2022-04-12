@@ -15,6 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ReplaceDeletable<T> extends Replaceable<T>, Deletable, ItemReplacable<T>, StatusReplaceable<T> {
+public interface ReplaceDeletable<T> extends Replaceable<T>, Deletable, ItemReplacable<T> {
 
 }

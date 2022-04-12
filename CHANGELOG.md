@@ -26,11 +26,11 @@ And Store.getKey can be used rather than directly referencing static Cache funct
 * Fix #3407: Added Itemable.withItem to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  There is also client.resourceList(...).getResources() - that will provide the resource list as Resources.  This allows you to implement composite operations easily with lambda: client.resourceList(...).getResources().forEach(r -> r.delete());
 * Fix #3922: added Client.supports and Client.hasApiGroup methods
 * KubernetesMockServer has new methods - unsupported and reset - to control what apis are unsupported and to reset its state.
-* Fix #3407 #3973: Added Resourceable.resource to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
-* Fix #3854: Camel-K: Missing method for manipulating KameletBindings
+* Fix #3407 #3973: Added resource(item) to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
 There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
 This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
 * Fix #3472 #3587: Allowing for customization of the Informer store/cache key function and how state is stored.  See BasicItemStore and ReducedStateItemStore and the SharedIndexInformer.itemStore function.
+* Fix #3854: Camel-K: Missing method for manipulating KameletBindings
 
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)
