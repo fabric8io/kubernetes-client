@@ -41,6 +41,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'temurin'
       - name: Build Project
         run: ./mvnw clean install
 
