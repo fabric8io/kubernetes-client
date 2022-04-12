@@ -97,7 +97,7 @@
     <assertj.core.version>3.22.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>15.1.1</approvaltests.version>
+    <approvaltests.version>15.1.2</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
