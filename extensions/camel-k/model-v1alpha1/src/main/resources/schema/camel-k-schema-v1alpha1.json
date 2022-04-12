@@ -13,8 +13,7 @@
       "type": "object",
       "properties": {
         "properties": {
-          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
-          "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "ref": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
@@ -29,13 +28,6 @@
         }
       },
       "javaType": "io.fabric8.camelk.v1alpha1.Endpoint",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
-      "type": "object",
-      "javaType": "io.fabric8.camelk.v1alpha1.EndpointProperties",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -394,10 +386,6 @@
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
       "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
-    },
-    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
-      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
-      "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
     },
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec",
