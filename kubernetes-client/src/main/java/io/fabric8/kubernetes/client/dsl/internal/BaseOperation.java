@@ -88,7 +88,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
-  private final boolean cascading;
   private final T item;
 
   private final String resourceVersion;
@@ -105,7 +104,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected BaseOperation(OperationContext ctx) {
     super(ctx);
-    this.cascading = ctx.getCascading();
     this.item = (T) ctx.getItem();
     this.reloadingFromServer = ctx.isReloadingFromServer();
     this.resourceVersion = ctx.getResourceVersion();
@@ -216,6 +214,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public ExtensibleResource<T> lockResourceVersion(String resourceVersion) {
+    if (resourceVersion == null) {
+      throw new KubernetesClientException("resourceVersion cannot be null");
+    }
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
@@ -230,11 +231,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public BaseOperation<T, L, R> inAnyNamespace() {
     return newInstance(context.withNamespace(null));
-  }
-
-  @Override
-  public ExtensibleResource<T> cascading(boolean cascading) {
-    return newInstance(context.withCascading(cascading).withPropagationPolicy(null));
   }
 
   @Override
@@ -270,24 +266,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return newInstance(context.withReloadingFromServer(true));
   }
 
-  @SafeVarargs
   @Override
-  public final T createOrReplace(T... items) {
-    final T itemToCreateOrReplace;
-    Resource<T> resource;
-    if (items.length > 1) {
-      throw new IllegalArgumentException("Too many items to create.");
-    } else if (items.length == 1) {
-      itemToCreateOrReplace = items[0];
-      resource = resource(itemToCreateOrReplace);
-    } else {
-      itemToCreateOrReplace = getItem();
-      resource = this;
-    }
-
-    if (itemToCreateOrReplace == null) {
+  public final T createOrReplace() {
+    if (item == null) {
       throw new IllegalArgumentException("Nothing to create.");
     }
+    R resource = resource(item);
 
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
         resource::create,
@@ -295,7 +279,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
         m -> resource.fromServer().get());
 
-    return createOrReplaceHelper.createOrReplace(itemToCreateOrReplace);
+    return createOrReplaceHelper.createOrReplace(item);
   }
 
   @Override
@@ -449,11 +433,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public boolean delete(T item) {
-    return resource(item).delete();
-  }
-
-  @Override
   public boolean delete(List<T> items) {
     if (items != null) {
       for (T toDelete : items) {
@@ -473,19 +452,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T updateStatus(T item) {
-    try {
-      return handleUpdate(item, true);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
-    }
-
-  }
-
-  @Override
   public T patchStatus(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
@@ -497,7 +463,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     item = correctNamespace(item);
     updateApiVersion(item);
     String itemNs = KubernetesResourceUtil.getNamespace(item);
-    OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item)).withItem(item);
+    OperationContext ctx = context.withName(checkName(item)).withItem(item);
     if (Utils.isNotNullOrEmpty(itemNs)) {
       ctx = ctx.withNamespace(itemNs);
     }
@@ -508,10 +474,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       if (item != null) {
         updateApiVersion(item);
-        handleDelete(item, gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
+        handleDelete(item, gracePeriodSeconds, propagationPolicy, resourceVersion);
       } else {
-        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion,
-            cascading);
+        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
@@ -600,12 +565,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T replace(T item) {
+  public T replace() {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   @Override
-  public T replaceStatus(T item) {
+  public T replaceStatus() {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
@@ -700,12 +665,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return requestUrl;
   }
 
-  public Boolean isCascading() {
-    return cascading;
-  }
-
   @Override
-  public T getItem() {
+  public final T getItem() {
     return item;
   }
 
@@ -767,11 +728,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public ExtensibleResource<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
-  }
-
-  @Override
-  public BaseOperation<T, L, R> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return this;
   }
 
   protected Class<? extends Config> getConfigType() {
@@ -1009,6 +965,46 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Stream<R> resources() {
     return list().getItems().stream().map(this::resource);
+  }
+
+  @Override
+  public T createOrReplace(T item) {
+    return resource(item).createOrReplace();
+  }
+
+  @Override
+  public T replace(T item) {
+    return resource(item).replace();
+  }
+
+  @Override
+  public T replaceStatus(T item) {
+    return resource(item).replaceStatus();
+  }
+
+  @Override
+  public boolean delete(T item) {
+    return resource(item).delete();
+  }
+
+  @Override
+  public ExtensibleResource<T> dryRun() {
+    return dryRun(true);
+  }
+
+  @Override
+  public ExtensibleResource<T> lockResourceVersion() {
+    return lockResourceVersion(KubernetesResourceUtil.getResourceVersion(getItem()));
+  }
+
+  @Override
+  public T updateStatus(T item) {
+    return resource(item).lockResourceVersion().replaceStatus();
+  }
+
+  @Override
+  public T create() {
+    return create(getItem());
   }
 
 }

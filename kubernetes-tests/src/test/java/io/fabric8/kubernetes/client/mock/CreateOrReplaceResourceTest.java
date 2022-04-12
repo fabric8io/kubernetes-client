@@ -297,7 +297,7 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1")
         .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
             .withNewMetadata().withResourceVersion("1001").and().build())
-        .once();
+        .times(2);
 
     ConfigMap map = client.configMaps().withName("map1")
         .lockResourceVersion("900")
@@ -306,6 +306,12 @@ class CreateOrReplaceResourceTest {
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
+        .readValue(server.getLastRequest().getBody().inputStream());
+    assertEquals("900", replacedMap.getMetadata().getResourceVersion());
+
+    client.configMaps().resource(replacedMap).lockResourceVersion().replace();
+
+    replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
   }

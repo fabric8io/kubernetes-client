@@ -63,7 +63,8 @@ public class RunOperations {
   /**
    * Specify complex configuration for Pod creating using {@link RunConfig}
    *
-   * @param generatorRunConfig {@link RunConfig} which allows to provide configuring environment variables, labels, resources, ports etc
+   * @param generatorRunConfig {@link RunConfig} which allows to provide configuring environment variables, labels, resources,
+   *        ports etc
    * @return {@link RunOperations} with specified configuration
    */
   public RunOperations withRunConfig(RunConfig generatorRunConfig) {
@@ -76,15 +77,15 @@ public class RunOperations {
    * @return Pod which got created from the operation
    */
   public Pod done() {
-    return client.pods().create(convertRunConfigIntoPod());
+    return client.pods().resource(convertRunConfigIntoPod()).create();
   }
 
   Pod convertRunConfigIntoPod() {
     RunConfig finalGeneratorConfig = runConfigBuilder.build();
     return new PodBuilder()
-      .withMetadata(RunConfigUtil.getObjectMetadataFromRunConfig(finalGeneratorConfig))
-      .withSpec(RunConfigUtil.getPodSpecFromRunConfig(finalGeneratorConfig))
-      .build();
+        .withMetadata(RunConfigUtil.getObjectMetadataFromRunConfig(finalGeneratorConfig))
+        .withSpec(RunConfigUtil.getPodSpecFromRunConfig(finalGeneratorConfig))
+        .build();
   }
 
 }

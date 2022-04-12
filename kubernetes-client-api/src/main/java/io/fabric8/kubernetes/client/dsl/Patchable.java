@@ -28,7 +28,7 @@ public interface Patchable<T> {
    *
    * WARNING: This may overwrite concurrent changes (between when you obtained your item and the current state) in an unexpected
    * way.
-   * Consider using edit instead or ensure you have called load or withItem to define the base of your patch
+   * Consider using edit instead or ensure you have called load or resource to define the base of your patch
    *
    * @param item to be patched with patched values
    * @return returns deserialized version of api server response

@@ -24,9 +24,7 @@ public interface DryRunable<T> {
    *
    * @return write operations which are applicable for dry run
    */
-  default T dryRun() {
-    return dryRun(true);
-  }
+  T dryRun();
 
   /**
    * Indicates whether modifications should not be persisted or not. If enabled, All dry run stages will be processed.

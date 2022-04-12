@@ -21,10 +21,10 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 
 class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList> {
@@ -53,7 +53,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(ReplicaSet obj) {
+  protected FilterWatchListDeletable<Pod, PodList, PodResource> selectedPodLister(ReplicaSet obj) {
     return selectedPodLister(obj.getSpec().getSelector());
   }
 
@@ -88,7 +88,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected Operation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> resources() {
+  protected MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> resources() {
     return new ReplicaSetOperationsImpl(client);
   }
 }

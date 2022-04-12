@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -20,16 +21,31 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import java.util.Arrays;
 import java.util.List;
 
-public interface FilterWatchListMultiDeletable<T, L, R> extends FilterWatchListDeletable<T, L, R>, Deletable {
+public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable<T, L, R>,
+    ItemWritableOperation<T>,
+    Loadable<R>,
+    Resourceable<T, R> {
 
   /**
-   * Delete the given item.
+   * Indicates that modifications should not be persisted. All dry run stages will be processed. the request is still
+   * processed as typical request: the fields are defaulted, the object is validated, it goes through the validation
+   * admission chain, and through the mutating admission chain, and then the final object is returned to the user as
+   * it normally would, without being persisted.
    *
-   * @param item to delete
-   * @return false if the item is not found
-   *
+   * @return write operations which are applicable for dry run
    */
-  boolean delete(T item);
+  ItemWritableOperation<T> dryRun();
+
+  /**
+   * Indicates whether modifications should not be persisted or not. If enabled, All dry run stages will be processed.
+   * the request is still processed as typical request: the fields are defaulted, the object is validated, it goes through
+   * the validation admission chain, and through the mutating admission chain, and then the final object is returned
+   * to the user as it normally would, without being persisted.
+   *
+   * @param isDryRun whether dry run is enabled or disabled
+   * @return write operations which are applicable for dry run
+   */
+  ItemWritableOperation<T> dryRun(boolean isDryRun);
 
   /**
    * Delete the given items.

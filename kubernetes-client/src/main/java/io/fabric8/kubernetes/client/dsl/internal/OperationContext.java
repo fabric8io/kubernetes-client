@@ -45,7 +45,6 @@ public class OperationContext {
   protected String namespace;
   protected boolean defaultNamespace = true;
   protected String name;
-  protected boolean cascading;
   protected boolean reloadingFromServer;
   protected boolean dryRun;
 
@@ -68,13 +67,13 @@ public class OperationContext {
 
   public OperationContext(OperationContext other) {
     this(other.client, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
-        other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
+        other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace);
   }
 
   public OperationContext(Client client, String plural, String namespace, String name,
-      String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
+      String apiGroupName, String apiGroupVersion, Object item, Map<String, String> labels,
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
@@ -86,7 +85,6 @@ public class OperationContext {
     this.name = name;
     setApiGroupName(apiGroupName);
     setApiGroupVersion(apiGroupVersion);
-    this.cascading = cascading;
     setLabels(labels);
     setLabelsNot(labelsNot);
     setLabelsIn(labelsIn);
@@ -184,10 +182,6 @@ public class OperationContext {
 
   public String getApiGroupVersion() {
     return apiGroupVersion;
-  }
-
-  public boolean getCascading() {
-    return cascading;
   }
 
   public Object getItem() {
@@ -360,15 +354,6 @@ public class OperationContext {
     }
     final OperationContext context = new OperationContext(this);
     context.item = item;
-    return context;
-  }
-
-  public OperationContext withCascading(boolean cascading) {
-    if (this.cascading == cascading) {
-      return this;
-    }
-    final OperationContext context = new OperationContext(this);
-    context.cascading = cascading;
     return context;
   }
 

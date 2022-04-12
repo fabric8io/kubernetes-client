@@ -126,7 +126,7 @@ public class FullExample {
         log("Get RC by label in namespace",
             client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
         // Update the RC
-        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").cascading(false)
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller")
             .edit(r -> new ReplicationControllerBuilder(r).editMetadata().addToLabels("new", "label").endMetadata().build());
 
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").scale(8);

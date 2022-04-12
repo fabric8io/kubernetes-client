@@ -30,15 +30,12 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.NamespaceableResourceAdapter;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.CascadingDeletable;
-import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.Readiable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.readiness.Readiness;
@@ -64,7 +61,7 @@ import java.util.stream.Stream;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl
     implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
-    Waitable<List<HasMetadata>, HasMetadata>, Readiable {
+    Waitable<List<HasMetadata>, HasMetadata> {
 
   static class ChangeNamespace extends TypedVisitor<ObjectMetaBuilder> {
 
@@ -198,11 +195,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public boolean isReady() {
-    return getResources().stream().map(impl -> impl.get()).allMatch(meta -> getReadiness().isReady(meta));
-  }
-
-  @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(
       Map<String, String> parameters) {
     Object item = Serialization.unmarshal((InputStream) context.getItem(), parameters);
@@ -212,11 +204,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   @Override
   public ListVisitFromServerWritable<HasMetadata> dryRun(boolean isDryRun) {
     return newInstance(this.context.withDryRun(isDryRun), namespaceVisitOperationContext);
-  }
-
-  @Override
-  public List<HasMetadata> apply() {
-    return createOrReplace();
   }
 
   @Override
@@ -242,6 +229,9 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
+    if (explicitNamespace == null) {
+      throw new KubernetesClientException("namespace cannot be null");
+    }
     return newInstance(context.withNamespace(explicitNamespace),
         namespaceVisitOperationContext.withExplicitNamespace(explicitNamespace));
   }
@@ -259,24 +249,14 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
-  public CascadingDeletable<HasMetadata> withGracePeriod(long gracePeriodSeconds) {
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds), namespaceVisitOperationContext);
   }
 
   @Override
-  public CascadingDeletable<HasMetadata> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withPropagationPolicy(
+      DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy), namespaceVisitOperationContext);
-  }
-
-  @Override
-  public Waitable<List<HasMetadata>, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit,
-      double backoffMultiplier) {
-    return this;
-  }
-
-  @Override
-  public Deletable cascading(boolean cascading) {
-    return newInstance(context.withCascading(cascading), namespaceVisitOperationContext);
   }
 
   protected Readiness getReadiness() {
@@ -327,6 +307,17 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   @Override
   public List<HasMetadata> create() {
     return getResources().stream().map(Resource::create).collect(Collectors.toList());
+  }
+
+  @Override
+  public ListVisitFromServerWritable<HasMetadata> dryRun() {
+    return dryRun(true);
+  }
+
+  @Override
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inAnyNamespace() {
+    return newInstance(context.withNamespace(null),
+        namespaceVisitOperationContext.withExplicitNamespace(null));
   }
 
 }

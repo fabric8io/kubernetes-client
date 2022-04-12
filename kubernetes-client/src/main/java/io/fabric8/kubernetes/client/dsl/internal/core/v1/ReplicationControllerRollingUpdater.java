@@ -21,10 +21,10 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 
 class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationController, ReplicationControllerList> {
@@ -52,7 +52,7 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
   }
 
   @Override
-  protected WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(ReplicationController obj) {
+  protected FilterWatchListDeletable<Pod, PodList, PodResource> selectedPodLister(ReplicationController obj) {
     return pods().inNamespace(namespace).withLabels(obj.getSpec().getSelector());
   }
 
@@ -89,7 +89,7 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
   }
 
   @Override
-  protected Operation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> resources() {
+  protected MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> resources() {
     return new ReplicationControllerOperationsImpl(this.client);
   }
 }

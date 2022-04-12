@@ -36,18 +36,6 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
     return handleCreate(resource, getType());
   }
 
-  @SafeVarargs
-  @Override
-  public final O create(I... resources) {
-    if (resources.length > 1) {
-      throw new IllegalArgumentException("Too many items to create.");
-    } else if (resources.length == 1) {
-      return create(resources[0]);
-    } else {
-      return create(getItem());
-    }
-  }
-
   @Override
   public O create(I item) {
     try {
@@ -58,10 +46,6 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     }
-  }
-
-  public I getItem() {
-    return (I) context.getItem();
   }
 
 }

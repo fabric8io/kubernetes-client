@@ -17,5 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Lockable<T> {
 
+  T lockResourceVersion();
+
   T lockResourceVersion(String resourceVersion);
 }

@@ -15,15 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
-
 import java.util.List;
 
 public interface ListVisitFromServerWritable<T> extends
-    CascadingDeletable<T>,
-    GracePeriodConfigurable<CascadingDeletable<T>>,
-    PropagationPolicyConfigurable<CascadingDeletable<T>> {
+    DeletableWithOptions, CreateOrReplaceable<List<T>> {
 
   List<T> create();
+
 }

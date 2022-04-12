@@ -74,29 +74,18 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   @Override
-  public ProjectRequest create(ProjectRequest... resources) {
+  public ProjectRequest create(ProjectRequest resource) {
+    if (resource == null) {
+      throw new IllegalArgumentException("Nothing to create.");
+    }
     try {
-      if (resources.length > 1) {
-        throw new IllegalArgumentException("Too many items to create.");
-      } else if (resources.length == 1) {
-        return handleCreate(updateApiVersion(resources[0]), ProjectRequest.class);
-      } else if (getItem() == null) {
-        throw new IllegalArgumentException("Nothing to create.");
-      } else {
-        return handleCreate(updateApiVersion(getItem()), ProjectRequest.class);
-      }
+      return handleCreate(updateApiVersion(resource), ProjectRequest.class);
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-
-  }
-
-  @Override
-  public ProjectRequest create(ProjectRequest resource) {
-    return create(new ProjectRequest[] { resource });
   }
 
   @Override

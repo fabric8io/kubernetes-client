@@ -17,13 +17,12 @@
 package io.fabric8.kubernetes.client.dsl;
 
 /**
- * A Client Namespace or Non Namespace Operation. This acts as an umbrella for {@link Operation} and {@link NonNamespaceOperation}.
- * Its not intended to be exposed directly into the client and is only usable as a convenient interface internally.
+ * A {@link Parameterizable} {@link MixedOperation}
  *
  * @param <T> The Kubernetes resource type.
  * @param <L> The list variant of the Kubernetes resource type.
  * @param <R> The resource operations.
  */
 public interface ParameterMixedOperation<T, L, R extends Resource<T>>
-  extends MixedOperation<T, L, R>, Parameterizable<MixedOperation<T, L, R>> {
+    extends MixedOperation<T, L, R>, Parameterizable<MixedOperation<T, L, R>> {
 }

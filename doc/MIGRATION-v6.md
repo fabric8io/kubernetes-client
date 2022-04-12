@@ -106,6 +106,7 @@ This means that you must ensure the apiVersion values are correct on the objects
 - Removed the AutoAdaptableKubernetesClient, use the new KubernetesClientBuilder instead
 - Removed OpenShiftConfig OpenshiftApiGroupsEnabled methods
 - Removed Recreateable, RecreateApplicable, and ApplicableAnd from the hierarchy of ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable
+- Removed Applicable, apply was just an alias for createOrReplace
 
 ### Extension Development
 
@@ -213,6 +214,23 @@ KubernetesList and Template will no longer automatically sort their objects by d
 - WatchListDeletable now takes three type parameters to include the Resource type.
 
 - PodResource is no longer generic.
+
+- The following interfaces were removed: 
+* CascadingEditReplacePatchDeletable
+* CreateFromserverGettable
+* EditReplacePatchDeletable
+* Operation
+* VersionWatchAndWaitable
+* WatchListDeletable
+* StatusUpdatable
+* Cascading
+* FilterWatchListMultiDeletable
+
+The logic was consolidated onto:
+* AnyNamespaceOperation
+* ItemWritableOperation
+* ItemReplacable
+* And the existing interfaces representing where the methods logically belong.
 
 ## Evict Changes
 

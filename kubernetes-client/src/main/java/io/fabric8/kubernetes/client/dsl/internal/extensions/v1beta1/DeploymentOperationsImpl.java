@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
-import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
@@ -50,8 +49,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 public class DeploymentOperationsImpl
     extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
@@ -82,44 +79,12 @@ public class DeploymentOperationsImpl
 
   @Override
   public Deployment scale(int count, boolean wait) {
-    Deployment res = cascading(false).accept(d -> d.getSpec().setReplicas(count));
+    Deployment res = accept(d -> d.getSpec().setReplicas(count));
     if (wait) {
       waitUntilDeploymentIsScaled(count);
       res = getMandatory();
     }
     return res;
-  }
-
-  @Override
-  public Deployment edit(UnaryOperator<Deployment> function) {
-    if (isCascading()) {
-      return cascading(false).edit(function);
-    }
-    return super.edit(function);
-  }
-
-  @Override
-  public Deployment accept(Consumer<Deployment> consumer) {
-    if (isCascading()) {
-      return cascading(false).accept(consumer);
-    }
-    return super.accept(consumer);
-  }
-
-  @Override
-  public Deployment replace(Deployment item) {
-    if (isCascading()) {
-      return cascading(false).replace(item);
-    }
-    return super.replace(item);
-  }
-
-  @Override
-  public Deployment patch(PatchContext patchContext, Deployment item) {
-    if (isCascading()) {
-      return cascading(false).patch(patchContext, item);
-    }
-    return super.patch(patchContext, item);
   }
 
   @Override
@@ -135,7 +100,7 @@ public class DeploymentOperationsImpl
 
   @Override
   public Deployment withReplicas(int count) {
-    return cascading(false).accept(d -> d.getSpec().setReplicas(count));
+    return accept(d -> d.getSpec().setReplicas(count));
   }
 
   @Override
@@ -302,7 +267,7 @@ public class DeploymentOperationsImpl
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override

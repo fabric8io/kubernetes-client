@@ -21,10 +21,10 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 
 class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetList> {
 
@@ -52,7 +52,7 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
   }
 
   @Override
-  protected WatchListDeletable<Pod, PodList, PodResource> selectedPodLister(StatefulSet obj) {
+  protected FilterWatchListDeletable<Pod, PodList, PodResource> selectedPodLister(StatefulSet obj) {
     return selectedPodLister(obj.getSpec().getSelector());
   }
 
@@ -90,7 +90,7 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
   }
 
   @Override
-  protected Operation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> resources() {
+  protected MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> resources() {
     return new StatefulSetOperationsImpl(this.client);
   }
 }

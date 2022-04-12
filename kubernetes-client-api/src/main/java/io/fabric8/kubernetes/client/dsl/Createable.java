@@ -15,4 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Createable<T> extends InOutCreateable<T, T> { }
+public interface Createable<T> {
+
+  T create();
+
+}

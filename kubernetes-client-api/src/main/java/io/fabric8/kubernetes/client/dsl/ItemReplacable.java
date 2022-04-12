@@ -13,7 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface VersionWatchAndWaitable<T> extends WatchAndWaitable<T>, Versionable<WatchAndWaitable<T>> {
+public interface ItemReplacable<T> {
+
+  /**
+   * Similar to calling resource(item).replaceStatus()
+   * <br>
+   * See {@link Replaceable#replace()}
+   *
+   * @param item replacement
+   * @return the replaced item from the api server
+   */
+  T replaceStatus(T item);
+
+  /**
+   * Similar to calling resource(item).replace()
+   * <br>
+   * See {@link Replaceable#replace()}
+   *
+   * @param item replacement
+   * @return the replaced item from the api server
+   */
+  T replace(T item);
+
 }

@@ -103,7 +103,7 @@ class DryRunTest {
   @Test
   void testCreateOrReplace() {
     // When
-    Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").dryRun().createOrReplace(withPod("pod1"));
+    Pod pod = kubernetesClient.pods().inNamespace("ns1").dryRun().createOrReplace(withPod("pod1"));
     // Then
     verify(mockClient).sendAsync(any(), any());
     assertNotNull(pod);

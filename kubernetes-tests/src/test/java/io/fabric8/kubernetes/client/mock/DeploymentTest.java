@@ -448,34 +448,6 @@ class DeploymentTest {
   }
 
   @Test
-  void testCreateMulti() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(1)
-        .endSpec()
-        .build();
-    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(1)
-        .endSpec()
-        .build();
-
-    server.expect().post().withPath("/apis/apps/v1/namespaces/test/deployments")
-        .andReturn(200, deployment1)
-        .once();
-
-    NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp = client.apps()
-        .deployments().inNamespace("test");
-    // Will throw exception
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> deployOp.create(deployment1, deployment2));
-
-    assertEquals("Too many items to create.", exception.getMessage());
-  }
-
-  @Test
   @DisplayName("Should update image based in single argument")
   void testRolloutUpdateSingleImage() throws InterruptedException {
     // Given
