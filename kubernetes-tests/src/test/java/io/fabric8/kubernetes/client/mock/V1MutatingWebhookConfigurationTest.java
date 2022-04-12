@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,20 +40,23 @@ public class V1MutatingWebhookConfigurationTest {
   public void create() {
     MutatingWebhookConfiguration mutatingWebhookConfiguration = getMutatingWebhookConfigurationSample();
 
-    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations").andReturn(201, mutatingWebhookConfiguration).once();
+    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations")
+        .andReturn(201, mutatingWebhookConfiguration).once();
 
     HasMetadata response = client.resource(mutatingWebhookConfiguration).inNamespace("test").createOrReplace();
     assertEquals(mutatingWebhookConfiguration, response);
   }
 
-
   @Test
   public void get() {
     // Given
-    server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/mutatingWebhookConfiguration1").andReturn(200, getMutatingWebhookConfigurationSample()).once();
+    server.expect().get()
+        .withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/mutatingWebhookConfiguration1")
+        .andReturn(200, getMutatingWebhookConfigurationSample()).once();
 
     // When
-    MutatingWebhookConfiguration mutatingWebhookConfiguration = client.admissionRegistration().v1().mutatingWebhookConfigurations().withName("mutatingWebhookConfiguration1").get();
+    MutatingWebhookConfiguration mutatingWebhookConfiguration = client.admissionRegistration().v1()
+        .mutatingWebhookConfigurations().withName("mutatingWebhookConfiguration1").get();
 
     // Then
     assertNotNull(mutatingWebhookConfiguration);
@@ -66,10 +67,13 @@ public class V1MutatingWebhookConfigurationTest {
   public void list() {
     // Given
     server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations")
-      .andReturn(200, new MutatingWebhookConfigurationListBuilder().withItems(getMutatingWebhookConfigurationSample()).build()).once();
+        .andReturn(200,
+            new MutatingWebhookConfigurationListBuilder().withItems(getMutatingWebhookConfigurationSample()).build())
+        .once();
 
     // When
-    MutatingWebhookConfigurationList mutatingWebhookConfigurationList = client.admissionRegistration().v1().mutatingWebhookConfigurations().list();
+    MutatingWebhookConfigurationList mutatingWebhookConfigurationList = client.admissionRegistration().v1()
+        .mutatingWebhookConfigurations().list();
 
     // Then
     assertNotNull(mutatingWebhookConfigurationList);
@@ -81,9 +85,11 @@ public class V1MutatingWebhookConfigurationTest {
   public void createOrReplace() {
     MutatingWebhookConfiguration mutatingWebhookConfiguration = getMutatingWebhookConfigurationSample();
 
-    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations").andReturn(200, mutatingWebhookConfiguration).once();
+    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations")
+        .andReturn(200, mutatingWebhookConfiguration).once();
 
-    MutatingWebhookConfiguration mutatingWebhookConfiguration1 = client.admissionRegistration().v1().mutatingWebhookConfigurations().createOrReplace(mutatingWebhookConfiguration);
+    MutatingWebhookConfiguration mutatingWebhookConfiguration1 = client.admissionRegistration().v1()
+        .mutatingWebhookConfigurations().createOrReplace(mutatingWebhookConfiguration);
     assertNotNull(mutatingWebhookConfiguration1);
     assertEquals("mutatingWebhookConfiguration1", mutatingWebhookConfiguration1.getMetadata().getName());
   }
@@ -91,42 +97,31 @@ public class V1MutatingWebhookConfigurationTest {
   @Test
   public void delete() {
     // Given
-    server.expect().delete().withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/mutatingWebhookConfiguration1")
-      .andReturn(200, getMutatingWebhookConfigurationSample()).once();
+    server.expect().delete()
+        .withPath("/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/mutatingWebhookConfiguration1")
+        .andReturn(200, getMutatingWebhookConfigurationSample()).once();
 
     // When
-    Boolean isDeleted = client.admissionRegistration().v1().mutatingWebhookConfigurations().withName("mutatingWebhookConfiguration1").delete();
+    Boolean isDeleted = client.admissionRegistration().v1().mutatingWebhookConfigurations()
+        .withName("mutatingWebhookConfiguration1").delete();
 
     // Then
     assertTrue(isDeleted);
   }
 
-  @Test
-  void testMutatingWebhookConfigurationLoadWithNoApiVersion() {
-    // Given
-
-    // When
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-mwc-no-apiversion.yml")).get();
-
-    // Then
-    assertNotNull(items);
-    assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof MutatingWebhookConfiguration);
-  }
-
   public MutatingWebhookConfiguration getMutatingWebhookConfigurationSample() {
     return new MutatingWebhookConfigurationBuilder()
-      .withNewMetadata().withName("mutatingWebhookConfiguration1").endMetadata()
-      .addToWebhooks(new MutatingWebhookBuilder()
-        .withName("webhook1")
-        .withNewClientConfig()
-        .withNewService()
-        .withName("svc1")
-        .withNamespace("test")
-        .withPath("/mutate")
-        .endService()
-        .endClientConfig()
-        .build())
-      .build();
+        .withNewMetadata().withName("mutatingWebhookConfiguration1").endMetadata()
+        .addToWebhooks(new MutatingWebhookBuilder()
+            .withName("webhook1")
+            .withNewClientConfig()
+            .withNewService()
+            .withName("svc1")
+            .withNamespace("test")
+            .withPath("/mutate")
+            .endService()
+            .endClientConfig()
+            .build())
+        .build();
   }
 }

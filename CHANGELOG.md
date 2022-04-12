@@ -2,18 +2,10 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
-* Fix #3880: Synchronize access to map in KubernetesCrudDispatcher
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
-* Fix #3848: Supports Queue (cluster) API for Volcano extension
-* Fix #3582: SSL truststore can be loaded in FIPS enabled environments
-* Fix #3818: adding missing throws to launderThrowable
-* Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
-* Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
-* Fix #3957: Lister `onOpen` should be called before marking the connection as open
 
 #### Improvements
-* Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
@@ -39,6 +31,23 @@ This allows you to implement composite operations easily with lambda: client.sec
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)
 
+### 5.12.2 (2022-04-06)
+
+#### Bugs
+* Fix #3582: SSL truststore can be loaded in FIPS enabled environments
+* Fix #3797: Implement SchemaSwap; generate CRD from model not owned
+* Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
+* Fix #3818: adding missing throws to launderThrowable
+* Fix #3848: Supports Queue (cluster) API for Volcano extension
+* Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
+* Fix #3880: Synchronize access to map in KubernetesCrudDispatcher
+* Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
+* Fix #3957: Lister `onOpen` should be called before marking the connection as open
+* Fix #4022: Reintroduce `Deletable` interface in `NonNamespaceOperation`
+
+#### _**Note**_:
+- `Config#autoConfigure(String context)`: Has been changed to only trigger the autoConfigure method once. Previously, providing a wrong context argument would not be a problem since an initial context-less autoConfigure would have already been invoked to provide a valid initial Config.
+
 ### 5.12.1 (2022-02-04)
 
 #### Bugs
@@ -47,6 +56,9 @@ Please see the [migration guide](doc/MIGRATION-v6.md)
 * Fix #3796: Limit usage of YAML Serializer
 * Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
 * Fix #3477: Handle exit code status messages with pod uploads
+
+#### _**Note**_:
+- `Config#autoConfigure(String context)`: Has been changed to only trigger the autoConfigure method once. Previously, providing a wrong context argument would not be a problem since an initial context-less autoConfigure would have already been invoked to provide a valid initial Config.
 
 ### 5.12.0 (2022-01-24)
 

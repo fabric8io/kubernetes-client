@@ -89,7 +89,13 @@ To use it, exclude the kubernetes-httpclient-okhttp dependency and add the kuber
 
 ## Deserialization Resolution
 
-The group on the object being deserialized is not required to match the prospective class - even for built-in types.  This prevents the unintentional parsing of custom types without a registered class as a built-in type of the same name.  This also means that you must ensure the apiVersion values are correct on the objects you are deserializing as they will no longer resolve to built-in type of the same name when there is a mistake.
+The apiVersion on an resource being deserialized is required.
+
+If a version only is specified as the apiVersion, it may match kubernetes built-in types with an empty group (for example Pod), or OpenShift built in types (for example kind: Template apiVersion: v1 is allowed to match apiVersion: template.openshift.io/v1).
+
+Otherwise with group and version specified, the resource match uniquely with a class.  This prevents the unintentional parsing of custom types without a registered class as a built-in type of the same name.  
+
+This means that you must ensure the apiVersion values are correct on the objects you are deserializing as they will no longer resolve to built-in type of the same name when there is a mistake.
 
 ## Deprecation Removals
 

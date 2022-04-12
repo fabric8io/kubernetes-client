@@ -34,6 +34,7 @@ jobs:
   minikube:
     name: K8S
     runs-on: ubuntu-latest
+    if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:
@@ -50,7 +51,7 @@ jobs:
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--addons=metrics-server --force'
       - name: Setup Java 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -61,6 +62,7 @@ jobs:
   openshift:
     name: OpenShift
     runs-on: ubuntu-latest
+    if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:
@@ -75,7 +77,7 @@ jobs:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Java 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'

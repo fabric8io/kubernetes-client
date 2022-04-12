@@ -57,17 +57,21 @@ class NetworkingV1IngressTest {
 
   @Test
   void testList() {
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses").andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses").andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
+            .addNewItem().and()
+            .addNewItem().and().build())
+        .once();
 
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingresses").andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
-
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingresses")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem()
+            .and().build())
+        .once();
 
     IngressList ingressList = client.network().v1().ingresses().list();
     assertNotNull(ingressList);
@@ -84,38 +88,43 @@ class NetworkingV1IngressTest {
 
   @Test
   void testListWithLables() {
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).always();
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).always();
+    server.expect().withPath(
+        "/apis/networking.k8s.io/v1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     IngressList ingressList = client.network().v1().ingresses()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
-
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
 
     assertNotNull(ingressList);
     assertEquals(0, ingressList.getItems().size());
 
     ingressList = client.network().v1().ingresses()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     assertNotNull(ingressList);
     assertEquals(3, ingressList.getItems().size());
   }
 
-
   @Test
   void testGet() {
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
-
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
 
     Ingress ingress = client.network().v1().ingresses().withName("ingress1").get();
     assertNotNull(ingress);
@@ -127,12 +136,12 @@ class NetworkingV1IngressTest {
     assertNotNull(ingress);
   }
 
-
   @Test
   void testDelete() {
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
-
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
 
     Boolean deleted = client.network().v1().ingresses().withName("ingress1").delete();
     assertTrue(deleted);
@@ -144,16 +153,16 @@ class NetworkingV1IngressTest {
     assertTrue(deleted);
   }
 
-
   @Test
   void testDeleteMulti() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
     Ingress ingress3 = new IngressBuilder().withNewMetadata().withName("ingress3").withNamespace("any").and().build();
 
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1").andReturn(HttpURLConnection.HTTP_OK, ingress1).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2").andReturn(HttpURLConnection.HTTP_OK, ingress2).once();
-
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1")
+        .andReturn(HttpURLConnection.HTTP_OK, ingress1).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2")
+        .andReturn(HttpURLConnection.HTTP_OK, ingress2).once();
 
     Boolean deleted = client.network().v1().ingresses().inAnyNamespace().delete(ingress1, ingress2);
     assertTrue(deleted);
@@ -166,9 +175,9 @@ class NetworkingV1IngressTest {
   void testDeleteWithNamespaceMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingressOp = client
-      .network()
-      .v1()
-      .ingresses().inNamespace("test1");
+        .network()
+        .v1()
+        .ingresses().inNamespace("test1");
 
     assertFalse(ingressOp.delete(ingress1));
   }
@@ -182,31 +191,18 @@ class NetworkingV1IngressTest {
   }
 
   @Test
-  void testIngressLoadWithoutApiVersion() {
-    // Given
-
-    // When
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-ingress-no-apiversion.yml")).get();
-
-    // Then
-    assertNotNull(items);
-    assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof io.fabric8.kubernetes.api.model.networking.v1.Ingress);
-  }
-
-  @Test
   void testCreateOrReplaceWhenAnnotationUpdated() {
     // Given
     Ingress ingressFromServer = new IngressBuilder().withNewMetadata().withName("ing1").endMetadata().build();
     Ingress ingressUpdated = new IngressBuilder(ingressFromServer).editOrNewMetadata()
-      .addToAnnotations("nginx.ingress.kubernetes.io/rewrite-target", "/")
-      .endMetadata().build();
+        .addToAnnotations("nginx.ingress.kubernetes.io/rewrite-target", "/")
+        .endMetadata().build();
     server.expect().post().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, ingressFromServer).once();
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, ingressFromServer).once();
     server.expect().get().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ing1")
-      .andReturn(HttpURLConnection.HTTP_OK, ingressFromServer).times(2);
+        .andReturn(HttpURLConnection.HTTP_OK, ingressFromServer).times(2);
     server.expect().put().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ing1")
-      .andReturn(HttpURLConnection.HTTP_OK, ingressUpdated).once();
+        .andReturn(HttpURLConnection.HTTP_OK, ingressUpdated).once();
 
     // When
     ingressUpdated = client.network().v1().ingresses().inNamespace("ns1").createOrReplace(ingressUpdated);
