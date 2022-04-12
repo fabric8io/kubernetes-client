@@ -371,7 +371,19 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
       @Override
       public CreateOrDeleteable<ImageSignature> withName(String name) {
-        return operation.withName(name);
+        return new CreateOrDeleteable<ImageSignature>() {
+
+          @Override
+          public ImageSignature create(ImageSignature item) {
+            return operation.withName(name).create(item);
+          }
+
+          @Override
+          public boolean delete() {
+            return operation.withName(name).delete();
+          }
+
+        };
       }
     };
   }

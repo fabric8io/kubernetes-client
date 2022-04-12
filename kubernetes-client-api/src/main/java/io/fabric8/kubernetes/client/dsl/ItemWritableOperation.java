@@ -24,11 +24,31 @@ public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemRepl
    *
    * @param item to create or replace
    * @return created or replaced item returned in kubernetes api response
+   * @deprecated use resource(item).createOrReplace()
    */
+  @Deprecated
   T createOrReplace(T item);
 
+  /**
+   * Creates an item
+   *
+   * @see CreateOrReplaceable#create()
+   *
+   * @param item to create
+   * @return the item from the api server
+   * @deprecated use resource(item).create()
+   */
+  @Deprecated
   T create(T item);
 
+  /**
+   * Deletes an item
+   *
+   * @param item
+   * @return
+   * @deprecated use resource(item).delete()
+   */
+  @Deprecated
   boolean delete(T item);
 
   /**
@@ -43,5 +63,15 @@ public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemRepl
    */
   @Deprecated
   T updateStatus(T item);
+
+  /**
+   * See {@link EditReplacePatchable#patchStatus()}
+   *
+   * @param item kubernetes object
+   * @return updated object
+   * @deprecated use resource(item).patchStatus()
+   */
+  @Deprecated
+  T patchStatus(T item);
 
 }

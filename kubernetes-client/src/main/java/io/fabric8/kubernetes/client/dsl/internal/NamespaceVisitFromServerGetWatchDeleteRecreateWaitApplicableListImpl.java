@@ -53,6 +53,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -220,7 +221,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public List<HasMetadata> get() {
-    return getResources().stream().map(Resource::get).collect(Collectors.toList());
+    return performOperation(Resource::get);
   }
 
   @Override
@@ -302,7 +303,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public List<HasMetadata> create() {
-    return getResources().stream().map(Resource::create).collect(Collectors.toList());
+    return performOperation(Resource::create);
   }
 
   @Override
@@ -314,6 +315,21 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inAnyNamespace() {
     return newInstance(context.withNamespace(null),
         namespaceVisitOperationContext.withExplicitNamespace(null));
+  }
+
+  @Override
+  public List<HasMetadata> replace() {
+    return performOperation(Resource::replace);
+  }
+
+  private List<HasMetadata> performOperation(
+      Function<? super NamespaceableResource<HasMetadata>, ? extends HasMetadata> operation) {
+    return getResources().stream().map(operation).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<HasMetadata> replaceStatus() {
+    return performOperation(Resource::replaceStatus);
   }
 
 }

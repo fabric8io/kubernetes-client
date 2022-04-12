@@ -18,13 +18,14 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
 public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable<T, L, R>,
-    ItemWritableOperation<T>,
-    Loadable<R>,
-    Resourceable<T, R> {
+    ItemWritableOperation<T> {
 
   /**
    * Indicates that modifications should not be persisted. All dry run stages will be processed. the request is still
@@ -71,5 +72,45 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
    */
   @Deprecated
   boolean delete(List<T> items);
+
+  /**
+   * Load from an {@link InputStream}.
+   * 
+   * @param is The input stream.
+   * @return returns de-serialized object
+   */
+  R load(InputStream is);
+
+  /**
+   * Load from a {@link URL}.
+   * 
+   * @param url The url.
+   * @return returns de-serialized object
+   */
+  R load(URL url);
+
+  /**
+   * Load from a {@link File}.
+   * 
+   * @param file The file.
+   * @return returns de-serialized object
+   */
+  R load(File file);
+
+  /**
+   * Load from path.
+   * 
+   * @param path The path.
+   * @return returns de-serialized object
+   */
+  R load(String path);
+
+  /**
+   * Provide a {@link Resource} for the given item
+   * 
+   * @param item
+   * @return the resource upon which operations can be performed
+   */
+  R resource(T item);
 
 }

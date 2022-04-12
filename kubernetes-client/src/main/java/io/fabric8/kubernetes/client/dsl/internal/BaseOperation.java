@@ -458,6 +458,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public T patchStatus() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
   public R resource(T item) {
     // set the name, namespace, and item - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example

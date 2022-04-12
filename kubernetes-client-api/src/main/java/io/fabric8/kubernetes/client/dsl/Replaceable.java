@@ -33,4 +33,11 @@ public interface Replaceable<T> {
    */
   T replace();
 
+  /**
+   * Similar to {@link Replaceable#replace()}, but only affects the status subresource
+   *
+   * @return returns deserialized version of api server response
+   */
+  T replaceStatus();
+
 }
