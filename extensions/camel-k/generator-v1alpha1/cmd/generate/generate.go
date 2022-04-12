@@ -76,11 +76,12 @@ func main() {
 
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
-		reflect.TypeOf(machinery.Time{}):       "java.lang.String",
-		reflect.TypeOf(apis.URL{}):             "java.lang.String",
-		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
-		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
-		reflect.TypeOf(v1.Template{}):          "java.util.Map<String, Object>",
+		reflect.TypeOf(machinery.Time{}):              "java.lang.String",
+		reflect.TypeOf(apis.URL{}):                    "java.lang.String",
+		reflect.TypeOf(apis.VolatileTime{}):           "java.lang.String",
+		reflect.TypeOf(runtime.RawExtension{}):        "java.util.Map<String, Object>",
+		reflect.TypeOf(v1.Template{}):                 "java.util.Map<String, Object>",
+		reflect.TypeOf(v1alpha1.EndpointProperties{}): "java.util.Map<String, Object>",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/camel-k/v1alpha1/CamelKSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")

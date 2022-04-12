@@ -17,6 +17,8 @@ package io.fabric8.camelk.client;
 
 import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.camelk.v1alpha1.Kamelet;
+import io.fabric8.camelk.v1alpha1.KameletBinding;
+import io.fabric8.camelk.v1alpha1.KameletBindingList;
 import io.fabric8.camelk.v1alpha1.KameletList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -32,5 +34,10 @@ public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupClient
   @Override
   public MixedOperation<Kamelet, KameletList, Resource<Kamelet>> kamelets() {
     return resources(Kamelet.class, KameletList.class);
+  }
+
+  @Override
+  public MixedOperation<KameletBinding, KameletBindingList, Resource<KameletBinding>> kameletBindings() {
+    return resources(KameletBinding.class, KameletBindingList.class);
   }
 }

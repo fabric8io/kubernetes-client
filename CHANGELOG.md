@@ -25,6 +25,7 @@ And Store.getKey can be used rather than directly referencing static Cache funct
 * Fix #3922: added Client.supports and Client.hasApiGroup methods
 * KubernetesMockServer has new methods - unsupported and reset - to control what apis are unsupported and to reset its state.
 * Fix #3407 #3973: Added Resourceable.resource to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
+* Fix #3854: Camel-K: Missing method for manipulating KameletBindings
 There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
 This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
 
