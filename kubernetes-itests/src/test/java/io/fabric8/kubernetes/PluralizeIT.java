@@ -19,11 +19,9 @@ import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIResource;
-import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.GroupVersionForDiscovery;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,8 +51,7 @@ class PluralizeIT {
     final List<APIResource> testCases;
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       // Core Resources
-      testCases = new ArrayList<>(new OperationSupport(client)
-          .restCall(APIResourceList.class, "api/v1").getResources());
+      testCases = new ArrayList<>(client.getApiResources("v1").getResources());
       // Additional groups
       for (APIGroup group : client.getApiGroups().getGroups()) {
         for (GroupVersionForDiscovery version : group.getVersions()) {
