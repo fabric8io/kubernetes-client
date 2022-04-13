@@ -132,9 +132,6 @@
                 <target>
                   <!-- removing the generated Schema class -->
                   <delete
-                    file="${project.build.directory}/generated-sources/io/fabric8/camelk/v1alpha1/JSONSchemaProps.java"
-                    verbose="true"/>
-                  <delete
                     file="${project.build.directory}/generated-sources/io/fabric8/camelk/api/model/CamelKSchemaV1alpha1.java"
                     verbose="true"/>
                 </target>

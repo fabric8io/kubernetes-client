@@ -44,7 +44,6 @@ func main() {
 
 	// types that are manually defined in the model
 	providedTypes := []schemagen.ProvidedType{
-		{GoType: reflect.TypeOf(v1alpha1.JSONSchemaProps{}), JavaClass: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"},
 		{GoType: reflect.TypeOf(v1.Flow{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
 		{GoType: reflect.TypeOf(v1.TraitConfiguration{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
 	}
@@ -76,11 +75,12 @@ func main() {
 
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
-		reflect.TypeOf(machinery.Time{}):              "java.lang.String",
-		reflect.TypeOf(apis.URL{}):                    "java.lang.String",
-		reflect.TypeOf(apis.VolatileTime{}):           "java.lang.String",
-		reflect.TypeOf(runtime.RawExtension{}):        "java.util.Map<String, Object>",
-		reflect.TypeOf(v1.Template{}):                 "java.util.Map<String, Object>",
+		reflect.TypeOf(machinery.Time{}):       "java.lang.String",
+		reflect.TypeOf(apis.URL{}):             "java.lang.String",
+		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
+		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
+		reflect.TypeOf(v1.Template{}):          "java.util.Map<String, Object>",
+		reflect.TypeOf(v1alpha1.JSON{}):        "com.fasterxml.jackson.databind.JsonNode",
 		reflect.TypeOf(v1alpha1.EndpointProperties{}): "java.util.Map<String, Object>",
 	}
 
