@@ -7,6 +7,7 @@
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
+* Fix #3852: Deserializing kamelets fails with UnrecognizedPropertyException
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
 * Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
