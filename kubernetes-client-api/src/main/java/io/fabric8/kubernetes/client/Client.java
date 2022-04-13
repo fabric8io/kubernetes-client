@@ -92,7 +92,7 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
   void close();
 
   /**
-   * Returns the api groups
+   * Returns the api groups. This does not include the core/legacy v1 apiVersion.
    *
    * @return the {@link APIGroupList} metadata
    */
@@ -108,6 +108,8 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
 
   /**
    * Return the api resource metadata for the given groupVersion
+   * <p>
+   * Use v1 to indicate the core/legacy resources
    *
    * @param groupVersion the groupVersion - group/version
    * @return the {@link APIResourceList} for the groupVersion

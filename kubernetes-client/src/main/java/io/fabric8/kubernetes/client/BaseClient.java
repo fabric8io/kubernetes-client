@@ -207,6 +207,9 @@ public abstract class BaseClient implements Client {
 
   @Override
   public APIResourceList getApiResources(String groupVersion) {
+    if ("v1".equals(groupVersion)) {
+      return getOperationSupport().restCall(APIResourceList.class, "api", "v1");
+    }
     return getOperationSupport().restCall(APIResourceList.class, APIS, groupVersion);
   }
 

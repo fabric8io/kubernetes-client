@@ -15,6 +15,7 @@
 * Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts. 
 SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
 And Store.getKey can be used rather than directly referencing static Cache functions.
+* Fix #4065: Client.getAPIResources("v1") can be used to obtain the core/legacy resources
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0
