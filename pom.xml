@@ -115,7 +115,7 @@
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.36</slf4j.version>
     <mockito.version>4.4.0</mockito.version>
-    <lombok.version>1.18.22</lombok.version>
+    <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.30</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.21</commons-compress.version>
