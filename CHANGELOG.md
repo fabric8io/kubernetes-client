@@ -4,6 +4,7 @@
 
 #### Bugs
 * Configure SnakeYaml to ignore converting timestamps to Date objects
+* Fix #4049: properly populate exception metadata with resource information if available
 
 #### Improvements
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
