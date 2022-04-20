@@ -27,6 +27,7 @@ public class KubernetesClientException extends RuntimeException {
   private String version;
   private String resourcePlural;
   private String namespace;
+  private String name;
 
   public KubernetesClientException(String message) {
     super(message);
@@ -41,10 +42,11 @@ public class KubernetesClientException extends RuntimeException {
   }
 
   public KubernetesClientException(String message, int code, Status status) {
-    this(message, code, status, null, null, null, null);
+    this(message, code, status, null, null, null, null, null);
   }
 
-  public KubernetesClientException(String message, int code, Status status, String group, String version, String resourcePlural, String namespace) {
+  public KubernetesClientException(String message, int code, Status status, String group, String version, String resourcePlural,
+      String namespace, String name) {
     super(message);
     this.code = code;
     this.status = status;
@@ -52,14 +54,17 @@ public class KubernetesClientException extends RuntimeException {
     this.version = version;
     this.resourcePlural = resourcePlural;
     this.namespace = namespace;
+    this.name = name;
   }
 
-  public KubernetesClientException(String message, Throwable t, String group, String version, String resourcePlural, String namespace) {
+  public KubernetesClientException(String message, Throwable t, String group, String version, String resourcePlural,
+      String namespace, String name) {
     super(message, t);
     this.group = group;
     this.version = version;
     this.resourcePlural = resourcePlural;
     this.namespace = namespace;
+    this.name = name;
   }
 
   public Status getStatus() {
@@ -86,8 +91,12 @@ public class KubernetesClientException extends RuntimeException {
     return namespace;
   }
 
+  public String getName() {
+    return name;
+  }
+
   public String getFullResourceName() {
-    if(resourcePlural != null && group != null) {
+    if (resourcePlural != null && group != null) {
       return HasMetadata.getFullResourceName(resourcePlural, group);
     }
     return null;
@@ -99,7 +108,8 @@ public class KubernetesClientException extends RuntimeException {
 
   public static RuntimeException launderThrowable(String message, Throwable cause) {
     RuntimeException processed = processCause(cause);
-    if (processed != null) return processed;
+    if (processed != null)
+      return processed;
     throw new KubernetesClientException(message, cause);
   }
 
@@ -116,7 +126,8 @@ public class KubernetesClientException extends RuntimeException {
 
   public static RuntimeException launderThrowable(OperationInfo spec, Throwable cause) {
     RuntimeException processed = processCause(cause);
-    if (processed != null) return processed;
+    if (processed != null)
+      return processed;
 
     StringBuilder sb = new StringBuilder();
     sb.append(describeOperation(spec)).append(" failed.");
@@ -127,7 +138,8 @@ public class KubernetesClientException extends RuntimeException {
       }
     }
 
-    throw new KubernetesClientException(sb.toString(), cause, spec.getGroup(), spec.getVersion(), spec.getPlural(), spec.getNamespace());
+    throw new KubernetesClientException(sb.toString(), cause, spec.getGroup(), spec.getVersion(), spec.getPlural(),
+        spec.getNamespace(), spec.getName());
   }
 
   /**
@@ -136,18 +148,18 @@ public class KubernetesClientException extends RuntimeException {
   @Deprecated
   public static RuntimeException launderThrowable(OperationInfo spec, Status status, Throwable cause) {
     StringBuilder sb = new StringBuilder();
-    sb.append(describeOperation(spec)+ " failed.");
+    sb.append(describeOperation(spec)).append(" failed.");
     if (status != null && Utils.isNotNullOrEmpty(status.getMessage())) {
       sb.append("Reason: ").append(status.getMessage());
     }
     return launderThrowable(sb.toString(), cause);
   }
 
-  private static final String describeOperation(OperationInfo operation) {
+  private static String describeOperation(OperationInfo operation) {
     StringBuilder sb = new StringBuilder();
     sb.append("Operation");
     if (Utils.isNotNullOrEmpty(operation.getOperationType())) {
-      sb.append(": [").append(operation.getOperationType() + "]");
+      sb.append(": [").append(operation.getOperationType()).append("]");
     }
     sb.append(" ");
     sb.append(" for kind: [").append(operation.getKind()).append("] ");
