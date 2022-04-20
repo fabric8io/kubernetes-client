@@ -45,11 +45,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
@@ -680,7 +682,8 @@ public class OperationSupport {
     }
 
     final RequestMetadata metadata = RequestMetadata.from(request);
-    return new KubernetesClientException(sb.toString(), status.getCode(), status, metadata.group, metadata.version, metadata.plural, metadata.namespace);
+    return new KubernetesClientException(sb.toString(), status.getCode(), status, metadata.group, metadata.version,
+        metadata.plural, metadata.namespace, metadata.name);
   }
 
   public static KubernetesClientException requestException(HttpRequest request, Throwable e, String message) {
@@ -694,37 +697,78 @@ public class OperationSupport {
       .append(". Cause: ").append(e.getMessage());
 
     final RequestMetadata metadata = RequestMetadata.from(request);
-    return new KubernetesClientException(sb.toString(), e, metadata.group, metadata.version, metadata.plural, metadata.namespace);
+    return new KubernetesClientException(sb.toString(), e, metadata.group, metadata.version, metadata.plural,
+        metadata.namespace, metadata.name);
   }
 
   public static KubernetesClientException requestException(HttpRequest request, Exception e) {
     return requestException(request, e, null);
   }
 
-  private static class RequestMetadata {
-    private final String group;
-    private final String version;
-    private final String plural;
-    private final String namespace;
-    private final static RequestMetadata EMPTY = new RequestMetadata(null, null, null, null);
+  static class RequestMetadata {
+    final String group;
+    final String version;
+    final String plural;
+    final String namespace;
+    final String name;
+    private static final RequestMetadata EMPTY = new RequestMetadata(null, null, null, null, null);
 
-    private RequestMetadata(String group, String version, String plural, String namespace) {
+    RequestMetadata(String group, String version, String plural, String namespace, String name) {
       this.group = group;
       this.version = version;
       this.plural = plural;
       this.namespace = namespace;
+      this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      RequestMetadata that = (RequestMetadata) o;
+      return Objects.equals(group, that.group) && Objects.equals(version,
+          that.version) && Objects.equals(plural, that.plural)
+          && Objects.equals(
+              namespace, that.namespace)
+          && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(group, version, plural, namespace, name);
     }
 
     static RequestMetadata from(HttpRequest request) {
-      final List<String> segments = Arrays.stream(request.uri().getRawPath().split("/"))
-        .filter(s -> !s.isEmpty()).collect(Collectors.toList());
+      return from(request.uri());
+    }
+
+    static RequestMetadata from(URI request) {
+      final List<String> segments = Arrays.stream(request.getRawPath().split("/"))
+          .filter(s -> !s.isEmpty()).collect(Collectors.toList());
       switch (segments.size()) {
+        case 3:
+          // cluster URL for historic resources
+          return new RequestMetadata("", segments.get(1), segments.get(2), null, null);
         case 4:
           // cluster URL
-          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(3), null);
+          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(3), null, null);
         case 6:
-          // namespaced URL
-          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(5), segments.get(4));
+          // namespaced URL with potential name
+          final String root = segments.get(0);
+          if ("api".equals(root)) {
+            return new RequestMetadata("", segments.get(1), segments.get(4), segments.get(3),
+                segments.get(5));
+          }
+          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(5),
+              segments.get(4), null);
+        case 7:
+          // namespaced URL with name
+          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(5),
+              segments.get(4), segments.get(6));
         default:
           return EMPTY;
       }
