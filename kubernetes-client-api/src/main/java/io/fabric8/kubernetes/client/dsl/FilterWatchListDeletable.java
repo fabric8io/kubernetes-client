@@ -15,12 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.Watcher;
-
 import java.util.stream.Stream;
 
 public interface FilterWatchListDeletable<T, L, R>
-    extends Filterable<FilterWatchListDeletable<T, L, R>>, Watchable<Watcher<T>>, Versionable<WatchAndWaitable<T>>, Listable<L>,
+    extends Filterable<FilterWatchListDeletable<T, L, R>>, Listable<L>,
+    WatchAndWaitable<T>,
     DeletableWithOptions,
     Informable<T> {
 

@@ -172,6 +172,10 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
     return restore(key, store.get(key));
   }
 
+  public String getResourceVersion(String key) {
+    return (String) store.getOrDefault(key, new Object[1])[0];
+  }
+
   @Override
   public int size() {
     return store.size();
@@ -180,6 +184,11 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
   @Override
   public String getKey(V obj) {
     return this.keyState.keyFunction.apply(obj);
+  }
+
+  @Override
+  public boolean isFullState() {
+    return false;
   }
 
 }

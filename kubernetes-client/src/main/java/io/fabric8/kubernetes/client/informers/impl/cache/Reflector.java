@@ -126,10 +126,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     return futureResult.thenCompose(result -> {
       result.getItems().forEach(i -> {
         String key = store.getKey(i);
-        // process the updates immediately so we don't need to hold the item
-        store.update(i);
         nextKeys.add(key);
       });
+      store.update(result.getItems());
       String nextContinueVal = result.getMetadata().getContinue();
       if (Utils.isNotNullOrEmpty(nextContinueVal)) {
         return processList(nextKeys, nextContinueVal);

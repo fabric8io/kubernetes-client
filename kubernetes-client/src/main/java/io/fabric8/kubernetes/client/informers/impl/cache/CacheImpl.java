@@ -392,4 +392,8 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     this.indexers.remove(name);
   }
 
+  public boolean isFullState() {
+    return items.isFullState();
+  }
+
 }

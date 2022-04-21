@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
+* Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
@@ -12,6 +13,7 @@
 * Fix #1285: removed references to manually calling registerCustomKind
 * Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 * Fix #3969: relist will not trigger sync events
+* Fix #4082: improving informOnCondition to test the initial list instead of individual add events
 * Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts. 
 SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
 And Store.getKey can be used rather than directly referencing static Cache functions.

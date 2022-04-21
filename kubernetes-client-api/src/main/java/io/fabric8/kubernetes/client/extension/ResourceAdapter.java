@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.WatchAndWaitable;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -91,7 +91,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public WatchAndWaitable<T> withResourceVersion(String resourceVersion) {
+  public Watchable<Watcher<T>> withResourceVersion(String resourceVersion) {
     return resource.withResourceVersion(resourceVersion);
   }
 

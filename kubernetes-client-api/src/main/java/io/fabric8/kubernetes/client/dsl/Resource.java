@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
  */
 public interface Resource<T> extends
     FromServerGettable<T>,
-    WatchAndWaitable<T>, Versionable<WatchAndWaitable<T>>,
+    WatchAndWaitable<T>,
     WritableOperation<T>,
     DryRunable<WritableOperation<T>>,
     Informable<T> {

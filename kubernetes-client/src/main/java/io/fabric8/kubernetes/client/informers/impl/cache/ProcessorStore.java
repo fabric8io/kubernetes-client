@@ -18,10 +18,13 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
+import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.Notification;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
@@ -30,6 +33,8 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
 
   private CacheImpl<T> cache;
   private SharedProcessor<T> processor;
+  private AtomicBoolean synced = new AtomicBoolean();
+  private List<String> deferredAdd = new ArrayList<>();
 
   public ProcessorStore(CacheImpl<T> cache, SharedProcessor<T> processor) {
     this.cache = cache;
@@ -42,14 +47,30 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
   }
 
   @Override
-  public void update(T obj) {
+  public void update(List<T> items) {
+    items.stream().map(this::updateInternal).filter(Objects::nonNull).forEach(n -> this.processor.distribute(n, false));
+  }
+
+  private Notification<T> updateInternal(T obj) {
     T oldObj = this.cache.put(obj);
+    Notification<T> notification = null;
     if (oldObj != null) {
       if (!Objects.equals(oldObj.getMetadata().getResourceVersion(), obj.getMetadata().getResourceVersion())) {
-        this.processor.distribute(new ProcessorListener.UpdateNotification<>(oldObj, obj), false);
+        notification = new ProcessorListener.UpdateNotification<>(oldObj, obj);
       }
+    } else if (synced.get() || !cache.isFullState()) {
+      notification = new ProcessorListener.AddNotification<>(obj);
     } else {
-      this.processor.distribute(new ProcessorListener.AddNotification<>(obj), false);
+      deferredAdd.add(getKey(obj));
+    }
+    return notification;
+  }
+
+  @Override
+  public void update(T obj) {
+    Notification<T> notification = updateInternal(obj);
+    if (notification != null) {
+      this.processor.distribute(notification, false);
     }
   }
 
@@ -83,6 +104,11 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
 
   @Override
   public void retainAll(Set<String> nextKeys) {
+    if (synced.compareAndSet(false, true)) {
+      deferredAdd.stream().map(cache::getByKey).filter(Objects::nonNull)
+          .forEach(v -> this.processor.distribute(new ProcessorListener.AddNotification<>(v), false));
+      deferredAdd.clear();
+    }
     List<T> current = cache.list();
     if (nextKeys.isEmpty() && current.isEmpty()) {
       this.processor.distribute(l -> l.getHandler().onNothing(), false);
