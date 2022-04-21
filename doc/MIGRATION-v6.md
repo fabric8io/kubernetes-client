@@ -1,6 +1,7 @@
 # Migration from 5.x to 6.x
 
 ## Contents:
+- [Backwards Compatibility Interceptor](#backwards-compatibility-interceptor)
 - [Namespace Changes](#namespace-changes)
 - [API/Impl split](#api-impl-split)
 - [Deserialization Resolution](#deserialization-resolution)
@@ -16,6 +17,10 @@
 - [DSL Interface Changes](#dsl-interface-changes)
 - [evict Changes](#evict-changes)
 - [Delete Behavior](#delete-behavior)
+
+## Backwards Compatibility Interceptor
+
+kubernetes.backwardsCompatibilityInterceptor.disable now defaults to true, rather than false.  If you need backwards compatibility support, please set this property to false.
 
 ## Namespace Changes
 

@@ -56,6 +56,7 @@ public class HttpClientUtils {
   private static Pattern VALID_IPV4_PATTERN = null;
   public static final String ipv4Pattern = "(http:\\/\\/|https:\\/\\/)?(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?";
   protected static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
+  protected static final String BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT = "true";
 
   static {
     try {
@@ -130,7 +131,8 @@ public class HttpClientUtils {
     interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils
-        .getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
+        .getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE,
+            BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT);
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
       interceptors.put(BackwardsCompatibilityInterceptor.NAME, new BackwardsCompatibilityInterceptor());
     }
