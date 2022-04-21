@@ -45,6 +45,7 @@ Please see the [migration guide](doc/MIGRATION-v6.md)
 * Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
 * Fix #3957: Lister `onOpen` should be called before marking the connection as open
 * Fix #4022: Reintroduce `Deletable` interface in `NonNamespaceOperation`
+* Fix #4009: updating readiness to consider 0 replicas
 
 #### _**Note**_:
 - `Config#autoConfigure(String context)`: Has been changed to only trigger the autoConfigure method once. Previously, providing a wrong context argument would not be a problem since an initial context-less autoConfigure would have already been invoked to provide a valid initial Config.
