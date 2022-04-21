@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;

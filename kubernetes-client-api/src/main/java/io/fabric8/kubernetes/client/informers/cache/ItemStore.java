@@ -54,4 +54,18 @@ public interface ItemStore<V> {
 
   V get(String key);
 
+  /**
+   * Used to determine if initial add events can be deferred until
+   * the entire list operation has completed - when using a limit
+   * it may take several batches to complete.
+   * <br>
+   * If false, then the initial add events must be processed as they
+   * occur - meaning that the store state may not be complete.
+   *
+   * @return
+   */
+  default boolean isFullState() {
+    return true;
+  }
+
 }
