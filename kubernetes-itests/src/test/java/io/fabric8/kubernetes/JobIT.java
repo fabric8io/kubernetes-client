@@ -43,8 +43,7 @@ class JobIT {
         .withName(job.getMetadata().getName())
         .withLogWaitTimeout(30)
         .watchLog(baos)) {
-      System.out.println(baos);
-      await().atMost(5, TimeUnit.SECONDS).until(() -> baos.toString().length() > 0);
+      await().atMost(30, TimeUnit.SECONDS).until(() -> baos.toString().length() > 0);
       assertNotNull(baos.toString());
       assertEquals("This is a message!\n", baos.toString());
     }
@@ -56,7 +55,9 @@ class JobIT {
     Job job = initJob("job-generate-name").editMetadata()
       .withName(null)
       .withGenerateName("test-job-")
-      .endMetadata().build();
+      .endMetadata()
+      .editOrNewSpec().withSuspend(true).endSpec()
+      .build();
 
     // When
     Job jobCreated = client.batch().v1().jobs().create(job);
@@ -78,7 +79,7 @@ class JobIT {
       .withNewSpec()
       .addNewContainer()
       .withName("hello")
-      .withImage("busybox")
+      .withImage("registry.access.redhat.com/ubi8/ubi-minimal")
       .withCommand("echo", "This is a message!")
       .endContainer()
       .withRestartPolicy("Never")

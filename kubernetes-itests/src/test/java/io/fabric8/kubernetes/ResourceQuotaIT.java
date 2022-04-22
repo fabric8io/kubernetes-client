@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LoadKubernetesManifests("/resourcequota-it.yml")
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 17)
 class ResourceQuotaIT {
 
   KubernetesClient client;

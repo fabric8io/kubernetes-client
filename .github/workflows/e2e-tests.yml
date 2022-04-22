@@ -31,7 +31,7 @@ concurrency:
 
 env:
   IT_REVISION: master
-  IT_DIR: kubernetes-itests
+  IT_MODULE: kubernetes-itests
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
@@ -53,7 +53,7 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - name: Install Kubernetes Client
-        run: ./mvnw ${MAVEN_ARGS} -f pom.xml clean install -DskipTests -Djacoco.skip=true
+        run: ./mvnw ${MAVEN_ARGS} clean install -DskipTests -Djacoco.skip=true
 
   minikube:
     name: K8S
@@ -86,7 +86,7 @@ jobs:
           distribution: 'temurin'
       - name: Install and Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
+          ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
 
   openshift:
     name: OpenShift
@@ -117,4 +117,4 @@ jobs:
           distribution: 'temurin'
       - name: Install and Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"
+          ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE verify
