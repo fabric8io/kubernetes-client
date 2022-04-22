@@ -37,26 +37,26 @@ class ClusterDeprovisionTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterdeprovisions/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterDeprovision("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterDeprovision("test-get"))
+        .once();
 
     // When
     ClusterDeprovision clusterDeprovision = client.hive().clusterDeprovisions().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(clusterDeprovision)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterdeprovisions")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterDeprovisionListBuilder()
-        .addToItems(createNewClusterDeprovision("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterDeprovisionListBuilder()
+            .addToItems(createNewClusterDeprovision("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterDeprovisionList clusterDeprovisionList = client.hive().clusterDeprovisions().inNamespace("ns1").list();
@@ -65,18 +65,19 @@ class ClusterDeprovisionTest {
     assertThat(clusterDeprovisionList).isNotNull();
     assertThat(clusterDeprovisionList.getItems()).hasSize(1);
     assertThat(clusterDeprovisionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterdeprovisions/clusterdeprovision1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterDeprovision("clusterdeprovision1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterDeprovision("clusterdeprovision1"))
+        .once();
 
     // When
-    boolean isDeleted = client.hive().clusterDeprovisions().inNamespace("ns1").withName("clusterdeprovision1").delete().size() == 1;
+    boolean isDeleted = client.hive().clusterDeprovisions().inNamespace("ns1").withName("clusterdeprovision1").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,18 +85,18 @@ class ClusterDeprovisionTest {
 
   private ClusterDeprovision createNewClusterDeprovision(String name) {
     return new ClusterDeprovisionBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withInfraID("cluster-infra-id")
-      .withNewPlatform()
-      .withNewAws()
-      .withNewCredentialsSecretRef().withName("cluster-aws-creds").endCredentialsSecretRef()
-      .withRegion("us-east-1")
-      .endAws()
-      .endPlatform()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withInfraID("cluster-infra-id")
+        .withNewPlatform()
+        .withNewAws()
+        .withNewCredentialsSecretRef().withName("cluster-aws-creds").endCredentialsSecretRef()
+        .withRegion("us-east-1")
+        .endAws()
+        .endPlatform()
+        .endSpec()
+        .build();
   }
 }

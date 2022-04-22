@@ -422,7 +422,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   static void toStatusDetails(KubernetesResource obj, List<StatusDetails> details) {
     if (obj instanceof HasMetadata) {
-      HasMetadata meta = (HasMetadata)obj;
+      HasMetadata meta = (HasMetadata) obj;
       ObjectMeta metadata = meta.getMetadata();
       details.add(new StatusDetailsBuilder()
           .withGroup(ApiVersionUtil.trimGroup(meta.getApiVersion()))
@@ -462,13 +462,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         if (useOptions) {
           resourceURLForWriteOperation = appendListOptionParams(resourceURLForWriteOperation, options);
         }
-        KubernetesResource result = handleDelete(resourceURLForWriteOperation, gracePeriodSeconds, propagationPolicy, resourceVersion);
+        KubernetesResource result = handleDelete(resourceURLForWriteOperation, gracePeriodSeconds, propagationPolicy,
+            resourceVersion);
         toStatusDetails(result, details);
         return details;
       } catch (Exception e) {
         RuntimeException re = KubernetesClientException.launderThrowable(forOperationType("delete"), e);
         if (re instanceof KubernetesClientException) {
-          KubernetesClientException ke = (KubernetesClientException)re;
+          KubernetesClientException ke = (KubernetesClientException) re;
           if (Utils.isNotNullOrEmpty(name)) {
             if (ke.getCode() == HttpURLConnection.HTTP_NOT_FOUND) {
               return Collections.emptyList();

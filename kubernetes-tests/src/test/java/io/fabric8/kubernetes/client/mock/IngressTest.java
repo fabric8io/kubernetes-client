@@ -42,17 +42,17 @@ public class IngressTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses").andReturn(200, new IngressListBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses").andReturn(200, new IngressListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses")
+        .andReturn(200, new IngressListBuilder().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses").andReturn(200, new IngressListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build()).once();
 
-   server.expect().withPath("/apis/extensions/v1beta1/ingresses").andReturn(200, new IngressListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
-
+    server.expect().withPath("/apis/extensions/v1beta1/ingresses").andReturn(200, new IngressListBuilder()
+        .addNewItem().and()
+        .addNewItem().and()
+        .addNewItem()
+        .and().build()).once();
 
     IngressList ingressList = client.extensions().ingress().list();
     assertNotNull(ingressList);
@@ -69,37 +69,44 @@ public class IngressTest {
 
   @Test
   public void testListWithLables() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new IngressListBuilder().build()).always();
+    server.expect()
+        .withPath(
+            "/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new IngressListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     IngressList ingressList = client.extensions().ingress()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
-
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
 
     assertNotNull(ingressList);
     assertEquals(0, ingressList.getItems().size());
 
     ingressList = client.extensions().ingress()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     assertNotNull(ingressList);
     assertEquals(3, ingressList.getItems().size());
   }
 
-
   @Test
   public void testGet() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1")
+        .andReturn(200, new IngressBuilder().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2")
+        .andReturn(200, new IngressBuilder().build()).once();
 
     Ingress ingress = client.extensions().ingress().withName("ingress1").get();
     assertNotNull(ingress);
@@ -111,12 +118,12 @@ public class IngressTest {
     assertNotNull(ingress);
   }
 
-
   @Test
   public void testDelete() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
-
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1")
+        .andReturn(200, new IngressBuilder().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2")
+        .andReturn(200, new IngressBuilder().build()).once();
 
     boolean deleted = client.extensions().ingress().withName("ingress1").delete().size() == 1;
     assertTrue(deleted);
@@ -128,16 +135,14 @@ public class IngressTest {
     assertTrue(deleted);
   }
 
-
   @Test
   public void testDeleteMulti() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
     Ingress ingress3 = new IngressBuilder().withNewMetadata().withName("ingress3").withNamespace("any").and().build();
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, ingress1).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, ingress2).once();
-
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, ingress1).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, ingress2).once();
 
     Boolean deleted = client.extensions().ingress().inAnyNamespace().delete(ingress1, ingress2);
     assertTrue(deleted);

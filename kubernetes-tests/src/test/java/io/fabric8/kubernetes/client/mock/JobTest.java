@@ -50,17 +50,16 @@ public class JobTest {
 
   @Test
   void testList() {
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
-   server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build()).once();
 
-   server.expect().withPath("/apis/batch/v1/jobs").andReturn(200, new JobListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
-
+    server.expect().withPath("/apis/batch/v1/jobs").andReturn(200, new JobListBuilder()
+        .addNewItem().and()
+        .addNewItem().and()
+        .addNewItem()
+        .and().build()).once();
 
     JobList jobList = client.batch().jobs().list();
     assertNotNull(jobList);
@@ -77,38 +76,41 @@ public class JobTest {
 
   @Test
   void testListWithLables() {
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath(
+            "/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new JobListBuilder().build()).always();
+    server.expect()
+        .withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new JobListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     JobList jobList = client.batch().jobs()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
-
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
 
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
 
     jobList = client.batch().v1().jobs()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     assertNotNull(jobList);
     assertEquals(3, jobList.getItems().size());
   }
 
-
   @Test
   void testGet() {
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
-   server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
-
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
 
     Job job = client.batch().v1().jobs().withName("job1").get();
     assertNotNull(job);
@@ -120,55 +122,53 @@ public class JobTest {
     assertNotNull(job);
   }
 
-
   @Test
   void testDelete() {
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
-      .withName("job1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withParallelism(0)
-      .endSpec()
-      .withNewStatus()
-      .withActive(1)
-      .endStatus()
-      .build()).once();
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
-      .withName("job1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withParallelism(0)
-      .endSpec()
-      .withNewStatus()
-      .withActive(0)
-      .endStatus()
-      .build()).times(5);
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+        .withName("job1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withParallelism(0)
+        .endSpec()
+        .withNewStatus()
+        .withActive(1)
+        .endStatus()
+        .build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+        .withName("job1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withParallelism(0)
+        .endSpec()
+        .withNewStatus()
+        .withActive(0)
+        .endStatus()
+        .build()).times(5);
 
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
-      .withName("job2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withParallelism(0)
-      .endSpec()
-      .withNewStatus()
-      .withActive(1)
-      .endStatus()
-      .build()).once();
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
-      .withName("job2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withParallelism(0)
-      .endSpec()
-      .withNewStatus()
-      .withActive(0)
-      .endStatus()
-      .build()).times(5);
-
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+        .withName("job2")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withParallelism(0)
+        .endSpec()
+        .withNewStatus()
+        .withActive(1)
+        .endStatus()
+        .build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+        .withName("job2")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withParallelism(0)
+        .endSpec()
+        .withNewStatus()
+        .withActive(0)
+        .endStatus()
+        .build()).times(5);
 
     boolean deleted = client.batch().v1().jobs().withName("job1").delete().size() == 1;
     assertTrue(deleted);
@@ -177,42 +177,40 @@ public class JobTest {
     assertTrue(deleted);
   }
 
-
   @Test
   void testDeleteMulti() {
     Job job1 = new JobBuilder().withNewMetadata()
-      .withNamespace("test")
-      .withName("job1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withParallelism(0)
-      .endSpec()
-      .withNewStatus()
-      .withActive(1)
-      .endStatus()
-      .build();
+        .withNamespace("test")
+        .withName("job1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withParallelism(0)
+        .endSpec()
+        .withNewStatus()
+        .withActive(1)
+        .endStatus()
+        .build();
     Job job2 = new JobBuilder().withNewMetadata()
-      .withNamespace("ns1")
-      .withName("job2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withParallelism(0)
-      .endSpec()
-      .withNewStatus()
-      .withActive(1)
-      .endStatus()
-      .build();
+        .withNamespace("ns1")
+        .withName("job2")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withParallelism(0)
+        .endSpec()
+        .withNewStatus()
+        .withActive(1)
+        .endStatus()
+        .build();
     Job job3 = new JobBuilder().withNewMetadata().withName("job3").withNamespace("any").and().build();
 
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, job1).once();
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
-      .editStatus().withActive(0).endStatus().build()).times(5);
-   server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
-   server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
-      .editStatus().withActive(0).endStatus().build()).times(5);
-
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, job1).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
+        .editStatus().withActive(0).endStatus().build()).times(5);
+    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
+        .editStatus().withActive(0).endStatus().build()).times(5);
 
     Boolean deleted = client.batch().v1().jobs().inAnyNamespace().delete(job1, job2);
     assertTrue(deleted);
@@ -243,23 +241,6 @@ public class JobTest {
   public void testCreateOrReplaceWithExistingJob() {
     // Given
     Job jobExistingInServer = createJobBuilder()
-      .editSpec()
-      .editOrNewTemplate().editOrNewMetadata()
-      .addToLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6")
-      .addToLabels("job-name", "job1")
-      .endMetadata()
-      .endTemplate()
-      .editOrNewSelector().addToMatchLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6").endSelector()
-      .endSpec()
-      .build();
-
-    server.expect().get().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
-      .andReturn(HttpURLConnection.HTTP_OK, jobExistingInServer).always();
-    server.expect().post().withPath("/apis/batch/v1/namespaces/test/jobs")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, jobExistingInServer).once();
-    server.expect().put().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
-      .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder()
-        .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
         .editSpec()
         .editOrNewTemplate().editOrNewMetadata()
         .addToLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6")
@@ -268,11 +249,29 @@ public class JobTest {
         .endTemplate()
         .editOrNewSelector().addToMatchLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6").endSelector()
         .endSpec()
-        .build()).once();
+        .build();
+
+    server.expect().get().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
+        .andReturn(HttpURLConnection.HTTP_OK, jobExistingInServer).always();
+    server.expect().post().withPath("/apis/batch/v1/namespaces/test/jobs")
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, jobExistingInServer).once();
+    server.expect().put().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
+        .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder()
+            .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
+            .editSpec()
+            .editOrNewTemplate().editOrNewMetadata()
+            .addToLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6")
+            .addToLabels("job-name", "job1")
+            .endMetadata()
+            .endTemplate()
+            .editOrNewSelector().addToMatchLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6").endSelector()
+            .endSpec()
+            .build())
+        .once();
 
     Job job = createJobBuilder()
-      .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
-      .build();
+        .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
+        .build();
 
     // When
     job = client.batch().v1().jobs().inNamespace("test").createOrReplace(job);
@@ -284,7 +283,8 @@ public class JobTest {
     assertEquals("bar1", job.getMetadata().getLabels().get("foo1"));
     assertEquals("df842342-33bb-4f6c-9707-f76a86748ee6", job.getSpec().getSelector().getMatchLabels().get("controller-uid"));
     assertEquals("job1", job.getSpec().getTemplate().getMetadata().getLabels().get("job-name"));
-    assertEquals("df842342-33bb-4f6c-9707-f76a86748ee6", job.getSpec().getTemplate().getMetadata().getLabels().get("controller-uid"));
+    assertEquals("df842342-33bb-4f6c-9707-f76a86748ee6",
+        job.getSpec().getTemplate().getMetadata().getLabels().get("controller-uid"));
   }
 
   @Test
@@ -294,15 +294,16 @@ public class JobTest {
     Pod jobPod = createJobPod();
 
     server.expect().get().withPath("/apis/batch/v1/namespaces/ns1/jobs/job1")
-      .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
-      .always();
+        .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
+        .always();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
-      .once();
+    server.expect().get()
+        .withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+        .once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false")
-      .andReturn(HttpURLConnection.HTTP_OK, "hello")
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, "hello")
+        .once();
 
     // When
     String log = client.batch().v1().jobs().inNamespace("ns1").withName("job1").getLog();
@@ -319,15 +320,16 @@ public class JobTest {
     Pod jobPod = createJobPod();
 
     server.expect().get().withPath("/apis/batch/v1/namespaces/ns1/jobs/job1")
-      .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
-      .always();
+        .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
+        .always();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
-      .once();
+    server.expect().get()
+        .withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+        .once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false&container=c1")
-      .andReturn(HttpURLConnection.HTTP_OK, "hello")
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, "hello")
+        .once();
 
     // When
     String log = client.batch().v1().jobs().inNamespace("ns1").withName("job1").inContainer("c1").getLog();
@@ -339,39 +341,39 @@ public class JobTest {
 
   private Pod createJobPod() {
     return new PodBuilder()
-      .withNewMetadata()
-      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("batch/v1")
-        .withBlockOwnerDeletion(true)
-        .withController(true)
-        .withKind("Job")
-        .withName("pi")
-        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-        .build())
-      .withName("job1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("batch/v1")
+            .withBlockOwnerDeletion(true)
+            .withController(true)
+            .withKind("Job")
+            .withName("pi")
+            .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+            .build())
+        .withName("job1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .endMetadata()
+        .build();
   }
 
   private JobBuilder createJobBuilder() {
     return new JobBuilder()
-      .withApiVersion("batch/v1")
-      .withNewMetadata()
-      .withName("job1")
-      .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
-      .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
-      .endMetadata()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("pi")
-      .withImage("perl")
-      .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
-      .endContainer()
-      .withRestartPolicy("Never")
-      .endSpec()
-      .endTemplate()
-      .endSpec();
+        .withApiVersion("batch/v1")
+        .withNewMetadata()
+        .withName("job1")
+        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
+        .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
+        .endMetadata()
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("pi")
+        .withImage("perl")
+        .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
+        .endContainer()
+        .withRestartPolicy("Never")
+        .endSpec()
+        .endTemplate()
+        .endSpec();
   }
 }

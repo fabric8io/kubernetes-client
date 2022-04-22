@@ -58,18 +58,21 @@ class V1IngressClassTest {
   @Test
   void testList() {
     // Given
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses").andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder().build()).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses").andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder()
+            .addNewItem().and()
+            .addNewItem().and().build())
+        .once();
 
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses").andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
-
-
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem()
+            .and().build())
+        .once();
 
     // When + Then
     IngressClassList ingressClassList = client.network().v1().ingressClasses().list();
@@ -88,40 +91,45 @@ class V1IngressClassTest {
   @Test
   void testListWithLables() {
     // Given
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder().build()).always();
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
-
+    server.expect()
+        .withPath("/apis/networking.k8s.io/v1/ingressclasses?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder().build()).always();
+    server.expect()
+        .withPath("/apis/networking.k8s.io/v1/ingressclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     // When + Then
     IngressClassList ingressClassList = client.network().v1().ingressClasses()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
-
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
 
     assertNotNull(ingressClassList);
     assertEquals(0, ingressClassList.getItems().size());
 
     ingressClassList = client.network().v1().ingressClasses()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     assertNotNull(ingressClassList);
     assertEquals(3, ingressClassList.getItems().size());
   }
 
-
   @Test
   void testGet() {
     // Given
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass1").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass1")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
 
     // When
     IngressClass ingressClass1 = client.network().v1().ingressClasses().withName("ingressClass1").get();
@@ -132,12 +140,13 @@ class V1IngressClassTest {
     assertNotNull(ingressClass2);
   }
 
-
   @Test
   void testDelete() {
     // Given
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass1").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
-    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass1")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
+    server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
 
     // When
     boolean result1 = client.network().v1().ingressClasses().withName("ingressClass1").delete().size() == 1;

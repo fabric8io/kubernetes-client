@@ -47,8 +47,8 @@ class ControllerRevisionTest {
     // Given
     ControllerRevision controllerRevision = getMockControllerRevision("my-cr1");
     server.expect().post().withPath("/apis/apps/v1/namespaces/default/controllerrevisions")
-      .andReturn(HttpURLConnection.HTTP_CREATED, controllerRevision)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, controllerRevision)
+        .once();
 
     // When
     ControllerRevision myCr = client.apps().controllerRevisions().inNamespace("default").create(controllerRevision);
@@ -61,24 +61,25 @@ class ControllerRevisionTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/default/controllerrevisions/cr1")
-      .andReturn(HttpURLConnection.HTTP_OK, getMockControllerRevision("cr1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, getMockControllerRevision("cr1"))
+        .once();
 
     // When
     ControllerRevision cr1 = client.apps().controllerRevisions().inNamespace("default").withName("cr1").get();
 
     // Then
     assertThat(cr1)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "cr1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "cr1");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/default/controllerrevisions")
-      .andReturn(HttpURLConnection.HTTP_OK, new ControllerRevisionListBuilder().addToItems(getMockControllerRevision("cr1")).build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new ControllerRevisionListBuilder().addToItems(getMockControllerRevision("cr1")).build())
+        .once();
 
     // When
     ControllerRevisionList controllerRevisionList = client.apps().controllerRevisions().inNamespace("default").list();
@@ -93,8 +94,8 @@ class ControllerRevisionTest {
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apps/v1/namespaces/default/controllerrevisions/cr1")
-      .andReturn(HttpURLConnection.HTTP_OK, getMockControllerRevision("cr1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, getMockControllerRevision("cr1"))
+        .once();
 
     // When
     boolean isDeleted = client.apps().controllerRevisions().inNamespace("default").withName("cr1").delete().size() == 1;
@@ -105,12 +106,12 @@ class ControllerRevisionTest {
 
   private ControllerRevision getMockControllerRevision(String name) {
     return new ControllerRevisionBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewDaemonSetData()
-      .withApiVersion("apps/v1")
-      .withKind("DaemonSet")
-      .endDaemonSetData()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewDaemonSetData()
+        .withApiVersion("apps/v1")
+        .withKind("DaemonSet")
+        .endDaemonSetData()
+        .build();
   }
 
 }

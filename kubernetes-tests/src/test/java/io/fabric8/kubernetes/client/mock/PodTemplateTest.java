@@ -50,8 +50,8 @@ public class PodTemplateTest {
     // Given
     PodTemplate pt1 = getPodTemplate();
     server.expect().post().withPath("/api/v1/namespaces/test/podtemplates")
-      .andReturn(200, pt1)
-      .once();
+        .andReturn(200, pt1)
+        .once();
 
     // When
     PodTemplate result = client.v1().podTemplates().inNamespace("test").create(pt1);
@@ -66,8 +66,8 @@ public class PodTemplateTest {
   public void testGet() {
     // Given
     server.expect().get().withPath("/api/v1/namespaces/test/podtemplates/pt1")
-      .andReturn(200, getPodTemplate())
-      .once();
+        .andReturn(200, getPodTemplate())
+        .once();
 
     // When
     PodTemplate result = client.v1().podTemplates().inNamespace("test").withName("pt1").get();
@@ -82,8 +82,8 @@ public class PodTemplateTest {
   public void testList() {
     // Given
     server.expect().get().withPath("/api/v1/namespaces/test/podtemplates")
-      .andReturn(200, new PodTemplateListBuilder().withItems(getPodTemplate()).build())
-      .once();
+        .andReturn(200, new PodTemplateListBuilder().withItems(getPodTemplate()).build())
+        .once();
 
     // When
     PodTemplateList podTemplateList = client.v1().podTemplates().inNamespace("test").list();
@@ -100,28 +100,29 @@ public class PodTemplateTest {
   public void testEdit() {
     // Given
     PodTemplate updatedPodTemplate = new PodTemplateBuilder()
-      .withNewMetadata()
-      .withName("pt1")
-      .addToLabels("foo", "bar")
-      .endMetadata()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("foo")
-      .withImage("docker.io/matzew/eventing-display@sha256:f1c948343622a75b5f7a9058aacdffd2dc1732e07a339477f7d1d6ef09da872a")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .build();
+        .withNewMetadata()
+        .withName("pt1")
+        .addToLabels("foo", "bar")
+        .endMetadata()
+        .withNewTemplate()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("foo")
+        .withImage("docker.io/matzew/eventing-display@sha256:f1c948343622a75b5f7a9058aacdffd2dc1732e07a339477f7d1d6ef09da872a")
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .build();
     server.expect().get().withPath("/api/v1/namespaces/test/podtemplates/pt1")
-      .andReturn(200, getPodTemplate())
-      .times(3);
+        .andReturn(200, getPodTemplate())
+        .times(3);
     server.expect().patch().withPath("/api/v1/namespaces/test/podtemplates/pt1")
-      .andReturn(200, updatedPodTemplate)
-      .once();
+        .andReturn(200, updatedPodTemplate)
+        .once();
 
     // When
-    PodTemplate podTemplate = client.v1().podTemplates().inNamespace("test").withName("pt1").edit(p -> new PodTemplateBuilder(p).editMetadata().addToLabels("foo", "bar").endMetadata().build());
+    PodTemplate podTemplate = client.v1().podTemplates().inNamespace("test").withName("pt1")
+        .edit(p -> new PodTemplateBuilder(p).editMetadata().addToLabels("foo", "bar").endMetadata().build());
 
     // Then
     assertEquals("pt1", podTemplate.getMetadata().getName());
@@ -134,8 +135,8 @@ public class PodTemplateTest {
   public void testDelete() {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/test/podtemplates/pt1")
-      .andReturn(200, getPodTemplate())
-      .once();
+        .andReturn(200, getPodTemplate())
+        .once();
 
     // When
     boolean isDeleted = client.v1().podTemplates().inNamespace("test").withName("pt1").delete().size() == 1;
@@ -146,15 +147,15 @@ public class PodTemplateTest {
 
   private PodTemplate getPodTemplate() {
     return new PodTemplateBuilder()
-      .withNewMetadata().withName("pt1").endMetadata()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("foo")
-      .withImage("docker.io/matzew/eventing-display@sha256:f1c948343622a75b5f7a9058aacdffd2dc1732e07a339477f7d1d6ef09da872a")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .build();
+        .withNewMetadata().withName("pt1").endMetadata()
+        .withNewTemplate()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("foo")
+        .withImage("docker.io/matzew/eventing-display@sha256:f1c948343622a75b5f7a9058aacdffd2dc1732e07a339477f7d1d6ef09da872a")
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .build();
   }
 }

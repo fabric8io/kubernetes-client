@@ -41,8 +41,8 @@ class CSINodeTest {
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-csinode.yml")).get();
     assertThat(items).isNotNull();
     AssertionsForClassTypes.assertThat(items.get(0))
-      .isInstanceOf(CSINode.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "node1");
+        .isInstanceOf(CSINode.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "node1");
   }
 
   @Test
@@ -50,24 +50,24 @@ class CSINodeTest {
     // Given
     CSINode csiNode = createNewCSINode("csinode1");
     server.expect().post().withPath("/apis/storage.k8s.io/v1/csinodes")
-      .andReturn(HttpURLConnection.HTTP_CREATED, csiNode)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, csiNode)
+        .once();
 
     // When
     CSINode createdCsiNode = client.storage().csiNodes().create(csiNode);
 
     // Then
     AssertionsForClassTypes.assertThat(createdCsiNode)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "csinode1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "csinode1");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/storage.k8s.io/v1/csinodes")
-      .andReturn(HttpURLConnection.HTTP_OK, new CSINodeListBuilder().addToItems(createNewCSINode("c1")).build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new CSINodeListBuilder().addToItems(createNewCSINode("c1")).build())
+        .once();
 
     // When
     CSINodeList csiNodeList = client.storage().csiNodes().list();
@@ -81,8 +81,8 @@ class CSINodeTest {
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/storage.k8s.io/v1/csinodes/c1")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createNewCSINode("c1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createNewCSINode("c1"))
+        .once();
 
     // When
     boolean isDeleted = client.storage().csiNodes().withName("c1").delete().size() == 1;
@@ -91,16 +91,16 @@ class CSINodeTest {
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();
   }
 
-  private CSINode createNewCSINode(String name){
+  private CSINode createNewCSINode(String name) {
     return new CSINodeBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addNewDriver()
-      .withName("mydriver.fabric8.io")
-      .withNodeID("mynodeid")
-      .withTopologyKeys("mycsidriver.example.com/regions", "mycsidriver.example.com/zones")
-      .endDriver()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addNewDriver()
+        .withName("mydriver.fabric8.io")
+        .withNodeID("mynodeid")
+        .withTopologyKeys("mycsidriver.example.com/regions", "mycsidriver.example.com/zones")
+        .endDriver()
+        .endSpec()
+        .build();
   }
 }

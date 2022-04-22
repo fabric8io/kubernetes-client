@@ -36,18 +36,18 @@ public class ImageStreamTagExample {
       final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       final String isTagName = "bar1:1.0.12";
       final ImageStreamTag isTag = client.imageStreamTags().inNamespace(project).createOrReplace(
-        new ImageStreamTagBuilder().withNewMetadata().withName(isTagName).endMetadata()
-          .withNewTag().withNewFrom().withKind("DockerImage").withName("openshift/wildfly-81-centos7:latest").endFrom().endTag()
-          .build()
-      );
+          new ImageStreamTagBuilder().withNewMetadata().withName(isTagName).endMetadata()
+              .withNewTag().withNewFrom().withKind("DockerImage").withName("openshift/wildfly-81-centos7:latest").endFrom()
+              .endTag()
+              .build());
       logger.info("Created ImageStreamTag: {}", isTag.getMetadata().getName());
       int limit = 0;
-      while (client.imageStreamTags().inNamespace(project).withName(isTagName).fromServer().get() == null && limit++ < 10){
+      while (client.imageStreamTags().inNamespace(project).withName(isTagName).fromServer().get() == null && limit++ < 10) {
         TimeUnit.SECONDS.sleep(1);
       }
       logger.info("ImageStreamTags in {}:", project);
-      client.imageStreamTags().inNamespace(project).list().getItems().forEach(ist ->
-        logger.info(" - {}", ist.getMetadata().getName()));
+      client.imageStreamTags().inNamespace(project).list().getItems()
+          .forEach(ist -> logger.info(" - {}", ist.getMetadata().getName()));
       final boolean deletedIsTag = client.imageStreamTags().withName(isTagName).delete().size() == 1;
       logger.info("Deleted ImageStreamTag: {}", deletedIsTag);
     }

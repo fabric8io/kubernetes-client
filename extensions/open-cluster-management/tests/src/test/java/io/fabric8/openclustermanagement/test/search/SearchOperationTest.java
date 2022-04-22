@@ -77,7 +77,8 @@ class SearchOperatorTest {
         .once();
 
     // When
-    boolean isDeleted = client.search().searchOperators().inNamespace("ns1").withName("sample-searchoperator").delete().size() == 1;
+    boolean isDeleted = client.search().searchOperators().inNamespace("ns1").withName("sample-searchoperator").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

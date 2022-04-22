@@ -37,14 +37,15 @@ class UserTest {
   NamespacedOpenShiftClient client;
 
   @BeforeEach
-  void setUp() { client = server.createOpenShiftClient(); }
+  void setUp() {
+    client = server.createOpenShiftClient();
+  }
 
   @Test
   void testList() {
-   server.expect().withPath("/apis/user.openshift.io/v1/users").andReturn(200, new UserListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).always();
-
+    server.expect().withPath("/apis/user.openshift.io/v1/users").andReturn(200, new UserListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build()).always();
 
     UserList userList = client.users().list();
     assertNotNull(userList);
@@ -56,17 +57,15 @@ class UserTest {
     assertEquals(2, userList.getItems().size());
   }
 
-
   @Test
   void testGet() {
-   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder()
-      .withNewMetadata().withName("user1").endMetadata()
-      .build()).once();
+    server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder()
+        .withNewMetadata().withName("user1").endMetadata()
+        .build()).once();
 
-   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder()
-      .withNewMetadata().withName("User2").endMetadata()
-      .build()).once();
-
+    server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder()
+        .withNewMetadata().withName("User2").endMetadata()
+        .build()).once();
 
     User user = client.users().withName("user1").get();
     assertNotNull(user);
@@ -80,12 +79,10 @@ class UserTest {
     assertNull(user);
   }
 
-
   @Test
   void testDelete() {
-   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
-   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
-
+    server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
+    server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder().build()).once();
 
     boolean deleted = client.users().withName("user1").delete().size() == 1;
 

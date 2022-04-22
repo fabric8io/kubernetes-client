@@ -41,43 +41,45 @@ class PriorityLevelConfigurationTest {
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/v1beta1-prioritylevelconfiguration.yml")).get();
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
-      .isInstanceOf(PriorityLevelConfiguration.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "my-priority-level-configuration");
+        .isInstanceOf(PriorityLevelConfiguration.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "my-priority-level-configuration");
   }
 
   @Test
   void get() {
     // Given
     server.expect().get().withPath("/apis/flowcontrol.apiserver.k8s.io/v1beta1/prioritylevelconfigurations/plc1")
-      .andReturn(HttpURLConnection.HTTP_OK, createPriorityLevelConfiguration("plc1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createPriorityLevelConfiguration("plc1"))
+        .once();
 
     // When
-    PriorityLevelConfiguration priorityLevelConfiguration = client.flowControl().v1beta1().priorityLevelConfigurations().withName("plc1").get();
+    PriorityLevelConfiguration priorityLevelConfiguration = client.flowControl().v1beta1().priorityLevelConfigurations()
+        .withName("plc1").get();
 
     // Then
     AssertionsForClassTypes.assertThat(priorityLevelConfiguration)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "plc1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "plc1");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/flowcontrol.apiserver.k8s.io/v1beta1/prioritylevelconfigurations")
-      .andReturn(HttpURLConnection.HTTP_OK, new PriorityLevelConfigurationListBuilder()
-        .addToItems(createPriorityLevelConfiguration("exempt"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityLevelConfigurationListBuilder()
+            .addToItems(createPriorityLevelConfiguration("exempt"))
+            .build())
+        .once();
 
     // When
-    PriorityLevelConfigurationList priorityLevelConfigurations = client.flowControl().v1beta1().priorityLevelConfigurations().list();
+    PriorityLevelConfigurationList priorityLevelConfigurations = client.flowControl().v1beta1().priorityLevelConfigurations()
+        .list();
 
     // Then
     AssertionsForClassTypes.assertThat(priorityLevelConfigurations).isNotNull();
     assertThat(priorityLevelConfigurations.getItems()).hasSize(1);
     AssertionsForClassTypes.assertThat(priorityLevelConfigurations.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "exempt");
+        .hasFieldOrPropertyWithValue("metadata.name", "exempt");
   }
 
   @Test
@@ -85,28 +87,31 @@ class PriorityLevelConfigurationTest {
     // Given
     PriorityLevelConfiguration priorityLevelConfiguration = createPriorityLevelConfiguration("prioritylevelconfiguration1");
     server.expect().post().withPath("/apis/flowcontrol.apiserver.k8s.io/v1beta1/prioritylevelconfigurations")
-      .andReturn(HttpURLConnection.HTTP_OK, priorityLevelConfiguration)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, priorityLevelConfiguration)
+        .once();
 
     // When
-    PriorityLevelConfiguration createdPriorityLevelConfiguration = client.flowControl().v1beta1().priorityLevelConfigurations().create(priorityLevelConfiguration);
+    PriorityLevelConfiguration createdPriorityLevelConfiguration = client.flowControl().v1beta1().priorityLevelConfigurations()
+        .create(priorityLevelConfiguration);
 
     // Then
     AssertionsForClassTypes.assertThat(createdPriorityLevelConfiguration).isNotNull();
     AssertionsForClassTypes.assertThat(createdPriorityLevelConfiguration)
-      .hasFieldOrPropertyWithValue("metadata.name", "prioritylevelconfiguration1");
+        .hasFieldOrPropertyWithValue("metadata.name", "prioritylevelconfiguration1");
   }
 
   @Test
   void delete() {
     // Given
     PriorityLevelConfiguration priorityLevelConfiguration = createPriorityLevelConfiguration("prioritylevelconfiguration1");
-    server.expect().delete().withPath("/apis/flowcontrol.apiserver.k8s.io/v1beta1/prioritylevelconfigurations/prioritylevelconfiguration1")
-      .andReturn(HttpURLConnection.HTTP_OK, priorityLevelConfiguration)
-      .once();
+    server.expect().delete()
+        .withPath("/apis/flowcontrol.apiserver.k8s.io/v1beta1/prioritylevelconfigurations/prioritylevelconfiguration1")
+        .andReturn(HttpURLConnection.HTTP_OK, priorityLevelConfiguration)
+        .once();
 
     // When
-    boolean isDeleted = client.flowControl().v1beta1().priorityLevelConfigurations().withName("prioritylevelconfiguration1").delete().size() == 1;
+    boolean isDeleted = client.flowControl().v1beta1().priorityLevelConfigurations().withName("prioritylevelconfiguration1")
+        .delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();
@@ -114,21 +119,21 @@ class PriorityLevelConfigurationTest {
 
   private PriorityLevelConfiguration createPriorityLevelConfiguration(String name) {
     return new PriorityLevelConfigurationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewLimited()
-      .withAssuredConcurrencyShares(20)
-      .withNewLimitResponse()
-      .withNewQueuing()
-      .withHandSize(3)
-      .withQueueLengthLimit(50)
-      .withQueues(16)
-      .endQueuing()
-      .withType("Queue")
-      .endLimitResponse()
-      .endLimited()
-      .withType("Limited")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewLimited()
+        .withAssuredConcurrencyShares(20)
+        .withNewLimitResponse()
+        .withNewQueuing()
+        .withHandSize(3)
+        .withQueueLengthLimit(50)
+        .withQueues(16)
+        .endQueuing()
+        .withType("Queue")
+        .endLimitResponse()
+        .endLimited()
+        .withType("Limited")
+        .endSpec()
+        .build();
   }
 }

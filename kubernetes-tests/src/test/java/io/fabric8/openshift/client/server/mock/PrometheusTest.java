@@ -48,9 +48,9 @@ class PrometheusTest {
     // Given
     Prometheus prometheus = getPrometheus();
     server.expect().post()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses")
-      .andReturn(HttpURLConnection.HTTP_OK, prometheus)
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses")
+        .andReturn(HttpURLConnection.HTTP_OK, prometheus)
+        .once();
 
     // When
     prometheus = client.monitoring().prometheuses().inNamespace("ns1").create(prometheus);
@@ -64,9 +64,9 @@ class PrometheusTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getPrometheus())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getPrometheus())
+        .once();
 
     // When
     Prometheus f = client.monitoring().prometheuses().inNamespace("ns1").withName("foo").get();
@@ -80,9 +80,9 @@ class PrometheusTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses")
-      .andReturn(HttpURLConnection.HTTP_OK, new PrometheusListBuilder().withItems(getPrometheus()).build())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses")
+        .andReturn(HttpURLConnection.HTTP_OK, new PrometheusListBuilder().withItems(getPrometheus()).build())
+        .once();
 
     // When
     PrometheusList fgList = client.monitoring().prometheuses().inNamespace("ns1").list();
@@ -97,9 +97,9 @@ class PrometheusTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getPrometheus())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheuses/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getPrometheus())
+        .once();
 
     // When
     boolean deleted = client.monitoring().prometheuses().inNamespace("ns1").withName("foo").delete().size() == 1;
@@ -110,10 +110,10 @@ class PrometheusTest {
 
   private Prometheus getPrometheus() {
     AlertmanagerEndpoints alertmanagerEndpoints = new AlertmanagerEndpointsBuilder()
-      .withName("alertmanager-main")
-      .withNamespace("monitoring")
-      .withPort(new IntOrString("web"))
-      .build();
+        .withName("alertmanager-main")
+        .withNamespace("monitoring")
+        .withPort(new IntOrString("web"))
+        .build();
     List<AlertmanagerEndpoints> alertmanagerEndpointsList = new ArrayList<>();
     alertmanagerEndpointsList.add(alertmanagerEndpoints);
 
@@ -121,11 +121,11 @@ class PrometheusTest {
     alertingSpec.setAlertmanagers(alertmanagerEndpointsList);
 
     return new PrometheusBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .withServiceAccountName("prometheus-k8s")
-      .withAlerting(alertingSpec)
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .withServiceAccountName("prometheus-k8s")
+        .withAlerting(alertingSpec)
+        .endSpec()
+        .build();
   }
 }

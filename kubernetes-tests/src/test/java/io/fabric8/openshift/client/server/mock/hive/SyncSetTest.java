@@ -37,26 +37,26 @@ class SyncSetTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/syncsets/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSyncSet("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSyncSet("test-get"))
+        .once();
 
     // When
     SyncSet syncSet = client.hive().syncSets().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(syncSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/syncsets")
-      .andReturn(HttpURLConnection.HTTP_OK, new SyncSetListBuilder()
-        .addToItems(createNewSyncSet("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SyncSetListBuilder()
+            .addToItems(createNewSyncSet("test-list"))
+            .build())
+        .once();
 
     // When
     SyncSetList syncSetList = client.hive().syncSets().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class SyncSetTest {
     assertThat(syncSetList).isNotNull();
     assertThat(syncSetList.getItems()).hasSize(1);
     assertThat(syncSetList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/syncsets/syncset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSyncSet("syncset1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSyncSet("syncset1"))
+        .once();
 
     // When
     boolean isDeleted = client.hive().syncSets().inNamespace("ns1").withName("syncset1").delete().size() == 1;
@@ -84,25 +84,25 @@ class SyncSetTest {
 
   private SyncSet createNewSyncSet(String name) {
     return new SyncSetBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withResourceApplyMode("Upsert")
-      .addNewClusterDeploymentRef()
-      .withName("ClusterName")
-      .endClusterDeploymentRef()
-      .addNewSecretMapping()
-      .withNewSourceRef()
-      .withName("ad-bind-password")
-      .withNamespace("default")
-      .endSourceRef()
-      .withNewTargetRef()
-      .withName("ad-bind-password")
-      .withNamespace("openshift-config")
-      .endTargetRef()
-      .endSecretMapping()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withResourceApplyMode("Upsert")
+        .addNewClusterDeploymentRef()
+        .withName("ClusterName")
+        .endClusterDeploymentRef()
+        .addNewSecretMapping()
+        .withNewSourceRef()
+        .withName("ad-bind-password")
+        .withNamespace("default")
+        .endSourceRef()
+        .withNewTargetRef()
+        .withName("ad-bind-password")
+        .withNamespace("openshift-config")
+        .endTargetRef()
+        .endSecretMapping()
+        .endSpec()
+        .build();
   }
 }

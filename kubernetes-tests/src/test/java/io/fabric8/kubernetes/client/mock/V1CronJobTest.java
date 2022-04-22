@@ -47,14 +47,14 @@ class V1CronJobTest {
   void testList() {
     server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs").andReturn(200, new CronJobListBuilder().build()).once();
     server.expect().withPath("/apis/batch/v1/namespaces/ns1/cronjobs").andReturn(200, new CronJobListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
+        .addNewItem().and()
+        .addNewItem().and().build()).once();
 
     server.expect().withPath("/apis/batch/v1/cronjobs").andReturn(200, new CronJobListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
+        .addNewItem().and()
+        .addNewItem().and()
+        .addNewItem()
+        .and().build()).once();
 
     CronJobList cronJobList = client.batch().v1().cronjobs().list();
     assertNotNull(cronJobList);
@@ -71,35 +71,43 @@ class V1CronJobTest {
 
   @Test
   void testListWithLables() {
-    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new CronJobListBuilder().build()).always();
-    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new CronJobListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath("/apis/batch/v1/namespaces/test/cronjobs?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new CronJobListBuilder().build()).always();
+    server.expect()
+        .withPath("/apis/batch/v1/namespaces/test/cronjobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new CronJobListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     CronJobList cronJobList = client.batch().v1().cronjobs()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
-
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
 
     assertNotNull(cronJobList);
     assertEquals(0, cronJobList.getItems().size());
 
     cronJobList = client.batch().v1().cronjobs()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     assertNotNull(cronJobList);
     assertEquals(3, cronJobList.getItems().size());
   }
+
   @Test
   void testGet() {
-    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder().build()).once();
-    server.expect().withPath("/apis/batch/v1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder().build())
+        .once();
+    server.expect().withPath("/apis/batch/v1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build())
+        .once();
 
     CronJob cronjob = client.batch().v1().cronjobs().withName("cronjob1").get();
     assertNotNull(cronjob);
@@ -113,68 +121,72 @@ class V1CronJobTest {
 
   @Test
   void testDelete() {
-    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronJob1").andReturn(200, new CronJobBuilder().withNewMetadata()
-      .withName("cronJob1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withSchedule("1 2-14 * * 0-1,5-6")
-      .withNewJobTemplate()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewImagePullSecret()
-      .withName("gcr-secret")
-      .endImagePullSecret()
-      .addNewContainer()
-      .withName("devopsish-netlify-cronjob")
-      .withImage("gcr.io/chrisshort-net/devopsish-netlify-cron:latest")
-      .addNewEnv()
-      .withName("URL")
-      .withNewValueFrom()
-      .withNewSecretKeyRef()
-      .withName("devops-build-hook")
-      .withKey("url")
-      .endSecretKeyRef()
-      .endValueFrom()
-      .endEnv()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .endJobTemplate()
-      .endSpec()
-      .build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronJob1")
+        .andReturn(200, new CronJobBuilder().withNewMetadata()
+            .withName("cronJob1")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withSchedule("1 2-14 * * 0-1,5-6")
+            .withNewJobTemplate()
+            .withNewSpec()
+            .withNewTemplate()
+            .withNewSpec()
+            .addNewImagePullSecret()
+            .withName("gcr-secret")
+            .endImagePullSecret()
+            .addNewContainer()
+            .withName("devopsish-netlify-cronjob")
+            .withImage("gcr.io/chrisshort-net/devopsish-netlify-cron:latest")
+            .addNewEnv()
+            .withName("URL")
+            .withNewValueFrom()
+            .withNewSecretKeyRef()
+            .withName("devops-build-hook")
+            .withKey("url")
+            .endSecretKeyRef()
+            .endValueFrom()
+            .endEnv()
+            .endContainer()
+            .endSpec()
+            .endTemplate()
+            .endSpec()
+            .endJobTemplate()
+            .endSpec()
+            .build())
+        .once();
 
-    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronJob2").andReturn(200, new CronJobBuilder().withNewMetadata()
-      .withName("cronJob2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withSchedule("*/1 * * * *")
-      .withNewJobTemplate()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("app")
-      .withImage("bitnami/kubecfg:0.5.0")
-      .addNewEnv()
-      .withName("TOKEN")
-      .withNewValueFrom()
-      .withNewSecretKeyRef()
-      .withName("default-token-rtw2m")
-      .withKey("token")
-      .endSecretKeyRef()
-      .endValueFrom()
-      .endEnv()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .endJobTemplate()
-      .endSpec()
-      .build()).once();
+    server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronJob2")
+        .andReturn(200, new CronJobBuilder().withNewMetadata()
+            .withName("cronJob2")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withSchedule("*/1 * * * *")
+            .withNewJobTemplate()
+            .withNewSpec()
+            .withNewTemplate()
+            .withNewSpec()
+            .addNewContainer()
+            .withName("app")
+            .withImage("bitnami/kubecfg:0.5.0")
+            .addNewEnv()
+            .withName("TOKEN")
+            .withNewValueFrom()
+            .withNewSecretKeyRef()
+            .withName("default-token-rtw2m")
+            .withKey("token")
+            .endSecretKeyRef()
+            .endValueFrom()
+            .endEnv()
+            .endContainer()
+            .endSpec()
+            .endTemplate()
+            .endSpec()
+            .endJobTemplate()
+            .endSpec()
+            .build())
+        .once();
 
     boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").delete().size() == 1;
     assertTrue(deleted);
@@ -186,34 +198,33 @@ class V1CronJobTest {
   @Test
   void testDeleteMulti() {
     CronJob cronjob1 = new CronJobBuilder().withNewMetadata()
-      .withNamespace("test")
-      .withName("cronjob1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .withNewStatus()
-      .endStatus()
-      .build();
+        .withNamespace("test")
+        .withName("cronjob1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .withNewStatus()
+        .endStatus()
+        .build();
     CronJob cronjob2 = new CronJobBuilder().withNewMetadata()
-      .withNamespace("ns1")
-      .withName("cronjob2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .withNewStatus()
-      .endStatus()
-      .build();
+        .withNamespace("ns1")
+        .withName("cronjob2")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .withNewStatus()
+        .endStatus()
+        .build();
     CronJob cronjob3 = new CronJobBuilder().withNewMetadata().withName("cronjob3").withNamespace("any").and().build();
 
     server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronjob1").andReturn(200, cronjob1).once();
     server.expect().withPath("/apis/batch/v1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder(cronjob1)
-      .editStatus().endStatus().build()).times(5);
+        .editStatus().endStatus().build()).times(5);
     server.expect().withPath("/apis/batch/v1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, cronjob2).once();
     server.expect().withPath("/apis/batch/v1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder(cronjob2)
-      .editStatus().endStatus().build()).times(5);
-
+        .editStatus().endStatus().build()).times(5);
 
     Boolean deleted = client.batch().v1().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
     assertTrue(deleted);
@@ -225,7 +236,8 @@ class V1CronJobTest {
   @Test
   void testDeleteWithNamespaceMismatch() {
     CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
-    NonNamespaceOperation<CronJob, CronJobList, Resource<CronJob>> cronJobOp = client.batch().v1().cronjobs().inNamespace("test1");
+    NonNamespaceOperation<CronJob, CronJobList, Resource<CronJob>> cronJobOp = client.batch().v1().cronjobs()
+        .inNamespace("test1");
     assertFalse(cronJobOp.delete(cronjob1).size() == 1);
   }
 
@@ -250,4 +262,3 @@ class V1CronJobTest {
     assertEquals("hello", hasMetadata.get(0).getMetadata().getName());
   }
 }
-

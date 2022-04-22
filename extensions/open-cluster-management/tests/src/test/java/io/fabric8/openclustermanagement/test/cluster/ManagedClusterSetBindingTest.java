@@ -80,7 +80,8 @@ class ManagedClusterSetBindingTest {
         .once();
 
     // When
-    boolean isDeleted = client.clusters().managedClusterSetBindings().inNamespace("ns1").withName("clustersetbinding").delete().size() == 1;
+    boolean isDeleted = client.clusters().managedClusterSetBindings().inNamespace("ns1").withName("clustersetbinding").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

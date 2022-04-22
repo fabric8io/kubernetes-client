@@ -37,26 +37,26 @@ class ClusterImageSetTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/clusterimagesets/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterImageSet("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterImageSet("test-get"))
+        .once();
 
     // When
     ClusterImageSet egressRouter = client.hive().clusterImageSets().withName("test-get").get();
 
     // Then
     assertThat(egressRouter)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/clusterimagesets")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterImageSetListBuilder()
-        .addToItems(createNewClusterImageSet("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterImageSetListBuilder()
+            .addToItems(createNewClusterImageSet("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterImageSetList ipPoolList = client.hive().clusterImageSets().list();
@@ -65,15 +65,15 @@ class ClusterImageSetTest {
     assertThat(ipPoolList).isNotNull();
     assertThat(ipPoolList.getItems()).hasSize(1);
     assertThat(ipPoolList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/clusterimagesets/clusterimageset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterImageSet("clusterimageset1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterImageSet("clusterimageset1"))
+        .once();
 
     // When
     boolean isDeleted = client.hive().clusterImageSets().withName("clusterimageset1").delete().size() == 1;
@@ -84,12 +84,12 @@ class ClusterImageSetTest {
 
   private ClusterImageSet createNewClusterImageSet(String name) {
     return new ClusterImageSetBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withReleaseImage("quay.io/openshift-release-dev/ocp-release:4.0.0-0.6")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withReleaseImage("quay.io/openshift-release-dev/ocp-release:4.0.0-0.6")
+        .endSpec()
+        .build();
   }
 }

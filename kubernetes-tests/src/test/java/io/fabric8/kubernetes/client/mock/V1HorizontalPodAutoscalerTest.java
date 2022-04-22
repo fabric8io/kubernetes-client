@@ -175,7 +175,8 @@ public class V1HorizontalPodAutoscalerTest {
         horizontalPodAutoscaler2);
     assertTrue(deleted);
 
-    deleted = client.autoscaling().v1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3).size() == 1;
+    deleted = client.autoscaling().v1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3)
+        .size() == 1;
     assertFalse(deleted);
   }
 

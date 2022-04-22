@@ -35,23 +35,26 @@ class ImageSignatureTest {
     // Given
     ImageSignature is = createImageSignatureBuilder("test-get").build();
     server.expect().post().withPath("/apis/image.openshift.io/v1/imagesignatures")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createImageSignatureBuilder("sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158@sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158").build())
-      .once();
-    
+        .andReturn(HttpURLConnection.HTTP_CREATED, createImageSignatureBuilder(
+            "sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158@sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158")
+                .build())
+        .once();
+
     // When
     ImageSignature createdIs = client.imageSignatures().create(is);
-    
+
     // Then
     assertThat(createdIs).isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158@sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158");
+        .hasFieldOrPropertyWithValue("metadata.name",
+            "sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158@sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/image.openshift.io/v1/imagesignatures/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, new StatusBuilder().withStatus("Success").build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new StatusBuilder().withStatus("Success").build())
+        .once();
 
     // When
     boolean isDeleted = client.imageSignatures().withName("test-delete").delete().size() == 1;
@@ -62,15 +65,15 @@ class ImageSignatureTest {
 
   private ImageSignatureBuilder createImageSignatureBuilder(String name) {
     return new ImageSignatureBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewMetadata().withName(name).endMetadata()
-      .withType("DockerImage")
-      .withContent("VGVzdENvbnRlbnQK")
-      .addNewCondition()
-      .withMessage("testMessage")
-      .withLastProbeTime("2006-01-02T15:04:05Z")
-      .withReason("SomeReason")
-      .withStatus("TestStatus")
-      .endCondition();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewMetadata().withName(name).endMetadata()
+        .withType("DockerImage")
+        .withContent("VGVzdENvbnRlbnQK")
+        .addNewCondition()
+        .withMessage("testMessage")
+        .withLastProbeTime("2006-01-02T15:04:05Z")
+        .withReason("SomeReason")
+        .withStatus("TestStatus")
+        .endCondition();
   }
 }

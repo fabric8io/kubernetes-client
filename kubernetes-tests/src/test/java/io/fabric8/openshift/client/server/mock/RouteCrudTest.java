@@ -38,14 +38,14 @@ class RouteCrudTest {
   void testCrud() {
 
     Route route1 = new RouteBuilder().withNewMetadata().withName("route1")
-      .addToLabels("foo", "bar")
-      .and().build();
+        .addToLabels("foo", "bar")
+        .and().build();
     Route route2 = new RouteBuilder().withNewMetadata().withName("route2")
-      .addToLabels("foo", "bar")
-      .and().build();
+        .addToLabels("foo", "bar")
+        .and().build();
     Route route3 = new RouteBuilder().withNewMetadata().withName("route3")
-      .addToLabels("foo", "bar")
-      .and().build();
+        .addToLabels("foo", "bar")
+        .and().build();
 
     client.routes().inNamespace("ns1").create(route1);
     client.routes().inNamespace("ns1").create(route2);

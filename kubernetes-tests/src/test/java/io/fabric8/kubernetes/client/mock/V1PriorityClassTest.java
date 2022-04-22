@@ -43,11 +43,13 @@ class V1PriorityClassTest {
   @Test
   void testList() {
     // Given
-    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses").andReturn(HttpURLConnection.HTTP_OK, new PriorityClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses")
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityClassListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem()
+            .and().build())
+        .once();
 
     // When
     PriorityClassList priorityClassList = client.scheduling().v1().priorityClasses().list();
@@ -60,24 +62,30 @@ class V1PriorityClassTest {
   @Test
   void testListWithLables() {
     // Given
-    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(HttpURLConnection.HTTP_OK, new PriorityClassListBuilder().build()).always();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(HttpURLConnection.HTTP_OK, new PriorityClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath("/apis/scheduling.k8s.io/v1/priorityclasses?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityClassListBuilder().build()).always();
+    server.expect()
+        .withPath("/apis/scheduling.k8s.io/v1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityClassListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     // When
     PriorityClassList priorityClassList1 = client.scheduling().v1().priorityClasses()
-      .withLabel("key1", "value1")
-      .withLabel("key2", "value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     PriorityClassList priorityClassList2 = client.scheduling().v1().priorityClasses()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
 
     // Then
     assertEquals(3, priorityClassList1.getItems().size());
@@ -87,8 +95,10 @@ class V1PriorityClassTest {
   @Test
   void testGet() {
     // Given
-    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/priorityclass1").andReturn(HttpURLConnection.HTTP_OK, new PriorityClassBuilder().build()).once();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/priorityclass2").andReturn(HttpURLConnection.HTTP_OK, new PriorityClassBuilder().build()).once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/priorityclass1")
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityClassBuilder().build()).once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/priorityclass2")
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityClassBuilder().build()).once();
 
     // When
     PriorityClass priorityClass1 = client.scheduling().v1().priorityClasses().withName("priorityclass1").get();
@@ -103,12 +113,14 @@ class V1PriorityClassTest {
   @Test
   void testDelete() {
     // Given
-    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/priorityclass1").andReturn(HttpURLConnection.HTTP_OK, new PriorityClassBuilder()
-      .withNewMetadata().withName("high-priority").endMetadata()
-      .withValue(100000)
-      .withGlobalDefault(false)
-      .withDescription("This priority class should be used for XYZ service pods only.")
-      .build()).once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/priorityclass1")
+        .andReturn(HttpURLConnection.HTTP_OK, new PriorityClassBuilder()
+            .withNewMetadata().withName("high-priority").endMetadata()
+            .withValue(100000)
+            .withGlobalDefault(false)
+            .withDescription("This priority class should be used for XYZ service pods only.")
+            .build())
+        .once();
 
     // When
     boolean deleted = client.scheduling().v1().priorityClasses().withName("priorityclass1").delete().size() == 1;
@@ -121,22 +133,22 @@ class V1PriorityClassTest {
   void testDeleteMulti() {
     // Given
     PriorityClass priorityClass1 = new PriorityClassBuilder()
-      .withNewMetadata().withName("high-priority").endMetadata()
-      .withValue(100000)
-      .withGlobalDefault(false)
-      .withDescription("This priority class should be used for XYZ service pods only.")
-      .build();
+        .withNewMetadata().withName("high-priority").endMetadata()
+        .withValue(100000)
+        .withGlobalDefault(false)
+        .withDescription("This priority class should be used for XYZ service pods only.")
+        .build();
     PriorityClass priorityClass2 = new PriorityClassBuilder()
-      .withNewMetadata().withName("super-high-priority").endMetadata()
-      .withValue(1000000)
-      .withGlobalDefault(false)
-      .withDescription("This priority class should be used for XYZ service pods only.")
-      .build();
+        .withNewMetadata().withName("super-high-priority").endMetadata()
+        .withValue(1000000)
+        .withGlobalDefault(false)
+        .withDescription("This priority class should be used for XYZ service pods only.")
+        .build();
 
     server.expect().delete().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/high-priority")
-      .andReturn(HttpURLConnection.HTTP_OK, priorityClass1).once();
+        .andReturn(HttpURLConnection.HTTP_OK, priorityClass1).once();
     server.expect().delete().withPath("/apis/scheduling.k8s.io/v1/priorityclasses/super-high-priority")
-      .andReturn(HttpURLConnection.HTTP_OK, priorityClass2).once();
+        .andReturn(HttpURLConnection.HTTP_OK, priorityClass2).once();
 
     // When
     boolean deleted = client.scheduling().v1().priorityClasses().delete(priorityClass1, priorityClass2);
@@ -149,7 +161,9 @@ class V1PriorityClassTest {
   void testCreateWithNameMismatch() {
     PriorityClass priorityClass1 = new PriorityClassBuilder().withNewMetadata().withName("priorityclass1").and().build();
     Resource<PriorityClass> pcOp = client.scheduling().v1().priorityClasses().withName("mypriorityclass1");
-    Assertions.assertThrows(KubernetesClientException.class, () -> { pcOp.create(priorityClass1); });
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      pcOp.create(priorityClass1);
+    });
   }
 
   @Test

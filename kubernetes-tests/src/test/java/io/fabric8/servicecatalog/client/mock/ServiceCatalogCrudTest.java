@@ -31,10 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Class testing crud operations on ServiceCatalog
@@ -44,18 +44,19 @@ class ServiceCatalogCrudTest {
 
   public ServiceCatalogMockServer server = null;
   public ServiceCatalogClient client = null;
+
   @BeforeEach
-  void setUp(){
+  void setUp() {
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
-    server =  new ServiceCatalogMockServer(
-      new Context(),
-      new MockWebServer(),
-      responses,
-      new KubernetesMixedDispatcher(responses),
-      true
-    );
+    server = new ServiceCatalogMockServer(
+        new Context(),
+        new MockWebServer(),
+        responses,
+        new KubernetesMixedDispatcher(responses),
+        true);
     client = server.createServiceCatalog();
   }
+
   /**
    * Creates two brokers and gets list of all brokers.
    * List mustn't be null and have size of 2.
@@ -65,22 +66,22 @@ class ServiceCatalogCrudTest {
   void testList() {
 
     ClusterServiceBroker broker1 = new ClusterServiceBrokerBuilder()
-      .withNewMetadata()
-      .withName("broker1")
-      .endMetadata()
-      .withNewSpec()
-      .withUrl("https://broker1.example.com")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("broker1")
+        .endMetadata()
+        .withNewSpec()
+        .withUrl("https://broker1.example.com")
+        .endSpec()
+        .build();
 
     ClusterServiceBroker broker2 = new ClusterServiceBrokerBuilder()
-      .withNewMetadata()
-      .withName("broker2")
-      .endMetadata()
-      .withNewSpec()
-      .withUrl("https://broker2.example.com")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("broker2")
+        .endMetadata()
+        .withNewSpec()
+        .withUrl("https://broker2.example.com")
+        .endSpec()
+        .build();
 
     client.clusterServiceBrokers().create(broker1);
     client.clusterServiceBrokers().create(broker2);
@@ -100,13 +101,13 @@ class ServiceCatalogCrudTest {
   void testGet() {
 
     ClusterServiceBroker brokerMock = new ClusterServiceBrokerBuilder()
-      .withNewMetadata()
-      .withName("broker")
-      .endMetadata()
-      .withNewSpec()
-      .withUrl("https://broker.example.com")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("broker")
+        .endMetadata()
+        .withNewSpec()
+        .withUrl("https://broker.example.com")
+        .endSpec()
+        .build();
 
     client.clusterServiceBrokers().create(brokerMock);
 
@@ -123,11 +124,10 @@ class ServiceCatalogCrudTest {
   @Order(3)
   void testLoadFromFile() {
 
-
-    ClusterServiceBroker brokerFromFile = client.clusterServiceBrokers().load(getClass().getResourceAsStream("/test-broker.yml")).get();
+    ClusterServiceBroker brokerFromFile = client.clusterServiceBrokers()
+        .load(getClass().getResourceAsStream("/test-broker.yml")).get();
 
     client.clusterServiceBrokers().create(brokerFromFile);
-
 
     ClusterServiceBroker brokerGet = client.clusterServiceBrokers().withName("broker").get();
 
@@ -143,13 +143,13 @@ class ServiceCatalogCrudTest {
   void testDelete() {
 
     ClusterServiceBroker broker = new ClusterServiceBrokerBuilder()
-      .withNewMetadata()
-      .withName("broker")
-      .endMetadata()
-      .withNewSpec()
-      .withUrl("https://broker.example.com")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("broker")
+        .endMetadata()
+        .withNewSpec()
+        .withUrl("https://broker.example.com")
+        .endSpec()
+        .build();
 
     client.clusterServiceBrokers().create(broker);
 

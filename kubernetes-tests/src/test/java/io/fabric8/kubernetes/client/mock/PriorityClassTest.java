@@ -41,11 +41,10 @@ public class PriorityClassTest {
   @Test
   void testList() {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses").andReturn(200, new PriorityClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
-
+        .addNewItem().and()
+        .addNewItem().and()
+        .addNewItem()
+        .and().build()).once();
 
     PriorityClassList priorityClassList = client.scheduling().v1beta1().priorityClasses().list();
     assertNotNull(priorityClassList);
@@ -54,33 +53,40 @@ public class PriorityClassTest {
 
   @Test
   void testListWithLables() {
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PriorityClassListBuilder().build()).always();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PriorityClassListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
-
+    server.expect()
+        .withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new PriorityClassListBuilder().build()).always();
+    server.expect()
+        .withPath(
+            "/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new PriorityClassListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     PriorityClassList priorityClassList = client.scheduling().v1beta1().priorityClasses()
-      .withLabel("key1", "value1")
-      .withLabel("key2", "value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
     assertEquals(3, priorityClassList.getItems().size());
 
     priorityClassList = client.scheduling().v1beta1().priorityClasses()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
     assertEquals(0, priorityClassList.getItems().size());
   }
 
   @Test
   void testGet() {
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, new PriorityClassBuilder().build()).once();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, new PriorityClassBuilder().build()).once();
-
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1")
+        .andReturn(200, new PriorityClassBuilder().build()).once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2")
+        .andReturn(200, new PriorityClassBuilder().build()).once();
 
     PriorityClass priorityClass1 = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").get();
     assertNotNull(priorityClass1);
@@ -92,13 +98,14 @@ public class PriorityClassTest {
 
   @Test
   void testDelete() {
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, new PriorityClassBuilder()
-      .withNewMetadata().withName("high-priority").endMetadata()
-      .withValue(new Integer(100000))
-      .withGlobalDefault(false)
-      .withDescription("This priority class should be used for XYZ service pods only.")
-      .build()).once();
-
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1")
+        .andReturn(200, new PriorityClassBuilder()
+            .withNewMetadata().withName("high-priority").endMetadata()
+            .withValue(new Integer(100000))
+            .withGlobalDefault(false)
+            .withDescription("This priority class should be used for XYZ service pods only.")
+            .build())
+        .once();
 
     boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete().size() == 1;
     assertTrue(deleted);
@@ -107,25 +114,30 @@ public class PriorityClassTest {
   @Test
   void testDeleteMulti() {
     PriorityClass priorityClass1 = new PriorityClassBuilder()
-      .withNewMetadata().withName("high-priority").endMetadata()
-      .withValue(new Integer(100000))
-      .withGlobalDefault(false)
-      .withDescription("This priority class should be used for XYZ service pods only.")
-      .build();
+        .withNewMetadata().withName("high-priority").endMetadata()
+        .withValue(new Integer(100000))
+        .withGlobalDefault(false)
+        .withDescription("This priority class should be used for XYZ service pods only.")
+        .build();
     PriorityClass priorityClass2 = new PriorityClassBuilder()
-      .withNewMetadata().withName("super-high-priority").endMetadata()
-      .withValue(new Integer(1000000))
-      .withGlobalDefault(false)
-      .withDescription("This priority class should be used for XYZ service pods only.")
-      .build();
+        .withNewMetadata().withName("super-high-priority").endMetadata()
+        .withValue(new Integer(1000000))
+        .withGlobalDefault(false)
+        .withDescription("This priority class should be used for XYZ service pods only.")
+        .build();
 
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, priorityClass1).once();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, new PriorityClassBuilder(priorityClass1)
-      .editMetadata().addToAnnotations("foo", "bar").endMetadata().build()).times(5);
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, priorityClass2).once();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, new PriorityClassBuilder(priorityClass2)
-      .editMetadata().addToAnnotations("foo", "bar").endMetadata().build()).times(5);
-
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, priorityClass1)
+        .once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1")
+        .andReturn(200, new PriorityClassBuilder(priorityClass1)
+            .editMetadata().addToAnnotations("foo", "bar").endMetadata().build())
+        .times(5);
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, priorityClass2)
+        .once();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2")
+        .andReturn(200, new PriorityClassBuilder(priorityClass2)
+            .editMetadata().addToAnnotations("foo", "bar").endMetadata().build())
+        .times(5);
 
     boolean deleted = client.scheduling().v1beta1().priorityClasses().delete(priorityClass1, priorityClass2);
     assertTrue(deleted);
@@ -142,6 +154,7 @@ public class PriorityClassTest {
 
   @Test
   void testLoadFromFile() {
-    assertNotNull(client.scheduling().v1beta1().priorityClasses().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
+    assertNotNull(
+        client.scheduling().v1beta1().priorityClasses().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
   }
 }

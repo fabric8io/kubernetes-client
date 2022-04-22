@@ -37,26 +37,28 @@ class GroupTest {
 
   OpenShiftMockServer server;
   NamespacedOpenShiftClient client;
+
   @BeforeEach
-  void setUp() { client = server.createOpenShiftClient(); }
+  void setUp() {
+    client = server.createOpenShiftClient();
+  }
 
   @Test
   void testList() {
-   server.expect().withPath("/apis/user.openshift.io/v1/groups").andReturn(200, new GroupListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).always();
+    server.expect().withPath("/apis/user.openshift.io/v1/groups").andReturn(200, new GroupListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build()).always();
 
-   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("autoscaling.k8s.io")
-      .endGroup()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("security.openshift.io")
-      .endGroup()
-      .build()).always();
-
+    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+        .addNewGroup()
+        .withApiVersion("v1")
+        .withName("autoscaling.k8s.io")
+        .endGroup()
+        .addNewGroup()
+        .withApiVersion("v1")
+        .withName("security.openshift.io")
+        .endGroup()
+        .build()).always();
 
     GroupList groupList = client.groups().list();
     assertNotNull(groupList);
@@ -68,17 +70,15 @@ class GroupTest {
     assertEquals(2, groupList.getItems().size());
   }
 
-
   @Test
   void testGet() {
-   server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder()
-      .withNewMetadata().withName("group1").endMetadata()
-      .build()).once();
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder()
+        .withNewMetadata().withName("group1").endMetadata()
+        .build()).once();
 
-   server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn(200, new GroupBuilder()
-      .withNewMetadata().withName("Group2").endMetadata()
-      .build()).once();
-
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn(200, new GroupBuilder()
+        .withNewMetadata().withName("Group2").endMetadata()
+        .build()).once();
 
     Group group = client.groups().withName("group1").get();
     assertNotNull(group);
@@ -92,12 +92,10 @@ class GroupTest {
     assertNull(group);
   }
 
-
   @Test
   void testDelete() {
-   server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
-   server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
-
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn(200, new GroupBuilder().build()).once();
 
     boolean deleted = client.groups().withName("group1").delete().size() == 1;
 
@@ -111,10 +109,10 @@ class GroupTest {
   @Test
   void testDeleteWithPropagationPolicy() {
     server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
-    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn(200, new GroupBuilder().build()).once();
 
-
-    boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
+    boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete()
+        .size() == 1;
 
     deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
     assertTrue(deleted);

@@ -37,24 +37,22 @@ class ClusterRoleCrudTest {
   KubernetesClient client;
 
   @Test
-  void crudTest(){
-
+  void crudTest() {
 
     ClusterRole kubernetesClusterRole = new ClusterRoleBuilder()
-      .withNewMetadata()
+        .withNewMetadata()
         .withName("node-reader")
-      .endMetadata()
-      .addToRules(0, new PolicyRuleBuilder()
-        .addToApiGroups(0,"")
-        .addToNonResourceURLs(0,"/healthz")
-        .addToResourceNames(0,"my-node")
-        .addToResources(0,"nodes")
-        .addToVerbs(0, "get")
-        .addToVerbs(1, "watch")
-        .addToVerbs(2, "list")
-        .build()
-      )
-      .build();
+        .endMetadata()
+        .addToRules(0, new PolicyRuleBuilder()
+            .addToApiGroups(0, "")
+            .addToNonResourceURLs(0, "/healthz")
+            .addToResourceNames(0, "my-node")
+            .addToResources(0, "nodes")
+            .addToVerbs(0, "get")
+            .addToVerbs(1, "watch")
+            .addToVerbs(2, "list")
+            .build())
+        .build();
 
     //test of creation
     kubernetesClusterRole = client.rbac().clusterRoles().create(kubernetesClusterRole);
@@ -118,7 +116,7 @@ class ClusterRoleCrudTest {
     //test of updation
 
     kubernetesClusterRole = client.rbac().clusterRoles().withName("node-reader").edit(c -> new ClusterRoleBuilder(c)
-                                  .editRule(0).addToApiGroups(1, "extensions").endRule().build());
+        .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(kubernetesClusterRole);
     assertEquals("ClusterRole", kubernetesClusterRole.getKind());
@@ -151,7 +149,7 @@ class ClusterRoleCrudTest {
 
     assertTrue(deleted);
     kubernetesClusterRoleList = client.rbac().clusterRoles().list();
-    assertEquals(0,kubernetesClusterRoleList.getItems().size());
+    assertEquals(0, kubernetesClusterRoleList.getItems().size());
   }
 
   @Test

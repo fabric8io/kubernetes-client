@@ -37,26 +37,26 @@ class ClusterRelocateTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterrelocates/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRelocate("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRelocate("test-get"))
+        .once();
 
     // When
     ClusterRelocate clusterRelocate = client.hive().clusterRelocates().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(clusterRelocate)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterrelocates")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterRelocateListBuilder()
-        .addToItems(createNewClusterRelocate("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterRelocateListBuilder()
+            .addToItems(createNewClusterRelocate("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterRelocateList clusterRelocateList = client.hive().clusterRelocates().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class ClusterRelocateTest {
     assertThat(clusterRelocateList).isNotNull();
     assertThat(clusterRelocateList.getItems()).hasSize(1);
     assertThat(clusterRelocateList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterrelocates/clusterrelocate1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRelocate("clusterrelocate1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRelocate("clusterrelocate1"))
+        .once();
 
     // When
     boolean isDeleted = client.hive().clusterRelocates().inNamespace("ns1").withName("clusterrelocate1").delete().size() == 1;
@@ -84,18 +84,18 @@ class ClusterRelocateTest {
 
   private ClusterRelocate createNewClusterRelocate(String name) {
     return new ClusterRelocateBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withNewKubeconfigSecretRef()
-      .withName("hive2-remote-kubeconfig-secret")
-      .withNamespace("hive")
-      .endKubeconfigSecretRef()
-      .withNewClusterDeploymentSelector()
-      .addToMatchLabels("hive-instance", "hive2")
-      .endClusterDeploymentSelector()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withNewKubeconfigSecretRef()
+        .withName("hive2-remote-kubeconfig-secret")
+        .withNamespace("hive")
+        .endKubeconfigSecretRef()
+        .withNewClusterDeploymentSelector()
+        .addToMatchLabels("hive-instance", "hive2")
+        .endClusterDeploymentSelector()
+        .endSpec()
+        .build();
   }
 }

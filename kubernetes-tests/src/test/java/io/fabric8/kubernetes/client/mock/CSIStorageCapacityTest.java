@@ -41,8 +41,8 @@ class CSIStorageCapacityTest {
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-csistoragecapacity.yml")).get();
     assertThat(items).isNotNull();
     AssertionsForClassTypes.assertThat(items.get(0))
-      .isInstanceOf(CSIStorageCapacity.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "csisc-64103396-0d32-11ea-945c-e3ede5f0f3ae");
+        .isInstanceOf(CSIStorageCapacity.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "csisc-64103396-0d32-11ea-945c-e3ede5f0f3ae");
   }
 
   @Test
@@ -50,24 +50,26 @@ class CSIStorageCapacityTest {
     // Given
     CSIStorageCapacity csiStorageCapacity = createNewCSIStorageCapacity("csidriver1");
     server.expect().post().withPath("/apis/storage.k8s.io/v1beta1/namespaces/default/csistoragecapacities")
-      .andReturn(HttpURLConnection.HTTP_CREATED, csiStorageCapacity)
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, csiStorageCapacity)
+        .once();
 
     // When
-    CSIStorageCapacity createdCsiStorageCapacity = client.storage().csiStorageCapacities().inNamespace("default").create(csiStorageCapacity);
+    CSIStorageCapacity createdCsiStorageCapacity = client.storage().csiStorageCapacities().inNamespace("default")
+        .create(csiStorageCapacity);
 
     // Then
     AssertionsForClassTypes.assertThat(createdCsiStorageCapacity)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "csidriver1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "csidriver1");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/storage.k8s.io/v1beta1/namespaces/default/csistoragecapacities")
-      .andReturn(HttpURLConnection.HTTP_OK, new CSIStorageCapacityListBuilder().addToItems(createNewCSIStorageCapacity("c1")).build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new CSIStorageCapacityListBuilder().addToItems(createNewCSIStorageCapacity("c1")).build())
+        .once();
 
     // When
     CSIStorageCapacityList csiStorageCapacityList = client.storage().csiStorageCapacities().inNamespace("default").list();
@@ -81,8 +83,8 @@ class CSIStorageCapacityTest {
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/storage.k8s.io/v1beta1/namespaces/default/csistoragecapacities/c1")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createNewCSIStorageCapacity("c1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createNewCSIStorageCapacity("c1"))
+        .once();
 
     // When
     boolean isDeleted = client.storage().csiStorageCapacities().inNamespace("default").withName("c1").delete().size() == 1;
@@ -93,15 +95,15 @@ class CSIStorageCapacityTest {
 
   private CSIStorageCapacity createNewCSIStorageCapacity(String name) {
     return new CSIStorageCapacityBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withStorageClassName("foo")
-      .withNewNodeTopology()
-      .addNewMatchExpression()
-      .withKey("kubernetes.io/hostname")
-      .withValues("node-1")
-      .withOperator("In")
-      .endMatchExpression()
-      .endNodeTopology()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withStorageClassName("foo")
+        .withNewNodeTopology()
+        .addNewMatchExpression()
+        .withKey("kubernetes.io/hostname")
+        .withValues("node-1")
+        .withOperator("In")
+        .endMatchExpression()
+        .endNodeTopology()
+        .build();
   }
 }

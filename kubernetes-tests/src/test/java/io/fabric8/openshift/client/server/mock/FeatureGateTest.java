@@ -39,9 +39,9 @@ class FeatureGateTest {
     // Given
     FeatureGate featureGate = getFeatureGate();
     server.expect().post()
-      .withPath("/apis/config.openshift.io/v1/featuregates")
-      .andReturn(HttpURLConnection.HTTP_OK, featureGate)
-      .once();
+        .withPath("/apis/config.openshift.io/v1/featuregates")
+        .andReturn(HttpURLConnection.HTTP_OK, featureGate)
+        .once();
 
     // When
     featureGate = client.config().featureGates().create(featureGate);
@@ -55,9 +55,9 @@ class FeatureGateTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/config.openshift.io/v1/featuregates/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getFeatureGate())
-      .once();
+        .withPath("/apis/config.openshift.io/v1/featuregates/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getFeatureGate())
+        .once();
 
     // When
     FeatureGate f = client.config().featureGates().withName("foo").get();
@@ -71,9 +71,9 @@ class FeatureGateTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/config.openshift.io/v1/featuregates")
-      .andReturn(HttpURLConnection.HTTP_OK, new FeatureGateListBuilder().withItems(getFeatureGate()).build())
-      .once();
+        .withPath("/apis/config.openshift.io/v1/featuregates")
+        .andReturn(HttpURLConnection.HTTP_OK, new FeatureGateListBuilder().withItems(getFeatureGate()).build())
+        .once();
 
     // When
     FeatureGateList fgList = client.config().featureGates().list();
@@ -88,9 +88,9 @@ class FeatureGateTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/config.openshift.io/v1/featuregates/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getFeatureGate())
-      .once();
+        .withPath("/apis/config.openshift.io/v1/featuregates/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getFeatureGate())
+        .once();
 
     // When
     boolean deleted = client.config().featureGates().withName("foo").delete().size() == 1;
@@ -101,7 +101,7 @@ class FeatureGateTest {
 
   private FeatureGate getFeatureGate() {
     return new FeatureGateBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .build();
   }
 }

@@ -37,26 +37,26 @@ class ClusterPoolTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterpools/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterPool("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterPool("test-get"))
+        .once();
 
     // When
     ClusterPool clusterPool = client.hive().clusterPools().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(clusterPool)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterpools")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterPoolListBuilder()
-        .addToItems(createNewClusterPool("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterPoolListBuilder()
+            .addToItems(createNewClusterPool("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterPoolList clusterPoolList = client.hive().clusterPools().inNamespace("ns1").list();
@@ -65,15 +65,15 @@ class ClusterPoolTest {
     assertThat(clusterPoolList).isNotNull();
     assertThat(clusterPoolList.getItems()).hasSize(1);
     assertThat(clusterPoolList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterpools/clusterpool1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterPool("clusterpool1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterPool("clusterpool1"))
+        .once();
 
     // When
     boolean isDeleted = client.hive().clusterPools().inNamespace("ns1").withName("clusterpool1").delete().size() == 1;
@@ -84,28 +84,28 @@ class ClusterPoolTest {
 
   private ClusterPool createNewClusterPool(String name) {
     return new ClusterPoolBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withBaseDomain("new-installer.openshift.com")
-      .withNewImageSetRef()
-      .withName("openshift-4-6")
-      .endImageSetRef()
-      .withNewPlatform()
-      .withNewAws()
-      .withNewCredentialsSecretRef()
-      .withName("hive-team-aws-creds")
-      .endCredentialsSecretRef()
-      .withRegion("us-east-1")
-      .endAws()
-      .endPlatform()
-      .withNewPullSecretRef()
-      .withName("hive-team-pull-secret")
-      .endPullSecretRef()
-      .withRunningCount(1)
-      .withSize(3)
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withBaseDomain("new-installer.openshift.com")
+        .withNewImageSetRef()
+        .withName("openshift-4-6")
+        .endImageSetRef()
+        .withNewPlatform()
+        .withNewAws()
+        .withNewCredentialsSecretRef()
+        .withName("hive-team-aws-creds")
+        .endCredentialsSecretRef()
+        .withRegion("us-east-1")
+        .endAws()
+        .endPlatform()
+        .withNewPullSecretRef()
+        .withName("hive-team-pull-secret")
+        .endPullSecretRef()
+        .withRunningCount(1)
+        .withSize(3)
+        .endSpec()
+        .build();
   }
 }

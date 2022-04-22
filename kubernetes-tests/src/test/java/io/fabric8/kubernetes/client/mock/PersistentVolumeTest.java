@@ -46,10 +46,9 @@ public class PersistentVolumeTest {
   @Test
   public void testList() {
     server.expect().withPath("/api/v1/persistentvolumes").andReturn(200, new PersistentVolumeListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
-
+        .addNewItem().and()
+        .addNewItem().and()
+        .build()).once();
 
     PersistentVolumeList persistentVolumeList = client.persistentVolumes().list();
     assertNotNull(persistentVolumeList);
@@ -58,16 +57,18 @@ public class PersistentVolumeTest {
 
   @Test
   public void testListWithLables() {
-    server.expect().withPath("/api/v1/persistentvolumes?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PersistentVolumeListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect().withPath("/api/v1/persistentvolumes?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new PersistentVolumeListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     PersistentVolumeList persistentVolumeList = client.persistentVolumes()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
 
     assertNotNull(persistentVolumeList);
     assertEquals(3, persistentVolumeList.getItems().size());
@@ -75,7 +76,8 @@ public class PersistentVolumeTest {
 
   @Test
   public void testGet() {
-    server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, new PersistentVolumeBuilder().build()).once();
+    server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1")
+        .andReturn(200, new PersistentVolumeBuilder().build()).once();
     PersistentVolume persistentVolume = client.persistentVolumes().withName("persistentvolume1").get();
     assertNotNull(persistentVolume);
   }
@@ -83,7 +85,8 @@ public class PersistentVolumeTest {
   @Test
   public void testEditMissing() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(404, "error message from kubernetes").always();
+      server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(404, "error message from kubernetes")
+          .always();
 
       client.persistentVolumes().withName("persistentvolume").edit(p -> p);
     });
@@ -92,15 +95,18 @@ public class PersistentVolumeTest {
 
   @Test
   public void testDelete() {
-    server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, new PersistentVolumeBuilder().build()).once();
+    server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1")
+        .andReturn(200, new PersistentVolumeBuilder().build()).once();
     boolean deleted = client.persistentVolumes().withName("persistentvolume1").delete().size() == 1;
     assertTrue(deleted);
   }
 
   @Test
   public void testDeleteMulti() {
-    PersistentVolume persistentVolume1 = new PersistentVolumeBuilder().withNewMetadata().withName("persistentvolume1").endMetadata().build();
-    PersistentVolume persistentVolume2 = new PersistentVolumeBuilder().withNewMetadata().withName("persistentvolume2").endMetadata().build();
+    PersistentVolume persistentVolume1 = new PersistentVolumeBuilder().withNewMetadata().withName("persistentvolume1")
+        .endMetadata().build();
+    PersistentVolume persistentVolume2 = new PersistentVolumeBuilder().withNewMetadata().withName("persistentvolume2")
+        .endMetadata().build();
 
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, persistentVolume1).once();
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume2").andReturn(200, persistentVolume2).once();
@@ -111,36 +117,36 @@ public class PersistentVolumeTest {
 
   @Test
   public void testLoadFromFile() {
-    PersistentVolume persistentVolume = client.persistentVolumes().load(getClass().getResourceAsStream("/test-persistentvolume.yml")).get();
+    PersistentVolume persistentVolume = client.persistentVolumes()
+        .load(getClass().getResourceAsStream("/test-persistentvolume.yml")).get();
     assertEquals("pv-test", persistentVolume.getMetadata().getName());
   }
 
   @Test
   public void testBuild() {
     PersistentVolume persistentVolume = new PersistentVolumeBuilder()
-      .withNewMetadata().withName("persistentvolume").endMetadata()
-      .withNewSpec()
-      .addToCapacity(Collections.singletonMap("storage", new Quantity("500Gi")))
-      .withAccessModes("ReadWriteOnce")
-      .withPersistentVolumeReclaimPolicy("Retain")
-      .withStorageClassName("local-storage")
-      .withNewLocal()
-      .withPath("/mnt/disks/vol1")
-      .endLocal()
-      .withNewNodeAffinity()
-      .withNewRequired()
-      .addNewNodeSelectorTerm()
-      .withMatchExpressions(Arrays.asList(new NodeSelectorRequirementBuilder()
-        .withKey("kubernetes.io/hostname")
-        .withOperator("In")
-        .withValues("my-node")
-        .build()
-      ))
-      .endNodeSelectorTerm()
-      .endRequired()
-      .endNodeAffinity()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("persistentvolume").endMetadata()
+        .withNewSpec()
+        .addToCapacity(Collections.singletonMap("storage", new Quantity("500Gi")))
+        .withAccessModes("ReadWriteOnce")
+        .withPersistentVolumeReclaimPolicy("Retain")
+        .withStorageClassName("local-storage")
+        .withNewLocal()
+        .withPath("/mnt/disks/vol1")
+        .endLocal()
+        .withNewNodeAffinity()
+        .withNewRequired()
+        .addNewNodeSelectorTerm()
+        .withMatchExpressions(Arrays.asList(new NodeSelectorRequirementBuilder()
+            .withKey("kubernetes.io/hostname")
+            .withOperator("In")
+            .withValues("my-node")
+            .build()))
+        .endNodeSelectorTerm()
+        .endRequired()
+        .endNodeAffinity()
+        .endSpec()
+        .build();
 
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(200, persistentVolume).once();
 
