@@ -240,4 +240,9 @@ Evictable.evict will throw an exception rather than returning false if the pod i
 
 ## Delete Behavior
 
-Deleting a collection / list will always return true and 404s on individual items will simply be ignored.
+Deleting a collection is now implemented using a single delete call, rather than for each item.  When the collection is namespaced and inAnyNamespace is used, in which case a call will be made to first determine the affected namespaces, and then a collection delete issued against each namespace.
+
+The result of the delete calls will be a List of StatusDetails rather than a boolean value.  A best
+effort is made to process the response from the server to populate which items are deleted.  This information is generally useful if you wish to implement some kind of blocking delete behavior - that is ensure the returned resources based upon a matching uid have been deleted.
+
+/ list will always return true and 404s on individual items will simply be ignored.
