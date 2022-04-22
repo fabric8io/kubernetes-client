@@ -15,6 +15,7 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.java.generator.Config;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class JPrimitive extends AbstractJSONSchema2Pojo {
 
   private static final GeneratorResult empty = new GeneratorResult(new ArrayList<>(), new ArrayList<>());
 
-  public JPrimitive(String type, Config config, String description, final boolean isNullable) {
-    super(config, description, isNullable);
+  public JPrimitive(String type, Config config, String description, final boolean isNullable, JsonNode defaultValue) {
+    super(config, description, isNullable, defaultValue);
     this.type = type;
   }
 

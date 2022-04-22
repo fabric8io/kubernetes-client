@@ -16,39 +16,33 @@
 package io.fabric8.openshift;
 
 
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class SecurityContextConstraintsIT {
+@RequireK8sSupport(SecurityContextConstraints.class)
+@LoadKubernetesManifests("/securitycontextconstraints-it.yml")
+class SecurityContextConstraintsIT {
 
-  @ArquillianResource
   OpenShiftClient client;
 
   private SecurityContextConstraints scc;
 
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(SecurityContextConstraintsIT.class.getResourceAsStream("/securitycontextconstraints-it.yml"));
-  }
-
   @Test
-  public void load() {
-      
+  void load() {
+
     SecurityContextConstraints loadedSCC = client.securityContextConstraints()
       .load(getClass().getResourceAsStream("/test-scc.yml")).get();
 
@@ -64,7 +58,7 @@ public class SecurityContextConstraintsIT {
   }
 
   @Test
-  public void get() {
+  void get() {
 
     SecurityContextConstraints getSCC = client.securityContextConstraints()
       .withName("scc-get").get();
@@ -82,7 +76,7 @@ public class SecurityContextConstraintsIT {
   }
 
   @Test
-  public void list() {
+  void list() {
 
     SecurityContextConstraintsList sccList = client.securityContextConstraints()
       .withLabels(Collections.singletonMap("foo","bar")).list();
@@ -102,7 +96,7 @@ public class SecurityContextConstraintsIT {
   }
 
   @Test
-  public void update(){
+  void update(){
 
     scc = client.securityContextConstraints().withName("scc-update").edit(s -> new SecurityContextConstraintsBuilder(s)
       .withAllowPrivilegedContainer(false)
@@ -122,7 +116,7 @@ public class SecurityContextConstraintsIT {
   }
 
   @Test
-  public void delete() {
+  void delete() {
 
     scc = client.securityContextConstraints().withName("scc-delete").get();
     boolean deleted = client.securityContextConstraints().delete(scc);

@@ -15,35 +15,28 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReviewBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class SelfSubjectAccessReviewIT {
-  @ArquillianResource
+class SelfSubjectAccessReviewIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     // Given
     SelfSubjectAccessReview selfSubjectAccessReview = new SelfSubjectAccessReviewBuilder()
       .withNewSpec()
       .withNewResourceAttributes()
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .withVerb("get")
       .withResource("pods")
       .endResourceAttributes()

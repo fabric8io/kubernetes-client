@@ -49,12 +49,13 @@ public class IntOrString implements Serializable {
 
   private Object value;
 
-  public IntOrString() { }
+  public IntOrString() {
+  }
 
   //Builders are generated for the first non-empty constructor found.
-  @Buildable(editableEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
+  @Buildable(editableEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
   public IntOrString(Object value) {
-    if (value instanceof Integer || value instanceof String) {
+    if (value == null || value instanceof Integer || value instanceof String) {
       this.value = value;
     } else {
       throw new IllegalArgumentException("Either integer or string value needs to be provided");

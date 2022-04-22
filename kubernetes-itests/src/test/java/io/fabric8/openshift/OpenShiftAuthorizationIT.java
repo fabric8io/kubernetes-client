@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.LocalResourceAccessReview;
 import io.fabric8.openshift.api.model.LocalResourceAccessReviewBuilder;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
@@ -32,34 +34,21 @@ import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectRulesReviewBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class OpenShiftAuthorizationIT {
-  @ArquillianResource
+@RequireK8sSupport(RoleBindingRestriction.class)
+class OpenShiftAuthorizationIT {
+
   OpenShiftClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @Before
-  public void initialCallToInitializeToken() {
-    client.pods().inNamespace(session.getNamespace()).list();
-  }
+  Namespace namespace;
 
   @Test
-  public void createSubjectAccessReviewOpenShift() {
+  void createSubjectAccessReviewOpenShift() {
     // Given
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
       .withResource("pod")
@@ -75,7 +64,7 @@ public class OpenShiftAuthorizationIT {
   }
 
   @Test
-  public void createSubjectRulesReviewOpenShift() {
+  void createSubjectRulesReviewOpenShift() {
     // Given
     String user = client.currentUser().getMetadata().getName();
     SubjectRulesReview srr = new SubjectRulesReviewBuilder()
@@ -85,7 +74,7 @@ public class OpenShiftAuthorizationIT {
       .build();
 
     // When
-    SubjectRulesReview createdSrr = client.subjectRulesReviews().inNamespace(session.getNamespace()).create(srr);
+    SubjectRulesReview createdSrr = client.subjectRulesReviews().inNamespace(namespace.getMetadata().getName()).create(srr);
 
     // Then
     assertNotNull(createdSrr);
@@ -94,12 +83,12 @@ public class OpenShiftAuthorizationIT {
   }
 
   @Test
-  public void createSelfSubjectRulesReview() {
+  void createSelfSubjectRulesReview() {
     // Given
     SelfSubjectRulesReview ssrr = new SelfSubjectRulesReviewBuilder().build();
 
     // When
-    SelfSubjectRulesReview createdSsrr = client.selfSubjectRulesReviews().inNamespace(session.getNamespace()).create(ssrr);
+    SelfSubjectRulesReview createdSsrr = client.selfSubjectRulesReviews().inNamespace(namespace.getMetadata().getName()).create(ssrr);
 
     // Then
     assertNotNull(createdSsrr);
@@ -108,7 +97,7 @@ public class OpenShiftAuthorizationIT {
   }
 
   @Test
-  public void createLocalResourceAccessReview() {
+  void createLocalResourceAccessReview() {
     // Given
     LocalResourceAccessReview lrar = new LocalResourceAccessReviewBuilder()
       .withVerb("create")
@@ -116,7 +105,7 @@ public class OpenShiftAuthorizationIT {
       .build();
 
     // When
-    ResourceAccessReviewResponse rarr = client.localResourceAccessReviews().inNamespace(session.getNamespace()).create(lrar);
+    ResourceAccessReviewResponse rarr = client.localResourceAccessReviews().inNamespace(namespace.getMetadata().getName()).create(lrar);
 
     // Then
     assertNotNull(rarr);
@@ -125,16 +114,16 @@ public class OpenShiftAuthorizationIT {
   }
 
   @Test
-  public void createLocalSubjectAccessReview() {
+  void createLocalSubjectAccessReview() {
     // Given
     LocalSubjectAccessReview localSubjectAccessReview = new LocalSubjectAccessReviewBuilder()
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .withVerb("get")
       .withResource("pods")
       .build();
 
     // When
-    SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace(session.getNamespace()).create(localSubjectAccessReview);
+    SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace(namespace.getMetadata().getName()).create(localSubjectAccessReview);
 
     // Then
     assertNotNull(response);
@@ -142,7 +131,7 @@ public class OpenShiftAuthorizationIT {
   }
 
   @Test
-  public void createResourceAccessReview() {
+  void createResourceAccessReview() {
     // Given
     ResourceAccessReview rar = new ResourceAccessReviewBuilder()
       .withVerb("create")
@@ -159,7 +148,7 @@ public class OpenShiftAuthorizationIT {
   }
 
   @Test
-  public void createRoleBindingRestriction() {
+  void createRoleBindingRestriction() {
     // Given
     String name = "create-oc-rolebindingrestriction";
     RoleBindingRestriction roleBindingRestriction = new RoleBindingRestrictionBuilder()
@@ -172,11 +161,11 @@ public class OpenShiftAuthorizationIT {
       .build();
 
     // When
-    RoleBindingRestriction createdRoleBindingRestriction = client.roleBindingRestrictions().inNamespace(session.getNamespace()).create(roleBindingRestriction);
+    RoleBindingRestriction createdRoleBindingRestriction = client.roleBindingRestrictions().create(roleBindingRestriction);
 
     // Then
     assertNotNull(createdRoleBindingRestriction);
     assertNotNull(createdRoleBindingRestriction.getMetadata().getUid());
-    client.roleBindingRestrictions().inNamespace(session.getNamespace()).withName(name).delete();
+    client.roleBindingRestrictions().withName(name).delete();
   }
 }

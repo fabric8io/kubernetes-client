@@ -16,8 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
-import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Secret;
@@ -27,98 +26,69 @@ import io.fabric8.kubernetes.api.model.SecretVolumeSource;
 import io.fabric8.kubernetes.api.model.SecretVolumeSourceBuilder;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class SecretIT {
-  @ArquillianResource
+@LoadKubernetesManifests("/secret-it.yml")
+class SecretIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(SecretIT.class.getResourceAsStream("/secret-it.yml"));
-  }
-
-  @Before
-  public void initNamespace() {
-    this.currentNamespace = session.getNamespace();
-  }
-
   @Test
-  public void load() {
-    Secret aSecret = client.secrets().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-secret.yml")).get();
+  void load() {
+    Secret aSecret = client.secrets().load(getClass().getResourceAsStream("/test-secret.yml")).get();
     assertThat(aSecret).isNotNull();
-    assertEquals("mysecret", aSecret.getMetadata().getName());
+    assertEquals("my-secret", aSecret.getMetadata().getName());
   }
 
   @Test
-  public void get() {
-    Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-get").get();
+  void get() {
+    Secret secret1 = client.secrets().withName("secret-get").get();
     assertNotNull(secret1);
   }
 
   @Test
-  public void list() {
-    SecretList aSecretList = client.secrets().inNamespace(currentNamespace).list();
+  void list() {
+    SecretList aSecretList = client.secrets().list();
     assertNotNull(aSecretList);
     assertTrue(aSecretList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret-update", currentNamespace);
-    Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-update").edit(s -> new SecretBuilder(s)
+  void update() {
+    Secret secret1 = client.secrets().withName("secret-update").edit(s -> new SecretBuilder(s)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
       .build());
-    await().atMost(30, TimeUnit.SECONDS).until(secretReady);
+    client.secrets().withName("secret-update").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     assertThat(secret1).isNotNull();
     assertEquals("bar", secret1.getMetadata().getLabels().get("foo"));
   }
 
   @Test
-  public void delete() {
-    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret-delete", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(secretReady);
-    assertTrue(client.secrets().inNamespace(currentNamespace).withName("secret-delete").delete());
+  void delete() {
+    client.secrets().withName("secret-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    assertTrue(client.secrets().withName("secret-delete").delete());
   }
 
   @Test
-  public void testLoadInPod() {
-    String currentNamespace = session.getNamespace();
-    Secret aSecret = new SecretBuilder()
+  void testLoadInPod() {
+    Secret aSecret =  client.secrets().create(new SecretBuilder()
       .withNewMetadata().withName("secret2").endMetadata()
       .addToData("username", "guccifer")
       .addToData("password", "shadowgovernment")
-      .build();
-
-    client.secrets().inNamespace(currentNamespace).create(aSecret);
+      .build());
     SecretVolumeSource secretVolumeSource = new SecretVolumeSourceBuilder()
       .withSecretName("secret2")
       .build();
 
-    Pod pod1 = client.pods().inNamespace(currentNamespace).create(new PodBuilder()
+    Pod pod1 = client.pods().create(new PodBuilder()
       .withNewMetadata().withName("pod-secret1").endMetadata()
       .withNewSpec()
       .addNewContainer().withName("mysql").withImage("openshift/mysql-55-centos7").endContainer()
@@ -129,13 +99,9 @@ public class SecretIT {
     assertTrue(pod1.getSpec().getVolumes().size() > 0);
 
     Volume aVolume = pod1.getSpec().getVolumes().get(0);
-    Secret fetchedSecret = client.secrets().inNamespace(currentNamespace)
+    Secret fetchedSecret = client.secrets()
       .withName(aVolume.getSecret().getSecretName()).get();
     assertThat(fetchedSecret).isNotNull();
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(SecretIT.class.getResourceAsStream("/secret-it.yml"));
-  }
 }

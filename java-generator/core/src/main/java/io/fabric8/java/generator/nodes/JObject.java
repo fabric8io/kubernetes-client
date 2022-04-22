@@ -15,6 +15,7 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
@@ -24,11 +25,14 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.utils.StringEscapeUtils;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,6 +52,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   private final String pkg;
   private final Map<String, AbstractJSONSchema2Pojo> fields;
   private final Set<String> required;
+
   private final boolean preserveUnknownFields;
 
   public JObject(
@@ -60,8 +65,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       String classSuffix,
       Config config,
       String description,
-      final boolean isNullable) {
-    super(config, description, isNullable);
+      final boolean isNullable, JsonNode defaultValue) {
+    super(config, description, isNullable, defaultValue);
     this.required = new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
     this.fields = new HashMap<>();
     this.preserveUnknownFields = preserveUnknownFields;
@@ -212,7 +217,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         if (!prop.isNullable) {
           // from https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#defaulting-and-nullable :
           // "_null values for fields that either don't specify the nullable flag, or give it a false
-          // value, will be pruned before defaulting happens..._"
+          // value, will be pruned before defaulting happens. If a default is present, it will be applied_"
           objField.addAnnotation(
               new SingleMemberAnnotationExpr(
                   new Name("com.fasterxml.jackson.annotation.JsonSetter"),
@@ -226,6 +231,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SET")));
         }
 
+        if (prop.getDefaultValue() != null) {
+          objField.getVariable(0).setInitializer(generateDefaultInitializerExpression(prop));
+        }
       } catch (Exception cause) {
         throw new JavaGeneratorException(
             "Error generating field " + fieldName + " with type " + prop.getType(),
@@ -256,5 +264,20 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     buffer.add(new GeneratorResult.ClassResult(this.className, cu));
 
     return new GeneratorResult(buffer);
+  }
+
+  /**
+   * This method is responsible for creating an expression that will initialize the default value.
+   *
+   * @return a {@link Expression} instance that contains a call to the
+   *         {@link Serialization#unmarshal(String, Class)} method.
+   */
+  private Expression generateDefaultInitializerExpression(AbstractJSONSchema2Pojo prop) {
+    return new NameExpr(
+        "io.fabric8.kubernetes.client.utils.Serialization.unmarshal("
+            + "\"" + StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())) + "\""
+            + ", "
+            + prop.getClassType() + ".class"
+            + ")");
   }
 }

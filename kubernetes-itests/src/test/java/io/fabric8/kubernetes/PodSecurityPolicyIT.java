@@ -16,46 +16,30 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class PodSecurityPolicyIT {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-  @ArquillianResource
+@LoadKubernetesManifests("/podsecuritypolicy-it.yml")
+class PodSecurityPolicyIT {
+
   KubernetesClient client;
 
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml"));
-  }
-
   @Test
-  public void load() {
+  void load() {
 
-    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().podSecurityPolicies()
+    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
       .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
 
     assertNotNull(loadedPodSecurityPolicy);
@@ -68,17 +52,16 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void get() {
-    PodSecurityPolicy getPodSecurityPolicy = client.policy().podSecurityPolicies()
+  void get() {
+    PodSecurityPolicy getPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
       .withName("psp-get").get();
     assertNotNull(getPodSecurityPolicy);
     assertEquals("psp-get", getPodSecurityPolicy.getMetadata().getName());
   }
 
   @Test
-  public void list() {
-
-    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies()
+  void list() {
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
@@ -90,9 +73,9 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void update(){
+  void update(){
 
-    PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
+    PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
       .editSpec().withPrivileged(true).endSpec()
       .build());
 
@@ -106,17 +89,13 @@ public class PodSecurityPolicyIT {
   }
 
   @Test
-  public void delete(){
-    boolean deleted = client.policy().podSecurityPolicies().withName("psp-delete").delete();
+  void delete(){
+    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete();
     assertTrue(deleted);
 
-    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "psp-delete", null);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    client.policy().v1beta1().podSecurityPolicies().withName("psp-delete")
+      .waitUntilCondition(psp -> psp == null || psp.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml"));
-  }
 
 }

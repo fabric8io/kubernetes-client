@@ -15,57 +15,41 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@Ignore
-@RequiresKubernetes
-public class DaemonSetIT {
-  @ArquillianResource
+@Disabled
+@LoadKubernetesManifests("/daemonset-it.yml")
+class DaemonSetIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml"));
-  }
-
   @Test
-  public void get() {
-    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-get").get();
+  void get() {
+    DaemonSet daemonSet = client.apps().daemonSets().withName("daemonset-get").get();
     assertThat(daemonSet).isNotNull();
   }
 
   @Test
-  public void list() {
-    DaemonSetList aDaemonSetList = client.apps().daemonSets().inNamespace(session.getNamespace()).list();
+  void list() {
+    DaemonSetList aDaemonSetList = client.apps().daemonSets().list();
     assertNotNull(aDaemonSetList);
     assertTrue(aDaemonSetList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
+  void update() {
+    DaemonSet daemonSet = client.apps().daemonSets().withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
       .editSpec().editTemplate().editSpec().editContainer(0)
       .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
       .endContainer().endSpec().endTemplate().endSpec()
@@ -76,12 +60,7 @@ public class DaemonSetIT {
   }
 
   @Test
-  public void delete() {
-    assertTrue(client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-delete").delete());
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml"));
+  void delete() {
+    assertTrue(client.apps().daemonSets().withName("daemonset-delete").delete());
   }
 }

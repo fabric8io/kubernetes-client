@@ -16,6 +16,7 @@
 /* (C)2015 */
 package io.fabric8.java.generator.nodes;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 
@@ -28,8 +29,9 @@ public class JMap extends AbstractJSONSchema2Pojo {
 
   private final AbstractJSONSchema2Pojo nested;
 
-  public JMap(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable) {
-    super(config, description, isNullable);
+  public JMap(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable,
+      JsonNode defaultValue) {
+    super(config, description, isNullable, defaultValue);
     this.type = new ClassOrInterfaceType()
         .setName(JAVA_UTIL_MAP)
         .setTypeArguments(
@@ -42,6 +44,11 @@ public class JMap extends AbstractJSONSchema2Pojo {
   @Override
   public String getType() {
     return this.type;
+  }
+
+  @Override
+  protected String getClassType() {
+    return JAVA_UTIL_MAP;
   }
 
   @Override

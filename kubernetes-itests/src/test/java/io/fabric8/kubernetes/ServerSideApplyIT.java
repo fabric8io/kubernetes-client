@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.AssumingK8sVersionAtLeast;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
@@ -23,35 +23,20 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class ServerSideApplyIT {
+@RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 22)
+class ServerSideApplyIT {
 
-  @ClassRule
-  public static final AssumingK8sVersionAtLeast assumingK8sVersion =
-    new AssumingK8sVersionAtLeast("1", "22");
-
-  @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
   @Test
-  public void testServerSideApply() {
+  void testServerSideApply() {
     Service service = new ServiceBuilder()
       .withNewMetadata().withName(PatchIT.class.getSimpleName().toLowerCase() + "-svc").endMetadata()
       .withNewSpec()
@@ -64,7 +49,7 @@ public class ServerSideApplyIT {
       .endSpec()
       .build();
 
-    Resource<Service> resource = client.services().inNamespace(session.getNamespace()).resource(service);
+    Resource<Service> resource = client.services().resource(service);
     resource.delete();
 
     // 1st apply - create must be a server side apply - otherwise the later operations will need to force

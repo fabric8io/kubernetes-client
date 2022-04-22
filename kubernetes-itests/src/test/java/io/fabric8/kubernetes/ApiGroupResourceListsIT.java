@@ -20,36 +20,25 @@ import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class ApiGroupResourceListsIT {
+class ApiGroupResourceListsIT {
 
-  @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
   @Test
-  public void testApiGroups() {
+  void testApiGroups() {
     APIGroupList list = client.getApiGroups();
 
     assertTrue(list.getGroups().stream().anyMatch(g -> "apps".equals(g.getName())));
   }
 
   @Test
-  public void testApiGroup() {
+  void testApiGroup() {
     APIGroup group = client.getApiGroup("apps");
 
     assertNotNull(group);
@@ -60,7 +49,7 @@ public class ApiGroupResourceListsIT {
   }
 
   @Test
-  public void testApiResources() {
+  void testApiResources() {
     APIResourceList list = client.getApiResources("apps/v1");
 
     assertTrue(list.getResources().stream().anyMatch(r -> "deployments".equals(r.getName())));

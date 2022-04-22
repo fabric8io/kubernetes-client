@@ -15,37 +15,32 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RequireK8sSupport(Project.class)
+class SubjectAccessReviewIT {
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class SubjectAccessReviewIT {
-  @ArquillianResource
   OpenShiftClient client;
 
-  @ArquillianResource
-  Session session;
+  Namespace namespace;
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     // Given
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
       .withResource("Pod")
       .withVerb("get")
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .build();
 
     // When
