@@ -145,7 +145,7 @@
     <jandex.version>2.4.2.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-    <nexus-staging-maven-plugin>1.6.12</nexus-staging-maven-plugin>
+    <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
     <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
 
     <!-- Other options -->
