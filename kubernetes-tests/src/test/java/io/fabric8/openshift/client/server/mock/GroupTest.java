@@ -100,7 +100,6 @@ class GroupTest {
 
 
     boolean deleted = client.groups().withName("group1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.groups().withName("Group2").delete().size() == 1;
     assertTrue(deleted);
@@ -116,7 +115,6 @@ class GroupTest {
 
 
     boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
     assertTrue(deleted);

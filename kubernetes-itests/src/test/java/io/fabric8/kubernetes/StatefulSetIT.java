@@ -65,7 +65,7 @@ class StatefulSetIT {
   @Test
   void delete() {
     client.apps().statefulSets().withName("ss-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.apps().statefulSets().withName("ss-delete").delete();
+    boolean bDeleted = client.apps().statefulSets().withName("ss-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

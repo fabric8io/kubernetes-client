@@ -66,7 +66,7 @@ class IngressIT {
 
   @Test
   void delete() {
-    assertTrue(client.network().v1().ingresses().withName("ingress-delete").delete());
+    assertTrue(client.network().v1().ingresses().withName("ingress-delete").delete().size() == 1);
   }
 
 }

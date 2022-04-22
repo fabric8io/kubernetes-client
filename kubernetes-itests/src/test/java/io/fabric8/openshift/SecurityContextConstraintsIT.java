@@ -22,7 +22,6 @@ import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -119,7 +118,7 @@ class SecurityContextConstraintsIT {
   void delete() {
 
     scc = client.securityContextConstraints().withName("scc-delete").get();
-    boolean deleted = client.securityContextConstraints().delete(scc);
+    boolean deleted = client.securityContextConstraints().delete(scc).size() == 1;
     assertTrue(deleted);
     SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
     assertFalse(sccList.getItems().contains(scc));

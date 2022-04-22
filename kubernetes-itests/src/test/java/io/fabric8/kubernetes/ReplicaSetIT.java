@@ -71,7 +71,7 @@ class ReplicaSetIT {
   void delete() {
     client.apps().replicaSets().withName("replicaset-delete")
       .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.apps().replicaSets().withName("replicaset-delete").delete();
+    boolean bDeleted = client.apps().replicaSets().withName("replicaset-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

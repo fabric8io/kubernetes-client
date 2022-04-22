@@ -70,7 +70,7 @@ class ServiceAccountIT {
   @Test
   void delete() {
     client.serviceAccounts().withName("sa-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.serviceAccounts().withName("sa-delete").delete();
+    boolean bDeleted = client.serviceAccounts().withName("sa-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

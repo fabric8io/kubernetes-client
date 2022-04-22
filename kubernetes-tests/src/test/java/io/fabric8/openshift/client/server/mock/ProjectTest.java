@@ -85,7 +85,6 @@ class ProjectTest {
 
 
     boolean deleted = client.projects().withName("project1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.projects().withName("project2").delete().size() == 1;
     assertTrue(deleted);

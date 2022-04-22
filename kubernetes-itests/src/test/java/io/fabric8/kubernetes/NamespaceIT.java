@@ -53,6 +53,6 @@ class NamespaceIT {
     assertEquals("bar", namespace.getMetadata().getAnnotations().get("foo"));
 
     // Delete
-    assertTrue(client.namespaces().withName("fabric8-test").delete());
+    assertTrue(client.namespaces().withName("fabric8-test").delete().size() == 1);
   }
 }

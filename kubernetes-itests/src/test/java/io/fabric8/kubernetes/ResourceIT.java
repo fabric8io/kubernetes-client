@@ -76,7 +76,7 @@ class ResourceIT {
     boolean bDeleted = client
       .resourceList(new PodListBuilder().withItems(listPod1).build())
       .withGracePeriod(0L)
-      .delete();
+      .delete().size() == 1;
     assertTrue(bDeleted);
   }
 
@@ -125,7 +125,7 @@ class ResourceIT {
   void delete() {
     Pod pod1 = client.pods().withName("resource-pod-delete")
       .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    assertTrue(client.resource(pod1).withGracePeriod(0L).delete());
+    assertTrue(client.resource(pod1).withGracePeriod(0L).delete().size() == 1);
   }
 
   @Test
@@ -153,7 +153,7 @@ class ResourceIT {
     assertNotEquals(replicaSetUid, replicaSets.iterator().next().getMetadata().getUid());
 
     // cleanup
-    assertTrue(resource.withGracePeriod(0L).delete());
+    assertTrue(resource.withGracePeriod(0L).delete().size() == 1);
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
         .get(30, TimeUnit.SECONDS);
@@ -186,7 +186,7 @@ class ResourceIT {
     assertEquals(replicaSetUid, replicaSetList.iterator().next().getMetadata().getUid());
 
     // cleanup
-    assertTrue(resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0L).delete());
+    assertTrue(resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0L).delete().size() == 1);
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
       .get(30, TimeUnit.SECONDS);
@@ -202,7 +202,7 @@ class ResourceIT {
       .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
 
     // Delete deployment
-    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete().size() == 1;
     assertTrue(deleted);
 
     // Check whether child resources are also deleted
@@ -220,7 +220,7 @@ class ResourceIT {
       .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
 
     // Delete deployment
-    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(deleted);
 
     // wait till deployment is deleted

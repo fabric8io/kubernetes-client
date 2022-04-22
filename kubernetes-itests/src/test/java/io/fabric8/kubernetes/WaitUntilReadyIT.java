@@ -86,9 +86,9 @@ class WaitUntilReadyIT {
       .waitUntilReady(60, TimeUnit.SECONDS);
 
     // Cleanup
-    assertTrue(client.pods().withName("p1").withGracePeriod(0L).delete());
-    assertTrue(client.pods().withName("p2").withGracePeriod(0L).delete());
-    assertTrue(client.secrets().withName("my-secret").delete());
+    assertTrue(client.pods().withName("p1").withGracePeriod(0L).delete().size() == 1);
+    assertTrue(client.pods().withName("p2").withGracePeriod(0L).delete().size() == 1);
+    assertTrue(client.secrets().withName("my-secret").delete().size() == 1);
 
     // wait for all pods to be deleted
     CompletableFuture<List<Pod>> pods = client.pods()

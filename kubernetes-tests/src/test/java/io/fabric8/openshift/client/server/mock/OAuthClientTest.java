@@ -80,7 +80,6 @@ class OAuthClientTest {
 
 
     boolean deleted = client.oAuthClients().withName("client1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.oAuthClients().withName("client2").delete().size() == 1;
     assertTrue(deleted);

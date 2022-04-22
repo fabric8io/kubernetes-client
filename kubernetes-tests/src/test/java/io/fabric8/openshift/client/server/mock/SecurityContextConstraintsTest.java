@@ -98,7 +98,6 @@ class SecurityContextConstraintsTest {
 
 
     boolean deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
     assertFalse(deleted);

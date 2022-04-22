@@ -101,7 +101,6 @@ public class PriorityClassTest {
 
 
     boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete().size() == 1;
-    assertNotNull(deleted);
     assertTrue(deleted);
   }
 
@@ -128,8 +127,8 @@ public class PriorityClassTest {
       .editMetadata().addToAnnotations("foo", "bar").endMetadata().build()).times(5);
 
 
-    Boolean deleted = client.scheduling().v1beta1().priorityClasses().delete(priorityClass1, priorityClass2);
-    assertNotNull(deleted);
+    boolean deleted = client.scheduling().v1beta1().priorityClasses().delete(priorityClass1, priorityClass2);
+    assertTrue(deleted);
   }
 
   @Test

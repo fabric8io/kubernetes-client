@@ -114,7 +114,6 @@ class V1PriorityClassTest {
     boolean deleted = client.scheduling().v1().priorityClasses().withName("priorityclass1").delete().size() == 1;
 
     // Then
-    assertNotNull(deleted);
     assertTrue(deleted);
   }
 
@@ -140,10 +139,9 @@ class V1PriorityClassTest {
       .andReturn(HttpURLConnection.HTTP_OK, priorityClass2).once();
 
     // When
-    Boolean deleted = client.scheduling().v1().priorityClasses().delete(priorityClass1, priorityClass2);
+    boolean deleted = client.scheduling().v1().priorityClasses().delete(priorityClass1, priorityClass2);
 
     // Then
-    assertNotNull(deleted);
     assertTrue(deleted);
   }
 

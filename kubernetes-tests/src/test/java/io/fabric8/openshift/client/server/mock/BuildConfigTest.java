@@ -182,7 +182,6 @@ class BuildConfigTest {
 
 
     boolean deleted = client.buildConfigs().withName("bc1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.buildConfigs().withName("bc2").delete().size() == 1;
     assertFalse(deleted);

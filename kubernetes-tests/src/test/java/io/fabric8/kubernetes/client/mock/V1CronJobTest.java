@@ -177,7 +177,6 @@ class V1CronJobTest {
       .build()).once();
 
     boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").delete().size() == 1;
-    assertNotNull(deleted);
     assertTrue(deleted);
 
     deleted = client.batch().v1().cronjobs().withName("cronJob2").delete().size() == 1;

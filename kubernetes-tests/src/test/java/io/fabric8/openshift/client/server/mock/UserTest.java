@@ -88,7 +88,6 @@ class UserTest {
 
 
     boolean deleted = client.users().withName("user1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.users().withName("User2").delete().size() == 1;
     assertTrue(deleted);

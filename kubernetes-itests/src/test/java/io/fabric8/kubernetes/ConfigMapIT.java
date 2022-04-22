@@ -64,6 +64,6 @@ class ConfigMapIT {
 
   @Test
   void delete() {
-    assertTrue(client.configMaps().withName("configmap-delete").delete());
+    assertTrue(client.configMaps().withName("configmap-delete").delete().size() == 1);
   }
 }

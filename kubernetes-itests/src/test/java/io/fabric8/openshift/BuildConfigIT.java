@@ -69,7 +69,7 @@ class BuildConfigIT {
   @Test
   void delete() {
     client.buildConfigs().withName("bc-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.buildConfigs().withName("bc-delete").delete();
+    boolean bDeleted = client.buildConfigs().withName("bc-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

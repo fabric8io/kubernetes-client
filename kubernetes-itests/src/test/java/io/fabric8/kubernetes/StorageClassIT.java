@@ -60,7 +60,7 @@ class StorageClassIT {
 
   @Test
   void delete() {
-    assertTrue(client.storage().storageClasses().withName("storageclass-delete").delete());
+    assertTrue(client.storage().storageClasses().withName("storageclass-delete").delete().size() == 1);
   }
 
 }

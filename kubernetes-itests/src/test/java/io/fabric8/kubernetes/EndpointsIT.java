@@ -59,7 +59,7 @@ class EndpointsIT {
 
   @Test
   void delete() {
-    assertTrue(client.endpoints().withName("endpoints-delete").delete());
+    assertTrue(client.endpoints().withName("endpoints-delete").delete().size() == 1);
   }
 
 }

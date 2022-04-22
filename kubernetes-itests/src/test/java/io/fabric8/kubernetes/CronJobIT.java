@@ -66,6 +66,6 @@ class CronJobIT {
 
   @Test
   void delete() {
-    assertTrue(client.batch().v1beta1().cronjobs().withName("hello-delete").delete());
+    assertTrue(client.batch().v1beta1().cronjobs().withName("hello-delete").delete().size() == 1);
   }
 }

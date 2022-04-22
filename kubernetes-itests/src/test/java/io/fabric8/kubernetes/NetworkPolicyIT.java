@@ -113,7 +113,7 @@ class NetworkPolicyIT {
   void delete() {
     client.network().v1().networkPolicies().withName("networkpolicy-delete")
       .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean deleted = client.network().v1().networkPolicies().withName("networkpolicy-delete").delete();
+    boolean deleted = client.network().v1().networkPolicies().withName("networkpolicy-delete").delete().size() == 1;
 
     assertTrue(deleted);
 

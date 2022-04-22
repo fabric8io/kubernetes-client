@@ -125,7 +125,7 @@ class GenericCustomResourceIT {
     assertAnimal(hippoCr, name, "Hippopotamidae");
 
     // Delete
-    boolean isDeleted = resourceClient.withName(name).delete();
+    boolean isDeleted = resourceClient.withName(name).delete().size() == 1;
     assertTrue(isDeleted);
   }
 
@@ -171,7 +171,7 @@ class GenericCustomResourceIT {
 
   @Test
   void testDeleteNonExistingResource() {
-    boolean isDeleted = resourceClient.withName("idontexist").delete();
+    boolean isDeleted = resourceClient.withName("idontexist").delete().size() == 1;
     assertFalse(isDeleted);
   }
 
@@ -195,7 +195,7 @@ class GenericCustomResourceIT {
     GenericKubernetesResource createdDhole = resourceClient.create(dhole);
 
     // When
-    boolean deletionStatus = resourceClient.withName("dhole").dryRun().delete();
+    boolean deletionStatus = resourceClient.withName("dhole").dryRun().delete().size() == 1;
 
     // Then
     assertTrue(deletionStatus);

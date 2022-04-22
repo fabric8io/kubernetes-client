@@ -63,7 +63,7 @@ class ReplicationControllerIT {
 
   @Test
   void delete() {
-    assertTrue(client.replicationControllers().withName("rc-delete").delete());
+    assertTrue(client.replicationControllers().withName("rc-delete").delete().size() == 1);
   }
 
 }

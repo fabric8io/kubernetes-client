@@ -74,7 +74,7 @@ class SecretIT {
   @Test
   void delete() {
     client.secrets().withName("secret-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    assertTrue(client.secrets().withName("secret-delete").delete());
+    assertTrue(client.secrets().withName("secret-delete").delete().size() == 1);
   }
 
   @Test

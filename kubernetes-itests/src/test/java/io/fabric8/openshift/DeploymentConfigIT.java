@@ -69,7 +69,7 @@ class DeploymentConfigIT {
   @Test
   void delete() {
     client.deploymentConfigs().withName("dc-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.deploymentConfigs().withName("dc-delete").delete();
+    boolean bDeleted = client.deploymentConfigs().withName("dc-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

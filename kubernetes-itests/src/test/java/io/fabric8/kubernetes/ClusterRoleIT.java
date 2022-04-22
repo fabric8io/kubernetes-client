@@ -151,7 +151,7 @@ class ClusterRoleIT {
 
     ClusterRoleList clusterRoleListBefore = client.rbac().clusterRoles().list();
 
-    boolean deleted = client.rbac().clusterRoles().withName("node-reader-delete").delete();
+    boolean deleted = client.rbac().clusterRoles().withName("node-reader-delete").delete().size() == 1;
     assertTrue(deleted);
 
     client.rbac().clusterRoles().withName("node-reader-delete")

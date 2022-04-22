@@ -158,7 +158,7 @@ class RoleIT {
   void delete() {
 
     int countBeforeDeletion = client.rbac().roles().list().getItems().size();
-    boolean deleted = client.rbac().roles().withName("role-delete").delete();
+    boolean deleted = client.rbac().roles().withName("role-delete").delete().size() == 1;
 
     assertTrue(deleted);
 

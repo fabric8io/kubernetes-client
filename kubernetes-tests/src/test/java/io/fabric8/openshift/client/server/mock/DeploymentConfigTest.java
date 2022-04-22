@@ -162,7 +162,6 @@ class DeploymentConfigTest {
 
 
     boolean deleted = client.deploymentConfigs().withName("dc1").delete().size() == 1;
-    assertNotNull(deleted);
     deleted = client.deploymentConfigs().withName("dc2").delete().size() == 1;
     assertFalse(deleted);
 

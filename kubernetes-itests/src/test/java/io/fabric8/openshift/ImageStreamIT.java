@@ -71,7 +71,7 @@ class ImageStreamIT {
   @Test
   void delete() {
     client.imageStreams().withName("is-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.imageStreams().withName("is-delete").delete();
+    boolean bDeleted = client.imageStreams().withName("is-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

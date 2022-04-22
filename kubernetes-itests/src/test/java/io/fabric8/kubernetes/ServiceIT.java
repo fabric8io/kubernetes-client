@@ -76,7 +76,7 @@ class ServiceIT {
   void delete() {
     client.services().withName("service-delete")
       .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.services().withName("service-delete").delete();
+    boolean bDeleted = client.services().withName("service-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 
@@ -252,7 +252,7 @@ class ServiceIT {
     // Then
     assertNotNull(service);
     assertEquals(svcName, service.getMetadata().getName());
-    assertTrue(client.pods().withName(svcName).delete());
+    assertTrue(client.pods().withName(svcName).delete().size() == 1);
   }
 
 }

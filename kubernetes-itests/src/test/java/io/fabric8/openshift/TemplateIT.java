@@ -67,7 +67,7 @@ class TemplateIT {
   @Test
   void delete() {
     client.templates().withName("template-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.templates().withName("template-delete").delete();
+    boolean bDeleted = client.templates().withName("template-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

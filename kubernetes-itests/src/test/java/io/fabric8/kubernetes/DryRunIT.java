@@ -78,7 +78,7 @@ class DryRunIT {
     String name = "dryrunit-delete";
 
     // When
-    boolean deletionResult = client.configMaps().withName(name).dryRun().delete();
+    boolean deletionResult = client.configMaps().withName(name).dryRun().delete().size() == 1;
 
     // Then
     assertTrue(deletionResult);
@@ -111,7 +111,7 @@ class DryRunIT {
     ConfigMap configMap = client.configMaps().withName(name).get();
 
     // When
-    Boolean isDeleted = client.resource(configMap).dryRun().delete();
+    boolean isDeleted = client.resource(configMap).dryRun().delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -127,7 +127,7 @@ class DryRunIT {
     Service svc = client.services().withName(name).get();
 
     // When
-    boolean isDeleted = client.resourceList(configMap, svc).dryRun().delete();
+    boolean isDeleted = client.resourceList(configMap, svc).dryRun().delete().size() == 2;
 
     // Then
     assertTrue(isDeleted);

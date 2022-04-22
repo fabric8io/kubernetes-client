@@ -103,7 +103,7 @@ class ImageStreamTagIT {
         is != null && is.getStatus() != null &&
           is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
       30, TimeUnit.SECONDS);
-    boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete();
+    boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete().size() == 1;
     assertTrue(deleted);
     client.imageStreamTags().withName("delete:1.0.12")
       .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);

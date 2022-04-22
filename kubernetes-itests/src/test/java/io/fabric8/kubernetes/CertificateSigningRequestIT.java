@@ -58,7 +58,7 @@ class CertificateSigningRequestIT {
 
   @Test
   void delete() {
-    assertTrue(client.certificates().v1beta1().certificateSigningRequests().withName("csr-delete").delete());
+    assertTrue(client.certificates().v1beta1().certificateSigningRequests().withName("csr-delete").delete().size() == 1);
   }
 
 }

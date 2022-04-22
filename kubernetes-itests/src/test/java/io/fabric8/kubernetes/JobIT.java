@@ -67,7 +67,7 @@ class JobIT {
     assertEquals("test-job-", jobCreated.getMetadata().getGenerateName());
     assertNotNull(jobCreated.getMetadata().getName());
     assertNotEquals("test-job-", jobCreated.getMetadata().getName());
-    assertTrue(client.batch().v1().jobs().withName(jobCreated.getMetadata().getName()).delete());
+    assertTrue(client.batch().v1().jobs().withName(jobCreated.getMetadata().getName()).delete().size() == 1);
   }
 
   private JobBuilder initJob(String name) {

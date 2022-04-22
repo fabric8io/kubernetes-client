@@ -98,6 +98,6 @@ class DeploymentIT {
 
   @Test
   void delete() {
-    assertTrue(client.apps().deployments().withName("deployment-delete").delete());
+    assertTrue(client.apps().deployments().withName("deployment-delete").delete().size() == 1);
   }
 }

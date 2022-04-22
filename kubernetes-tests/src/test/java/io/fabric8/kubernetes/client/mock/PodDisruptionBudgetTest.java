@@ -126,7 +126,6 @@ public class PodDisruptionBudgetTest {
 
 
     boolean deleted = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").delete().size() == 1;
-    assertNotNull(deleted);
     assertTrue(deleted);
   }
 

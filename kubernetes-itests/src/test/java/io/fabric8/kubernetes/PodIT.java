@@ -98,7 +98,7 @@ class PodIT {
 
   @Test
   void delete() {
-    assertTrue(client.pods().withName("pod-delete").delete());
+    assertTrue(client.pods().withName("pod-delete").delete().size() == 1);
   }
 
   @Test

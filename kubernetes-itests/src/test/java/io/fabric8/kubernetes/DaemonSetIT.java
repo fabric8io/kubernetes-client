@@ -61,6 +61,6 @@ class DaemonSetIT {
 
   @Test
   void delete() {
-    assertTrue(client.apps().daemonSets().withName("daemonset-delete").delete());
+    assertTrue(client.apps().daemonSets().withName("daemonset-delete").delete().size() == 1);
   }
 }

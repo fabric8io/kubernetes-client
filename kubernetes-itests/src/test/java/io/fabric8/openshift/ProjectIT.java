@@ -51,7 +51,7 @@ class ProjectIT {
     assertEquals(name, projectFromServer.getMetadata().getName());
 
     // Delete
-    assertTrue(client.projects().withName(name).delete());
+    assertTrue(client.projects().withName(name).delete().size() == 1);
   }
 
   @Test
@@ -74,6 +74,6 @@ class ProjectIT {
     assertEquals(displayName, createdProject.getMetadata().getAnnotations().get("openshift.io/display-name"));
     assertEquals(description, createdProject.getMetadata().getAnnotations().get("openshift.io/description"));
     assertEquals(requestingUser, createdProject.getMetadata().getAnnotations().get("openshift.io/requester"));
-    assertTrue(client.projects().withName(name).delete());
+    assertTrue(client.projects().withName(name).delete().size() == 1);
   }
 }

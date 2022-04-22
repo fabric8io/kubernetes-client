@@ -63,6 +63,6 @@ class HorizontalPodAutoscalerIT {
   @Test
   void delete() {
     assertTrue(client.autoscaling().v1().horizontalPodAutoscalers()
-        .withName("horizontalpodautoscaler-delete").delete());
+        .withName("horizontalpodautoscaler-delete").delete().size() == 1);
   }
 }

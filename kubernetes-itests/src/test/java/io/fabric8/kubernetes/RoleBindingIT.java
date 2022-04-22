@@ -129,7 +129,7 @@ class RoleBindingIT {
   void delete() {
 
     int initialCountBeforeDeletion = client.rbac().roleBindings().list().getItems().size();
-    boolean deleted = client.rbac().roleBindings().withName("rb-delete").delete();
+    boolean deleted = client.rbac().roleBindings().withName("rb-delete").delete().size() == 1;
 
     assertTrue(deleted);
 

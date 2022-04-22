@@ -76,7 +76,7 @@ class GenericClusterScopedCustomResourceIT {
     assertThat(satellites.getItems()).hasSize(1);
 
     // Delete
-    Boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").delete();
+    boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").delete().size() == 1;
     assertThat(isDeleted).isTrue();
   }
 

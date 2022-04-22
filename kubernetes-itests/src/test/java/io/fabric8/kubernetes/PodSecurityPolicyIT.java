@@ -90,7 +90,7 @@ class PodSecurityPolicyIT {
 
   @Test
   void delete(){
-    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete();
+    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete().size() == 1;
     assertTrue(deleted);
 
     client.policy().v1beta1().podSecurityPolicies().withName("psp-delete")

@@ -109,7 +109,7 @@ class CustomResourceDefinitionIT {
   void delete() {
     // When
     final boolean result = client.apiextensions().v1().customResourceDefinitions()
-      .withName(name).delete();
+      .withName(name).delete().size() == 1;
     // Then
     assertThat(result).isTrue();
   }

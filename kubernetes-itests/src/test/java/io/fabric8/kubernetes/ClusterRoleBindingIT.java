@@ -132,7 +132,7 @@ class ClusterRoleBindingIT {
   void delete() {
     ClusterRoleBindingList clusterRoleBindingListBefore = client.rbac().clusterRoleBindings().list();
 
-    boolean deleted = client.rbac().clusterRoleBindings().withName("read-nodes-delete").delete();
+    boolean deleted = client.rbac().clusterRoleBindings().withName("read-nodes-delete").delete().size() == 1;
     assertTrue(deleted);
 
     client.rbac().clusterRoleBindings().withName("read-nodes-delete")

@@ -65,7 +65,7 @@ class EventsIT {
 
     // When
     Event createdEvent = client.v1().events().create(event);
-    Boolean isDeleted = client.v1().events().withName("custom-event-delete").delete();
+    boolean isDeleted = client.v1().events().withName("custom-event-delete").delete().size() == 1;
 
     // Then
     assertNotNull(createdEvent);

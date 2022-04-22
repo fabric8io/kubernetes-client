@@ -261,7 +261,7 @@ class TypedCustomResourceIT {
     Pet pet = createNewPet("pet-delete", "Cow", "Eating");
     // When
     petClient.create(pet);
-    boolean isDeleted = petClient.withName("pet-delete").delete();
+    boolean isDeleted = petClient.withName("pet-delete").delete().size() == 1;
     // Then
     assertTrue(isDeleted);
   }
@@ -287,7 +287,7 @@ class TypedCustomResourceIT {
     Pet duck = createNewPet("dry-run-delete", "Duck", "Quacking");
     petClient.createOrReplace(duck);
     // When
-    boolean isDeleted = petClient.withName("dry-run-delete").dryRun().delete();
+    boolean isDeleted = petClient.withName("dry-run-delete").dryRun().delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     Pet duckFromServer = petClient.withName("dry-run-delete").get();

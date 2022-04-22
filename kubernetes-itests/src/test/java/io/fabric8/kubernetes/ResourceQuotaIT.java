@@ -56,7 +56,7 @@ class ResourceQuotaIT {
 
   @Test
   void delete() {
-    assertTrue(client.resourceQuotas().withName("resourcequota-delete").delete());
+    assertTrue(client.resourceQuotas().withName("resourcequota-delete").delete().size() == 1);
   }
 
 }

@@ -142,7 +142,6 @@ class TemplateTest {
 
 
     boolean deleted = client.templates().withName("tmpl1").delete().size() == 1;
-    assertNotNull(deleted);
 
     deleted = client.templates().withName("tmpl2").delete().size() == 1;
     assertFalse(deleted);

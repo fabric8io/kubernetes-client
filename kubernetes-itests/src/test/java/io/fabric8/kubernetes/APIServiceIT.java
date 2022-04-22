@@ -64,6 +64,6 @@ class APIServiceIT {
   @Test
   @Disabled(value = "https://github.com/fabric8io/kubernetes-client/issues/3668")
   void delete() {
-    assertThat(client.apiServices().withName("v1beta1.delete.fabric8.io").delete()).isTrue();
+    assertThat(client.apiServices().withName("v1beta1.delete.fabric8.io").delete().size() == 1).isTrue();
   }
 }
