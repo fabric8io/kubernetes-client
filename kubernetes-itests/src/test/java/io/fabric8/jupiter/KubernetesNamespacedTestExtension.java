@@ -67,7 +67,7 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
   }
 
   @Override
-  public void afterAll(ExtensionContext context) throws Exception {
+  public void afterAll(ExtensionContext context)  {
     final KubernetesClient client = getClient(context);
     client.resource(getNamespace(context)).withGracePeriod(0L).delete();
     client.close();
@@ -101,7 +101,9 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
     final List<ObjectReference> secrets = client.serviceAccounts()
         .inNamespace(namespace.getMetadata().getName())
         .withName("default")
-        .waitUntilCondition(sa -> sa != null && sa.getSecrets() != null && !sa.getSecrets().isEmpty(), 5, TimeUnit.SECONDS)
+        .waitUntilCondition(sa -> sa != null && sa.getSecrets() != null
+            && sa.getSecrets().stream().anyMatch(s -> s.getName().matches("default-token.+")),
+            5, TimeUnit.SECONDS)
         .getSecrets();
     for (ObjectReference secret : secrets) {
       client.secrets().inNamespace(namespace.getMetadata().getName()).withName(secret.getName())
