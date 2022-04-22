@@ -26,7 +26,7 @@ public interface Deletable {
    * as determined by the api server response(s).
    * <p>
    * It is not guaranteed that the returned list will contain all values marked for deletion
-   * - see <a href="#{@link}">{@link https://github.com/fabric8io/kubernetes-client/pull/3058}</a>
+   * - see <a href="https://github.com/fabric8io/kubernetes-client/pull/3058">Issue #3058</a>
    *
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */

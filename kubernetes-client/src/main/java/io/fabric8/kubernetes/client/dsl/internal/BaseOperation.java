@@ -433,7 +433,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } else if (obj instanceof Status) {
       details.add(((Status) obj).getDetails());
     } else if (obj instanceof KubernetesResourceList) {
-      ((KubernetesResourceList<HasMetadata>) obj).getItems().forEach(i -> toStatusDetails(i, details));
+      List<HasMetadata> items = ((KubernetesResourceList<HasMetadata>) obj).getItems();
+      if (items != null) {
+        items.forEach(i -> toStatusDetails(i, details));
+      }
     } else {
       // log?
     }
@@ -442,7 +445,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public List<StatusDetails> delete() {
     if (Utils.isNotNullOrEmpty(name) || Utils.isNotNullOrEmpty(namespace) || !isResourceNamespaced()) {
-      ArrayList<StatusDetails> details = new ArrayList<>();
       try {
         URL resourceURLForWriteOperation = getResourceURLForWriteOperation(getResourceUrl());
         ListOptions options = new ListOptions();
@@ -464,6 +466,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
         KubernetesResource result = handleDelete(resourceURLForWriteOperation, gracePeriodSeconds, propagationPolicy,
             resourceVersion);
+        ArrayList<StatusDetails> details = new ArrayList<>();
         toStatusDetails(result, details);
         return details;
       } catch (Exception e) {
@@ -475,8 +478,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
               return Collections.emptyList();
             }
           } else if (ke.getCode() == HttpURLConnection.HTTP_BAD_METHOD) {
-            // could compensate with a list delete - but it appears this only for sensitive resources like RoleBinding
-            // so we'll just allow the exception
+            // collection delete may not be supported, fall-back to single item delete
+            return list().getItems().stream().flatMap(i -> resource(i).delete().stream()).collect(Collectors.toList());
           }
         }
         throw re;
