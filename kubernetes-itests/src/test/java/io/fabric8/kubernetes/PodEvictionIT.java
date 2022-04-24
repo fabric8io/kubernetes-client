@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Evictable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -64,7 +64,7 @@ class PodEvictionIT {
       .withName(podName)
       .endMetadata()
       .build();
-    final Evictable podOps = client.pods().withName(podName);
+    final PodResource podOps = client.pods().withName(podName);
 
     // When + Then
     assertThrows(KubernetesClientException.class, () -> podOps.evict(eviction));

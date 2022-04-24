@@ -210,6 +210,10 @@ Client.adapt will no longer perform the isAdaptable check - that is you may free
 
 - The methods provided by MultiDeleteable have moved to FilterWatchListMultiDeletable and have been deprecated.  You may use KubernetesClient.resourceList, or the individual resource methods to delete the items.
 
+- DSL methods available off of a resource context involving a resource - client.configMaps().withName("name").create(configMap) - should instead use a no-argument method - client.configMaps().resource(configMap).create() or client.resource(configMap).create().
+
+- DSL methods available off of a collection context involving a resource - client.configMaps().create(configMap) - should instead use a no-argument method - client.configMaps().resource(configMap).create() or client.resource(configMap).create().
+
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
@@ -234,6 +238,12 @@ KubernetesList and Template will no longer automatically sort their objects by d
 * StatusUpdatable
 * Cascading
 * FilterWatchListMultiDeletable
+* Creatable
+* Editable
+* Loadable
+* Patchable
+* Status*
+* And many others
 
 The logic was consolidated onto:
 * AnyNamespaceOperation

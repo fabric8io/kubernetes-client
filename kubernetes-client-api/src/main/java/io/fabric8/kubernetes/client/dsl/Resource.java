@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.FromServerGettable;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
@@ -32,7 +33,7 @@ public interface Resource<T> extends
     WatchAndWaitable<T>, Versionable<WatchAndWaitable<T>>,
     WritableOperation<T>,
     DryRunable<WritableOperation<T>>,
-    Requirable<T>, Readiable, Informable<T> {
+    Informable<T> {
 
   /**
    * deletes dependent resources. Sets `orphanDependents` field to `false` when set `true`
@@ -49,5 +50,19 @@ public interface Resource<T> extends
     }
     return this;
   }
+
+  /**
+   * Check if the resource is ready. If no readiness check exists, this is just an existence check.
+   * 
+   * @return true if the resource exists and is ready.
+   */
+  boolean isReady();
+
+  /**
+   * @return the item or throws an exception if the item doesn't exist.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
+   * @throws io.fabric8.kubernetes.client.ResourceNotFoundException if resource is absent
+   */
+  T require() throws ResourceNotFoundException;
 
 }
