@@ -16,5 +16,13 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface TailPrettyLoggable<W> extends Tailable<PrettyLoggable<W>>, PrettyLoggable<W> {
+public interface TailPrettyLoggable<W> extends PrettyLoggable<W> {
+
+  /**
+   * Get logs lines of recent log file to display.
+   * 
+   * @param lines number of lines to tail
+   * @return returns pod log operation with specified PodLogOption configured
+   */
+  PrettyLoggable<W> tailingLines(int lines);
 }

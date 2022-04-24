@@ -16,13 +16,13 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-
 /**
  *
  * @param <I> The exec input.
  * @param <T> The exec output.
  */
-public interface ExecListenable<I, T>  extends
-        Listenable<Execable<I, T>, ExecListener>,
-        Execable<I, T> {
+public interface ExecListenable<I, T> extends
+    Execable<I, T> {
+
+  Execable<I, T> usingListener(ExecListener listener);
 }
