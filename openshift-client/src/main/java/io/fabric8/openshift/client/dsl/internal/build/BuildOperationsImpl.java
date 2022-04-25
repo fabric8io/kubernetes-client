@@ -36,6 +36,7 @@ import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
@@ -141,6 +142,16 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   @Override
   public Reader getLogReader() {
     return doGetLog(Reader.class);
+  }
+
+  /**
+   * Returns an unclosed InputStream. It's the caller responsibility to close it.
+   *
+   * @return InputStream
+   */
+  @Override
+  public InputStream getLogInputStream() {
+    return doGetLog(InputStream.class);
   }
 
   @Override

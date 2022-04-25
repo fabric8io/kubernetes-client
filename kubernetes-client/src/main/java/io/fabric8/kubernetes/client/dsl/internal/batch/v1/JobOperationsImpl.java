@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.HashMap;
@@ -140,6 +141,16 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   @Override
   public Reader getLogReader() {
     return PodOperationUtil.getLogReader(doGetLog(false));
+  }
+
+  /**
+   * Returns an unclosed InputStream. It's the caller responsibility to close it.
+   *
+   * @return Reader
+   */
+  @Override
+  public InputStream getLogInputStream() {
+    return PodOperationUtil.getLogInputStream(doGetLog(false));
   }
 
   @Override

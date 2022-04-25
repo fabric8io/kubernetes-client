@@ -31,6 +31,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -163,6 +164,26 @@ class PodOperationUtilTest {
     assertThat(reader).isNotNull();
     verify(p1, times(1)).getLogReader();
     verify(p2, times(0)).getLogReader();
+  }
+
+  @Test
+  void testGetLogInputStreamEmptyPodResourceList() {
+    assertThat(PodOperationUtil.getLogInputStream(Collections.emptyList())).isNull();
+  }
+
+  @Test
+  void testGetLogInputStreamMultiplePodReplicasPicksFirstPod() {
+    // Given
+    PodResource p1 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+    PodResource p2 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
+
+    // When
+    InputStream inputStream = PodOperationUtil.getLogInputStream(createMockPodResourceList(p1, p2));
+
+    // Then
+    assertThat(inputStream).isNotNull();
+    verify(p1, times(1)).getLogInputStream();
+    verify(p2, times(0)).getLogInputStream();
   }
 
   @Test

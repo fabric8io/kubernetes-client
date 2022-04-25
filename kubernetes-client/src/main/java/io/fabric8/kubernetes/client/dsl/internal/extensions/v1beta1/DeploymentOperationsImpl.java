@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
@@ -39,14 +40,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -272,26 +269,33 @@ public class DeploymentOperationsImpl
    */
   @Override
   public Reader getLogReader() {
-    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
-    if (!podResources.isEmpty()) {
-      if (podResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to get log reader", podResources.size());
-      }
-      return podResources.get(0).getLogReader();
-    }
-    return null;
+    return findFirstPodResource().map(Loggable::getLogReader).orElse(null);
+  }
+
+  /**
+   * Returns an unclosed InputStream. It's the caller responsibility to close it.
+   *
+   * @return InputStream
+   */
+  @Override
+  public InputStream getLogInputStream() {
+    return findFirstPodResource().map(Loggable::getLogInputStream).orElse(null);
   }
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<RollableScalableResource<ReplicaSet>> replicaSetResources = doGetLog();
-    if (!replicaSetResources.isEmpty()) {
-      if (replicaSetResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to get logs", replicaSetResources.size());
+    return findFirstPodResource().map(it -> it.watchLog(out)).orElse(null);
+  }
+
+  private Optional<RollableScalableResource<ReplicaSet>> findFirstPodResource() {
+    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
+    if (!podResources.isEmpty()) {
+      if (podResources.size() > 1) {
+        LOG.debug("Found {} pods, Using first one to get log", podResources.size());
       }
-      return replicaSetResources.get(0).watchLog(out);
+      return Optional.of(podResources.get(0));
     }
-    return null;
+    return Optional.empty();
   }
 
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {

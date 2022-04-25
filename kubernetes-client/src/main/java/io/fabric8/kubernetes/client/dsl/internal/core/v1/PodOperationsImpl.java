@@ -134,6 +134,16 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     return doGetLog(Reader.class);
   }
 
+  /**
+   * Returns an unclosed InputStream. It's the caller responsibility to close it.
+   *
+   * @return InputStream
+   */
+  @Override
+  public InputStream getLogInputStream() {
+    return doGetLog(InputStream.class);
+  }
+
   @Override
   public String getLog(boolean isPretty) {
     return new PodOperationsImpl(getContext().withPrettyOutput(isPretty), context).getLog();
