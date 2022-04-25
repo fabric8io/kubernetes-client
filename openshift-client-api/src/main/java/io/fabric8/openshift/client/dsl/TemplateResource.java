@@ -15,6 +15,85 @@
  */
 package io.fabric8.openshift.client.dsl;
 
-public interface TemplateResource<T, L> extends ProcessableResource<T, L> {
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.openshift.client.ParameterValue;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.Map;
+
+public interface TemplateResource<T, L> extends Resource<T> {
+
+  /**
+   * Process a template reading parameter values from a {@link File} in json or yml format.
+   * 
+   * @param f The specified {@link File}.
+   * @return
+   */
+  L process(File f);
+
+  /**
+   * Process a template reading parameter values from an {@link InputStream} in json or yml format.
+   * 
+   * @param is The specified {@link InputStream}.
+   * @return
+   */
+  L process(InputStream is);
+
+  /**
+   * Process a template reading parameter values from am {@link Map}.
+   * 
+   * @param map The specified {@link Map}.
+   * @return
+   */
+  L process(Map<String, String> map);
+
+  /**
+   * Process a template with the specified {@link ParameterValue}s.
+   * 
+   * @param values The specified {@link ParameterValue}s.
+   * @return
+   */
+  L process(ParameterValue... values);
+
+  /**
+   * Process a template locally reading parameter values from a {@link File} in json or yml format.
+   * This kind of processing is performed locally, without communicating with the server (e.g for generating values using
+   * expressions).
+   * 
+   * @param f The specified {@link File}.
+   * @return
+   */
+  L processLocally(File f);
+
+  /**
+   * Process a template locally reading parameter values from an {@link InputStream} in json or yml format.
+   * This kind of processing is performed locally, without communicating with the server (e.g for generating values using
+   * expressions).
+   * 
+   * @param is The specified {@link InputStream}.
+   * @return
+   */
+  L processLocally(InputStream is);
+
+  /**
+   * Process a template locally reading parameter values from am {@link Map}.
+   * This kind of processing is performed locally, without communicating with the server (e.g for generating values using
+   * expressions).
+   * 
+   * @param map The specified {@link Map}.
+   * @return
+   */
+  L processLocally(Map<String, String> map);
+
+  /**
+   * Process a template with the specified {@link ParameterValue}s.
+   * This kind of processing is performed locally, without communicating with the server (e.g for generating values using
+   * expressions).
+   * 
+   * @param values The specified {@link ParameterValue}s.
+   * @return
+   */
+  L processLocally(ParameterValue... values);
 
 }
