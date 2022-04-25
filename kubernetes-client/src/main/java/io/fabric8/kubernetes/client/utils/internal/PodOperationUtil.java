@@ -18,8 +18,11 @@ package io.fabric8.kubernetes.client.utils.internal;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
@@ -28,11 +31,13 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class PodOperationUtil {
@@ -76,23 +81,25 @@ public class PodOperationUtil {
   }
 
   public static LogWatch watchLog(List<PodResource> podResources, OutputStream out) {
-    if (!podResources.isEmpty()) {
-      if (podResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to watch logs", podResources.size());
-      }
-      return podResources.get(0).watchLog(out);
-    }
-    return null;
+    return findFirstPodResource(podResources).map(it -> it.watchLog(out)).orElse(null);
   }
 
   public static Reader getLogReader(List<PodResource> podResources) {
+    return findFirstPodResource(podResources).map(Loggable::getLogReader).orElse(null);
+  }
+
+  public static InputStream getLogInputStream(List<PodResource> podResources) {
+    return findFirstPodResource(podResources).map(Loggable::getLogInputStream).orElse(null);
+  }
+
+  private static Optional<PodResource> findFirstPodResource(List<PodResource> podResources) {
     if (!podResources.isEmpty()) {
       if (podResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to get log reader", podResources.size());
+        LOG.debug("Found {} pods, Using first one to get log", podResources.size());
       }
-      return podResources.get(0).getLogReader();
+      return Optional.ofNullable(podResources.get(0));
     }
-    return null;
+    return Optional.empty();
   }
 
   public static String getLog(List<PodResource> podOperationList, Boolean isPretty) {

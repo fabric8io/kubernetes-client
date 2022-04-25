@@ -36,6 +36,7 @@ import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
@@ -185,6 +186,16 @@ public class DeploymentConfigOperationsImpl
   @Override
   public Reader getLogReader() {
     return doGetLog(false, Reader.class);
+  }
+
+  /**
+   * Returns an unclosed InputStream. It's the caller responsibility to close it.
+   *
+   * @return InputStream
+   */
+  @Override
+  public InputStream getLogInputStream() {
+    return doGetLog(false, InputStream.class);
   }
 
   @Override

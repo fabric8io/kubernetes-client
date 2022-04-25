@@ -35,6 +35,7 @@ import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.Collections;
@@ -158,6 +159,16 @@ public class StatefulSetOperationsImpl
   @Override
   public Reader getLogReader() {
     return PodOperationUtil.getLogReader(doGetLog(false));
+  }
+
+  /**
+   * Returns an unclosed InputStream. It's the caller responsibility to close it.
+   *
+   * @return InputStream
+   */
+  @Override
+  public InputStream getLogInputStream() {
+    return PodOperationUtil.getLogInputStream(doGetLog(false));
   }
 
   @Override
