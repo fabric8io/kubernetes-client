@@ -18,6 +18,9 @@ package io.fabric8.openshift.client.dsl.buildconfig;
 /**
  * Created by iocanel on 7/18/16.
  */
-public interface CommitterAuthorMessageAsFileTimeoutInputStreamable<T> extends AuthorMessageAsFileTimeoutInputStreamable<T>,
-  CommitterNameOrEmailable<AuthorMessageAsFileTimeoutInputStreamable<T>> {
+public interface CommitterAuthorMessageAsFileTimeoutInputStreamable<T>
+    extends AuthorMessageAsFileTimeoutInputStreamable<T>,
+    CommitterEmailable<AuthorMessageAsFileTimeoutInputStreamable<T>> {
+
+  CommitterEmailable<AuthorMessageAsFileTimeoutInputStreamable<T>> withCommitterName(String committerName);
 }
