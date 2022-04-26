@@ -15,6 +15,8 @@
  */
 package io.fabric8.crd.example.basic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class BasicSpec {
   private int myInt;
 
@@ -35,4 +37,7 @@ public class BasicSpec {
   public void setMyLong(long myLong) {
     this.myLong = myLong;
   }
+
+  @JsonIgnore
+  public Class<?> clazz;
 }
