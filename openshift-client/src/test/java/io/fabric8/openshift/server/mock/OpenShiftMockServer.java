@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,32 +15,3 @@
  */
 
 package io.fabric8.openshift.server.mock;
-
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
-import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftConfig;
-
-@Deprecated
-// The class has moved under mvn:io.fabric8:openshift-server-mock in package: io.fabric8.openshift.client.server.mock
-public class OpenShiftMockServer extends KubernetesMockServer {
-
-  public OpenShiftMockServer() {
-    super();
-  }
-
-  public OpenShiftMockServer(boolean useHttps) {
-    super(useHttps);
-  }
-
-  @Override
-  public String[] getRootPaths() {
-    return new String[]{"/api","/oapi"};
-  }
-
-  public NamespacedOpenShiftClient createOpenShiftClient() {
-    Config config = getMockConfiguration();
-    return new DefaultOpenShiftClient(new OpenShiftConfig(config));
-  }
-}
