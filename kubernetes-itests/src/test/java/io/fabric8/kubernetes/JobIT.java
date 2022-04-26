@@ -17,11 +17,13 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
+import io.fabric8.kubernetes.api.model.batch.v1.JobStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
@@ -36,11 +38,14 @@ class JobIT {
 
   @Test
   void testGetLog() {
-    Job job = initJob("job-get-log").build();
-    client.batch().v1().jobs().createOrReplace(job);
+    final String jobName = "job-get-log";
+    client.batch().v1().jobs().createOrReplace(initJob("job-get-log").build());
+    client.batch().v1().jobs().withName(jobName).waitUntilCondition(j ->
+        Optional.ofNullable(j).map(Job::getStatus).map(JobStatus::getSucceeded).orElse(0) > 0,
+      1, TimeUnit.MINUTES);
     ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
     try (LogWatch ignore = client.batch().v1().jobs()
-        .withName(job.getMetadata().getName())
+        .withName(jobName)
         .withLogWaitTimeout(30)
         .watchLog(baos)) {
       await().atMost(30, TimeUnit.SECONDS).until(() -> baos.toString().length() > 0);
