@@ -24,26 +24,26 @@ Now you can start your contribution work.
 #### * Finding the issue
 There are lots of issues on kubernetes-client's [issue page](https://github.com/fabric8io/kubernetes-client/issues). Please go through the issues and find a one which you want to fix/develop. If you want to implement something which is not there in the issues, please create a new issue. Please assign that new issue or already existing issue to yourself otherwise it may happen that someone else will fix the same issue.
 
-#### * Creating a new branch
+#### Creating a new branch
 Please create a new branch to start your development work. You can create the branch by any name but we will suggest you consider the naming convention like iss_issueNumber. Example - iss_989
 
 ```
 git checkout -b iss_issueNumber
 ```
 
-#### * Create your PATCH
+#### Create your PATCH
 
 Do all your development or fixing work here.
 
-#### * Adding Unit and Regression Tests 
+#### Adding Unit and Regression Tests 
 
 After all your development/fixing work is done, do not forget to add `Unit Test` and `Regression Test` around that. It will be nice if you can add an example of the new feature you have added.
 
-#### * Check your work after running all Unit and Regression Tests
+#### Check your work after running all Unit and Regression Tests
 
 You should run all the unit tests by hitting the following command
 
-```
+```shell
 mvn clean install
 ```
 
@@ -51,49 +51,55 @@ To run regression tests, you need to run a OpenShift/Kubernetes Cluster and afte
 
 For Kubernetes,
 
-```
-mvn clean verify -Pitests-kubernetes
+```shell
+mvn -Pitests -pl kubernetes-itests verify
 ```
 
 For OpenShift (Login as Admin),
 
-```
-mvn clean verify -Pitests-openshift
+```shell
+mvn -Pitests -pl kubernetes-itests verify
 ```
 
-#### * Other Requirements
- * If adding a new feature or fixing some bug please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md),
+If you only want to run the OpenShift specific tests:
+
+```shell
+mvn -Pitests -pl kubernetes-itests verify  -Dtest="io.fabric8.openshift.**"
+```
+
+#### Other Requirements
+ * If adding a new feature or fixing some bug, please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md),
  * Make sure you add the license headers at top of every new source file you add while implementing the feature. You can do so by hitting `mvn -N license:format` command.
 
-#### * Commit your work
+#### Commit your work
 After all your work is done, you need to commit the changes.
 ```
 git commit -am "Commit-Message"
 ```
-Please add a very elaborative commit message for the work you have done. It will help the reviewer to understand the things quickly.
+Please add a very elaborative [commit message](https://www.conventionalcommits.org/en/v1.0.0/) for the work you have done. It will help the reviewer to understand the things quickly.
 
-#### * Rebase the PR
-It may happen that during the development, someone else submitted other PATCH and that is merged. You need to rebase your branch with current upstream master.
+#### Rebase the PR
+It may happen that during the development, someone else submitted another PATCH that is merged before yours. You need to rebase your branch with current upstream master.
 
-#### * Build the project
+#### Build the project
 Before sending the PR, check whether everything is working fine. To build the project and run test
-```
+```shell
 mvn clean install
 ```
 To run regression test
-```
+```shell
 mvn clean install -P itests
 ```
-#### * Format the files that you touched
+#### Format the files that you touched
 ```shell
 mvn spotless:apply
 ```
-#### * Push the changes to your fork
+#### Push the changes to your fork
 ```
 git push origin iss_issueNumber
 ```
-#### * Create a Pull Request
-Please create a Pull Request from GitHub to kubernetes-client: master. Do not forget to provide very brief Title and elaborative description of PR. Please link the PR to issue by adding `#issueNumber` at the end of the description.
+#### Create a Pull Request
+Please create a Pull Request from GitHub to kubernetes-client: master. Do not forget to provide very brief Title and elaborative description of PR. Please link the PR to issue by adding `Fix #issueNumber` at the end of the description.
 
 ### PR Review
 

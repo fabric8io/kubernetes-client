@@ -1,0 +1,61 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+kind: List
+apiVersion: v1
+metadata: {}
+items:
+  - apiVersion: "image.openshift.io/v1"
+    kind: "ImageStreamTag"
+    metadata:
+      name: "fabric8-build-config-watch:1.33.7"
+      annotations:
+        openshift.io/generated-by: Fabric8 Kubernetes Client
+        openshift.io/imported-from: registry.access.redhat.com/ubi8/ubi-minimal
+      labels:
+        app: fabric8-build-config-watch
+    tag:
+      from:
+        kind: "DockerImage"
+        name: "registry.access.redhat.com/ubi8/ubi-minimal"
+  - kind: BuildConfig
+    apiVersion: build.openshift.io/v1
+    metadata:
+      name: fabric8-build-config-watch
+      labels:
+        app: fabric8-build-config-watch
+      annotations:
+        openshift.io/generated-by: Fabric8 Kubernetes Client
+    spec:
+      triggers:
+        - type: GitHub
+          github:
+            secret: secret101
+      source:
+        type: Git
+        git:
+          uri: https://github.com/openshift/ruby-hello-world
+      strategy:
+        type: "Docker"
+        dockerStrategy:
+          from:
+            kind: ImageStreamTag
+            name: fabric8-build-config-watch:1.33.7
+      output:
+        to:
+          kind: ImageStreamTag
+          name: fabric8-build-config-watch-improved:latest

@@ -16,88 +16,74 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
-import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class ServiceIT {
-  @ArquillianResource
+@LoadKubernetesManifests("/service-it.yml")
+class ServiceIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(ServiceIT.class.getResourceAsStream("/service-it.yml"));
-  }
+  Namespace namespace;
 
   @Test
-  public void load() {
-    Service aService = client.services().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-service.yml")).get();
+  void load() {
+    Service aService = client.services().load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertThat(aService).isNotNull();
     assertEquals("my-service", aService.getMetadata().getName());
   }
 
   @Test
-  public void get() {
-    Service svc1 = client.services().inNamespace(session.getNamespace()).withName("service-get").get();
+  void get() {
+    Service svc1 = client.services().withName("service-get").get();
     assertNotNull(svc1);
   }
 
   @Test
-  public void list() {
-    ServiceList aServiceList = client.services().inNamespace(session.getNamespace()).list();
+  void list() {
+    ServiceList aServiceList = client.services().list();
     assertThat(aServiceList).isNotNull();
     assertTrue(aServiceList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "service-update", session.getNamespace());
-    Service svc1 = client.services().inNamespace(session.getNamespace()).withName("service-update").edit(s -> new ServiceBuilder (s)
+  void update() {
+    Service svc1 = client.services().withName("service-update").edit(s -> new ServiceBuilder (s)
       .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
       .build());
-    await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
+    client.services().withName("service-update")
+      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     assertThat(svc1).isNotNull();
     assertEquals(2, svc1.getSpec().getPorts().size());
   }
 
   @Test
-  public void delete() {
-    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "service-delete", session.getNamespace());
-    await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
-    boolean bDeleted = client.services().inNamespace(session.getNamespace()).withName("service-delete").delete();
+  void delete() {
+    client.services().withName("service-delete")
+      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    boolean bDeleted = client.services().withName("service-delete").delete();
     assertTrue(bDeleted);
   }
 
   @Test
-  public void testChangeServiceType() {
+  void testChangeServiceType() {
     // Given
-    Service svc = client.services().inNamespace(session.getNamespace()).withName("service-change-service-type").get();
+    Service svc = client.services().withName("service-change-service-type").get();
 
     // When
     svc.getSpec().setType("ExternalName");
@@ -106,7 +92,7 @@ public class ServiceIT {
     svc.getSpec().setClusterIPs(Collections.emptyList());
     svc.getSpec().setIpFamilies(Collections.emptyList());
     svc.getSpec().setIpFamilyPolicy(null);
-    svc = client.services().inNamespace(session.getNamespace()).createOrReplace(svc);
+    svc = client.services().createOrReplace(svc);
 
     // Then
     assertNotNull(svc);
@@ -115,11 +101,11 @@ public class ServiceIT {
   }
 
   @Test
-  public void testChangeServiceTypePatch() {
+  void testChangeServiceTypePatch() {
     // Given
     Service svc = new ServiceBuilder()
       .withNewMetadata()
-      .withNamespace(session.getNamespace())
+      .withNamespace(namespace.getMetadata().getName())
       .withName("service-change-service-type-patch")
       .endMetadata()
       .withNewSpec()
@@ -130,7 +116,6 @@ public class ServiceIT {
 
     // When
     svc = client.services()
-      .inNamespace(session.getNamespace())
       .withName("service-change-service-type-patch")
       .patch(svc);
 
@@ -141,7 +126,7 @@ public class ServiceIT {
   }
 
   @Test
-  public void testClusterIpServiceCreateOrReplace() {
+  void testClusterIpServiceCreateOrReplace() {
     // Given
     Service clusterIPSvc = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-clusterip-createorreplace").endMetadata()
@@ -158,11 +143,11 @@ public class ServiceIT {
 
     // When
     // Create resource
-    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    client.services().createOrReplace(clusterIPSvc);
     // Modify resource
     clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
     // Do createOrReplace again; resource should get updated
-    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    clusterIPSvc = client.services().createOrReplace(clusterIPSvc);
 
     // Then
     assertNotNull(clusterIPSvc);
@@ -171,7 +156,7 @@ public class ServiceIT {
   }
 
   @Test
-  public void testNodePortServiceCreateOrReplace() {
+  void testNodePortServiceCreateOrReplace() {
     // Given
     Service nodePortSvc = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-nodeport-createorreplace").endMetadata()
@@ -187,12 +172,12 @@ public class ServiceIT {
 
     // When
     // Create resource
-    client.services().inNamespace(session.getNamespace()).createOrReplace(nodePortSvc);
+    client.services().createOrReplace(nodePortSvc);
     // Modify resource
     nodePortSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(81));
     nodePortSvc.getSpec().getPorts().get(0).setNodePort(32124);
     // Do createOrReplace again; resource should get updated
-    nodePortSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(nodePortSvc);
+    nodePortSvc = client.services().createOrReplace(nodePortSvc);
 
     // Then
     assertNotNull(nodePortSvc);
@@ -202,7 +187,7 @@ public class ServiceIT {
   }
 
   @Test
-  public void testLoadBalancerServiceCreateOrReplace() {
+  void testLoadBalancerServiceCreateOrReplace() {
     // Given
     Service loadBalancerSvc = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-loadbalancer-createorreplace").endMetadata()
@@ -219,11 +204,11 @@ public class ServiceIT {
 
     // When
     // Create resource
-    client.services().inNamespace(session.getNamespace()).createOrReplace(loadBalancerSvc);
+    client.services().createOrReplace(loadBalancerSvc);
     // Modify resource
     loadBalancerSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
     // Do createOrReplace again; resource should get updated
-    loadBalancerSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(loadBalancerSvc);
+    loadBalancerSvc = client.services().createOrReplace(loadBalancerSvc);
 
     // Then
     assertNotNull(loadBalancerSvc);
@@ -232,7 +217,7 @@ public class ServiceIT {
   }
 
   @Test
-  public void testExternalNameServiceCreateOrReplace() {
+  void testExternalNameServiceCreateOrReplace() {
     // Given
     Service service = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-externalname-createorreplace").endMetadata()
@@ -243,9 +228,9 @@ public class ServiceIT {
       .build();
 
     // When
-    client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+    client.services().createOrReplace(service);
     service.getSpec().setExternalName("his.database.example.com");
-    service = client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+    service = client.services().createOrReplace(service);
 
     // Then
     assertNotNull(service);
@@ -255,24 +240,19 @@ public class ServiceIT {
   }
 
   @Test
-  public void waitUntilReady() throws InterruptedException {
+  void waitUntilReady() {
     // Given
     String svcName = "service-wait-until-ready";
 
     // When
-    Service service = client.services().inNamespace(session.getNamespace())
+    Service service = client.services()
       .withName(svcName)
       .waitUntilReady(10, TimeUnit.SECONDS);
 
     // Then
     assertNotNull(service);
     assertEquals(svcName, service.getMetadata().getName());
-    assertTrue(client.pods().inNamespace(session.getNamespace()).withName(svcName).delete());
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(ServiceIT.class.getResourceAsStream("/service-it.yml"));
+    assertTrue(client.pods().withName(svcName).delete());
   }
 
 }

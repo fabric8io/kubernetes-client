@@ -266,8 +266,19 @@ public class Readiness {
   }
 
   /**
+   * Returns true if the Pod.status.phase is 'Succeeded'.
+   *
+   * @param pod the Pod to check the status phase of
+   * @return true if the Pod is succeeded, false otherwise
+   */
+  public static boolean isPodSucceeded(Pod pod) {
+    Utils.checkNotNull(pod, "Pod can't be null.");
+    return pod.getStatus() != null && "Succeeded".equals(pod.getStatus().getPhase());
+  }
+
+  /**
    * Returns the ready condition of the pod.
-   * 
+   *
    * @param pod The target pod.
    * @return The {@link PodCondition} or null if not found.
    */

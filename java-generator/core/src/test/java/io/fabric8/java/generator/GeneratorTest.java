@@ -21,10 +21,16 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -32,6 +38,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GeneratorTest {
@@ -101,7 +108,7 @@ class GeneratorTest {
   @Test
   void testPrimitive() {
     // Arrange
-    JPrimitive primitive = new JPrimitive("test", defaultConfig, null, Boolean.FALSE);
+    JPrimitive primitive = new JPrimitive("test", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = primitive.generateJava();
@@ -114,8 +121,8 @@ class GeneratorTest {
   @Test
   void testArrayOfPrimitives() {
     // Arrange
-    JArray array = new JArray(new JPrimitive("primitive", defaultConfig, null, Boolean.FALSE), defaultConfig, null,
-        Boolean.FALSE);
+    JArray array = new JArray(new JPrimitive("primitive", defaultConfig, null, Boolean.FALSE, null), defaultConfig, null,
+        Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = array.generateJava();
@@ -129,10 +136,11 @@ class GeneratorTest {
   void testMapOfPrimitives() {
     // Arrange
     JMap map = new JMap(
-        new JPrimitive("primitive", defaultConfig, null, Boolean.FALSE),
+        new JPrimitive("primitive", defaultConfig, null, Boolean.FALSE, null),
         defaultConfig,
         null,
-        Boolean.FALSE);
+        Boolean.FALSE,
+        null);
 
     // Act
     GeneratorResult res = map.generateJava();
@@ -145,7 +153,7 @@ class GeneratorTest {
   @Test
   void testEmptyObject() {
     // Arrange
-    JObject obj = new JObject("v1alpha1", "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject("v1alpha1", "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -160,7 +168,7 @@ class GeneratorTest {
   void testEmptyObjectWithSuffix() {
     // Arrange
     Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null);
-    JObject obj = new JObject("v1alpha1", "t", null, null, false, "", "MySuffix", config, null, Boolean.FALSE);
+    JObject obj = new JObject("v1alpha1", "t", null, null, false, "", "MySuffix", config, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -174,7 +182,7 @@ class GeneratorTest {
   @Test
   void testEmptyObjectWithoutNamespace() {
     // Arrange
-    JObject obj = new JObject(null, "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject(null, "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -192,7 +200,7 @@ class GeneratorTest {
     JSONSchemaProps newBool = new JSONSchemaProps();
     newBool.setType("boolean");
     props.put("o1", newBool);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -217,7 +225,7 @@ class GeneratorTest {
     props.put("o1", newBool);
     List<String> req = new ArrayList<>(1);
     req.add("o1");
-    JObject obj = new JObject("v1alpha1", "t", props, req, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject("v1alpha1", "t", props, req, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -238,7 +246,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("bar"));
     enumValues.add(new TextNode("baz"));
     props.put("e1", newEnum);
-    JEnum enu = new JEnum("t", enumValues, defaultConfig, null, Boolean.FALSE);
+    JEnum enu = new JEnum("t", enumValues, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = enu.generateJava();
@@ -268,7 +276,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("bar"));
     enumValues.add(new TextNode("baz"));
     props.put("e1", newEnum);
-    JEnum enu = new JEnum("t", enumValues, new Config(false, null, null, null, null, null), null, Boolean.FALSE);
+    JEnum enu = new JEnum("t", enumValues, new Config(false, null, null, null, null, null), null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = enu.generateJava();
@@ -290,9 +298,9 @@ class GeneratorTest {
   void testArrayOfObjects() {
     // Arrange
     JArray array = new JArray(
-        new JObject(null, "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE),
+        new JObject(null, "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE, null),
         defaultConfig,
-        null, false);
+        null, false, null);
 
     // Act
     GeneratorResult res = array.generateJava();
@@ -307,9 +315,9 @@ class GeneratorTest {
   void testMapOfObjects() {
     // Arrange
     JMap map = new JMap(
-        new JObject(null, "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE),
+        new JObject(null, "t", null, null, false, "", "", defaultConfig, null, Boolean.FALSE, null),
         defaultConfig,
-        null, Boolean.FALSE);
+        null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = map.generateJava();
@@ -327,7 +335,7 @@ class GeneratorTest {
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");
     props.put("o1", newObj);
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -353,7 +361,7 @@ class GeneratorTest {
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");
     props.put("o1", newObj);
-    JObject obj = new JObject(null, "t", props, null, false, "My", "", config, null, Boolean.FALSE);
+    JObject obj = new JObject(null, "t", props, null, false, "My", "", config, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -372,7 +380,7 @@ class GeneratorTest {
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");
     props.put("o1", newObj);
-    JObject obj = new JObject(null, "t", props, null, false, "My", "", config, null, Boolean.FALSE);
+    JObject obj = new JObject(null, "t", props, null, false, "My", "", config, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -386,7 +394,7 @@ class GeneratorTest {
   @Test
   void testObjectWithPreservedFields() {
     // Arrange
-    JObject obj = new JObject(null, "t", null, null, true, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject(null, "t", null, null, true, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -414,7 +422,7 @@ class GeneratorTest {
     nonNullableObj.setNullable(Boolean.FALSE);
     props.put("o2", nonNullableObj);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -466,7 +474,7 @@ class GeneratorTest {
     newObj2.setProperties(obj2Props);
     props.put("o1", newObj1);
     props.put("o2", newObj2);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE);
+    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -503,5 +511,59 @@ class GeneratorTest {
         clzO2.get().getFieldByName("o1").get().getElementType().toString());
     assertTrue(clzO2.get().getFieldByName("o2").isPresent());
     assertTrue(clzO2.get().getFieldByName("o3").isPresent());
+  }
+
+  @Test
+  void testObjectDefaultFieldsManagement() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+
+    JSONSchemaProps objWithDefaultValues = new JSONSchemaProps();
+    objWithDefaultValues.setType("object");
+    String jsonContent = "{\"limits\":{\"memory\":\"1024Mi\",\"cpu\":\"\"},\"requests\":{\"memory\":\"1024Mi\",\"cpu\":\"1\"}}";
+    JsonNode defaultValue = Serialization.unmarshal(jsonContent, JsonNode.class);
+    objWithDefaultValues.setDefault(defaultValue);
+    props.put("o1", objWithDefaultValues);
+
+    JSONSchemaProps objWithoutDefaultValues = new JSONSchemaProps();
+    objWithoutDefaultValues.setType("object");
+    props.put("o2", objWithoutDefaultValues);
+
+    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    assertEquals(3, res.getTopLevelClasses().size());
+    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
+    assertEquals("O2", res.getTopLevelClasses().get(1).getName());
+    assertEquals("T", res.getTopLevelClasses().get(2).getName());
+
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getCompilationUnit().getClassByName("T");
+    assertTrue(clzT.isPresent());
+    assertEquals(2, clzT.get().getFields().size());
+
+    Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
+    assertTrue(o1Field.isPresent());
+    FieldDeclaration actualO1Field = o1Field.get();
+    VariableDeclarator variableDeclarator = actualO1Field.getVariable(0);
+    assertNotNull(variableDeclarator);
+    Optional<Expression> initializer = variableDeclarator.getInitializer();
+    assertTrue(initializer.isPresent());
+
+    Optional<FieldDeclaration> o2Field = clzT.get().getFieldByName("o2");
+    assertTrue(o2Field.isPresent());
+    FieldDeclaration actualO2Field = o2Field.get();
+    variableDeclarator = actualO2Field.getVariable(0);
+    assertNotNull(variableDeclarator);
+    initializer = variableDeclarator.getInitializer();
+    assertFalse(initializer.isPresent());
+
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    assertTrue(clzO1.isPresent());
+
+    Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getCompilationUnit().getClassByName("O2");
+    assertTrue(clzO2.isPresent());
   }
 }

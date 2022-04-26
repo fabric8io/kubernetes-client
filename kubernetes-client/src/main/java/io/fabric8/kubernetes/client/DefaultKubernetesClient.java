@@ -544,6 +544,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return newInstance(createInNamespaceConfig(null, true));
   }
 
+  @Override
   protected DefaultKubernetesClient newInstance(Config config) {
     return new DefaultKubernetesClient(config, this);
   }

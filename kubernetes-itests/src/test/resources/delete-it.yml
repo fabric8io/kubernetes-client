@@ -122,26 +122,8 @@ spec:
         pod-is-for: garbage-collection-example
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
----
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: deleteit-resource
-spec:
-  replicas: 0
-  selector:
-    matchLabels:
-      pod-is-for: garbage-collection-example
-  template:
-    metadata:
-      labels:
-        pod-is-for: garbage-collection-example
-    spec:
-      containers:
-        - name: nginx
-          image: nginx:1.7.9
+        - name: busybox
+          image: busybox
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
@@ -158,8 +140,8 @@ spec:
         pod-is-for: garbage-collection-example
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
+        - name: busybox
+          image: busybox
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
@@ -176,8 +158,8 @@ spec:
         pod-is-for: garbage-collection-example
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
+        - name: busybox
+          image: busybox
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
@@ -194,8 +176,8 @@ spec:
         pod-is-for: garbage-collection-example
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
+        - name: busybox
+          image: busybox
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -214,8 +196,8 @@ spec:
         test: deleteit-resource-orphan
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
+        - name: busybox
+          image: busybox
           ports:
             - containerPort: 80
 

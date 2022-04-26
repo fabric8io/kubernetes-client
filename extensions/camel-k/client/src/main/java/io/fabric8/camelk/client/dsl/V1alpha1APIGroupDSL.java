@@ -16,6 +16,8 @@
 package io.fabric8.camelk.client.dsl;
 
 import io.fabric8.camelk.v1alpha1.Kamelet;
+import io.fabric8.camelk.v1alpha1.KameletBinding;
+import io.fabric8.camelk.v1alpha1.KameletBindingList;
 import io.fabric8.camelk.v1alpha1.KameletList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -29,5 +31,10 @@ public interface V1alpha1APIGroupDSL extends Client {
    */
   MixedOperation<Kamelet, KameletList, Resource<Kamelet>> kamelets();
 
- 
+  /**
+   * API entrypoint for KameletBinding (camel.apache.org/v1alpha1)
+   *
+   * @return {@link MixedOperation} for KameletBinding
+   */
+  MixedOperation<KameletBinding, KameletBindingList, Resource<KameletBinding>> kameletBindings();
 }

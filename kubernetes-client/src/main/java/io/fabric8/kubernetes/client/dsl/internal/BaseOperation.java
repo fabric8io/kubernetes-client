@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
@@ -955,6 +956,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
     }
     return urlBuilder.build();
+  }
+
+  @Override
+  public <C extends Client> C inWriteContext(Class<C> clazz) {
+    return context.clientInWriteContext(clazz);
   }
 
   @Override

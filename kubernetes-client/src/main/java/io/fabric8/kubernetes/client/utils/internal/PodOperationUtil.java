@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,11 +115,10 @@ public class PodOperationUtil {
 
   public static void waitUntilReadyBeforeFetchingLogs(PodResource podOperation, Integer logWaitTimeout) {
     try {
-      // Wait for Pod to become ready
-      Pod pod = podOperation.fromServer().get();
-      if (pod != null && pod.getStatus() != null && pod.getStatus().getPhase().equals("Pending")) {
-        podOperation.waitUntilReady(logWaitTimeout, TimeUnit.SECONDS);
-      }
+      // Wait for Pod to become ready or succeeded
+      podOperation.waitUntilCondition(p -> p != null && (Readiness.isPodReady(p) || Readiness.isPodSucceeded(p)),
+          logWaitTimeout,
+          TimeUnit.SECONDS);
     } catch (Exception otherException) {
       LOG.debug("Error while waiting for Pod to become Ready: {}", otherException.getMessage());
     }

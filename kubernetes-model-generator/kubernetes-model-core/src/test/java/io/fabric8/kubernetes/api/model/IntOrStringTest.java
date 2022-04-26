@@ -73,7 +73,7 @@ class IntOrStringTest {
 
     // Then
     assertThat(intOrString)
-      .hasFieldOrPropertyWithValue("value", 89);
+        .hasFieldOrPropertyWithValue("value", 89);
   }
 
   @Test
@@ -83,19 +83,28 @@ class IntOrStringTest {
 
     // Then
     assertThat(intOrString)
-      .hasFieldOrPropertyWithValue("value", "89");
+        .hasFieldOrPropertyWithValue("value", "89");
   }
 
   @Test
-  void builder_withEmpty_shouldThrowException() {
+  void builder_withEmpty_shouldSetNullValue() {
     // Given
     IntOrStringBuilder intOrStringBuilder = new IntOrStringBuilder();
+    // When
+    final IntOrString result = intOrStringBuilder.build();
+    // Then
+    assertThat(result)
+        .hasFieldOrPropertyWithValue("value", null);
+  }
 
+  @Test
+  void builder_withBoolean_shouldThrowException() {
+    // Given
+    IntOrStringBuilder intOrStringBuilder = new IntOrStringBuilder().withValue(true);
     // When
     IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, intOrStringBuilder::build);
-
     // Then
     assertThat(illegalArgumentException)
-      .hasMessage("Either integer or string value needs to be provided");
+        .hasMessage("Either integer or string value needs to be provided");
   }
 }

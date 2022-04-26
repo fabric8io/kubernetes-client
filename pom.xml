@@ -80,7 +80,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.90.3</sundrio.version>
+    <sundrio.version>0.90.4</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
@@ -95,9 +95,8 @@
 
     <!-- Testing versions -->
     <assertj.core.version>3.22.0</assertj.core.version>
-    <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>15.1.2</approvaltests.version>
+    <approvaltests.version>15.2.0</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -110,12 +109,10 @@
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>5.8.2</junit.version>
-    <junit.compatible-with-arquillian.version>4.13.2</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
-    <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.36</slf4j.version>
-    <mockito.version>4.4.0</mockito.version>
-    <lombok.version>1.18.22</lombok.version>
+    <mockito.version>4.5.1</mockito.version>
+    <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.30</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.21</commons-compress.version>
@@ -133,12 +130,12 @@
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
     <maven.release.plugin.version>3.0.0-M5</maven.release.plugin.version>
-    <maven.javadoc.plugin.version>3.3.2</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.4.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.0.0-M2</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
-    <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
+    <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.3.0</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
@@ -148,8 +145,8 @@
     <jandex.version>2.4.2.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-    <nexus-staging-maven-plugin>1.6.12</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
+    <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
+    <spotless-maven-plugin.version>2.22.2</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -795,20 +792,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.arquillian.cube</groupId>
-        <artifactId>arquillian-cube-requirement</artifactId>
-        <version>${arquillian.cube.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.arquillian.cube</groupId>
-        <artifactId>arquillian-cube-openshift-starter</artifactId>
-        <version>${arquillian.cube.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>${validation-api.version}</version>
@@ -1271,7 +1254,7 @@
       </build>
     </profile>
     <profile>
-      <id>itests-kubernetes</id>
+      <id>itests</id>
       <modules>
         <module>kubernetes-itests</module>
       </modules>
@@ -1283,37 +1266,6 @@
             <version>${maven.surefire.plugin.version}</version>
             <configuration>
               <skipTests>false</skipTests>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${maven.surefire.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>itests-openshift</id>
-      <modules>
-        <module>kubernetes-itests</module>
-      </modules>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>${maven.surefire.plugin.version}</version>
-            <configuration>
-              <skipTests>true</skipTests>
             </configuration>
           </plugin>
           <plugin>

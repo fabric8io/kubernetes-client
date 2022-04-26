@@ -43,7 +43,7 @@
           "spec": {
             "containers": [
               {
-                "image": "openshift/hello-openshift:v3.6.0",
+                "image": "busybox",
                 "imagePullPolicy": "IfNotPresent",
                 "name": "hello-world-container",
                 "ports": [

@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IT_DIR: kubernetes-itests
+  IT_MODULE: kubernetes-itests
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
@@ -57,7 +57,7 @@ jobs:
           distribution: 'temurin'
       - name: Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
+          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
 
   openshift:
     name: OpenShift
@@ -83,4 +83,4 @@ jobs:
           distribution: 'temurin'
       - name: Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"
+          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE verify

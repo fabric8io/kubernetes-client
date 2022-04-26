@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
@@ -23,49 +23,25 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class PatchIT {
-  @ArquillianResource
+@LoadKubernetesManifests("/patch-it.yml")
+class PatchIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(PatchIT.class.getResourceAsStream("/patch-it.yml"));
-  }
-
-  @Before
-  public void initNamespace() {
-    this.currentNamespace = session.getNamespace();
-  }
-
   @Test
-  public void testJsonPatch() {
+  void testJsonPatch() {
     // Given
     String name = "patchit-testjsonpatch";
 
     // When
-    ConfigMap patchedConfigMap = client.configMaps().inNamespace(currentNamespace).withName(name).patch("{\"metadata\":{\"labels\":{\"version\":\"v1\"}}}");
+    ConfigMap patchedConfigMap = client.configMaps().withName(name).patch("{\"metadata\":{\"labels\":{\"version\":\"v1\"}}}");
 
     // Then
     assertThat(patchedConfigMap).isNotNull();
@@ -74,13 +50,13 @@ public class PatchIT {
   }
 
   @Test
-  public void testJsonMergePatch() {
+  void testJsonMergePatch() {
     // Given
     String name = "patchit-testjsonmergepatch";
     PatchContext patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build();
 
     // When
-    ConfigMap patchedConfigMap = client.configMaps().inNamespace(currentNamespace).withName(name)
+    ConfigMap patchedConfigMap = client.configMaps().withName(name)
       .patch(patchContext, "{\"metadata\":{\"annotations\":{\"foo\":null}}}");
 
     // Then
@@ -89,13 +65,13 @@ public class PatchIT {
   }
 
   @Test
-  public void testJsonPatchWithPositionalArrays() {
+  void testJsonPatchWithPositionalArrays() {
     // Given
     String name = "patchit-testjsonpatchpositionalarray";
     PatchContext patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
 
     // When
-    ReplicaSet patchedReplicaSet = client.apps().replicaSets().inNamespace(currentNamespace).withName(name)
+    ReplicaSet patchedReplicaSet = client.apps().replicaSets().withName(name)
       .patch(patchContext
         , "[{\"op\": \"replace\", \"path\":\"/spec/template/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
 
@@ -105,12 +81,12 @@ public class PatchIT {
   }
 
   @Test
-  public void testYamlPatch() {
+  void testYamlPatch() {
     // Given
     String name = "patchit-testyamlpatch";
 
     // When
-    ConfigMap patchedConfigMap = client.configMaps().inNamespace(currentNamespace).withName(name)
+    ConfigMap patchedConfigMap = client.configMaps().withName(name)
       .patch("data:\n  version: v1\n  status: patched");
 
     // Then
@@ -121,14 +97,14 @@ public class PatchIT {
   }
 
   @Test
-  public void testFullObjectPatch() {
+  void testFullObjectPatch() {
     // Given
     String name = "patchit-fullobjectpatch";
 
     // When
-    ConfigMap configMapFromServer = client.configMaps().inNamespace(currentNamespace).withName(name).get();
+    ConfigMap configMapFromServer = client.configMaps().withName(name).get();
     configMapFromServer.setData(Collections.singletonMap("foo", "bar"));
-    ConfigMap patchedConfigMap = client.configMaps().inNamespace(currentNamespace).withName(name).patch(configMapFromServer);
+    ConfigMap patchedConfigMap = client.configMaps().withName(name).patch(configMapFromServer);
 
     // Then
     assertThat(patchedConfigMap).isNotNull();
@@ -136,34 +112,30 @@ public class PatchIT {
   }
 
   @Test
-  public void testFullObjectPatchWithConcurrentChange() {
+  void testFullObjectPatchWithConcurrentChange() {
     // Given
     String name = "patchit-fullobjectpatch";
 
     // When
-    ConfigMap configMapFromServer = client.configMaps().inNamespace(currentNamespace).withName(name).get();
+    ConfigMap configMapFromServer = client.configMaps().withName(name).get();
     configMapFromServer.setData(Collections.singletonMap("conflicting", "change"));
-    ConfigMap base = client.configMaps().inNamespace(currentNamespace).withName(name).patch(configMapFromServer);
+    ConfigMap base = client.configMaps().withName(name).patch(configMapFromServer);
 
     // concurrent change to empty
     ConfigMap baseCopy = new ConfigMapBuilder(base).build();
     baseCopy.setData(Collections.emptyMap());
-    client.configMaps().inNamespace(currentNamespace).withName(name).patch(baseCopy);
+    client.configMaps().withName(name).patch(baseCopy);
 
     // concurrent change to empty
     ConfigMap baseCopy2 = new ConfigMapBuilder(base).build();
     baseCopy2.setData(Collections.singletonMap("conflicting", "second"));
 
     // optimistically locking should work because the resource version is set
-    assertThrows(KubernetesClientException.class, () -> client.configMaps().inNamespace(currentNamespace).withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2));
+    assertThrows(KubernetesClientException.class, () -> client.configMaps().withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2));
 
     baseCopy2.getMetadata().setResourceVersion(null);
     // will succeed when not locked
-    client.configMaps().inNamespace(currentNamespace).withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2);
+    client.configMaps().withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2);
   }
 
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(CronJobIT.class.getResourceAsStream("/patch-it.yml"));
-  }
 }

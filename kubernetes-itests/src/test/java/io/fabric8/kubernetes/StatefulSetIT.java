@@ -16,82 +16,57 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
-import io.fabric8.commons.ReadyEntity;
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class StatefulSetIT {
-  @ArquillianResource
+@LoadKubernetesManifests("/statefulset-it.yml")
+class StatefulSetIT {
+
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml"));
-  }
-
   @Test
-  public void load() {
-    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(session.getNamespace())
+  void load() {
+    StatefulSet aStatefulSet = client.apps().statefulSets()
       .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
     assertThat(aStatefulSet).isNotNull();
     assertEquals("web", aStatefulSet.getMetadata().getName());
   }
 
   @Test
-  public void get() {
-    StatefulSet ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-get").get();
+  void get() {
+    StatefulSet ss1 = client.apps().statefulSets().withName("ss-get").get();
     assertNotNull(ss1);
   }
 
   @Test
-  public void list() {
-    StatefulSetList statefulSetList = client.apps().statefulSets().inNamespace(session.getNamespace()).list();
+  void list() {
+    StatefulSetList statefulSetList = client.apps().statefulSets().list();
     assertThat(statefulSetList).isNotNull();
     assertTrue(statefulSetList.getItems().size() >= 1);
   }
 
   @Test
-  public void update() {
-    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-update", session.getNamespace());
-    StatefulSet ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-update").scale(5);
-    await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
+  void update() {
+    StatefulSet ss1 = client.apps().statefulSets().withName("ss-update").scale(5);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
   }
 
   @Test
-  public void delete() {
-    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-delete", session.getNamespace());
-    await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
-    boolean bDeleted = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-delete ").delete();
+  void delete() {
+    client.apps().statefulSets().withName("ss-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    boolean bDeleted = client.apps().statefulSets().withName("ss-delete").delete();
     assertTrue(bDeleted);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml"));
   }
 
 }

@@ -15,68 +15,57 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getName;
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getOrCreateAnnotations;
-import static junit.framework.TestCase.assertNotNull;
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class BuildConfigWatchIT {
-  @ArquillianResource
+@RequireK8sSupport(BuildConfig.class)
+@LoadKubernetesManifests("/build-config-watch.yml")
+class BuildConfigWatchIT {
+
   OpenShiftClient client;
 
-  @ArquillianResource
-  Session session;
-
-  @Before
-  public void initOcNewApp() {
-    client.load(getClass().getResourceAsStream("/ruby-new-app.yml")).inNamespace(session.getNamespace()).createOrReplace();
-    await().atMost(10, TimeUnit.SECONDS).until(() -> client.imageStreamTags().inNamespace(session.getNamespace()).withName("ruby-25-centos7:latest").get() != null);
-  }
-
   @Test
-  public void instantiateAndWatchBuild() throws InterruptedException {
+  void instantiateAndWatchBuild() throws Exception {
     // Given
-    BuildRequest buildRequest = new BuildRequestBuilder().withNewMetadata().withName("ruby-hello-world").endMetadata().build();
+    client.imageStreams().withName("fabric8-build-config-watch").waitUntilCondition(is ->
+        is != null && is.getStatus() != null &&
+          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.33.7")),
+      30, TimeUnit.SECONDS);
+    client.buildConfigs().withName("fabric8-build-config-watch")
+      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    BuildRequest buildRequest = new BuildRequestBuilder().withNewMetadata()
+      .withName("fabric8-build-config-watch").endMetadata().build();
     CountDownLatch buildEventReceivedLatch = new CountDownLatch(1);
 
     // When
-    Build startedBuild = client.buildConfigs().inNamespace(session.getNamespace()).withName("ruby-hello-world").instantiate(buildRequest);
+    Build startedBuild = client.buildConfigs().withName("fabric8-build-config-watch").instantiate(buildRequest);
     TestBuildWatcher testBuildWatcher = new TestBuildWatcher(buildEventReceivedLatch, getName(startedBuild));
-    Watch watcher = client.builds().inNamespace(session.getNamespace()).withName(getName(startedBuild)).watch(testBuildWatcher);
+    Watch watcher = client.builds().withName(getName(startedBuild)).watch(testBuildWatcher);
 
     // Then
     assertNotNull(startedBuild);
-    assertEquals("ruby-hello-world", getOrCreateAnnotations(startedBuild).get("openshift.io/build-config.name"));
+    assertEquals("fabric8-build-config-watch", getOrCreateAnnotations(startedBuild).get("openshift.io/build-config.name"));
     assertTrue(buildEventReceivedLatch.await(5, TimeUnit.SECONDS));
     watcher.close();
-  }
-
-  @After
-  public void cleanOcNewApp() {
-    client.load(getClass().getResourceAsStream("/ruby-new-app.yml")).inNamespace(session.getNamespace()).delete();
   }
 
   private static class TestBuildWatcher implements Watcher<Build> {

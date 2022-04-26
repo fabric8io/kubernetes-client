@@ -15,52 +15,29 @@
  */
 package io.fabric8.openshift;
 
-import io.fabric8.commons.ClusterEntity;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+@RequireK8sSupport(Project.class)
+class AdaptIT {
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresOpenshift
-public class AdaptIT {
+  KubernetesClient client;
+
   @Test
-  public void testAdaptToOpenShift() throws IOException {
-    // Given
-    String clusterUrl = ClusterEntity.getClusterUrl();
-    Config config = getConfig(clusterUrl, "developer", "developer");
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-
+  void testAdaptToOpenShift() {
     // When + Then
-    assertNotNull(kubernetesClient.adapt(OpenShiftClient.class));
+    assertNotNull(client.adapt(OpenShiftClient.class));
   }
 
   @Test
-  public void testIsAdaptable() throws IOException {
-    // Given
-    String clusterUrl = ClusterEntity.getClusterUrl();
-    Config config = getConfig(clusterUrl, "developer", "developer");
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-
+  void testIsAdaptable() {
     // When + Then
-    assertTrue(kubernetesClient.isAdaptable(OpenShiftClient.class));
-  }
-
-  private Config getConfig(String clusterUrl, String username, String password) {
-    return new ConfigBuilder()
-      .withMasterUrl(clusterUrl)
-      .withUsername(username)
-      .withPassword(password)
-      .build();
+    assertTrue(client.isAdaptable(OpenShiftClient.class));
   }
 }
