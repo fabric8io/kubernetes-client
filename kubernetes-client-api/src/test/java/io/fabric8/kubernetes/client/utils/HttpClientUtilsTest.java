@@ -39,11 +39,10 @@ class HttpClientUtilsTest {
 
     // Then
     assertThat(interceptorList)
-      .isNotNull()
-      .hasSize(4)
-      .hasAtLeastOneElementOfType(BackwardsCompatibilityInterceptor.class)
-      .hasAtLeastOneElementOfType(ImpersonatorInterceptor.class)
-      .hasAtLeastOneElementOfType(TokenRefreshInterceptor.class);
+        .isNotNull()
+        .hasSize(3)
+        .hasAtLeastOneElementOfType(ImpersonatorInterceptor.class)
+        .hasAtLeastOneElementOfType(TokenRefreshInterceptor.class);
   }
 
   @Test
@@ -57,11 +56,11 @@ class HttpClientUtilsTest {
 
     // Then
     assertThat(interceptorList)
-      .isNotNull()
-      .hasSize(3)
-      .noneMatch(i -> i instanceof BackwardsCompatibilityInterceptor)
-      .hasAtLeastOneElementOfType(ImpersonatorInterceptor.class)
-      .hasAtLeastOneElementOfType(TokenRefreshInterceptor.class);
+        .isNotNull()
+        .hasSize(3)
+        .noneMatch(i -> i instanceof BackwardsCompatibilityInterceptor)
+        .hasAtLeastOneElementOfType(ImpersonatorInterceptor.class)
+        .hasAtLeastOneElementOfType(TokenRefreshInterceptor.class);
     System.clearProperty(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE);
   }
 
@@ -69,32 +68,33 @@ class HttpClientUtilsTest {
   void getProxyUrl_whenHttpsProxyUrlWithNoPort_shouldReturnValidProxyUrl() {
     // Given
     Config config = new ConfigBuilder()
-      .withMasterUrl("http://localhost")
-      .withHttpProxy("http://192.168.0.1")
-      .build();
+        .withMasterUrl("http://localhost")
+        .withHttpProxy("http://192.168.0.1")
+        .build();
 
     // When
-    final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> HttpClientUtils.getProxyUrl(config));
+    final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+        () -> HttpClientUtils.getProxyUrl(config));
 
     // Then
     assertThat(illegalArgumentException)
-      .hasMessage("Failure in creating proxy URL. Proxy port is required!");
+        .hasMessage("Failure in creating proxy URL. Proxy port is required!");
   }
 
   @Test
   void getProxyUrl_whenHttpsProxyUrlWithPort_shouldReturnValidProxyUrl() throws MalformedURLException {
     // Given
     Config config = new ConfigBuilder()
-      .withMasterUrl("http://localhost")
-      .withHttpProxy("http://192.168.0.1:3128")
-      .build();
+        .withMasterUrl("http://localhost")
+        .withHttpProxy("http://192.168.0.1:3128")
+        .build();
 
     // When
     URL url = HttpClientUtils.getProxyUrl(config);
 
     // Then
     assertThat(url).isNotNull()
-      .hasPort(3128)
-      .hasHost("192.168.0.1");
+        .hasPort(3128)
+        .hasHost("192.168.0.1");
   }
 }
