@@ -15,17 +15,15 @@
  */
 package io.fabric8.kubernetes.internal;
 
-import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer.TypeKey;
-import org.apache.commons.lang3.tuple.Pair;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,7 +34,7 @@ class KubernetesDeserializerTest {
 
   @BeforeEach
   public void beforeEach() {
-    this.mapping = new TestableMapping(createProvider());
+    this.mapping = new KubernetesDeserializer.Mapping();
   }
 
   @Test
@@ -71,20 +69,6 @@ class KubernetesDeserializerTest {
     TypeKey key = mapping.createKey(version, kind);
     // when
     mapping.registerKind(version, kind, SmurfResource.class);
-    // then
-    Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
-    assertThat(clazz).isEqualTo(SmurfResource.class);
-  }
-
-  @Test
-  void shouldRegisterProvider() {
-    // given
-    TypeKey key = mapping.createKey("42", "Hitchhiker");
-    assertThat(mapping.getForKey(key)).isNull();
-    KubernetesResourceMappingProvider provider = createProvider(
-        Pair.of("42#Hitchhiker", SmurfResource.class));
-    // when
-    mapping.registerProvider(provider);
     // then
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     assertThat(clazz).isEqualTo(SmurfResource.class);
@@ -153,26 +137,9 @@ class KubernetesDeserializerTest {
     assertThat(clazz).isNull();
   }
 
-  private KubernetesResourceMappingProvider createProvider(Pair<String, Class<? extends KubernetesResource>>... mappings) {
-    return () -> Stream.of(mappings)
-        .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-  }
-
-  public static final class TestableMapping extends KubernetesDeserializer.Mapping {
-
-    private final KubernetesResourceMappingProvider provider;
-
-    public TestableMapping(KubernetesResourceMappingProvider provider) {
-      this.provider = provider;
-    }
-
-    @Override
-    protected Stream<KubernetesResourceMappingProvider> getAllMappingProviders() {
-      return Stream.of(provider);
-    }
-
-  }
-
+  @Group("")
+  @Kind("Hitchhiker")
+  @Version("42")
   private static final class SmurfResource implements KubernetesResource {
   }
 }

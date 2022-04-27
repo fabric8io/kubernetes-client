@@ -23,6 +23,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.model.annotation.Generated;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 
 import java.util.ArrayList;
@@ -42,6 +45,9 @@ import java.util.Map;
     "metadata",
     "items",
 })
+@Version("v1")
+@Group("")
+@Kind("List")
 @JsonDeserialize(using = JsonDeserializer.None.class)
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class KubernetesList extends DefaultKubernetesResourceList<HasMetadata> implements KubernetesResource {
