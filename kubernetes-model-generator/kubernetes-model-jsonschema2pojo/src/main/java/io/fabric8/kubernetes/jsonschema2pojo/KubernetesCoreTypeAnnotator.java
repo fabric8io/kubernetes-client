@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
@@ -100,6 +101,11 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         apiGroup = apiVersion.substring(0, lastSlash);
         apiVersion = apiVersion.substring(apiGroup.length() + 1);
       }
+
+      JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
+          .paramArray(ANNOTATION_VALUE);
+      arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
+          .param("outputPath", "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource").param("gather", true);
 
       String resourceName = clazz.fullName();
       if (resourceName.endsWith("List")) {
@@ -196,13 +202,10 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   }
 
   protected void addClassesToPropertyFiles(JDefinedClass clazz) {
-    if (moduleName == null || moduleName.equals(getPackageCategory(clazz.getPackage().name())) /*
-                                                                                                * &&
-                                                                                                * shouldIncludeClass(clazz.name(
-                                                                                                * ))
-                                                                                                */) {
-      JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
-          .paramArray(ANNOTATION_VALUE);
+    if (moduleName == null || moduleName.equals(getPackageCategory(clazz.getPackage().name()))) {
+      JAnnotationUse annotation = clazz.annotations().stream()
+          .filter(a -> a.getAnnotationClass().name().equals(TemplateTransformations.class.getSimpleName())).findFirst().get();
+      JAnnotationArrayMember arrayMember = (JAnnotationArrayMember) annotation.getAnnotationMembers().get(ANNOTATION_VALUE);
       arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
           .param("outputPath", (moduleName == null ? "model" : moduleName) + ".properties").param("gather", true);
     }
