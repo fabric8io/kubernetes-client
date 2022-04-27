@@ -25,13 +25,22 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.util.Helper;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.Index;
+import org.jboss.jandex.IndexReader;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +48,7 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -164,120 +174,77 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
 
   static class Mapping {
 
-    private static final String KEY_SEPARATOR = "#";
-
-    // n.b. Packages sorted in order of precedence, deserialization of resources with no
-    // specific version will default to first available Class in one of these packages:
-    private static final String[] PACKAGES = {
-        "io.fabric8.kubernetes.api.model.",
-        "io.fabric8.kubernetes.api.model.admission.v1.",
-        "io.fabric8.kubernetes.api.model.admission.v1beta1.",
-        "io.fabric8.kubernetes.api.model.admissionregistration.v1.",
-        "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.",
-        "io.fabric8.kubernetes.api.model.authentication.",
-        "io.fabric8.kubernetes.api.model.authorization.v1.",
-        "io.fabric8.kubernetes.api.model.authorization.v1beta1.",
-        "io.fabric8.kubernetes.api.model.apiextensions.v1.",
-        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.",
-        "io.fabric8.kubernetes.api.model.apps.",
-        "io.fabric8.kubernetes.api.model.autoscaling.v1.",
-        "io.fabric8.kubernetes.api.model.autoscaling.",
-        "io.fabric8.kubernetes.api.model.autoscaling.v2beta1.",
-        "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.",
-        "io.fabric8.kubernetes.api.model.batch.v1.",
-        "io.fabric8.kubernetes.api.model.batch.v1beta1.",
-        "io.fabric8.kubernetes.api.model.certificates.v1.",
-        "io.fabric8.kubernetes.api.model.certificates.v1beta1.",
-        "io.fabric8.kubernetes.api.model.coordination.v1.",
-        "io.fabric8.kubernetes.api.model.coordination.",
-        "io.fabric8.kubernetes.api.model.discovery.v1.",
-        "io.fabric8.kubernetes.api.model.events.v1.",
-        "io.fabric8.kubernetes.api.model.events.v1beta1.",
-        "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.",
-        "io.fabric8.kubernetes.api.model.discovery.v1beta1.",
-        "io.fabric8.kubernetes.api.model.metrics.v1beta1.",
-        "io.fabric8.kubernetes.api.model.networking.v1.",
-        "io.fabric8.kubernetes.api.model.networking.v1beta1.",
-        "io.fabric8.kubernetes.api.model.policy.v1.",
-        "io.fabric8.kubernetes.api.model.policy.v1beta1.",
-        "io.fabric8.kubernetes.api.model.rbac.",
-        "io.fabric8.kubernetes.api.model.storage.",
-        "io.fabric8.kubernetes.api.model.scheduling.v1.",
-        "io.fabric8.kubernetes.api.model.scheduling.v1beta1.",
-        "io.fabric8.kubernetes.api.model.storage.",
-        "io.fabric8.kubernetes.api.model.storage.v1beta1.",
-        "io.fabric8.kubernetes.api.model.node.v1alpha1.",
-        "io.fabric8.kubernetes.api.model.node.v1beta1.",
-        "io.fabric8.openshift.api.model.",
-        "io.fabric8.openshift.api.model.clusterautoscaling.v1.",
-        "io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.",
-        "io.fabric8.openshift.api.model.runtime.",
-        "io.fabric8.openshift.api.model.console.v1.",
-        "io.fabric8.openshift.api.model.console.v1alpha1.",
-        "io.fabric8.openshift.api.model.hive.v1.",
-        "io.fabric8.openshift.api.model.installer.v1.",
-        "io.fabric8.openshift.api.model.monitoring.v1.",
-        "io.fabric8.openshift.api.model.machine.v1beta1.",
-        "io.fabric8.openshift.api.model.operator.",
-        "io.fabric8.openshift.api.model.operator.v1.",
-        "io.fabric8.openshift.api.model.operator.v1alpha1.",
-        "io.fabric8.openshift.api.model.imageregistry.v1.",
-        "io.fabric8.openshift.api.model.operatorhub.manifests.",
-        "io.fabric8.openshift.api.model.operatorhub.v1.",
-        "io.fabric8.openshift.api.model.operatorhub.v1alpha1.",
-        "io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.",
-        "io.fabric8.openshift.api.model.machineconfig.v1.",
-        "io.fabric8.openshift.api.model.tuned.v1.",
-        "io.fabric8.openshift.api.model.whereabouts.v1alpha1.",
-        "io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.",
-        "io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.",
-        "io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.",
-        "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.",
-        "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.",
-        "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.",
-        "io.fabric8.kubernetes.api.model.extensions."
+    // n.b. classes from each of the internal packages that lack a mapping provider
+    // needed for osgi resource loading:
+    private static final String[] CLASSES = {
+        "io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionRequest",
+        "io.fabric8.kubernetes.api.model.apps.Deployment",
+        "io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler",
+        "io.fabric8.kubernetes.api.model.batch.v1.CronJob",
+        "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest",
+        "io.fabric8.kubernetes.api.model.coordination.v1.Lease",
+        "io.fabric8.kubernetes.api.model.discovery.v1.Endpoint",
+        "io.fabric8.kubernetes.api.model.events.v1.Event",
+        "io.fabric8.kubernetes.api.model.extensions.DaemonSet",
+        "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema",
+        "io.fabric8.kubernetes.api.model.metrics.v1beta1.ContainerMetrics",
+        "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPath",
+        "io.fabric8.kubernetes.api.model.policy.v1.Eviction",
+        "io.fabric8.kubernetes.api.model.rbac.ClusterRole",
+        "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass",
+        "io.fabric8.kubernetes.api.model.storage.CSIDriver",
+        "io.fabric8.kubernetes.api.model.node.v1beta1.Overhead",
+        "io.fabric8.openshift.api.model.APIServer",
+        "io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler",
+        "io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload",
+        "io.fabric8.openshift.api.model.hive.v1.AWSAssociatedVPC",
+        "io.fabric8.openshift.api.model.installer.v1.BootstrapInPlace",
+        "io.fabric8.openshift.api.model.monitoring.v1.Alertmanager",
+        "io.fabric8.openshift.api.model.machine.v1beta1.Condition",
+        "io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig",
+        "io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest",
+        "io.fabric8.openshift.api.model.operator.v1.AccessLogging",
+        "io.fabric8.openshift.api.model.operatorhub.v1.Operator",
+        "io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.GroupResource",
+        "io.fabric8.openshift.api.model.tuned.v1.OperandConfig",
+        "io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPAllocation",
     };
 
     private Map<TypeKey, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
-    private Map<String, List<TypeKey>> internalMappings = new ConcurrentHashMap<>();
+    private Set<String> urlsLoaded = new ConcurrentSkipListSet<>();
 
     Mapping() {
       registerAllProviders();
+      loadFromJandex(Mapping.class.getClassLoader());
+      loadFromJandex(Thread.currentThread().getContextClassLoader());
+      // when in osgi, the jandex won't be visible from the current classloader, so we
+      // need the specific classloaders
+      Stream.of(CLASSES).map(this::getClassloader).filter(Objects::nonNull).forEach(this::loadFromJandex);
+    }
+
+    private ClassLoader getClassloader(String className) {
+      try {
+        Class<?> clazz = KubernetesDeserializer.class.getClassLoader().loadClass(className);
+        return clazz.getClassLoader();
+      } catch (Exception t) {
+        return null;
+      }
+    }
+
+    void loadFromJandex(ClassLoader classLoader) {
+      try {
+        internalLoadFromJandex(classLoader);
+      } catch (IOException e) {
+        System.err.println(String.format("Could not process jandex files for classloader %s", classLoader));
+      }
     }
 
     public Class<? extends KubernetesResource> getForKey(TypeKey key) {
       if (key == null) {
         return null;
       }
-      // check for an exact match
-      Class<? extends KubernetesResource> clazz = mappings.get(key);
-      if (clazz != null) {
-        return clazz;
-      }
-      // check if it's a lazily-loaded internal type
-      List<TypeKey> defaults = internalMappings.get(key.kind);
-      if (defaults == null) {
-        defaults = loadInternalTypes(key.kind);
-        clazz = mappings.get(key); // check again after load for an exact match
-        if (clazz != null) {
-          return clazz;
-        }
-      }
-
-      // version is required
-      if (key.version == null) {
-        return null;
-      }
-
-      // if there are internal types matching kind, look for matching groups and versions
-      for (TypeKey typeKey : defaults) {
-        if ((key.apiGroup == null || key.apiGroup.equals(typeKey.apiGroup))
-            && key.version.equals(typeKey.version)
-            && (typeKey.apiGroup == null || typeKey.apiGroup.endsWith(".openshift.io"))) {
-          return mappings.get(typeKey);
-        }
-      }
-      return null;
+      return mappings.get(key);
     }
 
     public void registerKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
@@ -288,11 +255,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
       if (provider == null) {
         return;
       }
-      provider.getMappings().entrySet().stream()
-          //If the model is shaded (which is as part of kubernetes-client uberjar) this is going to cause conflicts.
-          //This is why we NEED TO filter out incompatible resources.
-          .filter(entry -> KubernetesResource.class.isAssignableFrom(entry.getValue()))
-          .forEach(e -> mappings.put(createKey(e.getKey()), e.getValue()));
+      provider.provideClasses(this::addMapping);
+      loadFromJandex(provider.getClass().getClassLoader());
     }
 
     /**
@@ -310,15 +274,6 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         }
         return new TypeKey(kind, versionParts[0], versionParts[1]);
       }
-    }
-
-    TypeKey createKey(String key) {
-      // null is not allowed
-      if (key.contains(KEY_SEPARATOR)) {
-        String[] parts = key.split(KEY_SEPARATOR, 2);
-        return createKey(parts[0], parts[1]);
-      }
-      return createKey(null, key);
     }
 
     private void registerAllProviders() {
@@ -339,43 +294,16 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
           .filter(distinctByClassName(KubernetesResourceMappingProvider::getClass));
     }
 
-    private List<TypeKey> loadInternalTypes(String kind) {
-      List<TypeKey> ordering = new ArrayList<>();
-      for (int i = 0; i < PACKAGES.length; i++) {
-        Class<? extends KubernetesResource> result = loadClassIfExists(PACKAGES[i] + kind);
-        if (result == null) {
-          continue;
-        }
-        TypeKey defaultKeyFromClass = getKeyFromClass(result);
-        mappings.put(defaultKeyFromClass, result);
-        ordering.add(defaultKeyFromClass);
-      }
-
-      internalMappings.put(kind, ordering);
-      return ordering;
-    }
-
     TypeKey getKeyFromClass(Class<? extends KubernetesResource> clazz) {
       String apiGroup = Helper.getAnnotationValue(clazz, Group.class);
       String apiVersion = Helper.getAnnotationValue(clazz, Version.class);
+      String kind = HasMetadata.getKind(clazz);
       if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {
-        return new TypeKey(clazz.getSimpleName(), apiGroup, apiVersion);
+        return new TypeKey(kind, apiGroup, apiVersion);
       } else if (apiVersion != null && !apiVersion.isEmpty()) {
-        return createKey(apiVersion, clazz.getSimpleName());
+        return createKey(apiVersion, kind);
       }
-      return new TypeKey(clazz.getSimpleName(), null, null);
-    }
-
-    private Class<? extends KubernetesResource> loadClassIfExists(String className) {
-      try {
-        Class<?> clazz = KubernetesDeserializer.class.getClassLoader().loadClass(className);
-        if (!KubernetesResource.class.isAssignableFrom(clazz)) {
-          return null;
-        }
-        return (Class<? extends KubernetesResource>) clazz;
-      } catch (Exception t) {
-        return null;
-      }
+      return new TypeKey(kind, null, null);
     }
 
     private Predicate<KubernetesResourceMappingProvider> distinctByClassName(
@@ -384,5 +312,51 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
       return provider -> existing.add(mapperProvider.apply(provider).getName());
     }
 
+    private void internalLoadFromJandex(ClassLoader classLoader) throws IOException {
+      Enumeration<URL> indecies = classLoader.getResources("META-INF/jandex.idx");
+      while (indecies.hasMoreElements()) {
+        URL u = indecies.nextElement();
+        if (!urlsLoaded.add(u.toString())) {
+          continue;
+        }
+        URLConnection uc = u.openConnection();
+        uc.setUseCaches(false);
+        try (InputStream input = uc.getInputStream()) {
+          IndexReader reader = new IndexReader(input);
+          Index index = reader.read();
+          List<AnnotationInstance> annotations = index.getAnnotations(DotName.createSimple(Version.class.getName()));
+          for (AnnotationInstance a : annotations) {
+            DotName name = a.target().asClass().name();
+            Class<?> clazz;
+            try {
+              clazz = classLoader.loadClass(name.toString());
+            } catch (ClassNotFoundException e) {
+              continue;
+            }
+            addMapping(clazz);
+          }
+        }
+      }
+    }
+
+    private void addMapping(Class<?> clazz) {
+      if (!KubernetesResource.class.isAssignableFrom(clazz)) {
+        //If the model is shaded (which is as part of kubernetes-client uberjar) this is going to cause conflicts.
+        //This is why we NEED TO filter out incompatible resources.
+        return;
+      }
+      if (KubernetesResourceList.class.isAssignableFrom(clazz)) {
+        // list classes don't need a mapping
+        return;
+      }
+      Class<? extends KubernetesResource> krClazz = (Class<? extends KubernetesResource>) clazz;
+      TypeKey keyFromClass = getKeyFromClass(krClazz);
+      mappings.put(keyFromClass, krClazz);
+
+      // oc behavior - allow resolving against just the version
+      if (keyFromClass.apiGroup != null && keyFromClass.apiGroup.endsWith(".openshift.io")) {
+        mappings.putIfAbsent(new TypeKey(keyFromClass.kind, null, keyFromClass.version), krClazz);
+      }
+    }
   }
 }

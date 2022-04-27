@@ -117,6 +117,10 @@
       <artifactId>kubernetes-model-common</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.jboss</groupId>
+      <artifactId>jandex</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>

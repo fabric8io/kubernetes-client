@@ -17,9 +17,20 @@ package io.fabric8.kubernetes.api;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 
-import java.util.Map;
+import java.util.function.Consumer;
 
+/**
+ * Only required when running in a runtime, such as OSGI, that does
+ * not provide resource access outside of a module's own classloader.
+ */
 public interface KubernetesResourceMappingProvider {
 
-    Map<String, Class<? extends KubernetesResource>> getMappings();
+  /**
+   * Implement this method if you are not providing a jandex index.
+   *
+   * @param classConsumer
+   */
+  default void provideClasses(Consumer<Class<? extends KubernetesResource>> classConsumer) {
+
+  }
 }

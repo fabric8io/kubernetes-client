@@ -36,6 +36,7 @@
     <bundle dependency='true'>mvn:org.ow2.asm/asm-commons/${asm.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm-tree/${asm.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm-util/${asm.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.jboss/jandex/${jandex.version}</bundle>
     <bundle dependency='true'>mvn:io.fabric8/kubernetes-model-common/${project.version}</bundle>
     <bundle>mvn:io.fabric8/zjsonpatch/${zjsonpatch.version}</bundle>
 

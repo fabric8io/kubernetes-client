@@ -16,20 +16,7 @@
 package io.fabric8.camelk;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CamelKV1alpha1ResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-  public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
-
-  public CamelKV1alpha1ResourceMappingProvider() {
-    mappings.put("camel.apache.org/v1alpha1#Kamelet", io.fabric8.camelk.v1alpha1.Kamelet.class);
-  }
-
-  public Map<String, Class<? extends KubernetesResource>> getMappings() {
-    return mappings;
-  }
 }

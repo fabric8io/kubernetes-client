@@ -16,23 +16,7 @@
 package io.fabric8.tekton;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class TektonV1beta1ResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-    public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
-
-    public TektonV1beta1ResourceMappingProvider() {
-      mappings.put("tekton.dev/v1beta1#Pipeline", io.fabric8.tekton.pipeline.v1beta1.Pipeline.class);
-      mappings.put("tekton.dev/v1beta1#PipelineRun", io.fabric8.tekton.pipeline.v1beta1.PipelineRun.class);
-      mappings.put("tekton.dev/v1beta1#Task", io.fabric8.tekton.pipeline.v1beta1.Task.class);
-      mappings.put("tekton.dev/v1beta1#TaskRun", io.fabric8.tekton.pipeline.v1beta1.TaskRun.class);
-      mappings.put("tekton.dev/v1beta1#ClusterTask", io.fabric8.tekton.pipeline.v1beta1.ClusterTask.class);
-    }
-
-    public Map<String, Class<? extends KubernetesResource>> getMappings() {
-        return mappings;
-    }}
+}

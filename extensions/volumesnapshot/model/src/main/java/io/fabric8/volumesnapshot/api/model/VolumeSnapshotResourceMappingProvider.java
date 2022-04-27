@@ -16,22 +16,7 @@
 package io.fabric8.volumesnapshot.api.model;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class VolumeSnapshotResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-  public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
-
-  public VolumeSnapshotResourceMappingProvider() {
-    mappings.put("snapshot.storage.k8s.io/v1#VolumeSnapshot", VolumeSnapshot.class);
-    mappings.put("snapshot.storage.k8s.io/v1#VolumeSnapshotClass", VolumeSnapshotClass.class);
-    mappings.put("snapshot.storage.k8s.io/v1#VolumeSnapshotContent", VolumeSnapshotContent.class);
-  }
-
-  public Map<String, Class<? extends KubernetesResource>> getMappings() {
-    return mappings;
-  }
 }

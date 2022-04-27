@@ -16,35 +16,7 @@
 package io.fabric8.chaosmesh.api.model;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChaosMeshResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-  public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
-
-  public ChaosMeshResourceMappingProvider() {
-    mappings.put("chaos-mesh.org/v1alpha1#IOChaos", io.fabric8.chaosmesh.v1alpha1.IOChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#KernelChaos", io.fabric8.chaosmesh.v1alpha1.KernelChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#NetworkChaos", io.fabric8.chaosmesh.v1alpha1.NetworkChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#PodChaos", io.fabric8.chaosmesh.v1alpha1.PodChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#PodIOChaos", io.fabric8.chaosmesh.v1alpha1.PodIOChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#PodHttpChaos", io.fabric8.chaosmesh.v1alpha1.PodHttpChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#PodNetworkChaos", io.fabric8.chaosmesh.v1alpha1.PodNetworkChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#StressChaos", io.fabric8.chaosmesh.v1alpha1.StressChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#TimeChaos", io.fabric8.chaosmesh.v1alpha1.TimeChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#JVMChaos", io.fabric8.chaosmesh.v1alpha1.JVMChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#HTTPChaos", io.fabric8.chaosmesh.v1alpha1.HTTPChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#DNSChaos", io.fabric8.chaosmesh.v1alpha1.DNSChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#AWSChaos", io.fabric8.chaosmesh.v1alpha1.AWSChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#GCPChaos", io.fabric8.chaosmesh.v1alpha1.GCPChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#BlockChaos", io.fabric8.chaosmesh.v1alpha1.BlockChaos.class);
-    mappings.put("chaos-mesh.org/v1alpha1#PhysicalMachineChaos", io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos.class);
-  }
-
-  public Map<String, Class<? extends KubernetesResource>> getMappings() {
-    return mappings;
-  }
 }

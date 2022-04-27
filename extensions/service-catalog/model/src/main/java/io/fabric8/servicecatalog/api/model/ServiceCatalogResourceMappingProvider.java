@@ -16,27 +16,7 @@
 package io.fabric8.servicecatalog.api.model;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ServiceCatalogResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-  public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
-
-  public ServiceCatalogResourceMappingProvider() {
-    mappings.put("servicecatalog.k8s.io/v1beta1#ClusterServiceBroker", ClusterServiceBroker.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ClusterServiceClass", ClusterServiceClass.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ClusterServicePlan", ClusterServicePlan.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ServiceBroker", ServiceBroker.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ServiceBinding", ServiceBinding.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ServiceInstance", ServiceInstance.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ServiceClass", ServiceClass.class);
-    mappings.put("servicecatalog.k8s.io/v1beta1#ServicePlan", ServicePlan.class);
-  }
-
-  public Map<String, Class<? extends KubernetesResource>> getMappings() {
-    return mappings;
-  }
 }

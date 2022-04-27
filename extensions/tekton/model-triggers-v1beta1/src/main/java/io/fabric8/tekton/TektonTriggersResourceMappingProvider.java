@@ -16,25 +16,7 @@
 package io.fabric8.tekton;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class TektonTriggersResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-  public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
-
-  public TektonTriggersResourceMappingProvider() {
-    mappings.put("triggers.tekton.dev/v1beta1#TriggerTemplate", io.fabric8.tekton.triggers.v1beta1.TriggerTemplate.class);
-    mappings.put("triggers.tekton.dev/v1beta1#TriggerBinding", io.fabric8.tekton.triggers.v1beta1.TriggerBinding.class);
-    mappings.put("triggers.tekton.dev/v1beta1#EventListener", io.fabric8.tekton.triggers.v1beta1.EventListener.class);
-    mappings.put("triggers.tekton.dev/v1beta1#ClusterTriggerBinding",
-        io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding.class);
-    mappings.put("triggers.tekton.dev/v1beta1#Trigger", io.fabric8.tekton.triggers.v1beta1.Trigger.class);
-  }
-
-  public Map<String, Class<? extends KubernetesResource>> getMappings() {
-    return mappings;
-  }
 }
