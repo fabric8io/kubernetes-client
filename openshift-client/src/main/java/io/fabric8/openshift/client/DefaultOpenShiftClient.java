@@ -101,6 +101,7 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
+import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.ResourceAccessReview;
@@ -161,7 +162,6 @@ import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
-import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
 import io.fabric8.openshift.client.dsl.internal.apps.DeploymentConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.authorization.RoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
@@ -468,7 +468,10 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
 
   @Override
   public ProjectRequestOperation projectrequests() {
-    return new ProjectRequestsOperationImpl(this);
+    MixedOperation<ProjectRequest, KubernetesResourceList<ProjectRequest>, Resource<ProjectRequest>> op = resources(
+        ProjectRequest.class, null);
+
+    return item -> op.resource(item).create();
   }
 
   @Override

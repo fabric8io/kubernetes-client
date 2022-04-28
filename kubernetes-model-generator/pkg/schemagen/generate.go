@@ -710,6 +710,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/user/v1/Identity",
 		"github.com/openshift/api/apiserver/v1/APIRequestCount",
 		"github.com/openshift/api/project/v1/Project",
+		"github.com/openshift/api/project/v1/ProjectRequest",
 		"github.com/openshift/api/user/v1/Group",
 		"github.com/openshift/api/user/v1/User",
 		"github.com/openshift/api/oauth/v1/OAuthAccessToken",
