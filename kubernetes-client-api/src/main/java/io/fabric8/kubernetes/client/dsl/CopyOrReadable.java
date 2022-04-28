@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-public interface CopyOrReadable<I> {
+public interface CopyOrReadable {
 
   /**
    * Upload file located at specified {@link Path} to Pod
@@ -36,7 +36,7 @@ public interface CopyOrReadable<I> {
    */
   boolean upload(InputStream inputStream);
 
-  I read();
+  InputStream read();
 
   boolean copy(Path destination);
 

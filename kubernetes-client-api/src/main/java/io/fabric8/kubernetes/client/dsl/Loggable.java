@@ -21,10 +21,8 @@ import java.io.Reader;
 
 /**
  * Loggable interface for all resources which produce logs
- *
- * @param <W> returns a LogWatch for watching logs
  */
-public interface Loggable<W> {
+public interface Loggable {
 
   /**
    * Get logs of a resource
@@ -53,16 +51,17 @@ public interface Loggable<W> {
    *
    * @return returns a Closeable interface for log watch
    */
-  W watchLog();
+  LogWatch watchLog();
 
   /**
    * Watch logs of resource and put them inside OutputStream inside
-   * <br>if the OutputStream is a PipedOutputStream, it will be closed when the Watch terminates
+   * <br>
+   * if the OutputStream is a PipedOutputStream, it will be closed when the Watch terminates
    *
    * @param out {@link OutputStream} for storing logs
    * @return returns a Closeable interface for log watch
    */
-  W watchLog(OutputStream out);
+  LogWatch watchLog(OutputStream out);
 
   /**
    * While waiting for Pod logs, how long shall we wait until a Pod
@@ -71,6 +70,6 @@ public interface Loggable<W> {
    * @param logWaitTimeout timeout in milliseconds
    * @return {@link Loggable} for fetching logs
    */
-  Loggable<W> withLogWaitTimeout(Integer logWaitTimeout);
+  Loggable withLogWaitTimeout(Integer logWaitTimeout);
 
 }

@@ -16,12 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface TimestampBytesLimitTerminateTimeTailPrettyLoggable<W> extends BytesLimitTerminateTimeTailPrettyLoggable<W> {
+public interface TimestampBytesLimitTerminateTimeTailPrettyLoggable extends BytesLimitTerminateTimeTailPrettyLoggable {
 
   /**
    * Include timestamps on each line in the log output
-   * 
+   *
    * @return returns pod log operation with specified PodLogOption configured
    */
-  BytesLimitTerminateTimeTailPrettyLoggable<W> usingTimestamps();
+  BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps();
 }

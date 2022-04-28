@@ -323,7 +323,7 @@ public class ManagedOpenShiftClient extends NamespacedKubernetesClientAdapter<Na
   }
 
   @Override
-  public MixedOperation<Build, BuildList, BuildResource<Build, LogWatch>> builds() {
+  public MixedOperation<Build, BuildList, BuildResource> builds() {
     return getClient().builds();
   }
 

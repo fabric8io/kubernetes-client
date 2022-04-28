@@ -85,7 +85,7 @@ import java.util.concurrent.TimeUnit;
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource>
-    implements PodResource, CopyOrReadable<InputStream> {
+    implements PodResource, CopyOrReadable {
 
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
@@ -226,7 +226,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
     return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout), context);
   }
 
@@ -311,7 +311,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream> inContainer(
+  public ContainerResource inContainer(
       String containerId) {
     return new PodOperationsImpl(getContext().withContainerId(containerId), context);
   }
@@ -368,12 +368,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public CopyOrReadable<InputStream> file(String file) {
+  public CopyOrReadable file(String file) {
     return new PodOperationsImpl(getContext().withFile(file), context);
   }
 
   @Override
-  public CopyOrReadable<InputStream> dir(String dir) {
+  public CopyOrReadable dir(String dir) {
     return new PodOperationsImpl(getContext().withDir(dir), context);
   }
 
@@ -568,112 +568,112 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
+  public TtyExecOutputErrorable readingInput(InputStream in) {
     return new PodOperationsImpl(getContext().withIn(in), context);
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
+  public TtyExecOutputErrorable writingInput(PipedOutputStream inPipe) {
     return new PodOperationsImpl(getContext().withInPipe(inPipe), context);
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput() {
+  public TtyExecOutputErrorable redirectingInput() {
     return redirectingInput(null);
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput(Integer bufferSize) {
+  public TtyExecOutputErrorable redirectingInput(Integer bufferSize) {
     return new PodOperationsImpl(getContext().withInPipe(new PipedOutputStream()).withBufferSize(bufferSize), context);
   }
 
   @Override
-  public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
+  public TtyExecErrorable writingOutput(OutputStream out) {
     return new PodOperationsImpl(getContext().withOut(out), context);
   }
 
   @Override
-  public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
+  public TtyExecErrorable readingOutput(PipedInputStream outPipe) {
     return new PodOperationsImpl(getContext().withOutPipe(outPipe), context);
   }
 
   @Override
-  public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingOutput() {
+  public TtyExecErrorable redirectingOutput() {
     return readingOutput(new PipedInputStream());
   }
 
   @Override
-  public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> writingError(OutputStream err) {
+  public TtyExecErrorChannelable writingError(OutputStream err) {
     return new PodOperationsImpl(getContext().withErr(err), context);
   }
 
   @Override
-  public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> readingError(PipedInputStream errPipe) {
+  public TtyExecErrorChannelable readingError(PipedInputStream errPipe) {
     return new PodOperationsImpl(getContext().withErrPipe(errPipe), context);
   }
 
   @Override
-  public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> redirectingError() {
+  public TtyExecErrorChannelable redirectingError() {
     return readingError(new PipedInputStream());
   }
 
   @Override
-  public TtyExecable<String, ExecWatch> writingErrorChannel(OutputStream errChannel) {
+  public TtyExecable writingErrorChannel(OutputStream errChannel) {
     return new PodOperationsImpl(getContext().withErrChannel(errChannel), context);
   }
 
   @Override
-  public TtyExecable<String, ExecWatch> readingErrorChannel(PipedInputStream errChannelPipe) {
+  public TtyExecable readingErrorChannel(PipedInputStream errChannelPipe) {
     return new PodOperationsImpl(getContext().withErrChannelPipe(errChannelPipe), context);
   }
 
   @Override
-  public TtyExecable<String, ExecWatch> redirectingErrorChannel() {
+  public TtyExecable redirectingErrorChannel() {
     return readingErrorChannel(new PipedInputStream());
   }
 
   @Override
-  public ExecListenable<String, ExecWatch> withTTY() {
+  public ExecListenable withTTY() {
     return new PodOperationsImpl(getContext().withTty(true), context);
   }
 
   @Override
-  public Loggable<LogWatch> withPrettyOutput() {
+  public Loggable withPrettyOutput() {
     return new PodOperationsImpl(getContext().withPrettyOutput(true), context);
   }
 
   @Override
-  public PrettyLoggable<LogWatch> tailingLines(int withTailingLines) {
+  public PrettyLoggable tailingLines(int withTailingLines) {
     return new PodOperationsImpl(getContext().withTailingLines(withTailingLines), context);
   }
 
   @Override
-  public TailPrettyLoggable<LogWatch> sinceTime(String sinceTimestamp) {
+  public TailPrettyLoggable sinceTime(String sinceTimestamp) {
     return new PodOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp), context);
   }
 
   @Override
-  public TailPrettyLoggable<LogWatch> sinceSeconds(int sinceSeconds) {
+  public TailPrettyLoggable sinceSeconds(int sinceSeconds) {
     return new PodOperationsImpl(getContext().withSinceSeconds(sinceSeconds), context);
   }
 
   @Override
-  public TimeTailPrettyLoggable<LogWatch> terminated() {
+  public TimeTailPrettyLoggable terminated() {
     return new PodOperationsImpl(getContext().withTerminatedStatus(true), context);
   }
 
   @Override
-  public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
+  public Execable usingListener(ExecListener execListener) {
     return new PodOperationsImpl(getContext().withExecListener(execListener), context);
   }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> limitBytes(int limitBytes) {
+  public BytesLimitTerminateTimeTailPrettyLoggable limitBytes(int limitBytes) {
     return new PodOperationsImpl(getContext().withLimitBytes(limitBytes), context);
   }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
     return new PodOperationsImpl(getContext().withTimestamps(true), context);
   }
 

@@ -20,22 +20,18 @@ import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 public interface PodResource extends Resource<Pod>,
-    Loggable<LogWatch>,
-    Containerable<String, ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream>>,
-    ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, InputStream>,
+    Loggable,
+    Containerable<String, ContainerResource>,
+    ContainerResource,
     PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
 
   /**
    * Evicts resource, respecting {@link io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget}
-   * 
+   *
    * @return value indicating object was evicted or not
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs, including if the Pod is not found.
    */
