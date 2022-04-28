@@ -34,7 +34,9 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
    * it normally would, without being persisted.
    *
    * @return write operations which are applicable for dry run
+   * @deprecated use Resource.dryRun()
    */
+  @Deprecated
   ItemWritableOperation<T> dryRun();
 
   /**
@@ -45,7 +47,9 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
    *
    * @param isDryRun whether dry run is enabled or disabled
    * @return write operations which are applicable for dry run
+   * @deprecated use Resource.dryRun()
    */
+  @Deprecated
   ItemWritableOperation<T> dryRun(boolean isDryRun);
 
   /**
@@ -75,7 +79,7 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
 
   /**
    * Load from an {@link InputStream}.
-   * 
+   *
    * @param is The input stream.
    * @return returns de-serialized object
    */
@@ -83,7 +87,7 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
 
   /**
    * Load from a {@link URL}.
-   * 
+   *
    * @param url The url.
    * @return returns de-serialized object
    */
@@ -91,7 +95,7 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
 
   /**
    * Load from a {@link File}.
-   * 
+   *
    * @param file The file.
    * @return returns de-serialized object
    */
@@ -99,7 +103,7 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
 
   /**
    * Load from path.
-   * 
+   *
    * @param path The path.
    * @return returns de-serialized object
    */
@@ -107,7 +111,7 @@ public interface AnyNamespaceOperation<T, L, R> extends FilterWatchListDeletable
 
   /**
    * Provide a {@link Resource} for the given item
-   * 
+   *
    * @param item
    * @return the resource upon which operations can be performed
    */
