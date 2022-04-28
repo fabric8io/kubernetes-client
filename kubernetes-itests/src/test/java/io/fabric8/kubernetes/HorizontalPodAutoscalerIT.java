@@ -30,10 +30,10 @@ class HorizontalPodAutoscalerIT {
   @Test
   void hpaWithScalingDisabled() {
     final HorizontalPodAutoscaler result = client.autoscaling().v1().horizontalPodAutoscalers()
-      .withName("horizontal-pod-autoscaler").get();
+        .withName("horizontal-pod-autoscaler").get();
     assertThat(result)
-      .extracting(HorizontalPodAutoscaler::getStatus)
-      .hasFieldOrPropertyWithValue("currentReplicas", 0)
-      .hasFieldOrPropertyWithValue("desiredReplicas", 0);
+        .extracting(HorizontalPodAutoscaler::getStatus)
+        .hasFieldOrPropertyWithValue("currentReplicas", 0)
+        .hasFieldOrPropertyWithValue("desiredReplicas", 0);
   }
 }

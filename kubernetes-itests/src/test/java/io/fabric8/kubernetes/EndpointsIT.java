@@ -35,9 +35,9 @@ class EndpointsIT {
   void withNoSubsets() {
     final Endpoints result = client.endpoints().withName("endpoints-with-no-subsets").get();
     assertThat(result)
-      .hasFieldOrPropertyWithValue("metadata.name", "endpoints-with-no-subsets")
-      .extracting(Endpoints::getSubsets).asList()
-      .isEmpty();
+        .hasFieldOrPropertyWithValue("metadata.name", "endpoints-with-no-subsets")
+        .extracting(Endpoints::getSubsets).asList()
+        .isEmpty();
   }
 
   @Test
@@ -45,23 +45,23 @@ class EndpointsIT {
     client.apps().deployments().withName("endpoints-with-subsets").waitUntilReady(30, TimeUnit.SECONDS);
     final Endpoints result = client.endpoints().withName("endpoints-with-subsets").get();
     assertThat(result)
-      .hasFieldOrPropertyWithValue("metadata.name", "endpoints-with-subsets")
-      .extracting(Endpoints::getSubsets).asList()
-      .singleElement()
-      .extracting("ports").asList()
-      .singleElement()
-      .hasFieldOrPropertyWithValue("name", "http")
-      .hasFieldOrPropertyWithValue("protocol", "TCP")
-      .hasFieldOrPropertyWithValue("port", 1337);
+        .hasFieldOrPropertyWithValue("metadata.name", "endpoints-with-subsets")
+        .extracting(Endpoints::getSubsets).asList()
+        .singleElement()
+        .extracting("ports").asList()
+        .singleElement()
+        .hasFieldOrPropertyWithValue("name", "http")
+        .hasFieldOrPropertyWithValue("protocol", "TCP")
+        .hasFieldOrPropertyWithValue("port", 1337);
   }
 
   @Test
   void list() {
     final EndpointsList result = client.endpoints().list();
     assertThat(result)
-      .extracting(EndpointsList::getItems).asList()
-      .extracting("metadata.name")
-      .containsExactlyInAnyOrder("endpoints-with-subsets", "endpoints-with-no-subsets");
+        .extracting(EndpointsList::getItems).asList()
+        .extracting("metadata.name")
+        .containsExactlyInAnyOrder("endpoints-with-subsets", "endpoints-with-no-subsets");
   }
 
 }

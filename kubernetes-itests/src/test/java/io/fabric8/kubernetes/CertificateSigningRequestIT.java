@@ -104,14 +104,14 @@ class CertificateSigningRequestIT {
 
   static CertificateSigningRequest createCertificateSigningRequest(String name) throws Exception {
     return new CertificateSigningRequestBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withRequest(Base64.encodeBytes(generateCSR().getBytes(StandardCharsets.UTF_8)))
-      .withSignerName("kubernetes.io/kube-apiserver-client") // https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers
-      .addToGroups("system:authenticated")
-      .addToUsages("client auth")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withRequest(Base64.encodeBytes(generateCSR().getBytes(StandardCharsets.UTF_8)))
+        .withSignerName("kubernetes.io/kube-apiserver-client") // https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers
+        .addToGroups("system:authenticated")
+        .addToUsages("client auth")
+        .endSpec()
+        .build();
   }
 
   static String generateCSR() throws Exception {
@@ -121,7 +121,7 @@ class CertificateSigningRequestIT {
 
     final KeyPair kp = kpg.generateKeyPair();
     final PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(
-      new X500Principal("CN=*.cluster.local"), kp.getPublic());
+        new X500Principal("CN=*.cluster.local"), kp.getPublic());
     ContentSigner signer = new JcaContentSignerBuilder("SHA256withRSA").build(kp.getPrivate());
     PKCS10CertificationRequest csr = p10Builder.build(signer);
     try (StringWriter stringWriter = new StringWriter(); JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter)) {
