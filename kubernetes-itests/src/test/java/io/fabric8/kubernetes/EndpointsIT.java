@@ -18,48 +18,50 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.concurrent.TimeUnit;
 
-@Disabled
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @LoadKubernetesManifests("/endpoints-it.yml")
 class EndpointsIT {
 
   KubernetesClient client;
 
   @Test
-  void get() {
-    Endpoints endpoints = client.endpoints().withName("endpoints-get").get();
-    assertThat(endpoints).isNotNull();
+  void withNoSubsets() {
+    final Endpoints result = client.endpoints().withName("endpoints-with-no-subsets").get();
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("metadata.name", "endpoints-with-no-subsets")
+      .extracting(Endpoints::getSubsets).asList()
+      .isEmpty();
+  }
+
+  @Test
+  void withSubsets() {
+    client.apps().deployments().withName("endpoints-with-subsets").waitUntilReady(30, TimeUnit.SECONDS);
+    final Endpoints result = client.endpoints().withName("endpoints-with-subsets").get();
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("metadata.name", "endpoints-with-subsets")
+      .extracting(Endpoints::getSubsets).asList()
+      .singleElement()
+      .extracting("ports").asList()
+      .singleElement()
+      .hasFieldOrPropertyWithValue("name", "http")
+      .hasFieldOrPropertyWithValue("protocol", "TCP")
+      .hasFieldOrPropertyWithValue("port", 1337);
   }
 
   @Test
   void list() {
-    EndpointsList aEndpointList = client.endpoints().list();
-    assertNotNull(aEndpointList);
-    assertTrue(aEndpointList.getItems().size() >= 1);
-  }
-
-  @Test
-  void update() {
-    Endpoints endpoints = client.endpoints().withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
-      .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
-
-    assertNotNull(endpoints);
-    assertEquals("bar", endpoints.getMetadata().getAnnotations().get("foo"));
-  }
-
-  @Test
-  void delete() {
-    assertTrue(client.endpoints().withName("endpoints-delete").delete());
+    final EndpointsList result = client.endpoints().list();
+    assertThat(result)
+      .extracting(EndpointsList::getItems).asList()
+      .extracting("metadata.name")
+      .containsExactlyInAnyOrder("endpoints-with-subsets", "endpoints-with-no-subsets");
   }
 
 }
