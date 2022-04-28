@@ -16,8 +16,8 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -26,29 +26,21 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class ProjectRequestTest {
 
-  OpenShiftMockServer server;
+  KubernetesMockServer server;
   OpenShiftClient client;
 
   @Test
-  void testList() {
-   server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(200, new StatusBuilder().withMessage("success").build()).once();
-
-    Status status = client.projectrequests().list();
-    assertNotNull(status);
-    assertEquals("success", status.getMessage());
-  }
-
-
-
-  @Test
   void testCreate() {
-    ProjectRequest req1 = new ProjectRequestBuilder().withApiVersion("v1").withNewMetadata().withName("req1").and().build();
+    ProjectRequest req1 = new ProjectRequestBuilder().withApiVersion("project.openshift.io/v1")
+        .withNewMetadata()
+        .withName("req1")
+        .and()
+        .build();
 
-   server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(201, req1).once();
-
+    server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(201, req1).once();
 
     ProjectRequest result = client.projectrequests().create(req1);
     assertNotNull(result);

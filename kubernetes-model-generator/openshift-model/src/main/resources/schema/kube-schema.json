@@ -12600,8 +12600,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ProjectRequest",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "os_project_ProjectSpec": {
