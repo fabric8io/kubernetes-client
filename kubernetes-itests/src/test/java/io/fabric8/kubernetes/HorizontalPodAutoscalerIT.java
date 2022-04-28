@@ -17,52 +17,23 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerBuilder;
-import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled
 @LoadKubernetesManifests("/horizontalpodautoscaler-it.yml")
 class HorizontalPodAutoscalerIT {
 
   KubernetesClient client;
 
   @Test
-  void get() {
-    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers()
-        .withName("horizontalpodautoscaler-get").get();
-    assertThat(horizontalPodAutoscaler).isNotNull();
-  }
-
-  @Test
-  void list() {
-    HorizontalPodAutoscalerList aEndpointList = client.autoscaling().v1().horizontalPodAutoscalers()
-        .list();
-    assertNotNull(aEndpointList);
-    assertTrue(aEndpointList.getItems().size() >= 1);
-  }
-
-  @Test
-  void update() {
-    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers()
-        .withName("horizontalpodautoscaler-update")
-        .edit(c -> new HorizontalPodAutoscalerBuilder(c)
-            .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
-
-    assertNotNull(horizontalPodAutoscaler);
-    assertEquals("bar", horizontalPodAutoscaler.getMetadata().getAnnotations().get("foo"));
-  }
-
-  @Test
-  void delete() {
-    assertTrue(client.autoscaling().v1().horizontalPodAutoscalers()
-        .withName("horizontalpodautoscaler-delete").delete());
+  void hpaWithScalingDisabled() {
+    final HorizontalPodAutoscaler result = client.autoscaling().v1().horizontalPodAutoscalers()
+      .withName("horizontal-pod-autoscaler").get();
+    assertThat(result)
+      .extracting(HorizontalPodAutoscaler::getStatus)
+      .hasFieldOrPropertyWithValue("currentReplicas", 0)
+      .hasFieldOrPropertyWithValue("desiredReplicas", 0);
   }
 }
