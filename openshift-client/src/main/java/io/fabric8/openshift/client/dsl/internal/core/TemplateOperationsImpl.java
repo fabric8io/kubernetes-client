@@ -23,11 +23,11 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -36,7 +36,6 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.ParameterValue;
-import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +58,8 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
 public class TemplateOperationsImpl
     extends HasMetadataOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>>
-    implements TemplateOperation {
+    implements TemplateResource<Template, KubernetesList>,
+    ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> {
 
   private static final Logger logger = LoggerFactory.getLogger(TemplateOperationsImpl.class);
   private static final String EXPRESSION = "expression";
