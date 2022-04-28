@@ -25,11 +25,12 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.io.Closeable;
 import java.net.URL;
 
-public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable {
+public interface Client extends Closeable {
 
   /**
    * Checks if the client can be adapted to an other client type and if that target client is supported.
@@ -166,5 +167,9 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
    * @return a new client
    */
   Client newClient(RequestConfig requestConfig);
+
+  HttpClient getHttpClient();
+
+  Config getConfiguration();
 
 }
