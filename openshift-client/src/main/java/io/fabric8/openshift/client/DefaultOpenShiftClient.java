@@ -287,7 +287,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
   }
 
   @Override
-  public MixedOperation<Build, BuildList, BuildResource<Build, LogWatch>> builds() {
+  public MixedOperation<Build, BuildList, BuildResource> builds() {
     return new BuildOperationsImpl(this);
   }
 

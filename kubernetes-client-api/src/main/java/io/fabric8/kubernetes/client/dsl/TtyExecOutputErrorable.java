@@ -15,18 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-/**
- * @param <X> The exec input.
- * @param <O> Where to write err to.
- * @param <P> Where to read err from.
- * @param <T> The exec output.
- */
-public interface TtyExecOutputErrorable<X, O, P, T> extends
-    TtyExecErrorable<X, O, P, T> {
+import java.io.OutputStream;
+import java.io.PipedInputStream;
 
-  TtyExecErrorable<X, O, P, T> writingOutput(O in);
+public interface TtyExecOutputErrorable extends
+    TtyExecErrorable {
 
-  TtyExecErrorable<X, O, P, T> readingOutput(P in);
+  TtyExecErrorable writingOutput(OutputStream in);
 
-  TtyExecErrorable<X, O, P, T> redirectingOutput();
+  TtyExecErrorable readingOutput(PipedInputStream in);
+
+  TtyExecErrorable redirectingOutput();
 }

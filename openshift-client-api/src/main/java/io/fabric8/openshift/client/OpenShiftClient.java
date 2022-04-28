@@ -231,7 +231,7 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
    *
    * @return MixedOperation instance for Build object
    */
-  MixedOperation<Build, BuildList, BuildResource<Build, LogWatch>> builds();
+  MixedOperation<Build, BuildList, BuildResource> builds();
 
   /**
    * API entrypoint for handling BuildConfig(build.openshift.io/v1)
@@ -578,7 +578,7 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
 
   /**
    * Returns the current logged in user details similar to the `oc whoami` command.
-   * 
+   *
    * @return User as currently logged in user
    */
   User currentUser();

@@ -44,7 +44,7 @@ import java.util.function.UnaryOperator;
  * Operations for resources that represent scalable, rolling-updatable sets of Pods.
  */
 public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
-  extends HasMetadataOperation<T, L, R> implements RollableScalableResource<T>, TimeoutImageEditReplacePatchable<T> {
+    extends HasMetadataOperation<T, L, R> implements RollableScalableResource<T>, TimeoutImageEditReplacePatchable<T> {
 
   private static final Logger Log = LoggerFactory.getLogger(RollableScalableResourceOperation.class);
 
@@ -53,7 +53,8 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   final long rollingTimeout;
   final TimeUnit rollingTimeUnit;
 
-  protected RollableScalableResourceOperation(RollingOperationContext context, OperationContext superContext, Class<T> type, Class<L> listType) {
+  protected RollableScalableResourceOperation(RollingOperationContext context, OperationContext superContext, Class<T> type,
+      Class<L> listType) {
     super(superContext, type, listType);
     this.rollingOperationContext = context;
     this.rolling = context.getRolling();
@@ -62,11 +63,14 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   }
 
   protected abstract T withReplicas(int count);
+
   protected abstract RollingUpdater<T, L> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit);
 
   // There are no common interfaces through which we could get these values.
   protected abstract int getCurrentReplicas(T current);
+
   protected abstract int getDesiredReplicas(T item);
+
   protected abstract long getObservedGeneration(T current);
 
   @Override
@@ -107,28 +111,30 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
     try {
       return waitUntilCondition(t -> {
-          //If the resource is gone, we shouldn't wait.
-          if (t == null) {
-            if (count == 0) {
-              return true;
-            }
-            throw new IllegalStateException("Can't wait for " + getType().getSimpleName() + ": " +name + " in namespace: " + namespace + " to scale. Resource is no longer available.");
-          }
-          int currentReplicas = getCurrentReplicas(t);
-          int desiredReplicas = getDesiredReplicas(t);
-          replicasRef.set(currentReplicas);
-          long generation = t.getMetadata().getGeneration() != null ? t.getMetadata().getGeneration() : -1;
-          long observedGeneration = getObservedGeneration(t);
-          if (observedGeneration >= generation && Objects.equals(desiredReplicas, currentReplicas)) {
+        //If the resource is gone, we shouldn't wait.
+        if (t == null) {
+          if (count == 0) {
             return true;
           }
-          Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
+          throw new IllegalStateException("Can't wait for " + getType().getSimpleName() + ": " + name + " in namespace: "
+              + namespace + " to scale. Resource is no longer available.");
+        }
+        int currentReplicas = getCurrentReplicas(t);
+        int desiredReplicas = getDesiredReplicas(t);
+        replicasRef.set(currentReplicas);
+        long generation = t.getMetadata().getGeneration() != null ? t.getMetadata().getGeneration() : -1;
+        long observedGeneration = getObservedGeneration(t);
+        if (observedGeneration >= generation && Objects.equals(desiredReplicas, currentReplicas)) {
+          return true;
+        }
+        Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
             currentReplicas, desiredReplicas, t.getKind(), t.getMetadata().getName(), namespace);
-          return false;
-        }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+        return false;
+      }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
     } catch (KubernetesClientTimeoutException e) {
       Log.error("{}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
-          replicasRef.get(), count, getType().getSimpleName(), name, namespace, TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
+          replicasRef.get(), count, getType().getSimpleName(), name, namespace,
+          TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
       return null;
     }
   }
@@ -139,11 +145,11 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       return super.edit(function);
     }
     try {
-        T oldObj = getMandatory();
-        T newObj = function.apply(Serialization.clone(oldObj));
-        return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(oldObj, newObj);
+      T oldObj = getMandatory();
+      T newObj = function.apply(Serialization.clone(oldObj));
+      return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(oldObj, newObj);
     } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -157,21 +163,21 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
   @Override
   public T patch(PatchContext patchContext, T item) {
-    if (!rolling  || patchContext == null || patchContext.getPatchType() != PatchType.JSON) {
+    if (!rolling || patchContext == null || patchContext.getPatchType() != PatchType.JSON) {
       return super.patch(patchContext, item);
     }
     return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), item);
   }
-  
+
   public abstract RollableScalableResourceOperation<T, L, R> newInstance(RollingOperationContext context);
-  
+
   @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
     return newInstance(rollingOperationContext.withLogWaitTimout(logWaitTimeout));
   }
-  
+
   @Override
-  public Loggable<LogWatch> inContainer(String id) {
+  public Loggable inContainer(String id) {
     return newInstance(rollingOperationContext.withContainerId(id));
   }
 
@@ -179,25 +185,25 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   public TimeoutImageEditReplacePatchable<T> rolling() {
     return newInstance(rollingOperationContext.withRolling(true));
   }
-  
+
   @Override
   public ImageEditReplacePatchable<T> withTimeoutInMillis(long timeoutInMillis) {
     return newInstance(rollingOperationContext.withRollingTimeout(timeoutInMillis).withRollingTimeUnit(TimeUnit.MILLISECONDS));
   }
-  
+
   @Override
   public ImageEditReplacePatchable<T> withTimeout(long timeout, TimeUnit unit) {
     return newInstance(rollingOperationContext.withRollingTimeout(timeout).withRollingTimeUnit(unit));
   }
-  
+
   @Override
   public String getLog() {
     return getLog(false);
   }
-  
+
   @Override
   public LogWatch watchLog() {
     return watchLog(null);
   }
-  
+
 }

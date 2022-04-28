@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
@@ -46,8 +45,8 @@ import java.util.Map;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
-public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, BuildResource<Build, LogWatch>> implements
-    BuildResource<Build, LogWatch> {
+public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, BuildResource> implements
+    BuildResource {
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
   private final boolean withTerminatedStatus;
@@ -163,44 +162,44 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   }
 
   @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
     BuildOperationsImpl result = newInstance(context);
     result.podLogWaitTimeout = logWaitTimeout;
     return result;
   }
 
   @Override
-  public Loggable<LogWatch> withPrettyOutput() {
+  public Loggable withPrettyOutput() {
     return new BuildOperationsImpl(getContext().withPrettyOutput(true), context);
   }
 
   @Override
-  public PrettyLoggable<LogWatch> tailingLines(int tailingLines) {
+  public PrettyLoggable tailingLines(int tailingLines) {
     return new BuildOperationsImpl(getContext().withTailingLines(tailingLines), context);
   }
 
   @Override
-  public TimeTailPrettyLoggable<LogWatch> terminated() {
+  public TimeTailPrettyLoggable terminated() {
     return new BuildOperationsImpl(getContext().withTerminatedStatus(true), context);
   }
 
   @Override
-  public TailPrettyLoggable<LogWatch> sinceTime(String sinceTimestamp) {
+  public TailPrettyLoggable sinceTime(String sinceTimestamp) {
     return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp), context);
   }
 
   @Override
-  public TailPrettyLoggable<LogWatch> sinceSeconds(int sinceSeconds) {
+  public TailPrettyLoggable sinceSeconds(int sinceSeconds) {
     return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds), context);
   }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> limitBytes(int limitBytes) {
+  public BytesLimitTerminateTimeTailPrettyLoggable limitBytes(int limitBytes) {
     return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes), context);
   }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
     return new BuildOperationsImpl(getContext().withTimestamps(true), context);
   }
 

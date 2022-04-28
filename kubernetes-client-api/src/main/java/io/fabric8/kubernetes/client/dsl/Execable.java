@@ -16,12 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-/**
- * @param <X>   The exec input
- * @param <T>   The exec output
- */
-public interface Execable<X, T> {
+public interface Execable {
 
-    T exec(X... input);
+  ExecWatch exec(String... input);
 
 }

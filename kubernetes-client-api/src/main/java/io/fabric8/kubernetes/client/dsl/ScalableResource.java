@@ -18,12 +18,12 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 
 public interface ScalableResource<T> extends Resource<T>,
-    Loggable<LogWatch>,
-    Containerable<String, Loggable<LogWatch>> {
+    Loggable,
+    Containerable<String, Loggable> {
 
   /**
    * Scale the resource to given count
-   * 
+   *
    * @param count the desired instance count
    * @return the resource
    */
@@ -31,7 +31,7 @@ public interface ScalableResource<T> extends Resource<T>,
 
   /**
    * Scale the resource to given count
-   * 
+   *
    * @param count the desired instance count
    * @param wait if true, wait for the number of instances to exist - no guarantee is made
    *        as to readiness
