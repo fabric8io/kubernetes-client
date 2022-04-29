@@ -63,12 +63,9 @@ public class PodOperationUtil {
 
   public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout,
       String containerId) {
-    return new PodOperationsImpl(new PodOperationContext(containerId,
-        null, null, null, null, null,
-        null, null, null, false, false,
-        false, null, null, null, isPretty,
-        null, null, null,
-        null, null, podLogWaitTimeout), context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
+    return new PodOperationsImpl(
+        PodOperationContext.builder().containerId(containerId).prettyOutput(isPretty).logWaitTimeout(podLogWaitTimeout).build(),
+        context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
   }
 
   public static List<PodResource> getPodOperationsForController(OperationContext context, String controllerUid,

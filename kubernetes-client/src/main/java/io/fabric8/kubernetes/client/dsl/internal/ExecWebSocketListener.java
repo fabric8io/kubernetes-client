@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -70,6 +71,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   static final String CAUSE_REASON_EXIT_CODE = "ExitCode";
   static final String REASON_NON_ZERO_EXIT_CODE = "NonZeroExitCode";
   static final String STATUS_SUCCESS = "Success";
+
+  private static final long MAX_QUEUE_SIZE = 16 * 1024 * 1024L;
 
   private final class SimpleResponse implements Response {
     private final HttpResponse<?> response;
@@ -98,10 +101,12 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   private final OutputStream err;
   private final OutputStream errChannel;
 
-  private final PipedOutputStream input;
+  private final OutputStream input;
   private final PipedInputStream output;
   private final PipedInputStream error;
   private final PipedInputStream errorChannel;
+
+  private final boolean forUpload;
 
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -114,35 +119,36 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
 
-  private ObjectMapper objectMapper;
+  private ObjectMapper objectMapper = new ObjectMapper();
 
-  public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, OutputStream errChannel,
-      PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe,
-      ExecListener listener, Integer bufferSize) {
-    this.listener = listener;
-    this.in = inputStreamOrPipe(in, inputPipe, toClose, bufferSize);
-    this.out = outputStreamOrPipe(out, outputPipe, toClose);
-    this.err = outputStreamOrPipe(err, errorPipe, toClose);
-    this.errChannel = outputStreamOrPipe(errChannel, errorChannelPipe, toClose);
+  public ExecWebSocketListener(PodOperationContext context) {
+    this.listener = context.getExecListener();
+    this.forUpload = context.isForUpload();
+    PipedOutputStream inputPipe = context.getInPipe();
+    PipedInputStream outputPipe = context.getOutPipe();
+    PipedInputStream errorPipe = context.getErrPipe();
+    PipedInputStream errorChannelPipe = context.getErrChannelPipe();
+    this.in = inputStreamOrPipe(context.getIn(), inputPipe, toClose, context.getBufferSize());
+    this.out = outputStreamOrPipe(context.getOut(), outputPipe, toClose);
+    this.err = outputStreamOrPipe(context.getErr(), errorPipe, toClose);
+    this.errChannel = outputStreamOrPipe(context.getErrChannel(), errorChannelPipe, toClose);
 
-    this.input = inputPipe;
+    if (inputPipe == null && in == null && forUpload) {
+      // if there's no explicit in, then we create an OutputStream that writes directly to send
+      this.input = InputStreamPumper.writableOutputStream(this::sendWithErrorChecking);
+    } else {
+      this.input = inputPipe;
+    }
     this.output = outputPipe;
     this.error = errorPipe;
     this.errorChannel = errorChannelPipe;
-    this.objectMapper = new ObjectMapper();
   }
 
   @Override
   public void close() {
-    close(1000, "Closing...");
-  }
-
-  private void close(int code, String reason) {
-    if (!exitCode.isDone()) {
-      exitCode.completeExceptionally(new KubernetesClientException("Closed before exit code recieved"));
-    }
-    closeWebSocketOnce(code, reason);
-    onClosed(code, reason);
+    // simply sends a close, which will shut down the output
+    // it's expected that the server will respond with a close, but if not the input will be shutdown implicitly 
+    closeWebSocketOnce(1000, "Closing...");
   }
 
   /**
@@ -176,8 +182,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   @Override
   public void onOpen(WebSocket webSocket) {
     try {
-      if (in instanceof PipedInputStream && input != null) {
-        input.connect((PipedInputStream) in);
+      if (in instanceof PipedInputStream && input instanceof PipedOutputStream) {
+        ((PipedOutputStream) input).connect((PipedInputStream) in);
       }
       if (out instanceof PipedOutputStream && output != null) {
         output.connect((PipedOutputStream) out);
@@ -208,7 +214,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   public void onError(WebSocket webSocket, Throwable t) {
 
     //If we already called onClosed() or onFailed() before, we need to abort.
-    if (closed.compareAndSet(false, true)) {
+    if (!closed.compareAndSet(false, true)) {
       //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
       if (LOGGER.isWarnEnabled()) {
         LOGGER.warn("Received [{}], with message:[{}] after ExecWebSocketListener is closed, Ignoring.",
@@ -224,7 +230,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       }
       Status status = OperationSupport.createStatus(response);
       status.setMessage(t.getMessage());
-      LOGGER.error("Exec Failure", t);
       cleanUpOnce();
     } finally {
       try {
@@ -234,6 +239,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             execResponse = new SimpleResponse(response);
           }
           listener.onFailure(t, execResponse);
+        } else {
+          LOGGER.error("Exec Failure", t);
         }
       } finally {
         exitCode.completeExceptionally(t);
@@ -256,6 +263,11 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             break;
           case 2:
             writeAndFlush(err, byteString);
+            if (forUpload) {
+              String stringValue = StandardCharsets.UTF_8.decode(bytes).toString();
+              exitCode.completeExceptionally(new KubernetesClientException(stringValue));
+              this.close();
+            }
             break;
           case 3:
             handleExitStatus(bytes);
@@ -304,10 +316,10 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
-    ExecWebSocketListener.this.close(code, reason);
-  }
-
-  private void onClosed(int code, String reason) {
+    if (!exitCode.isDone()) {
+      exitCode.complete(null);
+    }
+    closeWebSocketOnce(code, reason);
     //If we already called onClosed() or onFailed() before, we need to abort.
     if (!closed.compareAndSet(false, true)) {
       return;
@@ -360,18 +372,25 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   private void send(byte[] bytes, int offset, int length, byte flag) {
     if (length > 0) {
+      waitForQueue(length);
       WebSocket ws = webSocketRef.get();
-      if (ws != null) {
-        byte[] toSend = new byte[length + 1];
-        toSend[0] = flag;
-        System.arraycopy(bytes, offset, toSend, 1, length);
-        ws.send(ByteBuffer.wrap(toSend));
+      byte[] toSend = new byte[length + 1];
+      toSend[0] = flag;
+      System.arraycopy(bytes, offset, toSend, 1, length);
+      if (!ws.send(ByteBuffer.wrap(toSend))) {
+        this.exitCode.completeExceptionally(new IOException("could not send"));
       }
     }
   }
 
   private void send(byte[] bytes, int offset, int length) {
     send(bytes, offset, length, (byte) 0);
+  }
+
+  void sendWithErrorChecking(byte[] bytes, int offset, int length) {
+    checkError();
+    send(bytes, offset, length);
+    checkError();
   }
 
   private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose,
@@ -424,6 +443,27 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   @Override
   public CompletableFuture<Integer> exitCode() {
     return exitCode;
+  }
+
+  final void waitForQueue(int length) {
+    try {
+      while (webSocketRef.get().queueSize() + length > MAX_QUEUE_SIZE && !Thread.interrupted()) {
+        checkError();
+        Thread.sleep(50L);
+      }
+    } catch (InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+  }
+
+  final void checkError() {
+    if (exitCode.isDone()) {
+      try {
+        exitCode.getNow(null);
+      } catch (CompletionException e) {
+        throw KubernetesClientException.launderThrowable(e.getCause());
+      }
+    }
   }
 
 }

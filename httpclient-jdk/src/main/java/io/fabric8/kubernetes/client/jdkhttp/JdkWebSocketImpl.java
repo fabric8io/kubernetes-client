@@ -27,6 +27,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 class JdkWebSocketImpl implements WebSocket {
@@ -177,6 +178,8 @@ class JdkWebSocketImpl implements WebSocket {
   @Override
   public boolean sendClose(int code, String reason) {
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
+    // matches the behavior of the okhttp implementation and will ensure input closure after 1 minute 
+    cf.thenRunAsync(() -> webSocket.abort(), CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES));
     return asBoolean(cf);
   }
 

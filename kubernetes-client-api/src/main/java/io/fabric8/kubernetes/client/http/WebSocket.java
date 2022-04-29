@@ -73,7 +73,10 @@ public interface WebSocket {
   boolean send(ByteBuffer buffer);
 
   /**
-   * Send a close message
+   * Send a close message. If successful, the output side
+   * will then be closed. After a timeout the input side will
+   * automatically be shutdown if it isn't already shutdown by
+   * the remote side.
    *
    * @return true if the message was successfully enqueued.
    */
