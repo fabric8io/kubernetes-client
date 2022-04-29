@@ -22,16 +22,40 @@ import java.util.concurrent.CompletableFuture;
 
 public interface ExecWatch extends Closeable {
 
+  /**
+   * Gets the {@link OutputStream} for stdIn if one is associated
+   * 
+   * @return the stdIn stream
+   */
   OutputStream getInput();
 
+  /**
+   * Gets the {@link InputStream} for stdOut if one is associated
+   * 
+   * @return the stdErr stream
+   */
   InputStream getOutput();
 
+  /**
+   * Gets the {@link InputStream} for stdErr if one is associated
+   * 
+   * @return the stdErr stream
+   */
   InputStream getError();
 
+  /**
+   * Gets the {@link InputStream} associated with channel 3, which
+   * returns the final Status containing the exit code, which
+   * could indicate abnormal termination.
+   * <p>
+   * See also {@link #exitCode()}
+   * 
+   * @return the channel 3 stream
+   */
   InputStream getErrorChannel();
 
   /**
-   * Close the Watch.
+   * Gracefully close the Watch.
    */
   @Override
   void close();
@@ -41,7 +65,7 @@ public interface ExecWatch extends Closeable {
   /**
    * Get a future that will be completed with the exit code.
    * <p>
-   * Will be -1 if the exit code can't be determined.
+   * Will be -1 if the exit code can't be determined from the status, or null if close is received before the exit code.
    * <p>
    * Can be used as an alternative to
    * {@link ExecListener#onFailure(Throwable, io.fabric8.kubernetes.client.dsl.ExecListener.Response)}

@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
@@ -91,26 +90,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
 
-  private final String containerId;
-  private final InputStream in;
-  private final OutputStream out;
-  private final OutputStream err;
-  private final OutputStream errChannel;
-
-  private final PipedOutputStream inPipe;
-  private final PipedInputStream outPipe;
-  private final PipedInputStream errPipe;
-  private final PipedInputStream errChannelPipe;
-  private final boolean withTTY;
-  private final boolean withTerminatedStatus;
-  private final boolean withTimestamps;
-  private final String sinceTimestamp;
-  private final Integer sinceSeconds;
-  private final Integer withTailingLines;
-  private final boolean withPrettyOutput;
-  private final ExecListener execListener;
-  private final Integer limitBytes;
-  private final Integer bufferSize;
   private final PodOperationContext podOperationContext;
 
   public PodOperationsImpl(Client client) {
@@ -120,25 +99,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public PodOperationsImpl(PodOperationContext context, OperationContext superContext) {
     super(superContext.withPlural("pods"), Pod.class, PodList.class);
     this.podOperationContext = context;
-    this.containerId = context.getContainerId();
-    this.in = context.getIn();
-    this.inPipe = context.getInPipe();
-    this.out = context.getOut();
-    this.outPipe = context.getOutPipe();
-    this.err = context.getErr();
-    this.errPipe = context.getErrPipe();
-    this.errChannel = context.getErrChannel();
-    this.errChannelPipe = context.getErrChannelPipe();
-    this.withTTY = context.isTty();
-    this.withTerminatedStatus = context.isTerminatedStatus();
-    this.withTimestamps = context.isTimestamps();
-    this.sinceTimestamp = context.getSinceTimestamp();
-    this.sinceSeconds = context.getSinceSeconds();
-    this.withTailingLines = context.getTailingLines();
-    this.withPrettyOutput = context.isPrettyOutput();
-    this.execListener = context.getExecListener();
-    this.limitBytes = context.getLimitBytes();
-    this.bufferSize = context.getBufferSize();
   }
 
   @Override
@@ -150,36 +110,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     return podOperationContext;
   }
 
-  protected String getLogParameters() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("log?pretty=").append(withPrettyOutput);
-
-    if (containerId != null && !containerId.isEmpty()) {
-      sb.append("&container=").append(containerId);
-    }
-    if (withTerminatedStatus) {
-      sb.append("&previous=true");
-    }
-    if (sinceSeconds != null) {
-      sb.append("&sinceSeconds=").append(sinceSeconds);
-    } else if (sinceTimestamp != null) {
-      sb.append("&sinceTime=").append(sinceTimestamp);
-    }
-    if (withTailingLines != null) {
-      sb.append("&tailLines=").append(withTailingLines);
-    }
-    if (limitBytes != null) {
-      sb.append("&limitBytes=").append(limitBytes);
-    }
-    if (withTimestamps) {
-      sb.append("&timestamps=true");
-    }
-    return sb.toString();
-  }
-
   protected <T> T doGetLog(Class<T> type) {
     try {
-      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), podOperationContext.getLogParameters()));
       return handleRawGet(url, type);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), ioException);
@@ -217,7 +150,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       PodOperationUtil.waitUntilReadyBeforeFetchingLogs(this,
           getContext().getLogWaitTimeout() != null ? getContext().getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
       // Issue Pod Logs HTTP request
-      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getContext().getLogParameters() + "&follow=true"));
       final LogWatchCallback callback = new LogWatchCallback(out);
       return callback.callAndWait(httpClient, url);
     } catch (IOException ioException) {
@@ -311,7 +244,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public ContainerResource inContainer(
+  public PodOperationsImpl inContainer(
       String containerId) {
     return new PodOperationsImpl(getContext().withContainerId(containerId), context);
   }
@@ -322,8 +255,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     try {
       URL url = getURLWithCommandParams(actualCommands);
       HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, errChannel, inPipe, outPipe,
-          errPipe, errChannelPipe, execListener, bufferSize);
+      final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext());
       CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
           .subprotocol("v4.channel.k8s.io")
           .uri(url.toURI())
@@ -349,31 +281,18 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       httpUrlBuilder.addQueryParameter("command", cmd);
     }
 
-    if (containerId != null && !containerId.isEmpty()) {
-      httpUrlBuilder.addQueryParameter("container", containerId);
-    }
-    if (withTTY) {
-      httpUrlBuilder.addQueryParameter("tty", "true");
-    }
-    if (in != null || inPipe != null) {
-      httpUrlBuilder.addQueryParameter("stdin", "true");
-    }
-    if (out != null || outPipe != null) {
-      httpUrlBuilder.addQueryParameter("stdout", "true");
-    }
-    if (err != null || errPipe != null) {
-      httpUrlBuilder.addQueryParameter("stderr", "true");
-    }
+    getContext().addQueryParameters(httpUrlBuilder);
+
     return httpUrlBuilder.build();
   }
 
   @Override
-  public CopyOrReadable file(String file) {
+  public PodOperationsImpl file(String file) {
     return new PodOperationsImpl(getContext().withFile(file), context);
   }
 
   @Override
-  public CopyOrReadable dir(String dir) {
+  public PodOperationsImpl dir(String dir) {
     return new PodOperationsImpl(getContext().withDir(dir), context);
   }
 
@@ -397,9 +316,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public boolean upload(InputStream inputStream) {
     return wrapRunWithOptionalDependency(() -> {
       try {
-        return PodUpload.uploadFileData(httpClient, getContext(), this, inputStream);
+        return PodUpload.uploadFileData(this, inputStream);
       } catch (Exception ex) {
-        Thread.currentThread().interrupt();
         throw KubernetesClientException.launderThrowable(ex);
       }
     }, "TarArchiveOutputStream is provided by commons-compress");
@@ -409,9 +327,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public boolean upload(Path path) {
     return wrapRunWithOptionalDependency(() -> {
       try {
-        return PodUpload.upload(httpClient, getContext(), this, path);
+        return PodUpload.upload(this, path);
       } catch (Exception ex) {
-        Thread.currentThread().interrupt();
         throw KubernetesClientException.launderThrowable(ex);
       }
     }, "TarArchiveOutputStream is provided by commons-compress");
@@ -679,5 +596,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   public static String shellQuote(String value) {
     return "'" + value.replace("'", "'\\\\''") + "'";
+  }
+
+  public PodOperationsImpl forUpload() {
+    return new PodOperationsImpl(getContext().toBuilder().forUpload(true).build(), context);
   }
 }

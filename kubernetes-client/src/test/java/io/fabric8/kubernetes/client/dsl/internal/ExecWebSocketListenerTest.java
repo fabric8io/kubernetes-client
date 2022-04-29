@@ -18,9 +18,20 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusCause;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 class ExecWebSocketListenerTest {
 
@@ -49,8 +60,63 @@ class ExecWebSocketListenerTest {
     assertEquals(126, ExecWebSocketListener
         .parseExitCode(new StatusBuilder().withStatus("Failed")
             .withReason(ExecWebSocketListener.REASON_NON_ZERO_EXIT_CODE)
-            .withNewDetails().withCauses(new StatusCause("ExitCode", "126", ExecWebSocketListener.CAUSE_REASON_EXIT_CODE)).endDetails()
+            .withNewDetails().withCauses(new StatusCause("ExitCode", "126", ExecWebSocketListener.CAUSE_REASON_EXIT_CODE))
+            .endDetails()
             .build()));
+  }
+
+  @Test
+  void testSendShouldTruncateAndSendFlaggedWebSocketData() {
+    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+    Mockito.when(mockedWebSocket.send(Mockito.any())).thenReturn(true);
+
+    ExecWebSocketListener listner = new ExecWebSocketListener(new PodOperationContext());
+
+    listner.onOpen(mockedWebSocket);
+    final byte[] toSend = new byte[] { 1, 3, 3, 7, 0 };
+
+    listner.sendWithErrorChecking(toSend, 0, 4);
+
+    verify(mockedWebSocket, times(1))
+        .send(ByteBuffer.wrap(new byte[] { (byte) 0, (byte) 1, (byte) 3, (byte) 3, (byte) 7 }));
+  }
+
+  @Test
+  void testCheckErrorHasErrorFromMessageShouldThrowException() {
+    ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext().toBuilder().forUpload(true).build());
+
+    listener.onMessage(null, ByteBuffer.wrap(new byte[] { (byte) 2, (byte) 1, (byte) 1 }));
+
+    assertThrows(KubernetesClientException.class, () -> listener.checkError());
+  }
+
+  @Test
+  void testCheckErrorHasErrorFromFailureShouldThrowException() {
+    ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext());
+
+    listener.onError(null, new IOException("here"));
+
+    assertThrows(KubernetesClientException.class, () -> listener.checkError());
+  }
+
+  @Test
+  void testGracefulClose() {
+    ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext());
+    WebSocket mock = Mockito.mock(WebSocket.class);
+    listener.onOpen(mock);
+    listener.close();
+
+    assertFalse(listener.exitCode().isDone());
+    verify(mock).sendClose(Mockito.anyInt(), Mockito.anyString());
+  }
+
+  @Test
+  void testOnClose() {
+    ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext());
+    WebSocket mock = Mockito.mock(WebSocket.class);
+    listener.onClose(mock, 1000, "testing");
+
+    assertNull(listener.exitCode().join());
   }
 
 }
