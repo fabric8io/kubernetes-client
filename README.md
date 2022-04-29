@@ -47,14 +47,14 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 The easiest way to create a client is:
 
 ```java
-KubernetesClient client = new DefaultKubernetesClient();
+KubernetesClient client = new KubernetesClientBuilder().build();
 ```
 
 `DefaultOpenShiftClient` implements both the `KubernetesClient` & `OpenShiftClient` interface so if you need the
 OpenShift extensions, such as `Build`s, etc then simply do:
 
 ```java
-OpenShiftClient osClient = new DefaultOpenShiftClient();
+OpenShiftClient osClient = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class);
 ```
 
 ### Configuring the client
@@ -121,7 +121,7 @@ Alternatively you can use the `ConfigBuilder` to create a config object for the 
 
 ```java
 Config config = new ConfigBuilder().withMasterUrl("https://mymaster.com").build();
-KubernetesClient client = new DefaultKubernetesClient(config);
+KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build();
 ```
 
 ###
@@ -264,7 +264,7 @@ which allows adapting an existing [KubernetesClient](kubernetes-client-api/src/m
  For example:
 
 ```java
-KubernetesClient client = new DefaultKubernetesClient();
+KubernetesClient client = new KubernetesClientBuilder().build();
 
 OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
 ```
@@ -272,7 +272,7 @@ OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
 The client also support the isAdaptable() method which checks if the adaptation is possible and returns true if it does.
 
 ```java
-KubernetesClient client = new DefaultKubernetesClient();
+KubernetesClient client = new KubernetesClientBuilder().build();
 if (client.isAdaptable(OpenShiftClient.class)) {
     OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
 } else {
