@@ -24,8 +24,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -33,16 +31,27 @@ import java.io.PipedOutputStream;
 @Getter
 public class PodOperationContext {
 
-  private String containerId;
-  private InputStream in;
-  private OutputStream out;
-  private OutputStream err;
-  private OutputStream errChannel;
+  @Getter
+  public static final class StreamContext {
+    private OutputStream outputStream;
 
-  private PipedOutputStream inPipe;
-  private PipedInputStream outPipe;
-  private PipedInputStream errPipe;
-  private PipedInputStream errChannelPipe;
+    public StreamContext(OutputStream outputStream) {
+      this.outputStream = outputStream;
+    }
+
+    public StreamContext() {
+    }
+  }
+
+  private String containerId;
+
+  private StreamContext output;
+  private StreamContext error;
+  private StreamContext errorChannel;
+
+  private boolean redirectingIn;
+  private InputStream in;
+
   private boolean tty;
   private boolean terminatedStatus;
   private boolean timestamps;
@@ -56,7 +65,7 @@ public class PodOperationContext {
   private Integer bufferSize;
   private String file;
   private String dir;
-  private boolean forUpload;
+  private boolean terminateOnError;
 
   public PodOperationContext withContainerId(String containerId) {
     return this.toBuilder().containerId(containerId).build();
@@ -64,34 +73,6 @@ public class PodOperationContext {
 
   public PodOperationContext withIn(InputStream in) {
     return this.toBuilder().in(in).build();
-  }
-
-  public PodOperationContext withOut(OutputStream out) {
-    return this.toBuilder().out(out).build();
-  }
-
-  public PodOperationContext withErr(OutputStream err) {
-    return this.toBuilder().err(err).build();
-  }
-
-  public PodOperationContext withErrChannel(OutputStream errChannel) {
-    return this.toBuilder().errChannel(errChannel).build();
-  }
-
-  public PodOperationContext withInPipe(PipedOutputStream inPipe) {
-    return this.toBuilder().inPipe(inPipe).build();
-  }
-
-  public PodOperationContext withOutPipe(PipedInputStream outPipe) {
-    return this.toBuilder().outPipe(outPipe).build();
-  }
-
-  public PodOperationContext withErrPipe(PipedInputStream errPipe) {
-    return this.toBuilder().errPipe(errPipe).build();
-  }
-
-  public PodOperationContext withErrChannelPipe(PipedInputStream errChannelPipe) {
-    return this.toBuilder().errChannelPipe(errChannelPipe).build();
   }
 
   public PodOperationContext withTty(boolean tty) {
@@ -180,13 +161,13 @@ public class PodOperationContext {
     if (tty) {
       httpUrlBuilder.addQueryParameter("tty", "true");
     }
-    if (in != null || inPipe != null || forUpload) {
+    if (in != null || redirectingIn) {
       httpUrlBuilder.addQueryParameter("stdin", "true");
     }
-    if (out != null || outPipe != null) {
+    if (output != null) {
       httpUrlBuilder.addQueryParameter("stdout", "true");
     }
-    if (err != null || errPipe != null || forUpload) {
+    if (error != null || terminateOnError) {
       httpUrlBuilder.addQueryParameter("stderr", "true");
     }
   }

@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.okhttp;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
@@ -30,6 +31,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 class OkHttpWebSocketImpl implements WebSocket {
 
@@ -54,6 +57,9 @@ class OkHttpWebSocketImpl implements WebSocket {
       CompletableFuture<WebSocket> future = new CompletableFuture<>();
       httpClient.newWebSocket(request, new WebSocketListener() {
         private volatile boolean opened;
+        private boolean more = true;
+        private ReentrantLock lock = new ReentrantLock();
+        private Condition moreRequested = lock.newCondition();
 
         @Override
         public void onFailure(okhttp3.WebSocket webSocket, Throwable t, Response response) {
@@ -72,7 +78,7 @@ class OkHttpWebSocketImpl implements WebSocket {
               future.completeExceptionally(t);
             }
           } else {
-            listener.onError(new OkHttpWebSocketImpl(webSocket), t);
+            listener.onError(new OkHttpWebSocketImpl(webSocket, this::request), t);
           }
         }
 
@@ -82,24 +88,56 @@ class OkHttpWebSocketImpl implements WebSocket {
           if (response != null) {
             response.close();
           }
-          OkHttpWebSocketImpl value = new OkHttpWebSocketImpl(webSocket);
+          OkHttpWebSocketImpl value = new OkHttpWebSocketImpl(webSocket, this::request);
           listener.onOpen(value);
           future.complete(value);
         }
 
         @Override
         public void onMessage(okhttp3.WebSocket webSocket, ByteString bytes) {
-          listener.onMessage(new OkHttpWebSocketImpl(webSocket), bytes.asByteBuffer());
+          awaitMoreRequest();
+          listener.onMessage(new OkHttpWebSocketImpl(webSocket, this::request), bytes.asByteBuffer());
         }
 
         @Override
         public void onMessage(okhttp3.WebSocket webSocket, String text) {
-          listener.onMessage(new OkHttpWebSocketImpl(webSocket), text);
+          awaitMoreRequest();
+          listener.onMessage(new OkHttpWebSocketImpl(webSocket, this::request), text);
+        }
+
+        /**
+         * To back pressure OkHttp, we need to hold the socket processing thread before
+         * it delivers more results than expected
+         */
+        private void awaitMoreRequest() {
+          lock.lock();
+          try {
+            while (!more) {
+              moreRequested.await();
+            }
+            more = false;
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw KubernetesClientException.launderThrowable(e);
+          } finally {
+            lock.unlock();
+          }
+        }
+
+        private void request() {
+          lock.lock();
+          try {
+            more = true;
+            moreRequested.signalAll();
+          } finally {
+            lock.unlock();
+          }
         }
 
         @Override
         public void onClosing(okhttp3.WebSocket webSocket, int code, String reason) {
-          listener.onClose(new OkHttpWebSocketImpl(webSocket), code, reason);
+          awaitMoreRequest();
+          listener.onClose(new OkHttpWebSocketImpl(webSocket, this::request), code, reason);
         }
 
       });
@@ -127,9 +165,11 @@ class OkHttpWebSocketImpl implements WebSocket {
   }
 
   private okhttp3.WebSocket webSocket;
+  private Runnable requestMethod;
 
-  public OkHttpWebSocketImpl(okhttp3.WebSocket webSocket) {
+  public OkHttpWebSocketImpl(okhttp3.WebSocket webSocket, Runnable requestMethod) {
     this.webSocket = webSocket;
+    this.requestMethod = requestMethod;
   }
 
   @Override
@@ -145,6 +185,11 @@ class OkHttpWebSocketImpl implements WebSocket {
   @Override
   public long queueSize() {
     return webSocket.queueSize();
+  }
+
+  @Override
+  public void request() {
+    requestMethod.run();
   }
 
 }

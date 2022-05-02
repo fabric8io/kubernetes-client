@@ -15,6 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.PortForward;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,15 +44,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.fabric8.kubernetes.client.LocalPortForward;
-import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.utils.URLUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A port-forwarder using the websocket protocol.
@@ -89,7 +88,7 @@ public class PortForwarderWebsocket implements PortForwarder {
           try {
             server.close();
           } finally {
-            closeQuietly(handles.toArray(new Closeable[]{}));
+            closeQuietly(handles.toArray(new Closeable[] {}));
             closeExecutor(executorService);
           }
         }
@@ -220,6 +219,7 @@ public class PortForwarderWebsocket implements PortForwarder {
 
       @Override
       public void onMessage(WebSocket webSocket, ByteBuffer buffer) {
+        webSocket.request();
         messagesRead++;
         if (messagesRead <= 2) {
           // skip the first two messages, containing the ports used internally
@@ -308,23 +308,25 @@ public class PortForwarderWebsocket implements PortForwarder {
       }
     };
     CompletableFuture<WebSocket> socket = client
-      .newWebSocketBuilder()
-      .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))
-      .buildAsync(listener);
-    
+        .newWebSocketBuilder()
+        .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))
+        .buildAsync(listener);
+
     socket.whenComplete((w, t) -> {
       if (t != null) {
         listener.onError(w, t);
       }
     });
-    
+
     return new PortForward() {
       @Override
       public void close() throws IOException {
         socket.cancel(true);
-        socket.whenComplete((w, t) -> { if (w != null) {
-          w.sendClose(1001, "User closing");
-        }});
+        socket.whenComplete((w, t) -> {
+          if (w != null) {
+            w.sendClose(1001, "User closing");
+          }
+        });
       }
 
       @Override
@@ -366,10 +368,10 @@ public class PortForwarderWebsocket implements PortForwarder {
   }
 
   public static void closeQuietly(Closeable... cloaseables) {
-    if(cloaseables != null) {
-      for(Closeable c : cloaseables) {
+    if (cloaseables != null) {
+      for (Closeable c : cloaseables) {
         try {
-          if(c != null) {
+          if (c != null) {
             c.close();
           }
         } catch (IOException ioe) {

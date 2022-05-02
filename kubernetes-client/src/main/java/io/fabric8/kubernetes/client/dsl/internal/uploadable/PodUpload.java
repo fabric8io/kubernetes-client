@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPOutputStream;
 
@@ -61,23 +62,25 @@ public class PodUpload {
   }
 
   private static boolean upload(PodOperationsImpl operation, String command, UploadProcessor processor) throws IOException {
-    operation = operation.forUpload();
+    operation = operation.redirectingInput().terminateOnError();
     String containerId = operation.getContext().getContainerId();
     if (Utils.isNotNullOrEmpty(containerId)) {
       operation = operation.inContainer(containerId);
     }
+    CompletableFuture<Integer> exitFuture;
     try (ExecWatch execWatch = operation.exec("sh", "-c", command)) {
       OutputStream out = execWatch.getInput();
       processor.process(out);
       out.close(); // also flushes
-      execWatch.close();
-      if (!Utils.waitUntilReady(execWatch.exitCode(), operation.getConfig().getRequestConfig().getUploadRequestTimeout(),
-          TimeUnit.MILLISECONDS)) {
-        return false;
-      }
-      Integer exitCode = execWatch.exitCode().getNow(null);
-      return exitCode == null || exitCode.intValue() == 0;
+      exitFuture = execWatch.exitCode();
     }
+    // TODO: should this timeout be from the start of the upload?
+    if (!Utils.waitUntilReady(exitFuture, operation.getConfig().getRequestConfig().getUploadRequestTimeout(),
+        TimeUnit.MILLISECONDS)) {
+      return false;
+    }
+    Integer exitCode = exitFuture.getNow(null);
+    return exitCode == null || exitCode.intValue() == 0;
   }
 
   public static boolean uploadFileData(PodOperationsImpl operation, InputStream inputStream)

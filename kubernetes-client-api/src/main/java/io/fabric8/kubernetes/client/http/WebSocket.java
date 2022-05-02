@@ -88,4 +88,12 @@ public interface WebSocket {
    */
   long queueSize();
 
+  /**
+   * Used to receive more onMessage or {@link Listener#onClose(WebSocket, int, String)} events after the initial message is
+   * received
+   * <p>
+   * request is implicitly called by {@link Listener#onOpen(WebSocket)}
+   */
+  void request();
+
 }

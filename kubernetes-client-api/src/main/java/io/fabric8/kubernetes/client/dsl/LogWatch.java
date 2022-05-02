@@ -21,16 +21,17 @@ import java.io.OutputStream;
 
 public interface LogWatch extends Closeable {
 
-    /**
-     * Returns the {@link InputStream} for the log watch.
-     * If an {@link OutputStream} was passed in, will be null
-     * @return the {@link InputStream}
-     */
-    InputStream getOutput();
+  /**
+   * Returns the {@link InputStream} for the log watch.
+   * If an {@link OutputStream} was passed in, will be null
+   * 
+   * @return the {@link InputStream} which must be read completely or closed
+   */
+  InputStream getOutput();
 
-    /**
-     * Close the Watch.
-     */
-    @Override
-    void close();
+  /**
+   * Close the Watch.
+   */
+  @Override
+  void close();
 }

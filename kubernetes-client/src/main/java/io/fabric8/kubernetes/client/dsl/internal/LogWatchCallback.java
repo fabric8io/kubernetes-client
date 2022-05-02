@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
@@ -23,21 +24,17 @@ import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedOutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
 public class LogWatchCallback implements LogWatch, AutoCloseable {
 
@@ -46,16 +43,13 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private OutputStream out;
   private WritableByteChannel outChannel;
   private volatile InputStream output;
-  private final Set<Closeable> toClose = new LinkedHashSet<>();
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
+  private volatile Optional<HttpClient.AsyncBody> asyncBody = Optional.empty();
   private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
 
   public LogWatchCallback(OutputStream out) {
     this.out = out;
-    if (this.out instanceof PipedOutputStream) {
-      toClose.add(this.out);
-    }
     if (out != null) {
       outChannel = Channels.newChannel(out);
     }
@@ -66,20 +60,12 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     cleanUp();
   }
 
-  /**
-   * Performs the cleanup tasks:
-   * 1. cancels the InputStream pumper
-   * 2. closes all internally managed closeables (piped streams).
-   *
-   * The order of these tasks can't change or its likely that the pumper will through errors,
-   * if the stream it uses closes before the pumper it self.
-   */
   private void cleanUp() {
     if (!closed.compareAndSet(false, true)) {
       return;
     }
+    asyncBody.ifPresent(HttpClient.AsyncBody::cancel);
     serialExecutor.shutdownNow();
-    closeQuietly(toClose);
   }
 
   public LogWatchCallback callAndWait(HttpClient client, URL url) {
@@ -99,16 +85,19 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     } else {
       // we need to write the bytes to the given output
       // we don't know if the write will be blocking, so hand it off to another thread
-      clone.consumeBytes(request, (buffers, a) -> serialExecutor.execute(() -> {
+      clone.consumeBytes(request, (buffers, a) -> CompletableFuture.runAsync(() -> {
         for (ByteBuffer byteBuffer : buffers) {
           try {
             outChannel.write(byteBuffer);
           } catch (IOException e1) {
-            onFailure(e1);
-            break;
+            throw KubernetesClientException.launderThrowable(e1);
           }
         }
-        if (!closed.get()) {
+      }, serialExecutor).whenComplete((v, t) -> {
+        if (t != null) {
+          a.cancel();
+          onFailure(t);
+        } else if (!closed.get()) {
           a.consume();
         } else {
           a.cancel();
@@ -118,6 +107,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
           onFailure(e);
         }
         if (a != null) {
+          asyncBody = Optional.of(a.body());
           a.body().consume();
           a.body().done().whenComplete((v, t) -> {
             if (t != null) {

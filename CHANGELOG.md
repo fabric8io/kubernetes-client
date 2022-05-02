@@ -35,6 +35,7 @@ And Store.getKey can be used rather than directly referencing static Cache funct
 There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
 This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
 * Fix #3472 #3587: Allowing for customization of the Informer store/cache key function and how state is stored.  See BasicItemStore and ReducedStateItemStore and the SharedIndexInformer.itemStore function.
+* Fix #4112: Added TtyExecErrorable.terminateOnError to produce an exceptional outcome to the exitCode when a message is seen on stdErr.
 * Fix #3854: Camel-K: Missing method for manipulating KameletBindings
 * Fix #4117: Created new kubernetes-junit-jupiter module, adds a JUnit5 extension for Kubernetes
 

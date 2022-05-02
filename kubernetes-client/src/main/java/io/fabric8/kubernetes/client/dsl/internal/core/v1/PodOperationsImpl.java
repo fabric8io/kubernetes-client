@@ -47,6 +47,7 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -62,7 +63,6 @@ import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -144,8 +144,15 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     return watchLog(null);
   }
 
+  private void checkForPiped(Object object) {
+    if (object instanceof PipedOutputStream || object instanceof PipedInputStream) {
+      throw new KubernetesClientException("Piped streams should not be used");
+    }
+  }
+
   @Override
   public LogWatch watchLog(OutputStream out) {
+    checkForPiped(out);
     try {
       PodOperationUtil.waitUntilReadyBeforeFetchingLogs(this,
           getContext().getLogWaitTimeout() != null ? getContext().getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
@@ -348,26 +355,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
   }
 
-  private Future<?> readFileTo(String source, OutputStream out) {
-    return readTo(new Base64.OutputStream(out, Base64.DECODE), "sh", "-c",
-        String.format("cat %s | base64", shellQuote(source)));
+  private String[] readFileCommand(String source) {
+    return new String[] { "sh", "-c", String.format("cat %s | base64", shellQuote(source)) };
   }
 
   private InputStream readFile(String source) {
-    try {
-      PipedOutputStream out = new PipedOutputStream();
-      PipedInputStream in = new PipedInputStream(out, 1024);
-      final Future<?> future = readFileTo(source, out);
-      return new FilterInputStream(in) {
-        @Override
-        public void close() throws IOException {
-          future.cancel(false);
-          super.close();
-        }
-      };
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return read(readFileCommand(source));
   }
 
   //
@@ -389,49 +382,39 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
 
     try (OutputStream out = new BufferedOutputStream(new FileOutputStream(destination))) {
-      readFileTo(source, out).get();
+      readTo(new Base64.OutputStream(out, Base64.DECODE), readFileCommand(source)).get();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
-
-  private Future<?> readTarTo(String source, OutputStream out) {
-    return readTo(new Base64.OutputStream(out, Base64.DECODE), "sh", "-c", "tar -cf - " + source + "|" + "base64");
   }
 
   public InputStream readTar(String source) {
-    try {
-      PipedOutputStream out = new PipedOutputStream();
-      PipedInputStream in = new PipedInputStream(out, 1024);
-      final Future<?> future = readTarTo(source, out);
-      return new FilterInputStream(in) {
-        @Override
-        public void close() throws IOException {
-          future.cancel(false);
-          super.close();
-        }
-      };
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return read("sh", "-c", "tar -cf - " + shellQuote(source) + "|" + "base64");
+  }
+
+  private InputStream read(String... command) {
+    ExecWatch watch = redirectingOutput().exec(command);
+    return new Base64.InputStream(watch.getOutput(), Base64.DECODE) {
+      @Override
+      public void close() throws IOException {
+        watch.close();
+        super.close();
+      }
+    };
   }
 
   private Future<?> readTo(OutputStream out, String... cmd) {
-    try {
-      ExecWatch w = writingOutput(out).exec(cmd);
-      CompletableFuture<Integer> result = w.exitCode();
-      result.whenComplete((i, t) -> {
-        try {
-          out.close();
-        } catch (Exception e) {
-          result.obtrudeException(e);
-        }
-        w.close();
-      });
-      return result;
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    ExecWatch w = writingOutput(out).exec(cmd);
+    CompletableFuture<Integer> result = w.exitCode();
+    result.whenComplete((i, t) -> {
+      try {
+        out.close();
+      } catch (Exception e) {
+        result.obtrudeException(e);
+      }
+      w.close();
+    });
+    return result;
   }
 
   private void copyDir(String source, File target) throws Exception {
@@ -486,67 +469,51 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public TtyExecOutputErrorable readingInput(InputStream in) {
+    checkForPiped(in);
     return new PodOperationsImpl(getContext().withIn(in), context);
   }
 
   @Override
-  public TtyExecOutputErrorable writingInput(PipedOutputStream inPipe) {
-    return new PodOperationsImpl(getContext().withInPipe(inPipe), context);
-  }
-
-  @Override
-  public TtyExecOutputErrorable redirectingInput() {
+  public PodOperationsImpl redirectingInput() {
     return redirectingInput(null);
   }
 
   @Override
-  public TtyExecOutputErrorable redirectingInput(Integer bufferSize) {
-    return new PodOperationsImpl(getContext().withInPipe(new PipedOutputStream()).withBufferSize(bufferSize), context);
+  public PodOperationsImpl redirectingInput(Integer bufferSize) {
+    return new PodOperationsImpl(getContext().toBuilder().redirectingIn(true).bufferSize(bufferSize).build(), context);
   }
 
   @Override
   public TtyExecErrorable writingOutput(OutputStream out) {
-    return new PodOperationsImpl(getContext().withOut(out), context);
-  }
-
-  @Override
-  public TtyExecErrorable readingOutput(PipedInputStream outPipe) {
-    return new PodOperationsImpl(getContext().withOutPipe(outPipe), context);
+    checkForPiped(out);
+    return new PodOperationsImpl(getContext().toBuilder().output(new StreamContext(out)).build(), context);
   }
 
   @Override
   public TtyExecErrorable redirectingOutput() {
-    return readingOutput(new PipedInputStream());
+    return new PodOperationsImpl(getContext().toBuilder().output(new StreamContext()).build(), context);
   }
 
   @Override
   public TtyExecErrorChannelable writingError(OutputStream err) {
-    return new PodOperationsImpl(getContext().withErr(err), context);
-  }
-
-  @Override
-  public TtyExecErrorChannelable readingError(PipedInputStream errPipe) {
-    return new PodOperationsImpl(getContext().withErrPipe(errPipe), context);
+    checkForPiped(err);
+    return new PodOperationsImpl(getContext().toBuilder().error(new StreamContext(err)).build(), context);
   }
 
   @Override
   public TtyExecErrorChannelable redirectingError() {
-    return readingError(new PipedInputStream());
+    return new PodOperationsImpl(getContext().toBuilder().error(new StreamContext()).build(), context);
   }
 
   @Override
   public TtyExecable writingErrorChannel(OutputStream errChannel) {
-    return new PodOperationsImpl(getContext().withErrChannel(errChannel), context);
-  }
-
-  @Override
-  public TtyExecable readingErrorChannel(PipedInputStream errChannelPipe) {
-    return new PodOperationsImpl(getContext().withErrChannelPipe(errChannelPipe), context);
+    checkForPiped(errChannel);
+    return new PodOperationsImpl(getContext().toBuilder().errorChannel(new StreamContext(errChannel)).build(), context);
   }
 
   @Override
   public TtyExecable redirectingErrorChannel() {
-    return readingErrorChannel(new PipedInputStream());
+    return new PodOperationsImpl(getContext().toBuilder().errorChannel(new StreamContext()).build(), context);
   }
 
   @Override
@@ -598,7 +565,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     return "'" + value.replace("'", "'\\\\''") + "'";
   }
 
-  public PodOperationsImpl forUpload() {
-    return new PodOperationsImpl(getContext().toBuilder().forUpload(true).build(), context);
+  @Override
+  public PodOperationsImpl terminateOnError() {
+    return new PodOperationsImpl(getContext().toBuilder().terminateOnError(true).build(), context);
   }
 }

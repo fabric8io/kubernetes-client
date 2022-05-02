@@ -51,6 +51,8 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -545,6 +547,34 @@ class PodTest {
   void testOptionalCopyDir() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(tempDir.toAbsolutePath());
+    });
+  }
+
+  @Test
+  void testPipesNotAllowed() {
+    PipedInputStream in = new PipedInputStream();
+    PipedOutputStream out = new PipedOutputStream();
+
+    PodResource podOp = client.pods().inNamespace("ns1").withName("pod2");
+
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      podOp.watchLog(out);
+    });
+
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      podOp.writingError(out);
+    });
+
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      podOp.writingErrorChannel(out);
+    });
+
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      podOp.writingOutput(out);
+    });
+
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      podOp.readingInput(in);
     });
   }
 

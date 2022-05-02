@@ -23,36 +23,34 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
 /**
  * A {@link WebSocket.Listener} for exec operations.
@@ -92,56 +90,105 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
   }
 
+  @FunctionalInterface
+  public interface MessageHandler {
+
+    void handle(ByteBuffer bytes) throws IOException;
+
+  }
+
+  private final class ListenerStream {
+    private MessageHandler handler;
+    private ExecWatchInputStream inputStream;
+
+    private void handle(ByteBuffer byteString, WebSocket webSocket) throws IOException {
+      if (handler != null) {
+        handler.handle(byteString);
+      } else {
+        webSocket.request();
+      }
+    }
+  }
+
   private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
   private static final String HEIGHT = "Height";
   private static final String WIDTH = "Width";
 
   private final InputStream in;
-  private final OutputStream out;
-  private final OutputStream err;
-  private final OutputStream errChannel;
-
   private final OutputStream input;
-  private final PipedInputStream output;
-  private final PipedInputStream error;
-  private final PipedInputStream errorChannel;
 
-  private final boolean forUpload;
+  private final ListenerStream out;
+  private final ListenerStream error;
+  private final ListenerStream errorChannel;
+
+  private final boolean terminateOnError;
+  private final ExecListener listener;
 
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-  private final ExecListener listener;
-
+  private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
   private final AtomicBoolean closed = new AtomicBoolean(false);
-
-  private final Set<Closeable> toClose = new LinkedHashSet<>();
-
   private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
-
   private ObjectMapper objectMapper = new ObjectMapper();
+
+  public static String toString(ByteBuffer buffer) {
+    return StandardCharsets.UTF_8.decode(buffer).toString();
+  }
 
   public ExecWebSocketListener(PodOperationContext context) {
     this.listener = context.getExecListener();
-    this.forUpload = context.isForUpload();
-    PipedOutputStream inputPipe = context.getInPipe();
-    PipedInputStream outputPipe = context.getOutPipe();
-    PipedInputStream errorPipe = context.getErrPipe();
-    PipedInputStream errorChannelPipe = context.getErrChannelPipe();
-    this.in = inputStreamOrPipe(context.getIn(), inputPipe, toClose, context.getBufferSize());
-    this.out = outputStreamOrPipe(context.getOut(), outputPipe, toClose);
-    this.err = outputStreamOrPipe(context.getErr(), errorPipe, toClose);
-    this.errChannel = outputStreamOrPipe(context.getErrChannel(), errorChannelPipe, toClose);
 
-    if (inputPipe == null && in == null && forUpload) {
-      // if there's no explicit in, then we create an OutputStream that writes directly to send
-      this.input = InputStreamPumper.writableOutputStream(this::sendWithErrorChecking);
+    Integer bufferSize = context.getBufferSize();
+    if (context.isRedirectingIn()) {
+      this.input = InputStreamPumper.writableOutputStream(this::sendWithErrorChecking, bufferSize);
+      this.in = null;
     } else {
-      this.input = inputPipe;
+      this.input = null;
+      this.in = context.getIn();
     }
-    this.output = outputPipe;
-    this.error = errorPipe;
-    this.errorChannel = errorChannelPipe;
+
+    this.terminateOnError = context.isTerminateOnError();
+    this.out = createStream(context.getOutput());
+    this.error = createStream(context.getError());
+    this.errorChannel = createStream(context.getErrorChannel());
+  }
+
+  private ListenerStream createStream(StreamContext streamContext) {
+    ListenerStream stream = new ListenerStream();
+    if (streamContext == null) {
+      return stream;
+    }
+    OutputStream os = streamContext.getOutputStream();
+    if (os == null) {
+      // redirecting
+      stream.inputStream = new ExecWatchInputStream(() -> this.webSocketRef.get().request());
+      this.exitCode.whenComplete(stream.inputStream::onExit);
+      stream.handler = b -> stream.inputStream.consume(Arrays.asList(b));
+    } else {
+      WritableByteChannel channel = Channels.newChannel(os);
+      stream.handler = b -> asyncWrite(channel, b);
+    }
+    return stream;
+  }
+
+  private void asyncWrite(WritableByteChannel channel, ByteBuffer b) {
+    CompletableFuture.runAsync(() -> {
+      try {
+        channel.write(b);
+      } catch (IOException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }, serialExecutor).whenComplete((v, t) -> {
+      webSocketRef.get().request();
+      if (t != null) {
+        if (closed.get()) {
+          LOGGER.debug("Stream write failed after close", t);
+        } else {
+          // This could happen if the user simply closes their stream prior to completion 
+          LOGGER.warn("Stream write failed", t);
+        }
+      }
+    });
   }
 
   @Override
@@ -154,14 +201,11 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   /**
    * Performs the cleanup tasks:
    * 1. cancels the InputStream pumper
-   * 2. closes all internally managed closeables (piped streams).
-   *
-   * The order of these tasks can't change or its likely that the pumper will throw errors,
-   * if the stream it uses closes before the pumper it self.
+   * 2. closes all pending message work
    */
   private void cleanUpOnce() {
     executorService.shutdownNow();
-    closeQuietly(toClose);
+    serialExecutor.shutdownNow();
   }
 
   private void closeWebSocketOnce(int code, String reason) {
@@ -182,27 +226,14 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   @Override
   public void onOpen(WebSocket webSocket) {
     try {
-      if (in instanceof PipedInputStream && input instanceof PipedOutputStream) {
-        ((PipedOutputStream) input).connect((PipedInputStream) in);
-      }
-      if (out instanceof PipedOutputStream && output != null) {
-        output.connect((PipedOutputStream) out);
-      }
-      if (err instanceof PipedOutputStream && error != null) {
-        error.connect((PipedOutputStream) err);
-      }
-      if (errChannel instanceof PipedOutputStream && errorChannel != null) {
-        errorChannel.connect((PipedOutputStream) errChannel);
-      }
-
+      // ensure onClose is processed
+      this.exitCode.whenComplete((i, t) -> webSocket.request());
       webSocketRef.set(webSocket);
       if (in != null && !executorService.isShutdown()) {
         // the task will be cancelled via shutdownNow
         // TODO: this does not work if the inputstream does not support available
         InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::send, executorService);
       }
-    } catch (IOException e) {
-      onError(webSocket, e);
     } finally {
       if (listener != null) {
         listener.onOpen();
@@ -250,37 +281,45 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
-    // TODO: these could be blocking writes and may need moved to another thread
-    // if we do that, we'll need to make the exit code wait on the final write
+    boolean close = false;
     try {
       byte streamID = bytes.get(0);
       bytes.position(1);
       ByteBuffer byteString = bytes.slice();
-      if (byteString.remaining() > 0) {
-        switch (streamID) {
-          case 1:
-            writeAndFlush(out, byteString);
-            break;
-          case 2:
-            writeAndFlush(err, byteString);
-            if (forUpload) {
-              String stringValue = StandardCharsets.UTF_8.decode(bytes).toString();
-              exitCode.completeExceptionally(new KubernetesClientException(stringValue));
-              this.close();
-            }
-            break;
-          case 3:
-            handleExitStatus(bytes);
-            writeAndFlush(errChannel, byteString);
-            // once the process is done, we can proactively close
-            this.close();
-            break;
-          default:
-            throw new IOException("Unknown stream ID " + streamID);
-        }
+      if (byteString.remaining() == 0) {
+        webSocket.request();
+        return;
+      }
+      switch (streamID) {
+        case 1:
+          out.handle(byteString, webSocket);
+          break;
+        case 2:
+          if (terminateOnError) {
+            String stringValue = toString(bytes);
+            exitCode.completeExceptionally(new KubernetesClientException(stringValue));
+            close = true;
+          } else {
+            error.handle(byteString, webSocket);
+          }
+          break;
+        case 3:
+          close = true;
+          try {
+            errorChannel.handle(bytes, webSocket);
+          } finally {
+            handleExitStatus(byteString);
+          }
+          break;
+        default:
+          throw new IOException("Unknown stream ID " + streamID);
       }
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
+    } finally {
+      if (close) {
+        this.close();
+      }
     }
   }
 
@@ -288,7 +327,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     Status status = null;
     int code = -1;
     try {
-      String stringValue = StandardCharsets.UTF_8.decode(bytes).toString();
+      String stringValue = toString(bytes);
       status = Serialization.unmarshal(stringValue, Status.class);
       if (status != null) {
         code = parseExitCode(status);
@@ -302,15 +341,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       }
     } finally {
       this.exitCode.complete(code);
-    }
-  }
-
-  private void writeAndFlush(OutputStream stream, ByteBuffer byteString) throws IOException {
-    if (stream != null) {
-      Channels.newChannel(stream).write(byteString);
-      if (stream instanceof PipedOutputStream) {
-        stream.flush(); // immediately wake up the reader
-      }
     }
   }
 
@@ -341,17 +371,17 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public InputStream getOutput() {
-    return output;
+    return out.inputStream;
   }
 
   @Override
   public InputStream getError() {
-    return error;
+    return error.inputStream;
   }
 
   @Override
   public InputStream getErrorChannel() {
-    return errorChannel;
+    return errorChannel.inputStream;
   }
 
   @Override
@@ -391,31 +421,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     checkError();
     send(bytes, offset, length);
     checkError();
-  }
-
-  private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose,
-      Integer bufferSize) {
-    if (stream != null) {
-      return stream;
-    } else if (out != null) {
-      PipedInputStream pis = bufferSize == null ? new PipedInputStream() : new PipedInputStream(bufferSize.intValue());
-      toClose.add(pis);
-      return pis;
-    } else {
-      return null;
-    }
-  }
-
-  private static OutputStream outputStreamOrPipe(OutputStream stream, PipedInputStream in, Set<Closeable> toClose) {
-    if (stream != null) {
-      return stream;
-    } else if (in != null) {
-      PipedOutputStream pos = new PipedOutputStream();
-      toClose.add(pos);
-      return pos;
-    } else {
-      return null;
-    }
   }
 
   public static int parseExitCode(Status status) {

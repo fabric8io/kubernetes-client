@@ -15,41 +15,22 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-
 public class BuildOperationContext {
 
-    private InputStream in;
-    private OutputStream out;
-    private OutputStream err;
-
-    private PipedOutputStream inPipe;
-    private PipedInputStream outPipe;
-    private PipedInputStream errPipe;
-    private boolean tty;
-    private boolean terminatedStatus;
-    private boolean timestamps;
-    private String sinceTimestamp;
-    private Integer sinceSeconds;
-    private Integer tailingLines;
-    private boolean prettyOutput;
-    private Integer limitBytes;
-    private String version;
+  private boolean terminatedStatus;
+  private boolean timestamps;
+  private String sinceTimestamp;
+  private Integer sinceSeconds;
+  private Integer tailingLines;
+  private boolean prettyOutput;
+  private Integer limitBytes;
+  private String version;
 
   public BuildOperationContext() {
   }
 
-  public BuildOperationContext(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, Boolean tty, Boolean terminatedStatus, Boolean timestamps, String sinceTimestamp, Integer sinceSeconds, Integer tailingLines, Boolean prettyOutput, Integer limitBytes, String version) {
-    this.in = in;
-    this.out = out;
-    this.err = err;
-    this.inPipe = inPipe;
-    this.outPipe = outPipe;
-    this.errPipe = errPipe;
-    this.tty = tty;
+  public BuildOperationContext(Boolean terminatedStatus, Boolean timestamps, String sinceTimestamp, Integer sinceSeconds,
+      Integer tailingLines, Boolean prettyOutput, Integer limitBytes, String version) {
     this.terminatedStatus = terminatedStatus;
     this.timestamps = timestamps;
     this.sinceTimestamp = sinceTimestamp;
@@ -62,36 +43,6 @@ public class BuildOperationContext {
 
   public String getVersion() {
     return version;
-  }
-
-  public InputStream getIn() {
-    return in;
-  }
-
-  public OutputStream getOut() {
-    return out;
-  }
-
-  public OutputStream getErr() {
-    return err;
-  }
-
-
-  public PipedOutputStream getInPipe() {
-    return inPipe;
-  }
-
-  public PipedInputStream getOutPipe() {
-    return outPipe;
-  }
-
-  public PipedInputStream getErrPipe() {
-    return errPipe;
-  }
-
-
-  public boolean isTty() {
-    return tty;
   }
 
   public boolean isTerminatedStatus() {
@@ -122,61 +73,39 @@ public class BuildOperationContext {
     return limitBytes;
   }
 
-
-  public BuildOperationContext withIn(InputStream in) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
-  public BuildOperationContext withOut(OutputStream out) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
-  public BuildOperationContext withErr(OutputStream err) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
-  public BuildOperationContext withInPipe(PipedOutputStream inPipe) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
-  public BuildOperationContext withOutPipe(PipedInputStream outPipe) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
-  public BuildOperationContext withErrPipe(PipedInputStream errPipe) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
-  public BuildOperationContext withTty(boolean tty) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
-  }
-
   public BuildOperationContext withTerminatedStatus(boolean terminatedStatus) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
   public BuildOperationContext withTimestamps(boolean timestamps) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
   public BuildOperationContext withSinceTimestamp(String sinceTimestamp) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
   public BuildOperationContext withSinceSeconds(Integer sinceSeconds) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
   public BuildOperationContext withTailingLines(Integer tailingLines) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
   public BuildOperationContext withPrettyOutput(boolean prettyOutput) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
   public BuildOperationContext withLimitBytes(Integer limitBytes) {
-    return new BuildOperationContext(in, out, err, inPipe, outPipe, errPipe, tty, terminatedStatus,timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, version);
+    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
+        limitBytes, version);
   }
 
 }

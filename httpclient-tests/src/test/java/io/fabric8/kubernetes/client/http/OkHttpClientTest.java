@@ -32,10 +32,12 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -114,6 +116,38 @@ class OkHttpClientTest {
     });
 
     startedFuture.get(10, TimeUnit.SECONDS);
+  }
+
+  @Test
+  void testRequest() throws Exception {
+    server.expect().withPath("/foo")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(0)
+        .andEmit("hello")
+        .waitFor(0)
+        .andEmit("world")
+        .done().always();
+
+    CountDownLatch latch = new CountDownLatch(2);
+
+    CompletableFuture<WebSocket> startedFuture = client.getHttpClient().newWebSocketBuilder()
+        .uri(URI.create(client.getConfiguration().getMasterUrl() + "foo"))
+        .buildAsync(new Listener() {
+
+          @Override
+          public void onMessage(WebSocket webSocket, String text) {
+            latch.countDown();
+          }
+
+        });
+
+    assertFalse(latch.await(2, TimeUnit.SECONDS));
+    assertEquals(1, latch.getCount());
+
+    startedFuture.get().request();
+
+    assertTrue(latch.await(1, TimeUnit.SECONDS));
   }
 
   @Test
