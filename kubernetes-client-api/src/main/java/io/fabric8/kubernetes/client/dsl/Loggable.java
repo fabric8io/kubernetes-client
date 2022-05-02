@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import java.io.OutputStream;
+import java.io.PipedOutputStream;
 import java.io.Reader;
 
 /**
@@ -47,7 +48,7 @@ public interface Loggable {
   Reader getLogReader();
 
   /**
-   * Watch logs of a resource
+   * Watch logs of a resource. Use {@link LogWatch#getOutput()} to obtain the stream
    *
    * @return returns a Closeable interface for log watch
    */
@@ -56,7 +57,7 @@ public interface Loggable {
   /**
    * Watch logs of resource and put them inside OutputStream inside
    * <br>
-   * if the OutputStream is a PipedOutputStream, it will be closed when the Watch terminates
+   * Should not be called with a {@link PipedOutputStream} - use {@link #watchLog()} instead
    *
    * @param out {@link OutputStream} for storing logs
    * @return returns a Closeable interface for log watch

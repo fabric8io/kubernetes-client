@@ -106,11 +106,12 @@ class JdkWebSocketImpl implements WebSocket {
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-      webSocket.request(1);
       if (last) {
         ByteBuffer value = ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
         byteArrayOutputStream.reset();
         listener.onMessage(new JdkWebSocketImpl(queueSize, webSocket), value);
+      } else {
+        webSocket.request(1);
       }
       return null;
     }
@@ -118,11 +119,12 @@ class JdkWebSocketImpl implements WebSocket {
     @Override
     public CompletionStage<?> onText(java.net.http.WebSocket webSocket, CharSequence data, boolean last) {
       stringBuilder.append(data);
-      webSocket.request(1);
       if (last) {
         String value = stringBuilder.toString();
         stringBuilder.setLength(0);
         listener.onMessage(new JdkWebSocketImpl(queueSize, webSocket), value);
+      } else {
+        webSocket.request(1);
       }
       return null;
     }
@@ -186,6 +188,11 @@ class JdkWebSocketImpl implements WebSocket {
   @Override
   public long queueSize() {
     return queueSize.get();
+  }
+
+  @Override
+  public void request() {
+    this.webSocket.request(1);
   }
 
 }

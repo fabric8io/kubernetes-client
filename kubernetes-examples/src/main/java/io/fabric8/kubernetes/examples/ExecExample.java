@@ -26,53 +26,51 @@ import io.fabric8.kubernetes.client.dsl.ExecWatch;
 @SuppressWarnings("java:S106")
 public class ExecExample {
 
-    public static void main(String[] args) throws InterruptedException {
-        if (args.length < 1) {
-            System.out.println("Usage: podName [namespace]");
-            return;
-          }
-
-        String podName = args[0];
-        String namespace = "default";
-
-        if (args.length > 1) {
-            namespace = args[1];
-        }
-
-        try (
-          KubernetesClient client = new KubernetesClientBuilder().build();
-          ExecWatch ignore = newExecWatch(client, namespace, podName)
-        ) {
-            Thread.sleep(10 * 1000L);
-        }
+  public static void main(String[] args) {
+    if (args.length < 1) {
+      System.out.println("Usage: podName [namespace]");
+      return;
     }
 
-    private static ExecWatch newExecWatch(KubernetesClient client, String namespace, String podName) {
-      return client.pods().inNamespace(namespace).withName(podName)
-        .readingInput(System.in)
+    String podName = args[0];
+    String namespace = "default";
+
+    if (args.length > 1) {
+      namespace = args[1];
+    }
+
+    try (
+        KubernetesClient client = new KubernetesClientBuilder().build();
+        ExecWatch watch = newExecWatch(client, namespace, podName)) {
+      watch.exitCode().join();
+    }
+  }
+
+  private static ExecWatch newExecWatch(KubernetesClient client, String namespace, String podName) {
+    return client.pods().inNamespace(namespace).withName(podName)
         .writingOutput(System.out)
         .writingError(System.err)
         .withTTY()
         .usingListener(new SimpleListener())
         .exec("sh", "-c", "echo 'Hello world!'");
+  }
+
+  private static class SimpleListener implements ExecListener {
+
+    @Override
+    public void onOpen() {
+      System.out.println("The shell will remain open for 10 seconds.");
     }
 
-    private static class SimpleListener implements ExecListener {
-
-        @Override
-        public void onOpen() {
-            System.out.println("The shell will remain open for 10 seconds.");
-        }
-
-        @Override
-        public void onFailure(Throwable t, Response failureResponse) {
-            System.err.println("shell barfed");
-        }
-
-        @Override
-        public void onClose(int code, String reason) {
-            System.out.println("The shell will now close.");
-        }
+    @Override
+    public void onFailure(Throwable t, Response failureResponse) {
+      System.err.println("shell barfed");
     }
+
+    @Override
+    public void onClose(int code, String reason) {
+      System.out.println("The shell will now close.");
+    }
+  }
 
 }

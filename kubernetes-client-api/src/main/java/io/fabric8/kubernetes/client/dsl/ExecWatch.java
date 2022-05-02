@@ -23,21 +23,24 @@ import java.util.concurrent.CompletableFuture;
 public interface ExecWatch extends Closeable {
 
   /**
-   * Gets the {@link OutputStream} for stdIn if one is associated
+   * Gets the {@link OutputStream} for stdIn if {@link ContainerResource#redirectingInput()} has been called.
+   * <p>
+   * Closing this stream does not immediately force sending. You will typically call {@link #close()} after
+   * you are finished writing - the close message will not be sent until all pending messages have been sent.
    * 
    * @return the stdIn stream
    */
   OutputStream getInput();
 
   /**
-   * Gets the {@link InputStream} for stdOut if one is associated
+   * Gets the {@link InputStream} for stdOut if {@link TtyExecOutputErrorable#redirectingOutput()} has been called.
    * 
    * @return the stdOut stream
    */
   InputStream getOutput();
 
   /**
-   * Gets the {@link InputStream} for stdErr if one is associated
+   * Gets the {@link InputStream} for stdErr if {@link TtyExecErrorable#redirectingError()} has been called.
    * 
    * @return the stdErr stream
    */
@@ -55,7 +58,7 @@ public interface ExecWatch extends Closeable {
   InputStream getErrorChannel();
 
   /**
-   * Gracefully close the Watch.
+   * Gracefully close the Watch - the close message will not be sent until all pending messages have been sent.
    */
   @Override
   void close();
@@ -66,6 +69,9 @@ public interface ExecWatch extends Closeable {
    * Get a future that will be completed with the exit code.
    * <p>
    * Will be -1 if the exit code can't be determined from the status, or null if close is received before the exit code.
+   * <br>
+   * See https://github.com/kubernetes/kubernetes/issues/89899 - which explains there's currently no way to indicate
+   * end of input over a websocket, so you may not get an exit code when using stdIn.
    * <p>
    * Can be used as an alternative to
    * {@link ExecListener#onFailure(Throwable, io.fabric8.kubernetes.client.dsl.ExecListener.Response)}

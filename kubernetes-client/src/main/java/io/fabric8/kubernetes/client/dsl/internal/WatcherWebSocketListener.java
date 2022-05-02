@@ -63,6 +63,7 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
 
   @Override
   public void onMessage(WebSocket webSocket, String text) {
+    webSocket.request();
     synchronized (reconnectLock) {
       manager.onMessage(text);
     }

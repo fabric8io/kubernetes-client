@@ -28,6 +28,8 @@ import java.util.concurrent.Executor;
 
 public class InputStreamPumper {
 
+  private static final int DEFAULT_BUFFER_SIZE = 8192;
+
   private InputStreamPumper() {
   }
 
@@ -74,7 +76,7 @@ public class InputStreamPumper {
    * See InputStream.transferTo(java.io.OutputStream) in Java 9 or later
    */
   public static void transferTo(InputStream in, Writable out) throws IOException {
-    byte[] buffer = new byte[8192];
+    byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
     int length;
     while ((length = in.read(buffer, 0, buffer.length)) != -1) {
       out.write(buffer, 0, length);
@@ -125,8 +127,8 @@ public class InputStreamPumper {
 
   }
 
-  public static OutputStream writableOutputStream(Writable writer) {
-    return new BufferedOutputStream(new WritableOutputStream(writer));
+  public static OutputStream writableOutputStream(Writable writer, Integer bufferSize) {
+    return new BufferedOutputStream(new WritableOutputStream(writer), Utils.getNonNullOrElse(bufferSize, DEFAULT_BUFFER_SIZE));
   }
 
 }

@@ -15,16 +15,31 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
 public interface TtyExecErrorable extends
     TtyExecErrorChannelable {
 
+  /**
+   * Should only be called with a minimally blocking or non-blocking stream
+   * <p>
+   * In particular do no use a {@link PipedOutputStream} - use {@link #redirectingError()} instead
+   */
   TtyExecErrorChannelable writingError(OutputStream in);
 
-  TtyExecErrorChannelable readingError(PipedInputStream in);
+  /**
+   * If the {@link ExecWatch} should terminate when a stdErr message is received.
+   * The message will be provided as an exceptional outcome of {@link ExecWatch#exitCode()}
+   */
+  TtyExecErrorChannelable terminateOnError();
 
+  /**
+   * Will provide an {@link InputStream} via {@link ExecWatch#getError()}
+   * <p>
+   * WARNING: the resulting stream must be fully read or closed for other events to be processed properly
+   */
   TtyExecErrorChannelable redirectingError();
 
 }

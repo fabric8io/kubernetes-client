@@ -17,6 +17,7 @@
 - [DSL Interface Changes](#dsl-interface-changes)
 - [evict Changes](#evict-changes)
 - [Delete Behavior](#delete-behavior)
+- [Stream Changes](#stream-changes)
 
 ## Backwards Compatibility Interceptor
 
@@ -259,7 +260,17 @@ Evictable.evict will throw an exception rather than returning false if the pod i
 
 Deleting a collection is now implemented using a single delete call, rather than for each item.  When the collection is namespaced and inAnyNamespace is used, in which case a call will be made to first determine the affected namespaces, and then a collection delete issued against each namespace.
 
-The result of the delete calls will be a List of StatusDetails rather than a boolean value.  A best
-effort is made to process the response from the server to populate which items are deleted.  This information is generally useful if you wish to implement some kind of blocking delete behavior - that is ensure the returned resources based upon a matching uid have been deleted.
+The result of the delete calls will be a List of StatusDetails rather than a boolean value.  A best effort is made to process the response from the server to populate which items are deleted.  This information is generally useful if you wish to implement some kind of blocking delete behavior - that is ensure the returned resources based upon a matching uid have been deleted.
 
-/ list will always return true and 404s on individual items will simply be ignored.
+delete(List<T>) and delete(T[]) returning boolean have been deprecated.  They will always return true and 404s on individual items will simply be ignored.
+
+## Stream Changes
+
+The usage of Piped streams is no longer supported - they make assumptions about reading and writing threads, which the client no longer honors.  They should not be passed into 
+the methods accepting InputStreams and OutputStreams.
+
+ContainerResource.writingInput(PipedOutputStream in) and readingXXX(PipedInputStream out) have been removed - use the redirecting methods instead.
+
+TtyExecErrorChannelable methods have been deprecated in favor of ExecWatch.exitCode and ExecListener.onExit.
+
+ContainerResource.readingInput(InputStream in) has been deprecated - use redirectingInput instead.

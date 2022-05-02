@@ -83,7 +83,8 @@ class ExecWebSocketListenerTest {
 
   @Test
   void testCheckErrorHasErrorFromMessageShouldThrowException() {
-    ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext().toBuilder().forUpload(true).build());
+    ExecWebSocketListener listener = new ExecWebSocketListener(
+        new PodOperationContext().toBuilder().terminateOnError(true).build());
 
     listener.onMessage(null, ByteBuffer.wrap(new byte[] { (byte) 2, (byte) 1, (byte) 1 }));
 

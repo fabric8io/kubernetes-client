@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -175,6 +176,7 @@ class PodIT {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
+    AtomicBoolean closed = new AtomicBoolean();
     int[] exitCode = new int[] { Integer.MAX_VALUE };
     ExecWatch execWatch = client.pods().withName("pod-standard")
         .writingOutput(out)
@@ -194,6 +196,7 @@ class PodIT {
           @Override
           public void onClose(int i, String s) {
             logger.info("Shell closed");
+            closed.set(true);
             execLatch.countDown();
           }
 
@@ -202,12 +205,12 @@ class PodIT {
             exitCode[0] = code;
           }
         }).exec("date");
-
-    execLatch.await(5, TimeUnit.SECONDS);
-    assertNotNull(execWatch);
-    assertNotNull(out.toString());
-    assertEquals(0, exitCode[0]);
+    // the stream must be read or closed to receive onClose
     assertEquals("{\"metadata\":{},\"status\":\"Success\"}", IOHelpers.readFully(execWatch.getErrorChannel()));
+    execLatch.await(5, TimeUnit.SECONDS);
+    assertEquals(0, exitCode[0]);
+    assertTrue(closed.get());
+    assertNotNull(out.toString());
   }
 
   @Test
