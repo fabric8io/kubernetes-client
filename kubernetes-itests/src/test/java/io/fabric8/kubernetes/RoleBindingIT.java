@@ -62,7 +62,7 @@ class RoleBindingIT {
   void load() {
 
     RoleBinding aRoleBinding = client.rbac().roleBindings()
-      .load(getClass().getResourceAsStream("/test-kubernetesrolebinding.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesrolebinding.yml")).get();
     assertNotNull(aRoleBinding);
     assertEquals("RoleBinding", aRoleBinding.getKind());
     assertNotNull(aRoleBinding.getMetadata());
@@ -82,7 +82,8 @@ class RoleBindingIT {
   @Test
   void list() {
 
-    RoleBindingList roleBindingList = client.rbac().roleBindings().withLabels(Collections.singletonMap("type", "io.fabric8.roleBindingIT")).list();
+    RoleBindingList roleBindingList = client.rbac().roleBindings()
+        .withLabels(Collections.singletonMap("type", "io.fabric8.roleBindingIT")).list();
 
     assertNotNull(roleBindingList);
     assertNotNull(roleBindingList.getItems());
@@ -107,7 +108,7 @@ class RoleBindingIT {
   void update() {
 
     RoleBinding roleBinding = client.rbac().roleBindings().withName("rb-update").edit(r -> new RoleBindingBuilder(r)
-                        .editSubject(0).withName("jane-new").endSubject().build());
+        .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);
     assertEquals("RoleBinding", roleBinding.getKind());
@@ -132,7 +133,7 @@ class RoleBindingIT {
     assertTrue(deleted);
 
     client.rbac().roleBindings().withName("rb-delete")
-      .waitUntilCondition(rb -> rb == null || rb.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(rb -> rb == null || rb.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
 }

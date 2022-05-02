@@ -62,7 +62,7 @@ class ClusterRoleIT {
   void load() {
 
     ClusterRole aClusterRole = client.rbac().clusterRoles()
-      .load(getClass().getResourceAsStream("/test-kubernetesclusterrole.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesclusterrole.yml")).get();
 
     assertNotNull(aClusterRole);
     assertEquals("ClusterRole", aClusterRole.getKind());
@@ -93,8 +93,8 @@ class ClusterRoleIT {
     assertNotNull(clusterRoleList);
     assertNotNull(clusterRoleList.getItems());
 
-    for (ClusterRole clusterRole : clusterRoleList.getItems())  {
-      if (clusterRole.getMetadata().getName().equals("node-reader-list"))  {
+    for (ClusterRole clusterRole : clusterRoleList.getItems()) {
+      if (clusterRole.getMetadata().getName().equals("node-reader-list")) {
         assertEquals("ClusterRole", clusterRole.getKind());
         assertNotNull(clusterRole.getMetadata());
         assertEquals("node-reader-list", clusterRole.getMetadata().getName());
@@ -123,7 +123,7 @@ class ClusterRoleIT {
   void update() {
 
     ClusterRole clusterRole = client.rbac().clusterRoles().withName("node-reader-update").edit(c -> new ClusterRoleBuilder(c)
-                        .editRule(0).addToApiGroups(1, "extensions").endRule().build());
+        .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(clusterRole);
     assertEquals("ClusterRole", clusterRole.getKind());
@@ -155,10 +155,10 @@ class ClusterRoleIT {
     assertTrue(deleted);
 
     client.rbac().clusterRoles().withName("node-reader-delete")
-      .waitUntilCondition(cr -> cr == null || cr.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(cr -> cr == null || cr.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
 
     ClusterRoleList clusterRoleListAfter = client.rbac().clusterRoles().list();
-    assertEquals(clusterRoleListBefore.getItems().size()-1,clusterRoleListAfter.getItems().size());
+    assertEquals(clusterRoleListBefore.getItems().size() - 1, clusterRoleListAfter.getItems().size());
   }
 
 }

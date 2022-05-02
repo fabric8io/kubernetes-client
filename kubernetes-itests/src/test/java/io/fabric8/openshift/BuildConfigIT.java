@@ -42,7 +42,7 @@ class BuildConfigIT {
   @Test
   void load() {
     BuildConfig aBuildConfig = client.buildConfigs()
-      .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
+        .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
     assertThat(aBuildConfig).isNotNull();
     assertEquals("ruby-sample-build", aBuildConfig.getMetadata().getName());
   }
@@ -80,10 +80,10 @@ class BuildConfigIT {
 
     // When
     buildConfig.getSpec().setSource(new BuildSourceBuilder()
-      .withNewGit()
-      .withUri("https://github.com/openshift/test2")
-      .endGit()
-      .build());
+        .withNewGit()
+        .withUri("https://github.com/openshift/test2")
+        .endGit()
+        .build());
     buildConfig = client.buildConfigs().createOrReplace(buildConfig);
 
     // Then

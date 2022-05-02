@@ -39,36 +39,39 @@ class GenericClusterScopedCustomResourceIT {
   static KubernetesClient client;
 
   private final CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
-    .withVersion("v1alpha1")
-    .withScope("Cluster")
-    .withGroup("demos.fabric8.io")
-    .withPlural("satellites")
-    .build();
+      .withVersion("v1alpha1")
+      .withScope("Cluster")
+      .withGroup("demos.fabric8.io")
+      .withPlural("satellites")
+      .build();
 
   @BeforeAll
   public static void initCrd() {
     // Wait for CRD to be deployed and ready
     client.apiextensions().v1().customResourceDefinitions()
-      .withName("satellites.demos.fabric8.io")
-      .waitUntilCondition(c -> c.getStatus() != null && c.getStatus().getConditions()!= null && c.getStatus().getConditions().stream()
-          .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
-        10L, TimeUnit.SECONDS);
+        .withName("satellites.demos.fabric8.io")
+        .waitUntilCondition(
+            c -> c.getStatus() != null && c.getStatus().getConditions() != null && c.getStatus().getConditions().stream()
+                .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
+            10L, TimeUnit.SECONDS);
   }
 
   @Test
   void testCrud() {
     // Create
     GenericKubernetesResource satellite = createSatellite("moon", "earth", "1.7371e+3", "7.34767309e+22");
-    GenericKubernetesResource createdSatellite = client.genericKubernetesResources(customResourceDefinitionContext).create(satellite);
+    GenericKubernetesResource createdSatellite = client.genericKubernetesResources(customResourceDefinitionContext)
+        .create(satellite);
 
     assertThat(createdSatellite)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "moon");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "moon");
 
     // Get
-    GenericKubernetesResource satelliteFromServer = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").get();
+    GenericKubernetesResource satelliteFromServer = client.genericKubernetesResources(customResourceDefinitionContext)
+        .withName("moon").get();
     assertThat(satelliteFromServer).isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "moon");
+        .hasFieldOrPropertyWithValue("metadata.name", "moon");
 
     // List
     GenericKubernetesResourceList satellites = client.genericKubernetesResources(customResourceDefinitionContext).list();
@@ -76,7 +79,8 @@ class GenericClusterScopedCustomResourceIT {
     assertThat(satellites.getItems()).hasSize(1);
 
     // Delete
-    boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").delete().size() == 1;
+    boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").delete()
+        .size() == 1;
     assertThat(isDeleted).isTrue();
   }
 

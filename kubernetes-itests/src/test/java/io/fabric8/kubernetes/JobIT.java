@@ -40,9 +40,9 @@ class JobIT {
   void testGetLog() {
     final String jobName = "job-get-log";
     client.batch().v1().jobs().createOrReplace(initJob("job-get-log").build());
-    client.batch().v1().jobs().withName(jobName).waitUntilCondition(j ->
-        Optional.ofNullable(j).map(Job::getStatus).map(JobStatus::getSucceeded).orElse(0) > 0,
-      1, TimeUnit.MINUTES);
+    client.batch().v1().jobs().withName(jobName).waitUntilCondition(
+        j -> Optional.ofNullable(j).map(Job::getStatus).map(JobStatus::getSucceeded).orElse(0) > 0,
+        1, TimeUnit.MINUTES);
     ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
     try (LogWatch ignore = client.batch().v1().jobs()
         .withName(jobName)
@@ -58,11 +58,11 @@ class JobIT {
   void testCreateWithGenerateName() {
     // Given
     Job job = initJob("job-generate-name").editMetadata()
-      .withName(null)
-      .withGenerateName("test-job-")
-      .endMetadata()
-      .editOrNewSpec().withSuspend(true).endSpec()
-      .build();
+        .withName(null)
+        .withGenerateName("test-job-")
+        .endMetadata()
+        .editOrNewSpec().withSuspend(true).endSpec()
+        .build();
 
     // When
     Job jobCreated = client.batch().v1().jobs().create(job);
@@ -78,18 +78,18 @@ class JobIT {
 
   private JobBuilder initJob(String name) {
     return new JobBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("hello")
-      .withImage("registry.access.redhat.com/ubi8/ubi-minimal")
-      .withCommand("echo", "This is a message!")
-      .endContainer()
-      .withRestartPolicy("Never")
-      .endSpec()
-      .endTemplate()
-      .endSpec();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("hello")
+        .withImage("registry.access.redhat.com/ubi8/ubi-minimal")
+        .withCommand("echo", "This is a message!")
+        .endContainer()
+        .withRestartPolicy("Never")
+        .endSpec()
+        .endTemplate()
+        .endSpec();
   }
 }

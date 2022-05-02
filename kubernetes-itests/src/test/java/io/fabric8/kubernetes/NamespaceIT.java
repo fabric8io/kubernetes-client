@@ -47,8 +47,8 @@ class NamespaceIT {
 
     // Update
     namespace = client.namespaces().withName("fabric8-test").edit(c -> new NamespaceBuilder(c)
-      .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
-      .build());
+        .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
+        .build());
     assertNotNull(namespace);
     assertEquals("bar", namespace.getMetadata().getAnnotations().get("foo"));
 

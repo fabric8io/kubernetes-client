@@ -63,7 +63,7 @@ class DeleteIT {
     String name = "deleteit-existent-graceperiod";
     // When
     boolean isDeleted = client.secrets().withName(name)
-      .withGracePeriod(0).delete().size() == 1;
+        .withGracePeriod(0).delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     client.secrets().withName(name).waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
@@ -86,8 +86,8 @@ class DeleteIT {
     String name = "deleteit-existent-foreground";
     // When
     boolean isDeleted = client.apps().replicaSets().withName(name)
-      .withPropagationPolicy(DeletionPropagation.FOREGROUND)
-      .delete().size() == 1;
+        .withPropagationPolicy(DeletionPropagation.FOREGROUND)
+        .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -99,8 +99,8 @@ class DeleteIT {
     String name = "deleteit-existent-background";
     // When
     boolean isDeleted = client.apps().replicaSets().withName(name)
-      .withPropagationPolicy(DeletionPropagation.BACKGROUND)
-      .delete().size() == 1;
+        .withPropagationPolicy(DeletionPropagation.BACKGROUND)
+        .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -112,8 +112,8 @@ class DeleteIT {
     String name = "deleteit-existent-orphan";
     // When
     boolean isDeleted = client.apps().deployments().withName(name)
-      .withPropagationPolicy(DeletionPropagation.ORPHAN)
-      .delete().size() == 1;
+        .withPropagationPolicy(DeletionPropagation.ORPHAN)
+        .delete().size() == 1;
     // Then
     ReplicaSetList replicaSetList = client.apps().replicaSets().withLabel("test", name).list();
     assertTrue(isDeleted);
@@ -153,8 +153,8 @@ class DeleteIT {
     // When
     ReplicaSet replicaSet = client.apps().replicaSets().withName(name).get();
     boolean isDeleted = client.resource(replicaSet)
-      .withPropagationPolicy(DeletionPropagation.BACKGROUND)
-      .delete().size() == 1;
+        .withPropagationPolicy(DeletionPropagation.BACKGROUND)
+        .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -167,8 +167,8 @@ class DeleteIT {
     // When
     ReplicaSet replicaSet = client.apps().replicaSets().withName(name).get();
     boolean isDeleted = client.resource(replicaSet)
-      .withPropagationPolicy(DeletionPropagation.FOREGROUND)
-      .delete().size() == 1;
+        .withPropagationPolicy(DeletionPropagation.FOREGROUND)
+        .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
@@ -181,8 +181,8 @@ class DeleteIT {
     // When
     Deployment deploy = client.apps().deployments().withName(name).get();
     boolean isDeleted = client.resource(deploy)
-      .withPropagationPolicy(DeletionPropagation.ORPHAN)
-      .delete().size() == 1;
+        .withPropagationPolicy(DeletionPropagation.ORPHAN)
+        .delete().size() == 1;
     // Then
     ReplicaSetList replicaSetList = client.apps().replicaSets().withLabel("test", name).list();
     assertTrue(isDeleted);

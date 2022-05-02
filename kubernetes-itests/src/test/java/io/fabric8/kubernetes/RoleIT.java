@@ -65,7 +65,7 @@ class RoleIT {
   void load() {
 
     Role aRole = client.rbac().roles()
-      .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).get();
 
     assertNotNull(aRole);
     assertEquals("Role", aRole.getKind());
@@ -129,7 +129,7 @@ class RoleIT {
   void update() {
 
     Role role = client.rbac().roles().withName("role-update").edit(r -> new RoleBuilder(r)
-                 .editRule(0).addToApiGroups(1, "extensions").endRule().build());
+        .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(role);
     assertEquals("Role", role.getKind());
@@ -163,10 +163,10 @@ class RoleIT {
     assertTrue(deleted);
 
     client.rbac().roles().withName("role-delete")
-      .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
 
     RoleList roleList = client.rbac().roles().list();
-    assertEquals(countBeforeDeletion - 1,roleList.getItems().size());
+    assertEquals(countBeforeDeletion - 1, roleList.getItems().size());
   }
 
 }

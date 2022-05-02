@@ -39,15 +39,15 @@ class NetworkPolicyIT {
   @Test
   void load() {
     NetworkPolicy loadedNetworkPolicy = client.network().v1().networkPolicies()
-      .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
+        .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
 
     assertNotNull(loadedNetworkPolicy);
     assertEquals("networkpolicy", loadedNetworkPolicy.getMetadata().getName());
     assertEquals("db", loadedNetworkPolicy.getSpec().getPodSelector().getMatchLabels().get("role"));
     assertEquals("myproject", loadedNetworkPolicy.getSpec().getIngress().get(0).getFrom().get(0)
-      .getNamespaceSelector().getMatchLabels().get("project"));
+        .getNamespaceSelector().getMatchLabels().get("project"));
     assertEquals("frontend", loadedNetworkPolicy.getSpec().getIngress().get(0).getFrom().get(1)
-      .getPodSelector().getMatchLabels().get("role"));
+        .getPodSelector().getMatchLabels().get("role"));
     assertEquals("TCP", loadedNetworkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getProtocol());
     assertEquals(6379, loadedNetworkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getPort().getIntVal().intValue());
   }
@@ -55,15 +55,15 @@ class NetworkPolicyIT {
   @Test
   void get() {
     NetworkPolicy getNetworkPolicy = client.network().v1().networkPolicies()
-      .withName("networkpolicy-get").get();
+        .withName("networkpolicy-get").get();
     assertNotNull(getNetworkPolicy);
     assertEquals("networkpolicy-get", getNetworkPolicy.getMetadata().getName());
-    assertEquals(1,getNetworkPolicy.getMetadata().getLabels().size());
+    assertEquals(1, getNetworkPolicy.getMetadata().getLabels().size());
     assertEquals("db", getNetworkPolicy.getSpec().getPodSelector().getMatchLabels().get("role"));
     assertEquals("myproject", getNetworkPolicy.getSpec().getIngress().get(0).getFrom().get(1)
-      .getNamespaceSelector().getMatchLabels().get("project"));
+        .getNamespaceSelector().getMatchLabels().get("project"));
     assertEquals("frontend", getNetworkPolicy.getSpec().getIngress().get(0).getFrom().get(0)
-      .getPodSelector().getMatchLabels().get("role"));
+        .getPodSelector().getMatchLabels().get("role"));
     assertEquals("TCP", getNetworkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getProtocol());
     assertEquals(6379, getNetworkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getPort().getIntVal().intValue());
   }
@@ -72,16 +72,16 @@ class NetworkPolicyIT {
   void list() {
 
     NetworkPolicyList networkPolicyList = client.network().v1().networkPolicies()
-      .withLabels(Collections.singletonMap("test","list")).list();
+        .withLabels(Collections.singletonMap("test", "list")).list();
     assertNotNull(networkPolicyList);
     assertTrue(networkPolicyList.getItems().size() >= 1);
     for (NetworkPolicy networkPolicy : networkPolicyList.getItems()) {
       if (networkPolicy.getMetadata().getName().equals("networkpolicy-list")) {
         assertEquals("db", networkPolicy.getSpec().getPodSelector().getMatchLabels().get("role"));
         assertEquals("myproject", networkPolicy.getSpec().getIngress().get(0).getFrom().get(1)
-          .getNamespaceSelector().getMatchLabels().get("project"));
+            .getNamespaceSelector().getMatchLabels().get("project"));
         assertEquals("frontend", networkPolicy.getSpec().getIngress().get(0).getFrom().get(0)
-          .getPodSelector().getMatchLabels().get("role"));
+            .getPodSelector().getMatchLabels().get("role"));
         assertEquals("TCP", networkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getProtocol());
         assertEquals(6379, networkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getPort().getIntVal().intValue());
       }
@@ -92,18 +92,18 @@ class NetworkPolicyIT {
   @Test
   void update() {
     NetworkPolicy networkPolicy = client.network().v1().networkPolicies()
-      .withName("networkpolicy-update").edit(n -> new NetworkPolicyBuilder(n)
-      .editMetadata().addToLabels("bar", "foo").endMetadata()
-      .build());
+        .withName("networkpolicy-update").edit(n -> new NetworkPolicyBuilder(n)
+            .editMetadata().addToLabels("bar", "foo").endMetadata()
+            .build());
 
     assertNotNull(networkPolicy);
     assertEquals("networkpolicy-update", networkPolicy.getMetadata().getName());
     assertEquals(1, networkPolicy.getMetadata().getLabels().size());
     assertEquals("db", networkPolicy.getSpec().getPodSelector().getMatchLabels().get("role"));
     assertEquals("myproject", networkPolicy.getSpec().getIngress().get(0).getFrom().get(1)
-      .getNamespaceSelector().getMatchLabels().get("project"));
+        .getNamespaceSelector().getMatchLabels().get("project"));
     assertEquals("frontend", networkPolicy.getSpec().getIngress().get(0).getFrom().get(0)
-      .getPodSelector().getMatchLabels().get("role"));
+        .getPodSelector().getMatchLabels().get("role"));
     assertEquals("TCP", networkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getProtocol());
     assertEquals(6379, networkPolicy.getSpec().getIngress().get(0).getPorts().get(0).getPort().getIntVal().intValue());
 
@@ -112,13 +112,13 @@ class NetworkPolicyIT {
   @Test
   void delete() {
     client.network().v1().networkPolicies().withName("networkpolicy-delete")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean deleted = client.network().v1().networkPolicies().withName("networkpolicy-delete").delete().size() == 1;
 
     assertTrue(deleted);
 
     client.network().v1().networkPolicies().withName("networkpolicy-delete")
-      .waitUntilCondition(np -> np == null || np.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(np -> np == null || np.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
 }

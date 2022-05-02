@@ -50,13 +50,14 @@ class DaemonSetIT {
   @Test
   void update() {
     DaemonSet daemonSet = client.apps().daemonSets().withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
-      .editSpec().editTemplate().editSpec().editContainer(0)
-      .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
-      .endContainer().endSpec().endTemplate().endSpec()
-      .build());
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build());
 
     assertNotNull(daemonSet);
-    assertEquals("quay.io/fluentd_elasticsearch/fluentd:v3.0.0", daemonSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    assertEquals("quay.io/fluentd_elasticsearch/fluentd:v3.0.0",
+        daemonSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
   }
 
   @Test

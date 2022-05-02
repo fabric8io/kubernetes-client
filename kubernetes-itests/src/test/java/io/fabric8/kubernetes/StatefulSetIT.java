@@ -38,7 +38,7 @@ class StatefulSetIT {
   @Test
   void load() {
     StatefulSet aStatefulSet = client.apps().statefulSets()
-      .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+        .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
     assertThat(aStatefulSet).isNotNull();
     assertEquals("web", aStatefulSet.getMetadata().getName());
   }

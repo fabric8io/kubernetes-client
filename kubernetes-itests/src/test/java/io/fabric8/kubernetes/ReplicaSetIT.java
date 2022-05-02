@@ -39,7 +39,7 @@ class ReplicaSetIT {
   @Test
   void load() {
     ReplicaSet replicaSet = client.apps().replicaSets()
-      .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();
+        .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();
     assertThat(replicaSet).isNotNull();
     assertEquals("frontend", replicaSet.getMetadata().getName());
   }
@@ -60,9 +60,9 @@ class ReplicaSetIT {
   @Test
   void update() {
     client.apps().replicaSets().withName("replicaset-update")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     ReplicaSet replicaset1 = client.apps().replicaSets().withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
-                        .editSpec().withReplicas(2).endSpec().build());
+        .editSpec().withReplicas(2).endSpec().build());
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
   }
@@ -70,7 +70,7 @@ class ReplicaSetIT {
   @Test
   void delete() {
     client.apps().replicaSets().withName("replicaset-delete")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.apps().replicaSets().withName("replicaset-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }

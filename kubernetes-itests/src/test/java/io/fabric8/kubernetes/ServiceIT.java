@@ -63,11 +63,12 @@ class ServiceIT {
 
   @Test
   void update() {
-    Service svc1 = client.services().withName("service-update").edit(s -> new ServiceBuilder (s)
-      .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
-      .build());
+    Service svc1 = client.services().withName("service-update").edit(s -> new ServiceBuilder(s)
+        .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377))
+        .endPort().endSpec()
+        .build());
     client.services().withName("service-update")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     assertThat(svc1).isNotNull();
     assertEquals(2, svc1.getSpec().getPorts().size());
   }
@@ -75,7 +76,7 @@ class ServiceIT {
   @Test
   void delete() {
     client.services().withName("service-delete")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     boolean bDeleted = client.services().withName("service-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
@@ -104,20 +105,20 @@ class ServiceIT {
   void testChangeServiceTypePatch() {
     // Given
     Service svc = new ServiceBuilder()
-      .withNewMetadata()
-      .withNamespace(namespace.getMetadata().getName())
-      .withName("service-change-service-type-patch")
-      .endMetadata()
-      .withNewSpec()
-      .withType("ExternalName")
-      .withExternalName("my.database.example.com")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withNamespace(namespace.getMetadata().getName())
+        .withName("service-change-service-type-patch")
+        .endMetadata()
+        .withNewSpec()
+        .withType("ExternalName")
+        .withExternalName("my.database.example.com")
+        .endSpec()
+        .build();
 
     // When
     svc = client.services()
-      .withName("service-change-service-type-patch")
-      .patch(svc);
+        .withName("service-change-service-type-patch")
+        .patch(svc);
 
     // Then
     assertNotNull(svc);
@@ -129,17 +130,17 @@ class ServiceIT {
   void testClusterIpServiceCreateOrReplace() {
     // Given
     Service clusterIPSvc = new ServiceBuilder()
-      .withNewMetadata().withName("serviceit-clusterip-createorreplace").endMetadata()
-      .withNewSpec()
-      .addToSelector("app", "myapp")
-      .addNewPort()
-      .withName("http")
-      .withProtocol("TCP")
-      .withPort(80)
-      .withTargetPort(new IntOrString(9376))
-      .endPort()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("serviceit-clusterip-createorreplace").endMetadata()
+        .withNewSpec()
+        .addToSelector("app", "myapp")
+        .addNewPort()
+        .withName("http")
+        .withProtocol("TCP")
+        .withPort(80)
+        .withTargetPort(new IntOrString(9376))
+        .endPort()
+        .endSpec()
+        .build();
 
     // When
     // Create resource
@@ -159,16 +160,16 @@ class ServiceIT {
   void testNodePortServiceCreateOrReplace() {
     // Given
     Service nodePortSvc = new ServiceBuilder()
-      .withNewMetadata().withName("serviceit-nodeport-createorreplace").endMetadata()
-      .withNewSpec()
-      .withType("NodePort")
-      .addToSelector("app", "myapp")
-      .addNewPort()
-      .withPort(80)
-      .withTargetPort(new IntOrString(80))
-      .endPort()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("serviceit-nodeport-createorreplace").endMetadata()
+        .withNewSpec()
+        .withType("NodePort")
+        .addToSelector("app", "myapp")
+        .addNewPort()
+        .withPort(80)
+        .withTargetPort(new IntOrString(80))
+        .endPort()
+        .endSpec()
+        .build();
 
     // When
     // Create resource
@@ -190,17 +191,17 @@ class ServiceIT {
   void testLoadBalancerServiceCreateOrReplace() {
     // Given
     Service loadBalancerSvc = new ServiceBuilder()
-      .withNewMetadata().withName("serviceit-loadbalancer-createorreplace").endMetadata()
-      .withNewSpec()
-      .withType("LoadBalancer")
-      .addToSelector("app", "myapp")
-      .addNewPort()
-      .withProtocol("TCP")
-      .withPort(80)
-      .withTargetPort(new IntOrString(9376))
-      .endPort()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("serviceit-loadbalancer-createorreplace").endMetadata()
+        .withNewSpec()
+        .withType("LoadBalancer")
+        .addToSelector("app", "myapp")
+        .addNewPort()
+        .withProtocol("TCP")
+        .withPort(80)
+        .withTargetPort(new IntOrString(9376))
+        .endPort()
+        .endSpec()
+        .build();
 
     // When
     // Create resource
@@ -220,12 +221,12 @@ class ServiceIT {
   void testExternalNameServiceCreateOrReplace() {
     // Given
     Service service = new ServiceBuilder()
-      .withNewMetadata().withName("serviceit-externalname-createorreplace").endMetadata()
-      .withNewSpec()
-      .withType("ExternalName")
-      .withExternalName("my.database.example.com")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("serviceit-externalname-createorreplace").endMetadata()
+        .withNewSpec()
+        .withType("ExternalName")
+        .withExternalName("my.database.example.com")
+        .endSpec()
+        .build();
 
     // When
     client.services().createOrReplace(service);
@@ -246,8 +247,8 @@ class ServiceIT {
 
     // When
     Service service = client.services()
-      .withName(svcName)
-      .waitUntilReady(10, TimeUnit.SECONDS);
+        .withName(svcName)
+        .waitUntilReady(10, TimeUnit.SECONDS);
 
     // Then
     assertNotNull(service);

@@ -92,7 +92,7 @@ class PodIT {
   @Test
   void update() {
     Pod pod1 = client.pods().withName("pod-standard").edit(p -> new PodBuilder(p)
-                 .editMetadata().addToLabels("foo", "bar").endMetadata().build());
+        .editMetadata().addToLabels("foo", "bar").endMetadata().build());
     assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
   }
 
@@ -108,41 +108,40 @@ class PodIT {
     assertNotNull("pdb-scope label is null. is pod1 misconfigured?", pdbScope);
 
     PodDisruptionBudget pdb = new PodDisruptionBudgetBuilder()
-      .withNewMetadata()
-      .withName("test-pdb")
-      .endMetadata()
-      .withSpec(
-        new PodDisruptionBudgetSpecBuilder()
-          .withMinAvailable(new IntOrString(1))
-          .withNewSelector()
-          .addToMatchLabels("pdb-scope", pdbScope)
-          .endSelector()
-          .build()
-      )
-      .build();
+        .withNewMetadata()
+        .withName("test-pdb")
+        .endMetadata()
+        .withSpec(
+            new PodDisruptionBudgetSpecBuilder()
+                .withMinAvailable(new IntOrString(1))
+                .withNewSelector()
+                .addToMatchLabels("pdb-scope", pdbScope)
+                .endSelector()
+                .build())
+        .build();
 
     Pod pod2 = new PodBuilder()
-      .withNewMetadata()
-      .withName("pod2")
-      .addToLabels("pdb-scope", pdbScope)
-      .endMetadata()
-      .withSpec(pod1.getSpec())
-      .build();
+        .withNewMetadata()
+        .withName("pod2")
+        .addToLabels("pdb-scope", pdbScope)
+        .endMetadata()
+        .withSpec(pod1.getSpec())
+        .build();
 
     Pod pod3 = new PodBuilder()
-      .withNewMetadata()
-      .withName("pod3")
-      .addToLabels("pdb-scope", pdbScope)
-      .endMetadata()
-      .withSpec(pod1.getSpec())
-      .build();
+        .withNewMetadata()
+        .withName("pod3")
+        .addToLabels("pdb-scope", pdbScope)
+        .endMetadata()
+        .withSpec(pod1.getSpec())
+        .build();
 
     client.pods().withName(pod1.getMetadata().getName())
-      .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+        .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     client.pods().createOrReplace(pod2);
     client.pods().withName(pod2.getMetadata().getName())
-      .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+        .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     client.policy().v1beta1().podDisruptionBudget().createOrReplace(pdb);
 
@@ -158,7 +157,7 @@ class PodIT {
     // create another pod to satisfy PDB
     client.pods().createOrReplace(pod3);
     client.pods().withName(pod3.getMetadata().getName())
-      .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+        .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     // can now evict
     assertTrue(client.pods().withName(pod1.getMetadata().getName()).evict());
@@ -176,33 +175,33 @@ class PodIT {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    int[] exitCode = new int[] {Integer.MAX_VALUE};
+    int[] exitCode = new int[] { Integer.MAX_VALUE };
     ExecWatch execWatch = client.pods().withName("pod-standard")
-      .writingOutput(out)
-      .redirectingErrorChannel()
-      .withTTY().usingListener(new ExecListener() {
-        @Override
-        public void onOpen() {
-          logger.info("Shell was opened");
-        }
+        .writingOutput(out)
+        .redirectingErrorChannel()
+        .withTTY().usingListener(new ExecListener() {
+          @Override
+          public void onOpen() {
+            logger.info("Shell was opened");
+          }
 
-        @Override
-        public void onFailure(Throwable t, Response failureResponse) {
-          logger.info("Shell barfed");
-          execLatch.countDown();
-        }
+          @Override
+          public void onFailure(Throwable t, Response failureResponse) {
+            logger.info("Shell barfed");
+            execLatch.countDown();
+          }
 
-        @Override
-        public void onClose(int i, String s) {
-          logger.info("Shell closed");
-          execLatch.countDown();
-        }
+          @Override
+          public void onClose(int i, String s) {
+            logger.info("Shell closed");
+            execLatch.countDown();
+          }
 
-        @Override
-        public void onExit(int code, Status status) {
-          exitCode[0] = code;
-        }
-      }).exec("date");
+          @Override
+          public void onExit(int code, Status status) {
+            exitCode[0] = code;
+          }
+        }).exec("date");
 
     execLatch.await(5, TimeUnit.SECONDS);
     assertNotNull(execWatch);
@@ -215,9 +214,9 @@ class PodIT {
   void readFile() throws IOException {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     try (
-      ExecWatch ignore = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
-      InputStream is = client.pods().withName("pod-standard").file("/msg").read()
-    )  {
+        ExecWatch ignore = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c",
+            "echo 'hello' > /msg");
+        InputStream is = client.pods().withName("pod-standard").file("/msg").read()) {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("hello", result);
     }
@@ -227,9 +226,9 @@ class PodIT {
   void readFileEscapedParams() throws IOException {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     try (
-      ExecWatch watch = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
-      InputStream is = client.pods().withName("pod-standard").file("/msg").read()
-    )  {
+        ExecWatch watch = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c",
+            "echo 'H$ll* (W&RLD}' > /msg");
+        InputStream is = client.pods().withName("pod-standard").file("/msg").read()) {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("H$ll* (W&RLD}", result);
     }

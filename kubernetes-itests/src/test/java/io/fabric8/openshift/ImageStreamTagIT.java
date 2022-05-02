@@ -39,7 +39,7 @@ class ImageStreamTagIT {
   @Test
   void load() {
     ImageStreamTag loadedIST = client.imageStreamTags()
-      .load(getClass().getResourceAsStream("/test-ist.yml")).get();
+        .load(getClass().getResourceAsStream("/test-ist.yml")).get();
 
     assertNotNull(loadedIST);
     assertEquals("bar1:1.0.12", loadedIST.getMetadata().getName());
@@ -49,10 +49,9 @@ class ImageStreamTagIT {
 
   @Test
   void get() {
-    client.imageStreams().withName("get").waitUntilCondition(is ->
-      is != null && is.getStatus() != null &&
+    client.imageStreams().withName("get").waitUntilCondition(is -> is != null && is.getStatus() != null &&
         is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
-      30, TimeUnit.SECONDS);
+        30, TimeUnit.SECONDS);
     ImageStreamTag getIST = client.imageStreamTags().withName("get:1.0.12").get();
 
     assertNotNull(getIST);
@@ -68,7 +67,8 @@ class ImageStreamTagIT {
 
     assertNotNull(istagList);
     assertTrue(istagList.getItems().size() >= 1);
-    Optional<ImageStreamTag> imageStreamTag = istagList.getItems().stream().filter(i -> i.getMetadata().getName().equalsIgnoreCase("list:1.0.12")).findFirst();
+    Optional<ImageStreamTag> imageStreamTag = istagList.getItems().stream()
+        .filter(i -> i.getMetadata().getName().equalsIgnoreCase("list:1.0.12")).findFirst();
     assertTrue(imageStreamTag.isPresent());
     assertEquals("list:1.0.12", imageStreamTag.get().getMetadata().getName());
     assertEquals("DockerImage", imageStreamTag.get().getTag().getFrom().getKind());
@@ -77,18 +77,17 @@ class ImageStreamTagIT {
 
   @Test
   void update() {
-    client.imageStreams().withName("update").waitUntilCondition(is ->
-        is != null && is.getStatus() != null &&
-          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
-      30, TimeUnit.SECONDS);
+    client.imageStreams().withName("update").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+        is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
+        30, TimeUnit.SECONDS);
     ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("update:1.0.12").endMetadata()
-      .withNewTag()
-      .withNewFrom()
-      .withKind("DockerImage")
-      .withName("busybox:latest")
-      .endFrom()
-      .endTag()
-      .build();
+        .withNewTag()
+        .withNewFrom()
+        .withKind("DockerImage")
+        .withName("busybox:latest")
+        .endFrom()
+        .endTag()
+        .build();
     ImageStreamTag istag = client.imageStreamTags().withName("update:1.0.12").patch(istag2);
 
     assertNotNull(istag);
@@ -99,14 +98,13 @@ class ImageStreamTagIT {
 
   @Test
   void delete() {
-    client.imageStreams().withName("delete").waitUntilCondition(is ->
-        is != null && is.getStatus() != null &&
-          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
-      30, TimeUnit.SECONDS);
+    client.imageStreams().withName("delete").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+        is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
+        30, TimeUnit.SECONDS);
     boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete().size() == 1;
     assertTrue(deleted);
     client.imageStreamTags().withName("delete:1.0.12")
-      .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 
 }

@@ -41,7 +41,7 @@ class DeploymentConfigIT {
   @Test
   void load() {
     DeploymentConfig deploymentConfig = client.deploymentConfigs()
-      .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
+        .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
     assertThat(deploymentConfig).isNotNull();
     assertEquals("frontend", deploymentConfig.getMetadata().getName());
   }
@@ -85,7 +85,8 @@ class DeploymentConfigIT {
     // Then
     assertNotNull(deploymentConfig);
     assertEquals("dc-createorreplace", deploymentConfig.getMetadata().getName());
-    assertEquals("openshift/hello-openshift:v3.8", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    assertEquals("openshift/hello-openshift:v3.8",
+        deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
   }
 
 }

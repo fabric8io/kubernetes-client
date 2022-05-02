@@ -38,8 +38,8 @@ class ProjectIT {
     // Given
     String name = "projectit-createreaddelete";
     Project project = new ProjectBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .build();
 
     // Create
     Project createdProject = client.projects().createOrReplace(project);
@@ -64,7 +64,8 @@ class ProjectIT {
     String adminUser = "admin-user";
 
     // When
-    List<HasMetadata> itemsCreated = client.projects().createProjectAndRoleBindings(name, description, displayName, adminUser, requestingUser);
+    List<HasMetadata> itemsCreated = client.projects().createProjectAndRoleBindings(name, description, displayName, adminUser,
+        requestingUser);
 
     // Then
     Project createdProject = client.projects().withName(name).get();

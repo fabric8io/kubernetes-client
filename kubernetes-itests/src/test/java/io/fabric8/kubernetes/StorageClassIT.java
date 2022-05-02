@@ -33,7 +33,8 @@ class StorageClassIT {
 
   @Test
   void load() {
-    StorageClass storageClassLoaded = client.storage().storageClasses().load(getClass().getResourceAsStream("/test-storageclass.yml")).get();
+    StorageClass storageClassLoaded = client.storage().storageClasses()
+        .load(getClass().getResourceAsStream("/test-storageclass.yml")).get();
     assertNotNull(storageClassLoaded);
     assertEquals("gluster-vol-default", storageClassLoaded.getMetadata().getName());
   }
@@ -53,7 +54,8 @@ class StorageClassIT {
 
   @Test
   void update() {
-    StorageClass storageClass = client.storage().storageClasses().withName("storageclass-update").edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
+    StorageClass storageClass = client.storage().storageClasses().withName("storageclass-update")
+        .edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
     assertNotNull(storageClass);
     assertEquals("testLabelValue", storageClass.getMetadata().getLabels().get("testLabel"));
   }

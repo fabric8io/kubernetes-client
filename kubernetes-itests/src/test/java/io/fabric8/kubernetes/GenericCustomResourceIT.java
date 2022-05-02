@@ -57,35 +57,37 @@ class GenericCustomResourceIT {
   public static void initCrd() {
     // Wait for CRD to be deployed and ready
     client.apiextensions().v1().customResourceDefinitions()
-      .withName("animals.jungle.example.com")
-      .waitUntilCondition(c -> c.getStatus() != null && c.getStatus().getConditions()!= null && c.getStatus().getConditions().stream()
-          .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
-        10L, TimeUnit.SECONDS);
+        .withName("animals.jungle.example.com")
+        .waitUntilCondition(
+            c -> c.getStatus() != null && c.getStatus().getConditions() != null && c.getStatus().getConditions().stream()
+                .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
+            10L, TimeUnit.SECONDS);
     final CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
-      .withName("animals.jungle.example.com")
-      .withGroup("jungle.example.com")
-      .withVersion("v1")
-      .withPlural("animals")
-      .withScope("Namespaced")
-      .build();
+        .withName("animals.jungle.example.com")
+        .withGroup("jungle.example.com")
+        .withVersion("v1")
+        .withPlural("animals")
+        .withScope("Namespaced")
+        .build();
     resourceClient = client.genericKubernetesResources(customResourceDefinitionContext);
   }
 
   @Test
   void testCrud() {
     // Test Create via file
-    GenericKubernetesResource object = resourceClient.load(getClass().getResourceAsStream("/test-rawcustomresource.yml")).create();
+    GenericKubernetesResource object = resourceClient.load(getClass().getResourceAsStream("/test-rawcustomresource.yml"))
+        .create();
     assertThat(object.getMetadata().getName()).isEqualTo("otter");
 
     // Test Create via raw json string
     String rawJsonCustomResourceObj = "{\"apiVersion\":\"jungle.example.com/v1\"," +
-      "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
-      "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
+        "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
+        "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
     object = resourceClient.createOrReplace(Serialization.unmarshal(rawJsonCustomResourceObj, GenericKubernetesResource.class));
     assertAnimal(object, "walrus", "my-awesome-walrus-image");
 
     // Test replace with object
-    ((HashMap<String, String>)object.get("spec")).put("image", "new-walrus-image");
+    ((HashMap<String, String>) object.get("spec")).put("image", "new-walrus-image");
     object = resourceClient.createOrReplace(object);
     assertAnimal(object, "walrus", "new-walrus-image");
 
@@ -103,8 +105,8 @@ class GenericCustomResourceIT {
 
     // Test Update
     GenericKubernetesResource updated = resourceClient.withName("walrus").get();
-    ((HashMap<String, Object>)updated.get("spec")).put("image", "my-updated-awesome-walrus-image");
-    object = resourceClient.withName("walrus").edit(r->updated);
+    ((HashMap<String, Object>) updated.get("spec")).put("image", "my-updated-awesome-walrus-image");
+    object = resourceClient.withName("walrus").edit(r -> updated);
     assertAnimal(object, "walrus", "my-updated-awesome-walrus-image");
 
     // Test Delete:
@@ -142,11 +144,13 @@ class GenericCustomResourceIT {
       }
 
       @Override
-      public void onClose(WatcherException cause) { }
+      public void onClose(WatcherException cause) {
+      }
     })) {
       resourceClient.create(createNewAnimal(name, "spotted-deer"));
       assertTrue(creationEventReceived.await(1, TimeUnit.SECONDS));
-    };
+    }
+    ;
   }
 
   @Test
@@ -160,7 +164,7 @@ class GenericCustomResourceIT {
     // When
     deer = resourceClient.create(deer);
     await().atMost(10, TimeUnit.SECONDS)
-      .until(() -> resourceClient.withName(name) != null);
+        .until(() -> resourceClient.withName(name) != null);
     deer.getAdditionalProperties().put("status", status);
     GenericKubernetesResource updatedDeer = resourceClient.withName(name).updateStatus(deer);
 
@@ -206,23 +210,23 @@ class GenericCustomResourceIT {
   private void assertAnimal(GenericKubernetesResource animal, String name, String image) {
     assertNotNull(animal);
     assertThat(animal.getMetadata().getName()).isEqualTo(name);
-    assertThat((String)animal.get("spec", "image")).isEqualTo(image);
+    assertThat((String) animal.get("spec", "image")).isEqualTo(image);
   }
 
   private GenericKubernetesResource createNewAnimal(String name, String image) {
-      Map<String, Object> crAsMap = new HashMap<>();
-      crAsMap.put("apiVersion", "jungle.example.com/v1");
-      crAsMap.put("kind", "Animal");
+    Map<String, Object> crAsMap = new HashMap<>();
+    crAsMap.put("apiVersion", "jungle.example.com/v1");
+    crAsMap.put("kind", "Animal");
 
-      Map<String, Object> crMetadata = new HashMap<>();
-      crMetadata.put("name", name);
-      crMetadata.put("labels", Collections.singletonMap("foo", "bar"));
-      Map<String, Object> crSpec = new HashMap<>();
-      crSpec.put("image", image);
+    Map<String, Object> crMetadata = new HashMap<>();
+    crMetadata.put("name", name);
+    crMetadata.put("labels", Collections.singletonMap("foo", "bar"));
+    Map<String, Object> crSpec = new HashMap<>();
+    crSpec.put("image", image);
 
-      crAsMap.put("metadata", crMetadata);
-      crAsMap.put("spec", crSpec);
+    crAsMap.put("metadata", crMetadata);
+    crAsMap.put("spec", crSpec);
 
-      return Serialization.jsonMapper().convertValue(crAsMap, GenericKubernetesResource.class);
+    return Serialization.jsonMapper().convertValue(crAsMap, GenericKubernetesResource.class);
   }
 }

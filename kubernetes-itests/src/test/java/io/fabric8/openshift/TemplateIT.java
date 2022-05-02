@@ -44,9 +44,9 @@ class TemplateIT {
   @Test
   void load() {
     Template template = client.templates()
-      .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
+        .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
 
-      .load(getClass().getResourceAsStream("/test-template.yml")).get();
+        .load(getClass().getResourceAsStream("/test-template.yml")).get();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());
   }
@@ -75,34 +75,34 @@ class TemplateIT {
   void testCreateWithVersionV1() {
     // Given
     Pod pod = new PodBuilder()
-      .withNewMetadata().withName("redis-master").endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .addNewEnv().withName("REDIS_PASSWORD").withValue("${REDIS_PASSWORD}").endEnv()
-      .withImage("dockerfile/redis")
-      .addNewPort()
-      .withContainerPort(6379)
-      .withProtocol("TCP")
-      .endPort()
-      .endContainer()
-      .endSpec()
-      .build();
-    Template template =  new TemplateBuilder()
-      .withNewMetadata()
-      .withName("templateit-createv1")
-      .addToAnnotations("description", "Description")
-      .addToAnnotations("iconClass", "icon-redis")
-      .addToAnnotations("tags", "database,nosql")
-      .endMetadata()
-      .addToObjects(pod)
-      .addNewParameter()
-      .withDescription("Password used for Redis authentication")
-      .withFrom("[A-Z0-9]{8}")
-      .withGenerate("expression")
-      .withName("REDIS_PASSWORD")
-      .endParameter()
-      .addToLabels("redis", "master")
-      .build();
+        .withNewMetadata().withName("redis-master").endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .addNewEnv().withName("REDIS_PASSWORD").withValue("${REDIS_PASSWORD}").endEnv()
+        .withImage("dockerfile/redis")
+        .addNewPort()
+        .withContainerPort(6379)
+        .withProtocol("TCP")
+        .endPort()
+        .endContainer()
+        .endSpec()
+        .build();
+    Template template = new TemplateBuilder()
+        .withNewMetadata()
+        .withName("templateit-createv1")
+        .addToAnnotations("description", "Description")
+        .addToAnnotations("iconClass", "icon-redis")
+        .addToAnnotations("tags", "database,nosql")
+        .endMetadata()
+        .addToObjects(pod)
+        .addNewParameter()
+        .withDescription("Password used for Redis authentication")
+        .withFrom("[A-Z0-9]{8}")
+        .withGenerate("expression")
+        .withName("REDIS_PASSWORD")
+        .endParameter()
+        .addToLabels("redis", "master")
+        .build();
 
     // When
     // Set v1 Api

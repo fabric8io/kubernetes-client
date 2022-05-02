@@ -139,10 +139,10 @@ class DryRunIT {
 
   private ConfigMap createConfigMap(String name) {
     return new ConfigMapBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .addToData("key1", "value1")
-      .addToData("key2", "value2")
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .addToData("key1", "value1")
+        .addToData("key2", "value2")
+        .build();
   }
 
 }
