@@ -78,7 +78,7 @@ class DiscoveredClusterTest {
         .once();
 
     // When
-    Boolean isDeleted = client.discovery().discoveredClusters().inNamespace("ns1").withName("sample-dc").delete();
+    boolean isDeleted = client.discovery().discoveredClusters().inNamespace("ns1").withName("sample-dc").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

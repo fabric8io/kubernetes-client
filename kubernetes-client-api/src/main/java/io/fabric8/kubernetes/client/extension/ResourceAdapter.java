@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
@@ -66,7 +67,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public boolean delete() {
+  public List<StatusDetails> delete() {
     return resource.delete();
   }
 
@@ -271,7 +272,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public boolean delete(T item) {
+  public List<StatusDetails> delete(T item) {
     return resource.delete(item);
   }
 

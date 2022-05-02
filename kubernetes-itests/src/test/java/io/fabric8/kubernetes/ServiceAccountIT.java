@@ -38,7 +38,7 @@ class ServiceAccountIT {
   @Test
   void load() {
     ServiceAccount svcAccount = client.serviceAccounts()
-      .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
+        .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
     assertThat(svcAccount).isNotNull();
     assertThat(svcAccount.getMetadata().getName()).isNotNull();
   }
@@ -60,9 +60,9 @@ class ServiceAccountIT {
   @Test
   void update() {
     ServiceAccount serviceAccount1 = client.serviceAccounts().withName("sa-update").edit(s -> new ServiceAccountBuilder(s)
-      .addNewSecret().withName("default-token-uudp").endSecret()
-      .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
-      .build());
+        .addNewSecret().withName("default-token-uudp").endSecret()
+        .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
+        .build());
     client.serviceAccounts().withName("sa-update").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     assertThat(serviceAccount1).isNotNull();
   }
@@ -70,7 +70,7 @@ class ServiceAccountIT {
   @Test
   void delete() {
     client.serviceAccounts().withName("sa-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.serviceAccounts().withName("sa-delete").delete();
+    boolean bDeleted = client.serviceAccounts().withName("sa-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

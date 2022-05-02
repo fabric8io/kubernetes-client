@@ -35,26 +35,26 @@ class DNSTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/dnses/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDNS("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDNS("test-get"))
+        .once();
 
     // When
     DNS dns = client.config().dnses().withName("test-get").get();
 
     // Then
     assertThat(dns)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/dnses")
-      .andReturn(HttpURLConnection.HTTP_OK, new DNSListBuilder()
-        .addToItems(createNewDNS("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new DNSListBuilder()
+            .addToItems(createNewDNS("test-list"))
+            .build())
+        .once();
 
     // When
     DNSList dnsList = client.config().dnses().list();
@@ -63,18 +63,18 @@ class DNSTest {
     assertThat(dnsList).isNotNull();
     assertThat(dnsList.getItems()).hasSize(1);
     assertThat(dnsList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/config.openshift.io/v1/dnses/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDNS("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDNS("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.config().dnses().withName("cluster").delete();
+    boolean isDeleted = client.config().dnses().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,11 +82,10 @@ class DNSTest {
 
   private DNS createNewDNS(String name) {
     return new DNSBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withBaseDomain("crc.testing")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withBaseDomain("crc.testing")
+        .endSpec()
+        .build();
   }
 }
-

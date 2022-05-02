@@ -76,7 +76,7 @@ class PlacementTest {
         .once();
 
     // When
-    Boolean isDeleted = client.clusters().placements().inNamespace("ns1").withName("placement1").delete();
+    boolean isDeleted = client.clusters().placements().inNamespace("ns1").withName("placement1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

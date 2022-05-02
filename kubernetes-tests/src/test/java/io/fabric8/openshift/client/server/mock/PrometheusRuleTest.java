@@ -52,9 +52,9 @@ class PrometheusRuleTest {
     // Given
     PrometheusRule prometheusRule = getPrometheusRule();
     server.expect().post()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules")
-      .andReturn(HttpURLConnection.HTTP_OK, prometheusRule)
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules")
+        .andReturn(HttpURLConnection.HTTP_OK, prometheusRule)
+        .once();
 
     // When
     prometheusRule = client.monitoring().prometheusRules().inNamespace("ns1").create(prometheusRule);
@@ -68,9 +68,9 @@ class PrometheusRuleTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getPrometheusRule())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getPrometheusRule())
+        .once();
 
     // When
     PrometheusRule f = client.monitoring().prometheusRules().inNamespace("ns1").withName("foo").get();
@@ -84,9 +84,9 @@ class PrometheusRuleTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules")
-      .andReturn(HttpURLConnection.HTTP_OK, new PrometheusRuleListBuilder().withItems(getPrometheusRule()).build())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules")
+        .andReturn(HttpURLConnection.HTTP_OK, new PrometheusRuleListBuilder().withItems(getPrometheusRule()).build())
+        .once();
 
     // When
     PrometheusRuleList fgList = client.monitoring().prometheusRules().inNamespace("ns1").list();
@@ -101,12 +101,12 @@ class PrometheusRuleTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getPrometheusRule())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getPrometheusRule())
+        .once();
 
     // When
-    Boolean deleted = client.monitoring().prometheusRules().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.monitoring().prometheusRules().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -114,16 +114,16 @@ class PrometheusRuleTest {
 
   private PrometheusRule getPrometheusRule() {
     return new PrometheusRuleBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .addNewGroup()
-      .withName("./example-rules")
-      .addNewRule()
-      .withAlert("ExampleAlert")
-      .withNewExpr("vector(1)")
-      .endRule()
-      .endGroup()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .addNewGroup()
+        .withName("./example-rules")
+        .addNewRule()
+        .withAlert("ExampleAlert")
+        .withNewExpr("vector(1)")
+        .endRule()
+        .endGroup()
+        .endSpec()
+        .build();
   }
 }

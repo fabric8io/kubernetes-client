@@ -91,7 +91,7 @@ class TypedClusterScopeCustomResourceApiTest {
 
     starClient = client.customResources(Star.class);
 
-    boolean isDeleted = starClient.inNamespace("test").withName("sun").delete();
+    boolean isDeleted = starClient.inNamespace("test").withName("sun").delete().size() == 1;
     assertTrue(isDeleted);
   }
 
@@ -101,7 +101,7 @@ class TypedClusterScopeCustomResourceApiTest {
 
     starClient = client.customResources(Star.class);
 
-    boolean isDeleted = starClient.inNamespace("test").withName("sun").cascading(true).delete();
+    boolean isDeleted = starClient.inNamespace("test").withName("sun").cascading(true).delete().size() == 1;
     assertTrue(isDeleted);
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
@@ -116,7 +116,7 @@ class TypedClusterScopeCustomResourceApiTest {
     starClient = client.customResources(Star.class);
 
     boolean isDeleted = starClient.inNamespace("test").withName("sun").withPropagationPolicy(DeletionPropagation.ORPHAN)
-        .delete();
+        .delete().size() == 1;
     assertTrue(isDeleted);
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());

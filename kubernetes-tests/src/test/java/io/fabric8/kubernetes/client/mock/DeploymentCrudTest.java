@@ -90,7 +90,7 @@ class DeploymentCrudTest {
 
     assertEquals(3, withLabels.resources().count());
 
-    boolean bDeleted = client.apps().deployments().inNamespace("ns2").withName("deployment3").delete();
+    boolean bDeleted = client.apps().deployments().inNamespace("ns2").withName("deployment3").delete().size() == 1;
     assertTrue(bDeleted);
 
     deployment2 = client.apps().deployments()

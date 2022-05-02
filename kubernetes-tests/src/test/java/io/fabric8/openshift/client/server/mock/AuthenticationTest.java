@@ -35,26 +35,26 @@ class AuthenticationTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/authentications/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewAuthentication("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewAuthentication("test-get"))
+        .once();
 
     // When
     Authentication authentication = client.config().authentications().withName("test-get").get();
 
     // Then
     assertThat(authentication)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/authentications")
-      .andReturn(HttpURLConnection.HTTP_OK, new AuthenticationListBuilder()
-        .addToItems(createNewAuthentication("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new AuthenticationListBuilder()
+            .addToItems(createNewAuthentication("test-list"))
+            .build())
+        .once();
 
     // When
     AuthenticationList authenticationList = client.config().authentications().list();
@@ -63,18 +63,18 @@ class AuthenticationTest {
     assertThat(authenticationList).isNotNull();
     assertThat(authenticationList.getItems()).hasSize(1);
     assertThat(authenticationList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/config.openshift.io/v1/authentications/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewAuthentication("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewAuthentication("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.config().authentications().withName("cluster").delete();
+    boolean isDeleted = client.config().authentications().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,12 +82,12 @@ class AuthenticationTest {
 
   private Authentication createNewAuthentication(String name) {
     return new AuthenticationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewOauthMetadata()
-      .withName("foo")
-      .endOauthMetadata()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewOauthMetadata()
+        .withName("foo")
+        .endOauthMetadata()
+        .endSpec()
+        .build();
   }
 }

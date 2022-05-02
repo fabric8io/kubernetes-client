@@ -35,26 +35,26 @@ class ClusterRoleTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/authorization.openshift.io/v1/clusterroles/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRole("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRole("test-get"))
+        .once();
 
     // When
     ClusterRole clusterRole = client.clusterRoles().withName("test-get").get();
 
     // Then
     assertThat(clusterRole)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/authorization.openshift.io/v1/clusterroles")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterRoleListBuilder()
-        .addToItems(createNewClusterRole("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterRoleListBuilder()
+            .addToItems(createNewClusterRole("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterRoleList clusterRoleList = client.clusterRoles().list();
@@ -63,18 +63,18 @@ class ClusterRoleTest {
     assertThat(clusterRoleList).isNotNull();
     assertThat(clusterRoleList.getItems()).hasSize(1);
     assertThat(clusterRoleList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/authorization.openshift.io/v1/clusterroles/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRole("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRole("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.clusterRoles().withName("cluster").delete();
+    boolean isDeleted = client.clusterRoles().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,13 +82,13 @@ class ClusterRoleTest {
 
   private ClusterRole createNewClusterRole(String name) {
     return new ClusterRoleBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .addNewRule()
-      .addToApiGroups("template.openshift.io")
-      .addToResources("templates", "processedtemplates", "templateauthorizations", "templateinstances")
-      .withVerbs("*")
-      .endRule()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .addNewRule()
+        .addToApiGroups("template.openshift.io")
+        .addToResources("templates", "processedtemplates", "templateauthorizations", "templateinstances")
+        .withVerbs("*")
+        .endRule()
+        .build();
   }
 
 }

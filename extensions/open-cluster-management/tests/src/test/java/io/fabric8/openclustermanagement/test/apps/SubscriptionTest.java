@@ -77,7 +77,7 @@ class SubscriptionTest {
         .once();
 
     // When
-    Boolean isDeleted = client.apps().subscriptions().inNamespace("ns1").withName("sample_subscription").delete();
+    boolean isDeleted = client.apps().subscriptions().inNamespace("ns1").withName("sample_subscription").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -78,7 +78,8 @@ class DiscoveryConfigTest {
         .once();
 
     // When
-    Boolean isDeleted = client.discovery().discoveryConfigs().inNamespace("ns1").withName("sample-discoveryconfig").delete();
+    boolean isDeleted = client.discovery().discoveryConfigs().inNamespace("ns1").withName("sample-discoveryconfig").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

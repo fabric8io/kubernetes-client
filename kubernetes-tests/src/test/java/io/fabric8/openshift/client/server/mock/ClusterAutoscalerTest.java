@@ -35,26 +35,26 @@ class ClusterAutoscalerTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/autoscaling.openshift.io/v1/clusterautoscalers/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterAutoscaler("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterAutoscaler("test-get"))
+        .once();
 
     // When
     ClusterAutoscaler clusterAutoscaler = client.clusterAutoscaling().v1().clusterAutoscalers().withName("test-get").get();
 
     // Then
     assertThat(clusterAutoscaler)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/autoscaling.openshift.io/v1/clusterautoscalers")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterAutoscalerListBuilder()
-        .addToItems(createNewClusterAutoscaler("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ClusterAutoscalerListBuilder()
+            .addToItems(createNewClusterAutoscaler("test-list"))
+            .build())
+        .once();
 
     // When
     ClusterAutoscalerList clusterAutoscalerList = client.clusterAutoscaling().v1().clusterAutoscalers().list();
@@ -63,18 +63,18 @@ class ClusterAutoscalerTest {
     assertThat(clusterAutoscalerList).isNotNull();
     assertThat(clusterAutoscalerList.getItems()).hasSize(1);
     assertThat(clusterAutoscalerList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/autoscaling.openshift.io/v1/clusterautoscalers/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewClusterAutoscaler("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewClusterAutoscaler("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.clusterAutoscaling().v1().clusterAutoscalers().withName("cluster").delete();
+    boolean isDeleted = client.clusterAutoscaling().v1().clusterAutoscalers().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,32 +82,32 @@ class ClusterAutoscalerTest {
 
   private ClusterAutoscaler createNewClusterAutoscaler(String name) {
     return new ClusterAutoscalerBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withBalanceSimilarNodeGroups(true)
-      .withIgnoreDaemonsetsUtilization(false)
-      .withSkipNodesWithLocalStorage(true)
-      .withPodPriorityThreshold(-10)
-      .withNewResourceLimits()
-      .withMaxNodesTotal(24)
-      .withNewCores()
-      .withMin(0)
-      .withMax(128)
-      .endCores()
-      .withNewMemory()
-      .withMin(4)
-      .withMax(256)
-      .endMemory()
-      .addNewGpus(0, 16, "example.com/gpu")
-      .endResourceLimits()
-      .withNewScaleDown()
-      .withEnabled(true)
-      .withDelayAfterAdd("10s")
-      .withDelayAfterDelete("10s")
-      .withDelayAfterFailure("10s")
-      .endScaleDown()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withBalanceSimilarNodeGroups(true)
+        .withIgnoreDaemonsetsUtilization(false)
+        .withSkipNodesWithLocalStorage(true)
+        .withPodPriorityThreshold(-10)
+        .withNewResourceLimits()
+        .withMaxNodesTotal(24)
+        .withNewCores()
+        .withMin(0)
+        .withMax(128)
+        .endCores()
+        .withNewMemory()
+        .withMin(4)
+        .withMax(256)
+        .endMemory()
+        .addNewGpus(0, 16, "example.com/gpu")
+        .endResourceLimits()
+        .withNewScaleDown()
+        .withEnabled(true)
+        .withDelayAfterAdd("10s")
+        .withDelayAfterDelete("10s")
+        .withDelayAfterFailure("10s")
+        .endScaleDown()
+        .endSpec()
+        .build();
   }
 
 }

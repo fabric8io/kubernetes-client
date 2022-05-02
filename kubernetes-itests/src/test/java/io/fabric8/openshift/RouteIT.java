@@ -70,7 +70,7 @@ class RouteIT {
   @Test
   void delete() {
     client.routes().withName("route-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.routes().withName("route-delete").delete();
+    boolean bDeleted = client.routes().withName("route-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

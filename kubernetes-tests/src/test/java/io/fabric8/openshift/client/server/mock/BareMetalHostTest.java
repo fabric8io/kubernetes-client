@@ -35,26 +35,26 @@ class BareMetalHostTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/metal3.io/v1alpha1/namespaces/ns1/baremetalhosts/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewBareMetalHost("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewBareMetalHost("test-get"))
+        .once();
 
     // When
     BareMetalHost networkAttachmentDefinition = client.bareMetalHosts().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(networkAttachmentDefinition)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/metal3.io/v1alpha1/namespaces/ns1/baremetalhosts")
-      .andReturn(HttpURLConnection.HTTP_OK, new BareMetalHostListBuilder()
-        .addToItems(createNewBareMetalHost("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new BareMetalHostListBuilder()
+            .addToItems(createNewBareMetalHost("test-list"))
+            .build())
+        .once();
 
     // When
     BareMetalHostList networkAttachmentDefinitionList = client.bareMetalHosts().inNamespace("ns1").list();
@@ -63,18 +63,18 @@ class BareMetalHostTest {
     assertThat(networkAttachmentDefinitionList).isNotNull();
     assertThat(networkAttachmentDefinitionList.getItems()).hasSize(1);
     assertThat(networkAttachmentDefinitionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/metal3.io/v1alpha1/namespaces/ns1/baremetalhosts/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewBareMetalHost("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewBareMetalHost("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.bareMetalHosts().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.bareMetalHosts().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,38 +82,38 @@ class BareMetalHostTest {
 
   private BareMetalHost createNewBareMetalHost(String name) {
     return new BareMetalHostBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withOnline(true)
-      .withNewBmc()
-      .withAddress("ipmi://192.168.122.1:6233")
-      .withCredentialsName("example-baremetalhost-secret-no-password")
-      .endBmc()
-      .withNewConsumerRef()
-      .withApiVersion("machine.openshift.io/v1beta1")
-      .withKind("Machine")
-      .withName("bmo-master")
-      .withNamespace("bmo-project")
-      .endConsumerRef()
-      .withExternallyProvisioned(true)
-      .withNewUserData("bmo-master-user-data", "bmo-project")
-      .withNewNetworkData("bmo-master-network-data", "bmo-project")
-      .withNewMetaData("bmo-master-meta-data", "bmo-project")
-      .withNewRaid()
-      .addNewHardwareRAIDVolume()
-      .withLevel("1")
-      .withSizeGibibytes(200)
-      .withRotational(true)
-      .endHardwareRAIDVolume()
-      .endRaid()
-      .withBootMACAddress("98:03:9b:61:80:48")
-      .withExternallyProvisioned(true)
-      .withHardwareProfile("default")
-      .withNewImage()
-      .withChecksum("https://172.16.1.100/images/myOSv1/myOS.qcow2.md5sum")
-      .withUrl("https://172.16.1.100/images/myOSv1/myOS.qcow2")
-      .endImage()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withOnline(true)
+        .withNewBmc()
+        .withAddress("ipmi://192.168.122.1:6233")
+        .withCredentialsName("example-baremetalhost-secret-no-password")
+        .endBmc()
+        .withNewConsumerRef()
+        .withApiVersion("machine.openshift.io/v1beta1")
+        .withKind("Machine")
+        .withName("bmo-master")
+        .withNamespace("bmo-project")
+        .endConsumerRef()
+        .withExternallyProvisioned(true)
+        .withNewUserData("bmo-master-user-data", "bmo-project")
+        .withNewNetworkData("bmo-master-network-data", "bmo-project")
+        .withNewMetaData("bmo-master-meta-data", "bmo-project")
+        .withNewRaid()
+        .addNewHardwareRAIDVolume()
+        .withLevel("1")
+        .withSizeGibibytes(200)
+        .withRotational(true)
+        .endHardwareRAIDVolume()
+        .endRaid()
+        .withBootMACAddress("98:03:9b:61:80:48")
+        .withExternallyProvisioned(true)
+        .withHardwareProfile("default")
+        .withNewImage()
+        .withChecksum("https://172.16.1.100/images/myOSv1/myOS.qcow2.md5sum")
+        .withUrl("https://172.16.1.100/images/myOSv1/myOS.qcow2")
+        .endImage()
+        .endSpec()
+        .build();
   }
 }

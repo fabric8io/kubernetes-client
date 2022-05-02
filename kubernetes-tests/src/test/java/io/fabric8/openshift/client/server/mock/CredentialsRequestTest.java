@@ -35,26 +35,26 @@ class CredentialsRequestTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/cloudcredential.openshift.io/v1/namespaces/ns1/credentialsrequests/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewCredentialsRequest("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewCredentialsRequest("test-get"))
+        .once();
 
     // When
     CredentialsRequest credentialsRequest = client.credentialsRequests().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(credentialsRequest)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/cloudcredential.openshift.io/v1/namespaces/ns1/credentialsrequests")
-      .andReturn(HttpURLConnection.HTTP_OK, new CredentialsRequestListBuilder()
-        .addToItems(createNewCredentialsRequest("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new CredentialsRequestListBuilder()
+            .addToItems(createNewCredentialsRequest("test-list"))
+            .build())
+        .once();
 
     // When
     CredentialsRequestList credentialsRequestList = client.credentialsRequests().inNamespace("ns1").list();
@@ -63,18 +63,18 @@ class CredentialsRequestTest {
     assertThat(credentialsRequestList).isNotNull();
     assertThat(credentialsRequestList.getItems()).hasSize(1);
     assertThat(credentialsRequestList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/cloudcredential.openshift.io/v1/namespaces/ns1/credentialsrequests/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewCredentialsRequest("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewCredentialsRequest("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.credentialsRequests().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.credentialsRequests().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,18 +82,16 @@ class CredentialsRequestTest {
 
   private CredentialsRequest createNewCredentialsRequest(String name) {
     return new CredentialsRequestBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addToProviderSpec("apiVersion", "cloudcredential.openshift.io/v1")
-      .addToProviderSpec("kind", "GCPProviderSpec")
-      .addToProviderSpec("skipServiceCheck", "true")
-      .withNewSecretRef()
-      .withName("cloud-credential-operator-gcp-ro-creds")
-      .withNamespace("openshift-cloud-credential-operator")
-      .endSecretRef()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addToProviderSpec("apiVersion", "cloudcredential.openshift.io/v1")
+        .addToProviderSpec("kind", "GCPProviderSpec")
+        .addToProviderSpec("skipServiceCheck", "true")
+        .withNewSecretRef()
+        .withName("cloud-credential-operator-gcp-ro-creds")
+        .withNamespace("openshift-cloud-credential-operator")
+        .endSecretRef()
+        .endSpec()
+        .build();
   }
 }
-
-

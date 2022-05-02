@@ -36,7 +36,7 @@ class IngressTest {
   @Test
   void load() {
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-openshift-config-ingress.yml"))
-      .get();
+        .get();
     assertThat(items).isNotNull().hasSize(1);
     assertThat(items.get(0)).isInstanceOf(Ingress.class);
   }
@@ -45,27 +45,27 @@ class IngressTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/ingresses/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewIngress("test-get", "test.fabric8.io"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewIngress("test-get", "test.fabric8.io"))
+        .once();
 
     // When
     Ingress ing = client.config().ingresses().withName("test-get").get();
 
     // Then
     assertThat(ing)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get")
-      .hasFieldOrPropertyWithValue("spec.domain", "test.fabric8.io");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get")
+        .hasFieldOrPropertyWithValue("spec.domain", "test.fabric8.io");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/ingresses")
-      .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
-        .addToItems(createNewIngress("test-list", "test.fabric8.io"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder()
+            .addToItems(createNewIngress("test-list", "test.fabric8.io"))
+            .build())
+        .once();
 
     // When
     IngressList ingressList = client.config().ingresses().list();
@@ -74,19 +74,19 @@ class IngressTest {
     assertThat(ingressList).isNotNull();
     assertThat(ingressList.getItems()).hasSize(1);
     assertThat(ingressList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list")
-      .hasFieldOrPropertyWithValue("spec.domain", "test.fabric8.io");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list")
+        .hasFieldOrPropertyWithValue("spec.domain", "test.fabric8.io");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/config.openshift.io/v1/ingresses/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewIngress("cluster", "test-delete.fabric8.io"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewIngress("cluster", "test-delete.fabric8.io"))
+        .once();
 
     // When
-    Boolean isDeleted = client.config().ingresses().withName("cluster").delete();
+    boolean isDeleted = client.config().ingresses().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -94,10 +94,10 @@ class IngressTest {
 
   private Ingress createNewIngress(String name, String domain) {
     return new IngressBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withDomain(domain)
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withDomain(domain)
+        .endSpec()
+        .build();
   }
 }

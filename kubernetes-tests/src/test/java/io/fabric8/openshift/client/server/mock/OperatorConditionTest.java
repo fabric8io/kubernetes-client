@@ -36,26 +36,27 @@ class OperatorConditionTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/operators.coreos.com/v1/namespaces/ns1/operatorconditions/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorCondition("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorCondition("test-get"))
+        .once();
 
     // When
-    OperatorCondition operatorCondition = client.operatorHub().operatorConditions().inNamespace("ns1").withName("test-get").get();
+    OperatorCondition operatorCondition = client.operatorHub().operatorConditions().inNamespace("ns1").withName("test-get")
+        .get();
 
     // Then
     assertThat(operatorCondition)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/operators.coreos.com/v1/namespaces/ns1/operatorconditions")
-      .andReturn(HttpURLConnection.HTTP_OK, new OperatorConditionListBuilder()
-        .addToItems(createNewOperatorCondition("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new OperatorConditionListBuilder()
+            .addToItems(createNewOperatorCondition("test-list"))
+            .build())
+        .once();
 
     // When
     OperatorConditionList operatorConditionList = client.operatorHub().operatorConditions().inNamespace("ns1").list();
@@ -64,18 +65,18 @@ class OperatorConditionTest {
     assertThat(operatorConditionList).isNotNull();
     assertThat(operatorConditionList.getItems()).hasSize(1);
     assertThat(operatorConditionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/operators.coreos.com/v1/namespaces/ns1/operatorconditions/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorCondition("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorCondition("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operatorHub().operatorConditions().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.operatorHub().operatorConditions().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,15 +84,15 @@ class OperatorConditionTest {
 
   private OperatorCondition createNewOperatorCondition(String name) {
     return new OperatorConditionBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addToOverrides(new ConditionBuilder()
-        .withType("Upgradeable")
-        .withStatus("True")
-        .withReason("upgradeIsSafe")
-        .withMessage("The cluster admin wants to make the operator eligible for an upgrade.")
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addToOverrides(new ConditionBuilder()
+            .withType("Upgradeable")
+            .withStatus("True")
+            .withReason("upgradeIsSafe")
+            .withMessage("The cluster admin wants to make the operator eligible for an upgrade.")
+            .build())
+        .endSpec()
+        .build();
   }
 }

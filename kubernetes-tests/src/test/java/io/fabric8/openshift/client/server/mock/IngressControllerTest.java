@@ -39,9 +39,9 @@ class IngressControllerTest {
     // Given
     IngressController dnsrecord = getIngressController();
     server.expect().post()
-      .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
-      .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
-      .once();
+        .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
+        .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
+        .once();
 
     // When
     dnsrecord = client.operator().ingressControllers().inNamespace("ns1").create(dnsrecord);
@@ -55,9 +55,9 @@ class IngressControllerTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
-      .once();
+        .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
+        .once();
 
     // When
     IngressController f = client.operator().ingressControllers().inNamespace("ns1").withName("foo").get();
@@ -71,9 +71,9 @@ class IngressControllerTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
-      .andReturn(HttpURLConnection.HTTP_OK, new IngressControllerListBuilder().withItems(getIngressController()).build())
-      .once();
+        .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressControllerListBuilder().withItems(getIngressController()).build())
+        .once();
 
     // When
     IngressControllerList fgList = client.operator().ingressControllers().inNamespace("ns1").list();
@@ -88,12 +88,12 @@ class IngressControllerTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
-      .once();
+        .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
+        .once();
 
     // When
-    Boolean deleted = client.operator().ingressControllers().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operator().ingressControllers().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,21 +101,21 @@ class IngressControllerTest {
 
   private IngressController getIngressController() {
     return new IngressControllerBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .withNamespace("ns1")
-      .endMetadata()
-      .withNewSpec()
-      .withDomain("example.fabric8.io")
-      .withNewNodePlacement()
-      .withNewNodeSelector()
-      .addToMatchLabels("node-role.kubernetes.io/worker", "")
-      .endNodeSelector()
-      .endNodePlacement()
-      .withNewRouteSelector()
-      .addToMatchLabels("type", "sharded")
-      .endRouteSelector()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("foo")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withNewSpec()
+        .withDomain("example.fabric8.io")
+        .withNewNodePlacement()
+        .withNewNodeSelector()
+        .addToMatchLabels("node-role.kubernetes.io/worker", "")
+        .endNodeSelector()
+        .endNodePlacement()
+        .withNewRouteSelector()
+        .addToMatchLabels("type", "sharded")
+        .endRouteSelector()
+        .endSpec()
+        .build();
   }
 }

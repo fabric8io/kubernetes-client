@@ -146,14 +146,14 @@ public class V1HorizontalPodAutoscalerTest {
         .andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     Boolean deleted = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test")
-        .withName("horizontalpodautoscaler1").delete();
+        .withName("horizontalpodautoscaler1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.autoscaling().v1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete();
+    deleted = client.autoscaling().v1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete().size() == 1;
     assertFalse(deleted);
 
     deleted = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2")
-        .delete();
+        .delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -175,7 +175,8 @@ public class V1HorizontalPodAutoscalerTest {
         horizontalPodAutoscaler2);
     assertTrue(deleted);
 
-    deleted = client.autoscaling().v1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3);
+    deleted = client.autoscaling().v1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3)
+        .size() == 1;
     assertFalse(deleted);
   }
 

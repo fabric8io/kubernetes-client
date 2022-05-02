@@ -69,8 +69,7 @@ public class LoadExample {
       logger.info("Applied: {} items.", appliedList.size());
       appliedList.stream().map(LoadExample::display).forEach(logger::info);
 
-      final boolean result = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).delete();
-      logger.info("Deleted: {}", result);
+      client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).delete();
     }
   }
 

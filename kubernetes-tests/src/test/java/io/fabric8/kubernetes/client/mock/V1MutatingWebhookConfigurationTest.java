@@ -103,7 +103,7 @@ public class V1MutatingWebhookConfigurationTest {
 
     // When
     Boolean isDeleted = client.admissionRegistration().v1().mutatingWebhookConfigurations()
-        .withName("mutatingWebhookConfiguration1").delete();
+        .withName("mutatingWebhookConfiguration1").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-
 import io.fabric8.openshift.api.model.tuned.v1.Tuned;
 import io.fabric8.openshift.api.model.tuned.v1.TunedBuilder;
 import io.fabric8.openshift.api.model.tuned.v1.TunedList;
@@ -36,26 +35,26 @@ class TunedTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/tuned.openshift.io/v1/namespaces/ns1/tuneds/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewTuned("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewTuned("test-get"))
+        .once();
 
     // When
     Tuned profile = client.tuned().tuneds().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(profile)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/tuned.openshift.io/v1/namespaces/ns1/tuneds")
-      .andReturn(HttpURLConnection.HTTP_OK, new TunedListBuilder()
-        .addToItems(createNewTuned("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new TunedListBuilder()
+            .addToItems(createNewTuned("test-list"))
+            .build())
+        .once();
 
     // When
     TunedList profileList = client.tuned().tuneds().inNamespace("ns1").list();
@@ -64,18 +63,18 @@ class TunedTest {
     assertThat(profileList).isNotNull();
     assertThat(profileList.getItems()).hasSize(1);
     assertThat(profileList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/tuned.openshift.io/v1/namespaces/ns1/tuneds/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewTuned("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewTuned("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.tuned().tuneds().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.tuned().tuneds().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,20 +82,20 @@ class TunedTest {
 
   private Tuned createNewTuned(String name) {
     return new TunedBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addNewProfile()
-      .withName("openshift-module-load")
-      .withData("foo")
-      .endProfile()
-      .addNewRecommend()
-      .addNewMatch()
-      .withLabel("tuned.openshift.io/module-load")
-      .endMatch()
-      .withPriority(20L)
-      .withProfile("openshift-module-load")
-      .endRecommend()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addNewProfile()
+        .withName("openshift-module-load")
+        .withData("foo")
+        .endProfile()
+        .addNewRecommend()
+        .addNewMatch()
+        .withLabel("tuned.openshift.io/module-load")
+        .endMatch()
+        .withPriority(20L)
+        .withProfile("openshift-module-load")
+        .endRecommend()
+        .endSpec()
+        .build();
   }
 }

@@ -40,7 +40,8 @@ public class V1beta1ValidatingWebhookConfigurationTest {
   public void createUsingResource() {
     ValidatingWebhookConfiguration validatingWebhookConfiguration = getValidatingWebhookConfigurationSample();
 
-    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations").andReturn(201, validatingWebhookConfiguration).once();
+    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations")
+        .andReturn(201, validatingWebhookConfiguration).once();
 
     HasMetadata response = client.resource(validatingWebhookConfiguration).inNamespace("test").createOrReplace();
     assertEquals(validatingWebhookConfiguration, response);
@@ -48,7 +49,8 @@ public class V1beta1ValidatingWebhookConfigurationTest {
 
   @Test
   public void load() {
-    ValidatingWebhookConfiguration vwc = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().load(getClass().getResourceAsStream("/v1beta1-vwc.yml")).get();
+    ValidatingWebhookConfiguration vwc = client.admissionRegistration().v1beta1().validatingWebhookConfigurations()
+        .load(getClass().getResourceAsStream("/v1beta1-vwc.yml")).get();
     assertNotNull(vwc);
     assertEquals("pod-policy.example.com", vwc.getMetadata().getName());
     assertEquals(1, vwc.getWebhooks().size());
@@ -57,10 +59,13 @@ public class V1beta1ValidatingWebhookConfigurationTest {
   @Test
   public void get() {
     // Given
-    server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations/validatingWebhookConfiguration1").andReturn(200, getValidatingWebhookConfigurationSample()).once();
+    server.expect().get()
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations/validatingWebhookConfiguration1")
+        .andReturn(200, getValidatingWebhookConfigurationSample()).once();
 
     // When
-    ValidatingWebhookConfiguration validatingWebhookConfiguration = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().withName("validatingWebhookConfiguration1").get();
+    ValidatingWebhookConfiguration validatingWebhookConfiguration = client.admissionRegistration().v1beta1()
+        .validatingWebhookConfigurations().withName("validatingWebhookConfiguration1").get();
 
     // Then
     assertNotNull(validatingWebhookConfiguration);
@@ -71,24 +76,30 @@ public class V1beta1ValidatingWebhookConfigurationTest {
   public void list() {
     // Given
     server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations")
-      .andReturn(200, new ValidatingWebhookConfigurationListBuilder().withItems(getValidatingWebhookConfigurationSample()).build()).once();
+        .andReturn(200,
+            new ValidatingWebhookConfigurationListBuilder().withItems(getValidatingWebhookConfigurationSample()).build())
+        .once();
 
     // When
-    ValidatingWebhookConfigurationList validatingWebhookConfigurationList = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().list();
+    ValidatingWebhookConfigurationList validatingWebhookConfigurationList = client.admissionRegistration().v1beta1()
+        .validatingWebhookConfigurations().list();
 
     // Then
     assertNotNull(validatingWebhookConfigurationList);
     assertEquals(1, validatingWebhookConfigurationList.getItems().size());
-    assertEquals("validatingWebhookConfiguration1", validatingWebhookConfigurationList.getItems().get(0).getMetadata().getName());
+    assertEquals("validatingWebhookConfiguration1",
+        validatingWebhookConfigurationList.getItems().get(0).getMetadata().getName());
   }
 
   @Test
   public void createOrReplace() {
     ValidatingWebhookConfiguration validatingWebhookConfiguration = getValidatingWebhookConfigurationSample();
 
-    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations").andReturn(200, validatingWebhookConfiguration).once();
+    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations")
+        .andReturn(200, validatingWebhookConfiguration).once();
 
-    ValidatingWebhookConfiguration validatingWebhookConfiguration1 = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().createOrReplace(validatingWebhookConfiguration);
+    ValidatingWebhookConfiguration validatingWebhookConfiguration1 = client.admissionRegistration().v1beta1()
+        .validatingWebhookConfigurations().createOrReplace(validatingWebhookConfiguration);
     assertNotNull(validatingWebhookConfiguration1);
     assertEquals("validatingWebhookConfiguration1", validatingWebhookConfiguration1.getMetadata().getName());
   }
@@ -96,11 +107,13 @@ public class V1beta1ValidatingWebhookConfigurationTest {
   @Test
   public void delete() {
     // Given
-    server.expect().delete().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations/validatingWebhookConfiguration1")
-      .andReturn(200, getValidatingWebhookConfigurationSample()).once();
+    server.expect().delete()
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations/validatingWebhookConfiguration1")
+        .andReturn(200, getValidatingWebhookConfigurationSample()).once();
 
     // When
-    Boolean isDeleted = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().withName("validatingWebhookConfiguration1").delete();
+    boolean isDeleted = client.admissionRegistration().v1beta1().validatingWebhookConfigurations()
+        .withName("validatingWebhookConfiguration1").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -108,17 +121,17 @@ public class V1beta1ValidatingWebhookConfigurationTest {
 
   public ValidatingWebhookConfiguration getValidatingWebhookConfigurationSample() {
     return new ValidatingWebhookConfigurationBuilder()
-      .withNewMetadata().withName("validatingWebhookConfiguration1").endMetadata()
-      .addToWebhooks(new ValidatingWebhookBuilder()
-        .withName("webhook1")
-        .withNewClientConfig()
-        .withNewService()
-        .withName("svc1")
-        .withNamespace("test")
-        .withPath("/validate")
-        .endService()
-        .endClientConfig()
-        .build())
-      .build();
+        .withNewMetadata().withName("validatingWebhookConfiguration1").endMetadata()
+        .addToWebhooks(new ValidatingWebhookBuilder()
+            .withName("webhook1")
+            .withNewClientConfig()
+            .withNewService()
+            .withName("svc1")
+            .withNamespace("test")
+            .withPath("/validate")
+            .endService()
+            .endClientConfig()
+            .build())
+        .build();
   }
 }

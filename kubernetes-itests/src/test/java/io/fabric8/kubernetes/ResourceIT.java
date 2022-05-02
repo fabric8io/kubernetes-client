@@ -63,38 +63,37 @@ class ResourceIT {
   @Test
   void list() {
     Pod listPod1 = new PodBuilder()
-      .withNewMetadata().withName("resource-pod-list-pod3").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("nginx").withImage("nginx").endContainer()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("resource-pod-list-pod3").endMetadata()
+        .withNewSpec()
+        .addNewContainer().withName("nginx").withImage("nginx").endContainer()
+        .endSpec()
+        .build();
     client.resourceList(new PodListBuilder().withItems(listPod1).build())
-      .create();
+        .create();
 
     assertNotNull(client.pods().withName("resource-pod-list-pod3"));
 
     boolean bDeleted = client
-      .resourceList(new PodListBuilder().withItems(listPod1).build())
-      .withGracePeriod(0L)
-      .delete();
+        .resourceList(new PodListBuilder().withItems(listPod1).build())
+        .withGracePeriod(0L)
+        .delete().size() == 1;
     assertTrue(bDeleted);
   }
 
   @Test
   void createOrReplace() {
-    Service service =  new ServiceBuilder()
-      .withNewMetadata().withName("my-service").endMetadata()
-      .withNewSpec()
-      .addToSelector("app", "Myapp")
-      .addNewPort().withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort()
-      .endSpec()
-      .build();
-
+    Service service = new ServiceBuilder()
+        .withNewMetadata().withName("my-service").endMetadata()
+        .withNewSpec()
+        .addToSelector("app", "Myapp")
+        .addNewPort().withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort()
+        .endSpec()
+        .build();
 
     ConfigMap configMap = new ConfigMapBuilder()
-      .withNewMetadata().withName("my-configmap").endMetadata()
-      .addToData(Collections.singletonMap("app", "Myapp"))
-      .build();
+        .withNewMetadata().withName("my-configmap").endMetadata()
+        .addToData(Collections.singletonMap("app", "Myapp"))
+        .build();
 
     KubernetesList list = new KubernetesListBuilder().withItems(service, configMap).build();
 
@@ -113,10 +112,10 @@ class ResourceIT {
     // Assert whether objects have been modified
     createdObjects.forEach((HasMetadata object) -> {
       if (object instanceof Service) {
-        assertEquals(9998, ((Service)object).getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+        assertEquals(9998, ((Service) object).getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
       } else if (object instanceof ConfigMap) {
-        assertTrue(((ConfigMap)object).getData().containsKey("io"));
-        assertTrue(((ConfigMap)object).getData().containsKey("test"));
+        assertTrue(((ConfigMap) object).getData().containsKey("io"));
+        assertTrue(((ConfigMap) object).getData().containsKey("test"));
       }
     });
   }
@@ -124,8 +123,8 @@ class ResourceIT {
   @Test
   void delete() {
     Pod pod1 = client.pods().withName("resource-pod-delete")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    assertTrue(client.resource(pod1).withGracePeriod(0L).delete());
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+    assertTrue(client.resource(pod1).withGracePeriod(0L).delete().size() == 1);
   }
 
   @Test
@@ -137,23 +136,23 @@ class ResourceIT {
 
     // get uid of underlying replicaset. we expect this NOT to match later, meaning the orphan WAS deleted.
     List<ReplicaSet> replicaSetList = client.apps().replicaSets().withLabel("run", deploymentName)
-      .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
+        .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
     String replicaSetUid = replicaSetList.iterator().next().getMetadata().getUid();
 
     // Recreate deployment
     resource.withGracePeriod(0L).delete();
     resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(Collection::isEmpty)
-      .get(30, TimeUnit.SECONDS);
+        .get(30, TimeUnit.SECONDS);
     resource.create();
 
     List<ReplicaSet> replicaSets = client.apps().replicaSets().withLabel("run", deploymentName)
-      .informOnCondition(l -> l.size() == 1).get(30, TimeUnit.SECONDS);
+        .informOnCondition(l -> l.size() == 1).get(30, TimeUnit.SECONDS);
     // check that uid DOES NOT MATCH original, meaning the orphan WAS deleted
     assertNotEquals(replicaSetUid, replicaSets.iterator().next().getMetadata().getUid());
 
     // cleanup
-    assertTrue(resource.withGracePeriod(0L).delete());
+    assertTrue(resource.withGracePeriod(0L).delete().size() == 1);
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
         .get(30, TimeUnit.SECONDS);
@@ -168,28 +167,28 @@ class ResourceIT {
 
     // get uid of underlying replicaset. we expect this to match later, meaning the orphan was not deleted.
     List<ReplicaSet> replicaSetList = client.apps().replicaSets().withLabel("run", deploymentName)
-      .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
+        .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
     String replicaSetUid = replicaSetList.iterator().next().getMetadata().getUid();
 
     // Recreate deployment
     resource
-      .withPropagationPolicy(DeletionPropagation.ORPHAN)
-      .withGracePeriod(0L)
-      .delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN)
+        .withGracePeriod(0L)
+        .delete();
     resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
     resource.create();
 
     // check that uid matches original, meaning the orphan was not deleted
     replicaSetList = client.apps().replicaSets().withLabel("run", deploymentName)
-      .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
+        .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
     assertEquals(1, replicaSetList.size());
     assertEquals(replicaSetUid, replicaSetList.iterator().next().getMetadata().getUid());
 
     // cleanup
-    assertTrue(resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0L).delete());
+    assertTrue(resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0L).delete().size() == 1);
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
-      .get(30, TimeUnit.SECONDS);
+        .get(30, TimeUnit.SECONDS);
   }
 
   @Test
@@ -199,15 +198,15 @@ class ResourceIT {
     client.resource(deployment).createOrReplace();
     // Check whether child resources are also created
     client.apps().replicaSets().withLabel("run", deploymentName)
-      .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
+        .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
 
     // Delete deployment
-    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete().size() == 1;
     assertTrue(deleted);
 
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
-      .get(30, TimeUnit.SECONDS);
+        .get(30, TimeUnit.SECONDS);
   }
 
   @Test
@@ -217,19 +216,19 @@ class ResourceIT {
     client.resource(deployment).createOrReplace();
     // Check whether child resources are also created
     client.apps().replicaSets().withLabel("run", deploymentName)
-      .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
+        .informOnCondition(replicaSets -> replicaSets.size() == 1).get(30, TimeUnit.SECONDS);
 
     // Delete deployment
-    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    boolean deleted = client.resource(deployment).withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(deleted);
 
     // wait till deployment is deleted
     client.apps().deployments().withLabel("run", deploymentName)
-      .informOnCondition(List::isEmpty).get(30, TimeUnit.SECONDS);
+        .informOnCondition(List::isEmpty).get(30, TimeUnit.SECONDS);
 
     // Check whether child resources are not deleted, they should be alive
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(l -> l.size() == 1)
-      .get(30, TimeUnit.SECONDS);
+        .get(30, TimeUnit.SECONDS);
 
     // cleanup resources which are not cleaned up during cascade deletion
     client.apps().replicaSets().withLabel("run", deploymentName).withGracePeriod(0L).delete();
@@ -237,25 +236,25 @@ class ResourceIT {
 
   private static Deployment initDeployment(String name) {
     return new DeploymentBuilder()
-      .withMetadata(new ObjectMetaBuilder()
-        .withName(name)
-        .build())
-      .withSpec(new DeploymentSpecBuilder()
-        .withReplicas(1)
-        .withNewSelector().withMatchLabels(Collections.singletonMap("run", name)).endSelector()
-        .withTemplate(new PodTemplateSpecBuilder()
-          .withNewMetadata().withLabels(Collections.singletonMap("run", name)).endMetadata()
-          .withNewSpec()
-            .withTerminationGracePeriodSeconds(1L)
-            .addToContainers(new ContainerBuilder()
-              .withImage("busybox")
-              .withCommand("sh", "-c", "sleep 60")
-              .withName(name)
-              .addNewPort().withContainerPort(80).endPort()
-              .build())
-            .endSpec()
-          .build())
-        .build())
-      .build();
+        .withMetadata(new ObjectMetaBuilder()
+            .withName(name)
+            .build())
+        .withSpec(new DeploymentSpecBuilder()
+            .withReplicas(1)
+            .withNewSelector().withMatchLabels(Collections.singletonMap("run", name)).endSelector()
+            .withTemplate(new PodTemplateSpecBuilder()
+                .withNewMetadata().withLabels(Collections.singletonMap("run", name)).endMetadata()
+                .withNewSpec()
+                .withTerminationGracePeriodSeconds(1L)
+                .addToContainers(new ContainerBuilder()
+                    .withImage("busybox")
+                    .withCommand("sh", "-c", "sleep 60")
+                    .withName(name)
+                    .addNewPort().withContainerPort(80).endPort()
+                    .build())
+                .endSpec()
+                .build())
+            .build())
+        .build();
   }
 }

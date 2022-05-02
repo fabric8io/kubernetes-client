@@ -38,26 +38,26 @@ class MachineTest {
   void get() throws IOException {
     // Given
     server.expect().get().withPath("/apis/machine.openshift.io/v1beta1/namespaces/ns1/machines/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachine("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachine("test-get"))
+        .once();
 
     // When
     Machine machine = client.machine().machines().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(machine)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() throws IOException {
     // Given
     server.expect().get().withPath("/apis/machine.openshift.io/v1beta1/namespaces/ns1/machines")
-      .andReturn(HttpURLConnection.HTTP_OK, new MachineListBuilder()
-        .addToItems(createNewMachine("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MachineListBuilder()
+            .addToItems(createNewMachine("test-list"))
+            .build())
+        .once();
 
     // When
     MachineList machineList = client.machine().machines().inNamespace("ns1").list();
@@ -66,34 +66,34 @@ class MachineTest {
     assertThat(machineList).isNotNull();
     assertThat(machineList.getItems()).hasSize(1);
     assertThat(machineList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() throws IOException {
     // Given
     server.expect().delete().withPath("/apis/machine.openshift.io/v1beta1/namespaces/ns1/machines/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachine("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachine("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.machine().machines().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.machine().machines().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
   }
 
   private Machine createNewMachine(String name) throws IOException {
-    Map<String, Object> providerMachineSpec = Serialization.jsonMapper().readValue(getClass().getResourceAsStream("/test-machineproviderspec.json"), Map.class);
+    Map<String, Object> providerMachineSpec = Serialization.jsonMapper()
+        .readValue(getClass().getResourceAsStream("/test-machineproviderspec.json"), Map.class);
     return new MachineBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withProviderID("foo")
-      .withNewProviderSpec()
-      .withValue(providerMachineSpec)
-      .endProviderSpec()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withProviderID("foo")
+        .withNewProviderSpec()
+        .withValue(providerMachineSpec)
+        .endProviderSpec()
+        .endSpec()
+        .build();
   }
 }
-

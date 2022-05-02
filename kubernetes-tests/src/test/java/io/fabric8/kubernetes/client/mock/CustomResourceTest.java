@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionListBuilder;
@@ -225,7 +226,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1")
-        .withName("example-hello").delete();
+        .withName("example-hello").delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -245,11 +246,11 @@ class CustomResourceTest {
         .andReturn(HttpURLConnection.HTTP_NOT_FOUND, Serialization.jsonMapper().writeValueAsString(notFoundStatus)).once();
 
     // When
-    boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1")
+    List<StatusDetails> deleted = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1")
         .withName("idontexist").delete();
 
     // Then
-    assertFalse(isDeleted);
+    assertTrue(deleted.isEmpty());
   }
 
   @Test
@@ -262,7 +263,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-        .inNamespace("ns1").withName("example-hello").cascading(false).delete();
+        .inNamespace("ns1").withName("example-hello").cascading(false).delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -283,7 +284,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -311,7 +312,7 @@ class CustomResourceTest {
         .withName("example-hello")
         .withPropagationPolicy(DeletionPropagation.ORPHAN)
         .withGracePeriod(0L)
-        .delete();
+        .delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -329,10 +330,10 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext)
-        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .inNamespace("ns1").withName("example-hello").withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
 
     // Then
-    assertTrue(result);
+    assertFalse(result);
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
@@ -342,7 +343,7 @@ class CustomResourceTest {
   @Test
   void testDeleteWithNonExistentResource() throws IOException {
     assertThat(client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns2").withName("example-hello")
-        .delete())
+        .delete().size() == 1)
             .isFalse();
   }
 

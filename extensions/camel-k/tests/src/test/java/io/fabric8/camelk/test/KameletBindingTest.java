@@ -96,7 +96,7 @@ class KameletBindingTest {
         .once();
 
     // When
-    boolean isDeleted = client.v1alpha1().kameletBindings().inNamespace("ns1").withName("kb-delete").delete();
+    boolean isDeleted = client.v1alpha1().kameletBindings().inNamespace("ns1").withName("kb-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

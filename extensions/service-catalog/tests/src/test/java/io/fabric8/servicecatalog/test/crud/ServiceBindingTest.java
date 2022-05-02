@@ -109,7 +109,7 @@ class ServiceBindingTest {
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.serviceBindings().inNamespace("testns").withName("binding1").delete());
+    assertTrue(client.serviceBindings().inNamespace("testns").withName("binding1").delete().size() == 1);
     assertNull(client.serviceBindings().inNamespace("testns").withName("binding1").get());
   }
 }

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
@@ -278,13 +279,7 @@ public class OperationSupport {
     return handleResponse(requestBuilder, type);
   }
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-      String resourceVersion) throws InterruptedException, IOException {
-    handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))),
-        gracePeriodSeconds, propagationPolicy, resourceVersion);
-  }
-
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
+  protected KubernetesResource handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy,
       String resourceVersion) throws InterruptedException, IOException {
     DeleteOptions deleteOptions = new DeleteOptions();
     if (gracePeriodSeconds >= 0) {
@@ -303,7 +298,8 @@ public class OperationSupport {
 
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
-    handleResponse(requestBuilder, null);
+
+    return handleResponse(requestBuilder, KubernetesResource.class);
   }
 
   /**

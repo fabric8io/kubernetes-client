@@ -39,9 +39,9 @@ class SubscriptionTest {
     // Given
     Subscription subscription = getSubscription();
     server.expect().post()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions")
-      .andReturn(HttpURLConnection.HTTP_OK, subscription)
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions")
+        .andReturn(HttpURLConnection.HTTP_OK, subscription)
+        .once();
 
     // When
     subscription = client.operatorHub().subscriptions().inNamespace("ns1").create(subscription);
@@ -55,9 +55,9 @@ class SubscriptionTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getSubscription())
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getSubscription())
+        .once();
 
     // When
     Subscription f = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").get();
@@ -71,9 +71,9 @@ class SubscriptionTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions")
-      .andReturn(HttpURLConnection.HTTP_OK, new SubscriptionListBuilder().withItems(getSubscription()).build())
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions")
+        .andReturn(HttpURLConnection.HTTP_OK, new SubscriptionListBuilder().withItems(getSubscription()).build())
+        .once();
 
     // When
     SubscriptionList fgList = client.operatorHub().subscriptions().inNamespace("ns1").list();
@@ -88,12 +88,12 @@ class SubscriptionTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getSubscription())
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getSubscription())
+        .once();
 
     // When
-    Boolean deleted = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,17 +101,17 @@ class SubscriptionTest {
 
   private Subscription getSubscription() {
     return new SubscriptionBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .withNamespace("ns1")
-      .endMetadata()
-      .withNewSpec()
-      .withChannel("alpha")
-      .withName("foo")
-      .withSource("example")
-      .withSourceNamespace("ns1")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("foo")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withNewSpec()
+        .withChannel("alpha")
+        .withName("foo")
+        .withSource("example")
+        .withSourceNamespace("ns1")
+        .endSpec()
+        .build();
   }
 
 }

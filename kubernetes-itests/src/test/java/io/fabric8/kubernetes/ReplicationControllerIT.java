@@ -35,7 +35,7 @@ class ReplicationControllerIT {
   @Test
   void load() {
     ReplicationController aReplicationController = client.replicationControllers()
-      .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
+        .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
 
     assertThat(aReplicationController).isNotNull();
     assertEquals("nginx", aReplicationController.getMetadata().getName());
@@ -63,7 +63,7 @@ class ReplicationControllerIT {
 
   @Test
   void delete() {
-    assertTrue(client.replicationControllers().withName("rc-delete").delete());
+    assertTrue(client.replicationControllers().withName("rc-delete").delete().size() == 1);
   }
 
 }

@@ -80,7 +80,7 @@ class ObservabilityAddonTest {
 
     // When
     Boolean isDeleted = client.observability().observabilityAddons().inNamespace("ns1").withName("sample-observabilityaddon")
-        .delete();
+        .delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

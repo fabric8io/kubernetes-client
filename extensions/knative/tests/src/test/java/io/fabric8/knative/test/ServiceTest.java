@@ -67,7 +67,7 @@ class ServiceTest {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
         .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
         .once();
-    Boolean deleted = client.services().inNamespace("ns3").withName("service3").delete();
+    boolean deleted = client.services().inNamespace("ns3").withName("service3").delete().size() == 1;
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
@@ -82,7 +82,7 @@ class ServiceTest {
         .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
         .once();
     Boolean deleted = client.services().inNamespace("ns3").withName("service3")
-        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();

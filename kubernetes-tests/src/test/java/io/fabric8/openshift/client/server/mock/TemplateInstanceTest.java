@@ -36,26 +36,26 @@ class TemplateInstanceTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templateinstances/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewTemplateInstance("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewTemplateInstance("test-get"))
+        .once();
 
     // When
     TemplateInstance templateInstance = client.templateInstances().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(templateInstance)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templateinstances")
-      .andReturn(HttpURLConnection.HTTP_OK, new TemplateInstanceListBuilder()
-        .addToItems(createNewTemplateInstance("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new TemplateInstanceListBuilder()
+            .addToItems(createNewTemplateInstance("test-list"))
+            .build())
+        .once();
 
     // When
     TemplateInstanceList templateInstanceList = client.templateInstances().inNamespace("ns1").list();
@@ -64,18 +64,18 @@ class TemplateInstanceTest {
     assertThat(templateInstanceList).isNotNull();
     assertThat(templateInstanceList.getItems()).hasSize(1);
     assertThat(templateInstanceList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templateinstances/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewTemplateInstance("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewTemplateInstance("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.templateInstances().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.templateInstances().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,27 +83,27 @@ class TemplateInstanceTest {
 
   private TemplateInstance createNewTemplateInstance(String name) {
     return new TemplateInstanceBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewSecret().withName("secret").endSecret()
-      .withNewTemplate()
-      .withNewMetadata()
-      .withName("redis-template")
-      .addToAnnotations("description", "Description")
-      .endMetadata()
-      .addToObjects(new ConfigMapBuilder()
-        .withNewMetadata().withNamespace(name).endMetadata()
-        .addToData("foo", "bar")
-        .build())
-      .addNewParameter()
-      .withDescription("Password used for Redis authentication")
-      .withFrom("[A-Z0-9]{8}")
-      .withGenerate("expression")
-      .withName("REDIS_PASSWORD")
-      .endParameter()
-      .addToLabels("redis", "master")
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewSecret().withName("secret").endSecret()
+        .withNewTemplate()
+        .withNewMetadata()
+        .withName("redis-template")
+        .addToAnnotations("description", "Description")
+        .endMetadata()
+        .addToObjects(new ConfigMapBuilder()
+            .withNewMetadata().withNamespace(name).endMetadata()
+            .addToData("foo", "bar")
+            .build())
+        .addNewParameter()
+        .withDescription("Password used for Redis authentication")
+        .withFrom("[A-Z0-9]{8}")
+        .withGenerate("expression")
+        .withName("REDIS_PASSWORD")
+        .endParameter()
+        .addToLabels("redis", "master")
+        .endTemplate()
+        .endSpec()
+        .build();
   }
 }

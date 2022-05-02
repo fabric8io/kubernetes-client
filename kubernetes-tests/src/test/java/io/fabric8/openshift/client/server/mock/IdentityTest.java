@@ -35,26 +35,26 @@ class IdentityTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/user.openshift.io/v1/identities/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewIdentity("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewIdentity("test-get"))
+        .once();
 
     // When
     Identity identity = client.identities().withName("test-get").get();
 
     // Then
     assertThat(identity)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/user.openshift.io/v1/identities")
-      .andReturn(HttpURLConnection.HTTP_OK, new IdentityListBuilder()
-        .addToItems(createNewIdentity("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new IdentityListBuilder()
+            .addToItems(createNewIdentity("test-list"))
+            .build())
+        .once();
 
     // When
     IdentityList identityList = client.identities().list();
@@ -63,18 +63,18 @@ class IdentityTest {
     assertThat(identityList).isNotNull();
     assertThat(identityList.getItems()).hasSize(1);
     assertThat(identityList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/user.openshift.io/v1/identities/developer:developer")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewIdentity("developer:developer"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewIdentity("developer:developer"))
+        .once();
 
     // When
-    Boolean isDeleted = client.identities().withName("developer:developer").delete();
+    boolean isDeleted = client.identities().withName("developer:developer").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,13 +82,13 @@ class IdentityTest {
 
   private Identity createNewIdentity(String name) {
     return new IdentityBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withProviderName("developer")
-      .withProviderUserName("developer")
-      .withNewUser()
-      .withName("developer")
-      .withUid("da8a03a4-be11-498e-8673-b2c072935e7b")
-      .endUser()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withProviderName("developer")
+        .withProviderUserName("developer")
+        .withNewUser()
+        .withName("developer")
+        .withUid("da8a03a4-be11-498e-8673-b2c072935e7b")
+        .endUser()
+        .build();
   }
 }

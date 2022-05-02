@@ -39,9 +39,9 @@ class ImagePrunerTest {
     // Given
     ImagePruner imagePruner = getImagePruner();
     server.expect().post()
-      .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners")
-      .andReturn(HttpURLConnection.HTTP_OK, imagePruner)
-      .once();
+        .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners")
+        .andReturn(HttpURLConnection.HTTP_OK, imagePruner)
+        .once();
 
     // When
     imagePruner = client.operator().imagePruners().create(imagePruner);
@@ -55,9 +55,9 @@ class ImagePrunerTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getImagePruner())
-      .once();
+        .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getImagePruner())
+        .once();
 
     // When
     ImagePruner f = client.operator().imagePruners().withName("foo").get();
@@ -71,9 +71,9 @@ class ImagePrunerTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners")
-      .andReturn(HttpURLConnection.HTTP_OK, new ImagePrunerListBuilder().withItems(getImagePruner()).build())
-      .once();
+        .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners")
+        .andReturn(HttpURLConnection.HTTP_OK, new ImagePrunerListBuilder().withItems(getImagePruner()).build())
+        .once();
 
     // When
     ImagePrunerList fgList = client.operator().imagePruners().list();
@@ -88,12 +88,12 @@ class ImagePrunerTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getImagePruner())
-      .once();
+        .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getImagePruner())
+        .once();
 
     // When
-    Boolean deleted = client.operator().imagePruners().withName("foo").delete();
+    boolean deleted = client.operator().imagePruners().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,7 +101,7 @@ class ImagePrunerTest {
 
   private ImagePruner getImagePruner() {
     return new ImagePrunerBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .build();
   }
 }

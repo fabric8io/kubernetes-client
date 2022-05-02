@@ -76,7 +76,7 @@ class MultiClusterHubTest {
         .once();
 
     // When
-    Boolean isDeleted = client.operator().multiClusterHubs().inNamespace("ns1").withName("sample-mch").delete();
+    boolean isDeleted = client.operator().multiClusterHubs().inNamespace("ns1").withName("sample-mch").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

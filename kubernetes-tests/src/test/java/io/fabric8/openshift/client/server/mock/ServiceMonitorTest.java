@@ -51,9 +51,9 @@ class ServiceMonitorTest {
     // Given
     ServiceMonitor serviceMonitor = getServiceMonitor();
     server.expect().post()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors")
-      .andReturn(HttpURLConnection.HTTP_OK, serviceMonitor)
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors")
+        .andReturn(HttpURLConnection.HTTP_OK, serviceMonitor)
+        .once();
 
     // When
     serviceMonitor = client.monitoring().serviceMonitors().inNamespace("ns1").create(serviceMonitor);
@@ -67,9 +67,9 @@ class ServiceMonitorTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getServiceMonitor())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getServiceMonitor())
+        .once();
 
     // When
     ServiceMonitor serviceMonitor = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").get();
@@ -83,9 +83,9 @@ class ServiceMonitorTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors")
-      .andReturn(HttpURLConnection.HTTP_OK, new ServiceMonitorListBuilder().withItems(getServiceMonitor()).build())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors")
+        .andReturn(HttpURLConnection.HTTP_OK, new ServiceMonitorListBuilder().withItems(getServiceMonitor()).build())
+        .once();
 
     // When
     ServiceMonitorList fgList = client.monitoring().serviceMonitors().inNamespace("ns1").list();
@@ -100,12 +100,12 @@ class ServiceMonitorTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getServiceMonitor())
-      .once();
+        .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getServiceMonitor())
+        .once();
 
     // When
-    Boolean deleted = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -113,21 +113,20 @@ class ServiceMonitorTest {
 
   private ServiceMonitor getServiceMonitor() {
     return new ServiceMonitorBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .addToLabels("prometheus", "frontend")
-      .endMetadata()
-      .withNewSpec()
-      .withNewNamespaceSelector().withAny(true).endNamespaceSelector()
-      .withNewSelector()
-      .addToMatchLabels("prometheus", "frontend")
-      .endSelector()
-      .addNewEndpoint()
-      .withPort("http-metric")
-      .withInterval("15s")
-      .endEndpoint()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("foo")
+        .addToLabels("prometheus", "frontend")
+        .endMetadata()
+        .withNewSpec()
+        .withNewNamespaceSelector().withAny(true).endNamespaceSelector()
+        .withNewSelector()
+        .addToMatchLabels("prometheus", "frontend")
+        .endSelector()
+        .addNewEndpoint()
+        .withPort("http-metric")
+        .withInterval("15s")
+        .endEndpoint()
+        .endSpec()
+        .build();
   }
 }
-

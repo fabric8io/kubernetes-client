@@ -34,47 +34,52 @@ class OverlappingRangeIPReservationTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/overlappingrangeipreservations/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOverlappingRangeIPReservation("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/overlappingrangeipreservations/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOverlappingRangeIPReservation("test-get"))
+        .once();
 
     // When
-    OverlappingRangeIPReservation overlappingRangeIPReservation = client.whereabouts().overlappingRangeIpReservations().inNamespace("ns1").withName("test-get").get();
+    OverlappingRangeIPReservation overlappingRangeIPReservation = client.whereabouts().overlappingRangeIpReservations()
+        .inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(overlappingRangeIPReservation)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/overlappingrangeipreservations")
-      .andReturn(HttpURLConnection.HTTP_OK, new OverlappingRangeIPReservationListBuilder()
-        .addToItems(createNewOverlappingRangeIPReservation("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new OverlappingRangeIPReservationListBuilder()
+            .addToItems(createNewOverlappingRangeIPReservation("test-list"))
+            .build())
+        .once();
 
     // When
-    OverlappingRangeIPReservationList overlappingRangeIPReservationList = client.whereabouts().overlappingRangeIpReservations().inNamespace("ns1").list();
+    OverlappingRangeIPReservationList overlappingRangeIPReservationList = client.whereabouts().overlappingRangeIpReservations()
+        .inNamespace("ns1").list();
 
     // Then
     assertThat(overlappingRangeIPReservationList).isNotNull();
     assertThat(overlappingRangeIPReservationList.getItems()).hasSize(1);
     assertThat(overlappingRangeIPReservationList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/overlappingrangeipreservations/orir")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOverlappingRangeIPReservation("orir"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/overlappingrangeipreservations/orir")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOverlappingRangeIPReservation("orir"))
+        .once();
 
     // When
-    Boolean isDeleted = client.whereabouts().overlappingRangeIpReservations().inNamespace("ns1").withName("orir").delete();
+    boolean isDeleted = client.whereabouts().overlappingRangeIpReservations().inNamespace("ns1").withName("orir").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,10 +87,10 @@ class OverlappingRangeIPReservationTest {
 
   private OverlappingRangeIPReservation createNewOverlappingRangeIPReservation(String name) {
     return new OverlappingRangeIPReservationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withContainerid("container1")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withContainerid("container1")
+        .endSpec()
+        .build();
   }
 }

@@ -19,12 +19,16 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusDetails;
+import io.fabric8.kubernetes.api.model.StatusDetailsBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
@@ -63,10 +67,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
@@ -74,6 +81,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
@@ -359,10 +367,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return context.getFieldQueryParam();
   }
 
-  public String getLabelQueryParam() {
-    return context.getLabelQueryParam();
-  }
-
   @Override
   public L list() {
     return list(new ListOptions());
@@ -416,20 +420,74 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return options;
   }
 
+  static void toStatusDetails(KubernetesResource obj, List<StatusDetails> details) {
+    if (obj instanceof HasMetadata) {
+      HasMetadata meta = (HasMetadata) obj;
+      ObjectMeta metadata = meta.getMetadata();
+      details.add(new StatusDetailsBuilder()
+          .withGroup(ApiVersionUtil.trimGroup(meta.getApiVersion()))
+          .withKind(meta.getKind())
+          .withName(metadata == null ? null : metadata.getName())
+          .withUid(metadata == null ? null : metadata.getUid())
+          .build());
+    } else if (obj instanceof Status) {
+      details.add(((Status) obj).getDetails());
+    } else if (obj instanceof KubernetesResourceList) {
+      List<HasMetadata> items = ((KubernetesResourceList<HasMetadata>) obj).getItems();
+      if (items != null) {
+        items.forEach(i -> toStatusDetails(i, details));
+      }
+    } else {
+      // log?
+    }
+  }
+
   @Override
-  public boolean delete() {
-    if (item != null || (name != null && !name.isEmpty())) {
+  public List<StatusDetails> delete() {
+    if (Utils.isNotNullOrEmpty(name) || Utils.isNotNullOrEmpty(namespace) || !isResourceNamespaced()) {
       try {
-        deleteThis();
-        return true;
-      } catch (KubernetesClientException e) {
-        if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-          throw e;
+        URL resourceURLForWriteOperation = getResourceURLForWriteOperation(getResourceUrl());
+        ListOptions options = new ListOptions();
+        boolean useOptions = false;
+        if (Utils.isNullOrEmpty(name)) {
+          String fieldQueryParam = context.getFieldQueryParam();
+          if (fieldQueryParam != null) {
+            options.setFieldSelector(fieldQueryParam);
+            useOptions = true;
+          }
+          String labelQueryParam = context.getLabelQueryParam();
+          if (labelQueryParam != null) {
+            options.setLabelSelector(labelQueryParam);
+            useOptions = true;
+          }
         }
-        return false;
+        if (useOptions) {
+          resourceURLForWriteOperation = appendListOptionParams(resourceURLForWriteOperation, options);
+        }
+        KubernetesResource result = handleDelete(resourceURLForWriteOperation, gracePeriodSeconds, propagationPolicy,
+            resourceVersion);
+        ArrayList<StatusDetails> details = new ArrayList<>();
+        toStatusDetails(result, details);
+        return details;
+      } catch (Exception e) {
+        RuntimeException re = KubernetesClientException.launderThrowable(forOperationType("delete"), e);
+        if (re instanceof KubernetesClientException) {
+          KubernetesClientException ke = (KubernetesClientException) re;
+          if (Utils.isNotNullOrEmpty(name)) {
+            if (ke.getCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+              return Collections.emptyList();
+            }
+          } else if (ke.getCode() == HttpURLConnection.HTTP_BAD_METHOD) {
+            // collection delete may not be supported, fall-back to single item delete
+            return list().getItems().stream().flatMap(i -> resource(i).delete().stream()).collect(Collectors.toList());
+          }
+        }
+        throw re;
       }
     }
-    return delete(list().getItems());
+    // if there is no name nor namespace and this is a namespaced resource, find each applicable namespace and issue a delete
+    Set<String> namespaces = list().getItems().stream().map(i -> i.getMetadata().getNamespace()).collect(Collectors.toSet());
+    return namespaces.stream().flatMap(n -> inNamespace(n).delete().stream()).collect(Collectors.toList());
   }
 
   @Override
@@ -473,19 +531,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       ctx = ctx.withNamespace(itemNs);
     }
     return newResource(ctx);
-  }
-
-  void deleteThis() {
-    try {
-      if (item != null) {
-        updateApiVersion(item);
-        handleDelete(item, gracePeriodSeconds, propagationPolicy, resourceVersion);
-      } else {
-        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion);
-      }
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
-    }
   }
 
   @Override
@@ -989,7 +1034,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public boolean delete(T item) {
+  public List<StatusDetails> delete(T item) {
     return resource(item).delete();
   }
 

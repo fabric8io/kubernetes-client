@@ -41,7 +41,7 @@ class DeploymentConfigIT {
   @Test
   void load() {
     DeploymentConfig deploymentConfig = client.deploymentConfigs()
-      .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
+        .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
     assertThat(deploymentConfig).isNotNull();
     assertEquals("frontend", deploymentConfig.getMetadata().getName());
   }
@@ -69,7 +69,7 @@ class DeploymentConfigIT {
   @Test
   void delete() {
     client.deploymentConfigs().withName("dc-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.deploymentConfigs().withName("dc-delete").delete();
+    boolean bDeleted = client.deploymentConfigs().withName("dc-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 
@@ -85,7 +85,8 @@ class DeploymentConfigIT {
     // Then
     assertNotNull(deploymentConfig);
     assertEquals("dc-createorreplace", deploymentConfig.getMetadata().getName());
-    assertEquals("openshift/hello-openshift:v3.8", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    assertEquals("openshift/hello-openshift:v3.8",
+        deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
   }
 
 }

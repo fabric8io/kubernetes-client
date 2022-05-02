@@ -39,9 +39,9 @@ class ConsoleLinkTest {
     // Given
     ConsoleLink consoleLink = getConsoleLink();
     server.expect().post()
-      .withPath("/apis/console.openshift.io/v1/consolelinks")
-      .andReturn(HttpURLConnection.HTTP_OK, consoleLink)
-      .once();
+        .withPath("/apis/console.openshift.io/v1/consolelinks")
+        .andReturn(HttpURLConnection.HTTP_OK, consoleLink)
+        .once();
 
     // When
     consoleLink = client.console().consoleLinks().create(consoleLink);
@@ -55,9 +55,9 @@ class ConsoleLinkTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/console.openshift.io/v1/consolelinks/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getConsoleLink())
-      .once();
+        .withPath("/apis/console.openshift.io/v1/consolelinks/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getConsoleLink())
+        .once();
 
     // When
     ConsoleLink f = client.console().consoleLinks().withName("foo").get();
@@ -71,9 +71,9 @@ class ConsoleLinkTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/console.openshift.io/v1/consolelinks")
-      .andReturn(HttpURLConnection.HTTP_OK, new ConsoleLinkListBuilder().withItems(getConsoleLink()).build())
-      .once();
+        .withPath("/apis/console.openshift.io/v1/consolelinks")
+        .andReturn(HttpURLConnection.HTTP_OK, new ConsoleLinkListBuilder().withItems(getConsoleLink()).build())
+        .once();
 
     // When
     ConsoleLinkList fgList = client.console().consoleLinks().list();
@@ -88,12 +88,12 @@ class ConsoleLinkTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/console.openshift.io/v1/consolelinks/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getConsoleLink())
-      .once();
+        .withPath("/apis/console.openshift.io/v1/consolelinks/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getConsoleLink())
+        .once();
 
     // When
-    Boolean deleted = client.console().consoleLinks().withName("foo").delete();
+    boolean deleted = client.console().consoleLinks().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,12 +101,12 @@ class ConsoleLinkTest {
 
   private ConsoleLink getConsoleLink() {
     return new ConsoleLinkBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .withHref("https://blog.openshift.com")
-      .withLocation("HelpMenu")
-      .withText("OpenShift Blog")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .withHref("https://blog.openshift.com")
+        .withLocation("HelpMenu")
+        .withText("OpenShift Blog")
+        .endSpec()
+        .build();
   }
 }

@@ -40,35 +40,32 @@ public class StorageClassExamples {
       final String storageClassName = UUID.randomUUID().toString();
       logger.info("List of existent storage classes:");
       client.storage().storageClasses().list().getItems()
-        .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
+          .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Creating new Storage class");
       final StorageClass storageClass = client.storage().storageClasses().create(
-        new StorageClassBuilder()
-          .withNewMetadata().withName(storageClassName).endMetadata()
-          .addToParameters("resturl", "http://localhost:8080")
-          .addToParameters("restuser", "")
-          .addToParameters("secretNamespace", "")
-          .addToParameters("secretName", "")
-          .addToParameters("key", "value1")
-          .withProvisioner("k8s.io/minikube-hostpath")
-          .build()
-      );
+          new StorageClassBuilder()
+              .withNewMetadata().withName(storageClassName).endMetadata()
+              .addToParameters("resturl", "http://localhost:8080")
+              .addToParameters("restuser", "")
+              .addToParameters("secretNamespace", "")
+              .addToParameters("secretName", "")
+              .addToParameters("key", "value1")
+              .withProvisioner("k8s.io/minikube-hostpath")
+              .build());
       logger.info("Newly created storage class details:\n{}", storageClass);
 
       logger.info("Updated list of existent storage classes:");
       client.storage().storageClasses().list().getItems()
-        .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
+          .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Updating {} storage clas to add new label", storageClassName);
-      final StorageClass updatedStorageClass = client.storage().storageClasses().withName(storageClassName).edit(s ->
-        new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build()
-      );
+      final StorageClass updatedStorageClass = client.storage().storageClasses().withName(storageClassName).edit(
+          s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
       logger.info("Updated storage class details:\n{}", updatedStorageClass);
 
       //delete storage class
-      boolean isDeleteSuccessful = client.storage().storageClasses().delete(storageClass);
-      logger.info("Storage Class resource successfully deleted: {}", isDeleteSuccessful);
+      client.resource(storageClass).delete();
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

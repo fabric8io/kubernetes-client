@@ -34,27 +34,30 @@ class UserOAuthAccessTokenTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/oauth.openshift.io/v1/useroauthaccesstokens/sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewUserOAuthAccessToken("sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/oauth.openshift.io/v1/useroauthaccesstokens/sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            createNewUserOAuthAccessToken("sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU"))
+        .once();
 
     // When
-    UserOAuthAccessToken userOAuthAccessToken = client.userOAuthAccessTokens().withName("sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU").get();
+    UserOAuthAccessToken userOAuthAccessToken = client.userOAuthAccessTokens()
+        .withName("sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU").get();
 
     // Then
     assertThat(userOAuthAccessToken)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/oauth.openshift.io/v1/useroauthaccesstokens")
-      .andReturn(HttpURLConnection.HTTP_OK, new UserOAuthAccessTokenListBuilder()
-        .addToItems(createNewUserOAuthAccessToken("sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new UserOAuthAccessTokenListBuilder()
+            .addToItems(createNewUserOAuthAccessToken("sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU"))
+            .build())
+        .once();
 
     // When
     UserOAuthAccessTokenList userOAuthAccessTokenList = client.userOAuthAccessTokens().list();
@@ -63,18 +66,18 @@ class UserOAuthAccessTokenTest {
     assertThat(userOAuthAccessTokenList).isNotNull();
     assertThat(userOAuthAccessTokenList.getItems()).hasSize(1);
     assertThat(userOAuthAccessTokenList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU");
+        .hasFieldOrPropertyWithValue("metadata.name", "sha256~mTZgKITxcHpoKJ5FSwLSeu0UNOQ0CO8bEMv0eLsANmU");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/oauth.openshift.io/v1/useroauthaccesstokens/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewUserOAuthAccessToken("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewUserOAuthAccessToken("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.userOAuthAccessTokens().withName("test-delete").delete();
+    boolean isDeleted = client.userOAuthAccessTokens().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,15 +85,14 @@ class UserOAuthAccessTokenTest {
 
   private UserOAuthAccessToken createNewUserOAuthAccessToken(String name) {
     return new UserOAuthAccessTokenBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withUserName("user1")
-      .withUserUID("uid")
-      .addToScopes("user:check-access")
-      .withRedirectURI("https://oauth-openshift.apps-crc.testing/oauth/token/implicit")
-      .withClientName("openshift-challenging-client")
-      .withExpiresIn(86400L)
-      .withAuthorizeToken("sha256~oKyk5Wcnar7JeO4-pLdnyGt-IIpmhNJA7-2testing-test")
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withUserName("user1")
+        .withUserUID("uid")
+        .addToScopes("user:check-access")
+        .withRedirectURI("https://oauth-openshift.apps-crc.testing/oauth/token/implicit")
+        .withClientName("openshift-challenging-client")
+        .withExpiresIn(86400L)
+        .withAuthorizeToken("sha256~oKyk5Wcnar7JeO4-pLdnyGt-IIpmhNJA7-2testing-test")
+        .build();
   }
 }
-

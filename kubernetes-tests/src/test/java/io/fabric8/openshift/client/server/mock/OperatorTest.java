@@ -35,26 +35,26 @@ class OperatorTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/operators.coreos.com/v1/operators/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOperator("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOperator("test-get"))
+        .once();
 
     // When
     Operator operator = client.operatorHub().operators().withName("test-get").get();
 
     // Then
     assertThat(operator)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/operators.coreos.com/v1/operators")
-      .andReturn(HttpURLConnection.HTTP_OK, new OperatorListBuilder()
-        .addToItems(createNewOperator("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new OperatorListBuilder()
+            .addToItems(createNewOperator("test-list"))
+            .build())
+        .once();
 
     // When
     OperatorList operatorList = client.operatorHub().operators().list();
@@ -63,18 +63,18 @@ class OperatorTest {
     assertThat(operatorList).isNotNull();
     assertThat(operatorList.getItems()).hasSize(1);
     assertThat(operatorList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/operators.coreos.com/v1/operators/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOperator("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOperator("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operatorHub().operators().withName("cluster").delete();
+    boolean isDeleted = client.operatorHub().operators().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,7 +82,7 @@ class OperatorTest {
 
   private Operator createNewOperator(String name) {
     return new OperatorBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .build();
   }
 }

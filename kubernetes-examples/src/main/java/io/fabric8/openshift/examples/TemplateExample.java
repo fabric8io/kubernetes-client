@@ -1,7 +1,3 @@
-package io.fabric8.openshift.examples;
-
-import io.fabric8.kubernetes.api.model.HasMetadata;
-
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -18,6 +14,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
  * limitations under the License.
  */
 
+package io.fabric8.openshift.examples;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.Parameter;
@@ -42,48 +41,50 @@ public class TemplateExample {
       try {
         logger.info("Creating temporary project '{}' for example", NAMESPACE);
         client.projectrequests().create(
-          new ProjectRequestBuilder()
-            .withNewMetadata()
-            .withName(NAMESPACE)
-            .endMetadata()
-            .build()
-        );
+            new ProjectRequestBuilder()
+                .withNewMetadata()
+                .withName(NAMESPACE)
+                .endMetadata()
+                .build());
         logger.info("Created project: {}", NAMESPACE);
 
         final Template loadedTemplate = client.templates()
-          .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).get();
+            .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).get();
         for (Parameter p : loadedTemplate.getParameters()) {
           final String required = Boolean.TRUE.equals(p.getRequired()) ? "*" : "";
           logger.info("Loaded parameter from template: {}{} - '{}' ({})",
-            p.getName(), required, p.getValue(), p.getGenerate());
+              p.getName(), required, p.getValue(), p.getGenerate());
         }
 
         final Template serverUploadedTemplate = client.templates()
-          .inNamespace(NAMESPACE)
-          .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE))
-          .create();
+            .inNamespace(NAMESPACE)
+            .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE))
+            .create();
         logger.info("Template {} successfully created on server", serverUploadedTemplate.getMetadata().getName());
-        final Template serverDownloadedTemplate = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).get();
+        final Template serverDownloadedTemplate = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE)
+            .get();
         logger.info("Template {} successfully downloaded from server", serverDownloadedTemplate.getMetadata().getName());
 
         final KubernetesList processedTemplateWithDefaultParameters = client.templates()
-          .inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).process();
+            .inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).process();
         logger.info("Template {} successfully processed to list with {} items, and requiredBoolean = {}",
-          processedTemplateWithDefaultParameters.getItems().get(0).getMetadata().getLabels().get("template"),
-          processedTemplateWithDefaultParameters.getItems().size(),
-          processedTemplateWithDefaultParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
+            processedTemplateWithDefaultParameters.getItems().get(0).getMetadata().getLabels().get("template"),
+            processedTemplateWithDefaultParameters.getItems().size(),
+            processedTemplateWithDefaultParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
 
         final KubernetesList processedTemplateWithCustomParameters = client.templates()
-          .inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).process(Collections.singletonMap("REQUIRED_BOOLEAN", "true"));
+            .inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE)
+            .process(Collections.singletonMap("REQUIRED_BOOLEAN", "true"));
         logger.info("Template {} successfully processed to list with {} items, and requiredBoolean = {}",
-          processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("template"),
-          processedTemplateWithCustomParameters.getItems().size(),
-          processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
+            processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("template"),
+            processedTemplateWithCustomParameters.getItems().size(),
+            processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
 
         List<HasMetadata> l = client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
         logger.info("{}", l.size());
 
-        final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete();
+        final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete()
+            .size() == 1;
         logger.info("Template {} was {}deleted", DEFAULT_NAME_OF_TEMPLATE, templateDeleted ? "" : "**NOT** ");
         client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).inNamespace(NAMESPACE).create();
       } finally {

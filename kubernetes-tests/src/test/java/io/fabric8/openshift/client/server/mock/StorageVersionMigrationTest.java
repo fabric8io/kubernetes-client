@@ -35,46 +35,48 @@ class StorageVersionMigrationTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/migration.k8s.io/v1alpha1/storageversionmigrations/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewStorageVersionMigration("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewStorageVersionMigration("test-get"))
+        .once();
 
     // When
-    StorageVersionMigration storageVersionMigration = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("test-get").get();
+    StorageVersionMigration storageVersionMigration = client.kubeStorageVersionMigrator().storageVersionMigrations()
+        .withName("test-get").get();
 
     // Then
     assertThat(storageVersionMigration)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/migration.k8s.io/v1alpha1/storageversionmigrations")
-      .andReturn(HttpURLConnection.HTTP_OK, new StorageVersionMigrationListBuilder()
-        .addToItems(createNewStorageVersionMigration("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new StorageVersionMigrationListBuilder()
+            .addToItems(createNewStorageVersionMigration("test-list"))
+            .build())
+        .once();
 
     // When
-    StorageVersionMigrationList storageVersionMigrationList = client.kubeStorageVersionMigrator().storageVersionMigrations().list();
+    StorageVersionMigrationList storageVersionMigrationList = client.kubeStorageVersionMigrator().storageVersionMigrations()
+        .list();
 
     // Then
     assertThat(storageVersionMigrationList).isNotNull();
     assertThat(storageVersionMigrationList.getItems()).hasSize(1);
     assertThat(storageVersionMigrationList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/migration.k8s.io/v1alpha1/storageversionmigrations/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewStorageVersionMigration("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewStorageVersionMigration("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("cluster").delete();
+    boolean isDeleted = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,14 +84,14 @@ class StorageVersionMigrationTest {
 
   private StorageVersionMigration createNewStorageVersionMigration(String name) {
     return new StorageVersionMigrationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withContinueToken("testtoken")
-      .withNewResource()
-      .withGroup("example.k8s.io")
-      .withResource("TestResource")
-      .endResource()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withContinueToken("testtoken")
+        .withNewResource()
+        .withGroup("example.k8s.io")
+        .withResource("TestResource")
+        .endResource()
+        .endSpec()
+        .build();
   }
 }

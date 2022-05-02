@@ -38,14 +38,14 @@ class RouteCrudTest {
   void testCrud() {
 
     Route route1 = new RouteBuilder().withNewMetadata().withName("route1")
-      .addToLabels("foo", "bar")
-      .and().build();
+        .addToLabels("foo", "bar")
+        .and().build();
     Route route2 = new RouteBuilder().withNewMetadata().withName("route2")
-      .addToLabels("foo", "bar")
-      .and().build();
+        .addToLabels("foo", "bar")
+        .and().build();
     Route route3 = new RouteBuilder().withNewMetadata().withName("route3")
-      .addToLabels("foo", "bar")
-      .and().build();
+        .addToLabels("foo", "bar")
+        .and().build();
 
     client.routes().inNamespace("ns1").create(route1);
     client.routes().inNamespace("ns1").create(route2);
@@ -67,7 +67,7 @@ class RouteCrudTest {
     assertNotNull(aRouteList);
     assertEquals(3, aRouteList.getItems().size());
 
-    boolean bDeleted = client.routes().inNamespace("ns1").delete();
+    boolean bDeleted = client.routes().inNamespace("ns1").delete().size() == 2;
     aRouteList = client.routes().inNamespace("ns1").list();
     assertTrue(bDeleted);
     assertEquals(0, aRouteList.getItems().size());

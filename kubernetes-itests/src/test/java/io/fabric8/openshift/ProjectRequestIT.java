@@ -38,24 +38,24 @@ class ProjectRequestIT {
     // Given
     String name = "projectrequestit-create";
     ProjectRequest projectRequest = new ProjectRequestBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withDisplayName("ProjectRequestIT Create")
-      .withDescription("Testing")
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withDisplayName("ProjectRequestIT Create")
+        .withDescription("Testing")
+        .build();
 
     // When
     client.projectrequests().create(projectRequest);
 
     // Then
     client.projects()
-      .withName(name)
-      .informOnCondition(pl -> pl.stream().anyMatch(p -> p.getMetadata().getName().equals(name)))
-      .get(1, TimeUnit.SECONDS);
+        .withName(name)
+        .informOnCondition(pl -> pl.stream().anyMatch(p -> p.getMetadata().getName().equals(name)))
+        .get(1, TimeUnit.SECONDS);
     final Project createdProject = client.projects().withName(name).get();
     assertNotNull(createdProject);
     assertEquals(name, createdProject.getMetadata().getName());
     assertEquals("Testing", createdProject.getMetadata().getAnnotations().get("openshift.io/description"));
     assertEquals("ProjectRequestIT Create", createdProject.getMetadata().getAnnotations().get("openshift.io/display-name"));
-    assertTrue(client.projects().withName(name).delete());
+    assertTrue(client.projects().withName(name).delete().size() == 1);
   }
 }

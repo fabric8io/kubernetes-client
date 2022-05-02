@@ -58,7 +58,7 @@ class ClusterRoleBindingIT {
   void load() {
 
     ClusterRoleBinding aClusterRoleBinding = client.rbac().clusterRoleBindings()
-      .load(getClass().getResourceAsStream("/test-kubernetesclusterrolebinding.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesclusterrolebinding.yml")).get();
     assertNotNull(aClusterRoleBinding);
     assertEquals("ClusterRoleBinding", aClusterRoleBinding.getKind());
     assertNotNull(aClusterRoleBinding.getMetadata());
@@ -84,8 +84,8 @@ class ClusterRoleBindingIT {
     assertNotNull(clusterRoleBindingList);
     assertNotNull(clusterRoleBindingList.getItems());
 
-    for (ClusterRoleBinding clusterRoleBinding : clusterRoleBindingList.getItems())  {
-      if (clusterRoleBinding.getMetadata().getName().equals("read-nodes-list"))  {
+    for (ClusterRoleBinding clusterRoleBinding : clusterRoleBindingList.getItems()) {
+      if (clusterRoleBinding.getMetadata().getName().equals("read-nodes-list")) {
         assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());
         assertNotNull(clusterRoleBinding.getMetadata());
         assertEquals("read-nodes-list", clusterRoleBinding.getMetadata().getName());
@@ -109,8 +109,9 @@ class ClusterRoleBindingIT {
   @Test
   void update() {
 
-    ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update").edit(c -> new ClusterRoleBindingBuilder(c)
-                               .editSubject(0).withName("jane-new").endSubject().build());
+    ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update")
+        .edit(c -> new ClusterRoleBindingBuilder(c)
+            .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(clusterRoleBinding);
     assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());
@@ -132,13 +133,13 @@ class ClusterRoleBindingIT {
   void delete() {
     ClusterRoleBindingList clusterRoleBindingListBefore = client.rbac().clusterRoleBindings().list();
 
-    boolean deleted = client.rbac().clusterRoleBindings().withName("read-nodes-delete").delete();
+    boolean deleted = client.rbac().clusterRoleBindings().withName("read-nodes-delete").delete().size() == 1;
     assertTrue(deleted);
 
     client.rbac().clusterRoleBindings().withName("read-nodes-delete")
-      .waitUntilCondition(crb -> crb == null || crb.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(crb -> crb == null || crb.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
 
     ClusterRoleBindingList clusterRoleBindingListAfter = client.rbac().clusterRoleBindings().list();
-    assertEquals(clusterRoleBindingListBefore.getItems().size() - 1,clusterRoleBindingListAfter.getItems().size());
+    assertEquals(clusterRoleBindingListBefore.getItems().size() - 1, clusterRoleBindingListAfter.getItems().size());
   }
 }

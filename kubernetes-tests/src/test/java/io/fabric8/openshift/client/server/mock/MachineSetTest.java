@@ -35,26 +35,26 @@ class MachineSetTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/machine.openshift.io/v1beta1/namespaces/ns1/machinesets/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachineSet("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachineSet("test-get"))
+        .once();
 
     // When
     MachineSet machineSet = client.machine().machineSets().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(machineSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/machine.openshift.io/v1beta1/namespaces/ns1/machinesets")
-      .andReturn(HttpURLConnection.HTTP_OK, new MachineSetListBuilder()
-        .addToItems(createNewMachineSet("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MachineSetListBuilder()
+            .addToItems(createNewMachineSet("test-list"))
+            .build())
+        .once();
 
     // When
     MachineSetList machineSetList = client.machine().machineSets().inNamespace("ns1").list();
@@ -63,18 +63,18 @@ class MachineSetTest {
     assertThat(machineSetList).isNotNull();
     assertThat(machineSetList.getItems()).hasSize(1);
     assertThat(machineSetList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/machine.openshift.io/v1beta1/namespaces/ns1/machinesets/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachineSet("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachineSet("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.machine().machineSets().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.machine().machineSets().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,18 +82,18 @@ class MachineSetTest {
 
   private MachineSet createNewMachineSet(String name) {
     return new MachineSetBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withReplicas(2)
-      .withNewSelector()
-      .addToMatchLabels("machine.openshift.io/cluster-api-machineset", "worker")
-      .endSelector()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToLabels("machine.openshift.io/cluster-api-machineset", "worker")
-      .endMetadata()
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withReplicas(2)
+        .withNewSelector()
+        .addToMatchLabels("machine.openshift.io/cluster-api-machineset", "worker")
+        .endSelector()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToLabels("machine.openshift.io/cluster-api-machineset", "worker")
+        .endMetadata()
+        .endTemplate()
+        .endSpec()
+        .build();
   }
 }

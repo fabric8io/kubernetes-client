@@ -35,26 +35,26 @@ class ConsoleTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/consoles/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConsole("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConsole("test-get"))
+        .once();
 
     // When
     Console console = client.config().consoles().withName("test-get").get();
 
     // Then
     assertThat(console)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/config.openshift.io/v1/consoles")
-      .andReturn(HttpURLConnection.HTTP_OK, new ConsoleListBuilder()
-        .addToItems(createNewConsole("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ConsoleListBuilder()
+            .addToItems(createNewConsole("test-list"))
+            .build())
+        .once();
 
     // When
     ConsoleList consoleList = client.config().consoles().list();
@@ -63,18 +63,18 @@ class ConsoleTest {
     assertThat(consoleList).isNotNull();
     assertThat(consoleList.getItems()).hasSize(1);
     assertThat(consoleList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/config.openshift.io/v1/consoles/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConsole("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConsole("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.config().consoles().withName("cluster").delete();
+    boolean isDeleted = client.config().consoles().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,12 +82,12 @@ class ConsoleTest {
 
   private Console createNewConsole(String name) {
     return new ConsoleBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .withNewStatus()
-      .withConsoleURL("https://console-openshift-console.apps-example.testing")
-      .endStatus()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .withNewStatus()
+        .withConsoleURL("https://console-openshift-console.apps-example.testing")
+        .endStatus()
+        .build();
   }
 }

@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- *  This is an example of secret.
+ * This is an example of secret.
  */
 public class SecretExamples {
   private static final Logger logger = LoggerFactory.getLogger(SecretExamples.class);
@@ -45,34 +45,32 @@ public class SecretExamples {
       final String namespace = "default";
       logger.info("List of existent Secret:");
       client.secrets().inNamespace(namespace).list().getItems()
-        .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
+          .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Creating new Secret");
       Map<String, String> data = new HashMap<>();
       data.put("tls.crt", "YWFh");
       data.put("tls.key", "YmJi");
       final Secret secret = new SecretBuilder()
-        .withNewMetadata().withName(secretName).endMetadata()
-        .withType("kubernetes.io/tls")
-        .withImmutable(false)
-        .addToData(data)
-        .build();
+          .withNewMetadata().withName(secretName).endMetadata()
+          .withType("kubernetes.io/tls")
+          .withImmutable(false)
+          .addToData(data)
+          .build();
       Secret secretCreated = client.secrets().inNamespace(namespace).create(secret);
       logger.info("Newly created Secret details:\n{}", secretCreated);
 
       logger.info("Updated list of existent Secret:");
       client.secrets().inNamespace(namespace).list().getItems()
-        .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
+          .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Updating {} Secret to add new label", secretName);
-      final Secret updatedSecret = client.secrets().inNamespace(namespace).withName(secretName).edit(s ->
-        new SecretBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build()
-      );
+      final Secret updatedSecret = client.secrets().inNamespace(namespace).withName(secretName)
+          .edit(s -> new SecretBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
       logger.info("Updated Secret details:\n{}", updatedSecret);
 
       //delete Secret
-      boolean isDeleteSuccessful = client.secrets().inNamespace(namespace).delete(secret);
-      logger.info("Secret resource successfully deleted: {}", isDeleteSuccessful);
+      client.resource(secret).inNamespace(namespace).delete();
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

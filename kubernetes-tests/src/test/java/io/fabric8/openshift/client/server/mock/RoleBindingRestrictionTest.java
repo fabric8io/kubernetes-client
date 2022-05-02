@@ -35,26 +35,27 @@ class RoleBindingRestrictionTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/rolebindingrestrictions/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewRoleBindingRestriction("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewRoleBindingRestriction("test-get"))
+        .once();
 
     // When
-    RoleBindingRestriction roleBindingRestriction = client.roleBindingRestrictions().inNamespace("ns1").withName("test-get").get();
+    RoleBindingRestriction roleBindingRestriction = client.roleBindingRestrictions().inNamespace("ns1").withName("test-get")
+        .get();
 
     // Then
     assertThat(roleBindingRestriction)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/rolebindingrestrictions")
-      .andReturn(HttpURLConnection.HTTP_OK, new RoleBindingRestrictionListBuilder()
-        .addToItems(createNewRoleBindingRestriction("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new RoleBindingRestrictionListBuilder()
+            .addToItems(createNewRoleBindingRestriction("test-list"))
+            .build())
+        .once();
 
     // When
     RoleBindingRestrictionList roleBindingRestrictionList = client.roleBindingRestrictions().inNamespace("ns1").list();
@@ -63,18 +64,18 @@ class RoleBindingRestrictionTest {
     assertThat(roleBindingRestrictionList).isNotNull();
     assertThat(roleBindingRestrictionList.getItems()).hasSize(1);
     assertThat(roleBindingRestrictionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/rolebindingrestrictions/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewRoleBindingRestriction("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewRoleBindingRestriction("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.roleBindingRestrictions().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.roleBindingRestrictions().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,13 +83,13 @@ class RoleBindingRestrictionTest {
 
   private RoleBindingRestriction createNewRoleBindingRestriction(String name) {
     return new RoleBindingRestrictionBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewGrouprestriction()
-      .addToGroups("groups-rolebindingrestriction")
-      .endGrouprestriction()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewGrouprestriction()
+        .addToGroups("groups-rolebindingrestriction")
+        .endGrouprestriction()
+        .endSpec()
+        .build();
   }
 
 }

@@ -64,7 +64,7 @@ class PersistentVolumeClaimIT {
 
   @Test
   void delete() {
-    assertTrue(client.persistentVolumeClaims().withName("persistentvolumeclaims-delete").delete());
+    assertTrue(client.persistentVolumeClaims().withName("persistentvolumeclaims-delete").delete().size() == 1);
   }
 
 }

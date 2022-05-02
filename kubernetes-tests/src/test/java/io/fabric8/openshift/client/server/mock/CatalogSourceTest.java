@@ -39,9 +39,9 @@ class CatalogSourceTest {
     // Given
     CatalogSource catalogSource = getCatalogSource();
     server.expect().post()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources")
-      .andReturn(HttpURLConnection.HTTP_OK, catalogSource)
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources")
+        .andReturn(HttpURLConnection.HTTP_OK, catalogSource)
+        .once();
 
     // When
     catalogSource = client.operatorHub().catalogSources().inNamespace("ns1").create(catalogSource);
@@ -55,9 +55,9 @@ class CatalogSourceTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getCatalogSource())
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getCatalogSource())
+        .once();
 
     // When
     CatalogSource f = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").get();
@@ -71,9 +71,9 @@ class CatalogSourceTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources")
-      .andReturn(HttpURLConnection.HTTP_OK, new CatalogSourceListBuilder().withItems(getCatalogSource()).build())
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources")
+        .andReturn(HttpURLConnection.HTTP_OK, new CatalogSourceListBuilder().withItems(getCatalogSource()).build())
+        .once();
 
     // When
     CatalogSourceList csList = client.operatorHub().catalogSources().inNamespace("ns1").list();
@@ -88,12 +88,12 @@ class CatalogSourceTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getCatalogSource())
-      .once();
+        .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getCatalogSource())
+        .once();
 
     // When
-    Boolean deleted = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,13 +101,13 @@ class CatalogSourceTest {
 
   private CatalogSource getCatalogSource() {
     return new CatalogSourceBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .withSourceType("Foo")
-      .withImage("nginx:latest")
-      .withDisplayName("Foo Bar")
-      .withPublisher("Fabric8")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .withSourceType("Foo")
+        .withImage("nginx:latest")
+        .withDisplayName("Foo Bar")
+        .withPublisher("Fabric8")
+        .endSpec()
+        .build();
   }
 }

@@ -58,7 +58,7 @@ class IngressIT {
   @Test
   void update() {
     Ingress ingress = client.network().v1().ingresses().withName("ingress-update").edit(i -> new IngressBuilder(i)
-                    .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
+        .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(ingress);
     assertEquals("bar", ingress.getMetadata().getAnnotations().get("foo"));
@@ -66,7 +66,7 @@ class IngressIT {
 
   @Test
   void delete() {
-    assertTrue(client.network().v1().ingresses().withName("ingress-delete").delete());
+    assertTrue(client.network().v1().ingresses().withName("ingress-delete").delete().size() == 1);
   }
 
 }

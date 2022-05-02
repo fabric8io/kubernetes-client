@@ -321,12 +321,12 @@ class CreateOrReplaceResourceTest {
   void testDeleteWithLock() throws Exception {
     server.expect().delete()
         .withPath("/api/v1/namespaces/test/configmaps/map1")
-        .andReturn(HttpURLConnection.HTTP_OK, null)
+        .andReturn(HttpURLConnection.HTTP_OK, new ConfigMap())
         .once();
 
     Boolean deleted = client.configMaps().withName("map1")
         .lockResourceVersion("800")
-        .delete();
+        .delete().size() == 1;
     assertTrue(deleted);
 
     DeleteOptions options = new ObjectMapper().readerFor(DeleteOptions.class)

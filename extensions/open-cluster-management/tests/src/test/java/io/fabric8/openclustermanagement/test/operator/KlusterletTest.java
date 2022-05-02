@@ -76,7 +76,7 @@ class KlusterletTest {
         .once();
 
     // When
-    Boolean isDeleted = client.operator().klusterlets().withName("sample-klusterlet").delete();
+    boolean isDeleted = client.operator().klusterlets().withName("sample-klusterlet").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

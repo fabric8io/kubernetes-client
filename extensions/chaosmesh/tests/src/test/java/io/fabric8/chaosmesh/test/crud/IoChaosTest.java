@@ -79,7 +79,7 @@ class IoChaosTest {
     assertEquals("true", client.ioChaos().withName("latency").get().getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.ioChaos().withName("latency").delete());
+    assertTrue(client.ioChaos().withName("latency").delete().size() == 1);
     assertNull(client.ioChaos().withName("latency").get());
   }
 }

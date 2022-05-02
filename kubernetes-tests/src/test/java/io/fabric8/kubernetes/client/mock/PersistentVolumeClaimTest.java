@@ -49,12 +49,15 @@ class PersistentVolumeClaimTest {
 
   @Test
   void testList() {
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims").andReturn(200, new PersistentVolumeClaimListBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims")
+        .andReturn(200, new PersistentVolumeClaimListBuilder().build()).once();
 
-    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims").andReturn(200, new PersistentVolumeClaimListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims")
+        .andReturn(200, new PersistentVolumeClaimListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     PersistentVolumeClaimList persistentVolumeClaimList = client.persistentVolumeClaims().inNamespace("test").list();
     assertNotNull(persistentVolumeClaimList);
@@ -67,36 +70,46 @@ class PersistentVolumeClaimTest {
 
   @Test
   void testListWithlabels() {
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PersistentVolumeClaimListBuilder().build()).once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/persistentvolumeclaims?labelSelector="
+            + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new PersistentVolumeClaimListBuilder().build()).once();
 
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PersistentVolumeClaimListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath(
+            "/api/v1/namespaces/test/persistentvolumeclaims?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new PersistentVolumeClaimListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     PersistentVolumeClaimList persistentVolumeClaimList = client.persistentVolumeClaims().inNamespace("test")
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
     assertNotNull(persistentVolumeClaimList);
     assertEquals(0, persistentVolumeClaimList.getItems().size());
 
     persistentVolumeClaimList = client.persistentVolumeClaims().inNamespace("test")
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
     assertNotNull(persistentVolumeClaimList);
     assertEquals(3, persistentVolumeClaimList.getItems().size());
   }
 
   @Test
   void testGet() {
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1")
+        .andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2")
+        .andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
 
-    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim1").get();
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace("test")
+        .withName("persistentvolumeclaim1").get();
     assertNotNull(persistentVolumeClaim);
 
     persistentVolumeClaim = client.persistentVolumeClaims().withName("persistentvolumeclaim2").get();
@@ -108,62 +121,74 @@ class PersistentVolumeClaimTest {
 
   @Test
   void testEditMissing() {
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim").andReturn(404, "error message from kubernetes").always();
-    Resource<PersistentVolumeClaim> pvcResource =  client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim");
+    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim")
+        .andReturn(404, "error message from kubernetes").always();
+    Resource<PersistentVolumeClaim> pvcResource = client.persistentVolumeClaims().inNamespace("test")
+        .withName("persistentvolumeclaim");
     Assertions.assertThrows(KubernetesClientException.class, () -> pvcResource.edit(r -> r));
   }
 
   @Test
   void testDelete() {
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1")
+        .andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2")
+        .andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
 
-    Boolean deleted = client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim1").delete();
+    boolean deleted = client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim1").delete()
+        .size() == 1;
     assertTrue(deleted);
 
-    deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").delete();
+    deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").delete();
+    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").delete().size() == 1;
     assertTrue(deleted);
   }
 
   @Test
   void testDeleteMulti() {
-    PersistentVolumeClaim persistentVolumeClaim1 = new PersistentVolumeClaimBuilder().withNewMetadata().withName("persistentvolumeclaim1").withNamespace("test").endMetadata().build();
-    PersistentVolumeClaim persistentVolumeClaim2 = new PersistentVolumeClaimBuilder().withNewMetadata().withName("persistentvolumeclaim2").withNamespace("ns1").endMetadata().build();
-    PersistentVolumeClaim persistentVolumeClaim3 = new PersistentVolumeClaimBuilder().withNewMetadata().withName("persistentvolumeclaim3").withNamespace("any").endMetadata().build();
+    PersistentVolumeClaim persistentVolumeClaim1 = new PersistentVolumeClaimBuilder().withNewMetadata()
+        .withName("persistentvolumeclaim1").withNamespace("test").endMetadata().build();
+    PersistentVolumeClaim persistentVolumeClaim2 = new PersistentVolumeClaimBuilder().withNewMetadata()
+        .withName("persistentvolumeclaim2").withNamespace("ns1").endMetadata().build();
+    PersistentVolumeClaim persistentVolumeClaim3 = new PersistentVolumeClaimBuilder().withNewMetadata()
+        .withName("persistentvolumeclaim3").withNamespace("any").endMetadata().build();
 
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1").andReturn(200, persistentVolumeClaim1).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2").andReturn(200, persistentVolumeClaim2).once();
+    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1")
+        .andReturn(200, persistentVolumeClaim1).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2")
+        .andReturn(200, persistentVolumeClaim2).once();
 
     Boolean deleted = client.persistentVolumeClaims().inAnyNamespace().delete(persistentVolumeClaim1, persistentVolumeClaim2);
     assertTrue(deleted);
 
-    deleted = client.persistentVolumeClaims().inAnyNamespace().delete(persistentVolumeClaim3);
+    deleted = client.persistentVolumeClaims().inAnyNamespace().delete(persistentVolumeClaim3).size() == 1;
     assertFalse(deleted);
   }
 
   @Test
   void testLoadFromFile() {
-    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().load(getClass().getResourceAsStream("/test-persistentvolumeclaim.yml")).get();
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims()
+        .load(getClass().getResourceAsStream("/test-persistentvolumeclaim.yml")).get();
     assertEquals("task-pv-claim", persistentVolumeClaim.getMetadata().getName());
   }
 
   @Test
   void testBuild() {
     PersistentVolumeClaim persistentVolumeClaim = new PersistentVolumeClaimBuilder()
-      .withNewMetadata().withName("test-pv-claim").withNamespace("test").endMetadata()
-      .withNewSpec()
-      .withStorageClassName("my-local-storage")
-      .withAccessModes("ReadWriteOnce")
-      .withNewResources()
-      .addToRequests("storage", new Quantity("500Gi"))
-      .endResources()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("test-pv-claim").withNamespace("test").endMetadata()
+        .withNewSpec()
+        .withStorageClassName("my-local-storage")
+        .withAccessModes("ReadWriteOnce")
+        .withNewResources()
+        .addToRequests("storage", new Quantity("500Gi"))
+        .endResources()
+        .endSpec()
+        .build();
 
-    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/test-pv-claim").andReturn(200, persistentVolumeClaim).once();
+    server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/test-pv-claim")
+        .andReturn(200, persistentVolumeClaim).once();
 
     persistentVolumeClaim = client.persistentVolumeClaims().inNamespace("test").withName("test-pv-claim").get();
     assertNotNull(persistentVolumeClaim);
@@ -174,7 +199,7 @@ class PersistentVolumeClaimTest {
   void testCreateOrReplaceWhenNotExists() {
     // Given
     server.expect().post().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims")
-      .andReturn(HttpURLConnection.HTTP_CREATED, mockPVCBuilder().build()).once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, mockPVCBuilder().build()).once();
     // @formatter:off
     final PersistentVolumeClaim toCreate = mockPVCBuilder()
       .editMetadata()
@@ -185,13 +210,13 @@ class PersistentVolumeClaimTest {
     // @formatter:on
     // When
     final PersistentVolumeClaim result = client.persistentVolumeClaims().inNamespace("ns1")
-      .createOrReplace(toCreate);
+        .createOrReplace(toCreate);
     // Then
     assertThat(result)
-      .isNotNull()
-      .extracting("metadata")
-      .hasFieldOrPropertyWithValue("resourceVersion", "1")
-      .extracting("creationTimestamp").asString().isNotBlank();
+        .isNotNull()
+        .extracting("metadata")
+        .hasFieldOrPropertyWithValue("resourceVersion", "1")
+        .extracting("creationTimestamp").asString().isNotBlank();
   }
 
   @Test
@@ -200,12 +225,13 @@ class PersistentVolumeClaimTest {
     // Given
     final PersistentVolumeClaim existent = mockPVCBuilder().build();
     server.expect().post().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, "").once();
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, "").once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/my-pvc")
-      .andReturn(HttpURLConnection.HTTP_OK, existent).times(2);
+        .andReturn(HttpURLConnection.HTTP_OK, existent).times(2);
     server.expect().put().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/my-pvc")
-      .andReturn(HttpURLConnection.HTTP_OK, mockPVCBuilder()
-        .editMetadata().withResourceVersion("2").endMetadata().build()).once();
+        .andReturn(HttpURLConnection.HTTP_OK, mockPVCBuilder()
+            .editMetadata().withResourceVersion("2").endMetadata().build())
+        .once();
     // @formatter:off
     final PersistentVolumeClaim toReplace = mockPVCBuilder()
       .editMetadata()
@@ -216,13 +242,13 @@ class PersistentVolumeClaimTest {
     // @formatter:on
     // When
     final PersistentVolumeClaim result = client.persistentVolumeClaims().inNamespace("ns1")
-      .createOrReplace(toReplace);
+        .createOrReplace(toReplace);
     // Then
     assertThat(result)
-      .isNotNull()
-      .extracting("metadata")
-      .hasFieldOrPropertyWithValue("resourceVersion", "2")
-      .hasFieldOrPropertyWithValue("creationTimestamp", existent.getMetadata().getCreationTimestamp());
+        .isNotNull()
+        .extracting("metadata")
+        .hasFieldOrPropertyWithValue("resourceVersion", "2")
+        .hasFieldOrPropertyWithValue("creationTimestamp", existent.getMetadata().getCreationTimestamp());
   }
 
   private static PersistentVolumeClaimBuilder mockPVCBuilder() {

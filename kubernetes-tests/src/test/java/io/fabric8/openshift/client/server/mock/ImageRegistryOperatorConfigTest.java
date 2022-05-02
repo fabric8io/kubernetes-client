@@ -37,26 +37,26 @@ class ImageRegistryOperatorConfigTest {
   void get() throws ParseException {
     // Given
     server.expect().get().withPath("/apis/imageregistry.operator.openshift.io/v1/configs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("test-get"))
+        .once();
 
     // When
     Config Config = client.imageRegistryOperatorConfigs().withName("test-get").get();
 
     // Then
     assertThat(Config)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() throws ParseException {
     // Given
     server.expect().get().withPath("/apis/imageregistry.operator.openshift.io/v1/configs")
-      .andReturn(HttpURLConnection.HTTP_OK, new ConfigListBuilder()
-        .addToItems(createNewConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ConfigListBuilder()
+            .addToItems(createNewConfig("test-list"))
+            .build())
+        .once();
 
     // When
     ConfigList ConfigList = client.imageRegistryOperatorConfigs().list();
@@ -65,18 +65,18 @@ class ImageRegistryOperatorConfigTest {
     assertThat(ConfigList).isNotNull();
     assertThat(ConfigList.getItems()).hasSize(1);
     assertThat(ConfigList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() throws ParseException {
     // Given
     server.expect().delete().withPath("/apis/imageregistry.operator.openshift.io/v1/configs/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.imageRegistryOperatorConfigs().withName("cluster").delete();
+    boolean isDeleted = client.imageRegistryOperatorConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,30 +84,30 @@ class ImageRegistryOperatorConfigTest {
 
   private Config createNewConfig(String name) throws ParseException {
     return new ConfigBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withDefaultRoute(true)
-      .withHttpSecret("secret")
-      .withLogLevel("Normal")
-      .withManagementState("Managed")
-      .withOperatorLogLevel("Normal")
-      .withReplicas(1)
-      .withNewRequests()
-      .withNewRead()
-      .withMaxWaitInQueue(Duration.parse("0s"))
-      .endRead()
-      .withNewWrite()
-      .withMaxWaitInQueue(Duration.parse("0s"))
-      .endWrite()
-      .endRequests()
-      .withRolloutStrategy("RollingUpdate")
-      .withNewStorage()
-      .withManagementState("Managed")
-      .withNewPvc()
-      .withClaim("crc-image-registry-storage")
-      .endPvc()
-      .endStorage()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withDefaultRoute(true)
+        .withHttpSecret("secret")
+        .withLogLevel("Normal")
+        .withManagementState("Managed")
+        .withOperatorLogLevel("Normal")
+        .withReplicas(1)
+        .withNewRequests()
+        .withNewRead()
+        .withMaxWaitInQueue(Duration.parse("0s"))
+        .endRead()
+        .withNewWrite()
+        .withMaxWaitInQueue(Duration.parse("0s"))
+        .endWrite()
+        .endRequests()
+        .withRolloutStrategy("RollingUpdate")
+        .withNewStorage()
+        .withManagementState("Managed")
+        .withNewPvc()
+        .withClaim("crc-image-registry-storage")
+        .endPvc()
+        .endStorage()
+        .endSpec()
+        .build();
   }
 }

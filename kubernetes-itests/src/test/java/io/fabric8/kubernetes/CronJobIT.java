@@ -56,16 +56,16 @@ class CronJobIT {
   @Test
   void update() {
     CronJob cronJob1 = client.batch().v1beta1().cronjobs().withName("hello-update")
-      .edit(c -> new CronJobBuilder(c)
-      .editSpec()
-      .withSchedule("*/1 * * * *")
-      .endSpec()
-      .build());
+        .edit(c -> new CronJobBuilder(c)
+            .editSpec()
+            .withSchedule("*/1 * * * *")
+            .endSpec()
+            .build());
     assertEquals("*/1 * * * *", cronJob1.getSpec().getSchedule());
   }
 
   @Test
   void delete() {
-    assertTrue(client.batch().v1beta1().cronjobs().withName("hello-delete").delete());
+    assertTrue(client.batch().v1beta1().cronjobs().withName("hello-delete").delete().size() == 1);
   }
 }

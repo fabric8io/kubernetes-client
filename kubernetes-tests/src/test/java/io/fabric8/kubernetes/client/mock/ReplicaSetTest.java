@@ -53,11 +53,12 @@ class ReplicaSetTest {
 
   @Test
   void testList() {
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().build()).once();
-   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets").andReturn(200,  new ReplicaSetListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build())
-      .once();
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().build())
+        .once();
+    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets").andReturn(200, new ReplicaSetListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build())
+        .once();
 
     ReplicaSetList replicaSetList = client.apps().replicaSets().list();
     assertNotNull(replicaSetList);
@@ -68,12 +69,12 @@ class ReplicaSetTest {
     assertEquals(2, replicaSetList.getItems().size());
   }
 
-
   @Test
   void testGet() {
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder().build()).once();
-   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder().build()).once();
-
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder().build())
+        .once();
+    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder().build())
+        .once();
 
     ReplicaSet repl1 = client.apps().replicaSets().withName("repl1").get();
     assertNotNull(repl1);
@@ -85,82 +86,88 @@ class ReplicaSetTest {
     assertNotNull(repl1);
   }
 
-
   @Test
   void testDelete() {
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
-      .withName("repl1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(0)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(1)
-      .endStatus()
-      .build()).once();
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1")
+        .andReturn(200, new ReplicaSetBuilder().withNewMetadata()
+            .withName("repl1")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withReplicas(0)
+            .endSpec()
+            .withNewStatus()
+            .withReplicas(1)
+            .endStatus()
+            .build())
+        .once();
 
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
-      .withName("repl1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(0)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(0)
-      .endStatus()
-      .build()).times(5);
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1")
+        .andReturn(200, new ReplicaSetBuilder().withNewMetadata()
+            .withName("repl1")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withReplicas(0)
+            .endSpec()
+            .withNewStatus()
+            .withReplicas(0)
+            .endStatus()
+            .build())
+        .times(5);
 
-   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
-      .withName("repl2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(0)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(1)
-      .endStatus()
-      .build()).once();
+    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2")
+        .andReturn(200, new ReplicaSetBuilder().withNewMetadata()
+            .withName("repl2")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withReplicas(0)
+            .endSpec()
+            .withNewStatus()
+            .withReplicas(1)
+            .endStatus()
+            .build())
+        .once();
 
-   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
-      .withName("repl2")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(0)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(0)
-      .endStatus()
-      .build()).times(5);
+    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2")
+        .andReturn(200, new ReplicaSetBuilder().withNewMetadata()
+            .withName("repl2")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withReplicas(0)
+            .endSpec()
+            .withNewStatus()
+            .withReplicas(0)
+            .endStatus()
+            .build())
+        .times(5);
 
-
-    Boolean deleted = client.apps().replicaSets().withName("repl1").delete();
+    boolean deleted = client.apps().replicaSets().withName("repl1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().replicaSets().withName("repl2").delete();
+    deleted = client.apps().replicaSets().withName("repl2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete();
+    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete().size() == 1;
     assertTrue(deleted);
   }
 
   @Test
   void testScale() {
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
-      .withNewMetadata()
-      .withName("repl1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(5)
-      .endSpec()
-      .withNewStatus()
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
+        .withNewMetadata()
+        .withName("repl1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(5)
+        .endSpec()
+        .withNewStatus()
         .withReplicas(1)
-      .endStatus()
-      .build()).always();
+        .endStatus()
+        .build()).always();
 
     ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5);
     assertNotNull(repl);
@@ -171,40 +178,40 @@ class ReplicaSetTest {
 
   @Test
   void testScaleAndWait() {
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
-      .withNewMetadata()
-      .withName("repl1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(5)
-      .endSpec()
-      .withNewStatus()
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
+        .withNewMetadata()
+        .withName("repl1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(5)
+        .endSpec()
+        .withNewStatus()
         .withReplicas(1)
-      .endStatus()
-      .build()).once();
+        .endStatus()
+        .build()).once();
 
     ReplicaSet scaled = new ReplicaSetBuilder()
-      .withNewMetadata()
-      .withName("repl1")
-      .withResourceVersion("1")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(5)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(5)
-      .endStatus()
-      .build();
+        .withNewMetadata()
+        .withName("repl1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(5)
+        .endSpec()
+        .withNewStatus()
+        .withReplicas(5)
+        .endStatus()
+        .build();
     // patch
     server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, scaled).once();
 
     // list for waiting
     server.expect()
-    .withPath("/apis/apps/v1/namespaces/test/replicasets?fieldSelector=metadata.name%3Drepl1")
-    .andReturn(200,
-        new ReplicaSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
-    .always();
+        .withPath("/apis/apps/v1/namespaces/test/replicasets?fieldSelector=metadata.name%3Drepl1")
+        .andReturn(200,
+            new ReplicaSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
+        .always();
 
     ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5, true);
     assertNotNull(repl);
@@ -217,58 +224,59 @@ class ReplicaSetTest {
   @Test
   void testUpdate() {
     ReplicaSet repl1 = new ReplicaSetBuilder()
-      .withNewMetadata()
-      .withName("repl1")
-      .withNamespace("test")
-      .endMetadata()
-      .withNewSpec()
+        .withNewMetadata()
+        .withName("repl1")
+        .withNamespace("test")
+        .endMetadata()
+        .withNewSpec()
         .withReplicas(1)
         .withNewTemplate()
-          .withNewMetadata().withLabels(new HashMap<String, String>()).endMetadata()
-          .withNewSpec()
-            .addNewContainer()
-              .withImage("img1")
-            .endContainer()
-          .endSpec()
+        .withNewMetadata().withLabels(new HashMap<String, String>()).endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withImage("img1")
+        .endContainer()
+        .endSpec()
         .endTemplate()
-      .endSpec()
-      .withNewStatus().withReplicas(1).endStatus()
-      .build();
+        .endSpec()
+        .withNewStatus().withReplicas(1).endStatus()
+        .build();
 
-   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
-   server.expect().put().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
-   server.expect().get().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().withItems(repl1).build()).once();
-   server.expect().post().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(201, repl1).once();
-   server.expect().withPath("/apis/apps/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
+    server.expect().put().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/test/replicasets")
+        .andReturn(200, new ReplicaSetListBuilder().withItems(repl1).build()).once();
+    server.expect().post().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(201, repl1).once();
+    server.expect().withPath("/apis/apps/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
 
     repl1 = client.apps().replicaSets().withName("repl1")
-      .rolling()
-      .withTimeout(5, TimeUnit.MINUTES)
-      .updateImage("");
+        .rolling()
+        .withTimeout(5, TimeUnit.MINUTES)
+        .updateImage("");
     assertNotNull(repl1);
   }
 
   @Test
   void testDeprecatedApiVersion() {
     io.fabric8.kubernetes.api.model.extensions.ReplicaSet repl1 = new io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder()
-      .withApiVersion("extensions/v1beta1")
-      .withNewMetadata()
-      .withName("repl1")
-      .withNamespace("test")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(1)
-      .withNewTemplate()
-      .withNewMetadata().withLabels(new HashMap<String, String>()).endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withImage("img1")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .withNewStatus().withReplicas(1).endStatus()
-      .build();
+        .withApiVersion("extensions/v1beta1")
+        .withNewMetadata()
+        .withName("repl1")
+        .withNamespace("test")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(1)
+        .withNewTemplate()
+        .withNewMetadata().withLabels(new HashMap<String, String>()).endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withImage("img1")
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .endSpec()
+        .withNewStatus().withReplicas(1).endStatus()
+        .build();
 
     server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets").andReturn(200, repl1).once();
 
@@ -281,17 +289,18 @@ class ReplicaSetTest {
     // Given
     String imageToUpdate = "nginx:latest";
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder().build()).times(3);
+        .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder()
-        .editSpec().editTemplate().editSpec().editContainer(0)
-        .withImage(imageToUpdate)
-        .endContainer().endSpec().endTemplate().endSpec()
-        .build()).times(2);
+        .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder()
+            .editSpec().editTemplate().editSpec().editContainer(0)
+            .withImage(imageToUpdate)
+            .endContainer().endSpec().endTemplate().endSpec()
+            .build())
+        .times(2);
 
     // When
     ReplicaSet replicationController = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1")
-      .rolling().updateImage(imageToUpdate);
+        .rolling().updateImage(imageToUpdate);
 
     // Then
     assertNotNull(replicationController);
@@ -306,21 +315,23 @@ class ReplicaSetTest {
     // Given
     Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder().build()).times(3);
+        .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder()
-        .editSpec().editTemplate().editSpec().editContainer(0)
-        .withImage(containerToImageMap.get("nginx"))
-        .endContainer().endSpec().endTemplate().endSpec()
-        .build()).once();
+        .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder()
+            .editSpec().editTemplate().editSpec().editContainer(0)
+            .withImage(containerToImageMap.get("nginx"))
+            .endContainer().endSpec().endTemplate().endSpec()
+            .build())
+        .once();
 
     // When
     ReplicaSet replicationController = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1")
-      .rolling().updateImage(containerToImageMap);
+        .rolling().updateImage(containerToImageMap);
 
     // Then
     assertNotNull(replicationController);
-    assertEquals(containerToImageMap.get("nginx"), replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    assertEquals(containerToImageMap.get("nginx"),
+        replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
     assertTrue(server.getLastRequest().getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
@@ -328,11 +339,11 @@ class ReplicaSetTest {
   void testGetLog() {
     ReplicaSet replicaSet = createReplicaSetBuilder().build();
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
+        .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
+        .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true")
-      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+        .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
 
     // When
     String log = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1").getLog(true);
@@ -346,11 +357,11 @@ class ReplicaSetTest {
   void testGetLogMultiContainer() {
     ReplicaSet replicaSet = createReplicaSetBuilder().build();
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
+        .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
+        .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true&container=c1")
-      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+        .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
 
     // When
     String log = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1").inContainer("c1").getLog(true);
@@ -362,42 +373,42 @@ class ReplicaSetTest {
 
   private ReplicaSetBuilder createReplicaSetBuilder() {
     return new ReplicaSetBuilder()
-      .withNewMetadata()
-      .withName("replicaset1")
-      .addToLabels("app", "nginx")
-      .addToAnnotations("app", "nginx")
-      .withUid("0a133177-0c55-49de-82bb-0d97d9444cb2")
-      .endMetadata()
-      .withNewSpec()
-      .withNewSelector()
-      .addToMatchLabels("app", "nginx")
-      .endSelector()
-      .withReplicas(1)
-      .withNewTemplate()
-      .withNewMetadata().addToLabels("app", "nginx").endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("nginx")
-      .withImage("nginx:1.7.9")
-      .addNewPort().withContainerPort(80).endPort()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec();
+        .withNewMetadata()
+        .withName("replicaset1")
+        .addToLabels("app", "nginx")
+        .addToAnnotations("app", "nginx")
+        .withUid("0a133177-0c55-49de-82bb-0d97d9444cb2")
+        .endMetadata()
+        .withNewSpec()
+        .withNewSelector()
+        .addToMatchLabels("app", "nginx")
+        .endSelector()
+        .withReplicas(1)
+        .withNewTemplate()
+        .withNewMetadata().addToLabels("app", "nginx").endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("nginx")
+        .withImage("nginx:1.7.9")
+        .addNewPort().withContainerPort(80).endPort()
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .endSpec();
   }
 
   private PodList getReplicaSetPodList(ReplicaSet rc) {
     return new PodListBuilder()
-      .addToItems(new PodBuilder().withNewMetadata()
-        .withName("pod1")
-        .addToLabels("app", "nginx")
-        .addNewOwnerReference()
-        .withApiVersion("v1")
-        .withController(true)
-        .withUid(rc.getMetadata().getUid())
-        .endOwnerReference()
-        .endMetadata()
-        .build())
-      .build();
+        .addToItems(new PodBuilder().withNewMetadata()
+            .withName("pod1")
+            .addToLabels("app", "nginx")
+            .addNewOwnerReference()
+            .withApiVersion("v1")
+            .withController(true)
+            .withUid(rc.getMetadata().getUid())
+            .endOwnerReference()
+            .endMetadata()
+            .build())
+        .build();
   }
 }

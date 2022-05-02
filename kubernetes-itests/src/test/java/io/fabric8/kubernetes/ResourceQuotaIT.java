@@ -50,7 +50,7 @@ class ResourceQuotaIT {
   @Test
   void update() {
     ResourceQuota resourceQuota = client.resourceQuotas().withName("resourcequota-update").edit(c -> new ResourceQuotaBuilder(c)
-      .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
+        .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(resourceQuota);
     assertEquals("bar", resourceQuota.getMetadata().getAnnotations().get("foo"));
@@ -58,8 +58,7 @@ class ResourceQuotaIT {
 
   @Test
   void delete() {
-    assertTrue(client.resourceQuotas().withName("resourcequota-delete").delete());
+    assertTrue(client.resourceQuotas().withName("resourcequota-delete").delete().size() == 1);
   }
 
 }
-

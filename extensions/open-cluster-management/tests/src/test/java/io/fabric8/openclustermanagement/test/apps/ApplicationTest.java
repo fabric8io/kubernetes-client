@@ -76,7 +76,7 @@ class ApplicationTest {
         .once();
 
     // When
-    Boolean isDeleted = client.apps().applications().inNamespace("ns1").withName("sample-application").delete();
+    boolean isDeleted = client.apps().applications().inNamespace("ns1").withName("sample-application").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

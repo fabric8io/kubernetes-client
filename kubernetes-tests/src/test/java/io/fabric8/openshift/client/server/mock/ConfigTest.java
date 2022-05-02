@@ -35,26 +35,26 @@ class ConfigTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/operator.openshift.io/v1/configs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("test-get"))
+        .once();
 
     // When
     Config config = client.operator().configs().withName("test-get").get();
 
     // Then
     assertThat(config)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/operator.openshift.io/v1/configs")
-      .andReturn(HttpURLConnection.HTTP_OK, new ConfigListBuilder()
-        .addToItems(createNewConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ConfigListBuilder()
+            .addToItems(createNewConfig("test-list"))
+            .build())
+        .once();
 
     // When
     ConfigList configList = client.operator().configs().list();
@@ -63,18 +63,18 @@ class ConfigTest {
     assertThat(configList).isNotNull();
     assertThat(configList.getItems()).hasSize(1);
     assertThat(configList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/operator.openshift.io/v1/configs/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConfig("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operator().configs().withName("cluster").delete();
+    boolean isDeleted = client.operator().configs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,12 +82,11 @@ class ConfigTest {
 
   private Config createNewConfig(String name) {
     return new ConfigBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withLogLevel("Normal")
-      .withOperatorLogLevel("Normal")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withLogLevel("Normal")
+        .withOperatorLogLevel("Normal")
+        .endSpec()
+        .build();
   }
 }
-

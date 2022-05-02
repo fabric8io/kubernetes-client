@@ -75,7 +75,7 @@ class RouteCrudTest {
     client.routes().inNamespace("ns3").create(route3);
 
     // When
-    Boolean deleted = client.routes().inNamespace("ns3").withName("route3").delete();
+    boolean deleted = client.routes().inNamespace("ns3").withName("route3").delete().size() == 1;
 
     // Then
     assertTrue(deleted);

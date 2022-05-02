@@ -35,46 +35,48 @@ class NetworkAttachmentDefinitionTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/k8s.cni.cncf.io/v1/namespaces/ns1/network-attachment-definitions/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewNetworkAttachmentDefinition("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewNetworkAttachmentDefinition("test-get"))
+        .once();
 
     // When
-    NetworkAttachmentDefinition networkAttachmentDefinition = client.networkAttachmentDefinitions().inNamespace("ns1").withName("test-get").get();
+    NetworkAttachmentDefinition networkAttachmentDefinition = client.networkAttachmentDefinitions().inNamespace("ns1")
+        .withName("test-get").get();
 
     // Then
     assertThat(networkAttachmentDefinition)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/k8s.cni.cncf.io/v1/namespaces/ns1/network-attachment-definitions")
-      .andReturn(HttpURLConnection.HTTP_OK, new NetworkAttachmentDefinitionListBuilder()
-        .addToItems(createNewNetworkAttachmentDefinition("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new NetworkAttachmentDefinitionListBuilder()
+            .addToItems(createNewNetworkAttachmentDefinition("test-list"))
+            .build())
+        .once();
 
     // When
-    NetworkAttachmentDefinitionList networkAttachmentDefinitionList = client.networkAttachmentDefinitions().inNamespace("ns1").list();
+    NetworkAttachmentDefinitionList networkAttachmentDefinitionList = client.networkAttachmentDefinitions().inNamespace("ns1")
+        .list();
 
     // Then
     assertThat(networkAttachmentDefinitionList).isNotNull();
     assertThat(networkAttachmentDefinitionList.getItems()).hasSize(1);
     assertThat(networkAttachmentDefinitionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/k8s.cni.cncf.io/v1/namespaces/ns1/network-attachment-definitions/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewNetworkAttachmentDefinition("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewNetworkAttachmentDefinition("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.networkAttachmentDefinitions().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.networkAttachmentDefinitions().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,10 +84,10 @@ class NetworkAttachmentDefinitionTest {
 
   private NetworkAttachmentDefinition createNewNetworkAttachmentDefinition(String name) {
     return new NetworkAttachmentDefinitionBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withConfig("{\"cniVersion\": \"0.3.0\",\"type\": \"foo\"}")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withConfig("{\"cniVersion\": \"0.3.0\",\"type\": \"foo\"}")
+        .endSpec()
+        .build();
   }
 }

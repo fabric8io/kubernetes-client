@@ -37,33 +37,33 @@ class APIServiceIT {
   void get() {
     APIService result = client.apiServices().withName("v1.tests.example.com").get();
     assertThat(result)
-      .hasFieldOrPropertyWithValue("spec.group", "tests.example.com")
-      .hasFieldOrPropertyWithValue("spec.version", "v1");
+        .hasFieldOrPropertyWithValue("spec.group", "tests.example.com")
+        .hasFieldOrPropertyWithValue("spec.version", "v1");
   }
 
   @Test
   void list() {
     APIServiceList result = client.apiServices().list();
     assertThat(result).extracting(APIServiceList::getItems)
-      .asInstanceOf(InstanceOfAssertFactories.list(APIService.class))
-      .anyMatch(t -> t.getMetadata().getName().equals("v1.tests.example.com"));
+        .asInstanceOf(InstanceOfAssertFactories.list(APIService.class))
+        .anyMatch(t -> t.getMetadata().getName().equals("v1.tests.example.com"));
   }
 
   @Test
   void update() {
     APIService result = client.apiServices().withName("v1.tests.example.com")
-      .edit(c -> new APIServiceBuilder(c)
-        .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
-        .build());
+        .edit(c -> new APIServiceBuilder(c)
+            .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
+            .build());
     assertThat(result)
-      .hasFieldOrPropertyWithValue("metadata.annotations.foo", "bar")
-      .hasFieldOrPropertyWithValue("spec.group", "tests.example.com")
-      .hasFieldOrPropertyWithValue("spec.version", "v1");
+        .hasFieldOrPropertyWithValue("metadata.annotations.foo", "bar")
+        .hasFieldOrPropertyWithValue("spec.group", "tests.example.com")
+        .hasFieldOrPropertyWithValue("spec.version", "v1");
   }
 
   @Test
   @Disabled(value = "https://github.com/fabric8io/kubernetes-client/issues/3668")
   void delete() {
-    assertThat(client.apiServices().withName("v1beta1.delete.fabric8.io").delete()).isTrue();
+    assertThat(client.apiServices().withName("v1beta1.delete.fabric8.io").delete().size() == 1).isTrue();
   }
 }

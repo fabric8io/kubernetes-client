@@ -35,26 +35,27 @@ class OAuthClientAuthorizationTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/oauth.openshift.io/v1/oauthclientauthorizations/user1:test-oauth-client")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOAuthClientAuthorization("user1:test-oauth-client"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOAuthClientAuthorization("user1:test-oauth-client"))
+        .once();
 
     // When
-    OAuthClientAuthorization oAuthClientAuthorization = client.oAuthClientAuthorizations().withName("user1:test-oauth-client").get();
+    OAuthClientAuthorization oAuthClientAuthorization = client.oAuthClientAuthorizations().withName("user1:test-oauth-client")
+        .get();
 
     // Then
     assertThat(oAuthClientAuthorization)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "user1:test-oauth-client");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "user1:test-oauth-client");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/oauth.openshift.io/v1/oauthclientauthorizations")
-      .andReturn(HttpURLConnection.HTTP_OK, new OAuthClientAuthorizationListBuilder()
-        .addToItems(createNewOAuthClientAuthorization("user1:test-oauth-client"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new OAuthClientAuthorizationListBuilder()
+            .addToItems(createNewOAuthClientAuthorization("user1:test-oauth-client"))
+            .build())
+        .once();
 
     // When
     OAuthClientAuthorizationList oAuthClientAuthorizationList = client.oAuthClientAuthorizations().list();
@@ -63,18 +64,18 @@ class OAuthClientAuthorizationTest {
     assertThat(oAuthClientAuthorizationList).isNotNull();
     assertThat(oAuthClientAuthorizationList.getItems()).hasSize(1);
     assertThat(oAuthClientAuthorizationList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "user1:test-oauth-client");
+        .hasFieldOrPropertyWithValue("metadata.name", "user1:test-oauth-client");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/oauth.openshift.io/v1/oauthclientauthorizations/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOAuthClientAuthorization("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOAuthClientAuthorization("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.oAuthClientAuthorizations().withName("test-delete").delete();
+    boolean isDeleted = client.oAuthClientAuthorizations().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,11 +83,11 @@ class OAuthClientAuthorizationTest {
 
   private OAuthClientAuthorization createNewOAuthClientAuthorization(String name) {
     return new OAuthClientAuthorizationBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withUserName("developer")
-      .withUserUID("uidda8a03a4-be11-498e-8673-b2c072935e7b")
-      .withClientName("openshift-challenging-client")
-      .addToScopes("user:check-access")
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withUserName("developer")
+        .withUserUID("uidda8a03a4-be11-498e-8673-b2c072935e7b")
+        .withClientName("openshift-challenging-client")
+        .addToScopes("user:check-access")
+        .build();
   }
 }

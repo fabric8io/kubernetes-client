@@ -39,26 +39,27 @@ class SyncIdentityProviderTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/syncidentityproviders/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSyncIdentityProvider("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSyncIdentityProvider("test-get"))
+        .once();
 
     // When
-    SyncIdentityProvider syncIdentityProvider = client.hive().syncIdentityProviders().inNamespace("ns1").withName("test-get").get();
+    SyncIdentityProvider syncIdentityProvider = client.hive().syncIdentityProviders().inNamespace("ns1").withName("test-get")
+        .get();
 
     // Then
     assertThat(syncIdentityProvider)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/syncidentityproviders")
-      .andReturn(HttpURLConnection.HTTP_OK, new SyncIdentityProviderListBuilder()
-        .addToItems(createNewSyncIdentityProvider("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SyncIdentityProviderListBuilder()
+            .addToItems(createNewSyncIdentityProvider("test-list"))
+            .build())
+        .once();
 
     // When
     SyncIdentityProviderList syncIdentityProviderList = client.hive().syncIdentityProviders().inNamespace("ns1").list();
@@ -67,18 +68,19 @@ class SyncIdentityProviderTest {
     assertThat(syncIdentityProviderList).isNotNull();
     assertThat(syncIdentityProviderList.getItems()).hasSize(1);
     assertThat(syncIdentityProviderList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/syncidentityproviders/syncidentityprovider1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSyncIdentityProvider("syncidentityprovider1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSyncIdentityProvider("syncidentityprovider1"))
+        .once();
 
     // When
-    Boolean isDeleted = client.hive().syncIdentityProviders().inNamespace("ns1").withName("syncidentityprovider1").delete();
+    boolean isDeleted = client.hive().syncIdentityProviders().inNamespace("ns1").withName("syncidentityprovider1").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -86,23 +88,23 @@ class SyncIdentityProviderTest {
 
   private SyncIdentityProvider createNewSyncIdentityProvider(String name) {
     return new SyncIdentityProviderBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .addNewClusterDeploymentRef("MyCluster")
-      .addToIdentityProviders(new IdentityProviderBuilder()
-        .withName("myprovider")
-        .withType("GitHubIdentityProvider")
-        .withGithub(new GitHubIdentityProviderBuilder()
-          .withClientID("sample-client-id")
-          .withNewClientSecret()
-          .withName("foo")
-          .endClientSecret()
-          .withHostname("github.com")
-          .build())
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .addNewClusterDeploymentRef("MyCluster")
+        .addToIdentityProviders(new IdentityProviderBuilder()
+            .withName("myprovider")
+            .withType("GitHubIdentityProvider")
+            .withGithub(new GitHubIdentityProviderBuilder()
+                .withClientID("sample-client-id")
+                .withNewClientSecret()
+                .withName("foo")
+                .endClientSecret()
+                .withHostname("github.com")
+                .build())
+            .build())
+        .endSpec()
+        .build();
   }
 }

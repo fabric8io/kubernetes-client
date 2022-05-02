@@ -57,8 +57,8 @@ class RuntimeClassTest {
   void testCreate() {
     // Given
     server.expect().post().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses")
-      .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
+        .once();
 
     // When
     RuntimeClass runtimeClass = client.runtimeClasses().create(getMockRuntimeClass());
@@ -72,8 +72,8 @@ class RuntimeClassTest {
   void testGet() {
     // Given
     server.expect().get().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses/test-class")
-      .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
+        .once();
 
     // When
     RuntimeClass runtimeClass = client.runtimeClasses().withName("test-class").get();
@@ -87,10 +87,10 @@ class RuntimeClassTest {
   void testList() {
     // Given
     server.expect().get().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses")
-      .andReturn(HttpURLConnection.HTTP_OK, new RuntimeClassListBuilder()
-        .addToItems(getMockRuntimeClass())
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new RuntimeClassListBuilder()
+            .addToItems(getMockRuntimeClass())
+            .build())
+        .once();
 
     // When
     RuntimeClassList runtimeClassList = client.runtimeClasses().list();
@@ -105,11 +105,11 @@ class RuntimeClassTest {
   void testDelete() {
     // Given
     server.expect().delete().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses/test-class")
-      .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
+        .once();
 
     // When
-    Boolean isDeleted = client.runtimeClasses().withName("test-class").delete();
+    boolean isDeleted = client.runtimeClasses().withName("test-class").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);
@@ -117,8 +117,8 @@ class RuntimeClassTest {
 
   private RuntimeClass getMockRuntimeClass() {
     return new RuntimeClassBuilder()
-      .withNewMetadata().withName("test-class").endMetadata()
-      .withHandler("handler2")
-      .build();
+        .withNewMetadata().withName("test-class").endMetadata()
+        .withHandler("handler2")
+        .build();
   }
 }

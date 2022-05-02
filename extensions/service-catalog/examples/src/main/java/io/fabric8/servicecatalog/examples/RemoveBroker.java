@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +14,14 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
+
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 public class RemoveBroker {
 
   public static void main(String[] args) {
-      ServiceCatalogClient client = ClientFactory.newClient(args);
-      if(client.clusterServiceBrokers().withName("my-broker").delete()) {
-          System.out.println("Broker successfully deleted!");
-     }
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    client.clusterServiceBrokers().withName("my-broker").delete();
   }
 }

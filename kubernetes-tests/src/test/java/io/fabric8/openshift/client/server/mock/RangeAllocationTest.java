@@ -39,9 +39,9 @@ class RangeAllocationTest {
     // Given
     RangeAllocation featureGate = getRangeAllocation();
     server.expect().post()
-      .withPath("/apis/security.openshift.io/v1/rangeallocations")
-      .andReturn(HttpURLConnection.HTTP_OK, featureGate)
-      .once();
+        .withPath("/apis/security.openshift.io/v1/rangeallocations")
+        .andReturn(HttpURLConnection.HTTP_OK, featureGate)
+        .once();
 
     // When
     featureGate = client.rangeAllocations().create(featureGate);
@@ -55,9 +55,9 @@ class RangeAllocationTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/security.openshift.io/v1/rangeallocations/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getRangeAllocation())
-      .once();
+        .withPath("/apis/security.openshift.io/v1/rangeallocations/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getRangeAllocation())
+        .once();
 
     // When
     RangeAllocation f = client.rangeAllocations().withName("foo").get();
@@ -71,9 +71,9 @@ class RangeAllocationTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/security.openshift.io/v1/rangeallocations")
-      .andReturn(HttpURLConnection.HTTP_OK, new RangeAllocationListBuilder().withItems(getRangeAllocation()).build())
-      .once();
+        .withPath("/apis/security.openshift.io/v1/rangeallocations")
+        .andReturn(HttpURLConnection.HTTP_OK, new RangeAllocationListBuilder().withItems(getRangeAllocation()).build())
+        .once();
 
     // When
     RangeAllocationList fgList = client.rangeAllocations().list();
@@ -88,12 +88,12 @@ class RangeAllocationTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/security.openshift.io/v1/rangeallocations/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getRangeAllocation())
-      .once();
+        .withPath("/apis/security.openshift.io/v1/rangeallocations/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getRangeAllocation())
+        .once();
 
     // When
-    Boolean deleted = client.rangeAllocations().withName("foo").delete();
+    boolean deleted = client.rangeAllocations().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,10 +101,9 @@ class RangeAllocationTest {
 
   private RangeAllocation getRangeAllocation() {
     return new RangeAllocationBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withData("wf////////8=")
-      .withRange("1000000000-1999999999/10000")
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withData("wf////////8=")
+        .withRange("1000000000-1999999999/10000")
+        .build();
   }
 }
-

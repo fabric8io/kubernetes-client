@@ -75,12 +75,14 @@ class ConfigMapTest {
         new ConfigMapListBuilder().withItems(cm).build()).always();
 
     MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = client.configMaps();
-    assertTrue(configMaps.delete());
+    assertTrue(configMaps.delete().size() == 1);
 
     server.expect().delete().withPath("/api/v1/namespaces/test/configmaps/cfg1").andReturn(200,
-        cm).times(2);
+        cm).times(1);
 
-    assertTrue(configMaps.delete());
+    assertEquals(1, configMaps.withName("cfg1").delete().size());
+
+    assertTrue(configMaps.withName("cfg1").delete().isEmpty());
   }
 
   @Test

@@ -56,7 +56,7 @@ class V1VerticalPodAutoscalerCrudTest {
 
     VerticalPodAutoscaler vpa3 = new VerticalPodAutoscalerBuilder().withNewMetadata().withName("vpa3").endMetadata().build();
     client.v1().verticalpodautoscalers().inNamespace("ns3").create(vpa3);
-    Boolean deleted = client.v1().verticalpodautoscalers().inNamespace("ns3").withName("vpa3").delete();
+    boolean deleted = client.v1().verticalpodautoscalers().inNamespace("ns3").withName("vpa3").delete().size() == 1;
     assertTrue(deleted);
   }
 

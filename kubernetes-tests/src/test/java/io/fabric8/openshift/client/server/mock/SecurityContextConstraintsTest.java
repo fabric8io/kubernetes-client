@@ -42,16 +42,16 @@ class SecurityContextConstraintsTest {
   void testCreateOrReplace() {
     // Given
     SecurityContextConstraints scc = new SecurityContextConstraintsBuilder()
-      .withNewMetadata().withName("scc1").endMetadata()
-      .withAllowPrivilegedContainer(true)
-      .withNewRunAsUser().withType("RunAsAny").endRunAsUser()
-      .withNewSeLinuxContext().withType("RunAsAny").endSeLinuxContext()
-      .withUsers("admin")
-      .withGroups("admin-group")
-      .build();
+        .withNewMetadata().withName("scc1").endMetadata()
+        .withAllowPrivilegedContainer(true)
+        .withNewRunAsUser().withType("RunAsAny").endRunAsUser()
+        .withNewSeLinuxContext().withType("RunAsAny").endSeLinuxContext()
+        .withUsers("admin")
+        .withGroups("admin-group")
+        .build();
     server.expect().post().withPath("/apis/security.openshift.io/v1/securitycontextconstraints")
-      .andReturn(HttpURLConnection.HTTP_OK, scc)
-    .once();
+        .andReturn(HttpURLConnection.HTTP_OK, scc)
+        .once();
 
     // When
     scc = client.securityContextConstraints().createOrReplace(scc);
@@ -67,8 +67,8 @@ class SecurityContextConstraintsTest {
   void testLoad() {
     // Given
     server.expect().post().withPath("/apis/security.openshift.io/v1/securitycontextconstraints")
-      .andReturn(HttpURLConnection.HTTP_OK, new SecurityContextConstraintsBuilder().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SecurityContextConstraintsBuilder().build())
+        .once();
 
     // When
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-scc.yml")).createOrReplace();
@@ -81,10 +81,11 @@ class SecurityContextConstraintsTest {
 
   @Test
   void testList() {
-   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
+    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints")
+        .andReturn(200, new SecurityContextConstraintsListBuilder()
             .addNewItem().endItem()
-            .build()).once();
-
+            .build())
+        .once();
 
     SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
     assertNotNull(sccList);
@@ -93,26 +94,31 @@ class SecurityContextConstraintsTest {
 
   @Test
   void testDelete() {
-   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
-   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1")
+        .andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2")
+        .andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
+    boolean deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
 
-    Boolean deleted = client.securityContextConstraints().withName("scc1").delete();
-    assertNotNull(deleted);
-
-    deleted = client.securityContextConstraints().withName("scc1").delete();
+    deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.securityContextConstraints().withName("scc2").delete();
+    deleted = client.securityContextConstraints().withName("scc2").delete().size() == 1;
     assertTrue(deleted);
   }
 
   @Test
   void testEdit() {
-   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).once();
-   server.expect().patch().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
+    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1")
+        .andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).once();
+    server.expect().patch().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1")
+        .andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and()
+            .addToAllowedCapabilities("allowed").build())
+        .once();
 
-    SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit(s -> new SecurityContextConstraintsBuilder(s).addToAllowedCapabilities("allowed").build());
+    SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1")
+        .edit(s -> new SecurityContextConstraintsBuilder(s).addToAllowedCapabilities("allowed").build());
     assertNotNull(scc);
     assertEquals(1, scc.getAllowedCapabilities().size());
   }

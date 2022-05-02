@@ -34,47 +34,53 @@ class PodNetworkConnectivityCheckTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/controlplane.operator.openshift.io/v1alpha1/namespaces/ns1/podnetworkconnectivitychecks/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPodNetworkConnectivityCheck("test-get"))
-      .once();
+    server.expect().get()
+        .withPath("/apis/controlplane.operator.openshift.io/v1alpha1/namespaces/ns1/podnetworkconnectivitychecks/test-get")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPodNetworkConnectivityCheck("test-get"))
+        .once();
 
     // When
-    PodNetworkConnectivityCheck podNetworkConnectivityCheck = client.operator().podNetworkConnectivityChecks().inNamespace("ns1").withName("test-get").get();
+    PodNetworkConnectivityCheck podNetworkConnectivityCheck = client.operator().podNetworkConnectivityChecks()
+        .inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(podNetworkConnectivityCheck)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/controlplane.operator.openshift.io/v1alpha1/namespaces/ns1/podnetworkconnectivitychecks")
-      .andReturn(HttpURLConnection.HTTP_OK, new PodNetworkConnectivityCheckListBuilder()
-        .addToItems(createNewPodNetworkConnectivityCheck("test-list"))
-        .build())
-      .once();
+    server.expect().get()
+        .withPath("/apis/controlplane.operator.openshift.io/v1alpha1/namespaces/ns1/podnetworkconnectivitychecks")
+        .andReturn(HttpURLConnection.HTTP_OK, new PodNetworkConnectivityCheckListBuilder()
+            .addToItems(createNewPodNetworkConnectivityCheck("test-list"))
+            .build())
+        .once();
 
     // When
-    PodNetworkConnectivityCheckList podNetworkConnectivityCheckList = client.operator().podNetworkConnectivityChecks().inNamespace("ns1").list();
+    PodNetworkConnectivityCheckList podNetworkConnectivityCheckList = client.operator().podNetworkConnectivityChecks()
+        .inNamespace("ns1").list();
 
     // Then
     assertThat(podNetworkConnectivityCheckList).isNotNull();
     assertThat(podNetworkConnectivityCheckList.getItems()).hasSize(1);
     assertThat(podNetworkConnectivityCheckList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/controlplane.operator.openshift.io/v1alpha1/namespaces/ns1/podnetworkconnectivitychecks/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPodNetworkConnectivityCheck("cluster"))
-      .once();
+    server.expect().delete()
+        .withPath("/apis/controlplane.operator.openshift.io/v1alpha1/namespaces/ns1/podnetworkconnectivitychecks/cluster")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPodNetworkConnectivityCheck("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operator().podNetworkConnectivityChecks().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.operator().podNetworkConnectivityChecks().inNamespace("ns1").withName("cluster").delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,13 +88,11 @@ class PodNetworkConnectivityCheckTest {
 
   private PodNetworkConnectivityCheck createNewPodNetworkConnectivityCheck(String name) {
     return new PodNetworkConnectivityCheckBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withSourcePod("network-check-source-596b4c6566-rgh92")
-      .withTargetEndpoint("api.crc.testing:6443")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withSourcePod("network-check-source-596b4c6566-rgh92")
+        .withTargetEndpoint("api.crc.testing:6443")
+        .endSpec()
+        .build();
   }
 }
-
-

@@ -35,26 +35,26 @@ class CloudCredentialTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/operator.openshift.io/v1/cloudcredentials/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewCloudCredential("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewCloudCredential("test-get"))
+        .once();
 
     // When
     CloudCredential cloudCredential = client.operator().cloudCredentials().withName("test-get").get();
 
     // Then
     assertThat(cloudCredential)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/operator.openshift.io/v1/cloudcredentials")
-      .andReturn(HttpURLConnection.HTTP_OK, new CloudCredentialListBuilder()
-        .addToItems(createNewCloudCredential("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new CloudCredentialListBuilder()
+            .addToItems(createNewCloudCredential("test-list"))
+            .build())
+        .once();
 
     // When
     CloudCredentialList cloudCredentialList = client.operator().cloudCredentials().list();
@@ -63,18 +63,18 @@ class CloudCredentialTest {
     assertThat(cloudCredentialList).isNotNull();
     assertThat(cloudCredentialList.getItems()).hasSize(1);
     assertThat(cloudCredentialList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/operator.openshift.io/v1/cloudcredentials/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewCloudCredential("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewCloudCredential("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operator().cloudCredentials().withName("cluster").delete();
+    boolean isDeleted = client.operator().cloudCredentials().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,12 +82,12 @@ class CloudCredentialTest {
 
   private CloudCredential createNewCloudCredential(String name) {
     return new CloudCredentialBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withCredentialsMode("")
-      .withLogLevel("Normal")
-      .withOperatorLogLevel("Normal")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withCredentialsMode("")
+        .withLogLevel("Normal")
+        .withOperatorLogLevel("Normal")
+        .endSpec()
+        .build();
   }
 }

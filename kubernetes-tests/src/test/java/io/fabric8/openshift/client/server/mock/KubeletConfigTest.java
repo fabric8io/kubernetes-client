@@ -35,26 +35,26 @@ class KubeletConfigTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/machineconfiguration.openshift.io/v1/kubeletconfigs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewKubeletConfig("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewKubeletConfig("test-get"))
+        .once();
 
     // When
     KubeletConfig kubeletConfig = client.machineConfigurations().kubeletConfigs().withName("test-get").get();
 
     // Then
     assertThat(kubeletConfig)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/machineconfiguration.openshift.io/v1/kubeletconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, new KubeletConfigListBuilder()
-        .addToItems(createNewKubeletConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new KubeletConfigListBuilder()
+            .addToItems(createNewKubeletConfig("test-list"))
+            .build())
+        .once();
 
     // When
     KubeletConfigList kubeletConfigList = client.machineConfigurations().kubeletConfigs().list();
@@ -63,18 +63,18 @@ class KubeletConfigTest {
     assertThat(kubeletConfigList).isNotNull();
     assertThat(kubeletConfigList.getItems()).hasSize(1);
     assertThat(kubeletConfigList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/machineconfiguration.openshift.io/v1/kubeletconfigs/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewKubeletConfig("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewKubeletConfig("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().kubeletConfigs().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().kubeletConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,13 +82,13 @@ class KubeletConfigTest {
 
   private KubeletConfig createNewKubeletConfig(String name) {
     return new KubeletConfigBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewMachineConfigPoolSelector()
-      .addToMatchLabels("custom-kubelet", "large-pods")
-      .endMachineConfigPoolSelector()
-      .addToKubeletConfig("maxPods", "500")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewMachineConfigPoolSelector()
+        .addToMatchLabels("custom-kubelet", "large-pods")
+        .endMachineConfigPoolSelector()
+        .addToKubeletConfig("maxPods", "500")
+        .endSpec()
+        .build();
   }
 }

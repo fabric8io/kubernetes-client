@@ -36,26 +36,26 @@ class ControllerConfigTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/machineconfiguration.openshift.io/v1/controllerconfigs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewControllerConfig("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewControllerConfig("test-get"))
+        .once();
 
     // When
     ControllerConfig controllerConfig = client.machineConfigurations().controllerConfigs().withName("test-get").get();
 
     // Then
     assertThat(controllerConfig)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/machineconfiguration.openshift.io/v1/controllerconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, new ControllerConfigListBuilder()
-        .addToItems(createNewControllerConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ControllerConfigListBuilder()
+            .addToItems(createNewControllerConfig("test-list"))
+            .build())
+        .once();
 
     // When
     ControllerConfigList controllerConfigList = client.machineConfigurations().controllerConfigs().list();
@@ -64,18 +64,18 @@ class ControllerConfigTest {
     assertThat(controllerConfigList).isNotNull();
     assertThat(controllerConfigList.getItems()).hasSize(1);
     assertThat(controllerConfigList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/machineconfiguration.openshift.io/v1/controllerconfigs/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewControllerConfig("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewControllerConfig("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().controllerConfigs().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().controllerConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,23 +83,22 @@ class ControllerConfigTest {
 
   private ControllerConfig createNewControllerConfig(String name) {
     return new ControllerConfigBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withInfra(new InfrastructureBuilder()
+        .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .withNewCloudConfig()
-        .withName("")
-        .endCloudConfig()
+        .withInfra(new InfrastructureBuilder()
+            .withNewSpec()
+            .withNewCloudConfig()
+            .withName("")
+            .endCloudConfig()
+            .endSpec()
+            .withNewStatus()
+            .withNewPlatformStatus()
+            .withType("Libvirt")
+            .endPlatformStatus()
+            .endStatus()
+            .build())
+        .withClusterDNSIP("10.2.3.10")
         .endSpec()
-        .withNewStatus()
-        .withNewPlatformStatus()
-        .withType("Libvirt")
-        .endPlatformStatus()
-        .endStatus()
-        .build())
-      .withClusterDNSIP("10.2.3.10")
-      .endSpec()
-      .build();
+        .build();
   }
 }
-

@@ -46,9 +46,9 @@ public class NamespaceTest {
   @Test
   public void testList() {
     server.expect().withPath("/api/v1/namespaces").andReturn(200, new NamespaceListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+        .addNewItem().and()
+        .addNewItem().and()
+        .build()).once();
 
     NamespaceList namespaceList = client.namespaces().list();
     assertNotNull(namespaceList);
@@ -58,11 +58,12 @@ public class NamespaceTest {
   @Test
   public void testCreateWithHandler() {
     server.expect().post().withPath("/api/v1/namespaces")
-      .andReturn(200, new NamespaceBuilder()
-        .withNewMetadata()
-        .withName("namespace-test")
-        .endMetadata()
-        .build()).once();
+        .andReturn(200, new NamespaceBuilder()
+            .withNewMetadata()
+            .withName("namespace-test")
+            .endMetadata()
+            .build())
+        .once();
 
     List<HasMetadata> nsList = client.load(getClass().getResourceAsStream("/test-namespace.yml")).createOrReplace();
     assertNotNull(nsList);
@@ -72,24 +73,26 @@ public class NamespaceTest {
 
   @Test
   public void testListWithLables() {
-    server.expect().withPath("/api/v1/namespaces?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new NamespaceListBuilder().build()).always();
-    server.expect().withPath("/api/v1/namespaces?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new NamespaceListBuilder().addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
-
+    server.expect().withPath("/api/v1/namespaces?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new NamespaceListBuilder().build()).always();
+    server.expect().withPath("/api/v1/namespaces?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new NamespaceListBuilder().addNewItem().and()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     NamespaceList namespaceList = client.namespaces()
-      .withLabel("key1", "value1")
-      .withLabel("key2", "value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
     assertEquals(3, namespaceList.getItems().size());
 
     namespaceList = client.namespaces()
-      .withLabel("key1", "value1")
-      .withLabel("key2", "value2")
-      .withLabel("key3", "value3")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
     assertEquals(0, namespaceList.getItems().size());
   }
 
@@ -120,7 +123,7 @@ public class NamespaceTest {
   @Test
   public void testDelete() {
     server.expect().withPath("/api/v1/namespaces/namespace1").andReturn(200, new NamespaceBuilder().build()).once();
-    Boolean deleted = client.namespaces().withName("namespace1").delete();
+    boolean deleted = client.namespaces().withName("namespace1").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -136,7 +139,7 @@ public class NamespaceTest {
     Boolean deleted = client.namespaces().delete(namespace1, namespace2);
     assertTrue(deleted);
 
-    deleted = client.namespaces().delete(namespace3);
+    deleted = client.namespaces().delete(namespace3).size() == 1;
     assertFalse(deleted);
   }
 

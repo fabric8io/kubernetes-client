@@ -40,7 +40,7 @@ class PodSecurityPolicyIT {
   void load() {
 
     PodSecurityPolicy loadedPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
-      .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
+        .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
 
     assertNotNull(loadedPodSecurityPolicy);
     assertEquals("example", loadedPodSecurityPolicy.getMetadata().getName());
@@ -54,7 +54,7 @@ class PodSecurityPolicyIT {
   @Test
   void get() {
     PodSecurityPolicy getPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
-      .withName("psp-get").get();
+        .withName("psp-get").get();
     assertNotNull(getPodSecurityPolicy);
     assertEquals("psp-get", getPodSecurityPolicy.getMetadata().getName());
   }
@@ -62,22 +62,23 @@ class PodSecurityPolicyIT {
   @Test
   void list() {
     PodSecurityPolicyList podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies()
-      .withLabels(Collections.singletonMap("foo","bar")).list();
+        .withLabels(Collections.singletonMap("foo", "bar")).list();
     assertNotNull(podSecurityPolicyList);
-    assertEquals(1,podSecurityPolicyList.getItems().size());
-    assertEquals("psp-list",podSecurityPolicyList.getItems().get(0).getMetadata().getName());
-    assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getRunAsUser().getRule());
-    assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getFsGroup().getRule());
-    assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSeLinux().getRule());
-    assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSupplementalGroups().getRule());
+    assertEquals(1, podSecurityPolicyList.getItems().size());
+    assertEquals("psp-list", podSecurityPolicyList.getItems().get(0).getMetadata().getName());
+    assertEquals("RunAsAny", podSecurityPolicyList.getItems().get(0).getSpec().getRunAsUser().getRule());
+    assertEquals("RunAsAny", podSecurityPolicyList.getItems().get(0).getSpec().getFsGroup().getRule());
+    assertEquals("RunAsAny", podSecurityPolicyList.getItems().get(0).getSpec().getSeLinux().getRule());
+    assertEquals("RunAsAny", podSecurityPolicyList.getItems().get(0).getSpec().getSupplementalGroups().getRule());
   }
 
   @Test
-  void update(){
+  void update() {
 
-    PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
-      .editSpec().withPrivileged(true).endSpec()
-      .build());
+    PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("psp-update")
+        .edit(p -> new PodSecurityPolicyBuilder(p)
+            .editSpec().withPrivileged(true).endSpec()
+            .build());
 
     assertNotNull(podSecurityPolicy);
     assertEquals("psp-update", podSecurityPolicy.getMetadata().getName());
@@ -89,13 +90,12 @@ class PodSecurityPolicyIT {
   }
 
   @Test
-  void delete(){
-    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete();
+  void delete() {
+    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete().size() == 1;
     assertTrue(deleted);
 
     client.policy().v1beta1().podSecurityPolicies().withName("psp-delete")
-      .waitUntilCondition(psp -> psp == null || psp.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(psp -> psp == null || psp.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
-
 
 }

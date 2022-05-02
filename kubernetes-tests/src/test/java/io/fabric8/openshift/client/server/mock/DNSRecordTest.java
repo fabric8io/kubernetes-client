@@ -39,9 +39,9 @@ class DNSRecordTest {
     // Given
     DNSRecord dnsrecord = getDNSRecord();
     server.expect().post()
-      .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords")
-      .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
-      .once();
+        .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords")
+        .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
+        .once();
 
     // When
     dnsrecord = client.operator().dnsRecords().inNamespace("ns1").create(dnsrecord);
@@ -55,9 +55,9 @@ class DNSRecordTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getDNSRecord())
-      .once();
+        .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getDNSRecord())
+        .once();
 
     // When
     DNSRecord f = client.operator().dnsRecords().inNamespace("ns1").withName("foo").get();
@@ -71,9 +71,9 @@ class DNSRecordTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords")
-      .andReturn(HttpURLConnection.HTTP_OK, new DNSRecordListBuilder().withItems(getDNSRecord()).build())
-      .once();
+        .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords")
+        .andReturn(HttpURLConnection.HTTP_OK, new DNSRecordListBuilder().withItems(getDNSRecord()).build())
+        .once();
 
     // When
     DNSRecordList fgList = client.operator().dnsRecords().inNamespace("ns1").list();
@@ -88,12 +88,12 @@ class DNSRecordTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getDNSRecord())
-      .once();
+        .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getDNSRecord())
+        .once();
 
     // When
-    Boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,15 +101,15 @@ class DNSRecordTest {
 
   private DNSRecord getDNSRecord() {
     return new DNSRecordBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .withNamespace("ns1")
-      .endMetadata()
-      .withNewSpec()
-      .withDnsName("foo.dns")
-      .withRecordType("CNAME")
-      .withTargets("1.2.4.3")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("foo")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withNewSpec()
+        .withDnsName("foo.dns")
+        .withRecordType("CNAME")
+        .withTargets("1.2.4.3")
+        .endSpec()
+        .build();
   }
 }

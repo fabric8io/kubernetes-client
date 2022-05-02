@@ -35,26 +35,26 @@ class ProbeTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/probes/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewProbe("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewProbe("test-get"))
+        .once();
 
     // When
     Probe probe = client.monitoring().probes().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(probe)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/probes")
-      .andReturn(HttpURLConnection.HTTP_OK, new ProbeListBuilder()
-        .addToItems(createNewProbe("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ProbeListBuilder()
+            .addToItems(createNewProbe("test-list"))
+            .build())
+        .once();
 
     // When
     ProbeList probeList = client.monitoring().probes().inNamespace("ns1").list();
@@ -63,18 +63,18 @@ class ProbeTest {
     assertThat(probeList).isNotNull();
     assertThat(probeList.getItems()).hasSize(1);
     assertThat(probeList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/probes/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewProbe("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewProbe("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.monitoring().probes().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.monitoring().probes().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,18 +82,18 @@ class ProbeTest {
 
   private Probe createNewProbe(String name) {
     return new ProbeBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withJobName("probe-cr")
-      .withNewProber()
-      .withUrl("example-prometheus-blackbox-exporter:9115")
-      .endProber()
-      .withNewTargets()
-      .withNewStaticConfig()
-      .withStatic("https://example.com")
-      .endStaticConfig()
-      .endTargets()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withJobName("probe-cr")
+        .withNewProber()
+        .withUrl("example-prometheus-blackbox-exporter:9115")
+        .endProber()
+        .withNewTargets()
+        .withNewStaticConfig()
+        .withStatic("https://example.com")
+        .endStaticConfig()
+        .endTargets()
+        .endSpec()
+        .build();
   }
 }

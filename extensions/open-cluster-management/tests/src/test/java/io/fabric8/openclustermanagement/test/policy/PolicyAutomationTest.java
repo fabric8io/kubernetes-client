@@ -78,7 +78,7 @@ class PolicyAutomationTest {
         .once();
 
     // When
-    Boolean isDeleted = client.policy().policyAutomations().inNamespace("ns1").withName("sample-policy").delete();
+    boolean isDeleted = client.policy().policyAutomations().inNamespace("ns1").withName("sample-policy").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

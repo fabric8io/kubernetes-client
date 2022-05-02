@@ -37,26 +37,26 @@ class SelectorSyncSetTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/selectorsyncsets/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSelectorSyncSet("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSelectorSyncSet("test-get"))
+        .once();
 
     // When
     SelectorSyncSet selectorSyncSet = client.hive().selectorSyncSets().withName("test-get").get();
 
     // Then
     assertThat(selectorSyncSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/selectorsyncsets")
-      .andReturn(HttpURLConnection.HTTP_OK, new SelectorSyncSetListBuilder()
-        .addToItems(createNewSelectorSyncSet("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new SelectorSyncSetListBuilder()
+            .addToItems(createNewSelectorSyncSet("test-list"))
+            .build())
+        .once();
 
     // When
     SelectorSyncSetList selectorSyncSetList = client.hive().selectorSyncSets().list();
@@ -65,18 +65,18 @@ class SelectorSyncSetTest {
     assertThat(selectorSyncSetList).isNotNull();
     assertThat(selectorSyncSetList.getItems()).hasSize(1);
     assertThat(selectorSyncSetList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/selectorsyncsets/selectorsyncset1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewSelectorSyncSet("selectorsyncset1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewSelectorSyncSet("selectorsyncset1"))
+        .once();
 
     // When
-    Boolean isDeleted = client.hive().selectorSyncSets().withName("selectorsyncset1").delete();
+    boolean isDeleted = client.hive().selectorSyncSets().withName("selectorsyncset1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,14 +84,14 @@ class SelectorSyncSetTest {
 
   private SelectorSyncSet createNewSelectorSyncSet(String name) {
     return new SelectorSyncSetBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withNewClusterDeploymentSelector()
-      .addToMatchLabels("cluster-group", "abutcher")
-      .endClusterDeploymentSelector()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withNewClusterDeploymentSelector()
+        .addToMatchLabels("cluster-group", "abutcher")
+        .endClusterDeploymentSelector()
+        .endSpec()
+        .build();
   }
 }

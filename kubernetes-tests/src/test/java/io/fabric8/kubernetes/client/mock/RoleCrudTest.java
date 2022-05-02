@@ -37,24 +37,22 @@ public class RoleCrudTest {
   KubernetesClient client;
 
   @Test
-  public void crudTest(){
-
+  public void crudTest() {
 
     Role kubernetesRole = new RoleBuilder()
-      .withNewMetadata()
+        .withNewMetadata()
         .withName("job-reader")
-      .endMetadata()
-      .addToRules(0, new PolicyRuleBuilder()
-        .addToApiGroups(0,"batch")
-        .addToNonResourceURLs(0,"/healthz")
-        .addToResourceNames(0,"my-job")
-        .addToResources(0,"jobs")
-        .addToVerbs(0, "get")
-        .addToVerbs(1, "watch")
-        .addToVerbs(2, "list")
-        .build()
-      )
-      .build();
+        .endMetadata()
+        .addToRules(0, new PolicyRuleBuilder()
+            .addToApiGroups(0, "batch")
+            .addToNonResourceURLs(0, "/healthz")
+            .addToResourceNames(0, "my-job")
+            .addToResources(0, "jobs")
+            .addToVerbs(0, "get")
+            .addToVerbs(1, "watch")
+            .addToVerbs(2, "list")
+            .build())
+        .build();
 
     //test of creation
     kubernetesRole = client.rbac().roles().create(kubernetesRole);
@@ -118,7 +116,7 @@ public class RoleCrudTest {
     //test of updation
 
     kubernetesRole = client.rbac().roles().withName("job-reader").edit(r -> new RoleBuilder(r)
-                           .editRule(0).addToApiGroups(1, "extensions").endRule().build());
+        .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(kubernetesRole);
     assertEquals("Role", kubernetesRole.getKind());
@@ -147,10 +145,10 @@ public class RoleCrudTest {
     assertEquals("list", kubernetesRole.getRules().get(0).getVerbs().get(2));
 
     //test of deletion
-    boolean deleted = client.rbac().roles().delete();
+    boolean deleted = client.rbac().roles().delete().size() == 1;
 
     assertTrue(deleted);
     kubernetesRoleList = client.rbac().roles().list();
-    assertEquals(0,kubernetesRoleList.getItems().size());
+    assertEquals(0, kubernetesRoleList.getItems().size());
   }
 }

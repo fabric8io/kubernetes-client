@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.crd.pet.Pet;
 import io.fabric8.crd.pet.PetSpec;
 import io.fabric8.crd.pet.PetStatus;
+import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
@@ -54,40 +54,40 @@ class TypedCustomResourceIT {
   private static MixedOperation<Pet, KubernetesResourceList<Pet>, Resource<Pet>> petClient;
 
   private static final CustomResourceDefinition petCrd = CustomResourceDefinitionContext
-    .v1CRDFromCustomResourceType(Pet.class)
-    .editSpec().editVersion(0)
-    .withNewSubresources()
-    .withNewStatus().endStatus()
-    .endSubresources()
-    .withNewSchema()
-    .withNewOpenAPIV3Schema()
-    .withType("object")
-    .addToProperties(Collections.singletonMap("spec", new JSONSchemaPropsBuilder()
+      .v1CRDFromCustomResourceType(Pet.class)
+      .editSpec().editVersion(0)
+      .withNewSubresources()
+      .withNewStatus().endStatus()
+      .endSubresources()
+      .withNewSchema()
+      .withNewOpenAPIV3Schema()
       .withType("object")
-      .withProperties(Collections.singletonMap("type", new JSONSchemaPropsBuilder()
-        .withType("string")
-        .build()))
-      .build()))
-    .addToProperties(Collections.singletonMap("status", new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withProperties(Collections.singletonMap("currentStatus", new JSONSchemaPropsBuilder()
-        .withType("string")
-        .build()))
-      .build()))
-    .endOpenAPIV3Schema()
-    .endSchema()
-    .endVersion()
-    .endSpec()
-    .build();
-
+      .addToProperties(Collections.singletonMap("spec", new JSONSchemaPropsBuilder()
+          .withType("object")
+          .withProperties(Collections.singletonMap("type", new JSONSchemaPropsBuilder()
+              .withType("string")
+              .build()))
+          .build()))
+      .addToProperties(Collections.singletonMap("status", new JSONSchemaPropsBuilder()
+          .withType("object")
+          .withProperties(Collections.singletonMap("currentStatus", new JSONSchemaPropsBuilder()
+              .withType("string")
+              .build()))
+          .build()))
+      .endOpenAPIV3Schema()
+      .endSchema()
+      .endVersion()
+      .endSpec()
+      .build();
 
   @BeforeAll
   public static void init() {
     client.resource(petCrd).create();
     client.apiextensions().v1().customResourceDefinitions()
         .withName("pets.testing.fabric8.io")
-        .waitUntilCondition(c -> c.getStatus() != null && c.getStatus().getConditions()!= null && c.getStatus().getConditions().stream()
-            .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
+        .waitUntilCondition(
+            c -> c.getStatus() != null && c.getStatus().getConditions() != null && c.getStatus().getConditions().stream()
+                .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
             10L, TimeUnit.SECONDS);
     petClient = client.customResources(Pet.class);
   }
@@ -150,7 +150,7 @@ class TypedCustomResourceIT {
     // When
     petClient.create(pet);
     await().atMost(5, TimeUnit.SECONDS)
-      .until(() -> petClient.withName("pet-update").get() != null);
+        .until(() -> petClient.withName("pet-update").get() != null);
     Pet updatedPet = petClient.withName("pet-update").edit(pet1 -> {
       pet1.getMetadata().setAnnotations(Collections.singletonMap("first", "1"));
       return pet1;
@@ -172,7 +172,7 @@ class TypedCustomResourceIT {
     // When
     pet = petClient.create(pet);
     petClient.withName("pet-update-status")
-      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
     pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
     Pet updatedPet = petClient.updateStatus(pet);
@@ -189,7 +189,7 @@ class TypedCustomResourceIT {
     // When
     petClient.create(pet);
     petClient.withName("pet-replace-status")
-      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
     pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
     Pet updatedPet = petClient.replaceStatus(pet);
@@ -206,7 +206,7 @@ class TypedCustomResourceIT {
     // When
     petClient.create(pet);
     petClient.withName("pet-apply-status")
-      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
     // use the original pet, no need to pick up the resourceVersion
     pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
@@ -224,8 +224,8 @@ class TypedCustomResourceIT {
     // When
     petClient.create(pet);
     petClient.withName("pet-edit-status")
-      .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
-    Pet updatedPet = petClient.withName("pet-edit-status").editStatus(p-> {
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    Pet updatedPet = petClient.withName("pet-edit-status").editStatus(p -> {
       Pet clone = Serialization.clone(pet);
       clone.setStatus(petStatusToUpdate);
       clone.getSpec().setType("shouldn't change");
@@ -248,7 +248,8 @@ class TypedCustomResourceIT {
       }
 
       @Override
-      public void onClose(WatcherException cause) { }
+      public void onClose(WatcherException cause) {
+      }
     })) {
       petClient.createOrReplace(pet);
       assertTrue(creationEventReceived.await(1, TimeUnit.SECONDS));
@@ -261,7 +262,7 @@ class TypedCustomResourceIT {
     Pet pet = createNewPet("pet-delete", "Cow", "Eating");
     // When
     petClient.create(pet);
-    boolean isDeleted = petClient.withName("pet-delete").delete();
+    boolean isDeleted = petClient.withName("pet-delete").delete().size() == 1;
     // Then
     assertTrue(isDeleted);
   }
@@ -287,7 +288,7 @@ class TypedCustomResourceIT {
     Pet duck = createNewPet("dry-run-delete", "Duck", "Quacking");
     petClient.createOrReplace(duck);
     // When
-    boolean isDeleted = petClient.withName("dry-run-delete").dryRun().delete();
+    boolean isDeleted = petClient.withName("dry-run-delete").dryRun().delete().size() == 1;
     // Then
     assertTrue(isDeleted);
     Pet duckFromServer = petClient.withName("dry-run-delete").get();
@@ -302,7 +303,6 @@ class TypedCustomResourceIT {
       assertEquals(currentStatus, pet.getStatus().getCurrentStatus());
     }
   }
-
 
   private Pet createNewPet(String name, String type, String currentStatus) {
     Pet pet = new Pet();

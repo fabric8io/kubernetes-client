@@ -36,26 +36,26 @@ class PackageManifestTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/packages.operators.coreos.com/v1/namespaces/ns1/packagemanifests/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPackageManifest("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPackageManifest("test-get"))
+        .once();
 
     // When
     PackageManifest packageManifest = client.operatorHub().packageManifests().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(packageManifest)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/packages.operators.coreos.com/v1/namespaces/ns1/packagemanifests")
-      .andReturn(HttpURLConnection.HTTP_OK, new PackageManifestListBuilder()
-        .addToItems(createNewPackageManifest("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PackageManifestListBuilder()
+            .addToItems(createNewPackageManifest("test-list"))
+            .build())
+        .once();
 
     // When
     PackageManifestList packageManifestList = client.operatorHub().packageManifests().inNamespace("ns1").list();
@@ -64,18 +64,18 @@ class PackageManifestTest {
     assertThat(packageManifestList).isNotNull();
     assertThat(packageManifestList.getItems()).hasSize(1);
     assertThat(packageManifestList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/packages.operators.coreos.com/v1/namespaces/ns1/packagemanifests/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewPackageManifest("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewPackageManifest("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operatorHub().packageManifests().inNamespace("ns1").withName("cluster").delete();
+    boolean isDeleted = client.operatorHub().packageManifests().inNamespace("ns1").withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,9 +83,9 @@ class PackageManifestTest {
 
   private PackageManifest createNewPackageManifest(String name) {
     return new PackageManifestBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
   }
 }

@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
@@ -33,7 +34,6 @@ import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -360,7 +360,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
     return new NameableCreateOrDeleteable() {
 
       @Override
-      public boolean delete() {
+      public List<StatusDetails> delete() {
         return operation.delete();
       }
 
@@ -379,7 +379,7 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
           }
 
           @Override
-          public boolean delete() {
+          public List<StatusDetails> delete() {
             return operation.withName(name).delete();
           }
 

@@ -37,26 +37,26 @@ class MachinePoolTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/machinepools/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachinePool("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachinePool("test-get"))
+        .once();
 
     // When
     MachinePool machinePool = client.hive().machinePools().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(machinePool)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/machinepools")
-      .andReturn(HttpURLConnection.HTTP_OK, new MachinePoolListBuilder()
-        .addToItems(createNewMachinePool("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MachinePoolListBuilder()
+            .addToItems(createNewMachinePool("test-list"))
+            .build())
+        .once();
 
     // When
     MachinePoolList machinePoolList = client.hive().machinePools().inNamespace("ns1").list();
@@ -65,18 +65,18 @@ class MachinePoolTest {
     assertThat(machinePoolList).isNotNull();
     assertThat(machinePoolList.getItems()).hasSize(1);
     assertThat(machinePoolList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/machinepools/machinepool1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachinePool("machinepool1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachinePool("machinepool1"))
+        .once();
 
     // When
-    Boolean isDeleted = client.hive().machinePools().inNamespace("ns1").withName("machinepool1").delete();
+    boolean isDeleted = client.hive().machinePools().inNamespace("ns1").withName("machinepool1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,26 +84,26 @@ class MachinePoolTest {
 
   private MachinePool createNewMachinePool(String name) {
     return new MachinePoolBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withNewClusterDeploymentRef()
-      .withName("foo")
-      .endClusterDeploymentRef()
-      .withName("worker")
-      .withReplicas(3L)
-      .withNewPlatform()
-      .withNewAws()
-      .withType("m4.large")
-      .withNewRootVolume()
-      .withIops(100)
-      .withSize(22)
-      .withType("gp2")
-      .endRootVolume()
-      .endAws()
-      .endPlatform()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withNewClusterDeploymentRef()
+        .withName("foo")
+        .endClusterDeploymentRef()
+        .withName("worker")
+        .withReplicas(3L)
+        .withNewPlatform()
+        .withNewAws()
+        .withType("m4.large")
+        .withNewRootVolume()
+        .withIops(100)
+        .withSize(22)
+        .withType("gp2")
+        .endRootVolume()
+        .endAws()
+        .endPlatform()
+        .endSpec()
+        .build();
   }
 }

@@ -39,9 +39,9 @@ class EgressNetworkPolicyTest {
     // Given
     EgressNetworkPolicy egressNetworkPolicy = getEgressNetworkPolicy();
     server.expect().post()
-      .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies")
-      .andReturn(HttpURLConnection.HTTP_OK, egressNetworkPolicy)
-      .once();
+        .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies")
+        .andReturn(HttpURLConnection.HTTP_OK, egressNetworkPolicy)
+        .once();
 
     // When
     egressNetworkPolicy = client.egressNetworkPolicies().inNamespace("ns1").create(egressNetworkPolicy);
@@ -55,9 +55,9 @@ class EgressNetworkPolicyTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getEgressNetworkPolicy())
-      .once();
+        .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getEgressNetworkPolicy())
+        .once();
 
     // When
     EgressNetworkPolicy f = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").get();
@@ -71,9 +71,9 @@ class EgressNetworkPolicyTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies")
-      .andReturn(HttpURLConnection.HTTP_OK, new EgressNetworkPolicyListBuilder().withItems(getEgressNetworkPolicy()).build())
-      .once();
+        .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies")
+        .andReturn(HttpURLConnection.HTTP_OK, new EgressNetworkPolicyListBuilder().withItems(getEgressNetworkPolicy()).build())
+        .once();
 
     // When
     EgressNetworkPolicyList fgList = client.egressNetworkPolicies().inNamespace("ns1").list();
@@ -88,12 +88,12 @@ class EgressNetworkPolicyTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getEgressNetworkPolicy())
-      .once();
+        .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getEgressNetworkPolicy())
+        .once();
 
     // When
-    Boolean deleted = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,24 +101,24 @@ class EgressNetworkPolicyTest {
 
   private EgressNetworkPolicy getEgressNetworkPolicy() {
     return new EgressNetworkPolicyBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .withNamespace("ns1")
-      .endMetadata()
-      .withNewSpec()
-      .addNewEgress()
-      .withType("Allow")
-      .withNewTo()
-      .withCidrSelector("1.2.3.0/24")
-      .endTo()
-      .endEgress()
-      .addNewEgress()
-      .withType("Allow")
-      .withNewTo()
-      .withDnsName("www.foo.com")
-      .endTo()
-      .endEgress()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("foo")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withNewSpec()
+        .addNewEgress()
+        .withType("Allow")
+        .withNewTo()
+        .withCidrSelector("1.2.3.0/24")
+        .endTo()
+        .endEgress()
+        .addNewEgress()
+        .withType("Allow")
+        .withNewTo()
+        .withDnsName("www.foo.com")
+        .endTo()
+        .endEgress()
+        .endSpec()
+        .build();
   }
 }

@@ -62,7 +62,7 @@ class IntegrationCrudTest {
     Integration integration3 = new IntegrationBuilder().withNewMetadata().withName("integration3").endMetadata().build();
 
     client.v1().integrations().inNamespace("ns3").create(integration3);
-    Boolean deleted = client.v1().integrations().inNamespace("ns3").withName("integration3").delete();
+    boolean deleted = client.v1().integrations().inNamespace("ns3").withName("integration3").delete().size() == 1;
     assertTrue(deleted);
   }
 

@@ -35,26 +35,26 @@ class MachineConfigTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/machineconfiguration.openshift.io/v1/machineconfigs/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachineConfig("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachineConfig("test-get"))
+        .once();
 
     // When
     MachineConfig machineConfig = client.machineConfigurations().machineConfigs().withName("test-get").get();
 
     // Then
     assertThat(machineConfig)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/machineconfiguration.openshift.io/v1/machineconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, new MachineConfigListBuilder()
-        .addToItems(createNewMachineConfig("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MachineConfigListBuilder()
+            .addToItems(createNewMachineConfig("test-list"))
+            .build())
+        .once();
 
     // When
     MachineConfigList machineConfigList = client.machineConfigurations().machineConfigs().list();
@@ -63,18 +63,18 @@ class MachineConfigTest {
     assertThat(machineConfigList).isNotNull();
     assertThat(machineConfigList.getItems()).hasSize(1);
     assertThat(machineConfigList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/machineconfiguration.openshift.io/v1/machineconfigs/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachineConfig("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachineConfig("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.machineConfigurations().machineConfigs().withName("cluster").delete();
+    boolean isDeleted = client.machineConfigurations().machineConfigs().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,12 +82,13 @@ class MachineConfigTest {
 
   private MachineConfig createNewMachineConfig(String name) {
     return new MachineConfigBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withFips(false)
-      .withOsImageURL("quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0b2c764f69eb4663efb2954e74d0c235b5edcb429fd9d66f151dc666be03f63c")
-      .withKernelType("")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withFips(false)
+        .withOsImageURL(
+            "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0b2c764f69eb4663efb2954e74d0c235b5edcb429fd9d66f151dc666be03f63c")
+        .withKernelType("")
+        .endSpec()
+        .build();
   }
 }

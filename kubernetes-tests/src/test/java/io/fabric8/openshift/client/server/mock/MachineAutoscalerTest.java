@@ -35,52 +35,52 @@ class MachineAutoscalerTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/autoscaling.openshift.io/v1beta1/namespaces/ns1/machineautoscalers/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachineAutoscaler("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachineAutoscaler("test-get"))
+        .once();
 
     // When
     MachineAutoscaler machineAutoscaler = client.clusterAutoscaling().v1beta1().machineAutoscalers()
-      .inNamespace("ns1")
-      .withName("test-get").get();
+        .inNamespace("ns1")
+        .withName("test-get").get();
 
     // Then
     assertThat(machineAutoscaler)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/autoscaling.openshift.io/v1beta1/namespaces/ns1/machineautoscalers")
-      .andReturn(HttpURLConnection.HTTP_OK, new MachineAutoscalerListBuilder()
-        .addToItems(createNewMachineAutoscaler("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new MachineAutoscalerListBuilder()
+            .addToItems(createNewMachineAutoscaler("test-list"))
+            .build())
+        .once();
 
     // When
     MachineAutoscalerList machineAutoscalerList = client.clusterAutoscaling().v1beta1().machineAutoscalers()
-      .inNamespace("ns1")
-      .list();
+        .inNamespace("ns1")
+        .list();
 
     // Then
     assertThat(machineAutoscalerList).isNotNull();
     assertThat(machineAutoscalerList.getItems()).hasSize(1);
     assertThat(machineAutoscalerList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/autoscaling.openshift.io/v1beta1/namespaces/ns1/machineautoscalers/ma")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewMachineAutoscaler("ma"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewMachineAutoscaler("ma"))
+        .once();
 
     // When
     Boolean isDeleted = client.clusterAutoscaling().v1beta1().machineAutoscalers()
-      .inNamespace("ns1")
-      .withName("ma").delete();
+        .inNamespace("ns1")
+        .withName("ma").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -88,16 +88,16 @@ class MachineAutoscalerTest {
 
   private MachineAutoscaler createNewMachineAutoscaler(String name) {
     return new MachineAutoscalerBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withMaxReplicas(12)
-      .withMinReplicas(1)
-      .withNewScaleTargetRef()
-      .withApiVersion("machine.openshift.io/v1beta1")
-      .withKind("MachineSet")
-      .withName("worker-us-east-1a")
-      .endScaleTargetRef()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withMaxReplicas(12)
+        .withMinReplicas(1)
+        .withNewScaleTargetRef()
+        .withApiVersion("machine.openshift.io/v1beta1")
+        .withKind("MachineSet")
+        .withName("worker-us-east-1a")
+        .endScaleTargetRef()
+        .endSpec()
+        .build();
   }
 }

@@ -92,7 +92,7 @@ class TypedCustomResourceApiTest {
 
     podSetClient = client.customResources(PodSet.class);
 
-    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete();
+    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete().size() == 1;
     assertTrue(isDeleted);
   }
 
@@ -103,7 +103,7 @@ class TypedCustomResourceApiTest {
 
     podSetClient = client.customResources(PodSet.class);
 
-    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").cascading(true).delete();
+    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").cascading(true).delete().size() == 1;
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -120,7 +120,7 @@ class TypedCustomResourceApiTest {
     podSetClient = client.customResources(PodSet.class);
 
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset")
-        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.getLastRequest();

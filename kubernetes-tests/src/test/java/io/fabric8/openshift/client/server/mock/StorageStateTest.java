@@ -35,26 +35,26 @@ class StorageStateTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/migration.k8s.io/v1alpha1/storagestates/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewStorageState("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewStorageState("test-get"))
+        .once();
 
     // When
     StorageState storageState = client.kubeStorageVersionMigrator().storageStates().withName("test-get").get();
 
     // Then
     assertThat(storageState)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/migration.k8s.io/v1alpha1/storagestates")
-      .andReturn(HttpURLConnection.HTTP_OK, new StorageStateListBuilder()
-        .addToItems(createNewStorageState("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new StorageStateListBuilder()
+            .addToItems(createNewStorageState("test-list"))
+            .build())
+        .once();
 
     // When
     StorageStateList storageStateList = client.kubeStorageVersionMigrator().storageStates().list();
@@ -63,18 +63,18 @@ class StorageStateTest {
     assertThat(storageStateList).isNotNull();
     assertThat(storageStateList.getItems()).hasSize(1);
     assertThat(storageStateList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/migration.k8s.io/v1alpha1/storagestates/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewStorageState("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewStorageState("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.kubeStorageVersionMigrator().storageStates().withName("cluster").delete();
+    boolean isDeleted = client.kubeStorageVersionMigrator().storageStates().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,14 +82,13 @@ class StorageStateTest {
 
   private StorageState createNewStorageState(String name) {
     return new StorageStateBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewResource()
-      .withGroup("example.k8s.io")
-      .withResource("TestResource")
-      .endResource()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewResource()
+        .withGroup("example.k8s.io")
+        .withResource("TestResource")
+        .endResource()
+        .endSpec()
+        .build();
   }
 }
-

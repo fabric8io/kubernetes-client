@@ -64,7 +64,7 @@ class PipelineCrudTest {
     Pipeline pipeline3 = new PipelineBuilder().withNewMetadata().withName("pipeline3").endMetadata().build();
 
     client.v1beta1().pipelines().inNamespace("ns3").create(pipeline3);
-    Boolean deleted = client.v1beta1().pipelines().inNamespace("ns3").withName("pipeline3").delete();
+    boolean deleted = client.v1beta1().pipelines().inNamespace("ns3").withName("pipeline3").delete().size() == 1;
     assertTrue(deleted);
   }
 

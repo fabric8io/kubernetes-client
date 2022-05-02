@@ -39,9 +39,9 @@ class ImageContentSourcePolicyTest {
     // Given
     ImageContentSourcePolicy imageContentSourcePolicy = getImageContentSourcePolicy();
     server.expect().post()
-      .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies")
-      .andReturn(HttpURLConnection.HTTP_OK, imageContentSourcePolicy)
-      .once();
+        .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies")
+        .andReturn(HttpURLConnection.HTTP_OK, imageContentSourcePolicy)
+        .once();
 
     // When
     imageContentSourcePolicy = client.operator().imageContentSourcePolicies().create(imageContentSourcePolicy);
@@ -55,9 +55,9 @@ class ImageContentSourcePolicyTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getImageContentSourcePolicy())
-      .once();
+        .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getImageContentSourcePolicy())
+        .once();
 
     // When
     ImageContentSourcePolicy f = client.operator().imageContentSourcePolicies().withName("foo").get();
@@ -71,9 +71,10 @@ class ImageContentSourcePolicyTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies")
-      .andReturn(HttpURLConnection.HTTP_OK, new ImageContentSourcePolicyListBuilder().withItems(getImageContentSourcePolicy()).build())
-      .once();
+        .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new ImageContentSourcePolicyListBuilder().withItems(getImageContentSourcePolicy()).build())
+        .once();
 
     // When
     ImageContentSourcePolicyList fgList = client.operator().imageContentSourcePolicies().list();
@@ -88,12 +89,12 @@ class ImageContentSourcePolicyTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getImageContentSourcePolicy())
-      .once();
+        .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getImageContentSourcePolicy())
+        .once();
 
     // When
-    Boolean deleted = client.operator().imageContentSourcePolicies().withName("foo").delete();
+    boolean deleted = client.operator().imageContentSourcePolicies().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,14 +102,13 @@ class ImageContentSourcePolicyTest {
 
   private ImageContentSourcePolicy getImageContentSourcePolicy() {
     return new ImageContentSourcePolicyBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .addNewRepositoryDigestMirror()
-      .withSource("registry.redhat.io/openshift-service-mesh/proxyv2-rhel8")
-      .addToMirrors("image-registry.openshift-image-registry.svc:5000/openshift/proxyv2-rhel8")
-      .endRepositoryDigestMirror()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .addNewRepositoryDigestMirror()
+        .withSource("registry.redhat.io/openshift-service-mesh/proxyv2-rhel8")
+        .addToMirrors("image-registry.openshift-image-registry.svc:5000/openshift/proxyv2-rhel8")
+        .endRepositoryDigestMirror()
+        .endSpec()
+        .build();
   }
 }
-

@@ -41,7 +41,7 @@ class ImageStreamIT {
   @Test
   void load() {
     ImageStream aImageStream = client.imageStreams()
-      .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
+        .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
     assertThat(aImageStream).isNotNull();
     assertEquals("my-ruby", aImageStream.getMetadata().getName());
   }
@@ -62,8 +62,8 @@ class ImageStreamIT {
   void update() {
     client.imageStreams().withName("is-update").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     ImageStream imageStream1 = client.imageStreams().withName("is-update").edit(i -> new ImageStreamBuilder(i)
-      .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
-      .build());
+        .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
+        .build());
     assertThat(imageStream1).isNotNull();
     assertEquals("fabric8/s2i-java", imageStream1.getSpec().getDockerImageRepository());
   }
@@ -71,7 +71,7 @@ class ImageStreamIT {
   @Test
   void delete() {
     client.imageStreams().withName("is-delete").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
-    boolean bDeleted = client.imageStreams().withName("is-delete").delete();
+    boolean bDeleted = client.imageStreams().withName("is-delete").delete().size() == 1;
     assertTrue(bDeleted);
   }
 

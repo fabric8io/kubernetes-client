@@ -36,26 +36,26 @@ class ThanosRulerTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/thanosrulers/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewThanosRuler("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewThanosRuler("test-get"))
+        .once();
 
     // When
     ThanosRuler probe = client.monitoring().thanosRulers().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(probe)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/thanosrulers")
-      .andReturn(HttpURLConnection.HTTP_OK, new ThanosRulerListBuilder()
-        .addToItems(createNewThanosRuler("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ThanosRulerListBuilder()
+            .addToItems(createNewThanosRuler("test-list"))
+            .build())
+        .once();
 
     // When
     ThanosRulerList probeList = client.monitoring().thanosRulers().inNamespace("ns1").list();
@@ -64,18 +64,18 @@ class ThanosRulerTest {
     assertThat(probeList).isNotNull();
     assertThat(probeList.getItems()).hasSize(1);
     assertThat(probeList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/thanosrulers/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewThanosRuler("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewThanosRuler("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.monitoring().thanosRulers().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.monitoring().thanosRulers().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,14 +83,14 @@ class ThanosRulerTest {
 
   private ThanosRuler createNewThanosRuler(String name) {
     return new ThanosRulerBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withImage("quay.io/thanos/thanos")
-      .withNewRuleSelector()
-      .withMatchLabels(Collections.singletonMap("role", "my-thanos-rules"))
-      .endRuleSelector()
-      .withQueryEndpoints("dnssrv+_http._tcp.my-thanos-querier.monitoring.svc.cluster.local")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withImage("quay.io/thanos/thanos")
+        .withNewRuleSelector()
+        .withMatchLabels(Collections.singletonMap("role", "my-thanos-rules"))
+        .endRuleSelector()
+        .withQueryEndpoints("dnssrv+_http._tcp.my-thanos-querier.monitoring.svc.cluster.local")
+        .endSpec()
+        .build();
   }
 }

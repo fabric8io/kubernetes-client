@@ -41,9 +41,9 @@ class APIServiceTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/apiregistration.k8s.io/v1/apiservices/test-apiservice")
-      .andReturn(HttpURLConnection.HTTP_OK, new APIServiceBuilder()
-        .withNewMetadata().withName("as1").endMetadata().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new APIServiceBuilder()
+            .withNewMetadata().withName("as1").endMetadata().build())
+        .once();
 
     // When
     APIService apiService = client.apiServices().withName("test-apiservice").get();
@@ -73,10 +73,10 @@ class APIServiceTest {
   void list() {
     // Given
     server.expect().get().withPath("/apis/apiregistration.k8s.io/v1/apiservices")
-      .andReturn(HttpURLConnection.HTTP_OK, new APIServiceListBuilder()
-        .addNewItem()
-        .withNewMetadata().withName("as1").endMetadata().endItem().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new APIServiceListBuilder()
+            .addNewItem()
+            .withNewMetadata().withName("as1").endMetadata().endItem().build())
+        .once();
 
     // When
     APIServiceList apiServiceList = client.apiServices().list();
@@ -92,12 +92,12 @@ class APIServiceTest {
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apiregistration.k8s.io/v1/apiservices/v1alpha1.demo.fabric8.io")
-      .andReturn(HttpURLConnection.HTTP_OK, new APIServiceBuilder()
-        .withNewMetadata().withName("v1alpha1.demo.fabric8.io").endMetadata().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new APIServiceBuilder()
+            .withNewMetadata().withName("v1alpha1.demo.fabric8.io").endMetadata().build())
+        .once();
 
     // When
-    Boolean isDeleted = client.apiServices().withName("v1alpha1.demo.fabric8.io").delete();
+    boolean isDeleted = client.apiServices().withName("v1alpha1.demo.fabric8.io").delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

@@ -45,11 +45,11 @@ public class ResourceQuotaTest {
 
   @Test
   public void testList() {
-    server.expect().withPath("/api/v1/namespaces/test/resourcequotas").andReturn(200, new ResourceQuotaListBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/resourcequotas").andReturn(200, new ResourceQuotaListBuilder().build())
+        .once();
     server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas").andReturn(200, new ResourceQuotaListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
-
+        .addNewItem().and()
+        .addNewItem().and().build()).once();
 
     ResourceQuotaList resourceQuotaList = client.resourceQuotas().list();
     assertNotNull(resourceQuotaList);
@@ -62,9 +62,10 @@ public class ResourceQuotaTest {
 
   @Test
   public void testGet() {
-    server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1").andReturn(200, new ResourceQuotaListBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, new ResourceQuotaListBuilder().build()).once();
-
+    server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1")
+        .andReturn(200, new ResourceQuotaListBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2")
+        .andReturn(200, new ResourceQuotaListBuilder().build()).once();
 
     ResourceQuota resourceQuota = client.resourceQuotas().withName("resourcequota1").get();
     assertNotNull(resourceQuota);
@@ -78,34 +79,37 @@ public class ResourceQuotaTest {
 
   @Test
   public void testeDelete() {
-    server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1").andReturn(200, new ResourceQuotaBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, new ResourceQuotaBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1")
+        .andReturn(200, new ResourceQuotaBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2")
+        .andReturn(200, new ResourceQuotaBuilder().build()).once();
 
-
-    Boolean deleted = client.resourceQuotas().withName("resourcequota1").delete();
+    boolean deleted = client.resourceQuotas().withName("resourcequota1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.resourceQuotas().withName("resourcequota2").delete();
+    deleted = client.resourceQuotas().withName("resourcequota2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.resourceQuotas().inNamespace("ns1").withName("resourcequota2").delete();
+    deleted = client.resourceQuotas().inNamespace("ns1").withName("resourcequota2").delete().size() == 1;
     assertTrue(deleted);
   }
 
   @Test
   public void testeDeleteMulti() {
-    ResourceQuota resourcequota1 = new ResourceQuotaBuilder().withNewMetadata().withName("resourcequota1").withNamespace("test").endMetadata().build();
-    ResourceQuota resourcequota2 = new ResourceQuotaBuilder().withNewMetadata().withName("resourcequota2").withNamespace("ns1").endMetadata().build();
-    ResourceQuota resourcequota3 = new ResourceQuotaBuilder().withNewMetadata().withName("resourcequota3").withNamespace("any").endMetadata().build();
+    ResourceQuota resourcequota1 = new ResourceQuotaBuilder().withNewMetadata().withName("resourcequota1").withNamespace("test")
+        .endMetadata().build();
+    ResourceQuota resourcequota2 = new ResourceQuotaBuilder().withNewMetadata().withName("resourcequota2").withNamespace("ns1")
+        .endMetadata().build();
+    ResourceQuota resourcequota3 = new ResourceQuotaBuilder().withNewMetadata().withName("resourcequota3").withNamespace("any")
+        .endMetadata().build();
 
     server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1").andReturn(200, resourcequota1).once();
     server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, resourcequota2).once();
 
-
     Boolean deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota1, resourcequota2);
     assertTrue(deleted);
 
-    deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota3);
+    deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -134,14 +138,16 @@ public class ResourceQuotaTest {
 
   @Test
   public void testBuild() {
-    server.expect().withPath("/api/v1/namespaces/myspace/resourcequotas/compute-quota").andReturn(200, new ResourceQuotaBuilder()
-      .withNewMetadata().withName("compute-quota").withNamespace("myspace").endMetadata()
-      .withNewSpec().addToHard("pods", new Quantity("2"))
-      .addToHard("requests.cpu", new Quantity("1"))
-      .addToHard("limits.cpu", new Quantity("2")).endSpec().build()).once();
+    server.expect().withPath("/api/v1/namespaces/myspace/resourcequotas/compute-quota")
+        .andReturn(200, new ResourceQuotaBuilder()
+            .withNewMetadata().withName("compute-quota").withNamespace("myspace").endMetadata()
+            .withNewSpec().addToHard("pods", new Quantity("2"))
+            .addToHard("requests.cpu", new Quantity("1"))
+            .addToHard("limits.cpu", new Quantity("2")).endSpec().build())
+        .once();
 
-
-    Deployment deployment = client.apps().deployments().load(getClass().getResourceAsStream("/test-resourcequota-deployment.yml")).get();
+    Deployment deployment = client.apps().deployments()
+        .load(getClass().getResourceAsStream("/test-resourcequota-deployment.yml")).get();
     server.expect().withPath("/apis/apps/v1/namespaces/myspace/deployments/deployment").andReturn(200, deployment).once();
 
     ResourceQuota resourcequota = client.resourceQuotas().inNamespace("myspace").withName("compute-quota").get();

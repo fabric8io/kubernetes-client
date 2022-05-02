@@ -44,14 +44,14 @@ public class EndpointsTest {
   public void testList() {
     server.expect().withPath("/api/v1/namespaces/test/endpoints").andReturn(200, new EndpointsListBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/endpoints").andReturn(200, new EndpointsListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+        .addNewItem().and()
+        .addNewItem().and()
+        .build()).once();
     server.expect().withPath("/api/v1/endpoints").andReturn(200, new EndpointsListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+        .addNewItem().and()
+        .addNewItem().and()
+        .addNewItem().and()
+        .build()).once();
 
     EndpointsList endpointsList = client.endpoints().list();
     assertNotNull(endpointsList);
@@ -68,24 +68,29 @@ public class EndpointsTest {
 
   @Test
   public void testListWithLabels() {
-    server.expect().withPath("/api/v1/namespaces/test/endpoints?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new EndpointsListBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/endpoints?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new EndpointsListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .build()).once();
+    server.expect()
+        .withPath(
+            "/api/v1/namespaces/test/endpoints?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
+        .andReturn(200, new EndpointsListBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/endpoints?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .andReturn(200, new EndpointsListBuilder()
+            .addNewItem().and()
+            .addNewItem().and()
+            .build())
+        .once();
 
     EndpointsList endpointsList = client.endpoints()
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .withLabel("key3", "value3")
+        .list();
     assertNotNull(endpointsList);
     assertEquals(0, endpointsList.getItems().size());
 
     endpointsList = client.endpoints().inNamespace("ns1")
-      .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .list();
+        .withLabel("key1", "value1")
+        .withLabel("key2", "value2")
+        .list();
     assertNotNull(endpointsList);
     assertEquals(2, endpointsList.getItems().size());
   }
@@ -93,7 +98,8 @@ public class EndpointsTest {
   @Test
   public void testEditMissing() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint").andReturn(404, "error message from kubernetes").always();
+      server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint").andReturn(404, "error message from kubernetes")
+          .always();
 
       client.endpoints().withName("endpoint").edit(r -> r);
     });
@@ -101,8 +107,10 @@ public class EndpointsTest {
 
   @Test
   public void testGet() {
-    server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint1").andReturn(200, new EndpointsBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, new EndpointsBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint1").andReturn(200, new EndpointsBuilder().build())
+        .once();
+    server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, new EndpointsBuilder().build())
+        .once();
 
     Endpoints endpoints = client.endpoints().inNamespace("test").withName("endpoint1").get();
     assertNotNull(endpoints);
@@ -116,24 +124,29 @@ public class EndpointsTest {
 
   @Test
   public void testDelete() {
-    server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint1").andReturn(200, new EndpointsBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, new EndpointsBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint1").andReturn(200, new EndpointsBuilder().build())
+        .once();
+    server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, new EndpointsBuilder().build())
+        .once();
 
-    Boolean deleted = client.endpoints().inNamespace("test").withName("endpoint1").delete();
+    boolean deleted = client.endpoints().inNamespace("test").withName("endpoint1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.endpoints().withName("endpoint2").delete();
+    deleted = client.endpoints().withName("endpoint2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.endpoints().inNamespace("ns1").withName("endpoint2").delete();
+    deleted = client.endpoints().inNamespace("ns1").withName("endpoint2").delete().size() == 1;
     assertTrue(deleted);
   }
 
   @Test
   public void testDeleteMulti() {
-    Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata().build();
-    Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata().build();
-    Endpoints endpoint3 = new EndpointsBuilder().withNewMetadata().withName("endpoint3").withNamespace("any").endMetadata().build();
+    Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata()
+        .build();
+    Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata()
+        .build();
+    Endpoints endpoint3 = new EndpointsBuilder().withNewMetadata().withName("endpoint3").withNamespace("any").endMetadata()
+        .build();
 
     server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint1").andReturn(200, endpoint1).once();
     server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, endpoint2).once();
@@ -141,15 +154,17 @@ public class EndpointsTest {
     Boolean deleted = client.endpoints().inAnyNamespace().delete(endpoint1, endpoint2);
     assertTrue(deleted);
 
-    deleted = client.endpoints().inAnyNamespace().delete(endpoint3);
+    deleted = client.endpoints().inAnyNamespace().delete(endpoint3).size() == 1;
     assertFalse(deleted);
   }
 
   @Test
   public void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata().build();
-      Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata().build();
+      Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata()
+          .build();
+      Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata()
+          .build();
 
       client.endpoints().inNamespace("test1").withName("myendpoint1").create(endpoint1);
     });
@@ -165,11 +180,11 @@ public class EndpointsTest {
   @Test
   public void testBuild() {
     Endpoints endpoints = new EndpointsBuilder()
-      .withNewMetadata().withName("endpoint").withNamespace("test").endMetadata()
-      .withSubsets().addNewSubset().addNewAddress().withIp("10.10.50.53").endAddress()
-      .addNewPort().withPort(80).withName("apache").endPort()
-      .endSubset()
-      .build();
+        .withNewMetadata().withName("endpoint").withNamespace("test").endMetadata()
+        .withSubsets().addNewSubset().addNewAddress().withIp("10.10.50.53").endAddress()
+        .addNewPort().withPort(80).withName("apache").endPort()
+        .endSubset()
+        .build();
 
     server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint").andReturn(200, endpoints).once();
 

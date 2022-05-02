@@ -36,26 +36,26 @@ class APIRequestCountTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/apiserver.openshift.io/v1/apirequestcounts/pods.v1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewAPIRequestCount("pods.v1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewAPIRequestCount("pods.v1"))
+        .once();
 
     // When
     APIRequestCount apiRequestCount = client.apiRequestCounts().withName("pods.v1").get();
 
     // Then
     assertThat(apiRequestCount)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "pods.v1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "pods.v1");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/apiserver.openshift.io/v1/apirequestcounts")
-      .andReturn(HttpURLConnection.HTTP_OK, new APIRequestCountListBuilder()
-        .addToItems(createNewAPIRequestCount("example.v1"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new APIRequestCountListBuilder()
+            .addToItems(createNewAPIRequestCount("example.v1"))
+            .build())
+        .once();
 
     // When
     APIRequestCountList apiRequestCountList = client.apiRequestCounts().list();
@@ -64,18 +64,18 @@ class APIRequestCountTest {
     assertThat(apiRequestCountList).isNotNull();
     assertThat(apiRequestCountList.getItems()).hasSize(1);
     assertThat(apiRequestCountList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "example.v1");
+        .hasFieldOrPropertyWithValue("metadata.name", "example.v1");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/apiserver.openshift.io/v1/apirequestcounts/secrets.v1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewAPIRequestCount("secrets.v1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewAPIRequestCount("secrets.v1"))
+        .once();
 
     // When
-    Boolean isDeleted = client.apiRequestCounts().withName("secrets.v1").delete();
+    boolean isDeleted = client.apiRequestCounts().withName("secrets.v1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,20 +83,20 @@ class APIRequestCountTest {
 
   private APIRequestCount createNewAPIRequestCount(String name) {
     return new APIRequestCountBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNumberOfUsersToReport(10L)
-      .endSpec()
-      .withNewStatus()
-      .withLast24h(new PerResourceAPIRequestLogBuilder()
-        .addNewByNode()
-        .withNodeName("192.168.126.10")
-        .withRequestCount(0L)
-        .endByNode()
-        .withRequestCount(0L)
-        .build())
-      .endStatus()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNumberOfUsersToReport(10L)
+        .endSpec()
+        .withNewStatus()
+        .withLast24h(new PerResourceAPIRequestLogBuilder()
+            .addNewByNode()
+            .withNodeName("192.168.126.10")
+            .withRequestCount(0L)
+            .endByNode()
+            .withRequestCount(0L)
+            .build())
+        .endStatus()
+        .build();
   }
 
 }

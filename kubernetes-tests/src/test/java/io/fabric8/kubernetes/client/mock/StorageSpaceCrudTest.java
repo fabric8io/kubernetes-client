@@ -50,11 +50,11 @@ public class StorageSpaceCrudTest {
     parameters.put("key", "value");
 
     StorageClass storageClass = new StorageClassBuilder().withApiVersion("storage.k8s.io/v1")
-      .withKind("StorageClass")
-      .withMetadata(metadata)
-      .withParameters(parameters)
-      .withProvisioner("kubernetes.io/aws-ebs")
-      .build();
+        .withKind("StorageClass")
+        .withMetadata(metadata)
+        .withParameters(parameters)
+        .withProvisioner("kubernetes.io/aws-ebs")
+        .build();
 
     //test create
     storageClass = client.storage().storageClasses().create(storageClass);
@@ -72,14 +72,14 @@ public class StorageSpaceCrudTest {
 
     //test update
     storageClass = client.storage().storageClasses().withName(name).edit(s -> new StorageClassBuilder(s).editOrNewMetadata()
-      .addToLabels("key1", "value1")
-      .endMetadata().build());
+        .addToLabels("key1", "value1")
+        .endMetadata().build());
     logger.info("Updated Storage Class: {} ", storageClass.toString());
     assertNotNull(storageClass);
     assertEquals(1, storageClass.getMetadata().getLabels().size());
 
     //test delete
-    boolean result = client.storage().storageClasses().delete(storageClass);
+    boolean result = client.storage().storageClasses().delete(storageClass).size() == 1;
     assertEquals(true, result);
     StorageClassList storageClassList2 = client.storage().storageClasses().list();
     assertEquals(0, storageClassList2.getItems().size());

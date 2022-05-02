@@ -76,7 +76,7 @@ class ManagedClusterTest {
         .once();
 
     // When
-    Boolean isDeleted = client.clusters().managedClusters().withName("cluster").delete();
+    boolean isDeleted = client.clusters().managedClusters().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -37,43 +37,43 @@ class WaitUntilReadyIT {
   KubernetesClient client;
 
   private final Pod pod = new PodBuilder()
-    .withNewMetadata().withName("p1").addToLabels("test", "WaitUntilReadyIT").endMetadata()
-    .withNewSpec()
-    .addNewContainer()
-    .withName("myapp-container")
-    .withImage("busybox")
-    .withCommand("sh", "-c", "echo The app is running!; sleep 60")
-    .endContainer()
-    .addNewInitContainer()
-    .withName("init-myservice")
-    .withImage("busybox")
-    .withCommand("sh", "-c", "echo inititalizing...; sleep 1")
-    .endInitContainer()
-    .endSpec()
-    .build();
+      .withNewMetadata().withName("p1").addToLabels("test", "WaitUntilReadyIT").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("myapp-container")
+      .withImage("busybox")
+      .withCommand("sh", "-c", "echo The app is running!; sleep 60")
+      .endContainer()
+      .addNewInitContainer()
+      .withName("init-myservice")
+      .withImage("busybox")
+      .withCommand("sh", "-c", "echo inititalizing...; sleep 1")
+      .endInitContainer()
+      .endSpec()
+      .build();
 
   private final Pod secondPod = new PodBuilder()
-    .withNewMetadata().withName("p2").addToLabels("test", "WaitUntilReadyIT").endMetadata()
-    .withNewSpec()
-    .addNewContainer()
-    .withName("myapp2-container")
-    .withImage("busybox")
-    .withCommand("sh", "-c", "echo The app is running!; sleep 60")
-    .endContainer()
-    .addNewInitContainer()
-    .withName("init2-mypod")
-    .withImage("busybox")
-    .withCommand("sh", "-c", "echo initializing...; sleep 1")
-    .endInitContainer()
-    .endSpec()
-    .build();
+      .withNewMetadata().withName("p2").addToLabels("test", "WaitUntilReadyIT").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("myapp2-container")
+      .withImage("busybox")
+      .withCommand("sh", "-c", "echo The app is running!; sleep 60")
+      .endContainer()
+      .addNewInitContainer()
+      .withName("init2-mypod")
+      .withImage("busybox")
+      .withCommand("sh", "-c", "echo initializing...; sleep 1")
+      .endInitContainer()
+      .endSpec()
+      .build();
 
   private final Secret mySecret = new SecretBuilder()
-    .withNewMetadata().withName("my-secret").addToLabels("test", "WaitUntilReadyIT").endMetadata()
-    .withType("Opaque")
-    .addToData("username", "YWRtaW4=")
-    .addToData("password", "MWYyZDFlMmU2N2Rm")
-    .build();
+      .withNewMetadata().withName("my-secret").addToLabels("test", "WaitUntilReadyIT").endMetadata()
+      .withType("Opaque")
+      .addToData("username", "YWRtaW4=")
+      .addToData("password", "MWYyZDFlMmU2N2Rm")
+      .build();
 
   @Test
   void testBatchWaitUntilReady() throws InterruptedException, ExecutionException, TimeoutException {
@@ -83,12 +83,12 @@ class WaitUntilReadyIT {
 
     // For waiting for single resource use this.
     client.resourceList(new KubernetesListBuilder().withItems(podCreated, secondPodCreated, mySecretCreated).build())
-      .waitUntilReady(60, TimeUnit.SECONDS);
+        .waitUntilReady(60, TimeUnit.SECONDS);
 
     // Cleanup
-    assertTrue(client.pods().withName("p1").withGracePeriod(0L).delete());
-    assertTrue(client.pods().withName("p2").withGracePeriod(0L).delete());
-    assertTrue(client.secrets().withName("my-secret").delete());
+    assertTrue(client.pods().withName("p1").withGracePeriod(0L).delete().size() == 1);
+    assertTrue(client.pods().withName("p2").withGracePeriod(0L).delete().size() == 1);
+    assertTrue(client.secrets().withName("my-secret").delete().size() == 1);
 
     // wait for all pods to be deleted
     CompletableFuture<List<Pod>> pods = client.pods()

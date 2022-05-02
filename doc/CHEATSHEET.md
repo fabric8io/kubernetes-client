@@ -146,11 +146,11 @@ LogWatch watch = client.pods().inNamespace(namespace).withName(podName).tailingL
 ```
 - Delete a `Pod`:
 ```
-Boolean isDeleted = client.pods().inNamespace("default").withName("nginx").delete();
+client.pods().inNamespace("default").withName("nginx").delete();
 ```
 - Delete multiple `Pod` objects:
 ```
-Boolean isDeleted = client.pods().inNamespace("default").delete(pod1, pod2);
+client.pods().inNamespace("default").delete(pod1, pod2);
 ```
 - Wait until a `Pod` is ready:
 ```
@@ -234,7 +234,7 @@ ServiceList svcList = client.services().inNamespace("default").withLabel("foo", 
 ```
 - Delete a `Service`:
 ```
-Boolean isDeleted = client.services().inNamespace("default").withName("some-svc").delete();
+client.services().inNamespace("default").withName("some-svc").delete();
 ```
 - Watching a `Service`:
 ```
@@ -365,7 +365,7 @@ Deployment deployment = client.apps().deployments()
 ```
 - Deleting a `Deployment`:
 ```
-Boolean isDeleted = client.apps().deployments().inNamespace("default").withName("foo").delete();
+client.apps().deployments().inNamespace("default").withName("foo").delete();
 ```
 - Watching a `Deployment`:
 ```
@@ -455,7 +455,7 @@ ReplicaSetList rsList = client.apps().replicaSets().inNamespace("default").withL
 ```
 - Delete `ReplicaSet`:
 ```
-Boolean isDeleted = client.apps().replicaSets().inNamespace("default").withName("rs1").delete();
+client.apps().replicaSets().inNamespace("default").withName("rs1").delete();
 ```
 - Watch `ReplicaSet`:
 ```
@@ -543,7 +543,7 @@ ReplicationControllerList rcList = client.replicationControllers().inNamespace("
 ```
 - Delete `ReplicationController`:
 ```
-Boolean isDeleted = client.replicationControlers().inNamespace("default").withName("nginx-controller").delete();
+client.replicationControlers().inNamespace("default").withName("nginx-controller").delete();
 ```
 - Watch `ReplicationController` in some specific namespace:
 ```
@@ -621,7 +621,7 @@ ConfigMapList configMapList = client.configMaps().inNamespace("default").withLab
 ```
 - Delete `ConfigMap`:
 ```
-Boolean isDeleted = client.configMaps().inNamespace("default").withName("configmap1").delete();
+client.configMaps().inNamespace("default").withName("configmap1").delete();
 ```
 - Watch `ConfigMap`:
 ```
@@ -688,7 +688,7 @@ Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret
 ```
 - Delete `Secret`:
 ```
-Boolean isDeleted = client.secrets().inNamespace("default").withName("secret1").delete();
+client.secrets().inNamespace("default").withName("secret1").delete();
 ```
 - Watch `Secret`:
 ```
@@ -758,7 +758,7 @@ JobList jobList = client.batch().jobs().inNamespace("default").withLabel("foo", 
 ```
 - Delete `Job`:
 ```
-Boolean isDeleted = client.batch().jobs().inNamespace("default").withName("pi").delete();
+client.batch().jobs().inNamespace("default").withName("pi").delete();
 ```
 - Watch `Job`:
 ```
@@ -838,7 +838,7 @@ CronJob cronJob1 = client.batch().cronjobs().inNamespace("default").withName(cro
 ```
 - Delete `CronJob`:
 ```
-Boolean isDeleted = client.batch().cronjobs().inNamespace("default").withName("pi").delete();
+client.batch().cronjobs().inNamespace("default").withName("pi").delete();
 ```
 
 ### Namespace
@@ -861,7 +861,7 @@ NamespaceList namespaceList = client.namespaces().withLabel("key1", "value1").li
 ```
 - Delete `Namespace` objects:
 ```
-Boolean isDeleted = client.namespaces().withName("ns1").delete();
+client.namespaces().withName("ns1").delete();
 ```
 
 ### ServiceAccount
@@ -906,7 +906,7 @@ ServiceAccount serviceAccount1 = client.serviceAccounts().inNamespace("default")
 ```
 - Delete `ServiceAccount`:
 ```
-Boolean bDeleted = client.serviceAccounts().inNamespace("default").withName("serviceaccount1").delete();
+client.serviceAccounts().inNamespace("default").withName("serviceaccount1").delete();
 ```
 
 ### Ingress
@@ -953,7 +953,7 @@ IngressList ingressList = client.network().ingress().inNamespace("default").with
 ```
 - Delete `Ingress`:
 ```
-Boolean isDeleted = client.network().ingress().inNamespace("default").withName("ingress1").delete();
+client.network().ingress().inNamespace("default").withName("ingress1").delete();
 ```
 
 ### StatefulSet
@@ -1028,7 +1028,7 @@ StatefulSetList statefulSetList = client.apps().statefulSets().inNamespace("defa
 ```
 - Delete `StatefulSet`:
 ```
-Boolean bDeleted = client.apps().statefulSets().inNamespace("default").withName("ss1").delete();
+client.apps().statefulSets().inNamespace("default").withName("ss1").delete();
 ```
 - Scale `StatefulSet`:
 ```
@@ -1157,7 +1157,7 @@ DaemonSetList dsList = client.apps().daemonSets().inNamespace("default").withLab
 ```
 - Delete `DaemonSet`:
 ```
-Boolean isDeleted = client.apps().daemonSets().inNamespace("default").withName("ds1").delete();
+client.apps().daemonSets().inNamespace("default").withName("ds1").delete();
 ```
 - Watch `DaemonSet`:
 ```
@@ -1224,7 +1224,7 @@ EndpointSliceList esList = client.discovery().v1beta1().endpointSlices().inNames
 ```
 - Delete `EndpointSlice`:
 ```java
-Boolean isDeleted = client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").delete();
+client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").delete();
 ```
 - Watch `EndpointSlice`:
 ```java
@@ -1284,7 +1284,7 @@ PersistentVolumeClaimList pvcList = client.persistentVolumeClaims().inNamespace(
 ```
 - Delete `PersistentVolumeClaim`:
 ```
-Boolean isDeleted = client.persistentVolumeClaims().inNamespace("default").withName("test-pv-claim").delete();
+client.persistentVolumeClaims().inNamespace("default").withName("test-pv-claim").delete();
 ```
 
 ### PersistentVolume
@@ -1340,7 +1340,7 @@ PersistentVolumeList pvList = client.persistentVolumes().withLabel("foo", "bar")
 ```
 - Delete `PersistentVolume`:
 ```
-Boolean isDeleted = client.persistentVolumes().withName("test-local-pv").delete();
+client.persistentVolumes().withName("test-local-pv").delete();
 ```
 
 ### NetworkPolicy
@@ -1399,7 +1399,7 @@ NetworkPolicyList networkPolicyList = client.network().networkPolicies()
 ```
 - Delete `NetworkPolicy`:
 ```
-Boolean deleted = client.network().networkPolicies().withName("np-test").delete();
+client.network().networkPolicies().withName("np-test").delete();
 ```
 
 ### PodDisruptionBudget
@@ -1444,7 +1444,7 @@ PodDisruptionBudgetList pdbList = client.policy().podDisruptionBudget().inNamesp
 ```
 - Delete `PodDisruptionBudget`:
 ```
-Boolean deleted = client.policy().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").delete();
+client.policy().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").delete();
 ```
 
 ### SelfSubjectAccessReview
@@ -1548,7 +1548,7 @@ ClusterRoleList clusterRoleList = client.rbac().clusterRoles().withLabel("key1",
 ```
 - Delete `ClusterRole` objects:
 ```
-Boolean isDeleted = client.rbac().clusterRoles().withName("clusterrole1").delete();
+client.rbac().clusterRoles().withName("clusterrole1").delete();
 ```
 
 ### ClusterRoleBinding
@@ -1590,7 +1590,6 @@ ClusterRoleBindingList clusterRoleBindingList = client.rbac().clusterRoleBinding
 ```
 - Delete `ClusterRoleBinding` objects:
 ```
-Boolean isDeleted = client.rbac().clusterRoleBindings().withName("clusterrolebindingname").delete();
 ```
 
 ### Role
@@ -1627,7 +1626,7 @@ RoleList roleList = client.rbac().roles().inNamespace("default").withLabel("key1
 ```
 - Delete `Role` objects:
 ```
-Boolean isDeleted = client.rbac().roles().withName("rolename").delete();
+client.rbac().roles().withName("rolename").delete();
 ```
 
 ### RoleBinding
@@ -1669,7 +1668,7 @@ RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace("defa
 ```
 - Delete `RoleBinding` objects:
 ```
-Boolean isDeleted = client.rbac().roleBindings().inNamespace("default").withName("rolename").delete();
+client.rbac().roleBindings().inNamespace("default").withName("rolename").delete();
 ```
 
 ### Fetching Metrics
@@ -1718,7 +1717,7 @@ Pod p = client.resource(pod1).createOrReplaceAnd().waitUntilReady(10, TimeUnit.S
 ```
 - Delete a Kubernetes Resource:
 ```
-Boolean isDeleted = client.resource(pod1).inNamespace("default").delete();
+client.resource(pod1).inNamespace("default").delete();
 ```
 
 ### ResourceList API
@@ -1751,7 +1750,7 @@ client.resourceList(list).inNamespace("default").deletingExisting().createOrRepl
 ```
 - Delete a list of items:
 ```
-Boolean deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).inNamespace("default").delete();
+client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).inNamespace("default").delete();
 ```
 
 ### CustomResourceDefinition
@@ -1797,7 +1796,7 @@ CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customRe
 ```
 - Delete `CustomResourceDefinition`:
 ```java
-Boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
+client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
 ```
 
 ### Resource Typed API
@@ -1849,7 +1848,7 @@ CronTabList cronTabList = cronTabClient.inNamespace("default").list();
 ```
 - Delete `CustomResource`:
 ```java
-Boolean isDeleted = cronTabClient.inNamespace("default").withName("my-third-cron-object").delete();
+cronTabClient.inNamespace("default").withName("my-third-cron-object").delete();
 ```
 - Replace Status of `CustomResource`:
 ```java
@@ -2178,15 +2177,15 @@ PodList podList = client.pods().inNamespace("default").list(new ListOptionsBuild
 Kubernetes Client also provides way to delete dependents of some Kubernetes resource. Here are some examples:
 - Providing `cascading()` in order to either delete dependent resources or leave them orphan. By default it is `true` meaning it would delete dependent resources too.
 ```
-Boolean isDeleted = client.apps().deployments().inNamespace("default").withName("nginx-deploy").cascading(true).delete();
+client.apps().deployments().inNamespace("default").withName("nginx-deploy").cascading(true).delete();
 ```
 - Providing `propagationPolicy(..)` to specify how deletion should be performed:
 ```
-Boolean isDeleted = client.apps().deployments().inNamespace("default").withName("nginx-deploy").withPropagationPolicy("Foreground").delete();
+client.apps().deployments().inNamespace("default").withName("nginx-deploy").withPropagationPolicy("Foreground").delete();
 ```
 - Specifying grace period for deletion:
 ```
-Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
+client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
 ```
 
 ### Watch Options
@@ -2431,7 +2430,7 @@ DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(curr
 ```
 - Delete `DeploymentConfig`:
 ```
-Boolean bDeleted = client.deploymentConfigs().inNamespace("default").withName("deploymentconfig1").delete();
+client.deploymentConfigs().inNamespace("default").withName("deploymentconfig1").delete();
 ```
 - Watch `DeploymentConfig`:
 ```
@@ -2527,7 +2526,7 @@ BuildConfigList bcList = client.buildConfigs().inNamespace("default").withLabel(
 ```
 - Delete `BuildConfig`:
 ```
-Boolean bDeleted = client.buildConfigs().inNamespace("default").withName("bc1").delete();
+client.buildConfigs().inNamespace("default").withName("bc1").delete();
 ```
 - Watch `BuildConfig`:
 ```
@@ -2581,7 +2580,7 @@ RouteList routeList = client.routes().inNamespace("default").withLabel("foo", "b
 ```
 - Delete `Route`:
 ```
-boolean bDeleted = client.routes().inNamespace("default").withName("route1").delete();
+client.routes().inNamespace("default").withName("route1").delete();
 ```
 
 #### Project
@@ -2603,7 +2602,7 @@ ProjectList projectList = client.projects().list();
 ```
 - Delete `Project`:
 ```
-Boolean isDeleted = client.projects().withName("default").delete();
+client.projects().withName("default").delete();
 ```
 
 #### ImageStream
@@ -2652,7 +2651,7 @@ ImageStreamList isList = client.imageStreams().inNamespace("default").withLabel(
 ```
 - Delete `ImageStream`:
 ```
-Boolean bDeleted = client.imageStreams().inNamespace("default").withName("example-camel-cdi").delete();
+client.imageStreams().inNamespace("default").withName("example-camel-cdi").delete();
 ```
 #### CatalogSource
 `CatalogSource` is available for usage in OpenShift Client via `client.operatorHub().catalogSources()`. Here are some common examples of it's usage:

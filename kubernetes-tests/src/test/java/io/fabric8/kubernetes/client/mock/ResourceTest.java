@@ -244,12 +244,12 @@ class ResourceTest {
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
 
-    Boolean deleted = client.resource(pod1).delete();
+    Boolean deleted = client.resource(pod1).delete().size() == 1;
     assertTrue(deleted);
-    deleted = client.resource(pod2).delete();
+    deleted = client.resource(pod2).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.resource(pod3).delete();
+    deleted = client.resource(pod3).delete().size() == 1;
     assertFalse(deleted);
   }
 

@@ -36,26 +36,26 @@ class IPPoolTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/ippools/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewIPPool("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewIPPool("test-get"))
+        .once();
 
     // When
     IPPool ipPool = client.whereabouts().ippools().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(ipPool)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/ippools")
-      .andReturn(HttpURLConnection.HTTP_OK, new IPPoolListBuilder()
-        .addToItems(createNewIPPool("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new IPPoolListBuilder()
+            .addToItems(createNewIPPool("test-list"))
+            .build())
+        .once();
 
     // When
     IPPoolList ipPoolList = client.whereabouts().ippools().inNamespace("ns1").list();
@@ -64,18 +64,18 @@ class IPPoolTest {
     assertThat(ipPoolList).isNotNull();
     assertThat(ipPoolList.getItems()).hasSize(1);
     assertThat(ipPoolList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/whereabouts.cni.cncf.io/v1alpha1/namespaces/ns1/ippools/ippool1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewIPPool("ippool1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewIPPool("ippool1"))
+        .once();
 
     // When
-    Boolean isDeleted = client.whereabouts().ippools().inNamespace("ns1").withName("ippool1").delete();
+    boolean isDeleted = client.whereabouts().ippools().inNamespace("ns1").withName("ippool1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,11 +83,11 @@ class IPPoolTest {
 
   private IPPool createNewIPPool(String name) {
     return new IPPoolBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .addToAllocations("key1", new IPAllocationBuilder().withId("id1").build())
-      .withRange("192.168.12.0/24")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addToAllocations("key1", new IPAllocationBuilder().withId("id1").build())
+        .withRange("192.168.12.0/24")
+        .endSpec()
+        .build();
   }
 }

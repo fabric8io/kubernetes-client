@@ -37,28 +37,24 @@ class OAuthClientTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
-
-
+    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build()).once();
 
     OAuthClientList oauthclientList = client.oAuthClients().list();
     assertNotNull(oauthclientList);
     assertEquals(2, oauthclientList.getItems().size());
   }
 
-
   @Test
   void testGet() {
-   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
-      .withNewMetadata().withName("client1").endMetadata()
-      .build()).once();
+    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
+        .withNewMetadata().withName("client1").endMetadata()
+        .build()).once();
 
-   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
-      .withNewMetadata().withName("client2").endMetadata()
-      .build()).once();
-
+    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
+        .withNewMetadata().withName("client2").endMetadata()
+        .build()).once();
 
     OAuthClient oauthclient = client.oAuthClients().withName("client1").get();
     assertNotNull(oauthclient);
@@ -72,20 +68,19 @@ class OAuthClientTest {
     assertNull(oauthclient);
   }
 
-
   @Test
   void testDelete() {
-   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
-   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
+    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1")
+        .andReturn(200, new OAuthClientBuilder().build()).once();
+    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2")
+        .andReturn(200, new OAuthClientBuilder().build()).once();
 
+    boolean deleted = client.oAuthClients().withName("client1").delete().size() == 1;
 
-    Boolean deleted = client.oAuthClients().withName("client1").delete();
-    assertNotNull(deleted);
-
-    deleted = client.oAuthClients().withName("client2").delete();
+    deleted = client.oAuthClients().withName("client2").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.oAuthClients().withName("client3").delete();
+    deleted = client.oAuthClients().withName("client3").delete().size() == 1;
     assertFalse(deleted);
   }
 }

@@ -86,7 +86,7 @@ class PeerAuthenticationTest {
     server.expect().delete().withPath("/apis/security.istio.io/v1beta1/namespaces/ns3/peerauthentications/service3")
         .andReturn(HttpURLConnection.HTTP_OK, new PeerAuthenticationBuilder().build())
         .once();
-    Boolean deleted = client.v1beta1().peerAuthentications().inNamespace("ns3").withName("service3").delete();
+    boolean deleted = client.v1beta1().peerAuthentications().inNamespace("ns3").withName("service3").delete().size() == 1;
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();
@@ -101,7 +101,7 @@ class PeerAuthenticationTest {
         .andReturn(HttpURLConnection.HTTP_OK, new PeerAuthenticationBuilder().build())
         .once();
     Boolean deleted = client.v1beta1().peerAuthentications().inNamespace("ns3").withName("service3")
-        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+        .withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(deleted);
 
     RecordedRequest recordedRequest = server.takeRequest();

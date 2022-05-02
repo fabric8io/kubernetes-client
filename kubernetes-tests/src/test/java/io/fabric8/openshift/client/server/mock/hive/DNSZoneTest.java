@@ -37,26 +37,26 @@ class DNSZoneTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/dnszones/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDNSZone("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDNSZone("test-get"))
+        .once();
 
     // When
     DNSZone dnsZone = client.hive().dnsZones().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(dnsZone)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/dnszones")
-      .andReturn(HttpURLConnection.HTTP_OK, new DNSZoneListBuilder()
-        .addToItems(createNewDNSZone("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new DNSZoneListBuilder()
+            .addToItems(createNewDNSZone("test-list"))
+            .build())
+        .once();
 
     // When
     DNSZoneList dnsZoneList = client.hive().dnsZones().inNamespace("ns1").list();
@@ -65,18 +65,18 @@ class DNSZoneTest {
     assertThat(dnsZoneList).isNotNull();
     assertThat(dnsZoneList.getItems()).hasSize(1);
     assertThat(dnsZoneList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/dnszones/dnszone1")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewDNSZone("dnszone1"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDNSZone("dnszone1"))
+        .once();
 
     // When
-    Boolean isDeleted = client.hive().dnsZones().inNamespace("ns1").withName("dnszone1").delete();
+    boolean isDeleted = client.hive().dnsZones().inNamespace("ns1").withName("dnszone1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -84,16 +84,16 @@ class DNSZoneTest {
 
   private DNSZone createNewDNSZone(String name) {
     return new DNSZoneBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .endMetadata()
-      .withNewSpec()
-      .withPreserveOnDelete(false)
-      .withZone("testzone.testdomain.com")
-      .withNewAws()
-      .withNewCredentialsSecretRef().withName("route53-creds-secret").endCredentialsSecretRef()
-      .endAws()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withPreserveOnDelete(false)
+        .withZone("testzone.testdomain.com")
+        .withNewAws()
+        .withNewCredentialsSecretRef().withName("route53-creds-secret").endCredentialsSecretRef()
+        .endAws()
+        .endSpec()
+        .build();
   }
 }

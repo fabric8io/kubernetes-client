@@ -43,9 +43,9 @@ class ClusterResourceQuotaTest {
     // Given
     ClusterResourceQuota featureGate = getClusterResourceQuota();
     server.expect().post()
-      .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas")
-      .andReturn(HttpURLConnection.HTTP_OK, featureGate)
-      .once();
+        .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas")
+        .andReturn(HttpURLConnection.HTTP_OK, featureGate)
+        .once();
 
     // When
     featureGate = client.quotas().clusterResourceQuotas().create(featureGate);
@@ -59,9 +59,9 @@ class ClusterResourceQuotaTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getClusterResourceQuota())
-      .once();
+        .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getClusterResourceQuota())
+        .once();
 
     // When
     ClusterResourceQuota f = client.quotas().clusterResourceQuotas().withName("foo").get();
@@ -75,9 +75,10 @@ class ClusterResourceQuotaTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas")
-      .andReturn(HttpURLConnection.HTTP_OK, new ClusterResourceQuotaListBuilder().withItems(getClusterResourceQuota()).build())
-      .once();
+        .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new ClusterResourceQuotaListBuilder().withItems(getClusterResourceQuota()).build())
+        .once();
 
     // When
     ClusterResourceQuotaList fgList = client.quotas().clusterResourceQuotas().list();
@@ -92,12 +93,12 @@ class ClusterResourceQuotaTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getClusterResourceQuota())
-      .once();
+        .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getClusterResourceQuota())
+        .once();
 
     // When
-    Boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").delete();
+    boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -108,15 +109,15 @@ class ClusterResourceQuotaTest {
     hard.put("pods", new Quantity("10"));
     hard.put("secrets", new Quantity("20"));
     return new ClusterResourceQuotaBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .withNewSelector()
-      .addToAnnotations("openshift.io/requester", "foo-user")
-      .endSelector()
-      .withQuota(new ResourceQuotaSpecBuilder()
-        .withHard(hard)
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .withNewSelector()
+        .addToAnnotations("openshift.io/requester", "foo-user")
+        .endSelector()
+        .withQuota(new ResourceQuotaSpecBuilder()
+            .withHard(hard)
+            .build())
+        .endSpec()
+        .build();
   }
 }

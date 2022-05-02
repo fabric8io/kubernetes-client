@@ -36,26 +36,26 @@ class ConsoleQuickStartTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/console.openshift.io/v1/consolequickstarts/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConsoleQuickStart("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConsoleQuickStart("test-get"))
+        .once();
 
     // When
     ConsoleQuickStart consoleQuickStart = client.console().consoleQuickStarts().withName("test-get").get();
 
     // Then
     assertThat(consoleQuickStart)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/console.openshift.io/v1/consolequickstarts")
-      .andReturn(HttpURLConnection.HTTP_OK, new ConsoleQuickStartListBuilder()
-        .addToItems(createNewConsoleQuickStart("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new ConsoleQuickStartListBuilder()
+            .addToItems(createNewConsoleQuickStart("test-list"))
+            .build())
+        .once();
 
     // When
     ConsoleQuickStartList consoleQuickStartList = client.console().consoleQuickStarts().list();
@@ -64,18 +64,18 @@ class ConsoleQuickStartTest {
     assertThat(consoleQuickStartList).isNotNull();
     assertThat(consoleQuickStartList.getItems()).hasSize(1);
     assertThat(consoleQuickStartList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/console.openshift.io/v1/consolequickstarts/cluster")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewConsoleQuickStart("cluster"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewConsoleQuickStart("cluster"))
+        .once();
 
     // When
-    Boolean isDeleted = client.console().consoleQuickStarts().withName("cluster").delete();
+    boolean isDeleted = client.console().consoleQuickStarts().withName("cluster").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,20 +83,20 @@ class ConsoleQuickStartTest {
 
   private ConsoleQuickStart createNewConsoleQuickStart(String name) {
     return new ConsoleQuickStartBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withConclusion("You have learned how to access workload monitoring and metrics!")
-      .withDescription("Now that you’ve created a sample application and added health checks,\n" +
-        "    let’s monitor your application.")
-      .withDisplayName("Test Monitor your application")
-      .withTasks(new ConsoleQuickStartTaskBuilder()
-        .withDescription("Console Quickstart task")
-        .withTitle("test console quickstart")
-        .build())
-      .withDurationMinutes(10)
-      .withIntroduction("This quick start shows you how to test monitor")
-      .withPrerequisites("Kubernetes", "maven", "java")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withConclusion("You have learned how to access workload monitoring and metrics!")
+        .withDescription("Now that you’ve created a sample application and added health checks,\n" +
+            "    let’s monitor your application.")
+        .withDisplayName("Test Monitor your application")
+        .withTasks(new ConsoleQuickStartTaskBuilder()
+            .withDescription("Console Quickstart task")
+            .withTitle("test console quickstart")
+            .build())
+        .withDurationMinutes(10)
+        .withIntroduction("This quick start shows you how to test monitor")
+        .withPrerequisites("Kubernetes", "maven", "java")
+        .endSpec()
+        .build();
   }
 }

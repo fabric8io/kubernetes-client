@@ -43,7 +43,7 @@ class CustomResourceDefinitionIT {
   private CustomResourceDefinition crd;
 
   @BeforeEach
-  public void setUp(){
+  public void setUp() {
     singular = "a" + UUID.randomUUID().toString().replace("-", "");
     plural = singular + "s";
     group = "examples.fabric8.io";
@@ -60,7 +60,7 @@ class CustomResourceDefinitionIT {
   void load() {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
-      .load(getClass().getResourceAsStream("/test-crd.yml")).get();
+        .load(getClass().getResourceAsStream("/test-crd.yml")).get();
     // Then
     assertThat(result).isNotNull();
   }
@@ -69,7 +69,7 @@ class CustomResourceDefinitionIT {
   void get() {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
-      .withName(name).get();
+        .withName(name).get();
     // Then
     assertThat(result).isNotNull();
   }
@@ -78,71 +78,71 @@ class CustomResourceDefinitionIT {
   void list() {
     // When
     final CustomResourceDefinitionList result = client.apiextensions().v1().customResourceDefinitions()
-      .list();
+        .list();
     // Then
     assertThat(result.getItems())
-      .hasSizeGreaterThan(0)
-      .anyMatch(crd -> crd.getMetadata().getName().equals(name));
+        .hasSizeGreaterThan(0)
+        .anyMatch(crd -> crd.getMetadata().getName().equals(name));
   }
 
   @Test
   void create() {
     // Then
     assertThat(crd)
-      .hasFieldOrPropertyWithValue("metadata.name", name)
-      .extracting("metadata.creationTimestamp")
-      .isNotNull();
+        .hasFieldOrPropertyWithValue("metadata.name", name)
+        .extracting("metadata.creationTimestamp")
+        .isNotNull();
   }
 
   @Test
   void update() {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
-      .withName(name).edit(c -> new CustomResourceDefinitionBuilder(c)
-        .editSpec().editOrNewNames().addToShortNames("its").endNames().endSpec().build());
+        .withName(name).edit(c -> new CustomResourceDefinitionBuilder(c)
+            .editSpec().editOrNewNames().addToShortNames("its").endNames().endSpec().build());
     // Then
     assertThat(result.getSpec().getNames().getShortNames())
-      .containsExactlyInAnyOrder("its");
+        .containsExactlyInAnyOrder("its");
   }
 
   @Test
   void delete() {
     // When
     final boolean result = client.apiextensions().v1().customResourceDefinitions()
-      .withName(name).delete();
+        .withName(name).delete().size() == 1;
     // Then
     assertThat(result).isTrue();
   }
 
   private CustomResourceDefinition createCRD() {
     return client.apiextensions().v1().customResourceDefinitions().create(new CustomResourceDefinitionBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withGroup(group)
-      .addAllToVersions(Collections.singletonList(new CustomResourceDefinitionVersionBuilder()
-        .withName("v1")
-        .withServed(true)
-        .withStorage(true)
-        .withNewSchema()
-        .withNewOpenAPIV3Schema()
-        .withType("object")
-        .addToProperties("spec", new JSONSchemaPropsBuilder()
-          .withType("object")
-          .addToProperties("field", new JSONSchemaPropsBuilder()
-            .withType("string")
-            .build())
-          .build())
-        .endOpenAPIV3Schema()
-        .endSchema()
-        .build()))
-      .withScope("Namespaced")
-      .withNewNames()
-      .withPlural(plural)
-      .withSingular(singular)
-      .withKind("Itest")
-      .endNames()
-      .endSpec()
-      .build());
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withGroup(group)
+        .addAllToVersions(Collections.singletonList(new CustomResourceDefinitionVersionBuilder()
+            .withName("v1")
+            .withServed(true)
+            .withStorage(true)
+            .withNewSchema()
+            .withNewOpenAPIV3Schema()
+            .withType("object")
+            .addToProperties("spec", new JSONSchemaPropsBuilder()
+                .withType("object")
+                .addToProperties("field", new JSONSchemaPropsBuilder()
+                    .withType("string")
+                    .build())
+                .build())
+            .endOpenAPIV3Schema()
+            .endSchema()
+            .build()))
+        .withScope("Namespaced")
+        .withNewNames()
+        .withPlural(plural)
+        .withSingular(singular)
+        .withKind("Itest")
+        .endNames()
+        .endSpec()
+        .build());
   }
 
   private void deleteCRD() {

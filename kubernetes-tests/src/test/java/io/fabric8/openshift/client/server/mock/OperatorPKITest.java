@@ -35,26 +35,26 @@ class OperatorPKITest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/network.operator.openshift.io/v1/namespaces/ns1/operatorpkis/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorPKI("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorPKI("test-get"))
+        .once();
 
     // When
     OperatorPKI networkAttachmentDefinition = client.operatorPKIs().inNamespace("ns1").withName("test-get").get();
 
     // Then
     assertThat(networkAttachmentDefinition)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/network.operator.openshift.io/v1/namespaces/ns1/operatorpkis")
-      .andReturn(HttpURLConnection.HTTP_OK, new OperatorPKIListBuilder()
-        .addToItems(createNewOperatorPKI("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new OperatorPKIListBuilder()
+            .addToItems(createNewOperatorPKI("test-list"))
+            .build())
+        .once();
 
     // When
     OperatorPKIList networkAttachmentDefinitionList = client.operatorPKIs().inNamespace("ns1").list();
@@ -63,18 +63,18 @@ class OperatorPKITest {
     assertThat(networkAttachmentDefinitionList).isNotNull();
     assertThat(networkAttachmentDefinitionList.getItems()).hasSize(1);
     assertThat(networkAttachmentDefinitionList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/network.operator.openshift.io/v1/namespaces/ns1/operatorpkis/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorPKI("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewOperatorPKI("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.operatorPKIs().inNamespace("ns1").withName("test-delete").delete();
+    boolean isDeleted = client.operatorPKIs().inNamespace("ns1").withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,12 +82,12 @@ class OperatorPKITest {
 
   private OperatorPKI createNewOperatorPKI(String name) {
     return new OperatorPKIBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewTargetCert()
-      .withCommonName("test-name")
-      .endTargetCert()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewTargetCert()
+        .withCommonName("test-name")
+        .endTargetCert()
+        .endSpec()
+        .build();
   }
 }

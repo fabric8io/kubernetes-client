@@ -79,7 +79,7 @@ class SearchCustomizationTest {
         .once();
 
     // When
-    Boolean isDeleted = client.search().searchCustomizations().inNamespace("ns1").withName("sample-sc").delete();
+    boolean isDeleted = client.search().searchCustomizations().inNamespace("ns1").withName("sample-sc").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

@@ -92,15 +92,13 @@ public class KubernetesListTest {
             .editStatus().withReplicas(0).and().build())
         .times(5);
 
-    Boolean result = client.resourceList(list).delete();
+    Boolean result = client.resourceList(list).delete().size() == 3;
 
     assertTrue(result);
   }
 
   @Test
   public void testDeleteWithMismatch() {
-    Boolean result = client.resourceList(list).inNamespace("test1").delete();
-
-    assertTrue(result);
+    assertTrue(client.resourceList(list).inNamespace("test1").delete().isEmpty());
   }
 }

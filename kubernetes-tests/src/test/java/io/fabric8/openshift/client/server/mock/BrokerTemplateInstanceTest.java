@@ -26,7 +26,6 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @EnableOpenShiftMockClient
 class BrokerTemplateInstanceTest {
   private OpenShiftClient client;
@@ -36,26 +35,26 @@ class BrokerTemplateInstanceTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/template.openshift.io/v1/brokertemplateinstances/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewBrokerTemplateInstance("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewBrokerTemplateInstance("test-get"))
+        .once();
 
     // When
     BrokerTemplateInstance brokerTemplateInstance = client.brokerTemplateInstances().withName("test-get").get();
 
     // Then
     assertThat(brokerTemplateInstance)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/template.openshift.io/v1/brokertemplateinstances")
-      .andReturn(HttpURLConnection.HTTP_OK, new BrokerTemplateInstanceListBuilder()
-        .addToItems(createNewBrokerTemplateInstance("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new BrokerTemplateInstanceListBuilder()
+            .addToItems(createNewBrokerTemplateInstance("test-list"))
+            .build())
+        .once();
 
     // When
     BrokerTemplateInstanceList brokerTemplateInstanceList = client.brokerTemplateInstances().list();
@@ -64,18 +63,18 @@ class BrokerTemplateInstanceTest {
     assertThat(brokerTemplateInstanceList).isNotNull();
     assertThat(brokerTemplateInstanceList.getItems()).hasSize(1);
     assertThat(brokerTemplateInstanceList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/template.openshift.io/v1/brokertemplateinstances/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewBrokerTemplateInstance("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewBrokerTemplateInstance("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.brokerTemplateInstances().withName("test-delete").delete();
+    boolean isDeleted = client.brokerTemplateInstances().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -83,18 +82,18 @@ class BrokerTemplateInstanceTest {
 
   private BrokerTemplateInstance createNewBrokerTemplateInstance(String name) {
     return new BrokerTemplateInstanceBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewSecret().withName("secret").withNamespace("ns1").withKind("Secret").endSecret()
-      .withNewTemplateInstance()
-      .withApiVersion("template.openshift.io/v1")
-      .withName("test-templateinstance")
-      .withKind("TemplateInstance")
-      .withNamespace("ns1")
-      .withResourceVersion("202466")
-      .withUid("d8eecb23-12ab-4850-a918-b63ca12676f2")
-      .endTemplateInstance()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewSecret().withName("secret").withNamespace("ns1").withKind("Secret").endSecret()
+        .withNewTemplateInstance()
+        .withApiVersion("template.openshift.io/v1")
+        .withName("test-templateinstance")
+        .withKind("TemplateInstance")
+        .withNamespace("ns1")
+        .withResourceVersion("202466")
+        .withUid("d8eecb23-12ab-4850-a918-b63ca12676f2")
+        .endTemplateInstance()
+        .endSpec()
+        .build();
   }
 }

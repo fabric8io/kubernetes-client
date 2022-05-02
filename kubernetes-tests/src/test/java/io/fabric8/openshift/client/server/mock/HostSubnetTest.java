@@ -35,26 +35,26 @@ class HostSubnetTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/network.openshift.io/v1/hostsubnets/test-get")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewHostSubnet("test-get"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewHostSubnet("test-get"))
+        .once();
 
     // When
     HostSubnet hostSubnet = client.hostSubnets().withName("test-get").get();
 
     // Then
     assertThat(hostSubnet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-get");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-get");
   }
 
   @Test
   void list() {
     // Given
     server.expect().get().withPath("/apis/network.openshift.io/v1/hostsubnets")
-      .andReturn(HttpURLConnection.HTTP_OK, new HostSubnetListBuilder()
-        .addToItems(createNewHostSubnet("test-list"))
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new HostSubnetListBuilder()
+            .addToItems(createNewHostSubnet("test-list"))
+            .build())
+        .once();
 
     // When
     HostSubnetList hostSubnetList = client.hostSubnets().list();
@@ -63,18 +63,18 @@ class HostSubnetTest {
     assertThat(hostSubnetList).isNotNull();
     assertThat(hostSubnetList.getItems()).hasSize(1);
     assertThat(hostSubnetList.getItems().get(0))
-      .hasFieldOrPropertyWithValue("metadata.name", "test-list");
+        .hasFieldOrPropertyWithValue("metadata.name", "test-list");
   }
 
   @Test
   void delete() {
     // Given
     server.expect().delete().withPath("/apis/network.openshift.io/v1/hostsubnets/test-delete")
-      .andReturn(HttpURLConnection.HTTP_OK, createNewHostSubnet("test-delete"))
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, createNewHostSubnet("test-delete"))
+        .once();
 
     // When
-    Boolean isDeleted = client.hostSubnets().withName("test-delete").delete();
+    boolean isDeleted = client.hostSubnets().withName("test-delete").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -82,11 +82,11 @@ class HostSubnetTest {
 
   private HostSubnet createNewHostSubnet(String name) {
     return new HostSubnetBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withHost("crc-rsppg-master-0")
-      .withHostIP("192.168.126.11")
-      .withKind("HostSubnet")
-      .withSubnet("10.217.0.0/23")
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withHost("crc-rsppg-master-0")
+        .withHostIP("192.168.126.11")
+        .withKind("HostSubnet")
+        .withSubnet("10.217.0.0/23")
+        .build();
   }
 }

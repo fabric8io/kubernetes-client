@@ -208,13 +208,13 @@ class DeploymentTest {
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
         .andReturn(200, new DeploymentBuilder(deployment2).editSpec().withReplicas(0).endSpec().build()).times(5);
 
-    Boolean deleted = client.apps().deployments().withName("deployment1").delete();
+    boolean deleted = client.apps().deployments().withName("deployment1").delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().deployments().withName("deployment2").delete();
+    deleted = client.apps().deployments().withName("deployment2").delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().deployments().inNamespace("ns1").withName("deployment2").delete();
+    deleted = client.apps().deployments().inNamespace("ns1").withName("deployment2").delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -280,7 +280,7 @@ class DeploymentTest {
     Boolean deleted = client.apps().deployments().inAnyNamespace().delete(deployment1, deployment2);
     assertTrue(deleted);
 
-    deleted = client.apps().deployments().inAnyNamespace().delete(deployment3);
+    deleted = client.resource(deployment3).delete().size() == 1;
     assertFalse(deleted);
   }
 
@@ -295,7 +295,7 @@ class DeploymentTest {
     NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp = client.apps()
         .deployments().inNamespace("test1");
 
-    assertFalse(deployOp.delete(deployment1));
+    assertTrue(deployOp.delete(deployment1).isEmpty());
   }
 
   @Test

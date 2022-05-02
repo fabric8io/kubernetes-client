@@ -39,9 +39,9 @@ class ImageTagTest {
     // Given
     ImageTag imageTag = getImageTag();
     server.expect().post()
-      .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags")
-      .andReturn(HttpURLConnection.HTTP_OK, imageTag)
-      .once();
+        .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags")
+        .andReturn(HttpURLConnection.HTTP_OK, imageTag)
+        .once();
 
     // When
     imageTag = client.imageTags().inNamespace("ns1").create(imageTag);
@@ -55,9 +55,9 @@ class ImageTagTest {
   void get() {
     // Given
     server.expect().get()
-      .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getImageTag())
-      .once();
+        .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getImageTag())
+        .once();
 
     // When
     ImageTag f = client.imageTags().inNamespace("ns1").withName("foo").get();
@@ -71,9 +71,9 @@ class ImageTagTest {
   void list() {
     // Given
     server.expect().get()
-      .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags")
-      .andReturn(HttpURLConnection.HTTP_OK, new ImageTagListBuilder().withItems(getImageTag()).build())
-      .once();
+        .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags")
+        .andReturn(HttpURLConnection.HTTP_OK, new ImageTagListBuilder().withItems(getImageTag()).build())
+        .once();
 
     // When
     ImageTagList fgList = client.imageTags().inNamespace("ns1").list();
@@ -88,12 +88,12 @@ class ImageTagTest {
   void delete() {
     // Given
     server.expect().delete()
-      .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags/foo")
-      .andReturn(HttpURLConnection.HTTP_OK, getImageTag())
-      .once();
+        .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags/foo")
+        .andReturn(HttpURLConnection.HTTP_OK, getImageTag())
+        .once();
 
     // When
-    Boolean deleted = client.imageTags().inNamespace("ns1").withName("foo").delete();
+    boolean deleted = client.imageTags().inNamespace("ns1").withName("foo").delete().size() == 1;
 
     // Then
     assertTrue(deleted);
@@ -101,9 +101,9 @@ class ImageTagTest {
 
   private ImageTag getImageTag() {
     return new ImageTagBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withName("foo")
+        .endMetadata()
+        .build();
   }
 }

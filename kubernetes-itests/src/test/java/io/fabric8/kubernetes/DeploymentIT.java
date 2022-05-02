@@ -51,7 +51,7 @@ class DeploymentIT {
   @Test
   void get() {
     Deployment deployment1 = client.apps().deployments()
-      .withName("deployment-standard").get();
+        .withName("deployment-standard").get();
     assertNotNull(deployment1);
   }
 
@@ -65,7 +65,7 @@ class DeploymentIT {
   @Test
   void update() {
     Deployment deployment1 = client.apps().deployments().withName("deployment-standard")
-      .edit(d -> new DeploymentBuilder(d).editMetadata().addToAnnotations("updated", "true").endMetadata().build());
+        .edit(d -> new DeploymentBuilder(d).editMetadata().addToAnnotations("updated", "true").endMetadata().build());
     assertThat(deployment1).isNotNull();
     assertEquals("true", deployment1.getMetadata().getAnnotations().get("updated"));
   }
@@ -74,9 +74,9 @@ class DeploymentIT {
   void waitTest() {
     // Wait for resources to get ready
     client.apps().deployments().withName("deployment-wait")
-      .waitUntilReady(120, TimeUnit.SECONDS);
+        .waitUntilReady(120, TimeUnit.SECONDS);
     Deployment deploymentOne = client.apps().deployments()
-      .withName("deployment-wait").get();
+        .withName("deployment-wait").get();
     assertTrue(Readiness.isDeploymentReady(deploymentOne));
   }
 
@@ -98,6 +98,6 @@ class DeploymentIT {
 
   @Test
   void delete() {
-    assertTrue(client.apps().deployments().withName("deployment-delete").delete());
+    assertTrue(client.apps().deployments().withName("deployment-delete").delete().size() == 1);
   }
 }

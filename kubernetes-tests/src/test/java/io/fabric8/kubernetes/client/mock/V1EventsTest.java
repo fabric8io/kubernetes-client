@@ -38,10 +38,10 @@ class V1EventsTest {
   void testList() {
     // Given
     server.expect().get().withPath("/apis/events.k8s.io/v1/namespaces/default/events")
-      .andReturn(HttpURLConnection.HTTP_OK, new EventListBuilder()
-        .addToItems(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build())
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new EventListBuilder()
+            .addToItems(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build())
+            .build())
+        .once();
 
     // When
     EventList eventList = client.events().v1().events().inNamespace("default").list();
@@ -56,30 +56,29 @@ class V1EventsTest {
   void testGet() {
     // Given
     server.expect().get().withPath("/apis/events.k8s.io/v1/namespaces/default/events/event1")
-      .andReturn(HttpURLConnection.HTTP_OK, new EventBuilder()
-        .withNewMetadata().withName("event1").endMetadata()
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new EventBuilder()
+            .withNewMetadata().withName("event1").endMetadata()
+            .build())
+        .once();
 
     // When
     Event e1 = client.events().v1().events().inNamespace("default").withName("event1").get();
 
     // Then
     assertThat(e1)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "event1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "event1");
   }
-
 
   @Test
   void testDelete() {
     // Given
     server.expect().delete().withPath("/apis/events.k8s.io/v1/namespaces/default/events/e1")
-      .andReturn(HttpURLConnection.HTTP_OK, new StatusBuilder().withStatus("Success").build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new StatusBuilder().withStatus("Success").build())
+        .once();
 
     // When
-    Boolean isDeleted = client.events().v1().events().inNamespace("default").withName("e1").delete();
+    boolean isDeleted = client.events().v1().events().inNamespace("default").withName("e1").delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
