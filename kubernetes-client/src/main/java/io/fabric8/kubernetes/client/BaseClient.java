@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
@@ -52,6 +53,8 @@ public abstract class BaseClient implements Client {
   protected Config config;
   protected HttpClient httpClient;
   private OperationSupport operationSupport;
+
+  private OperationContext operationContext;
 
   BaseClient(Config config, BaseClient baseClient) {
     this.config = config;
@@ -204,6 +207,9 @@ public abstract class BaseClient implements Client {
 
   @Override
   public APIResourceList getApiResources(String groupVersion) {
+    if ("v1".equals(groupVersion)) {
+      return getOperationSupport().restCall(APIResourceList.class, "api", "v1");
+    }
     return getOperationSupport().restCall(APIResourceList.class, APIS, groupVersion);
   }
 
@@ -251,6 +257,30 @@ public abstract class BaseClient implements Client {
 
   public Handlers getHandlers() {
     return handlers;
+  }
+
+  /**
+   * Return the default operation context
+   */
+  public OperationContext getOperationContext() {
+    return operationContext;
+  }
+
+  public BaseClient operationContext(OperationContext operationContext) {
+    this.operationContext = operationContext;
+    return this;
+  }
+
+  /**
+   * Create a new instance with the given config. All other client resources will be shared.
+   *
+   * @param config
+   * @return
+   */
+  abstract BaseClient newInstance(Config config);
+
+  public Client newClient(OperationContext newContext) {
+    return newInstance(config).operationContext(newContext);
   }
 
 }

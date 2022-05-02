@@ -15,5 +15,58 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CertificateSigningRequestResource<T> extends Resource<T>, Approvable<T>, Deniable<T> {
+import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition;
+import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestConditionBuilder;
+
+public interface CertificateSigningRequestResource<T> extends Resource<T> {
+
+  /**
+   * Deny a given CertificateSigningRequest.
+   *
+   * Creates an opinionated CertificateSigningRequestCondition while denying
+   * provided CertificateSigningRequest
+   *
+   * @return updated CertificateSigningRequest from Kubernetes ApiServer
+   */
+  default T deny() {
+    return deny(new CertificateSigningRequestConditionBuilder()
+        .withType("Denied")
+        .withStatus("True")
+        .withReason("DeniedViaRESTApi")
+        .withMessage("Denied by REST API /approval endpoint.")
+        .build());
+  }
+
+  /**
+   * Reject a given CertificateSigningRequest.
+   *
+   * @param certificateSigningRequestCondition a condition of a CertificateSigningRequest object
+   * @return updated CertificateSigningRequest from Kubernetes ApiServer
+   */
+  T deny(CertificateSigningRequestCondition certificateSigningRequestCondition);
+
+  /**
+   * Approve a given CertificateSigningRequest.
+   *
+   * @param certificateSigningRequestCondition a condition of a CertificateSigningRequest object
+   * @return updated CertificateSigningRequest from Kubernetes ApiServer
+   */
+  T approve(CertificateSigningRequestCondition certificateSigningRequestCondition);
+
+  /**
+   * Approve a given CertificateSigningRequest.
+   *
+   * Creates an opinionated CertificateSigningRequestCondition while approving
+   * provided CertificateSigningRequest
+   *
+   * @return updated CertificateSigningRequest from Kubernetes ApiServer
+   */
+  default T approve() {
+    return approve(new CertificateSigningRequestConditionBuilder()
+        .withType("Approved")
+        .withStatus("True")
+        .withReason("ApprovedViaRESTApi")
+        .withMessage("Approved by REST API /approval endpoint.")
+        .build());
+  }
 }

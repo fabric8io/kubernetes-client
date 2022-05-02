@@ -15,9 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.io.InputStream;
+import java.io.PipedOutputStream;
 
-public interface ContainerResource<W, I, PI, O, PO, X, T, IS>
-        extends TtyExecInputOutputErrorable<X, O, PO, I, PI, T>,
-                FileSelector<CopyOrReadable<IS>>,
-  TimestampBytesLimitTerminateTimeTailPrettyLoggable<W> {
+public interface ContainerResource
+    extends TtyExecOutputErrorable,
+    TimestampBytesLimitTerminateTimeTailPrettyLoggable {
+
+  TtyExecOutputErrorable readingInput(InputStream in);
+
+  TtyExecOutputErrorable writingInput(PipedOutputStream in);
+
+  TtyExecOutputErrorable redirectingInput();
+
+  TtyExecOutputErrorable redirectingInput(Integer bufferSize);
+
+  CopyOrReadable file(String path);
+
+  CopyOrReadable dir(String path);
 }

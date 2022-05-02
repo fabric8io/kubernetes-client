@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.StatusDetailsBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
@@ -76,7 +77,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -515,6 +515,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public T patchStatus() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
   public R resource(T item) {
     // set the name, namespace, and item - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example
@@ -834,7 +839,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       if (l.isEmpty()) {
         return condition.test(null);
       }
-      return condition.test(l.get(0));
+      return l.stream().allMatch(condition);
     });
 
     if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
@@ -851,7 +856,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public CompletableFuture<List<T>> informOnCondition(Predicate<List<T>> condition) {
     CompletableFuture<List<T>> future = new CompletableFuture<>();
-    AtomicReference<Runnable> tester = new AtomicReference<>();
 
     // create an informer that supplies the tester with events and empty list handling
     SharedIndexInformer<T> informer = this.createInformer(0);
@@ -860,10 +864,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     future.whenComplete((r, t) -> informer.stop());
 
     // use the cache to evaluate the list predicate, trapping any exceptions
-    Runnable test = () -> {
+    Consumer<List<T>> test = list -> {
       try {
         // could skip if lastResourceVersion has not changed
-        List<T> list = informer.getStore().list();
         if (condition.test(list)) {
           future.complete(list);
         }
@@ -871,30 +874,28 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         future.completeExceptionally(e);
       }
     };
-    tester.set(test);
 
     informer.addEventHandler(new ResourceEventHandler<T>() {
       @Override
       public void onAdd(T obj) {
-        test.run();
+        test.accept(informer.getStore().list());
       }
 
       @Override
       public void onDelete(T obj, boolean deletedFinalStateUnknown) {
-        test.run();
+        test.accept(informer.getStore().list());
       }
 
       @Override
       public void onUpdate(T oldObj, T newObj) {
-        test.run();
+        test.accept(informer.getStore().list());
       }
 
       @Override
       public void onNothing() {
-        test.run();
+        test.accept(informer.getStore().list());
       }
-    });
-    informer.run();
+    }).run();
     return future;
   }
 
@@ -1000,6 +1001,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
     }
     return urlBuilder.build();
+  }
+
+  @Override
+  public <C extends Client> C inWriteContext(Class<C> clazz) {
+    return context.clientInWriteContext(clazz);
   }
 
   @Override

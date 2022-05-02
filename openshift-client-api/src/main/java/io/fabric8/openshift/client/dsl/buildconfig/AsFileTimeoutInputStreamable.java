@@ -20,6 +20,8 @@ import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
 /**
  * Created by iocanel on 7/18/16.
  */
-public interface AsFileTimeoutInputStreamable<T> extends TimeoutInputStreamable<T>, AsFileable<TimeoutInputStreamable<T>> {
+public interface AsFileTimeoutInputStreamable<T> extends TimeoutInputStreamable<T> {
+
+  TimeoutInputStreamable<T> asFile(String fileName);
 
 }

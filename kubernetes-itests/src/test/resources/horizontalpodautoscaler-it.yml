@@ -18,53 +18,36 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: horizontalpodautoscaler-get
+  name: horizontal-pod-autoscaler
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: php-apache
+    name: horizontal-pod-autoscaler
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50
 ---
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: horizontalpodautoscaler-list
+  name: horizontal-pod-autoscaler
+  labels:
+    app: fabric8-kubernetes-client-test
+    test: horizontal-pod-autoscaler
 spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: php-apache
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
----
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: horizontalpodautoscaler-update
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: php-apache
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: horizontalpodautoscaler-delete
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: php-apache
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
+  replicas: 0
+  selector:
+    matchLabels:
+      app: fabric8-kubernetes-client-test
+      test: horizontal-pod-autoscaler
+  template:
+    metadata:
+      labels:
+        app: fabric8-kubernetes-client-test
+        test: horizontal-pod-autoscaler
+    spec:
+      containers:
+        - name: horizontal-pod-autoscaler
+          image: registry.access.redhat.com/ubi8/ubi-minimal
+          command: ["sleep", "36000"]

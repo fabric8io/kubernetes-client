@@ -4,30 +4,38 @@
 #### Bugs
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
+* Fix #4106: removed listing from projectrequests
+* Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
+* Fix #3852: Deserializing kamelets fails with UnrecognizedPropertyException
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
 * Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 * Fix #3969: relist will not trigger sync events
+* Fix #4082: improving informOnCondition to test the initial list instead of individual add events
 * Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts. 
 SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
 And Store.getKey can be used rather than directly referencing static Cache functions.
+* Fix #4065: Client.getAPIResources("v1") can be used to obtain the core/legacy resources
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0
 * Fix #3813: Handle exit code status messages with pod uploads
 * Fix #3947: Point CamelK Extension model to latest released version v1.8.2
+* Update Tekton Pipeline Model to v0.35.0
+
 
 #### New Features
 * Fix #3407: Added Itemable.withItem to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  There is also client.resourceList(...).getResources() - that will provide the resource list as Resources.  This allows you to implement composite operations easily with lambda: client.resourceList(...).getResources().forEach(r -> r.delete());
 * Fix #3922: added Client.supports and Client.hasApiGroup methods
 * KubernetesMockServer has new methods - unsupported and reset - to control what apis are unsupported and to reset its state.
-* Fix #3407 #3973: Added Resourceable.resource to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
+* Fix #3407 #3973: Added resource(item) to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
 There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
 This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
 * Fix #3472 #3587: Allowing for customization of the Informer store/cache key function and how state is stored.  See BasicItemStore and ReducedStateItemStore and the SharedIndexInformer.itemStore function.
+* Fix #3854: Camel-K: Missing method for manipulating KameletBindings
 
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)
@@ -45,6 +53,7 @@ Please see the [migration guide](doc/MIGRATION-v6.md)
 * Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
 * Fix #3957: Lister `onOpen` should be called before marking the connection as open
 * Fix #4022: Reintroduce `Deletable` interface in `NonNamespaceOperation`
+* Fix #4009: updating readiness to consider 0 replicas
 
 #### _**Note**_:
 - `Config#autoConfigure(String context)`: Has been changed to only trigger the autoConfigure method once. Previously, providing a wrong context argument would not be a problem since an initial context-less autoConfigure would have already been invoked to provide a valid initial Config.

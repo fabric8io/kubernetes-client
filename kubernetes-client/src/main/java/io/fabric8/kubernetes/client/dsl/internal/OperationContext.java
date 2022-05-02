@@ -469,4 +469,20 @@ public class OperationContext {
     return getClient().adapt(BaseClient.class).getHandlers().get(item, getClient());
   }
 
+  public <C extends Client> C clientInWriteContext(Class<C> clazz) {
+    // other than namespace these do not have values on the config, so we need to associate a default
+    // operationcontext
+    OperationContext newContext = HasMetadataOperationsImpl.defaultContext(client).withDryRun(getDryRun())
+        .withGracePeriodSeconds(getGracePeriodSeconds()).withPropagationPolicy(getPropagationPolicy())
+        .withReloadingFromServer(isReloadingFromServer());
+
+    // check before setting to prevent flipping the default flag
+    if (!Objects.equals(getNamespace(), newContext.getNamespace())
+        || isDefaultNamespace() ^ newContext.isDefaultNamespace()) {
+      newContext = newContext.withNamespace(getNamespace());
+    }
+
+    return getClient().adapt(BaseClient.class).newClient(newContext).adapt(clazz);
+  }
+
 }

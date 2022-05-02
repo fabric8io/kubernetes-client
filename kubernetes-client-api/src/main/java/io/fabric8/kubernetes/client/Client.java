@@ -25,11 +25,12 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.io.Closeable;
 import java.net.URL;
 
-public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable {
+public interface Client extends Closeable {
 
   /**
    * Checks if the client can be adapted to an other client type and if that target client is supported.
@@ -92,7 +93,7 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
   void close();
 
   /**
-   * Returns the api groups
+   * Returns the api groups. This does not include the core/legacy v1 apiVersion.
    *
    * @return the {@link APIGroupList} metadata
    */
@@ -108,6 +109,8 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
 
   /**
    * Return the api resource metadata for the given groupVersion
+   * <p>
+   * Use v1 to indicate the core/legacy resources
    *
    * @param groupVersion the groupVersion - group/version
    * @return the {@link APIResourceList} for the groupVersion
@@ -164,5 +167,9 @@ public interface Client extends HttpClientAware, ConfigAware<Config>, Closeable 
    * @return a new client
    */
   Client newClient(RequestConfig requestConfig);
+
+  HttpClient getHttpClient();
+
+  Config getConfiguration();
 
 }

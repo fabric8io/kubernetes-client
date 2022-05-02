@@ -134,7 +134,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * 
+   *
    * @return Reader
    */
   @Override
@@ -153,7 +153,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
     return new JobOperationsImpl(podControllerOperationContext.withLogWaitTimout(logWaitTimeout), context);
   }
 
@@ -180,7 +180,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   @Override
-  public Loggable<LogWatch> inContainer(String id) {
+  public Loggable inContainer(String id) {
     return new JobOperationsImpl(podControllerOperationContext.withContainerId(id), context);
   }
 }

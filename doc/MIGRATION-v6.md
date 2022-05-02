@@ -1,6 +1,7 @@
 # Migration from 5.x to 6.x
 
 ## Contents:
+- [Backwards Compatibility Interceptor](#backwards-compatibility-interceptor)
 - [Namespace Changes](#namespace-changes)
 - [API/Impl split](#api-impl-split)
 - [Deserialization Resolution](#deserialization-resolution)
@@ -17,6 +18,10 @@
 - [evict Changes](#evict-changes)
 - [Delete Behavior](#delete-behavior)
 
+## Backwards Compatibility Interceptor
+
+kubernetes.backwardsCompatibilityInterceptor.disable now defaults to true, rather than false.  If you need backwards compatibility support, please set this property to false.
+
 ## Namespace Changes
 
 To match the behavior of kubectl the client will now consider any call to inNamespace as the namespace to use regardless of what is on a passed in item.  
@@ -27,6 +32,7 @@ The end result is that exceptions refering to mismatched namespaces will no long
 
 Consider the following examples:
 
+```
 // inNamespace called at the client level with load
 // Prior behavior - exception if item has a namespace that is not monitoring.  
 // New behavior - the item namespace is monitoring
@@ -51,6 +57,7 @@ this.kubernetesClient.configMaps().create(item);
 // Prior behavior - exception if item has a namespace that does not match the context.  
 // New behavior - item will be loaded with its namespace, or the default if missing
 this.kubernetesClient.configMaps().load(item)...
+```
 
 To track the namespace handling at the client level the Config has an additional boolean field defaultNamespace, you may set that to false to have the Client treat subsequent calls as if inNamespace had been called explicitly.
 
@@ -203,6 +210,10 @@ Client.adapt will no longer perform the isAdaptable check - that is you may free
 
 - The methods provided by MultiDeleteable have moved to FilterWatchListMultiDeletable and have been deprecated.  You may use KubernetesClient.resourceList, or the individual resource methods to delete the items.
 
+- DSL methods available off of a resource context involving a resource - client.configMaps().withName("name").create(configMap) - should instead use a no-argument method - client.configMaps().resource(configMap).create() or client.resource(configMap).create().
+
+- DSL methods available off of a collection context involving a resource - client.configMaps().create(configMap) - should instead use a no-argument method - client.configMaps().resource(configMap).create() or client.resource(configMap).create().
+
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
@@ -213,8 +224,8 @@ KubernetesList and Template will no longer automatically sort their objects by d
 
 - WatchListDeletable now takes three type parameters to include the Resource type.
 
-- PodResource is no longer generic.
-- 
+- PodResource, BuildResource, and interfaces related to containers and logging are no longer generic.
+
 - SharedInformer was removed, there is now only SharedIndexInformer
 
 - The following interfaces were removed: 
@@ -227,6 +238,12 @@ KubernetesList and Template will no longer automatically sort their objects by d
 * StatusUpdatable
 * Cascading
 * FilterWatchListMultiDeletable
+* Creatable
+* Editable
+* Loadable
+* Patchable
+* Status*
+* And many others
 
 The logic was consolidated onto:
 * AnyNamespaceOperation

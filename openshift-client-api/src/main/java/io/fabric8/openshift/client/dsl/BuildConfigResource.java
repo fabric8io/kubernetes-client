@@ -22,10 +22,14 @@ import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
+import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 
 public interface BuildConfigResource<T, S, I> extends Resource<T>,
-  Instantiateable<BuildRequest, I>,
-  Typeable<Triggerable<WebHookTrigger, S>>,
-  Triggerable<WebHookTrigger, S>,
-  Secretable<Typeable<Triggerable<WebHookTrigger, S>>> {
+    Typeable<Triggerable<WebHookTrigger, S>>,
+    Triggerable<WebHookTrigger, S>,
+    Secretable<Typeable<Triggerable<WebHookTrigger, S>>> {
+
+  I instantiate(BuildRequest request);
+
+  CommitterAuthorMessageAsFileTimeoutInputStreamable<I> instantiateBinary();
 }

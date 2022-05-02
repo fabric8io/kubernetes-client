@@ -53,5 +53,9 @@ class ApiGroupResourceListsIT {
     APIResourceList list = client.getApiResources("apps/v1");
 
     assertTrue(list.getResources().stream().anyMatch(r -> "deployments".equals(r.getName())));
+
+    list = client.getApiResources("v1");
+
+    assertTrue(list.getResources().stream().anyMatch(r -> "configmaps".equals(r.getName())));
   }
 }

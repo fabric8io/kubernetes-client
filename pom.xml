@@ -96,7 +96,7 @@
     <!-- Testing versions -->
     <assertj.core.version>3.22.0</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>15.1.2</approvaltests.version>
+    <approvaltests.version>15.2.0</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -123,7 +123,7 @@
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.0.0</buildnumber.plugin.version>
     <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-    <maven.bundle.plugin.version>5.1.4</maven.bundle.plugin.version>
+    <maven.bundle.plugin.version>5.1.5</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.3.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M6</maven.surefire.plugin.version>
@@ -146,7 +146,7 @@
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.22.3</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>

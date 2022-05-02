@@ -16,5 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface PrettyLoggable<W> extends Loggable<W>, Prettyable<Loggable<W>> {
+public interface PrettyLoggable extends Loggable {
+
+  /**
+   * Get logs with pretty output
+   *
+   * @return returns pod log operation with specified PodLogOption configured
+   */
+  Loggable withPrettyOutput();
 }

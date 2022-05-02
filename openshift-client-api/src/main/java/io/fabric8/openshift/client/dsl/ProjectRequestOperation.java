@@ -15,12 +15,9 @@
  */
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.Listable;
 import io.fabric8.openshift.api.model.ProjectRequest;
 
 public interface ProjectRequestOperation extends
-    InOutCreateable<ProjectRequest, ProjectRequest>,
-    Listable<Status> {
+    InOutCreateable<ProjectRequest, ProjectRequest> {
 }

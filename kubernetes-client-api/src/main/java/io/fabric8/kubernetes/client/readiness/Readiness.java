@@ -132,12 +132,16 @@ public class Readiness {
     StatefulSetSpec spec = ss.getSpec();
     StatefulSetStatus status = ss.getStatus();
 
-    if (status == null || status.getReplicas() == null || status.getReadyReplicas() == null) {
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
       return false;
     }
 
-    //Can be true in testing, so handle it to make test writing easier.
-    if (spec == null || spec.getReplicas() == null) {
+    if (spec.getReplicas() == 0) {
+      return true;
+    }
+
+    if (status == null || status.getReplicas() == null || status.getReadyReplicas() == null) {
       return false;
     }
 
@@ -150,17 +154,23 @@ public class Readiness {
     DeploymentSpec spec = d.getSpec();
     DeploymentStatus status = d.getStatus();
 
-    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
-      return false;
-    }
-
     //Can be true in testing, so handle it to make test writing easier.
     if (spec == null || spec.getReplicas() == null) {
       return false;
     }
 
-    return spec.getReplicas().intValue() == status.getReplicas() &&
-        spec.getReplicas() <= status.getAvailableReplicas();
+    if (spec.getReplicas() == 0) {
+      return true;
+    }
+
+    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
+      return false;
+    }
+
+    int replicas = Utils.getNonNullOrElse(spec.getReplicas(), 0);
+
+    return replicas == status.getReplicas() &&
+        replicas <= status.getAvailableReplicas();
   }
 
   public static boolean isExtensionsDeploymentReady(io.fabric8.kubernetes.api.model.extensions.Deployment d) {
@@ -168,12 +178,16 @@ public class Readiness {
     io.fabric8.kubernetes.api.model.extensions.DeploymentSpec spec = d.getSpec();
     io.fabric8.kubernetes.api.model.extensions.DeploymentStatus status = d.getStatus();
 
-    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
       return false;
     }
 
-    //Can be true in testing, so handle it to make test writing easier.
-    if (spec == null || spec.getReplicas() == null) {
+    if (spec.getReplicas() == 0) {
+      return true;
+    }
+
+    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
       return false;
     }
 
@@ -186,14 +200,19 @@ public class Readiness {
     ReplicaSetSpec spec = r.getSpec();
     ReplicaSetStatus status = r.getStatus();
 
-    if (status == null || status.getReadyReplicas() == null) {
-      return false;
-    }
-
     //Can be true in testing, so handle it to make test writing easier.
     if (spec == null || spec.getReplicas() == null) {
       return false;
     }
+
+    if (spec.getReplicas() == 0) {
+      return true;
+    }
+
+    if (status == null || status.getReadyReplicas() == null) {
+      return false;
+    }
+
     return spec.getReplicas().intValue() == status.getReadyReplicas();
   }
 
@@ -202,12 +221,16 @@ public class Readiness {
     ReplicationControllerSpec spec = r.getSpec();
     ReplicationControllerStatus status = r.getStatus();
 
-    if (status == null || status.getReadyReplicas() == null) {
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
       return false;
     }
 
-    //Can be true in testing, so handle it to make test writing easier.
-    if (spec == null || spec.getReplicas() == null) {
+    if (spec.getReplicas() == 0) {
+      return true;
+    }
+
+    if (status == null || status.getReadyReplicas() == null) {
       return false;
     }
 
@@ -255,7 +278,7 @@ public class Readiness {
 
   /**
    * Returns the ready condition of the pod.
-   * 
+   *
    * @param pod The target pod.
    * @return The {@link PodCondition} or null if not found.
    */

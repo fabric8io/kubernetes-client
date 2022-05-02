@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CreateOrReplaceable<T> {
+public interface CreateOrReplaceable<T> extends Replaceable<T> {
 
   /**
    * Creates a provided resource in a Kubernetes Cluster. If creation
@@ -24,4 +24,11 @@ public interface CreateOrReplaceable<T> {
    * @return created item returned in kubernetes api response
    */
   T createOrReplace();
+
+  /**
+   * Creates an item
+   *
+   * @return the item from the api server
+   */
+  T create();
 }

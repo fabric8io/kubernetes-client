@@ -49,6 +49,7 @@ class ReducedStateItemStoreTest {
 
     assertNull(store.put("x", pod));
     assertNotNull(store.get("x"));
+    assertEquals("2", store.getResourceVersion("x"));
     assertEquals(1, store.size());
     assertNotNull(store.remove("x"));
   }

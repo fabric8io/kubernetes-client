@@ -221,7 +221,7 @@ public class DeploymentConfigOperationsImpl
   }
 
   @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
     return new DeploymentConfigOperationsImpl(rollingOperationContext.withLogWaitTimout(logWaitTimeout), context);
   }
 
@@ -249,7 +249,7 @@ public class DeploymentConfigOperationsImpl
   }
 
   @Override
-  public Loggable<LogWatch> inContainer(String id) {
+  public Loggable inContainer(String id) {
     return new DeploymentConfigOperationsImpl(rollingOperationContext.withContainerId(id), context);
   }
 }

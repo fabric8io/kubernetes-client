@@ -17,6 +17,10 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 
-public interface DeployableScalableResource<T> extends ScalableResource<T>,
-  Deployable<T> {
+public interface DeployableScalableResource<T> extends ScalableResource<T> {
+
+  T deployLatest();
+
+  T deployLatest(boolean wait);
+
 }

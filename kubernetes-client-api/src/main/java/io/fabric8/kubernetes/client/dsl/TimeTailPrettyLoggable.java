@@ -16,5 +16,21 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface TimeTailPrettyLoggable<W> extends Timeable<TailPrettyLoggable<W>>, TailPrettyLoggable<W> {
+public interface TimeTailPrettyLoggable extends TailPrettyLoggable {
+
+  /**
+   * Only return logs after a specific date (RFC3339)
+   *
+   * @param timestamp timestamp as string
+   * @return log operation with PodLogOptions configured
+   */
+  TailPrettyLoggable sinceTime(String timestamp);
+
+  /**
+   * Get logs after a duration of seconds:
+   *
+   * @param seconds number of seconds
+   * @return log operation with PodLogOptions configured
+   */
+  TailPrettyLoggable sinceSeconds(int seconds);
 }

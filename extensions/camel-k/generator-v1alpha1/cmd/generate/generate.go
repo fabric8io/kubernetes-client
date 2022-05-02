@@ -44,7 +44,6 @@ func main() {
 
 	// types that are manually defined in the model
 	providedTypes := []schemagen.ProvidedType{
-		{GoType: reflect.TypeOf(v1alpha1.JSONSchemaProps{}), JavaClass: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"},
 		{GoType: reflect.TypeOf(v1.Flow{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
 		{GoType: reflect.TypeOf(v1.TraitConfiguration{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
 	}
@@ -81,6 +80,8 @@ func main() {
 		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
 		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 		reflect.TypeOf(v1.Template{}):          "java.util.Map<String, Object>",
+		reflect.TypeOf(v1alpha1.JSON{}):        "com.fasterxml.jackson.databind.JsonNode",
+		reflect.TypeOf(v1alpha1.EndpointProperties{}): "java.util.Map<String, Object>",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/camel-k/v1alpha1/CamelKSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")

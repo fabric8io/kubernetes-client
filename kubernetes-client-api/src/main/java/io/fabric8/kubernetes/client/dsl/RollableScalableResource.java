@@ -15,6 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface RollableScalableResource<T> extends ScalableResource<T>,
-  Rollable<TimeoutImageEditReplacePatchable<T>> {
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+
+public interface RollableScalableResource<T> extends ScalableResource<T> {
+
+  TimeoutImageEditReplacePatchable<T> rolling();
+
+  Status rollback(DeploymentRollback deploymentRollback);
 }

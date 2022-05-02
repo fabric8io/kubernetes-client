@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.client.informers.cache.Store;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -57,5 +58,12 @@ public interface SyncableStore<T> extends Store<T> {
    * @param nextKeys to retain
    */
   void retainAll(Set<String> nextKeys);
+
+  /**
+   * Process a batch of updates
+   * 
+   * @param items
+   */
+  void update(List<T> items);
 
 }

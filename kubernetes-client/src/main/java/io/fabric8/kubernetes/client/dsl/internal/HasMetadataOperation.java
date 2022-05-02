@@ -234,6 +234,11 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   @Override
+  public T patchStatus() {
+    return patchStatus(getItem());
+  }
+
+  @Override
   public T patchStatus(T item) {
     return patch(PatchContext.of(PatchType.JSON_MERGE), null, clone(item), true);
   }

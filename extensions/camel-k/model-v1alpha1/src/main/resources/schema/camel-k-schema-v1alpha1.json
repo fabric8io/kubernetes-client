@@ -13,8 +13,7 @@
       "type": "object",
       "properties": {
         "properties": {
-          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
-          "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "ref": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
@@ -33,13 +32,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
-      "type": "object",
-      "javaType": "io.fabric8.camelk.v1alpha1.EndpointProperties",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec": {
       "type": "object",
       "javaType": "io.fabric8.camelk.v1alpha1.ErrorHandlerSpec",
@@ -54,10 +46,163 @@
           "type": "string"
         },
         "schema": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProps",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.JSONSchemaProps"
         }
       },
       "javaType": "io.fabric8.camelk.v1alpha1.EventTypeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ExternalDocumentation": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.ExternalDocumentation",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProp": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enum": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
+          }
+        },
+        "example": {
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
+        },
+        "exclusiveMaximum": {
+          "type": "boolean"
+        },
+        "exclusiveMinimum": {
+          "type": "boolean"
+        },
+        "format": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "maxItems": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "maxLength": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "maxProperties": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "maximum": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "minItems": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "minLength": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "minProperties": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "minimum": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "multipleOf": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "nullable": {
+          "type": "boolean"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "uniqueItems": {
+          "type": "boolean"
+        },
+        "x-descriptors": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.JSONSchemaProp",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProps": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "example": {
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
+        },
+        "externalDocs": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ExternalDocumentation",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.ExternalDocumentation"
+        },
+        "id": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.camelk.v1alpha1.JSONSchemaProp\u003e"
+        },
+        "required": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.JSONSchemaProps",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -324,7 +469,8 @@
           "existingJavaType": "io.fabric8.camelk.v1alpha1.AuthorizationSpec"
         },
         "definition": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProps",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.JSONSchemaProps"
         },
         "dependencies": {
           "type": "array",
@@ -395,10 +541,6 @@
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
       "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
     },
-    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
-      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
-      "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
-    },
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec",
       "existingJavaType": "io.fabric8.camelk.v1alpha1.ErrorHandlerSpec"
@@ -406,6 +548,18 @@
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec",
       "existingJavaType": "io.fabric8.camelk.v1alpha1.EventTypeSpec"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ExternalDocumentation": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ExternalDocumentation",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.ExternalDocumentation"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProp": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProp",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.JSONSchemaProp"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProps": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_JSONSchemaProps",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.JSONSchemaProps"
     },
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Kamelet": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Kamelet",

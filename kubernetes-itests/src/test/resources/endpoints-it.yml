@@ -16,41 +16,55 @@
 
 ---
 apiVersion: v1
-kind: Endpoints
+kind: Service
 metadata:
-  name: endpoints-get
-subsets:
-  - addresses:
-      - ip: 192.168.7.50
-    ports:
-      - port: 8080
+  name: endpoints-with-no-subsets
+spec:
+  selector:
+    app: fabric8-kubernetes-client-test
+    test: endpoints-with-no-subsets
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: endpoints-with-subsets
+  labels:
+    app: fabric8-kubernetes-client-test
+    test: endpoints-with-subsets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fabric8-kubernetes-client-test
+      test: endpoints-with-subsets
+  template:
+    metadata:
+      labels:
+        app: fabric8-kubernetes-client-test
+        test: endpoints-with-subsets
+    spec:
+      containers:
+        - name: endpoints-with-subsets
+          image: registry.access.redhat.com/ubi8/ubi-minimal
+          command: ["sleep", "36000"]
+          ports:
+            - containerPort: 1337
 ---
 apiVersion: v1
-kind: Endpoints
+kind: Service
 metadata:
-  name: endpoints-list
-subsets:
-  - addresses:
-      - ip: 192.168.7.50
-    ports:
-      - port: 8080
----
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: endpoints-update
-subsets:
-  - addresses:
-      - ip: 192.168.7.50
-    ports:
-      - port: 8080
----
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: endpoints-delete
-subsets:
-  - addresses:
-      - ip: 192.168.7.50
-    ports:
-      - port: 8080
+  name: endpoints-with-subsets
+spec:
+  selector:
+    app: fabric8-kubernetes-client-test
+    test: endpoints-with-subsets
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 1337

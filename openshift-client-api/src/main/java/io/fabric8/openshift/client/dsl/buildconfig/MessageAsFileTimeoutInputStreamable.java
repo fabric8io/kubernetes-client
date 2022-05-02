@@ -18,5 +18,7 @@ package io.fabric8.openshift.client.dsl.buildconfig;
 /**
  * Created by iocanel on 7/18/16.
  */
-public interface MessageAsFileTimeoutInputStreamable<T> extends AsFileTimeoutInputStreamable<T>, Messageable<AsFileTimeoutInputStreamable<T>> {
+public interface MessageAsFileTimeoutInputStreamable<T> extends AsFileTimeoutInputStreamable<T> {
+
+  AsFileTimeoutInputStreamable<T> withMessage(String message);
 }

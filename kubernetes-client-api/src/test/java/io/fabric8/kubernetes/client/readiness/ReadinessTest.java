@@ -16,10 +16,11 @@
 package io.fabric8.kubernetes.client.readiness;
 
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
-import io.fabric8.kubernetes.client.readiness.Readiness;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -113,5 +114,12 @@ class ReadinessTest {
   @Test
   void testReadinessNullResource() {
     assertFalse(readiness.isReady(null));
+  }
+
+  @Test
+  void testDeploymentWithNoReplicas() {
+    Deployment d = new DeploymentBuilder().withNewSpec().withReplicas(0).endSpec().build();
+
+    assertTrue(readiness.isReady(d));
   }
 }

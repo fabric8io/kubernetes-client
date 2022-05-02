@@ -16,8 +16,9 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.FromServerable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 
-public interface FromServerGettable<T> extends Gettable<T>, FromServerable<Gettable<T>> {
+public interface FromServerGettable<T> extends Gettable<T> {
+
+  Gettable<T> fromServer();
 }

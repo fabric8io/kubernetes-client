@@ -35,7 +35,6 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.InputStreamable;
 import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
@@ -62,7 +61,8 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
 public class BuildConfigOperationsImpl
     extends HasMetadataOperation<BuildConfig, BuildConfigList, BuildConfigResource<BuildConfig, Void, Build>>
-    implements BuildConfigOperation {
+    implements BuildConfigResource<BuildConfig, Void, Build>,
+    CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> {
 
   private static final Logger logger = LoggerFactory.getLogger(BuildConfigOperationsImpl.class);
   public static final String BUILD_CONFIG_LABEL = "openshift.io/build-config.name";

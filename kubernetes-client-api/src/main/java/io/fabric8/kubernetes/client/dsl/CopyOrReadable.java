@@ -15,6 +15,29 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CopyOrReadable<I> extends Copiable, Readable<I>, Uploadable {
+import java.io.InputStream;
+import java.nio.file.Path;
+
+public interface CopyOrReadable {
+
+  /**
+   * Upload file located at specified {@link Path} to Pod
+   *
+   * @param path path of the file which needs to be uploaded
+   * @return boolean value regarding upload was successful or not.
+   */
+  boolean upload(Path path);
+
+  /**
+   * Upload file extracted from provided InputStream to Pod
+   *
+   * @param inputStream {@link InputStream} which will be uploaded
+   * @return boolean value regarding upload was successful or not.
+   */
+  boolean upload(InputStream inputStream);
+
+  InputStream read();
+
+  boolean copy(Path destination);
 
 }

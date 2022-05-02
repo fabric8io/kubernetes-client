@@ -16,5 +16,20 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface BytesLimitTerminateTimeTailPrettyLoggable<W> extends BytesLimitable<TimeTailPrettyLoggable<W>>, TerminateTimeTailPrettyLoggable<W> {
+public interface BytesLimitTerminateTimeTailPrettyLoggable extends TimeTailPrettyLoggable {
+
+  /**
+   * Configure Maximum bytes of logs to return. Defaults to no limit.
+   *
+   * @param limitBytes number of bytes
+   * @return returns pod log operation with specified PodLogOption configured
+   */
+  TimeTailPrettyLoggable limitBytes(int limitBytes);
+
+  /**
+   * Get logs for the previous instance of the container in a pod if it exists:
+   *
+   * @return returns pod log operation with specified PodLogOption configured
+   */
+  TimeTailPrettyLoggable terminated();
 }

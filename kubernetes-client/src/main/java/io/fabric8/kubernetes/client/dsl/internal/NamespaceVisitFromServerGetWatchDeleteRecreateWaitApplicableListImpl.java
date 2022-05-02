@@ -29,8 +29,6 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
-import io.fabric8.kubernetes.client.NamespaceableResourceAdapter;
-import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
@@ -56,6 +54,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -130,9 +129,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
    * The namespacing is the same - use the item namespace if available
    */
   NamespaceableResource<HasMetadata> getResource(HasMetadata meta) {
-    OperationContext ctx = context.withItem(null);
-    ResourceHandler<HasMetadata, ?> handler = context.getHandler(meta);
-    return new NamespaceableResourceAdapter<>(meta, handler.operation(ctx.getClient(), null).newInstance(ctx));
+    return context.clientInWriteContext(KubernetesClient.class).resource(meta);
   }
 
   @Override
@@ -224,7 +221,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public List<HasMetadata> get() {
-    return getResources().stream().map(Resource::get).collect(Collectors.toList());
+    return performOperation(Resource::get);
   }
 
   @Override
@@ -306,7 +303,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public List<HasMetadata> create() {
-    return getResources().stream().map(Resource::create).collect(Collectors.toList());
+    return performOperation(Resource::create);
   }
 
   @Override
@@ -318,6 +315,21 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inAnyNamespace() {
     return newInstance(context.withNamespace(null),
         namespaceVisitOperationContext.withExplicitNamespace(null));
+  }
+
+  @Override
+  public List<HasMetadata> replace() {
+    return performOperation(Resource::replace);
+  }
+
+  private List<HasMetadata> performOperation(
+      Function<? super NamespaceableResource<HasMetadata>, ? extends HasMetadata> operation) {
+    return getResources().stream().map(operation).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<HasMetadata> replaceStatus() {
+    return performOperation(Resource::replaceStatus);
   }
 
 }

@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
-package io.fabric8.kubernetes.client.dsl;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
- * @param <O>   Where to write err to.
- * @param <P>   Where to read err from.
- * @param <T>   The return type.
+ * Java equivalent of `kubectl scale statefulset --selector=app=my-database --replicas=4`
  */
-public interface Errorable<O, P, T> {
-
-    T writingError(O in);
-
-    T readingError(P in);
-
-    T redirectingError();
+public class ScaleWithLabelsEquivalent {
+  public static void main(String[] args) {
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
+      k8s.apps().statefulSets().inNamespace("default")
+          .withLabel("app", "my-database")
+          .resources()
+          .forEach(s -> s.scale(4));
+    }
+  }
 }

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.AddNotification;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.DeleteNotification;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.Notification;
@@ -25,8 +26,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -84,12 +87,14 @@ class ProcessorStoreTest {
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
 
-    Pod pod = new PodBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod1").withResourceVersion("1").endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withResourceVersion("2").endMetadata().build();
 
     // replace empty store with two values
-    processorStore.add(pod);
-    processorStore.add(pod2);
+    List<Pod> pods = Arrays.asList(pod, pod2);
+    processorStore.update(pods);
+
+    processorStore.retainAll(pods.stream().map(Cache::metaNamespaceKeyFunc).collect(Collectors.toSet()));
 
     // resync two values
     processorStore.resync();
