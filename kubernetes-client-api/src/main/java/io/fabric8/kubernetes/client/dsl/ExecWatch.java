@@ -32,7 +32,7 @@ public interface ExecWatch extends Closeable {
   /**
    * Gets the {@link InputStream} for stdOut if one is associated
    * 
-   * @return the stdErr stream
+   * @return the stdOut stream
    */
   InputStream getOutput();
 
