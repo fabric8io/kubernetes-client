@@ -66,6 +66,8 @@ type Schema struct {
   V1CSIDriverList                          storageclassapi.CSIDriverList
   V1CSINode                                storageclassapi.CSINode
   V1CSINodeList                            storageclassapi.CSINodeList
+  V1CSIStorageCapacity                     storageclassapi.CSIStorageCapacity
+  V1CSIStorageCapacityList                 storageclassapi.CSIStorageCapacityList
   CSIDriver                                storageclassapiv1beta1.CSIDriver
   CSIDriverList                            storageclassapiv1beta1.CSIDriverList
   CSINode                                  storageclassapiv1beta1.CSINode

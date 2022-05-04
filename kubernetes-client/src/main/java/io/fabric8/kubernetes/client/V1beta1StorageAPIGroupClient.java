@@ -15,31 +15,20 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.storage.CSIDriver;
-import io.fabric8.kubernetes.api.model.storage.CSIDriverList;
-import io.fabric8.kubernetes.api.model.storage.CSINode;
-import io.fabric8.kubernetes.api.model.storage.CSINodeList;
-import io.fabric8.kubernetes.api.model.storage.StorageClass;
-import io.fabric8.kubernetes.api.model.storage.StorageClassList;
-import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
-import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class StorageAPIGroupClient extends ClientAdapter<StorageAPIGroupClient> implements StorageAPIGroupDSL {
-
-  @Override
-  public MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses() {
-    return resources(StorageClass.class, StorageClassList.class);
-  }
-
+public class V1beta1StorageAPIGroupClient extends ClientAdapter<V1beta1StorageAPIGroupClient>
+    implements V1beta1StorageAPIGroupDSL {
   @Override
   public NonNamespaceOperation<CSIDriver, CSIDriverList, Resource<CSIDriver>> csiDrivers() {
     return resources(CSIDriver.class, CSIDriverList.class);
@@ -56,22 +45,7 @@ public class StorageAPIGroupClient extends ClientAdapter<StorageAPIGroupClient> 
   }
 
   @Override
-  public NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments() {
-    return resources(VolumeAttachment.class, VolumeAttachmentList.class);
-  }
-
-  @Override
-  public V1StorageAPIGroupDSL v1() {
-    return adapt(V1StorageAPIGroupClient.class);
-  }
-
-  @Override
-  public V1beta1StorageAPIGroupDSL v1beta1() {
-    return adapt(V1beta1StorageAPIGroupClient.class);
-  }
-
-  @Override
-  public StorageAPIGroupClient newInstance() {
-    return new StorageAPIGroupClient();
+  public V1beta1StorageAPIGroupClient newInstance() {
+    return new V1beta1StorageAPIGroupClient();
   }
 }

@@ -1359,14 +1359,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "events.k8s.io/v1beta1",
+          "default": "events.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_events_v1beta1_Event",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.events.v1beta1.Event"
+            "$ref": "#/definitions/kubernetes_events_v1_Event",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.events.v1.Event"
           }
         },
         "kind": {

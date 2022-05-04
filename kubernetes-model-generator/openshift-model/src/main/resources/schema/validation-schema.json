@@ -3859,6 +3859,9 @@
         "maxSkew": {
           "type": "integer"
         },
+        "minDomains": {
+          "type": "integer"
+        },
         "topologyKey": {
           "type": "string"
         },
@@ -16386,10 +16389,10 @@
     },
     "clusternetworkentry": {
       "properties": {
-        "cidr": {
+        "CIDR": {
           "type": "string"
         },
-        "hostPrefix": {
+        "hostSubnetLength": {
           "type": "integer"
         }
       },
@@ -21843,7 +21846,13 @@
     },
     "objectreference": {
       "properties": {
-        "group": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "kind": {
           "type": "string"
         },
         "name": {
@@ -21852,7 +21861,10 @@
         "namespace": {
           "type": "string"
         },
-        "resource": {
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
           "type": "string"
         }
       },
@@ -25692,6 +25704,9 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
           "type": "integer"
         },
         "topologyKey": {

@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "schedule",
     "startingDeadlineSeconds",
     "successfulJobsHistoryLimit",
-    "suspend"
+    "suspend",
+    "timeZone"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +77,8 @@ public class CronJobSpec implements KubernetesResource
     private Integer successfulJobsHistoryLimit;
     @JsonProperty("suspend")
     private Boolean suspend;
+    @JsonProperty("timeZone")
+    private String timeZone;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -93,10 +96,11 @@ public class CronJobSpec implements KubernetesResource
      * @param jobTemplate
      * @param startingDeadlineSeconds
      * @param concurrencyPolicy
+     * @param timeZone
      * @param failedJobsHistoryLimit
      * @param successfulJobsHistoryLimit
      */
-    public CronJobSpec(String concurrencyPolicy, Integer failedJobsHistoryLimit, JobTemplateSpec jobTemplate, String schedule, Long startingDeadlineSeconds, Integer successfulJobsHistoryLimit, Boolean suspend) {
+    public CronJobSpec(String concurrencyPolicy, Integer failedJobsHistoryLimit, JobTemplateSpec jobTemplate, String schedule, Long startingDeadlineSeconds, Integer successfulJobsHistoryLimit, Boolean suspend, String timeZone) {
         super();
         this.concurrencyPolicy = concurrencyPolicy;
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
@@ -105,6 +109,7 @@ public class CronJobSpec implements KubernetesResource
         this.startingDeadlineSeconds = startingDeadlineSeconds;
         this.successfulJobsHistoryLimit = successfulJobsHistoryLimit;
         this.suspend = suspend;
+        this.timeZone = timeZone;
     }
 
     @JsonProperty("concurrencyPolicy")
@@ -175,6 +180,16 @@ public class CronJobSpec implements KubernetesResource
     @JsonProperty("suspend")
     public void setSuspend(Boolean suspend) {
         this.suspend = suspend;
+    }
+
+    @JsonProperty("timeZone")
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    @JsonProperty("timeZone")
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     @JsonAnyGetter

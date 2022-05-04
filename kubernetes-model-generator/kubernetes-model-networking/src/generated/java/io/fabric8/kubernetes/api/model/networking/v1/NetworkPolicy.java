@@ -37,7 +37,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -83,6 +84,8 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private NetworkPolicySpec spec;
+    @JsonProperty("status")
+    private NetworkPolicyStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -99,13 +102,15 @@ public class NetworkPolicy implements HasMetadata, Namespaced
      * @param apiVersion
      * @param kind
      * @param spec
+     * @param status
      */
-    public NetworkPolicy(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, NetworkPolicySpec spec) {
+    public NetworkPolicy(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, NetworkPolicySpec spec, NetworkPolicyStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -166,6 +171,16 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     @JsonProperty("spec")
     public void setSpec(NetworkPolicySpec spec) {
         this.spec = spec;
+    }
+
+    @JsonProperty("status")
+    public NetworkPolicyStatus getStatus() {
+        return status;
+    }
+
+    @JsonProperty("status")
+    public void setStatus(NetworkPolicyStatus status) {
+        this.status = status;
     }
 
     @JsonAnyGetter

@@ -19,72 +19,48 @@ import io.fabric8.kubernetes.api.model.storage.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.CSIDriverList;
 import io.fabric8.kubernetes.api.model.storage.CSINode;
 import io.fabric8.kubernetes.api.model.storage.CSINodeList;
+import io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity;
+import io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
-import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
-import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.client.Client;
 
-public interface StorageAPIGroupDSL extends Client {
+public interface V1StorageAPIGroupDSL extends Client {
 
   /**
    * DSL entrypoint for storage.k8s.io/v1 StorageClass
    *
-   * @deprecated Use <code>client.storage().v1().storageClasses()</code> instead
    * @return {@link NonNamespaceOperation} for StorageClass
    */
-  @Deprecated
   NonNamespaceOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses();
 
   /**
    * DSL entrypoint for storage.k8s.io/v1 CSIDriver
    *
-   * @deprecated Use <code>client.storage().v1().csiDrivers()</code> instead
    * @return {@link NonNamespaceOperation} for CSIDriver resource
    */
-  @Deprecated
   NonNamespaceOperation<CSIDriver, CSIDriverList, Resource<CSIDriver>> csiDrivers();
 
   /**
    * DSL entrypoint for storage.k8s.io/v1 CSINode
    *
-   * @deprecated Use <code>client.storage().v1().csiDrivers()</code> instead
    * @return {@link NonNamespaceOperation} for CSINode resource
    */
-  @Deprecated
   NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes();
 
   /**
-   * DSL entrypoint for storage.k8s.io/v1 CSIStorageCapacities
+   * DSL entrypoint for storage.k8s.io/v1 CSIStorageCapacity
    *
-   * @deprecated Use <code>client.storage().v1beta1().csiStorageCapacities()</code> instead
-   * @return {@link NonNamespaceOperation} for CSIStorageCapacity
+   * @return {@link MixedOperation} for CSIStorageCapacity resource
    */
-  @Deprecated
   MixedOperation<CSIStorageCapacity, CSIStorageCapacityList, Resource<CSIStorageCapacity>> csiStorageCapacities();
 
   /**
    * DSL entrypoint for storage.k8s.io/v1 VolumeAttachment
    *
-   * @deprecated Use <code>client.storage().v1().volumeAttachments()</code> instead
    * @return {@link NonNamespaceOperation} for VolumeAttachment resource
    */
-  @Deprecated
   NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments();
-
-  /**
-   * DSL entrypoint for resources in storage.k8s.io/v1 apiGroup
-   *
-   * @return {@link V1StorageAPIGroupDSL}
-   */
-  V1StorageAPIGroupDSL v1();
-
-  /**
-   * DSL entrypoint for resources in storage.k8s.io/v1beta1 apiGroup
-   *
-   * @return {@link V1beta1StorageAPIGroupDSL}
-   */
-  V1beta1StorageAPIGroupDSL v1beta1();
 }

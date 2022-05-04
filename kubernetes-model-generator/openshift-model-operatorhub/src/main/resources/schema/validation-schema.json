@@ -3296,6 +3296,9 @@
         "maxSkew": {
           "type": "integer"
         },
+        "minDomains": {
+          "type": "integer"
+        },
         "topologyKey": {
           "type": "string"
         },
@@ -7169,12 +7172,12 @@
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
         },
-        "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
-        },
         "message": {
           "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "reason": {
           "type": "string"
@@ -11019,6 +11022,9 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
           "type": "integer"
         },
         "topologyKey": {

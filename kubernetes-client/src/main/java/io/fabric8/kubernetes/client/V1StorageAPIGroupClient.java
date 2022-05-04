@@ -19,24 +19,26 @@ import io.fabric8.kubernetes.api.model.storage.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.CSIDriverList;
 import io.fabric8.kubernetes.api.model.storage.CSINode;
 import io.fabric8.kubernetes.api.model.storage.CSINodeList;
+import io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity;
+import io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
-import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
-import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1StorageAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1beta1StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class StorageAPIGroupClient extends ClientAdapter<StorageAPIGroupClient> implements StorageAPIGroupDSL {
+public class V1StorageAPIGroupClient extends ClientAdapter<V1StorageAPIGroupClient> implements V1StorageAPIGroupDSL {
+  @Override
+  public V1StorageAPIGroupClient newInstance() {
+    return new V1StorageAPIGroupClient();
+  }
 
   @Override
-  public MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses() {
+  public NonNamespaceOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses() {
     return resources(StorageClass.class, StorageClassList.class);
   }
 
@@ -58,20 +60,5 @@ public class StorageAPIGroupClient extends ClientAdapter<StorageAPIGroupClient> 
   @Override
   public NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments() {
     return resources(VolumeAttachment.class, VolumeAttachmentList.class);
-  }
-
-  @Override
-  public V1StorageAPIGroupDSL v1() {
-    return adapt(V1StorageAPIGroupClient.class);
-  }
-
-  @Override
-  public V1beta1StorageAPIGroupDSL v1beta1() {
-    return adapt(V1beta1StorageAPIGroupClient.class);
-  }
-
-  @Override
-  public StorageAPIGroupClient newInstance() {
-    return new StorageAPIGroupClient();
   }
 }

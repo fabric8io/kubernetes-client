@@ -39,11 +39,11 @@ public class StorageClassExamples {
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       final String storageClassName = UUID.randomUUID().toString();
       logger.info("List of existent storage classes:");
-      client.storage().storageClasses().list().getItems()
+      client.storage().v1().storageClasses().list().getItems()
           .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Creating new Storage class");
-      final StorageClass storageClass = client.storage().storageClasses().create(
+      final StorageClass storageClass = client.storage().v1().storageClasses().create(
           new StorageClassBuilder()
               .withNewMetadata().withName(storageClassName).endMetadata()
               .addToParameters("resturl", "http://localhost:8080")
@@ -56,11 +56,11 @@ public class StorageClassExamples {
       logger.info("Newly created storage class details:\n{}", storageClass);
 
       logger.info("Updated list of existent storage classes:");
-      client.storage().storageClasses().list().getItems()
+      client.storage().v1().storageClasses().list().getItems()
           .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Updating {} storage clas to add new label", storageClassName);
-      final StorageClass updatedStorageClass = client.storage().storageClasses().withName(storageClassName).edit(
+      final StorageClass updatedStorageClass = client.storage().v1().storageClasses().withName(storageClassName).edit(
           s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
       logger.info("Updated storage class details:\n{}", updatedStorageClass);
 
