@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.MalformedURLException;
@@ -145,14 +146,20 @@ public abstract class BaseClient implements Client {
 
   @Override
   public <R extends KubernetesResource> boolean supports(Class<R> type) {
-    String typeApiVersion = HasMetadata.getApiVersion(type);
-
+    final String typeApiVersion = HasMetadata.getApiVersion(type);
     if (matchingGroupPredicate != null) {
       return matchingGroupPredicate.test(typeApiVersion);
     }
 
-    String kind = HasMetadata.getKind(type);
-    return handlers.getResourceDefinitionContext(typeApiVersion, kind, this) != null;
+    final String typeKind = HasMetadata.getKind(type);
+    if (Utils.isNullOrEmpty(typeApiVersion) || Utils.isNullOrEmpty(typeKind)) {
+      return false;
+    }
+    return getApiResources(ApiVersionUtil.joinApiGroupAndVersion(
+      HasMetadata.getGroup(type), HasMetadata.getVersion(type)
+    )).getResources()
+      .stream()
+      .anyMatch(r -> typeKind.equals(r.getKind()));
   }
 
   @Override
