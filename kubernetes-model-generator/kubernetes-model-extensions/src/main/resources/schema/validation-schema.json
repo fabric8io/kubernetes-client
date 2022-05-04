@@ -85,6 +85,36 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_CreateOptions": {
       "type": "object",
       "properties": {
@@ -3304,6 +3334,9 @@
         "maxSkew": {
           "type": "integer"
         },
+        "minDomains": {
+          "type": "integer"
+        },
         "topologyKey": {
           "type": "string"
         },
@@ -4398,6 +4431,10 @@
         "spec": {
           "$ref": "#/definitions/kubernetes_extensions_NetworkPolicySpec",
           "existingJavaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_extensions_NetworkPolicyStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicyStatus"
         }
       },
       "additionalProperties": true,
@@ -4566,6 +4603,24 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_extensions_NetworkPolicyStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicyStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -5080,6 +5135,31 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
         "volumeID": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "condition": {
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
           "type": "string"
         }
       },
@@ -6824,6 +6904,10 @@
         "spec": {
           "$ref": "#/definitions/kubernetes_extensions_NetworkPolicySpec",
           "existingJavaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_extensions_NetworkPolicyStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicyStatus"
         }
       },
       "additionalProperties": true
@@ -6955,6 +7039,19 @@
           "javaOmitEmpty": true,
           "items": {
             "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "networkpolicystatus": {
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
           }
         }
       },
@@ -8399,6 +8496,9 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
           "type": "integer"
         },
         "topologyKey": {

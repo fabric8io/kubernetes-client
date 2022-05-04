@@ -1478,6 +1478,10 @@
     "kubernetes_apps_RollingUpdateStatefulSetStrategy": {
       "type": "object",
       "properties": {
+        "maxUnavailable": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
         "partition": {
           "type": "integer"
         }
@@ -7093,6 +7097,9 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
           "type": "integer"
         },
         "topologyKey": {

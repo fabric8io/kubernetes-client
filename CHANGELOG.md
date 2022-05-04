@@ -25,6 +25,7 @@ And Store.getKey can be used rather than directly referencing static Cache funct
 * Fix #3813: Handle exit code status messages with pod uploads
 * Fix #3947: Point CamelK Extension model to latest released version v1.8.2
 * Update Tekton Pipeline Model to v0.35.0
+* Fix #4031: Update Kubernetes Model to v1.24.0
 
 
 #### New Features

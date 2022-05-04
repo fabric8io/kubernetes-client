@@ -2520,6 +2520,9 @@
         "maxSkew": {
           "type": "integer"
         },
+        "minDomains": {
+          "type": "integer"
+        },
         "topologyKey": {
           "type": "string"
         },
@@ -11511,6 +11514,9 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
           "type": "integer"
         },
         "topologyKey": {

@@ -21,8 +21,6 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
-import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
-import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -67,6 +65,8 @@ import lombok.experimental.Accessors;
     "V1CSIDriverList",
     "V1CSINode",
     "V1CSINodeList",
+    "V1CSIStorageCapacity",
+    "V1CSIStorageCapacityList",
     "VolumeAttachment",
     "VolumeAttachmentList"
 })
@@ -105,9 +105,9 @@ public class KubeSchema {
     @JsonProperty("CSINodeList")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList;
     @JsonProperty("CSIStorageCapacity")
-    private CSIStorageCapacity cSIStorageCapacity;
+    private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity;
     @JsonProperty("CSIStorageCapacityList")
-    private CSIStorageCapacityList cSIStorageCapacityList;
+    private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList;
     @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
     @JsonProperty("DeleteOptions")
@@ -150,6 +150,10 @@ public class KubeSchema {
     private io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode;
     @JsonProperty("V1CSINodeList")
     private io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList;
+    @JsonProperty("V1CSIStorageCapacity")
+    private io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity;
+    @JsonProperty("V1CSIStorageCapacityList")
+    private io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList;
     @JsonProperty("VolumeAttachment")
     private VolumeAttachment volumeAttachment;
     @JsonProperty("VolumeAttachmentList")
@@ -169,6 +173,7 @@ public class KubeSchema {
      * @param listOptions
      * @param aPIGroupList
      * @param v1CSINodeList
+     * @param v1CSIStorageCapacityList
      * @param baseKubernetesList
      * @param updateOptions
      * @param cSIDriverList
@@ -179,6 +184,7 @@ public class KubeSchema {
      * @param storageClass
      * @param v1CSINode
      * @param volumeAttachmentList
+     * @param v1CSIStorageCapacity
      * @param rootPaths
      * @param info
      * @param cSIDriver
@@ -199,7 +205,7 @@ public class KubeSchema {
      * @param time
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, CSIStorageCapacity cSIStorageCapacity, CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -231,6 +237,8 @@ public class KubeSchema {
         this.v1CSIDriverList = v1CSIDriverList;
         this.v1CSINode = v1CSINode;
         this.v1CSINodeList = v1CSINodeList;
+        this.v1CSIStorageCapacity = v1CSIStorageCapacity;
+        this.v1CSIStorageCapacityList = v1CSIStorageCapacityList;
         this.volumeAttachment = volumeAttachment;
         this.volumeAttachmentList = volumeAttachmentList;
     }
@@ -306,22 +314,22 @@ public class KubeSchema {
     }
 
     @JsonProperty("CSIStorageCapacity")
-    public CSIStorageCapacity getCSIStorageCapacity() {
+    public io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity getCSIStorageCapacity() {
         return cSIStorageCapacity;
     }
 
     @JsonProperty("CSIStorageCapacity")
-    public void setCSIStorageCapacity(CSIStorageCapacity cSIStorageCapacity) {
+    public void setCSIStorageCapacity(io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity) {
         this.cSIStorageCapacity = cSIStorageCapacity;
     }
 
     @JsonProperty("CSIStorageCapacityList")
-    public CSIStorageCapacityList getCSIStorageCapacityList() {
+    public io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList getCSIStorageCapacityList() {
         return cSIStorageCapacityList;
     }
 
     @JsonProperty("CSIStorageCapacityList")
-    public void setCSIStorageCapacityList(CSIStorageCapacityList cSIStorageCapacityList) {
+    public void setCSIStorageCapacityList(io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList) {
         this.cSIStorageCapacityList = cSIStorageCapacityList;
     }
 
@@ -533,6 +541,26 @@ public class KubeSchema {
     @JsonProperty("V1CSINodeList")
     public void setV1CSINodeList(io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList) {
         this.v1CSINodeList = v1CSINodeList;
+    }
+
+    @JsonProperty("V1CSIStorageCapacity")
+    public io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity getV1CSIStorageCapacity() {
+        return v1CSIStorageCapacity;
+    }
+
+    @JsonProperty("V1CSIStorageCapacity")
+    public void setV1CSIStorageCapacity(io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity) {
+        this.v1CSIStorageCapacity = v1CSIStorageCapacity;
+    }
+
+    @JsonProperty("V1CSIStorageCapacityList")
+    public io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList getV1CSIStorageCapacityList() {
+        return v1CSIStorageCapacityList;
+    }
+
+    @JsonProperty("V1CSIStorageCapacityList")
+    public void setV1CSIStorageCapacityList(io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList) {
+        this.v1CSIStorageCapacityList = v1CSIStorageCapacityList;
     }
 
     @JsonProperty("VolumeAttachment")

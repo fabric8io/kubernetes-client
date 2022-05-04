@@ -188,6 +188,8 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     this.getAdapters().registerClient(V1SchedulingAPIGroupDSL.class, new V1SchedulingAPIGroupClient());
     this.getAdapters().registerClient(V1beta1SchedulingAPIGroupDSL.class, new V1beta1SchedulingAPIGroupClient());
     this.getAdapters().registerClient(StorageAPIGroupDSL.class, new StorageAPIGroupClient());
+    this.getAdapters().registerClient(V1StorageAPIGroupClient.class, new V1StorageAPIGroupClient());
+    this.getAdapters().registerClient(V1beta1StorageAPIGroupClient.class, new V1beta1StorageAPIGroupClient());
     this.getAdapters().registerClient(V1APIGroupDSL.class, new V1APIGroupClient());
     this.getAdapters().registerClient(V1ApiextensionAPIGroupDSL.class, new V1ApiextensionsAPIGroupClient());
     this.getAdapters().registerClient(V1beta1ApiextensionAPIGroupDSL.class, new V1beta1ApiextensionsAPIGroupClient());

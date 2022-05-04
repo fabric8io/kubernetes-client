@@ -2372,15 +2372,26 @@
     },
     "machinepool": {
       "properties": {
-        "amiID": {
-          "type": "string"
+        "additionalNetworkIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
-        "iamRole": {
-          "type": "string"
+        "additionalSecurityGroupIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "rootVolume": {
-          "$ref": "#/definitions/os_installer_aws_v1_EC2RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2RootVolume"
+          "$ref": "#/definitions/os_installer_openstack_v1_RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.RootVolume"
+        },
+        "serverGroupPolicy": {
+          "type": "string"
         },
         "type": {
           "type": "string"

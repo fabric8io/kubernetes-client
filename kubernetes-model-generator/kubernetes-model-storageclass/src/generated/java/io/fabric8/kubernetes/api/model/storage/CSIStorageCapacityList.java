@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.extensions;
+package io.fabric8.kubernetes.api.model.storage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -11,11 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -24,8 +28,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
@@ -37,8 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -48,7 +49,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -58,12 +59,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1beta1")
-@Group("extensions")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "extensions.properties", gather = true)
-})
-public class NetworkPolicy implements HasMetadata, Namespaced
+@Version("v1")
+@Group("storage.k8s.io")
+public class CSIStorageCapacityList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity>
 {
 
     /**
@@ -72,20 +70,18 @@ public class NetworkPolicy implements HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "extensions/v1beta1";
+    private String apiVersion = "storage.k8s.io/v1";
+    @JsonProperty("items")
+    private List<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity> items = new ArrayList<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity>();
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "NetworkPolicy";
+    private String kind = "CSIStorageCapacityList";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
-    @JsonProperty("spec")
-    private NetworkPolicySpec spec;
-    @JsonProperty("status")
-    private NetworkPolicyStatus status;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -93,7 +89,7 @@ public class NetworkPolicy implements HasMetadata, Namespaced
      * No args constructor for use in serialization
      * 
      */
-    public NetworkPolicy() {
+    public CSIStorageCapacityList() {
     }
 
     /**
@@ -101,16 +97,14 @@ public class NetworkPolicy implements HasMetadata, Namespaced
      * @param metadata
      * @param apiVersion
      * @param kind
-     * @param spec
-     * @param status
+     * @param items
      */
-    public NetworkPolicy(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, NetworkPolicySpec spec, NetworkPolicyStatus status) {
+    public CSIStorageCapacityList(String apiVersion, List<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
     }
 
     /**
@@ -131,6 +125,16 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("items")
+    public List<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity> getItems() {
+        return items;
+    }
+
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity> items) {
+        this.items = items;
     }
 
     /**
@@ -154,33 +158,13 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
-    }
-
-    @JsonProperty("spec")
-    public NetworkPolicySpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(NetworkPolicySpec spec) {
-        this.spec = spec;
-    }
-
-    @JsonProperty("status")
-    public NetworkPolicyStatus getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(NetworkPolicyStatus status) {
-        this.status = status;
     }
 
     @JsonAnyGetter

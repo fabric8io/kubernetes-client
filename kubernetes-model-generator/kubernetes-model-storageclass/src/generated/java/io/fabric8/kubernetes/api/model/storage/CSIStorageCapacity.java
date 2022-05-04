@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.extensions;
+package io.fabric8.kubernetes.api.model.storage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +13,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -37,8 +37,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "capacity",
+    "maximumVolumeSize",
+    "nodeTopology",
+    "storageClassName"
 })
 @ToString
 @EqualsAndHashCode
@@ -49,7 +51,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -58,12 +60,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1beta1")
-@Group("extensions")
+@Version("v1")
+@Group("storage.k8s.io")
 @TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "extensions.properties", gather = true)
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "storage.properties", gather = true)
 })
-public class NetworkPolicy implements HasMetadata, Namespaced
+public class CSIStorageCapacity implements HasMetadata, Namespaced
 {
 
     /**
@@ -72,20 +74,24 @@ public class NetworkPolicy implements HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "extensions/v1beta1";
+    private String apiVersion = "storage.k8s.io/v1";
+    @JsonProperty("capacity")
+    private Quantity capacity;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "NetworkPolicy";
+    private String kind = "CSIStorageCapacity";
+    @JsonProperty("maximumVolumeSize")
+    private Quantity maximumVolumeSize;
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
-    @JsonProperty("spec")
-    private NetworkPolicySpec spec;
-    @JsonProperty("status")
-    private NetworkPolicyStatus status;
+    @JsonProperty("nodeTopology")
+    private io.fabric8.kubernetes.api.model.LabelSelector nodeTopology;
+    @JsonProperty("storageClassName")
+    private String storageClassName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -93,24 +99,28 @@ public class NetworkPolicy implements HasMetadata, Namespaced
      * No args constructor for use in serialization
      * 
      */
-    public NetworkPolicy() {
+    public CSIStorageCapacity() {
     }
 
     /**
      * 
+     * @param maximumVolumeSize
      * @param metadata
      * @param apiVersion
+     * @param nodeTopology
      * @param kind
-     * @param spec
-     * @param status
+     * @param storageClassName
+     * @param capacity
      */
-    public NetworkPolicy(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, NetworkPolicySpec spec, NetworkPolicyStatus status) {
+    public CSIStorageCapacity(String apiVersion, Quantity capacity, String kind, Quantity maximumVolumeSize, io.fabric8.kubernetes.api.model.ObjectMeta metadata, io.fabric8.kubernetes.api.model.LabelSelector nodeTopology, String storageClassName) {
         super();
         this.apiVersion = apiVersion;
+        this.capacity = capacity;
         this.kind = kind;
+        this.maximumVolumeSize = maximumVolumeSize;
         this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
+        this.nodeTopology = nodeTopology;
+        this.storageClassName = storageClassName;
     }
 
     /**
@@ -133,6 +143,16 @@ public class NetworkPolicy implements HasMetadata, Namespaced
         this.apiVersion = apiVersion;
     }
 
+    @JsonProperty("capacity")
+    public Quantity getCapacity() {
+        return capacity;
+    }
+
+    @JsonProperty("capacity")
+    public void setCapacity(Quantity capacity) {
+        this.capacity = capacity;
+    }
+
     /**
      * 
      * (Required)
@@ -153,6 +173,16 @@ public class NetworkPolicy implements HasMetadata, Namespaced
         this.kind = kind;
     }
 
+    @JsonProperty("maximumVolumeSize")
+    public Quantity getMaximumVolumeSize() {
+        return maximumVolumeSize;
+    }
+
+    @JsonProperty("maximumVolumeSize")
+    public void setMaximumVolumeSize(Quantity maximumVolumeSize) {
+        this.maximumVolumeSize = maximumVolumeSize;
+    }
+
     @JsonProperty("metadata")
     public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
         return metadata;
@@ -163,24 +193,24 @@ public class NetworkPolicy implements HasMetadata, Namespaced
         this.metadata = metadata;
     }
 
-    @JsonProperty("spec")
-    public NetworkPolicySpec getSpec() {
-        return spec;
+    @JsonProperty("nodeTopology")
+    public io.fabric8.kubernetes.api.model.LabelSelector getNodeTopology() {
+        return nodeTopology;
     }
 
-    @JsonProperty("spec")
-    public void setSpec(NetworkPolicySpec spec) {
-        this.spec = spec;
+    @JsonProperty("nodeTopology")
+    public void setNodeTopology(io.fabric8.kubernetes.api.model.LabelSelector nodeTopology) {
+        this.nodeTopology = nodeTopology;
     }
 
-    @JsonProperty("status")
-    public NetworkPolicyStatus getStatus() {
-        return status;
+    @JsonProperty("storageClassName")
+    public String getStorageClassName() {
+        return storageClassName;
     }
 
-    @JsonProperty("status")
-    public void setStatus(NetworkPolicyStatus status) {
-        this.status = status;
+    @JsonProperty("storageClassName")
+    public void setStorageClassName(String storageClassName) {
+        this.storageClassName = storageClassName;
     }
 
     @JsonAnyGetter

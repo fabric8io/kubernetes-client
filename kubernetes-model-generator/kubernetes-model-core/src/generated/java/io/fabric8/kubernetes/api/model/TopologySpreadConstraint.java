@@ -24,6 +24,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "labelSelector",
     "maxSkew",
+    "minDomains",
     "topologyKey",
     "whenUnsatisfiable"
 })
@@ -42,6 +43,8 @@ public class TopologySpreadConstraint implements KubernetesResource
     private LabelSelector labelSelector;
     @JsonProperty("maxSkew")
     private Integer maxSkew;
+    @JsonProperty("minDomains")
+    private Integer minDomains;
     @JsonProperty("topologyKey")
     private String topologyKey;
     @JsonProperty("whenUnsatisfiable")
@@ -61,12 +64,14 @@ public class TopologySpreadConstraint implements KubernetesResource
      * @param whenUnsatisfiable
      * @param maxSkew
      * @param labelSelector
+     * @param minDomains
      * @param topologyKey
      */
-    public TopologySpreadConstraint(LabelSelector labelSelector, Integer maxSkew, String topologyKey, String whenUnsatisfiable) {
+    public TopologySpreadConstraint(LabelSelector labelSelector, Integer maxSkew, Integer minDomains, String topologyKey, String whenUnsatisfiable) {
         super();
         this.labelSelector = labelSelector;
         this.maxSkew = maxSkew;
+        this.minDomains = minDomains;
         this.topologyKey = topologyKey;
         this.whenUnsatisfiable = whenUnsatisfiable;
     }
@@ -89,6 +94,16 @@ public class TopologySpreadConstraint implements KubernetesResource
     @JsonProperty("maxSkew")
     public void setMaxSkew(Integer maxSkew) {
         this.maxSkew = maxSkew;
+    }
+
+    @JsonProperty("minDomains")
+    public Integer getMinDomains() {
+        return minDomains;
+    }
+
+    @JsonProperty("minDomains")
+    public void setMinDomains(Integer minDomains) {
+        this.minDomains = minDomains;
     }
 
     @JsonProperty("topologyKey")

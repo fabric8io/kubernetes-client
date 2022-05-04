@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.apps;
+package io.fabric8.kubernetes.api.model.networking.v1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -32,8 +36,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "maxUnavailable",
-    "partition"
+    "conditions"
 })
 @ToString
 @EqualsAndHashCode
@@ -48,18 +51,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class RollingUpdateStatefulSetStrategy implements KubernetesResource
+public class NetworkPolicyStatus implements KubernetesResource
 {
 
-    @JsonProperty("maxUnavailable")
-    private io.fabric8.kubernetes.api.model.IntOrString maxUnavailable;
-    @JsonProperty("partition")
-    private Integer partition;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<Condition>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -67,38 +69,26 @@ public class RollingUpdateStatefulSetStrategy implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public RollingUpdateStatefulSetStrategy() {
+    public NetworkPolicyStatus() {
     }
 
     /**
      * 
-     * @param partition
-     * @param maxUnavailable
+     * @param conditions
      */
-    public RollingUpdateStatefulSetStrategy(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, Integer partition) {
+    public NetworkPolicyStatus(List<Condition> conditions) {
         super();
-        this.maxUnavailable = maxUnavailable;
-        this.partition = partition;
+        this.conditions = conditions;
     }
 
-    @JsonProperty("maxUnavailable")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxUnavailable() {
-        return maxUnavailable;
+    @JsonProperty("conditions")
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("maxUnavailable")
-    public void setMaxUnavailable(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable) {
-        this.maxUnavailable = maxUnavailable;
-    }
-
-    @JsonProperty("partition")
-    public Integer getPartition() {
-        return partition;
-    }
-
-    @JsonProperty("partition")
-    public void setPartition(Integer partition) {
-        this.partition = partition;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonAnyGetter

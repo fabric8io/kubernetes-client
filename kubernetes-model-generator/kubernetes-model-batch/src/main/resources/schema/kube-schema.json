@@ -914,6 +914,9 @@
         },
         "suspend": {
           "type": "boolean"
+        },
+        "timeZone": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1263,6 +1266,9 @@
         },
         "suspend": {
           "type": "boolean"
+        },
+        "timeZone": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -3761,6 +3767,9 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
           "type": "integer"
         },
         "topologyKey": {
