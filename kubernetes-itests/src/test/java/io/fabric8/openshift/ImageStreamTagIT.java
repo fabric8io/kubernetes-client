@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
-import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.api.model.ImageStreamTagList;

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.jupiter.api;
+package io.fabric8.junit.jupiter.api;
 
-import io.fabric8.jupiter.RequireK8sVersionAtLeastCondition;
+import io.fabric8.junit.jupiter.RequireK8sSupportCondition;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
  * Annotation to mark a test class as requiring support for a specific Kubernetes resource type.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@ExtendWith(RequireK8sVersionAtLeastCondition.class)
+@ExtendWith(RequireK8sSupportCondition.class)
 public @interface RequireK8sSupport {
   Class<? extends HasMetadata> value();
 }

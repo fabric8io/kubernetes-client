@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.jupiter;
+package io.fabric8.junit.jupiter;
 
-import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;

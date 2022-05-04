@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.jupiter.api;
+package io.fabric8.junit.jupiter.api;
 
-import io.fabric8.jupiter.RequireK8sVersionAtLeastCondition;
+import io.fabric8.junit.jupiter.RequireK8sVersionAtLeastCondition;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;

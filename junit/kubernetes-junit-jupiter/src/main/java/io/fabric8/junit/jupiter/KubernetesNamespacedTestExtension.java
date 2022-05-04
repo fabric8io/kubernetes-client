@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.jupiter;
+package io.fabric8.junit.jupiter;
 
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -45,8 +45,8 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
     final KubernetesClient client = new KubernetesClientBuilder().build();
-    context.getStore(EXT_NAMESPACE).put(Namespace.class, initNamespace(client));
-    context.getStore(EXT_NAMESPACE).put(KubernetesClient.class,
+    getStore(context).put(Namespace.class, initNamespace(client));
+    getStore(context).put(KubernetesClient.class,
         client.adapt(NamespacedKubernetesClient.class).inNamespace(getNamespace(context).getMetadata().getName()));
     for (Field field : extractFields(context, KubernetesClient.class, f -> Modifier.isStatic(f.getModifiers()))) {
       setFieldValue(field, null, getClient(context).adapt((Class<Client>) field.getType()));
@@ -74,11 +74,15 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
   }
 
   static KubernetesClient getClient(ExtensionContext context) {
-    final KubernetesClient client = context.getStore(EXT_NAMESPACE).get(KubernetesClient.class, KubernetesClient.class);
+    final KubernetesClient client = getStore(context).get(KubernetesClient.class, KubernetesClient.class);
     if (client == null) {
       throw new IllegalStateException("No KubernetesClient found");
     }
     return client;
+  }
+
+  private static ExtensionContext.Store getStore(ExtensionContext context) {
+    return context.getRoot().getStore(EXT_NAMESPACE);
   }
 
   /**
@@ -113,7 +117,7 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
   }
 
   private static Namespace getNamespace(ExtensionContext context) {
-    final Namespace namespace = context.getStore(EXT_NAMESPACE).get(Namespace.class, Namespace.class);
+    final Namespace namespace = getStore(context).get(Namespace.class, Namespace.class);
     if (namespace == null) {
       throw new IllegalStateException("No Kubernetes Namespace found");
     }

@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift;
 
-import io.fabric8.jupiter.api.RequireK8sSupport;
+import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.client.OpenShiftClient;
