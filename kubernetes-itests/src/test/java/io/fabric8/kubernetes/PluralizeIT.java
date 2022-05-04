@@ -39,7 +39,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
 class PluralizeIT {
 
-
   @DisplayName("toPlural, should return argument's plural")
   @ParameterizedTest(name = "{index} {0}: ''{1}'' plural is ''{2}''")
   @MethodSource("toPluralInput")
@@ -68,7 +67,6 @@ class PluralizeIT {
             ar.getKind(),
             // So far singularName field is always blank, we fall back to lower-cased kind
             Utils.isNullOrEmpty(ar.getSingularName()) ? ar.getKind().toLowerCase(Locale.ROOT) : ar.getSingularName(),
-            ar.getName()
-        ));
+            ar.getName()));
   }
 }

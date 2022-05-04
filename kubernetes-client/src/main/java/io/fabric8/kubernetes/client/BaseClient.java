@@ -156,10 +156,9 @@ public abstract class BaseClient implements Client {
       return false;
     }
     return getApiResources(ApiVersionUtil.joinApiGroupAndVersion(
-      HasMetadata.getGroup(type), HasMetadata.getVersion(type)
-    )).getResources()
-      .stream()
-      .anyMatch(r -> typeKind.equals(r.getKind()));
+        HasMetadata.getGroup(type), HasMetadata.getVersion(type))).getResources()
+            .stream()
+            .anyMatch(r -> typeKind.equals(r.getKind()));
   }
 
   @Override

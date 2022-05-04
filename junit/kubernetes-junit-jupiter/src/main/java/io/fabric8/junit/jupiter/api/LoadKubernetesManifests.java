@@ -27,7 +27,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
 /**
  * Enables and configures the {@link LoadKubernetesManifestsExtension} extension.
  * <p>
@@ -37,7 +36,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@ExtendWith({KubernetesNamespacedTestExtension.class, LoadKubernetesManifestsExtension.class})
+@ExtendWith({ KubernetesNamespacedTestExtension.class, LoadKubernetesManifestsExtension.class })
 public @interface LoadKubernetesManifests {
 
   String[] value();

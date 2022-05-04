@@ -32,7 +32,7 @@ public class RequireK8sVersionAtLeastCondition implements ExecutionCondition {
   @Override
   public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
     final RequireK8sVersionAtLeast requireK8s = findAnnotation(context.getElement(), RequireK8sVersionAtLeast.class)
-      .orElse(null);
+        .orElse(null);
     if (requireK8s != null) {
       final int majorVersion = requireK8s.majorVersion();
       final int minorVersion = requireK8s.minorVersion();

@@ -60,15 +60,18 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
     EnableOpenShiftMockClient a = testClass.getAnnotation(EnableOpenShiftMockClient.class);
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     openShiftMockServer = a.crud()
-      ? new OpenShiftMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), a.https())
-      : new OpenShiftMockServer(a.https());
+        ? new OpenShiftMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses),
+            a.https())
+        : new OpenShiftMockServer(a.https());
     openShiftMockServer.init();
     openShiftClient = openShiftMockServer.createOpenShiftClient();
   }
 
   @Override
-  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
+  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field)
+      throws IllegalAccessException {
     setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, openShiftClient));
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, openShiftMockServer));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(),
+        (i, f) -> f.set(i, openShiftMockServer));
   }
 }

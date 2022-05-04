@@ -67,7 +67,7 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
   }
 
   @Override
-  public void afterAll(ExtensionContext context)  {
+  public void afterAll(ExtensionContext context) {
     final KubernetesClient client = getClient(context);
     client.resource(getNamespace(context)).withGracePeriod(0L).delete();
     client.close();
@@ -95,13 +95,13 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
    */
   private static Namespace initNamespace(KubernetesClient client) {
     final Namespace namespace = client
-      .resource(new NamespaceBuilder()
-        .withNewMetadata()
-        .withName(UUID.randomUUID().toString())
-        .addToLabels("app", "fabric8-kubernetes-client-test")
-        .endMetadata()
-        .build())
-      .create();
+        .resource(new NamespaceBuilder()
+            .withNewMetadata()
+            .withName(UUID.randomUUID().toString())
+            .addToLabels("app", "fabric8-kubernetes-client-test")
+            .endMetadata()
+            .build())
+        .create();
     final List<ObjectReference> secrets = client.serviceAccounts()
         .inNamespace(namespace.getMetadata().getName())
         .withName("default")
@@ -111,7 +111,7 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
         .getSecrets();
     for (ObjectReference secret : secrets) {
       client.secrets().inNamespace(namespace.getMetadata().getName()).withName(secret.getName())
-        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+          .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
     }
     return namespace;
   }

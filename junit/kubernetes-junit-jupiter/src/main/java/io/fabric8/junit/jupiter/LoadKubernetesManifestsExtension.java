@@ -23,13 +23,12 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import static io.fabric8.junit.jupiter.KubernetesNamespacedTestExtension.getClient;
 
-
 public class LoadKubernetesManifestsExtension implements BeforeAllCallback, AfterAllCallback {
 
   @Override
   public void beforeAll(ExtensionContext context) {
     final LoadKubernetesManifests annotation = context.getRequiredTestClass()
-      .getAnnotation(LoadKubernetesManifests.class);
+        .getAnnotation(LoadKubernetesManifests.class);
     final KubernetesClient kc = getClient(context);
     for (String resource : annotation.value()) {
       kc.load(context.getRequiredTestClass().getResourceAsStream(resource)).create();
@@ -39,12 +38,12 @@ public class LoadKubernetesManifestsExtension implements BeforeAllCallback, Afte
   @Override
   public void afterAll(ExtensionContext context) {
     final LoadKubernetesManifests annotation = context.getRequiredTestClass()
-      .getAnnotation(LoadKubernetesManifests.class);
+        .getAnnotation(LoadKubernetesManifests.class);
     if (annotation.deleteAfterTest()) {
       final KubernetesClient kc = getClient(context);
       for (String resource : annotation.value()) {
         kc.load(context.getRequiredTestClass().getResourceAsStream(resource))
-          .withGracePeriod(annotation.deleteGracePeriod()).delete();
+            .withGracePeriod(annotation.deleteGracePeriod()).delete();
       }
     }
 

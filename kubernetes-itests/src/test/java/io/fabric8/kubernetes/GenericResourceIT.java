@@ -60,8 +60,8 @@ class GenericResourceIT {
     GenericKubernetesResource result = resource.createOrReplace();
     assertNotNull(result);
 
-    MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> resources =
-        client.genericKubernetesResources("v1", "ConfigMap");
+    MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> resources = client
+        .genericKubernetesResources("v1", "ConfigMap");
     assertTrue(!resources.list().getItems().isEmpty());
   }
 
@@ -89,42 +89,43 @@ class GenericResourceIT {
     assertEquals("x", result.getMetadata().getNamespace());
 
     // ensure it can be loaded as a list
-    List<HasMetadata> created = client.load(new ByteArrayInputStream(Serialization.asYaml(itest).getBytes(StandardCharsets.UTF_8))).createOrReplace();
+    List<HasMetadata> created = client
+        .load(new ByteArrayInputStream(Serialization.asYaml(itest).getBytes(StandardCharsets.UTF_8))).createOrReplace();
     assertEquals(1, created.size());
   }
 
   public static CustomResourceDefinition createCRD() {
     return new CustomResourceDefinitionBuilder()
-      .withApiVersion("apiextensions.k8s.io/v1")
-      .withNewMetadata()
-      .withName("itests.examples.fabric8.io")
-      .endMetadata()
-      .withNewSpec()
-      .withGroup("examples.fabric8.io")
-      .addAllToVersions(Collections.singletonList(new CustomResourceDefinitionVersionBuilder()
-        .withName("v1")
-        .withServed(true)
-        .withStorage(true)
-        .withNewSchema()
-        .withNewOpenAPIV3Schema()
-        .withType("object")
-        .addToProperties("spec", new JSONSchemaPropsBuilder()
-          .withType("object")
-          .addToProperties("field", new JSONSchemaPropsBuilder()
-            .withType("string")
-            .build())
-          .build())
-        .endOpenAPIV3Schema()
-        .endSchema()
-        .build()))
-      .withScope("Namespaced")
-      .withNewNames()
-      .withPlural("itests")
-      .withSingular("itest")
-      .withKind("Itest")
-      .withShortNames("it")
-      .endNames()
-      .endSpec()
-      .build();
+        .withApiVersion("apiextensions.k8s.io/v1")
+        .withNewMetadata()
+        .withName("itests.examples.fabric8.io")
+        .endMetadata()
+        .withNewSpec()
+        .withGroup("examples.fabric8.io")
+        .addAllToVersions(Collections.singletonList(new CustomResourceDefinitionVersionBuilder()
+            .withName("v1")
+            .withServed(true)
+            .withStorage(true)
+            .withNewSchema()
+            .withNewOpenAPIV3Schema()
+            .withType("object")
+            .addToProperties("spec", new JSONSchemaPropsBuilder()
+                .withType("object")
+                .addToProperties("field", new JSONSchemaPropsBuilder()
+                    .withType("string")
+                    .build())
+                .build())
+            .endOpenAPIV3Schema()
+            .endSchema()
+            .build()))
+        .withScope("Namespaced")
+        .withNewNames()
+        .withPlural("itests")
+        .withSingular("itest")
+        .withKind("Itest")
+        .withShortNames("it")
+        .endNames()
+        .endSpec()
+        .build();
   }
 }

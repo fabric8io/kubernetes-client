@@ -44,7 +44,8 @@ class WatchEventsListener extends WebSocketListener {
   private final Logger logger;
   private final Consumer<WatchEventsListener> onOpenAction;
 
-  public WatchEventsListener(Context context, AttributeSet attributeSet, final Set<WatchEventsListener> watchEventListenerList, Logger logger, Consumer<WatchEventsListener> onOpenAction) {
+  public WatchEventsListener(Context context, AttributeSet attributeSet, final Set<WatchEventsListener> watchEventListenerList,
+      Logger logger, Consumer<WatchEventsListener> onOpenAction) {
     this.logger = logger;
     this.context = context;
     this.attributeSet = attributeSet;
@@ -55,6 +56,7 @@ class WatchEventsListener extends WebSocketListener {
   public boolean attributeMatches(AttributeSet set) {
     return set.matches(attributeSet);
   }
+
   @Override
   public void onOpen(WebSocket webSocket, Response response) {
     webSocketRef.set(webSocket);
@@ -68,7 +70,7 @@ class WatchEventsListener extends WebSocketListener {
 
   @Override
   public void onClosed(WebSocket webSocket, int code, String reason) {
-    if (webSocketRef.get() != null){
+    if (webSocketRef.get() != null) {
       webSocketRef.get().close(code, reason);
     }
     executor.shutdown();
@@ -94,9 +96,9 @@ class WatchEventsListener extends WebSocketListener {
     watchEventListenerList.remove(this);
   }
 
-
   public void sendWebSocketResponse(String object, Watcher.Action action) {
-    WebSocketMessage message = toWebSocketMessage(context, new WatchEvent(Serialization.unmarshal(object, KubernetesResource.class), action.name()));
+    WebSocketMessage message = toWebSocketMessage(context,
+        new WatchEvent(Serialization.unmarshal(object, KubernetesResource.class), action.name()));
     executor.schedule(() -> webSocketRef.get().send(message.getBody()), message.getDelay(), TimeUnit.SECONDS);
   }
 
@@ -105,7 +107,7 @@ class WatchEventsListener extends WebSocketListener {
   }
 
   private static WebSocketMessage toWebSocketMessage(Context context, Object content, Boolean toBeRemoved) {
-    return toWebSocketMessage(context,0L, content, toBeRemoved);
+    return toWebSocketMessage(context, 0L, content, toBeRemoved);
   }
 
   private static WebSocketMessage toWebSocketMessage(Context context, Long delay, Object content, Boolean toBeRemoved) {

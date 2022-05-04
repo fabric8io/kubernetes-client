@@ -41,11 +41,11 @@ class PodEvictionIT {
     // Given
     String podName = "podeviction-it-with-v1-policy-eviction";
     Eviction eviction = new EvictionBuilder()
-      .withNewMetadata()
-      .withNamespace(namespace.getMetadata().getName())
-      .withName(podName)
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withNamespace(namespace.getMetadata().getName())
+        .withName(podName)
+        .endMetadata()
+        .build();
 
     // When
     boolean evicted = client.pods().withName(podName).evict(eviction);
@@ -59,11 +59,11 @@ class PodEvictionIT {
     // Given
     String podName = "podit-evict-non-existent-pod";
     Eviction eviction = new EvictionBuilder()
-      .withNewMetadata()
-      .withNamespace(namespace.getMetadata().getName())
-      .withName(podName)
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withNamespace(namespace.getMetadata().getName())
+        .withName(podName)
+        .endMetadata()
+        .build();
     final PodResource podOps = client.pods().withName(podName);
 
     // When + Then

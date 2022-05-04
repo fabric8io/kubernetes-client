@@ -46,7 +46,7 @@ class PatchIT {
     // Then
     assertThat(patchedConfigMap).isNotNull();
     assertThat(patchedConfigMap.getMetadata().getLabels()).isNotNull()
-      .hasFieldOrPropertyWithValue("version", "v1");
+        .hasFieldOrPropertyWithValue("version", "v1");
   }
 
   @Test
@@ -57,7 +57,7 @@ class PatchIT {
 
     // When
     ConfigMap patchedConfigMap = client.configMaps().withName(name)
-      .patch(patchContext, "{\"metadata\":{\"annotations\":{\"foo\":null}}}");
+        .patch(patchContext, "{\"metadata\":{\"annotations\":{\"foo\":null}}}");
 
     // Then
     assertThat(patchedConfigMap).isNotNull();
@@ -72,12 +72,13 @@ class PatchIT {
 
     // When
     ReplicaSet patchedReplicaSet = client.apps().replicaSets().withName(name)
-      .patch(patchContext
-        , "[{\"op\": \"replace\", \"path\":\"/spec/template/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
+        .patch(patchContext,
+            "[{\"op\": \"replace\", \"path\":\"/spec/template/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
 
     // Then
     assertThat(patchedReplicaSet).isNotNull();
-    assertThat(patchedReplicaSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage()).isEqualTo("foo/gb-frontend:v4");
+    assertThat(patchedReplicaSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage())
+        .isEqualTo("foo/gb-frontend:v4");
   }
 
   @Test
@@ -87,13 +88,13 @@ class PatchIT {
 
     // When
     ConfigMap patchedConfigMap = client.configMaps().withName(name)
-      .patch("data:\n  version: v1\n  status: patched");
+        .patch("data:\n  version: v1\n  status: patched");
 
     // Then
     assertThat(patchedConfigMap).isNotNull();
     assertThat(patchedConfigMap.getData())
-      .hasFieldOrPropertyWithValue("version", "v1")
-      .hasFieldOrPropertyWithValue("status", "patched");
+        .hasFieldOrPropertyWithValue("version", "v1")
+        .hasFieldOrPropertyWithValue("status", "patched");
   }
 
   @Test
@@ -131,7 +132,8 @@ class PatchIT {
     baseCopy2.setData(Collections.singletonMap("conflicting", "second"));
 
     // optimistically locking should work because the resource version is set
-    assertThrows(KubernetesClientException.class, () -> client.configMaps().withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2));
+    assertThrows(KubernetesClientException.class, () -> client.configMaps().withName(name)
+        .patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2));
 
     baseCopy2.getMetadata().setResourceVersion(null);
     // will succeed when not locked

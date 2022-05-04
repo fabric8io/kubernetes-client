@@ -46,14 +46,14 @@ class BuildConfigWatchIT {
   @Test
   void instantiateAndWatchBuild() throws Exception {
     // Given
-    client.imageStreams().withName("fabric8-build-config-watch").waitUntilCondition(is ->
-        is != null && is.getStatus() != null &&
-          is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.33.7")),
-      30, TimeUnit.SECONDS);
+    client.imageStreams().withName("fabric8-build-config-watch")
+        .waitUntilCondition(is -> is != null && is.getStatus() != null &&
+            is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.33.7")),
+            30, TimeUnit.SECONDS);
     client.buildConfigs().withName("fabric8-build-config-watch")
-      .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     BuildRequest buildRequest = new BuildRequestBuilder().withNewMetadata()
-      .withName("fabric8-build-config-watch").endMetadata().build();
+        .withName("fabric8-build-config-watch").endMetadata().build();
     CountDownLatch buildEventReceivedLatch = new CountDownLatch(1);
 
     // When
@@ -85,6 +85,7 @@ class BuildConfigWatchIT {
     }
 
     @Override
-    public void onClose(WatcherException cause) { }
+    public void onClose(WatcherException cause) {
+    }
   }
 }

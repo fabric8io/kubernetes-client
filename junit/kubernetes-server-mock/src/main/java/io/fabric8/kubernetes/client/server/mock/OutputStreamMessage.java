@@ -22,18 +22,18 @@ import java.nio.charset.StandardCharsets;
 
 public class OutputStreamMessage extends WebSocketMessage {
 
-    private static final byte OUT_STREAM_ID = 1;
+  private static final byte OUT_STREAM_ID = 1;
 
-    public OutputStreamMessage(String body) {
-      super(0L, getBodyBytes(OUT_STREAM_ID, body), true, true);
-    }
+  public OutputStreamMessage(String body) {
+    super(0L, getBodyBytes(OUT_STREAM_ID, body), true, true);
+  }
 
-    private static byte[] getBodyBytes(byte prefix, String body) {
-      byte[] original = body.getBytes(StandardCharsets.UTF_8);
-      byte[] prefixed = new byte[original.length + 1];
-      prefixed[0] = prefix;
-      System.arraycopy(original, 0, prefixed, 1, original.length);
-      return prefixed;
-    }
+  private static byte[] getBodyBytes(byte prefix, String body) {
+    byte[] original = body.getBytes(StandardCharsets.UTF_8);
+    byte[] prefixed = new byte[original.length + 1];
+    prefixed[0] = prefix;
+    System.arraycopy(original, 0, prefixed, 1, original.length);
+    return prefixed;
+  }
 
 }

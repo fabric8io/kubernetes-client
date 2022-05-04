@@ -38,10 +38,10 @@ class SubjectAccessReviewIT {
   void testCreate() {
     // Given
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
-      .withResource("Pod")
-      .withVerb("get")
-      .withNamespace(namespace.getMetadata().getName())
-      .build();
+        .withResource("Pod")
+        .withVerb("get")
+        .withNamespace(namespace.getMetadata().getName())
+        .build();
 
     // When
     SubjectAccessReviewResponse response = client.subjectAccessReviews().create(sar);

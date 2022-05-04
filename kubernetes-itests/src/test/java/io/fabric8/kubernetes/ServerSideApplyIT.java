@@ -38,16 +38,16 @@ class ServerSideApplyIT {
   @Test
   void testServerSideApply() {
     Service service = new ServiceBuilder()
-      .withNewMetadata().withName(PatchIT.class.getSimpleName().toLowerCase() + "-svc").endMetadata()
-      .withNewSpec()
-      .addToSelector("app", "testapp")
-      .addNewPort()
-      .withProtocol("TCP")
-      .withPort(80)
-      .withTargetPort(new IntOrString(9376))
-      .endPort()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(PatchIT.class.getSimpleName().toLowerCase() + "-svc").endMetadata()
+        .withNewSpec()
+        .addToSelector("app", "testapp")
+        .addNewPort()
+        .withProtocol("TCP")
+        .withPort(80)
+        .withTargetPort(new IntOrString(9376))
+        .endPort()
+        .endSpec()
+        .build();
 
     Resource<Service> resource = client.services().resource(service);
     resource.delete();

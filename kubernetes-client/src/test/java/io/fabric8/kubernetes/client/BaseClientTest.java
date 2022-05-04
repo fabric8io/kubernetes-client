@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;

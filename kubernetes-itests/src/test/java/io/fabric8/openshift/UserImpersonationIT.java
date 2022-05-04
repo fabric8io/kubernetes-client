@@ -60,52 +60,47 @@ class UserImpersonationIT {
   private ClusterRole impersonatorRole;
   private ClusterRoleBinding impersonatorRoleBinding;
 
-
   @BeforeEach
   public void init() {
     // Create impersonator cluster role
     impersonatorRole = new ClusterRoleBuilder()
-      .withNewMetadata()
-      .withName("impersonator")
-      .endMetadata()
-      .addToRules(new PolicyRuleBuilder()
-        .addToApiGroups("")
-        .addToResources("users", "groups", "userextras", "serviceaccounts")
-        .addToVerbs("impersonate")
-        .build()
-      )
-      .build();
+        .withNewMetadata()
+        .withName("impersonator")
+        .endMetadata()
+        .addToRules(new PolicyRuleBuilder()
+            .addToApiGroups("")
+            .addToResources("users", "groups", "userextras", "serviceaccounts")
+            .addToVerbs("impersonate")
+            .build())
+        .build();
     client.rbac().clusterRoles().createOrReplace(impersonatorRole);
 
     // Create Service Account
     serviceAccount1 = new ServiceAccountBuilder()
-      .withNewMetadata().withName(SERVICE_ACCOUNT).endMetadata()
-      .build();
+        .withNewMetadata().withName(SERVICE_ACCOUNT).endMetadata()
+        .build();
     client.serviceAccounts().create(serviceAccount1);
 
     // Bind Impersonator Role to current user
     impersonatorRoleBinding = new ClusterRoleBindingBuilder()
-      .withNewMetadata()
-      .withName("impersonate-role")
-      .endMetadata()
-      .addToSubjects(new SubjectBuilder()
-        .withApiGroup("rbac.authorization.k8s.io")
-        .withKind("User")
-        .withName(client.currentUser().getMetadata().getName())
-        .withNamespace(namespace.getMetadata().getName())
-        .build()
-      )
-      .withRoleRef(new RoleRefBuilder()
-        .withApiGroup("rbac.authorization.k8s.io")
-        .withKind("ClusterRole")
-        .withName("impersonator")
-        .build()
-      )
-      .build();
+        .withNewMetadata()
+        .withName("impersonate-role")
+        .endMetadata()
+        .addToSubjects(new SubjectBuilder()
+            .withApiGroup("rbac.authorization.k8s.io")
+            .withKind("User")
+            .withName(client.currentUser().getMetadata().getName())
+            .withNamespace(namespace.getMetadata().getName())
+            .build())
+        .withRoleRef(new RoleRefBuilder()
+            .withApiGroup("rbac.authorization.k8s.io")
+            .withKind("ClusterRole")
+            .withName("impersonator")
+            .build())
+        .build();
 
     client.rbac().clusterRoleBindings().createOrReplace(impersonatorRoleBinding);
   }
-
 
   @AfterEach
   public void cleanup() {
@@ -117,12 +112,12 @@ class UserImpersonationIT {
     // DeleteEntity Cluster Role
     client.rbac().clusterRoles().delete(impersonatorRole);
     client.rbac().clusterRoles().withName("impersonator")
-      .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
 
     // DeleteEntity Cluster Role binding
     client.rbac().clusterRoleBindings().delete(impersonatorRoleBinding);
     client.rbac().clusterRoleBindings().withName("impersonator-role")
-      .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
 
     // DeleteEntity project
     client.projects().withName(NEW_PROJECT).delete();
@@ -131,15 +126,17 @@ class UserImpersonationIT {
     // DeleteEntity ServiceAccounts
     client.serviceAccounts().delete(serviceAccount1);
     client.serviceAccounts().withName(serviceAccount1.getMetadata().getName())
-      .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+        .waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
   }
 
   @Test
   void should_be_able_to_return_service_account_name_when_impersonating_current_user() {
     RequestConfig requestConfig = new RequestConfigBuilder()
-    .withImpersonateUsername(SERVICE_ACCOUNT)
-    .withImpersonateGroups("system:authenticated", "system:authenticated:oauth")
-    .withImpersonateExtras(Collections.singletonMap("scopes", Arrays.asList("cn=jane","ou=engineers","dc=example","dc=com"))).build();
+        .withImpersonateUsername(SERVICE_ACCOUNT)
+        .withImpersonateGroups("system:authenticated", "system:authenticated:oauth")
+        .withImpersonateExtras(
+            Collections.singletonMap("scopes", Arrays.asList("cn=jane", "ou=engineers", "dc=example", "dc=com")))
+        .build();
 
     User user = client.withRequestConfig(requestConfig).call(OpenShiftClient::currentUser);
     assertThat(user.getMetadata().getName()).isEqualTo(SERVICE_ACCOUNT);
@@ -148,17 +145,18 @@ class UserImpersonationIT {
   @Test
   void should_be_able_to_create_a_project_impersonating_service_account() {
     RequestConfig requestConfig = new RequestConfigBuilder()
-    .withImpersonateUsername(SERVICE_ACCOUNT)
-    .withImpersonateGroups("system:authenticated", "system:authenticated:oauth")
-    .withImpersonateExtras(Collections.singletonMap("scopes", Collections.singletonList("development")))
-    .build();
+        .withImpersonateUsername(SERVICE_ACCOUNT)
+        .withImpersonateGroups("system:authenticated", "system:authenticated:oauth")
+        .withImpersonateExtras(Collections.singletonMap("scopes", Collections.singletonList("development")))
+        .build();
 
     // Create a project
-    ProjectRequest projectRequest = client.withRequestConfig(requestConfig).call(c -> c.projectrequests().create(new ProjectRequestBuilder()
-      .withNewMetadata()
-      .withName(NEW_PROJECT)
-      .endMetadata()
-      .build()));
+    ProjectRequest projectRequest = client.withRequestConfig(requestConfig)
+        .call(c -> c.projectrequests().create(new ProjectRequestBuilder()
+            .withNewMetadata()
+            .withName(NEW_PROJECT)
+            .endMetadata()
+            .build()));
 
     // Grab the requester annotation
     String requester = projectRequest.getMetadata().getAnnotations().get("openshift.io/requester");
@@ -168,7 +166,5 @@ class UserImpersonationIT {
   private Callable<Boolean> projectIsDeleted() {
     return () -> client.projects().withName(NEW_PROJECT).get() == null;
   }
-
-
 
 }

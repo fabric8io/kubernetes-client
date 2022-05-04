@@ -20,39 +20,40 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Locale;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class MasterProtocolTest {
 
-    @Test
-    void testWithSSL() {
-        KubernetesMockServer sslServer = new KubernetesMockServer();
-        sslServer.init();
+  @Test
+  void testWithSSL() {
+    KubernetesMockServer sslServer = new KubernetesMockServer();
+    sslServer.init();
 
-        String host = sslServer.getHostName();
-        int port = sslServer.getPort();
-        Config config = new ConfigBuilder()
-                .withMasterUrl(host + ":" +port)
-                .withTlsVersions(TlsVersion.TLS_1_2)
-                .withTrustCerts(true)
-                .build();
-        assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTPS_PROTOCOL_PREFIX));
+    String host = sslServer.getHostName();
+    int port = sslServer.getPort();
+    Config config = new ConfigBuilder()
+        .withMasterUrl(host + ":" + port)
+        .withTlsVersions(TlsVersion.TLS_1_2)
+        .withTrustCerts(true)
+        .build();
+    assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTPS_PROTOCOL_PREFIX));
 
-        sslServer.destroy();
-    }
+    sslServer.destroy();
+  }
 
-    @Test
-    void testWithoutSSL() {
-        KubernetesMockServer plainServer = new KubernetesMockServer(false);
-        plainServer.init();
-        String host = plainServer.getHostName();
-        int port = plainServer.getPort();
-        Config config = new ConfigBuilder()
-                .withMasterUrl(host + ":" +port)
-                .build();
-        assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX));
-        plainServer.destroy();
-    }
+  @Test
+  void testWithoutSSL() {
+    KubernetesMockServer plainServer = new KubernetesMockServer(false);
+    plainServer.init();
+    String host = plainServer.getHostName();
+    int port = plainServer.getPort();
+    Config config = new ConfigBuilder()
+        .withMasterUrl(host + ":" + port)
+        .build();
+    assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX));
+    plainServer.destroy();
+  }
 }
