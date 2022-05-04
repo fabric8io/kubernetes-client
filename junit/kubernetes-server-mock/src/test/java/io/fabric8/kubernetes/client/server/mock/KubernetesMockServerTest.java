@@ -46,8 +46,8 @@ class KubernetesMockServerTest {
   void onStartVersionInfo() {
     // Then
     assertThat(client.getKubernetesVersion())
-      .hasFieldOrPropertyWithValue("major", "0")
-      .hasFieldOrPropertyWithValue("minor", "0");
+        .hasFieldOrPropertyWithValue("major", "0")
+        .hasFieldOrPropertyWithValue("minor", "0");
   }
 
   @Test

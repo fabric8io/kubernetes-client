@@ -29,7 +29,7 @@ public class KubernetesResponseComposer implements ResponseComposer {
   public String compose(Collection<String> collection, String resourceVersion) {
     return String.format(
         "{\"apiVersion\":\"v1\",\"kind\":\"List\", \"items\": [%s], " +
-         "\"metadata\": {\"resourceVersion\": \"%s\", \"selfLink\": \"\"}}",
+            "\"metadata\": {\"resourceVersion\": \"%s\", \"selfLink\": \"\"}}",
         String.join(",", collection), resourceVersion);
   }
 }

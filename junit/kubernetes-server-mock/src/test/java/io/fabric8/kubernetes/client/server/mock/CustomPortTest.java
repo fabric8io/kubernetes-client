@@ -23,18 +23,18 @@ import java.net.ServerSocket;
 
 class CustomPortTest {
 
-    @Test
-    void testWithStaticPort() throws IOException {
-        KubernetesMockServer plainServer = new KubernetesMockServer(false);
-        int availablePort = findAvailablePort();
-        plainServer.init(InetAddress.getByName("0.0.0.0"), availablePort);
-        Assertions.assertEquals(availablePort, plainServer.getPort());
-        plainServer.destroy();
-    }
+  @Test
+  void testWithStaticPort() throws IOException {
+    KubernetesMockServer plainServer = new KubernetesMockServer(false);
+    int availablePort = findAvailablePort();
+    plainServer.init(InetAddress.getByName("0.0.0.0"), availablePort);
+    Assertions.assertEquals(availablePort, plainServer.getPort());
+    plainServer.destroy();
+  }
 
-    private static int findAvailablePort() throws IOException {
-        try (ServerSocket socket = new ServerSocket(0)) {
-            return socket.getLocalPort();
-        }
+  private static int findAvailablePort() throws IOException {
+    try (ServerSocket socket = new ServerSocket(0)) {
+      return socket.getLocalPort();
     }
+  }
 }

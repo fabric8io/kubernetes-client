@@ -15,19 +15,6 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import org.junit.jupiter.api.Test;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -36,57 +23,70 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KubernetesAttributesExtractorTest {
 
   @Test
-	void shouldHandleNamespacedPathWithResource() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod");
+  void shouldHandleNamespacedPathWithResource() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "pods"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		expected = expected.add(new Attribute("name", "mypod"));
-		expected = expected.add(new Attribute("version", "v1"));
-		assertTrue(attributes.matches(expected));
-		assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "mypod"));
+    expected = expected.add(new Attribute("version", "v1"));
+    assertTrue(attributes.matches(expected));
+    assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
+  }
 
-	@Test
-	void shouldHandleNamespacedPath() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods");
+  @Test
+  void shouldHandleNamespacedPath() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "pods"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    assertTrue(attributes.matches(expected));
+  }
 
-	@Test
-	void shouldHandleNonNamespacedPath() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/v1/nodes/mynode");
+  @Test
+  void shouldHandleNonNamespacedPath() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/nodes/mynode");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "nodes"));
-		expected = expected.add(new Attribute("name", "mynode"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "nodes"));
+    expected = expected.add(new Attribute("name", "mynode"));
+    assertTrue(attributes.matches(expected));
+  }
 
-	@Test
-	void shouldHandlePathWithLabelSelectorParam() {
-	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-	  AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
+  @Test
+  void shouldHandlePathWithLabelSelectorParam() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
-	  AttributeSet expected = new AttributeSet();
-	  expected = expected.add(new Attribute("plural", "pods"));
-	  expected = expected.add(new Attribute("labels:testKey", "testValue"));
-	  assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("labels:testKey", "testValue"));
+    assertTrue(attributes.matches(expected));
+  }
 
   @Test
   void shouldHandlePathWithFieldSelectorParam() {
@@ -99,24 +99,23 @@ public class KubernetesAttributesExtractorTest {
     assertTrue(attributes.matches(expected));
   }
 
-
   @Test
-	void shouldHandleResource() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		Pod pod = new PodBuilder().withNewMetadata().withName("mypod").withNamespace("myns").endMetadata().build();
+  void shouldHandleResource() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    Pod pod = new PodBuilder().withNewMetadata().withName("mypod").withNamespace("myns").endMetadata().build();
 
-		AttributeSet attributes = extractor.extract(pod);
+    AttributeSet attributes = extractor.extract(pod);
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "pods"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		expected = expected.add(new Attribute("metadata.namespace", "myns"));
-		expected = expected.add(new Attribute("name", "mypod"));
-		expected = expected.add(new Attribute("metadata.name", "mypod"));
-		expected = expected.add(new Attribute("version", "v1"));
-		assertTrue(attributes.matches(expected));
-		assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("metadata.namespace", "myns"));
+    expected = expected.add(new Attribute("name", "mypod"));
+    expected = expected.add(new Attribute("metadata.name", "mypod"));
+    expected = expected.add(new Attribute("version", "v1"));
+    assertTrue(attributes.matches(expected));
+    assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
+  }
 
   @Test
   void shouldHandleRawResource() {
@@ -136,108 +135,108 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
-	void shouldHandleResourceWithLabel() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		Map<String, String> labels = new HashMap<>();
-		labels.put("name", "myname");
-		Pod pod = new PodBuilder().withNewMetadata().withLabels(labels).endMetadata().build();
+  void shouldHandleResourceWithLabel() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("name", "myname");
+    Pod pod = new PodBuilder().withNewMetadata().withLabels(labels).endMetadata().build();
 
-		AttributeSet attributes = extractor.extract(pod);
+    AttributeSet attributes = extractor.extract(pod);
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("labels:name", "myname"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    assertTrue(attributes.matches(expected));
+  }
 
   /**
    * Default versions are not yet understood
    */
-	@Test
-	void shouldHandleKindWithoutVersion() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/pods");
+  @Test
+  void shouldHandleKindWithoutVersion() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/pods");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "pods"));
-		assertTrue(attributes.matches(expected));
-	}
-
-	@Test
-	void shouldHandleExtensions() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/apis/apps/v1/deployments");
-
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "deployments"));
-		expected = expected.add(new Attribute("api", "apps"));
-		expected = expected.add(new Attribute("version", "v1"));
-		assertTrue(attributes.matches(expected));
-	}
-
-	@Test
-	void shouldHandleIngress() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		extractor.extract(new IngressBuilder().withNewMetadata().endMetadata().build());
-		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
-
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "ingresses"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		expected = expected.add(new Attribute("name", "myingress"));
-		assertTrue(attributes.matches(expected));
-	}
-
-	@Test
-	void shouldHandleEndpoints() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
-
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "endpoints"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		assertTrue(attributes.matches(expected));
-	}
-
-	@Test
-	void shouldHandleIngresses() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
-
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "ingresses"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		assertTrue(attributes.matches(expected));
-	}
-
-	@Test
-	void shouldHandleApiGroups() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor
-				.fromPath("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
-
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "horizontalpodautoscalers"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		expected = expected.add(new Attribute("name", "myhpa"));
-		assertTrue(attributes.matches(expected));
-	}
-
-	@Test
-	void shouldHandleCrdsTypeUnknown() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
-
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("plural", "crds"));
-		expected = expected.add(new Attribute("namespace", "myns"));
-		expected = expected.add(new Attribute("name", "mycrd"));
-		expected = expected.add(new Attribute("version", "v1"));
-		expected = expected.add(new Attribute("api", "test.com"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    assertTrue(attributes.matches(expected));
+  }
 
   @Test
-	void shouldHandleCrds() {
+  void shouldHandleExtensions() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/apis/apps/v1/deployments");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "deployments"));
+    expected = expected.add(new Attribute("api", "apps"));
+    expected = expected.add(new Attribute("version", "v1"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleIngress() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    extractor.extract(new IngressBuilder().withNewMetadata().endMetadata().build());
+    AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "ingresses"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "myingress"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleEndpoints() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "endpoints"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleIngresses() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "ingresses"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleApiGroups() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor
+        .fromPath("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "horizontalpodautoscalers"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "myhpa"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleCrdsTypeUnknown() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "crds"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "mycrd"));
+    expected = expected.add(new Attribute("version", "v1"));
+    expected = expected.add(new Attribute("api", "test.com"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleCrds() {
     CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
         .withScope("Namespaced")
         .withPlural("crds")
@@ -246,17 +245,17 @@ public class KubernetesAttributesExtractorTest {
         .withKind("crd")
         .build();
 
-	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
-	  AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
+    AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
 
-	  AttributeSet expected = new AttributeSet();
-	  expected = expected.add(new Attribute("plural", "crds"));
-	  expected = expected.add(new Attribute("namespace", "myns"));
-	  expected = expected.add(new Attribute("name", "mycrd"));
-	  expected = expected.add(new Attribute("api", "test.com"));
-	  expected = expected.add(new Attribute("version", "v1"));
-	  assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "crds"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "mycrd"));
+    expected = expected.add(new Attribute("api", "test.com"));
+    expected = expected.add(new Attribute("version", "v1"));
+    assertTrue(attributes.matches(expected));
+  }
 
   @Test
   void shouldHandleCrdSubresources() {
@@ -269,7 +268,7 @@ public class KubernetesAttributesExtractorTest {
         .build();
 
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
-    String[] subresources = new String[]{"status", "scale"};
+    String[] subresources = new String[] { "status", "scale" };
 
     String basePath = "/apis/test.com/v1/namespaces/myns/crds/mycrd/";
     for (String subresource : subresources) {
@@ -280,47 +279,46 @@ public class KubernetesAttributesExtractorTest {
       expected = expected.add(new Attribute("namespace", "myns"));
       expected = expected.add(new Attribute("name", "mycrd"));
       assertTrue(attributes.matches(expected),
-        "extracted attributes match for " + subresource + " expectation: " + expected);
+          "extracted attributes match for " + subresource + " expectation: " + expected);
     }
 
     AttributeSet attributes = extractor.fromPath(basePath + "somethingRandom");
     assertTrue(attributes.matches(new AttributeSet()),
-      "should extract nothing from an unsupported crd subresource");
+        "should extract nothing from an unsupported crd subresource");
   }
 
-	@Test
-	void shouldHandleNamespacedResourceLabelSelectorsWithOneLabel() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
+  @Test
+  void shouldHandleNamespacedResourceLabelSelectorsWithOneLabel() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("labels:name", "myname"));
-		assertTrue(attributes.matches(expected));
-	}
-
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    assertTrue(attributes.matches(expected));
+  }
 
   @Test
-	void shouldHandleLabelSelectorsWithDoubleEquals() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor
-				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
+  void shouldHandleLabelSelectorsWithDoubleEquals() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor
+        .fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("labels:name", "myname"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    assertTrue(attributes.matches(expected));
+  }
 
-	@Test
-	void shouldHandleLabelSelectorsWithTwoLabels() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor
-				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
+  @Test
+  void shouldHandleLabelSelectorsWithTwoLabels() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor
+        .fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("labels:name", "myname"));
-		expected = expected.add(new Attribute("labels:age", "37"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    expected = expected.add(new Attribute("labels:age", "37"));
+    assertTrue(attributes.matches(expected));
+  }
 
   @Test
   void shouldHandleNamespacedResourceFieldSelectorsWithOneField() {
@@ -333,12 +331,11 @@ public class KubernetesAttributesExtractorTest {
     assertTrue(attributes.matches(expected));
   }
 
-
   @Test
   void shouldHandleFieldSelectorsWithDoubleEquals() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     AttributeSet attributes = extractor
-      .fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=testKey%3D%3DtestValue");
+        .fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=testKey%3D%3DtestValue");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("plural", "pods"));
@@ -350,7 +347,7 @@ public class KubernetesAttributesExtractorTest {
   void shouldHandleFieldSelectorsWithTwoLabels() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     AttributeSet attributes = extractor
-      .fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=keyOne%3DvalueOne,keyTwo%3DvalueTwo");
+        .fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=keyOne%3DvalueOne,keyTwo%3DvalueTwo");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("plural", "pods"));
@@ -359,95 +356,95 @@ public class KubernetesAttributesExtractorTest {
     assertTrue(attributes.matches(expected));
   }
 
-	@Test
-	void shouldHandleLabelSelectorsWithADomain() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor
-				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
+  @Test
+  void shouldHandleLabelSelectorsWithADomain() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor
+        .fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("labels:example.com/name", "myname"));
-		assertTrue(attributes.matches(expected));
-	}
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:example.com/name", "myname"));
+    assertTrue(attributes.matches(expected));
+  }
 
-	// https://github.com/fabric8io/kubernetes-client/issues/1688
+  // https://github.com/fabric8io/kubernetes-client/issues/1688
 
-	@Test
-	void getDeploymentsWithLabels() {
-		KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-		kubernetesServer.before();
-		KubernetesClient kubernetesClient = kubernetesServer.getClient();
-		Map<String, String> labels = new HashMap<>();
-		labels.put("app", "core");
-		labels.put("apiVersion", "1.7.1");
-		labels.put("keepUntil", "12000");
-		Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
-				.endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-		kubernetesClient.apps().deployments().create(deployment1);
+  @Test
+  void getDeploymentsWithLabels() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+    labels.put("apiVersion", "1.7.1");
+    labels.put("keepUntil", "12000");
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
+        .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment1);
 
-		labels.remove("keepUntil");
-		Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
-				.addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-		kubernetesClient.apps().deployments().create(deployment2);
+    labels.remove("keepUntil");
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
+        .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment2);
 
-		List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("app", "core").list().getItems();
-		assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
-				.isPresent());
-		assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
-				.isPresent());
-	}
+    List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("app", "core").list().getItems();
+    assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
+        .isPresent());
+    assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
+        .isPresent());
+  }
 
-	@Test
-	void getDeploymentsWithoutLabels() {
-		KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-		kubernetesServer.before();
-		KubernetesClient kubernetesClient = kubernetesServer.getClient();
-		Map<String, String> labels = new HashMap<>();
-		labels.put("app", "core");
-		labels.put("apiVersion", "1.7.1");
-		labels.put("keepUntil", "12000");
-		Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
-				.endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-		kubernetesClient.apps().deployments().create(deployment1);
+  @Test
+  void getDeploymentsWithoutLabels() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+    labels.put("apiVersion", "1.7.1");
+    labels.put("keepUntil", "12000");
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
+        .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment1);
 
-		labels.remove("keepUntil");
-		Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
-				.addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-		kubernetesClient.apps().deployments().create(deployment2);
+    labels.remove("keepUntil");
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
+        .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment2);
 
-		List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil", "12000").list()
-				.getItems();
-		assertFalse(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
-				.isPresent());
-		assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
-				.isPresent());
-	}
+    List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil", "12000").list()
+        .getItems();
+    assertFalse(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
+        .isPresent());
+    assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
+        .isPresent());
+  }
 
-	@Test
-	void getDeploymentsWithAndWithoutLabels() {
-		KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-		kubernetesServer.before();
-		KubernetesClient kubernetesClient = kubernetesServer.getClient();
-		Map<String, String> labels = new HashMap<>();
-		labels.put("app", "core");
-		labels.put("apiVersion", "1.7.1");
-		labels.put("keepUntil", "12000");
-		Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
-				.endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-		kubernetesClient.apps().deployments().create(deployment1);
+  @Test
+  void getDeploymentsWithAndWithoutLabels() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+    labels.put("apiVersion", "1.7.1");
+    labels.put("keepUntil", "12000");
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
+        .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment1);
 
-		labels.remove("keepUntil");
-		Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
-				.addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-		kubernetesClient.apps().deployments().create(deployment2);
+    labels.remove("keepUntil");
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
+        .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment2);
 
-		List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("app", "core")
-				.withoutLabel("keepUntil", "12000").list().getItems();
-		assertFalse(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
-				.isPresent());
-		assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
-				.isPresent());
-	}
+    List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("app", "core")
+        .withoutLabel("keepUntil", "12000").list().getItems();
+    assertFalse(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
+        .isPresent());
+    assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
+        .isPresent());
+  }
 
   @Test
   void shouldFilterBasedOnLabelExists() {
@@ -459,12 +456,12 @@ public class KubernetesAttributesExtractorTest {
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
-      .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+        .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
     kubernetesClient.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
-      .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+        .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
     kubernetesClient.apps().deployments().create(deployment2);
 
     List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("keepUntil").list().getItems();
@@ -482,12 +479,12 @@ public class KubernetesAttributesExtractorTest {
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
-      .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+        .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
     kubernetesClient.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
-      .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+        .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
     kubernetesClient.apps().deployments().create(deployment2);
 
     List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil").list().getItems();
@@ -499,17 +496,17 @@ public class KubernetesAttributesExtractorTest {
   void testCustomResourceAttributesExtraction() {
     // Given
     CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-      .withScope("Namespaced")
-      .withPlural("customdatabases")
-      .withVersion("v1alpha1")
-      .withGroup("demo.fabric8.io")
-      .withKind("CustomDatabase")
-      .build();
+        .withScope("Namespaced")
+        .withPlural("customdatabases")
+        .withVersion("v1alpha1")
+        .withGroup("demo.fabric8.io")
+        .withKind("CustomDatabase")
+        .build();
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Collections.singletonList(crdContext));
 
     // When
     AttributeSet attributes = extractor
-      .fromPath("/apis/demo.fabric8.io/v1alpha1/namespaces/ns1/customdatabases");
+        .fromPath("/apis/demo.fabric8.io/v1alpha1/namespaces/ns1/customdatabases");
 
     // Then
     AttributeSet expected = new AttributeSet();
@@ -523,7 +520,8 @@ public class KubernetesAttributesExtractorTest {
   @Test
   void kubernetesPathIngresses() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-    Map<String, String> attributes = extractor.fromKubernetesPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
+    Map<String, String> attributes = extractor
+        .fromKubernetesPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
     assertEquals("ingresses", attributes.get(KubernetesAttributesExtractor.PLURAL));
   }

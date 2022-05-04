@@ -36,15 +36,15 @@ class SelfSubjectAccessReviewIT {
   void create() {
     // Given
     SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
-      .withNewSpec()
-      .withNewResourceAttributes()
-      .withGroup("apps")
-      .withResource("deployments")
-      .withVerb("create")
-      .withNamespace(namespace.getMetadata().getName())
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewResourceAttributes()
+        .withGroup("apps")
+        .withResource("deployments")
+        .withVerb("create")
+        .withNamespace(namespace.getMetadata().getName())
+        .endResourceAttributes()
+        .endSpec()
+        .build();
 
     // When
     ssar = client.authorization().v1().selfSubjectAccessReview().create(ssar);

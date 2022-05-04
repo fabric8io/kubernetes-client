@@ -50,7 +50,7 @@ class KubernetesCrudDispatcherTest {
     final ConfigMap source = new ConfigMapBuilder().addToData("key", "same").build();
     // When
     final boolean result = shouldIncreaseGeneration(MAPPER.convertValue(existing, JsonNode.class),
-      MAPPER.convertValue(source, JsonNode.class));
+        MAPPER.convertValue(source, JsonNode.class));
     // Then
     assertFalse(result);
   }
@@ -60,12 +60,12 @@ class KubernetesCrudDispatcherTest {
   void shouldIncreaseGenerationExistingSourceDifferentMetadataReturnsFalse() {
     //Given
     final ConfigMap existing = new ConfigMapBuilder().withNewMetadata().addToAnnotations("f", "1").endMetadata()
-      .addToData("key", "same").build();
+        .addToData("key", "same").build();
     final ConfigMap source = new ConfigMapBuilder().withNewMetadata().addToAnnotations("f", "2").endMetadata()
-      .addToData("key", "same").build();
+        .addToData("key", "same").build();
     // When
     final boolean result = shouldIncreaseGeneration(MAPPER.convertValue(existing, JsonNode.class),
-      MAPPER.convertValue(source, JsonNode.class));
+        MAPPER.convertValue(source, JsonNode.class));
     // Then
     assertFalse(result);
   }
@@ -75,12 +75,12 @@ class KubernetesCrudDispatcherTest {
   void shouldIncreaseGenerationExistingSourceDifferentStatusReturnsFalse() {
     //Given
     final Pod existing = new PodBuilder().withNewSpec().withHostname("same").endSpec()
-      .withNewStatus().withHostIP("1.3.3.7").endStatus().build();
+        .withNewStatus().withHostIP("1.3.3.7").endStatus().build();
     final Pod source = new PodBuilder().withNewSpec().withHostname("same").endSpec()
-      .withNewStatus().withHostIP("31.3.3.73").endStatus().build();
+        .withNewStatus().withHostIP("31.3.3.73").endStatus().build();
     // When
     final boolean result = shouldIncreaseGeneration(MAPPER.convertValue(existing, JsonNode.class),
-      MAPPER.convertValue(source, JsonNode.class));
+        MAPPER.convertValue(source, JsonNode.class));
     // Then
     assertFalse(result);
   }
@@ -93,7 +93,7 @@ class KubernetesCrudDispatcherTest {
     final ConfigMap source = new ConfigMapBuilder().addToData("key", "not-equal").build();
     // When
     final boolean result = shouldIncreaseGeneration(MAPPER.convertValue(existing, JsonNode.class),
-      MAPPER.convertValue(source, JsonNode.class));
+        MAPPER.convertValue(source, JsonNode.class));
     // Then
     assertTrue(result);
   }

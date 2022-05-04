@@ -50,13 +50,13 @@ class K8sAuthorizationOnOpenShiftIT {
     // Given
     String name = "create-role-k8s";
     Role role = new RoleBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .addNewRule()
-      .withApiGroups("")
-      .withResources("pods")
-      .withVerbs("get", "watch", "list")
-      .endRule()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .addNewRule()
+        .withApiGroups("")
+        .withResources("pods")
+        .withVerbs("get", "watch", "list")
+        .endRule()
+        .build();
 
     // When
     Role createdRole = client.rbac().roles().create(role);
@@ -73,18 +73,18 @@ class K8sAuthorizationOnOpenShiftIT {
     // Given
     String name = "create-rolebinding-k8s";
     RoleBinding roleBinding = new RoleBindingBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .addNewSubject()
-      .withKind("User")
-      .withName("jane")
-      .withApiGroup("rbac.authorization.k8s.io")
-      .endSubject()
-      .withNewRoleRef()
-      .withKind("Role")
-      .withName("pod-reader")
-      .withApiGroup("rbac.authorization.k8s.io")
-      .endRoleRef()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .addNewSubject()
+        .withKind("User")
+        .withName("jane")
+        .withApiGroup("rbac.authorization.k8s.io")
+        .endSubject()
+        .withNewRoleRef()
+        .withKind("Role")
+        .withName("pod-reader")
+        .withApiGroup("rbac.authorization.k8s.io")
+        .endRoleRef()
+        .build();
 
     // When
     RoleBinding createdRoleBinding = client.rbac().roleBindings().create(roleBinding);
@@ -101,18 +101,18 @@ class K8sAuthorizationOnOpenShiftIT {
     // Given
     String name = "create-clusterrolebinding-k8s";
     ClusterRoleBinding clusterRoleBinding = new ClusterRoleBindingBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .addNewSubject()
-      .withKind("Group")
-      .withName("manager")
-      .withApiGroup("rbac.authorization.k8s.io")
-      .endSubject()
-      .withNewRoleRef()
-      .withKind("ClusterRole")
-      .withName("secret-reader")
-      .withApiGroup("rbac.authorization.k8s.io")
-      .endRoleRef()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .addNewSubject()
+        .withKind("Group")
+        .withName("manager")
+        .withApiGroup("rbac.authorization.k8s.io")
+        .endSubject()
+        .withNewRoleRef()
+        .withKind("ClusterRole")
+        .withName("secret-reader")
+        .withApiGroup("rbac.authorization.k8s.io")
+        .endRoleRef()
+        .build();
 
     // When
     ClusterRoleBinding clusterRoleBindingCreated = client.rbac().clusterRoleBindings().create(clusterRoleBinding);
@@ -129,13 +129,13 @@ class K8sAuthorizationOnOpenShiftIT {
     // Given
     String name = "create-clusterrole-k8s";
     ClusterRole clusterRole = new ClusterRoleBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .addNewRule()
-      .withApiGroups("")
-      .withResources("pods")
-      .withVerbs("get", "watch", "list")
-      .endRule()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .addNewRule()
+        .withApiGroups("")
+        .withResources("pods")
+        .withVerbs("get", "watch", "list")
+        .endRule()
+        .build();
 
     // When
     ClusterRole createdClusterRole = client.rbac().clusterRoles().create(clusterRole);
@@ -153,17 +153,17 @@ class K8sAuthorizationOnOpenShiftIT {
     User currentUser = client.currentUser();
     String ns = namespace.getMetadata().getName();
     LocalSubjectAccessReview lsar = new LocalSubjectAccessReviewBuilder()
-      .withNewMetadata().withNamespace(ns).endMetadata()
-      .withNewSpec()
-      .withNewResourceAttributes()
-      .withNamespace(ns)
-      .withVerb("get")
-      .withGroup("apps")
-      .withResource("Deployment")
-      .endResourceAttributes()
-      .withUser(currentUser.getMetadata().getName())
-      .endSpec()
-      .build();
+        .withNewMetadata().withNamespace(ns).endMetadata()
+        .withNewSpec()
+        .withNewResourceAttributes()
+        .withNamespace(ns)
+        .withVerb("get")
+        .withGroup("apps")
+        .withResource("Deployment")
+        .endResourceAttributes()
+        .withUser(currentUser.getMetadata().getName())
+        .endSpec()
+        .build();
 
     // When
     LocalSubjectAccessReview createdLsar = client.authorization().v1().localSubjectAccessReview().inNamespace(ns).create(lsar);
@@ -178,15 +178,15 @@ class K8sAuthorizationOnOpenShiftIT {
     // Given
     String user = client.currentUser().getMetadata().getName();
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
-      .withNewSpec()
-      .withNewResourceAttributes()
-      .withNamespace(namespace.getMetadata().getName())
-      .withVerb("get")
-      .withResource("pods")
-      .endResourceAttributes()
-      .withUser(user)
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewResourceAttributes()
+        .withNamespace(namespace.getMetadata().getName())
+        .withVerb("get")
+        .withResource("pods")
+        .endResourceAttributes()
+        .withUser(user)
+        .endSpec()
+        .build();
 
     // When
     SubjectAccessReview createSar = client.authorization().v1().subjectAccessReview().create(sar);

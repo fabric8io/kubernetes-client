@@ -29,15 +29,15 @@ public class RequireK8sSupportCondition implements ExecutionCondition {
   @Override
   public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
     final RequireK8sSupport requireK8s = findAnnotation(context.getElement(), RequireK8sSupport.class)
-      .orElse(null);
+        .orElse(null);
     if (requireK8s != null) {
       try (KubernetesClient client = new KubernetesClientBuilder().build()) {
         if (client.supports(requireK8s.value())) {
           return ConditionEvaluationResult
-            .enabled(String.format("Kubernetes resource %s IS supported in this cluster", requireK8s.value().getName()));
+              .enabled(String.format("Kubernetes resource %s IS supported in this cluster", requireK8s.value().getName()));
         } else {
           return ConditionEvaluationResult
-            .disabled(String.format("Kubernetes resource %s IS NOT supported in this cluster", requireK8s.value().getName()));
+              .disabled(String.format("Kubernetes resource %s IS NOT supported in this cluster", requireK8s.value().getName()));
         }
       }
     }

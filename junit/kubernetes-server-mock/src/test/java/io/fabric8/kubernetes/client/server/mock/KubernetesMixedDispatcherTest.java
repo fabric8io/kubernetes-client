@@ -62,16 +62,16 @@ class KubernetesMixedDispatcherTest {
   void dispatchWithMatchingExpectation() throws Exception {
     // Given
     responses.compute(new SimpleRequest(HttpMethod.GET, "/api/v1/resources/my-resource"), (k, v) -> new ArrayDeque<>())
-      .add(new SimpleResponse(true, 200, "resourceBody", null));
+        .add(new SimpleResponse(true, 200, "resourceBody", null));
     // When
     final MockResponse result = dispatcher.dispatch(new RecordedRequest(
-      "GET /api/v1/resources/my-resource HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
-      0, new Buffer(), 0, socket));
+        "GET /api/v1/resources/my-resource HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
+        0, new Buffer(), 0, socket));
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("status", "HTTP/1.1 200 OK")
-      .extracting(MockResponse::getBody).extracting(Buffer::readUtf8)
-      .isEqualTo("resourceBody");
+        .hasFieldOrPropertyWithValue("status", "HTTP/1.1 200 OK")
+        .extracting(MockResponse::getBody).extracting(Buffer::readUtf8)
+        .isEqualTo("resourceBody");
   }
 
   @Test
@@ -79,21 +79,22 @@ class KubernetesMixedDispatcherTest {
   void dispatchWithCrudExistentResource() throws Exception {
     // Given
     final Buffer requestBody = new Buffer();
-    requestBody.writeString("{\"kind\": \"Resource\", \"apiVersion\": \"v1\",\"metadata\": {\"name\": \"my-resource\"}}", StandardCharsets.UTF_8);
+    requestBody.writeString("{\"kind\": \"Resource\", \"apiVersion\": \"v1\",\"metadata\": {\"name\": \"my-resource\"}}",
+        StandardCharsets.UTF_8);
     requestBody.flush();
     dispatcher.dispatch(new RecordedRequest(
         "POST /api/v1/resources HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
         requestBody.size(), requestBody, 0, socket));
     // When
     final MockResponse result = dispatcher.dispatch(new RecordedRequest(
-      "GET /api/v1/resources/my-resource HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
-      0, new Buffer(), 0, socket));
+        "GET /api/v1/resources/my-resource HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
+        0, new Buffer(), 0, socket));
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("status", "HTTP/1.1 200 OK")
-      .extracting(MockResponse::getBody).extracting(Buffer::readUtf8)
-      .extracting(Serialization::unmarshal)
-      .isInstanceOf(GenericKubernetesResource.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "my-resource");
+        .hasFieldOrPropertyWithValue("status", "HTTP/1.1 200 OK")
+        .extracting(MockResponse::getBody).extracting(Buffer::readUtf8)
+        .extracting(Serialization::unmarshal)
+        .isInstanceOf(GenericKubernetesResource.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "my-resource");
   }
 }

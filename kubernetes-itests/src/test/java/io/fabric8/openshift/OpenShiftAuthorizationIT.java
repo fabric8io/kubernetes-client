@@ -51,9 +51,9 @@ class OpenShiftAuthorizationIT {
   void createSubjectAccessReviewOpenShift() {
     // Given
     SubjectAccessReview sar = new SubjectAccessReviewBuilder()
-      .withResource("pod")
-      .withVerb("get")
-      .build();
+        .withResource("pod")
+        .withVerb("get")
+        .build();
 
     // When
     SubjectAccessReviewResponse sarResponse = client.subjectAccessReviews().create(sar);
@@ -68,10 +68,10 @@ class OpenShiftAuthorizationIT {
     // Given
     String user = client.currentUser().getMetadata().getName();
     SubjectRulesReview srr = new SubjectRulesReviewBuilder()
-      .withNewSpec()
-      .withUser(user)
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withUser(user)
+        .endSpec()
+        .build();
 
     // When
     SubjectRulesReview createdSrr = client.subjectRulesReviews().inNamespace(namespace.getMetadata().getName()).create(srr);
@@ -88,7 +88,8 @@ class OpenShiftAuthorizationIT {
     SelfSubjectRulesReview ssrr = new SelfSubjectRulesReviewBuilder().build();
 
     // When
-    SelfSubjectRulesReview createdSsrr = client.selfSubjectRulesReviews().inNamespace(namespace.getMetadata().getName()).create(ssrr);
+    SelfSubjectRulesReview createdSsrr = client.selfSubjectRulesReviews().inNamespace(namespace.getMetadata().getName())
+        .create(ssrr);
 
     // Then
     assertNotNull(createdSsrr);
@@ -100,12 +101,13 @@ class OpenShiftAuthorizationIT {
   void createLocalResourceAccessReview() {
     // Given
     LocalResourceAccessReview lrar = new LocalResourceAccessReviewBuilder()
-      .withVerb("create")
-      .withResource("configmaps")
-      .build();
+        .withVerb("create")
+        .withResource("configmaps")
+        .build();
 
     // When
-    ResourceAccessReviewResponse rarr = client.localResourceAccessReviews().inNamespace(namespace.getMetadata().getName()).create(lrar);
+    ResourceAccessReviewResponse rarr = client.localResourceAccessReviews().inNamespace(namespace.getMetadata().getName())
+        .create(lrar);
 
     // Then
     assertNotNull(rarr);
@@ -117,13 +119,14 @@ class OpenShiftAuthorizationIT {
   void createLocalSubjectAccessReview() {
     // Given
     LocalSubjectAccessReview localSubjectAccessReview = new LocalSubjectAccessReviewBuilder()
-      .withNamespace(namespace.getMetadata().getName())
-      .withVerb("get")
-      .withResource("pods")
-      .build();
+        .withNamespace(namespace.getMetadata().getName())
+        .withVerb("get")
+        .withResource("pods")
+        .build();
 
     // When
-    SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace(namespace.getMetadata().getName()).create(localSubjectAccessReview);
+    SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace(namespace.getMetadata().getName())
+        .create(localSubjectAccessReview);
 
     // Then
     assertNotNull(response);
@@ -134,9 +137,9 @@ class OpenShiftAuthorizationIT {
   void createResourceAccessReview() {
     // Given
     ResourceAccessReview rar = new ResourceAccessReviewBuilder()
-      .withVerb("create")
-      .withResource("configmaps")
-      .build();
+        .withVerb("create")
+        .withResource("configmaps")
+        .build();
 
     // When
     ResourceAccessReviewResponse rarr = client.resourceAccessReviews().create(rar);
@@ -152,13 +155,13 @@ class OpenShiftAuthorizationIT {
     // Given
     String name = "create-oc-rolebindingrestriction";
     RoleBindingRestriction roleBindingRestriction = new RoleBindingRestrictionBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewSpec()
-      .withNewGrouprestriction()
-      .addToGroups("groups-rolebindingrestriction")
-      .endGrouprestriction()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .withNewGrouprestriction()
+        .addToGroups("groups-rolebindingrestriction")
+        .endGrouprestriction()
+        .endSpec()
+        .build();
 
     // When
     RoleBindingRestriction createdRoleBindingRestriction = client.roleBindingRestrictions().create(roleBindingRestriction);

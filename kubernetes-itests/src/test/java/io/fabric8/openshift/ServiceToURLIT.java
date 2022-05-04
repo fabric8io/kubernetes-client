@@ -38,40 +38,40 @@ class ServiceToURLIT {
   @BeforeEach
   public void init() {
     Service svc1 = new ServiceBuilder()
-      .withNewMetadata()
-      .withName("svc1")
-      .endMetadata()
-      .withNewSpec()
-      .withSelector(Collections.singletonMap("app", "MyApp"))
-      .addNewPort()
-      .withName("http")
-      .withProtocol("TCP")
-      .withPort(80)
-      .withTargetPort(new IntOrString(9376))
-      .endPort()
-      .withType("LoadBalancer")
-      .endSpec()
-      .withNewStatus()
-      .withNewLoadBalancer()
-      .addNewIngress()
-      .withIp("146.148.47.155")
-      .endIngress()
-      .endLoadBalancer()
-      .endStatus()
-      .build();
+        .withNewMetadata()
+        .withName("svc1")
+        .endMetadata()
+        .withNewSpec()
+        .withSelector(Collections.singletonMap("app", "MyApp"))
+        .addNewPort()
+        .withName("http")
+        .withProtocol("TCP")
+        .withPort(80)
+        .withTargetPort(new IntOrString(9376))
+        .endPort()
+        .withType("LoadBalancer")
+        .endSpec()
+        .withNewStatus()
+        .withNewLoadBalancer()
+        .addNewIngress()
+        .withIp("146.148.47.155")
+        .endIngress()
+        .endLoadBalancer()
+        .endStatus()
+        .build();
     Service svc2 = new ServiceBuilder()
-      .withNewMetadata().withName("svc2").endMetadata()
-      .withNewSpec().withType("ExternalName").withExternalName("my.database.example.com")
-      .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
-      .endSpec()
-      .withNewStatus()
-      .withNewLoadBalancer()
-      .addNewIngress()
-      .withIp("146.148.47.155")
-      .endIngress()
-      .endLoadBalancer()
-      .endStatus()
-      .build();
+        .withNewMetadata().withName("svc2").endMetadata()
+        .withNewSpec().withType("ExternalName").withExternalName("my.database.example.com")
+        .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
+        .endSpec()
+        .withNewStatus()
+        .withNewLoadBalancer()
+        .addNewIngress()
+        .withIp("146.148.47.155")
+        .endIngress()
+        .endLoadBalancer()
+        .endStatus()
+        .build();
 
     client.services().createOrReplace(svc1);
     client.services().createOrReplace(svc2);
@@ -84,7 +84,8 @@ class ServiceToURLIT {
     assertNotNull(url);
 
     // Testing Ingress Impl
-    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress-extensions.yml")).get();
+    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress-extensions.yml"))
+        .get();
     client.extensions().ingresses().create(ingress);
 
     url = client.services().withName("svc2").getURL("80");
@@ -92,20 +93,20 @@ class ServiceToURLIT {
 
     // Testing OpenShift Route Impl
     Service svc3 = client.services().create(new ServiceBuilder()
-      .withNewMetadata().withName("svc3").endMetadata()
-      .withNewSpec()
-      .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
-      .endSpec()
-      .build());
+        .withNewMetadata().withName("svc3").endMetadata()
+        .withNewSpec()
+        .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
+        .endSpec()
+        .build());
 
     OpenShiftClient openshiftClient = client.adapt(OpenShiftClient.class);
     openshiftClient.routes().create(new RouteBuilder()
-      .withNewMetadata().withName(svc3.getMetadata().getName()).endMetadata()
-      .withNewSpec()
-      .withHost("www.example.com")
-      .withNewTo().withName(svc3.getMetadata().getName()).withKind("Service").endTo()
-      .endSpec()
-      .build());
+        .withNewMetadata().withName(svc3.getMetadata().getName()).endMetadata()
+        .withNewSpec()
+        .withHost("www.example.com")
+        .withNewTo().withName(svc3.getMetadata().getName()).withKind("Service").endTo()
+        .endSpec()
+        .build());
 
     url = client.services().withName("svc3").getURL("80");
     assertNotNull(url);

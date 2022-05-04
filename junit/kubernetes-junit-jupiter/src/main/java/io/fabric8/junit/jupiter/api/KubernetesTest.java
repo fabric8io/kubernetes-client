@@ -30,11 +30,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Enables and configures the {@link KubernetesNamespacedTestExtension} extension.
  *
- * <p>Creates a namespace and configures a {@link KubernetesClient} instance that will
+ * <p>
+ * Creates a namespace and configures a {@link KubernetesClient} instance that will
  * be automatically injected into tests.
  *
  * <pre>{@code
- * @KubernetesTest
+ * &#64;KubernetesTest
  * class MyTest {
  *   KubernetesClient client;
  *   static OpenShiftClient oc;

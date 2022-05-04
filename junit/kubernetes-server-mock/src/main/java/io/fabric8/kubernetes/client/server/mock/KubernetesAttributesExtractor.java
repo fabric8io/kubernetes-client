@@ -69,7 +69,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
   private static final String SUBRESOURCE_MAYBE_GROUP = "(/(status|scale))?";
   private static final String END_GROUP = "[^ /]*";
 
-  protected static final Pattern PATTERN = Pattern.compile(API_GROUP + VERSION_GROUP + NAMESPACE_GROUP + KIND_GROUP + NAME_GROUP + SUBRESOURCE_MAYBE_GROUP + END_GROUP);
+  protected static final Pattern PATTERN = Pattern
+      .compile(API_GROUP + VERSION_GROUP + NAMESPACE_GROUP + KIND_GROUP + NAME_GROUP + SUBRESOURCE_MAYBE_GROUP + END_GROUP);
 
   private static final String LABEL_KEY_PREFIX = "labels:";
   private static final String KEY_GROUP = "(?<key>[a-zA-Z0-9-_./]+)";
@@ -95,7 +96,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
   }
 
   public KubernetesAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
-    this.crdContexts = crdContexts.stream().collect(Collectors.toMap(KubernetesAttributesExtractor::pluralKey, Function.identity()));
+    this.crdContexts = crdContexts.stream()
+        .collect(Collectors.toMap(KubernetesAttributesExtractor::pluralKey, Function.identity()));
   }
 
   private static List<String> pluralKey(CustomResourceDefinitionContext c) {
@@ -246,7 +248,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
   }
 
   private static AttributeSet extractQueryParameters(HttpUrl url) {
-    return AttributeSet.merge(extractLabelSelector(url),extractFieldSelector(url));
+    return AttributeSet.merge(extractLabelSelector(url), extractFieldSelector(url));
   }
 
   private static AttributeSet extractLabelSelector(HttpUrl url) {

@@ -28,5 +28,6 @@ import java.lang.annotation.RetentionPolicy;
 @ExtendWith(RequireK8sVersionAtLeastCondition.class)
 public @interface RequireK8sVersionAtLeast {
   int majorVersion();
+
   int minorVersion();
 }

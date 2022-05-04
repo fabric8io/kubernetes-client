@@ -82,9 +82,9 @@ class CreateOrReplaceIT {
   void testCreateOrReplaceConfigMap() {
     final String name = "create-or-replace-configmap";
     ConfigMap configMap = new ConfigMapBuilder()
-      .withNewMetadata().withLabels(labels).withName(name).endMetadata()
-      .addToData("first", "1st")
-      .build();
+        .withNewMetadata().withLabels(labels).withName(name).endMetadata()
+        .addToData("first", "1st")
+        .build();
 
     // 1st createOrReplace(); should create the resource
     configMap = client.configMaps().createOrReplace(configMap);
@@ -109,16 +109,16 @@ class CreateOrReplaceIT {
   void testCreateOrReplaceService() {
     final String name = "create-or-replace-service";
     Service service = new ServiceBuilder()
-      .withNewMetadata().withName(name).withLabels(labels).endMetadata()
-      .withNewSpec()
-      .addToSelector("app", "testapp")
-      .addNewPort()
-      .withProtocol("TCP")
-      .withPort(80)
-      .withTargetPort(new IntOrString(9376))
-      .endPort()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName(name).withLabels(labels).endMetadata()
+        .withNewSpec()
+        .addToSelector("app", "testapp")
+        .addNewPort()
+        .withProtocol("TCP")
+        .withPort(80)
+        .withTargetPort(new IntOrString(9376))
+        .endPort()
+        .endSpec()
+        .build();
 
     // 1st createOrReplace(); should create the resource
     service = client.services().createOrReplace(service);
@@ -145,30 +145,30 @@ class CreateOrReplaceIT {
   void testCreateOrReplaceDeployment() {
     final String name = "create-or-replace-deployment";
     Deployment deployment = new DeploymentBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .withLabels(labels)
-      .addToLabels("final-app", "busybox")
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(1)
-      .withNewSelector()
-      .addToMatchLabels("final-app", "busybox")
-      .endSelector()
-      .withNewTemplate()
-      .withNewMetadata().addToLabels("final-app", "busybox").endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("busybox")
-      .withImage("busybox")
-      .withCommand("sleep", "10")
-      .withImagePullPolicy("IfNotPresent")
-      .endContainer()
-      .withRestartPolicy("Always")
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .withLabels(labels)
+        .addToLabels("final-app", "busybox")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(1)
+        .withNewSelector()
+        .addToMatchLabels("final-app", "busybox")
+        .endSelector()
+        .withNewTemplate()
+        .withNewMetadata().addToLabels("final-app", "busybox").endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("busybox")
+        .withImage("busybox")
+        .withCommand("sleep", "10")
+        .withImagePullPolicy("IfNotPresent")
+        .endContainer()
+        .withRestartPolicy("Always")
+        .endSpec()
+        .endTemplate()
+        .endSpec()
+        .build();
 
     // 1st createOrReplace(); should create the resource
     deployment = client.apps().deployments().createOrReplace(deployment);
@@ -190,19 +190,19 @@ class CreateOrReplaceIT {
   void testCreateOrReplaceSecret() {
     final String name = "create-or-replace-secret";
     Secret secret = new SecretBuilder()
-      .withNewMetadata().withName(name).withLabels(labels).endMetadata()
-      .addToData("username", "ferferfe")
-      .addToData("password", "MWYyZDFlMmU2N2Rm")
-      .build();
+        .withNewMetadata().withName(name).withLabels(labels).endMetadata()
+        .addToData("username", "ferferfe")
+        .addToData("password", "MWYyZDFlMmU2N2Rm")
+        .build();
 
     // 1st createOrReplace(); should create the resource
     secret = client.secrets().createOrReplace(secret);
     assertNotNull(secret);
     assertThat(secret)
-    .hasFieldOrPropertyWithValue("metadata.name", name)
-    .hasFieldOrPropertyWithValue("data.username", "ferferfe")
-    .hasFieldOrPropertyWithValue("data.password", "MWYyZDFlMmU2N2Rm")
-    .extracting("metadata.creationTimestamp").asString().isNotBlank();
+        .hasFieldOrPropertyWithValue("metadata.name", name)
+        .hasFieldOrPropertyWithValue("data.username", "ferferfe")
+        .hasFieldOrPropertyWithValue("data.password", "MWYyZDFlMmU2N2Rm")
+        .extracting("metadata.creationTimestamp").asString().isNotBlank();
 
     // Modify resource
     Map<String, String> data = secret.getData();
@@ -218,27 +218,27 @@ class CreateOrReplaceIT {
   void testCreateOrReplaceIngress() {
     final String name = "create-or-replace-ingress";
     Ingress ingress = new IngressBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .withLabels(labels)
-      .endMetadata()
-      .withNewSpec()
-      .addNewRule()
-      .withNewHttp()
-      .addNewPath()
-      .withPath("/testPath")
-      .withPathType("Prefix")
-      .withNewBackend()
-      .withNewService()
-      .withName("test")
-      .withNewPort().withNumber(80).endPort()
-      .endService()
-      .endBackend()
-      .endPath()
-      .endHttp()
-      .endRule()
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName(name)
+        .withLabels(labels)
+        .endMetadata()
+        .withNewSpec()
+        .addNewRule()
+        .withNewHttp()
+        .addNewPath()
+        .withPath("/testPath")
+        .withPathType("Prefix")
+        .withNewBackend()
+        .withNewService()
+        .withName("test")
+        .withNewPort().withNumber(80).endPort()
+        .endService()
+        .endBackend()
+        .endPath()
+        .endHttp()
+        .endRule()
+        .endSpec()
+        .build();
 
     // 1st createOrReplace(); should create the resource
     ingress = client.network().v1().ingresses().createOrReplace(ingress);
@@ -260,26 +260,26 @@ class CreateOrReplaceIT {
     // Given
     final String name = "create-or-replace-generic-resource";
     ConfigMap configMap = new ConfigMapBuilder()
-      .withNewMetadata().withName(name).withLabels(labels).endMetadata()
-      .addToData("a1", "A1")
-      .addToData("a2", "A2")
-      .build();
+        .withNewMetadata().withName(name).withLabels(labels).endMetadata()
+        .addToData("a1", "A1")
+        .addToData("a2", "A2")
+        .build();
     // When
     final ConfigMap createdResource = client.resource(configMap).createOrReplace();
     configMap.setData(Collections.singletonMap("b1", "B1"));
     final HasMetadata resource = client.resource(configMap).createOrReplace();
     // Then
     assertThat(createdResource)
-      .hasFieldOrPropertyWithValue("metadata.name", name)
-      .isNotEqualTo(resource)
-      .extracting("data").asInstanceOf(InstanceOfAssertFactories.MAP)
-      .containsOnly(entry("a1", "A1"), entry("a2", "A2"));
+        .hasFieldOrPropertyWithValue("metadata.name", name)
+        .isNotEqualTo(resource)
+        .extracting("data").asInstanceOf(InstanceOfAssertFactories.MAP)
+        .containsOnly(entry("a1", "A1"), entry("a2", "A2"));
 
     assertThat(resource)
-      .hasFieldOrPropertyWithValue("metadata.name", name)
-      .extracting("data").asInstanceOf(InstanceOfAssertFactories.MAP)
-      .hasSize(1)
-      .containsEntry("b1", "B1");
+        .hasFieldOrPropertyWithValue("metadata.name", name)
+        .extracting("data").asInstanceOf(InstanceOfAssertFactories.MAP)
+        .hasSize(1)
+        .containsEntry("b1", "B1");
   }
 
   @Test
@@ -313,19 +313,19 @@ class CreateOrReplaceIT {
     // Given
     List<HasMetadata> listToCreate = new ArrayList<>();
     listToCreate.add(new ConfigMapBuilder()
-      .withNewMetadata().withName("create-or-replace-it-delete-existing-configmap").withLabels(labels).endMetadata()
-      .addToData("A", "a")
-      .addToData("B", "b")
-      .build());
+        .withNewMetadata().withName("create-or-replace-it-delete-existing-configmap").withLabels(labels).endMetadata()
+        .addToData("A", "a")
+        .addToData("B", "b")
+        .build());
     listToCreate.add(new SecretBuilder()
-      .withNewMetadata().withName("create-or-replace-it-delete-existing-secret").withLabels(labels).endMetadata()
-      .addToData("USERNAME", "YWRtaW4=")
-      .addToData("PASSWORD", "MWYyZDFlMmU2N2Rm")
-      .build());
+        .withNewMetadata().withName("create-or-replace-it-delete-existing-secret").withLabels(labels).endMetadata()
+        .addToData("USERNAME", "YWRtaW4=")
+        .addToData("PASSWORD", "MWYyZDFlMmU2N2Rm")
+        .build());
 
     // When
     ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> op = client
-      .resourceList(listToCreate);
+        .resourceList(listToCreate);
     List<HasMetadata> listCreated = op.createOrReplace();
     op.delete();
     op.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);

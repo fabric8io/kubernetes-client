@@ -43,7 +43,7 @@ class KubernetesMockServerExtensionTests {
     final VersionInfo result = client.getKubernetesVersion();
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("major", "0")
-      .hasFieldOrPropertyWithValue("minor", "0");
+        .hasFieldOrPropertyWithValue("major", "0")
+        .hasFieldOrPropertyWithValue("minor", "0");
   }
 }
