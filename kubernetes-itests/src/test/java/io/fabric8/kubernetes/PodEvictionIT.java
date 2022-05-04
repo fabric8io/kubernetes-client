@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
-import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;

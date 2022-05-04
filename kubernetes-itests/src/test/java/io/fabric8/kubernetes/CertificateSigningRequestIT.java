@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.RequireK8sVersionAtLeast;
+import io.fabric8.junit.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestBuilder;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;

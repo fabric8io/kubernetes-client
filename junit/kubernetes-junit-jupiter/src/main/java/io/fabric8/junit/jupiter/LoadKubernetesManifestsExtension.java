@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.jupiter;
+package io.fabric8.junit.jupiter;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import static io.fabric8.jupiter.KubernetesNamespacedTestExtension.getClient;
+import static io.fabric8.junit.jupiter.KubernetesNamespacedTestExtension.getClient;
+
 
 public class LoadKubernetesManifestsExtension implements BeforeAllCallback, AfterAllCallback {
 

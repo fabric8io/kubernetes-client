@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;

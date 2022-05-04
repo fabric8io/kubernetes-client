@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.jupiter.api;
+package io.fabric8.junit.jupiter.api;
 
-import io.fabric8.jupiter.LoadKubernetesManifestsExtension;
+import io.fabric8.junit.jupiter.KubernetesNamespacedTestExtension;
+import io.fabric8.junit.jupiter.LoadKubernetesManifestsExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
@@ -36,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@ExtendWith(LoadKubernetesManifestsExtension.class)
+@ExtendWith({KubernetesNamespacedTestExtension.class, LoadKubernetesManifestsExtension.class})
 public @interface LoadKubernetesManifests {
 
   String[] value();

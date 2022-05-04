@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;

@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;

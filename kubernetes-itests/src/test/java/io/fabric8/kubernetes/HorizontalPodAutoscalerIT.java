@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.Test;

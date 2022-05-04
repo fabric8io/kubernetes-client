@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;

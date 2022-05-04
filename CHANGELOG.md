@@ -36,6 +36,7 @@ There is also client.resourceList(...).resources() and client.configMaps().resou
 This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
 * Fix #3472 #3587: Allowing for customization of the Informer store/cache key function and how state is stored.  See BasicItemStore and ReducedStateItemStore and the SharedIndexInformer.itemStore function.
 * Fix #3854: Camel-K: Missing method for manipulating KameletBindings
+* Fix #4117: Created new kubernetes-junit-jupiter module, adds a JUnit5 extension for Kubernetes
 
 #### _**Note**_: Breaking changes in the API
 Please see the [migration guide](doc/MIGRATION-v6.md)
