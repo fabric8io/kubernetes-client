@@ -44,7 +44,10 @@ public interface Client extends Closeable {
   <C extends Client> Boolean isAdaptable(Class<C> type);
 
   /**
-   * The logic will check for the existence of a handler or check the api server for support.
+   * Checks the Kubernetes server for support for the given KubernetesResource type.
+   *
+   * <p>The response is not cached, a new check will be performed for each method invocation. In case custom resource
+   * definition is installed in between invocations, this method might return different values.
    *
    * @param type to check for support
    * @return boolean value indicating whether this type is supported
