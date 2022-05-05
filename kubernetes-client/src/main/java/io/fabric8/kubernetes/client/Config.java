@@ -696,8 +696,9 @@ public class Config {
     command = getCommandWithFullyQualifiedPath(command, systemPathValue);
     List<String> args = exec.getArgs();
     if (args != null) {
-      argv.add(command + " " + String.join( " ", args));
+      command += " " + String.join(" ", args);
     }
+    argv.add(command);
     return argv;
   }
 

@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 5.12.3
+
+#### Bugs
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
+
 ### 5.12.2 (2022-04-06)
 * Fix #3582: SSL truststore can be loaded in FIPS enabled environments
 * Fix #3797: Implement SchemaSwap; generate CRD from model not owned
