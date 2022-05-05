@@ -586,24 +586,22 @@ public class ConfigTest {
   void testGetAuthenticatorCommandFromExecConfigNoArgs() throws IOException {
     // Given
     File commandFolder = Files.createTempDirectory("test").toFile();
-    File commandFile = new File(commandFolder, "aws");
-    boolean isNewFileCreated = commandFile.createNewFile();
     String systemPathValue = getTestPathValue(commandFolder);
     ExecConfig execConfigNoArgs = new ExecConfigBuilder()
-        .withApiVersion("client.authentication.k8s.io/v1alpha1")
-        .withCommand("gke-gcloud-auth-plugin")
-        .build();
+      .withApiVersion("client.authentication.k8s.io/v1alpha1")
+      .withCommand("/usr/local/bin/gke-gcloud-auth-plugin")
+      .build();
+    execConfigNoArgs.setArgs(null);
 
     // When
-    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfigNoArgs, new File("~/.kube/config"),
-        systemPathValue);
+    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(
+      execConfigNoArgs, null, systemPathValue);
 
     // Then
-    assertTrue(isNewFileCreated);
     assertNotNull(processBuilderArgs);
     assertEquals(3, processBuilderArgs.size());
     assertPlatformPrefixes(processBuilderArgs);
-    assertEquals(commandFile.getAbsolutePath(), processBuilderArgs.get(2));
+    assertEquals("/usr/local/bin/gke-gcloud-auth-plugin", processBuilderArgs.get(2));
   }
 
   private void assertPlatformPrefixes(List<String> processBuilderArgs) {
