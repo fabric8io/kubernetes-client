@@ -6,6 +6,7 @@
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
 * Fix #4106: removed listing from projectrequests
 * Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
