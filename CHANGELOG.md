@@ -2,6 +2,7 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
+* Fix #2860: ensure that lockexceptions won't inhibit notification
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
 * Fix #3990: Throw exception when `HasMetadata` is used in `resources(...)` API
@@ -16,6 +17,7 @@
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
 * Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
+* Fix #2207: added LeaderElector.start to provide a CompletableFuture for easy cancellation.
 * Fix #3969: relist will not trigger sync events
 * Fix #4082: improving informOnCondition to test the initial list instead of individual add events
 * Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts. 
