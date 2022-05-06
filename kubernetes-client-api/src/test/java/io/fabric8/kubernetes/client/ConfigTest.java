@@ -591,6 +591,7 @@ public class ConfigTest {
       .withApiVersion("client.authentication.k8s.io/v1alpha1")
       .withCommand("/usr/local/bin/gke-gcloud-auth-plugin")
       .build();
+    // Simulate "user.exec.args: null" like e.g. in the configuration for the gke-gcloud-auth-plugin.
     execConfigNoArgs.setArgs(null);
 
     // When
