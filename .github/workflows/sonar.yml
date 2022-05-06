@@ -30,6 +30,9 @@ concurrency:
   group: ci-sonar-kubernetes-client-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   sonar:
     name: Sonar

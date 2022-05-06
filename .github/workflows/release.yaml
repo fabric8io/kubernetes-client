@@ -37,6 +37,9 @@ on:
         required: true
         default: '8'
 
+permissions:
+  contents: read
+
 jobs:
   release:
     name: Release ${{ github.event.inputs.tag }}

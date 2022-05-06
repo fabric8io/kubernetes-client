@@ -30,6 +30,9 @@ concurrency:
   group: ci-license-kubernetes-client-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   style-check:
     name: License & Code Style Checks
