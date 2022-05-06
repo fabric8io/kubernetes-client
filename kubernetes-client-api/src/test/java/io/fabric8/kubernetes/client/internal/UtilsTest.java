@@ -15,12 +15,6 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -52,8 +46,8 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice;
@@ -72,6 +66,10 @@ import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,11 +77,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UtilsTest {
 
@@ -225,8 +228,8 @@ class UtilsTest {
     pluralToKubernetesResourceMap.put("volumeattachments", VolumeAttachment.class);
 
     // When & Then
-    pluralToKubernetesResourceMap.forEach((plural, kubernetesResource)
-      -> assertEquals(plural, Utils.getPluralFromKind(kubernetesResource.getSimpleName())));
+    pluralToKubernetesResourceMap.forEach(
+        (plural, kubernetesResource) -> assertEquals(plural, Utils.getPluralFromKind(kubernetesResource.getSimpleName())));
   }
 
   @Test
@@ -287,8 +290,8 @@ class UtilsTest {
   @DisplayName("isNotNullOrEmpty, null, should return false")
   void isNotNullOrEmpty() {
     // When
-    final boolean result1 = Utils.isNotNullOrEmpty((Map)null);
-    final boolean result2 = Utils.isNotNullOrEmpty((String)null);
+    final boolean result1 = Utils.isNotNullOrEmpty((Map) null);
+    final boolean result2 = Utils.isNotNullOrEmpty((String) null);
     final boolean result3 = Utils.isNotNullOrEmpty("");
 
     // Then
@@ -314,7 +317,7 @@ class UtilsTest {
   @DisplayName("isNotNullOrEmpty, some null values, should return true")
   void isNotNullOrEmptySomeAreNullTest() {
     // Given
-    String[] testSample = new String[] {"notNullObj", null, null};
+    String[] testSample = new String[] { "notNullObj", null, null };
 
     // When
     final boolean result = Utils.isNotNullOrEmpty(testSample);
@@ -327,7 +330,7 @@ class UtilsTest {
   @DisplayName("isNotNull, some null values, should return true")
   void isNotNullSomeAreNullTest() {
     // Given
-    String[] testSample = new String[] {"notNullObj", null, null};
+    String[] testSample = new String[] { "notNullObj", null, null };
 
     // When
     final boolean result = Utils.isNotNull(testSample);
@@ -339,7 +342,7 @@ class UtilsTest {
   @Test
   @DisplayName("isNotNull, no null values, should return true")
   void isNotNullNoneAreNullTest() {
-    String[] testSample = new String[] {"Not null", "Not null either"};
+    String[] testSample = new String[] { "Not null", "Not null either" };
 
     // When
     final boolean result = Utils.isNotNull(testSample);
@@ -376,12 +379,30 @@ class UtilsTest {
         assertEquals("-c", commandPrefix.get(1));
     }
   }
-  
+
   @Test
   void testDaemonThreadFactory() {
     ThreadFactory tf = Utils.daemonThreadFactory(this);
-    Thread t = tf.newThread(()->{});
+    Thread t = tf.newThread(() -> {
+    });
     assertTrue(t.isDaemon());
     assertTrue(t.getName().startsWith(UtilsTest.class.getSimpleName()));
+  }
+
+  @Test
+  void testSerialExecution() throws Exception {
+    AtomicInteger counter = new AtomicInteger();
+    CompletableFuture<?> completableFuture = new CompletableFuture<Void>();
+    Utils.scheduleWithVariableRate(completableFuture, Utils.getCommonExecutorSerive(), () -> {
+      counter.getAndIncrement();
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+      }
+      // if the counter is greater than 1, another thread has executed
+      assertEquals(1, counter.get());
+      completableFuture.complete(null);
+    }, 0, () -> 1L, TimeUnit.MILLISECONDS);
+    completableFuture.get(1, TimeUnit.SECONDS);
   }
 }
