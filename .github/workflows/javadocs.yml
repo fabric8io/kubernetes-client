@@ -30,6 +30,9 @@ concurrency:
   group: ci-docs-kubernetes-client-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   javadoc:
     name: JavaDocs

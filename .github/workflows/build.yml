@@ -30,6 +30,9 @@ concurrency:
   group: ci-build-kubernetes-client-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Java ${{ matrix.java }} Maven

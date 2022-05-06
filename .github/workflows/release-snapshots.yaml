@@ -28,6 +28,9 @@ on:
   schedule:
     - cron: '0 2 * * *' # Every day at 2am
 
+permissions:
+  contents: read
+
 jobs:
   release-snapshots:
     name: Release SNAPSHOT
