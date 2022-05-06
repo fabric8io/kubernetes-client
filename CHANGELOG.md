@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
 * Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators

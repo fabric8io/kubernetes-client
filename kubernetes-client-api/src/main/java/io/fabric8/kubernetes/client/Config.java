@@ -763,7 +763,7 @@ public class Config {
     List<String> argv = new ArrayList<>(Utils.getCommandPlatformPrefix());
     command = getCommandWithFullyQualifiedPath(command, systemPathValue);
     List<String> args = exec.getArgs();
-    if (args != null) {
+    if (args != null && !args.isEmpty()) {
       argv.add(command + " " + String.join(" ", args));
     }
     return argv;
