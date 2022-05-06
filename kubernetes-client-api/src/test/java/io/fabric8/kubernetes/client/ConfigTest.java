@@ -589,15 +589,15 @@ public class ConfigTest {
     File commandFile = new File(commandFolder, "gke-gcloud-auth-plugin");
     String systemPathValue = getTestPathValue(commandFolder);
     ExecConfig execConfigNoArgs = new ExecConfigBuilder()
-      .withApiVersion("client.authentication.k8s.io/v1alpha1")
-      .withCommand(commandFile.getPath())
-      .build();
+        .withApiVersion("client.authentication.k8s.io/v1alpha1")
+        .withCommand(commandFile.getPath())
+        .build();
     // Simulate "user.exec.args: null" like e.g. in the configuration for the gke-gcloud-auth-plugin.
     execConfigNoArgs.setArgs(null);
 
     // When
     List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(
-      execConfigNoArgs, null, systemPathValue);
+        execConfigNoArgs, null, systemPathValue);
 
     // Then
     assertNotNull(processBuilderArgs);
