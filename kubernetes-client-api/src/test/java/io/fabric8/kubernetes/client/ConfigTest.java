@@ -583,13 +583,14 @@ public class ConfigTest {
   }
 
   @Test
-  void testGetAuthenticatorCommandFromExecConfigNoArgs() throws IOException {
+  void testGetAuthenticatorCommandFromExecConfigNullArgs() throws IOException {
     // Given
     File commandFolder = Files.createTempDirectory("test").toFile();
+    File commandFile = new File(commandFolder, "gke-gcloud-auth-plugin");
     String systemPathValue = getTestPathValue(commandFolder);
     ExecConfig execConfigNoArgs = new ExecConfigBuilder()
       .withApiVersion("client.authentication.k8s.io/v1alpha1")
-      .withCommand("/usr/local/bin/gke-gcloud-auth-plugin")
+      .withCommand(commandFile.getPath())
       .build();
     // Simulate "user.exec.args: null" like e.g. in the configuration for the gke-gcloud-auth-plugin.
     execConfigNoArgs.setArgs(null);
@@ -602,7 +603,7 @@ public class ConfigTest {
     assertNotNull(processBuilderArgs);
     assertEquals(3, processBuilderArgs.size());
     assertPlatformPrefixes(processBuilderArgs);
-    assertEquals("/usr/local/bin/gke-gcloud-auth-plugin", processBuilderArgs.get(2));
+    assertEquals(commandFile.getPath(), processBuilderArgs.get(2));
   }
 
   private void assertPlatformPrefixes(List<String> processBuilderArgs) {
