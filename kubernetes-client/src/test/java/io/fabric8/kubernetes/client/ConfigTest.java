@@ -629,7 +629,7 @@ public class ConfigTest {
   }
 
   @Test
-  void testGetAuthenticatorCommandFromExecConfigNoArgs() throws IOException {
+  void testGetAuthenticatorCommandFromExecConfigNullArgs() throws IOException {
     // Given
     File commandFolder = Files.createTempDirectory("test").toFile();
     File commandFile = new File(commandFolder, "gke-gcloud-auth-plugin");
