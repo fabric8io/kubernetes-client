@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MetricOperation;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public abstract class MetricOperationsImpl<T, L> extends OperationSupport implem
   private final Class<L> apiTypeListClass;
   private final Class<T> apiTypeClass;
 
-  public MetricOperationsImpl(OperationContext operationContext, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
+  protected MetricOperationsImpl(OperationContext operationContext, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
     super(operationContext);
     this.apiTypeClass = apiTypeClass;
     this.apiTypeListClass = apiTypeListClass;
@@ -107,11 +107,11 @@ public abstract class MetricOperationsImpl<T, L> extends OperationSupport implem
     URLBuilder httpUrlBuilder = new URLBuilder(baseUrl);
 
     StringBuilder sb = new StringBuilder();
-    for(Map.Entry<String, String> entry : labels.entrySet()) {
+    for (Map.Entry<String, String> entry : labels.entrySet()) {
       sb.append(entry.getKey()).append("=").append(entry.getValue()).append(",");
     }
     httpUrlBuilder.addQueryParameter("labelSelector", sb.substring(0, sb.toString().length() - 1));
     return httpUrlBuilder.toString();
   }
-  
+
 }

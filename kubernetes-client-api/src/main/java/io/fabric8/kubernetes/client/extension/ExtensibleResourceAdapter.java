@@ -33,7 +33,7 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   protected ExtensibleResource<T> resource;
   protected Client client;
 
-  public ExtensibleResourceAdapter() {
+  protected ExtensibleResourceAdapter() {
 
   }
 

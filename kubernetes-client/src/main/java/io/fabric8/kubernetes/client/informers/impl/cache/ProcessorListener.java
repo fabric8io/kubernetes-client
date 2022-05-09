@@ -39,7 +39,7 @@ public class ProcessorListener<T> {
   private ZonedDateTime nextResync;
   private ResourceEventHandler<? super T> handler;
 
-  public ProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodInMillis) {
+  protected ProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodInMillis) {
     this.resyncPeriodInMillis = resyncPeriodInMillis;
     this.handler = handler;
 
