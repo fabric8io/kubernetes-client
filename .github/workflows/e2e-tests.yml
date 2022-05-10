@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.23.3, v1.22.6, v1.20.15, v1.19.16, v1.12.10]
+        kubernetes: [v1.24.0,v1.23.3, v1.22.6, v1.20.15, v1.19.16, v1.12.10]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -73,7 +73,7 @@ jobs:
           minikube version: v1.25.1
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
-          start args: '--addons=metrics-server --force'
+          start args: '--force'
       - name: Cache .m2 registry
         uses: actions/cache@v3
         with:
