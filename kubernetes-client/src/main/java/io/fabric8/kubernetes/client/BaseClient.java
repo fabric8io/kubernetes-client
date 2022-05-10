@@ -229,6 +229,9 @@ public abstract class BaseClient implements Client {
     if (GenericKubernetesResource.class.equals(resourceType)) {
       throw new KubernetesClientException("resources cannot be called with a generic type");
     }
+    if (resourceType.isInterface()) {
+      throw new IllegalArgumentException("resources cannot be called with an interface");
+    }
     try {
       // TODO: check the Resource class type
       return handlers.getOperation(resourceType, listClass, this);
