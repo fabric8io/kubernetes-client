@@ -102,16 +102,21 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
             .endMetadata()
             .build())
         .create();
-    final List<ObjectReference> secrets = client.serviceAccounts()
-        .inNamespace(namespace.getMetadata().getName())
-        .withName("default")
-        .waitUntilCondition(sa -> sa != null && sa.getSecrets() != null
-            && sa.getSecrets().stream().anyMatch(s -> s.getName().matches("default-token.+")),
-            5, TimeUnit.SECONDS)
-        .getSecrets();
-    for (ObjectReference secret : secrets) {
-      client.secrets().inNamespace(namespace.getMetadata().getName()).withName(secret.getName())
-          .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    // If < v1.24, wait for ServiceAccount secret to be ready
+    final int major = Integer.parseInt(client.getKubernetesVersion().getMajor().replaceAll("\\D+", ""));
+    final int minor = Integer.parseInt(client.getKubernetesVersion().getMinor().replaceAll("\\D+", ""));
+    if (major < 1 || (major == 1 && minor < 24)) {
+      final List<ObjectReference> secrets = client.serviceAccounts()
+          .inNamespace(namespace.getMetadata().getName())
+          .withName("default")
+          .waitUntilCondition(sa -> sa != null && sa.getSecrets() != null
+              && sa.getSecrets().stream().anyMatch(s -> s.getName().matches("default-token.+")),
+              5, TimeUnit.SECONDS)
+          .getSecrets();
+      for (ObjectReference secret : secrets) {
+        client.secrets().inNamespace(namespace.getMetadata().getName()).withName(secret.getName())
+            .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+      }
     }
     return namespace;
   }
