@@ -64,17 +64,19 @@ public interface EditReplacePatchable<T>
 
   /**
    * Update field(s) of a resource using a JSON patch.
-   *
-   * <br>
+   * <p>
    * It is the same as calling {@link #patch(PatchContext, Object)} with {@link PatchType#JSON} specified.
-   *
+   * <p>
    * WARNING: This may overwrite concurrent changes (between when you obtained your item and the current state) in an unexpected
    * way.
-   * Consider using edit instead or ensure you have called load or resource to define the base of your patch
+   * <p>
+   * Consider using edit, which allows for a known base, and a builder instead.
    *
    * @param item to be patched with patched values
    * @return returns deserialized version of api server response
+   * @deprecated use resource(item).patch() or edit instead
    */
+  @Deprecated
   default T patch(T item) {
     return patch(PatchContext.of(PatchType.JSON), item);
   }
@@ -83,8 +85,7 @@ public interface EditReplacePatchable<T>
    * Update field(s) of a resource using type specified in {@link PatchContext}(defaults to strategic merge if not specified).
    *
    * <ul>
-   * <li>{@link PatchType#JSON} - will create a JSON patch against the current item. See the note in {@link #patch(Object)}
-   * about what is used for the base object.
+   * <li>{@link PatchType#JSON} - will create a JSON patch against the latest server state
    * <li>{@link PatchType#JSON_MERGE} - will send the serialization of the item as a JSON MERGE patch.
    * Set the resourceVersion to null to prevent optimistic locking.
    * <li>{@link PatchType#STRATEGIC_MERGE} - will send the serialization of the item as a STRATEGIC MERGE patch.
@@ -137,4 +138,40 @@ public interface EditReplacePatchable<T>
    * @return updated object
    */
   T patchStatus();
+
+  /**
+   * Update field(s) of a resource using a JSON patch.
+   * <p>
+   * It is the same as calling {@link #patch(PatchContext, Object)} with {@link PatchType#JSON} specified.
+   * <p>
+   * WARNING: This may overwrite concurrent changes (between when you obtained your item and the current state) in an unexpected
+   * way.
+   * <p>
+   * Consider using edit instead.
+   *
+   * @return returns deserialized version of api server response
+   */
+  T patch();
+
+  /**
+   * Update field(s) of a resource using type specified in {@link PatchContext}(defaults to strategic merge if not specified).
+   * <p>
+   * For use when you are providing a complete object to be patched:
+   * resource(item).patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY))
+   *
+   * <ul>
+   * <li>{@link PatchType#JSON} - will create a JSON patch against the latest server state
+   * <li>{@link PatchType#JSON_MERGE} - will send the serialization of the item as a JSON MERGE patch.
+   * Set the resourceVersion to null to prevent optimistic locking.
+   * <li>{@link PatchType#STRATEGIC_MERGE} - will send the serialization of the item as a STRATEGIC MERGE patch.
+   * Set the resourceVersion to null to prevent optimistic locking.
+   * <li>{@link PatchType#SERVER_SIDE_APPLY} - will send the serialization of the item as a SERVER SIDE APPLY patch.
+   * You may explicitly set the {@link PatchContext#getFieldManager()} as well to override the default.
+   * </ul>
+   *
+   * @param patchContext {@link PatchContext} for patch request
+   * @return returns deserialized version of api server response
+   */
+  T patch(PatchContext patchContext);
+
 }

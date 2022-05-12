@@ -215,6 +215,8 @@ Client.adapt will no longer perform the isAdaptable check - that is you may free
 
 - DSL methods available off of a collection context involving a resource - client.configMaps().create(configMap) - should instead use a no-argument method - client.configMaps().resource(configMap).create() or client.resource(configMap).create().
 
+The only exception to the above is patch(PatchContext, item) - it is valid to be called after withName. 
+
 ## Object Sorting
 
 KubernetesList and Template will no longer automatically sort their objects by default.  You may use the HasMetadataComparator to sort the items as needed.
