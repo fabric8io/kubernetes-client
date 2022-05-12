@@ -516,7 +516,25 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T patchStatus() {
-    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+    return patchStatus(getNonNullItem());
+  }
+
+  @Override
+  public T patch() {
+    return patch(getNonNullItem());
+  }
+
+  @Override
+  public T patch(PatchContext patchContext) {
+    return patch(patchContext, getNonNullItem());
+  }
+
+  protected T getNonNullItem() {
+    T result = getItem();
+    if (result == null) {
+      throw new KubernetesClientException("item required");
+    }
+    return result;
   }
 
   @Override
@@ -1045,7 +1063,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public ExtensibleResource<T> lockResourceVersion() {
-    return lockResourceVersion(KubernetesResourceUtil.getResourceVersion(getItem()));
+    return lockResourceVersion(KubernetesResourceUtil.getResourceVersion(getNonNullItem()));
   }
 
   @Override
@@ -1055,7 +1073,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T create() {
-    return create(getItem());
+    return create(getNonNullItem());
   }
 
 }

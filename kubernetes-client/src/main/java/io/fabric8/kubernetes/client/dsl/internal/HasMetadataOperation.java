@@ -90,15 +90,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
    * Will always return non-null or throw an exception.
    */
   protected T requireFromServer() {
-    return requireFromServer(null);
-  }
-
-  /**
-   * Get the current item from the server, consulting the metadata for the name if needed
-   * <br>
-   * Will always return non-null or throw an exception.
-   */
-  protected T requireFromServer(ObjectMeta metadata) {
     try {
       if (Utils.isNotNullOrEmpty(getName())) {
         return newInstance(context.withItem(null)).require();
@@ -108,9 +99,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (Utils.isNotNullOrEmpty(name)) {
           return newInstance(context.withItem(null)).withName(name).require();
         }
-      }
-      if (metadata != null && Utils.isNotNullOrEmpty(metadata.getName())) {
-        return newInstance(context.withItem(null)).withName(metadata.getName()).require();
       }
     } catch (ResourceNotFoundException e) {
       if (e.getCause() instanceof KubernetesClientException) {
@@ -155,7 +143,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     if (!status) {
       try {
         ObjectMeta metadata = item.getMetadata();
-        item = modifyItemForReplaceOrPatch(() -> requireFromServer(metadata), item);
+        item = modifyItemForReplaceOrPatch(() -> requireFromServer(), item);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
       }
@@ -170,7 +158,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
           // if a resourceVersion is already there, try it first
           resourceVersion = existingResourceVersion;
         } else {
-          T got = requireFromServer(item.getMetadata());
+          T got = requireFromServer();
           resourceVersion = KubernetesResourceUtil.getResourceVersion(got);
         }
 
@@ -207,7 +195,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   protected T patch(PatchContext context, T base, T item, boolean status) {
     if (base == null && context != null && context.getPatchType() == PatchType.JSON) {
-      base = requireFromServer(item.getMetadata());
+      base = getMandatory();
       if (base.getMetadata() != null) {
         // prevent the resourceVersion from being modified in the patch
         if (item.getMetadata() == null) {
@@ -231,11 +219,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       }
     };
     return visitor.apply(item);
-  }
-
-  @Override
-  public T patchStatus() {
-    return patchStatus(getItem());
   }
 
   @Override

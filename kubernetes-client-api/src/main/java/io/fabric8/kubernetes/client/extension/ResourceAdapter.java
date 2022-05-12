@@ -291,4 +291,14 @@ public class ResourceAdapter<T> implements Resource<T> {
     return resource.patchStatus();
   }
 
+  @Override
+  public T patch() {
+    return resource.patch();
+  }
+
+  @Override
+  public T patch(PatchContext patchContext) {
+    return resource.patch(patchContext);
+  }
+
 }

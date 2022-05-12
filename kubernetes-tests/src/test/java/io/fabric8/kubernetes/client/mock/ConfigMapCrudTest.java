@@ -116,6 +116,31 @@ class ConfigMapCrudTest {
   }
 
   @Test
+  void testPatchBase() {
+    ConfigMap configmap2 = new ConfigMapBuilder()
+        .withNewMetadata()
+        .addToLabels("foo", "bar")
+        .withName("configmap2")
+        .endMetadata()
+        .addToData("two", "2")
+        .build();
+    ConfigMap configmap2a = new ConfigMapBuilder()
+        .withNewMetadata()
+        .addToLabels("foo", "bar")
+        .withName("configmap2")
+        .endMetadata()
+        .addToData("three", "3")
+        .build();
+
+    client.configMaps().inNamespace("ns1").resource(configmap2).create();
+    client.configMaps().inNamespace("ns1").resource(configmap2a).replace();
+
+    // should still diff to latest
+    ConfigMap result = client.configMaps().inNamespace("ns1").resource(configmap2).patch(configmap2);
+    assertEquals(Collections.singletonMap("three", "3"), result.getData());
+  }
+
+  @Test
   @DisplayName("edit, should add and remove data entries")
   void edit() {
     // Given
