@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -35,6 +36,9 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -82,10 +86,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   public T scale(int count, boolean wait) {
     T res = withReplicas(count);
     if (wait) {
-      res = waitUntilScaled(count);
-      if (res == null) {
-        res = getMandatory();
-      }
+      return waitUntilScaled(count);
     }
     return res;
   }
@@ -132,10 +133,11 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
         return false;
       }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
     } catch (KubernetesClientTimeoutException e) {
-      Log.error("{}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
-          replicasRef.get(), count, getType().getSimpleName(), name, namespace,
-          TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
-      return null;
+      throw new KubernetesClientException(
+          String.format("%s/%s pod(s) ready for %s: %s in namespace: %s  after waiting for %s seconds so giving up",
+              replicasRef.get(), count, getType().getSimpleName(), name, namespace,
+              TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout())),
+          e);
     }
   }
 
@@ -204,6 +206,57 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   @Override
   public LogWatch watchLog() {
     return watchLog(null);
+  }
+
+  @Override
+  public T updateImage(String image) {
+    T value = get();
+
+    if (value == null) {
+      throw new KubernetesClientException("Resource doesn't exist");
+    }
+
+    List<Container> containers = getContainers(value);
+
+    if (containers.size() > 1) {
+      throw new KubernetesClientException("Image update is not supported for multicontainer pods");
+    }
+    if (containers.isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
+
+    Container container = containers.iterator().next();
+    return updateImage(Collections.singletonMap(container.getName(), image));
+  }
+
+  protected abstract List<Container> getContainers(T value);
+
+  @Override
+  public T updateImage(Map<String, String> containerToImageMap) {
+    T value = get();
+    if (value == null) {
+      throw new KubernetesClientException("Resource doesn't exist");
+    }
+
+    T base = Serialization.clone(value);
+
+    List<Container> containers = getContainers(value);
+
+    if (containers.isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
+
+    for (Container container : containers) {
+      if (containerToImageMap.containsKey(container.getName())) {
+        container.setImage(containerToImageMap.get(container.getName()));
+      }
+    }
+
+    return sendPatchedObject(base, value);
+  }
+
+  protected T sendPatchedObject(T oldObject, T updatedObject) {
+    return this.patch(null, oldObject, updatedObject, false);
   }
 
 }

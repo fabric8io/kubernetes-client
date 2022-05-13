@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
@@ -29,16 +28,17 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,8 +74,7 @@ public class StatefulSetOperationsImpl
 
   @Override
   public RollingUpdater<StatefulSet, StatefulSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new StatefulSetRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
-        config.getLoggingInterval());
+    return null;
   }
 
   @Override
@@ -93,44 +92,6 @@ public class StatefulSetOperationsImpl
     return (current != null && current.getStatus() != null && current.getStatus().getObservedGeneration() != null)
         ? current.getStatus().getObservedGeneration()
         : -1;
-  }
-
-  @Override
-  public StatefulSet updateImage(Map<String, String> containerToImageMap) {
-    StatefulSet statefulSet = get();
-    if (statefulSet == null) {
-      throw new KubernetesClientException("Existing replica set doesn't exist");
-    }
-    if (statefulSet.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
-    }
-
-    List<Container> containers = statefulSet.getSpec().getTemplate().getSpec().getContainers();
-    for (Container container : containers) {
-      if (containerToImageMap.containsKey(container.getName())) {
-        container.setImage(containerToImageMap.get(container.getName()));
-      }
-    }
-    statefulSet.getSpec().getTemplate().getSpec().setContainers(containers);
-    return sendPatchedObject(get(), statefulSet);
-  }
-
-  @Override
-  public StatefulSet updateImage(String image) {
-    StatefulSet oldRC = get();
-
-    if (oldRC == null) {
-      throw new KubernetesClientException("Existing StatefulSet doesn't exist");
-    }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
-      throw new KubernetesClientException("Image update is not supported for multicontainer pods");
-    }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
-    }
-
-    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
-    return updateImage(Collections.singletonMap(container.getName(), image));
   }
 
   @Override
@@ -178,17 +139,17 @@ public class StatefulSetOperationsImpl
 
   @Override
   public StatefulSet pause() {
-    return sendPatchedStatefulSet(RollingUpdater.requestPayLoadForRolloutPause());
+    throw new KubernetesClientException("not supported");
   }
 
   @Override
   public StatefulSet resume() {
-    return sendPatchedStatefulSet(RollingUpdater.requestPayLoadForRolloutResume());
+    throw new KubernetesClientException("not supported");
   }
 
   @Override
   public StatefulSet restart() {
-    return sendPatchedStatefulSet(RollingUpdater.requestPayLoadForRolloutRestart());
+    return RollingUpdater.restart(this);
   }
 
   @Override
@@ -214,23 +175,7 @@ public class StatefulSetOperationsImpl
     });
     ControllerRevision previousControllerRevision = controllerRevisions.get(1);
 
-    return sendPatchedStatefulSetData(previousControllerRevision.getData());
-  }
-
-  private StatefulSet sendPatchedStatefulSet(Map<String, Object> patchedUpdate) {
-    StatefulSet oldStatefulSet = get();
-    try {
-      return handlePatch(oldStatefulSet, patchedUpdate);
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  private StatefulSet sendPatchedStatefulSetData(HasMetadata patchedUpdate) {
-    return sendPatchedStatefulSet(getObjectValueAsMap(patchedUpdate));
+    return patch(PatchContext.of(PatchType.STRATEGIC_MERGE), Serialization.asJson(previousControllerRevision.getData()));
   }
 
   private ControllerRevisionList getControllerRevisionListForStatefulSet(StatefulSet statefulSet) {
@@ -246,6 +191,11 @@ public class StatefulSetOperationsImpl
       labels.putAll(statefulSet.getSpec().getTemplate().getMetadata().getLabels());
     }
     return labels;
+  }
+
+  @Override
+  protected List<Container> getContainers(StatefulSet value) {
+    return value.getSpec().getTemplate().getSpec().getContainers();
   }
 
 }

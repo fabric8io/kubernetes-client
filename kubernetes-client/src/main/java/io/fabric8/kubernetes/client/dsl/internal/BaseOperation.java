@@ -659,22 +659,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handlePatch(context, current, updated, getType(), status);
   }
 
-  protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws InterruptedException, IOException {
-    updateApiVersion(current);
-    return handlePatch(current, patchedUpdate, getType());
-  }
-
-  protected T sendPatchedObject(T oldObject, T updatedObject) {
-    try {
-      return handlePatch(null, oldObject, updatedObject, false);
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
   protected Scale handleScale(Scale scaleParam) {
     try {
       return handleScale(getCompleteResourceUrl().toString(), scaleParam);

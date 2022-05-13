@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -39,11 +38,15 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -91,8 +94,7 @@ public class DeploymentOperationsImpl
 
   @Override
   public RollingUpdater<Deployment, DeploymentList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new DeploymentRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
-        config.getLoggingInterval());
+    return null;
   }
 
   @Override
@@ -117,57 +119,18 @@ public class DeploymentOperationsImpl
   }
 
   @Override
-  public Deployment updateImage(String image) {
-    Deployment oldRC = get();
-
-    if (oldRC == null) {
-      throw new KubernetesClientException("Existing replica set doesn't exist");
-    }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
-      throw new KubernetesClientException(
-          "updateImage(image) does not supported for multicontainer pods, use updateImage(Map<String, String>) instead");
-    }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
-    }
-
-    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
-    return updateImage(Collections.singletonMap(container.getName(), image));
-  }
-
-  @Override
-  public Deployment updateImage(Map<String, String> containerToImageMap) {
-    Deployment deployment = get();
-    if (deployment == null) {
-      throw new KubernetesClientException("Existing replica set doesn't exist");
-    }
-    if (deployment.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
-    }
-
-    List<Container> containers = deployment.getSpec().getTemplate().getSpec().getContainers();
-    for (Container container : containers) {
-      if (containerToImageMap.containsKey(container.getName())) {
-        container.setImage(containerToImageMap.get(container.getName()));
-      }
-    }
-    deployment.getSpec().getTemplate().getSpec().setContainers(containers);
-    return sendPatchedObject(get(), deployment);
-  }
-
-  @Override
   public Deployment resume() {
-    return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutResume());
+    return RollingUpdater.resume(this);
   }
 
   @Override
   public Deployment pause() {
-    return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutPause());
+    return RollingUpdater.pause(this);
   }
 
   @Override
   public Deployment restart() {
-    return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutRestart());
+    return RollingUpdater.restart(this);
   }
 
   @Override
@@ -298,18 +261,6 @@ public class DeploymentOperationsImpl
     return Optional.empty();
   }
 
-  private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {
-    Deployment oldDeployment = get();
-    try {
-      return handlePatch(oldDeployment, patchedUpdate);
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
   private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {
     return new ReplicaSetOperationsImpl(context.getClient()).inNamespace(getNamespace())
         .withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
@@ -323,6 +274,11 @@ public class DeploymentOperationsImpl
       labels.putAll(deployment.getSpec().getTemplate().getMetadata().getLabels());
     }
     return labels;
+  }
+
+  @Override
+  protected List<Container> getContainers(Deployment value) {
+    return value.getSpec().getTemplate().getSpec().getContainers();
   }
 
 }
