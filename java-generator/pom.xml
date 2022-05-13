@@ -32,9 +32,20 @@
 
   <modules>
     <module>core</module>
-    <module>cli</module>
     <module>maven-plugin</module>
     <module>it</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>cli</id>
+      <activation>
+          <jdk>[11,)</jdk>
+      </activation>
+      <modules>
+          <module>cli</module>
+      </modules>
+    </profile>
+  </profiles>
 
 </project>
