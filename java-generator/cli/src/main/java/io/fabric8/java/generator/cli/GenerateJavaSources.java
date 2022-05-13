@@ -17,6 +17,7 @@ package io.fabric8.java.generator.cli;
 
 import io.fabric8.java.generator.CRGeneratorRunner;
 import io.fabric8.java.generator.Config;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -24,6 +25,41 @@ import picocli.CommandLine.Option;
 import java.io.File;
 
 @Command(name = "java-gen", mixinStandardHelpOptions = true, helpCommand = true, versionProvider = KubernetesClientVersionProvider.class)
+@RegisterForReflection(targets = {
+    io.fabric8.java.generator.cli.KubernetesClientVersionProvider.class,
+    io.fabric8.kubernetes.api.model.FieldsV1.class,
+    io.fabric8.kubernetes.api.model.HasMetadata.class,
+    io.fabric8.kubernetes.api.model.KubernetesResource.class,
+    io.fabric8.kubernetes.api.model.ManagedFieldsEntry.class,
+    io.fabric8.kubernetes.api.model.ObjectMeta.class,
+    io.fabric8.kubernetes.api.model.OwnerReference.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceConversion.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionStatus.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresourceScale.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresourceStatus.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresources.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.ExternalDocumentation.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Serializer.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Deserializer.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Serializer.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Deserializer.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Serializer.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.ServiceReference.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.WebhookClientConfig.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1.WebhookConversion.class,
+    io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition.class,
+    io.fabric8.kubernetes.internal.KubernetesDeserializer.class
+})
 public class GenerateJavaSources implements Runnable {
 
   @Option(names = { "-s",

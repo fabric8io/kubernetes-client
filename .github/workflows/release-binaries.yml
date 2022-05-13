@@ -1,0 +1,49 @@
+name: Release Java Generator CLI binaries
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # Every day at 2am
+
+jobs:
+  build-native-binary:
+    # Cheap way to prevent accidental releases
+    # Modify the list to add users with release permissions
+    if: contains('["manusa","rohanKanojia"]', github.actor)
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        gu-binary: [gu, gu.cmd]
+        exclude:
+          - os: ubuntu-latest
+            gu-binary: gu.cmd
+          - os: macos-latest
+            gu-binary: gu.cmd
+          - os: windows-latest
+            gu-binary: gu
+    continue-on-error: true
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.1.0'
+          java-version: '11'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install native-image component
+        run: |
+          ${{ matrix.gu-binary }} install native-image
+
+      - name: Compile native binaries
+        run: |
+          ./mvnw -pl :java-generator-cli -am clean package -Pnative -DskipTests
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: java-gen-${{ matrix.os }}
+          path: ./java-generator/cli/target/java-generator-*-runner*
+          if-no-files-found: error

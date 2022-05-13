@@ -30,20 +30,43 @@
   <name>Fabric8 :: Java generator :: CLI</name>
 
   <properties>
-    <picocli.version>4.6.3</picocli.version>
+    <compiler-plugin.version>3.8.1</compiler-plugin.version>
+    <failsafe.useModulePath>false</failsafe.useModulePath>
+    <maven.compiler.release>11</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+    <quarkus.platform.version>2.9.0.Final</quarkus.platform.version>
+    <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>${quarkus.platform.artifact-id}</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>java-generator-core</artifactId>
-      <version>${project.version}</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-picocli</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>info.picocli</groupId>
-      <artifactId>picocli</artifactId>
-      <version>${picocli.version}</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-arc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>java-generator-core</artifactId>
     </dependency>
 
     <dependency>
@@ -57,83 +80,82 @@
     </dependency>
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <groupId>org.jboss.slf4j</groupId>
+      <artifactId>slf4j-jboss-logmanager</artifactId>
     </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+              <goal>generate-code</goal>
+              <goal>generate-code-tests</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler-plugin.version}</version>
         <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>info.picocli</groupId>
-              <artifactId>picocli-codegen</artifactId>
-              <version>${picocli.version}</version>
-            </path>
-          </annotationProcessorPaths>
           <compilerArgs>
-            <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
+            <arg>-parameters</arg>
           </compilerArgs>
         </configuration>
       </plugin>
-
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0</version>
-        <executions>
-            <execution>
-                <phase>package</phase>
-                <goals>
-                    <goal>shade</goal>
-                </goals>
-                <configuration>
-                    <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>io.fabric8.java.generator.cli.GenerateJavaSources</mainClass>
-                        </transformer>
-                    </transformers>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-            </execution>
-        </executions>
-    </plugin>
-
-    <!-- now make the jar chmod +x style executable -->
-    <plugin>
-        <groupId>org.skife.maven</groupId>
-        <artifactId>really-executable-jar-maven-plugin</artifactId>
-        <version>1.5.0</version>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire-plugin.version}</version>
         <configuration>
-            <flags>-Xmx1G</flags>
-            <programFile>java-gen</programFile>
-            <attachProgramFile>true</attachProgramFile>
+          <systemPropertyVariables>
+            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
         </configuration>
-
-        <executions>
-            <execution>
-                <phase>package</phase>
-                <goals>
-                    <goal>really-executable-jar</goal>
-                </goals>
-            </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>native</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${surefire-plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <systemPropertyVariables>
+                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                    <maven.home>${maven.home}</maven.home>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <quarkus.package.type>native</quarkus.package.type>
+      </properties>
+    </profile>
+  </profiles>
 </project>
