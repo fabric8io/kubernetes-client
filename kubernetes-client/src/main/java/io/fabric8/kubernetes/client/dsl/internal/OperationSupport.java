@@ -388,24 +388,6 @@ public class OperationSupport {
   /**
    * Send an http patch and handle the response.
    *
-   * @param current current object
-   * @param patchForUpdate updated object spec as json string
-   * @param type type of object
-   * @param <T> template argument provided
-   *
-   * @return returns de-serialized version of api server response
-   * @throws InterruptedException Interrupted Exception
-   * @throws IOException IOException
-   */
-  protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type)
-      throws InterruptedException, IOException {
-    return handlePatch(new PatchContext.Builder().withPatchType(PatchType.STRATEGIC_MERGE).build(), current,
-        JSON_MAPPER.writeValueAsString(patchForUpdate), type, false);
-  }
-
-  /**
-   * Send an http patch and handle the response.
-   *
    * @param patchContext patch options for patch request
    * @param current current object
    * @param patchForUpdate Patch string

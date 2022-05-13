@@ -36,7 +36,6 @@ import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,44 +63,6 @@ public class ReplicaSetOperationsImpl
   @Override
   public ReplicaSetOperationsImpl newInstance(RollingOperationContext context) {
     return new ReplicaSetOperationsImpl(context, this.context);
-  }
-
-  @Override
-  public ReplicaSet updateImage(String image) {
-    ReplicaSet oldRC = get();
-
-    if (oldRC == null) {
-      throw new KubernetesClientException("Existing replication controller doesn't exist");
-    }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
-      throw new KubernetesClientException("Image update is not supported for multicontainer pods");
-    }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
-    }
-
-    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
-    return updateImage(Collections.singletonMap(container.getName(), image));
-  }
-
-  @Override
-  public ReplicaSet updateImage(Map<String, String> containerToImageMap) {
-    ReplicaSet replicationController = get();
-    if (replicationController == null) {
-      throw new KubernetesClientException("Existing replica set doesn't exist");
-    }
-    if (replicationController.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
-    }
-
-    List<Container> containers = replicationController.getSpec().getTemplate().getSpec().getContainers();
-    for (Container container : containers) {
-      if (containerToImageMap.containsKey(container.getName())) {
-        container.setImage(containerToImageMap.get(container.getName()));
-      }
-    }
-    replicationController.getSpec().getTemplate().getSpec().setContainers(containers);
-    return sendPatchedObject(get(), replicationController);
   }
 
   @Override
@@ -205,5 +166,10 @@ public class ReplicaSetOperationsImpl
       labels.putAll(replicaSet.getSpec().getSelector().getMatchLabels());
     }
     return labels;
+  }
+
+  @Override
+  protected List<Container> getContainers(ReplicaSet value) {
+    return value.getSpec().getTemplate().getSpec().getContainers();
   }
 }

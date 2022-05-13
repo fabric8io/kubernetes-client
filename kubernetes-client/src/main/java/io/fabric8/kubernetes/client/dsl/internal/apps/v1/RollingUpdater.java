@@ -28,10 +28,14 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.internal.PatchUtils.Format;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,6 +173,22 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     } catch (NoSuchAlgorithmException | JsonProcessingException e) {
       throw new KubernetesClientException("Could not calculate MD5 of RC", e);
     }
+  }
+
+  private static <T> T applyPatch(Resource<T> resource, Map<String, Object> map) {
+    return resource.patch(PatchContext.of(PatchType.STRATEGIC_MERGE), Serialization.asJson(map));
+  }
+
+  public static <T> T resume(Resource<T> resource) {
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutResume());
+  }
+
+  public static <T> T pause(Resource<T> resource) {
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutPause());
+  }
+
+  public static <T> T restart(Resource<T> resource) {
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart());
   }
 
   public static Map<String, Object> requestPayLoadForRolloutPause() {
