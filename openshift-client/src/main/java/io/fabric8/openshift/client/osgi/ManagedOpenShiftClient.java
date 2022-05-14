@@ -183,7 +183,7 @@ import static io.fabric8.openshift.client.OpenShiftConfig.DEFAULT_BUILD_TIMEOUT;
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY;
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY;
 
-@Component(immediate = true, configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.OPTIONAL)
+@Component(configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.OPTIONAL)
 @Service({ OpenShiftClient.class, NamespacedOpenShiftClient.class })
 public class ManagedOpenShiftClient extends NamespacedKubernetesClientAdapter<NamespacedOpenShiftClient>
     implements NamespacedOpenShiftClient {
