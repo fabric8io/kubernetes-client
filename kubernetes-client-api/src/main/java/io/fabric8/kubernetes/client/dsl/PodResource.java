@@ -17,17 +17,12 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.policy.v1.Eviction;
-import io.fabric8.kubernetes.client.LocalPortForward;
-import io.fabric8.kubernetes.client.PortForward;
-
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
 
 public interface PodResource extends Resource<Pod>,
     Loggable,
     Containerable<String, ContainerResource>,
     ContainerResource,
-    PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
+    PortForwardable {
 
   /**
    * Evicts resource, respecting {@link io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget}
