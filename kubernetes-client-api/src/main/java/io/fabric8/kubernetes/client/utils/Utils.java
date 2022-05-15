@@ -188,7 +188,7 @@ public class Utils {
    * 
    * @param closeables An {@link Iterable} of {@link Closeable} items.
    */
-  public static void closeQuietly(Iterable<Closeable> closeables) {
+  public static void closeQuietly(Iterable<? extends Closeable> closeables) {
     for (Closeable c : closeables) {
       try {
         //Check if we also need to flush

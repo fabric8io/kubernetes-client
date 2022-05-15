@@ -20,10 +20,11 @@ import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -42,7 +43,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -88,8 +88,8 @@ public class PortForwarderWebsocket implements PortForwarder {
           try {
             server.close();
           } finally {
-            closeQuietly(handles.toArray(new Closeable[] {}));
-            closeExecutor(executorService);
+            Utils.closeQuietly(handles);
+            executorService.shutdownNow();
           }
         }
 
@@ -157,7 +157,7 @@ public class PortForwarderWebsocket implements PortForwarder {
             if (alive.get()) {
               LOG.error("Error while listening for connections", e);
             }
-            closeQuietly(localPortForwardHandle);
+            Utils.closeQuietly(localPortForwardHandle);
           }
         }
       });
@@ -180,6 +180,7 @@ public class PortForwarderWebsocket implements PortForwarder {
       private int messagesRead = 0;
 
       private final ExecutorService pumperService = Executors.newSingleThreadExecutor();
+      private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
 
       @Override
       public void onOpen(final WebSocket webSocket) {
@@ -197,10 +198,13 @@ public class PortForwarderWebsocket implements PortForwarder {
                 if (read > 0) {
                   buffer.flip();
                   webSocket.send(buffer);
+                } else if (read == 0) {
+                  // in is non-blocking, prevent a busy loop
+                  Thread.sleep(50);
                 }
               } while (alive.get() && read >= 0);
 
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
               if (alive.get()) {
                 clientThrowables.add(e);
                 LOG.error("Error while writing client data");
@@ -219,10 +223,10 @@ public class PortForwarderWebsocket implements PortForwarder {
 
       @Override
       public void onMessage(WebSocket webSocket, ByteBuffer buffer) {
-        webSocket.request();
         messagesRead++;
         if (messagesRead <= 2) {
           // skip the first two messages, containing the ports used internally
+          webSocket.request();
           return;
         }
 
@@ -245,15 +249,24 @@ public class PortForwarderWebsocket implements PortForwarder {
         } else {
           // Data
           if (out != null) {
-            try {
-              out.write(buffer); // channel byte already skipped
-            } catch (IOException e) {
-              if (alive.get()) {
-                clientThrowables.add(e);
-                LOG.error("Error while forwarding data to the client", e);
-                closeBothWays(webSocket, 1002, "Protocol error");
+            serialExecutor.execute(() -> {
+              try {
+                while (buffer.hasRemaining()) {
+                  int written = out.write(buffer); // channel byte already skipped
+                  if (written == 0) {
+                    // out is non-blocking, prevent a busy loop
+                    Thread.sleep(50);
+                  }
+                }
+                webSocket.request();
+              } catch (IOException | InterruptedException e) {
+                if (alive.get()) {
+                  clientThrowables.add(e);
+                  LOG.error("Error while forwarding data to the client", e);
+                  closeBothWays(webSocket, 1002, "Protocol error");
+                }
               }
-            }
+            });
           }
         }
       }
@@ -304,7 +317,8 @@ public class PortForwarderWebsocket implements PortForwarder {
             LOG.error("{}: Error while closing the client output channel", logPrefix, e);
           }
         }
-        closeExecutor(pumperService);
+        pumperService.shutdownNow();
+        serialExecutor.shutdownNow();
       }
     };
     CompletableFuture<WebSocket> socket = client
@@ -349,36 +363,6 @@ public class PortForwarderWebsocket implements PortForwarder {
         return serverThrowables;
       }
     };
-  }
-
-  private void closeExecutor(ExecutorService executor) {
-    try {
-      executor.shutdown();
-      if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
-        executor.shutdownNow();
-        if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-          LOG.error("The executor service did not terminate");
-        }
-      }
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-    } catch (Exception e) {
-      LOG.error("Error while closing the executor", e);
-    }
-  }
-
-  public static void closeQuietly(Closeable... cloaseables) {
-    if (cloaseables != null) {
-      for (Closeable c : cloaseables) {
-        try {
-          if (c != null) {
-            c.close();
-          }
-        } catch (IOException ioe) {
-          // Ignored
-        }
-      }
-    }
   }
 
   InetSocketAddress createNewInetSocketAddress(InetAddress localHost, int localPort) {

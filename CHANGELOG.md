@@ -6,6 +6,7 @@
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
 * Fix #4106: removed listing from projectrequests
 * Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
+* Fix #4149: port forwarding can accept both blocking and non-blocking channels
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
