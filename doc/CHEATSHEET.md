@@ -2032,7 +2032,7 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
 ```
 - Create `SharedIndexInformer` for some Custom Resource(in our case, `Dummy` resource provided in our [examples](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds). By default it watches in all namespaces.
 ```java
-SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
+SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerFor(Dummy.class, 60 * 1000L);
 dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
   @Override
   public void onAdd(Dummy dummy) {

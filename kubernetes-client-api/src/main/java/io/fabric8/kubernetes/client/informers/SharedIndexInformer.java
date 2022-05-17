@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -63,7 +64,9 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   Indexer<T> getIndexer();
 
   /**
-   * Add event handler
+   * Add event handler.
+   * <p>
+   * The handler methods will be called using the client's {@link Executor}
    *
    * @param handler event handler
    */
@@ -73,6 +76,8 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * Adds an event handler to the shared informer using the specified resync period.
    * Events to a single handler are delivered sequentially, but there is no
    * coordination between different handlers.
+   * <p>
+   * The handler methods will be called using the client's {@link Executor}
    *
    * @param handle the event handler
    * @param resyncPeriod the specific resync period
@@ -159,4 +164,5 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * Only one start attempt is made - subsequent calls will not re-start the informer.
    */
   CompletableFuture<Void> start();
+
 }

@@ -43,8 +43,8 @@ class HasMetadataOperationsImplTest {
 
   @Test
   void shouldBeAbleToReturnOperationsWithoutSpecificList() {
-    final MixedOperation<Bar, BarList, Resource<Bar>> operation =
-      new DefaultKubernetesClient().customResources(Bar.class, BarList.class);
+    final MixedOperation<Bar, BarList, Resource<Bar>> operation = new DefaultKubernetesClient().resources(Bar.class,
+        BarList.class);
     assertNotNull(operation);
   }
 
@@ -52,66 +52,63 @@ class HasMetadataOperationsImplTest {
   void shouldReturnGenericKubernetesResourceWhenNotRegistered() {
     // When
     final KubernetesResource resource = Serialization.unmarshal("{\n" +
-      "    \"apiVersion\": \"sample.fabric8.io/v1\",\n" +
-      "    \"kind\": \"Bar\"\n" +
-      "}");
+        "    \"apiVersion\": \"sample.fabric8.io/v1\",\n" +
+        "    \"kind\": \"Bar\"\n" +
+        "}");
     // Then
     assertThat(resource)
-      .isInstanceOf(GenericKubernetesResource.class)
-      .hasFieldOrPropertyWithValue("apiVersion", "sample.fabric8.io/v1");
+        .isInstanceOf(GenericKubernetesResource.class)
+        .hasFieldOrPropertyWithValue("apiVersion", "sample.fabric8.io/v1");
   }
 
   @DisplayName("HasMetadataOperationsImpl registers custom kind")
   @ParameterizedTest(name = "{index}: {1}")
   @MethodSource("registerCustomKindInput")
   void hasMetadataOperationsImplRegistersCustomKind(
-    String description,
-    ResourceDefinitionContext resourceDefinitionContext,
-    Class<? extends CustomResource<?, ?>> resourceClazz,
-    Class<? extends CustomResourceList<?>> resourceListClazz
-  ) {
+      String description,
+      ResourceDefinitionContext resourceDefinitionContext,
+      Class<? extends CustomResource<?, ?>> resourceClazz,
+      Class<? extends CustomResourceList<?>> resourceListClazz) {
     // Given
     new HasMetadataOperationsImpl(
-      new OperationContext(),
-      resourceDefinitionContext,
-      resourceClazz,
-      resourceListClazz
-    );
+        new OperationContext(),
+        resourceDefinitionContext,
+        resourceClazz,
+        resourceListClazz);
     // When
     final KubernetesResource resource = Serialization.unmarshal("{\n" +
-      "    \"apiVersion\": \"custom.group/v1alpha1\",\n" +
-      "    \"kind\": \"MyCustomResource\"\n" +
-      "}");
+        "    \"apiVersion\": \"custom.group/v1alpha1\",\n" +
+        "    \"kind\": \"MyCustomResource\"\n" +
+        "}");
     // Then
     assertThat(resource)
-      .isInstanceOf(MyCustomResource.class)
-      .hasFieldOrPropertyWithValue("apiVersion", "custom.group/v1alpha1");
+        .isInstanceOf(MyCustomResource.class)
+        .hasFieldOrPropertyWithValue("apiVersion", "custom.group/v1alpha1");
   }
 
   static Stream<Arguments> registerCustomKindInput() {
     final CustomResourceDefinition myCustomResourceCrd = CustomResourceDefinitionContext
-      .v1beta1CRDFromCustomResourceType(MyCustomResource.class).build();
+        .v1beta1CRDFromCustomResourceType(MyCustomResource.class).build();
     return Stream.of(
-      Arguments.arguments(
-        "with typed custom resource and list",
-        CustomResourceDefinitionContext.fromCrd(myCustomResourceCrd),
-        MyCustomResource.class,
-        MyCustomResourceList.class),
-      Arguments.arguments(
-        "with typed custom resource and generic list",
-        CustomResourceDefinitionContext.fromCrd(myCustomResourceCrd),
-        MyCustomResource.class,
-        CustomResourceList.class),
-      Arguments.arguments(
-        "with manual ResourceDefinitionContext",
-        new ResourceDefinitionContext.Builder()
-          .withGroup("custom.group")
-          .withVersion("v1alpha1")
-          .withPlural("mycustomresources")
-          .build(),
-        MyCustomResource.class,
-        MyCustomResourceList.class)
-    );
+        Arguments.arguments(
+            "with typed custom resource and list",
+            CustomResourceDefinitionContext.fromCrd(myCustomResourceCrd),
+            MyCustomResource.class,
+            MyCustomResourceList.class),
+        Arguments.arguments(
+            "with typed custom resource and generic list",
+            CustomResourceDefinitionContext.fromCrd(myCustomResourceCrd),
+            MyCustomResource.class,
+            CustomResourceList.class),
+        Arguments.arguments(
+            "with manual ResourceDefinitionContext",
+            new ResourceDefinitionContext.Builder()
+                .withGroup("custom.group")
+                .withVersion("v1alpha1")
+                .withPlural("mycustomresources")
+                .build(),
+            MyCustomResource.class,
+            MyCustomResourceList.class));
   }
 
   @Group(MyCustomResource.GROUP)
@@ -126,7 +123,9 @@ class HasMetadataOperationsImplTest {
 
   @Group("sample.fabric8.io")
   @Version("v1")
-  public static class Bar extends CustomResource<Object, Object> {}
+  public static class Bar extends CustomResource<Object, Object> {
+  }
 
-  public static class BarList extends CustomResourceList<Bar> {}
+  public static class BarList extends CustomResourceList<Bar> {
+  }
 }

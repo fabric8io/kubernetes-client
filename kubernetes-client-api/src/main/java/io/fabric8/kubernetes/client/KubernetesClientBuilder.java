@@ -17,16 +17,33 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
+/**
+ * If no {@link Executor} or {@link ExecutorSupplier} is specified, a default {@link ExecutorSupplier} will
+ * be used which creates an unbounded cached thread pool per client.
+ */
 public class KubernetesClientBuilder {
+
+  @FunctionalInterface
+  public interface ExecutorSupplier extends Supplier<Executor> {
+
+    default void onClose(Executor executor) {
+
+    }
+
+  }
 
   private Config config;
   private HttpClient.Factory factory;
   private Class<KubernetesClient> clazz;
+  private ExecutorSupplier executorSupplier;
 
   public KubernetesClientBuilder() {
     // basically the same logic as in KubernetesResourceUtil for finding list types
@@ -52,7 +69,8 @@ public class KubernetesClientBuilder {
         return clazz.getConstructor(Config.class).newInstance(config);
       }
       HttpClient client = factory.createHttpClient(config);
-      return clazz.getConstructor(HttpClient.class, Config.class).newInstance(client, config);
+      return clazz.getConstructor(HttpClient.class, Config.class, ExecutorSupplier.class).newInstance(client, config,
+          executorSupplier);
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
         | NoSuchMethodException | SecurityException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -76,6 +94,34 @@ public class KubernetesClientBuilder {
 
   public KubernetesClientBuilder withHttpClientFactory(HttpClient.Factory factory) {
     this.factory = factory;
+    return this;
+  }
+
+  /**
+   * Configure the client to use the given executor for async tasks, such as {@link ResourceEventHandler}
+   * calls and writing to streams.
+   * <p>
+   * Only override if you need more control over the number of task threads used by the kubernetes client.
+   * 
+   * @return this builder
+   */
+  public KubernetesClientBuilder withTaskExecutor(Executor executor) {
+    this.executorSupplier = () -> executor;
+    return this;
+  }
+
+  /**
+   * Configure the client to use the given {@link ExecutorSupplier} for async tasks, such as {@link ResourceEventHandler}
+   * calls and writing to streams.
+   * <p>
+   * There will be a call to {@link ExecutorSupplier#onClose(Executor)} when a client is closed.
+   * <p>
+   * Only override if you need more control over the number of task threads used by the kubernetes client.
+   * 
+   * @return this builder
+   */
+  public KubernetesClientBuilder withTaskExecutorSupplier(ExecutorSupplier executorSupplier) {
+    this.executorSupplier = executorSupplier;
     return this;
   }
 

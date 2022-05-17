@@ -45,7 +45,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
@@ -65,7 +64,6 @@ public class Utils {
   public static final String PATH_UNIX = "PATH";
   private static final Random random = new Random();
 
-  private static final ExecutorService SHARED_POOL = Executors.newCachedThreadPool();
   private static final CachedSingleThreadScheduler SHARED_SCHEDULER = new CachedSingleThreadScheduler();
 
   private Utils() {
@@ -459,6 +457,7 @@ public class Utils {
    * hold the scheduling thread
    */
   public static ScheduledFuture<?> schedule(Executor executor, Runnable command, long delay, TimeUnit unit) {
+    // to be replaced in java 9+ with CompletableFuture.runAsync(command, CompletableFuture.delayedExecutor(delay, unit, executor)); 
     return SHARED_SCHEDULER.schedule(() -> executor.execute(command), delay, unit);
   }
 
@@ -470,13 +469,6 @@ public class Utils {
       TimeUnit unit) {
     // because of the hand-off to the other executor, there's no difference between rate and delay
     return SHARED_SCHEDULER.scheduleWithFixedDelay(() -> executor.execute(command), initialDelay, delay, unit);
-  }
-
-  /**
-   * Get the common executor service - callers should not shutdown this service
-   */
-  public static ExecutorService getCommonExecutorSerive() {
-    return SHARED_POOL;
   }
 
 }

@@ -213,8 +213,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           listSyncAndWatch().whenComplete((v, t) -> {
             if (t != null) {
               watchStopped();
-              // start a whole new list/watch cycle
-              reconnectFuture = Utils.schedule(Utils.getCommonExecutorSerive(), Reflector.this::listSyncAndWatch,
+              // start a whole new list/watch cycle, can be run in the scheduler thread because
+              // any further operations will happen on the io thread
+              reconnectFuture = Utils.schedule(Runnable::run, Reflector.this::listSyncAndWatch,
                   listerWatcher.getWatchReconnectInterval(), TimeUnit.MILLISECONDS);
             }
           });

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.Event;
@@ -28,7 +29,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
-import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 
 import java.nio.charset.StandardCharsets;
@@ -45,7 +45,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class KubernetesResourceUtil {
-  private KubernetesResourceUtil() {}
+  private KubernetesResourceUtil() {
+  }
 
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
   private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
@@ -165,8 +166,8 @@ public class KubernetesResourceUtil {
   public static String getName(ObjectMeta entity) {
     if (entity != null) {
       return Utils.coalesce(entity.getName(),
-        getAdditionalPropertyText(entity.getAdditionalProperties(), "id"),
-        entity.getUid());
+          getAdditionalPropertyText(entity.getAdditionalProperties(), "id"),
+          entity.getUid());
     } else {
       return null;
     }
@@ -241,7 +242,7 @@ public class KubernetesResourceUtil {
    * @return sanitized name
    */
   public static String sanitizeName(String name) {
-    if(name != null) {
+    if (name != null) {
       name = INVALID_LABEL_CHARS_PATTERN.matcher(name).replaceAll("-");
       if (!Character.isLetterOrDigit(name.charAt(0))) {
         name = "a" + name;
@@ -319,7 +320,6 @@ public class KubernetesResourceUtil {
     return Utils.isNotNullOrEmpty(name) && KUBERNETES_DNS1123_LABEL_REGEX.matcher(name).matches();
   }
 
-
   /**
    * Validates labels/annotations of Kubernetes resources
    *
@@ -327,8 +327,8 @@ public class KubernetesResourceUtil {
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidLabelOrAnnotation(Map<String, String> map) {
-    for(Map.Entry<String, String> entry : map.entrySet()) {
-      if(!(isValidName(entry.getKey()) && isValidName(entry.getValue()))) {
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+      if (!(isValidName(entry.getKey()) && isValidName(entry.getValue()))) {
         return false;
       }
     }
@@ -360,7 +360,8 @@ public class KubernetesResourceUtil {
   public static void sortEventListBasedOnTimestamp(List<Event> eventList) {
     if (eventList != null) {
       // Sort to get latest events in beginning, putting events without lastTimestamp first
-      eventList.sort(Comparator.comparing(Event::getLastTimestamp, Comparator.nullsFirst(Comparator.comparing(Instant::parse).reversed())));
+      eventList.sort(Comparator.comparing(Event::getLastTimestamp,
+          Comparator.nullsFirst(Comparator.comparing(Instant::parse).reversed())));
     }
   }
 
@@ -369,9 +370,9 @@ public class KubernetesResourceUtil {
     for (Map.Entry<String, String> entry : envVarMap.entrySet()) {
       if (entry.getKey() != null && entry.getValue() != null) {
         envVars.add(new EnvVarBuilder()
-          .withName(entry.getKey())
-          .withValue(entry.getValue())
-          .build());
+            .withName(entry.getKey())
+            .withValue(entry.getValue())
+            .build());
       }
     }
     return envVars;
@@ -381,6 +382,7 @@ public class KubernetesResourceUtil {
    * Check whether a Kubernetes resource is Ready or not. Applicable only to
    * Deployment, ReplicaSet, Pod, ReplicationController, Endpoints, Node and
    * StatefulSet
+   * 
    * @param item item which needs to be checked
    * @return boolean value indicating it's status
    */
@@ -390,6 +392,7 @@ public class KubernetesResourceUtil {
 
   /**
    * Calculates age of a kubernetes resource
+   * 
    * @param kubernetesResource
    * @return a positive duration indicating age of the kubernetes resource
    */
@@ -399,7 +402,7 @@ public class KubernetesResourceUtil {
   }
 
   public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
-    return (Class<? extends KubernetesResourceList>) loadRelated(type, "List", CustomResourceList.class);
+    return (Class<? extends KubernetesResourceList>) loadRelated(type, "List", DefaultKubernetesResourceList.class);
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> Class<V> inferBuilderType(Class<T> type) {
@@ -420,12 +423,14 @@ public class KubernetesResourceUtil {
 
   /**
    * Create Secret by using username and password.
+   * 
    * @param dockerServer User to store key value pair for auths map
    * @param username username that needs to be used during secret creation
    * @param password password that needs to be used during secret creation
    * @return an object of Secret
    */
-  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password) throws JsonProcessingException {
+  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password)
+      throws JsonProcessingException {
     Map<String, Object> dockerConfigMap = new HashMap<>();
     Map<String, Object> auths = new HashMap<>();
     Map<String, Object> credentials = new HashMap<>();
@@ -439,9 +444,9 @@ public class KubernetesResourceUtil {
     String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
 
     return new SecretBuilder()
-      .withNewMetadata().withName("harbor-secret").endMetadata()
-      .withType("kubernetes.io/dockerconfigjson")
-      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
-      .build();
+        .withNewMetadata().withName("harbor-secret").endMetadata()
+        .withType("kubernetes.io/dockerconfigjson")
+        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
+        .build();
   }
 }

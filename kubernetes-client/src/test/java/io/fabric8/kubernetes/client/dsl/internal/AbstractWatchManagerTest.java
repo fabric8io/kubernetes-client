@@ -29,6 +29,7 @@ import org.mockito.Mockito;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -139,6 +140,9 @@ class AbstractWatchManagerTest {
     utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(sf);
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    awm.baseOperation.context = Mockito.mock(OperationContext.class);
+    Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(ForkJoinPool.commonPool());
+
     awm.scheduleReconnect();
     // When
     awm.cancelReconnect();

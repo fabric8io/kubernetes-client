@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -380,10 +381,11 @@ class BaseOperationTest {
     assertTrue(future.isCancelled());
   }
 
-  private Client mockClient(HttpClient httpClient, Config config) {
-    Client client = Mockito.mock(Client.class);
+  private BaseClient mockClient(HttpClient httpClient, Config config) {
+    BaseClient client = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
     Mockito.when(client.getHttpClient()).thenReturn(httpClient);
     Mockito.when(client.getConfiguration()).thenReturn(config);
+    Mockito.when(client.getExecutor()).thenReturn(ForkJoinPool.commonPool());
     return client;
   }
 }

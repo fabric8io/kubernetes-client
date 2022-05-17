@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -67,8 +68,7 @@ public interface Informable<T> {
    * <p>
    * You are expected to call stop to terminate the underlying Watch.
    * <p>
-   * Additional handlers can be added, but processing of the events will be in the websocket thread,
-   * so consider non-blocking handler operations for more than one handler.
+   * The processing of handler events will be in the client's {@link Executor}.
    *
    * @return a running {@link SharedIndexInformer}
    */
@@ -86,8 +86,7 @@ public interface Informable<T> {
    * <p>
    * You are expected to call stop to terminate the underlying Watch.
    * <p>
-   * Additional handlers can be added, but processing of the events will be in the websocket thread,
-   * so consider non-blocking handler operations for more than one handler.
+   * The processing of handler events will be in the client's {@link Executor}.
    *
    * @param handler to notify
    * @return a running {@link SharedIndexInformer}
@@ -104,8 +103,7 @@ public interface Informable<T> {
    * <p>
    * You are expected to call stop to terminate the underlying Watch.
    * <p>
-   * Additional handlers can be added, but processing of the events will be in the websocket thread,
-   * so consider non-blocking handler operations for more than one handler.
+   * The processing of handler events will be in the client's {@link Executor}.
    *
    * @param handler to notify
    * @param resync the resync period or 0 for no resync
@@ -118,9 +116,6 @@ public interface Informable<T> {
    * and provides a store of all the current resources.
    * <p>
    * You are expected to call stop to terminate the underlying Watch.
-   * <p>
-   * Additional handlers can be added, but processing of the events will be in the websocket thread,
-   * so consider non-blocking handler operations for more than one handler.
    *
    * @param resync the resync period or 0 for no resync
    * @return a non-running {@link SharedIndexInformer}
@@ -131,6 +126,8 @@ public interface Informable<T> {
    * Return a {@link Future} when the list at this context satisfies the given {@link Predicate}.
    * The predicate will be tested against the state of the underlying informer store on every event.
    * The returned future should be cancelled by the caller if not waiting for completion to close the underlying informer
+   * <p>
+   * The processing of events will be in the IO thread, blocking operations should be avoided.
    *
    * @param condition the {@link Predicate} to test
    * @return a {@link CompletableFuture} of the list of items after the condition is met

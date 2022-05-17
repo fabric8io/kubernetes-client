@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -126,7 +126,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-  private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
+  private final SerialExecutor serialExecutor;
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
   private ObjectMapper objectMapper = new ObjectMapper();
@@ -136,6 +136,10 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   }
 
   public ExecWebSocketListener(PodOperationContext context) {
+    this(context, Runnable::run);
+  }
+
+  public ExecWebSocketListener(PodOperationContext context, Executor executor) {
     this.listener = context.getExecListener();
 
     Integer bufferSize = context.getBufferSize();
@@ -151,6 +155,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     this.out = createStream(context.getOutput());
     this.error = createStream(context.getError());
     this.errorChannel = createStream(context.getErrorChannel());
+    this.serialExecutor = new SerialExecutor(executor);
   }
 
   private ListenerStream createStream(StreamContext streamContext) {

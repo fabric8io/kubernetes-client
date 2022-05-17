@@ -455,7 +455,7 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset")
         .andReturn(HttpURLConnection.HTTP_OK, new PodSet()).once();
     MixedOperation<PodSet, KubernetesResourceList<PodSet>, Resource<PodSet>> podSetClient = client
-        .customResources(PodSet.class);
+        .resources(PodSet.class);
 
     // When
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete().size() == 1;

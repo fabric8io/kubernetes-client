@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder.ExecutorSupplier;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
@@ -39,9 +40,29 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
 public abstract class BaseClient implements Client {
+
+  /**
+   * An {@link ExecutorSupplier} that provides an unlimited thread pool {@link Executor} per client.
+   */
+  public static final ExecutorSupplier DEFAULT_EXECUTOR_SUPPLIER = new ExecutorSupplier() {
+
+    @Override
+    public Executor get() {
+      return Executors.newCachedThreadPool(Utils.daemonThreadFactory(this));
+    }
+
+    @Override
+    public void onClose(Executor executor) {
+      ((ExecutorService) executor).shutdownNow();
+    }
+
+  };
 
   public static final String APIS = "/apis";
 
@@ -54,6 +75,8 @@ public abstract class BaseClient implements Client {
   protected Config config;
   protected HttpClient httpClient;
   private OperationSupport operationSupport;
+  private ExecutorSupplier executorSupplier;
+  private Executor executor;
 
   private OperationContext operationContext;
 
@@ -63,15 +86,22 @@ public abstract class BaseClient implements Client {
     this.adapters = baseClient.adapters;
     this.handlers = baseClient.handlers;
     this.matchingGroupPredicate = baseClient.matchingGroupPredicate;
+    this.executorSupplier = baseClient.executorSupplier;
+    this.executor = baseClient.executor;
     setDerivedFields();
   }
 
-  BaseClient(final HttpClient httpClient, Config config) {
+  BaseClient(final HttpClient httpClient, Config config, ExecutorSupplier executorSupplier) {
     this.config = config;
     this.httpClient = httpClient;
     this.handlers = new Handlers();
     this.adapters = new Adapters(this.handlers);
     setDerivedFields();
+    if (executorSupplier == null) {
+      executorSupplier = DEFAULT_EXECUTOR_SUPPLIER;
+    }
+    this.executorSupplier = executorSupplier;
+    this.executor = executorSupplier.get();
   }
 
   protected void setDerivedFields() {
@@ -92,8 +122,12 @@ public abstract class BaseClient implements Client {
   }
 
   @Override
-  public void close() {
+  public synchronized void close() {
     httpClient.close();
+    if (this.executorSupplier != null) {
+      this.executorSupplier.onClose(executor);
+      this.executorSupplier = null;
+    }
   }
 
   @Override
@@ -290,6 +324,10 @@ public abstract class BaseClient implements Client {
 
   public Client newClient(OperationContext newContext) {
     return newInstance(config).operationContext(newContext);
+  }
+
+  public Executor getExecutor() {
+    return executor;
   }
 
 }

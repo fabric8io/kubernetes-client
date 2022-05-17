@@ -18,10 +18,9 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,36 +39,36 @@ public class DynamicSharedIndexInformerExample {
   private static final Logger logger = LoggerFactory.getLogger(DynamicSharedIndexInformerExample.class.getSimpleName());
 
   public static void main(String[] args) {
-    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-      SharedInformerFactory informerFactory = client.informers();
-      CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
+    ResourceDefinitionContext context = new ResourceDefinitionContext.Builder()
         .withGroup("demo.fabric8.io")
         .withVersion("v1")
         .withPlural("dummies")
         .withKind("Dummy")
-        .withScope("Namespaced")
+        .withNamespaced(true)
         .build();
 
-      SharedIndexInformer<GenericKubernetesResource> informer = informerFactory.sharedIndexInformerForCustomResource(context, 60 * 1000L);
+    try (KubernetesClient client = new KubernetesClientBuilder().build();
+        SharedIndexInformer<GenericKubernetesResource> informer = client.genericKubernetesResources(context).inAnyNamespace()
+            .runnableInformer(60 * 1000L);) {
       informer.addEventHandler(new ResourceEventHandler<GenericKubernetesResource>() {
         @Override
         public void onAdd(GenericKubernetesResource genericKubernetesResource) {
-          logger.info("ADD {}/{}", genericKubernetesResource.getMetadata().getNamespace(), genericKubernetesResource.getMetadata().getName());
+          logger.info("ADD {}/{}", genericKubernetesResource.getMetadata().getNamespace(),
+              genericKubernetesResource.getMetadata().getName());
         }
 
         @Override
         public void onUpdate(GenericKubernetesResource genericKubernetesResource, GenericKubernetesResource t1) {
-          logger.info("UPDATE {}/{}", genericKubernetesResource.getMetadata().getNamespace(), genericKubernetesResource.getMetadata().getName());
+          logger.info("UPDATE {}/{}", genericKubernetesResource.getMetadata().getNamespace(),
+              genericKubernetesResource.getMetadata().getName());
         }
 
         @Override
         public void onDelete(GenericKubernetesResource genericKubernetesResource, boolean b) {
-          logger.info("DELETE {}/{}", genericKubernetesResource.getMetadata().getNamespace(), genericKubernetesResource.getMetadata().getName());
+          logger.info("DELETE {}/{}", genericKubernetesResource.getMetadata().getNamespace(),
+              genericKubernetesResource.getMetadata().getName());
         }
       });
-
-      informerFactory.addSharedInformerEventListener(e -> logger.error(e.getMessage()));
-      informerFactory.startAllRegisteredInformers();
 
       TimeUnit.MINUTES.sleep(10);
     } catch (InterruptedException interruptedException) {

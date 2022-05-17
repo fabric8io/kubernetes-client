@@ -15,13 +15,11 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
@@ -30,37 +28,41 @@ import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.concurrent.ExecutorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SharedInformerFactoryImplTest {
   public static final long RESYNC_PERIOD = 10 * 1000L;
-  private ExecutorService executorService;
   private DefaultKubernetesClient mockBaseClient;
-  private static class TestCustomResourceSpec { }
-  private static class TestCustomResourceStatus { }
+
+  private static class TestCustomResourceSpec {
+  }
+
+  private static class TestCustomResourceStatus {
+  }
 
   @Group("io.fabric8")
   @Version("v1")
-  private static class TestCustomResource extends CustomResource<TestCustomResourceSpec, TestCustomResourceStatus> { }
+  private static class TestCustomResource extends CustomResource<TestCustomResourceSpec, TestCustomResourceStatus> {
+  }
 
   @Group("com.acme")
   @Version("v1")
   @Kind("MyApp")
-  public static class MyAppCustomResource extends CustomResource<Void, Void> { }
+  public static class MyAppCustomResource extends CustomResource<Void, Void> {
+  }
 
   @Group("com.acme")
   @Version("v1")
   @Kind("MyApp")
   @Plural("myapps")
-  public static class MyAppCustomResourceCopy extends CustomResource<Void, Void> { }
+  public static class MyAppCustomResourceCopy extends CustomResource<Void, Void> {
+  }
 
   @Group("networking.istio.io")
   @Version("v1alpha3")
-  public static class VirtualService extends CustomResource<Void, Void> { }
+  public static class VirtualService extends CustomResource<Void, Void> {
+  }
 
   @Group("com.acme")
   @Version("v1")
@@ -76,43 +78,30 @@ class SharedInformerFactoryImplTest {
 
   private static class FlinkJobSpec {
     private String flinkJobSpec;
-    public String getFlinkJobSpec() { return flinkJobSpec; }
 
-    public void setFlinkJobSpec(String flinkJobSpec) { this.flinkJobSpec = flinkJobSpec; }
+    public String getFlinkJobSpec() {
+      return flinkJobSpec;
+    }
+
+    public void setFlinkJobSpec(String flinkJobSpec) {
+      this.flinkJobSpec = flinkJobSpec;
+    }
 
     @Override
-    public String toString() { return "FlinkJobSpec{flinkJobSpec='" + flinkJobSpec + "'}"; }
+    public String toString() {
+      return "FlinkJobSpec{flinkJobSpec='" + flinkJobSpec + "'}";
+    }
   }
 
   @BeforeEach
   void init() {
     this.mockBaseClient = new DefaultKubernetesClient();
-    this.executorService = Mockito.mock(ExecutorService.class, Mockito.RETURNS_DEEP_STUBS);
-  }
-
-  @Test
-  void testSharedIndexInformerForCustomResourceNoType() {
-    // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
-    CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
-      .withKind("Dummy")
-      .withScope("Namespaced")
-      .withVersion("v1")
-      .withGroup("demos.fabric8.io")
-      .withPlural("dummies")
-      .build();
-
-    // When
-    SharedIndexInformer<GenericKubernetesResource> informer = sharedInformerFactory.inNamespace("ns1").sharedIndexInformerForCustomResource(context, 10 * 1000L);
-
-    // Then
-    assertThat(informer).isNotNull();
   }
 
   @Test
   void testGetExistingSharedIndexInformer() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient);
 
     // When
     sharedInformerFactory.sharedIndexInformerFor(Deployment.class, RESYNC_PERIOD);
@@ -126,11 +115,13 @@ class SharedInformerFactoryImplTest {
   @Test
   void testGetExistingSharedIndexInformerWithKindDifferentFromClassName() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient);
 
     // When
-    SharedIndexInformer<MyAppCustomResource> createdInformer = sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResource.class, RESYNC_PERIOD);
-    SharedIndexInformer<MyAppCustomResource> existingInformer = sharedInformerFactory.getExistingSharedIndexInformer(MyAppCustomResource.class);
+    SharedIndexInformer<MyAppCustomResource> createdInformer = sharedInformerFactory
+        .sharedIndexInformerFor(MyAppCustomResource.class, RESYNC_PERIOD);
+    SharedIndexInformer<MyAppCustomResource> existingInformer = sharedInformerFactory
+        .getExistingSharedIndexInformer(MyAppCustomResource.class);
 
     // Then
     assertThat(createdInformer).isNotNull();
@@ -141,13 +132,14 @@ class SharedInformerFactoryImplTest {
   @Test
   void testGetExistingSharedIndexInformerWithTwoClassesSimilarNames() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient);
     sharedInformerFactory.sharedIndexInformerFor(VirtualService.class, RESYNC_PERIOD);
     sharedInformerFactory.sharedIndexInformerFor(Service.class, RESYNC_PERIOD);
 
     // When
     SharedIndexInformer<Service> sharedIndexInformerSvc = sharedInformerFactory.getExistingSharedIndexInformer(Service.class);
-    SharedIndexInformer<VirtualService> sharedIndexInformerVSvc = sharedInformerFactory.getExistingSharedIndexInformer(VirtualService.class);
+    SharedIndexInformer<VirtualService> sharedIndexInformerVSvc = sharedInformerFactory
+        .getExistingSharedIndexInformer(VirtualService.class);
 
     // Then
     assertThat(sharedIndexInformerSvc.getApiTypeClass()).isEqualTo(Service.class);

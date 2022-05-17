@@ -92,7 +92,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public Watchable<Watcher<T>> withResourceVersion(String resourceVersion) {
+  public Watchable<T> withResourceVersion(String resourceVersion) {
     return resource.withResourceVersion(resourceVersion);
   }
 

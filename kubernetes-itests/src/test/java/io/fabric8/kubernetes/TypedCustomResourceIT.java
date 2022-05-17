@@ -89,7 +89,7 @@ class TypedCustomResourceIT {
             c -> c.getStatus() != null && c.getStatus().getConditions() != null && c.getStatus().getConditions().stream()
                 .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
             10L, TimeUnit.SECONDS);
-    petClient = client.customResources(Pet.class);
+    petClient = client.resources(Pet.class);
   }
 
   @AfterAll

@@ -64,7 +64,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private ScheduledFuture<?> reconnectAttempt;
 
   protected final HttpClient client;
-  private BaseOperation<T, ?, ?> baseOperation;
+  protected BaseOperation<T, ?, ?> baseOperation;
   private ListOptions listOptions;
   private URL requestUrl;
 
@@ -147,7 +147,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     long delay = nextReconnectInterval();
 
     synchronized (this) {
-      reconnectAttempt = Utils.schedule(Utils.getCommonExecutorSerive(), () -> {
+      reconnectAttempt = Utils.schedule(baseOperation.context.getExecutor(), () -> {
         try {
           runWatch();
           if (isForceClosed()) {

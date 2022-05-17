@@ -21,12 +21,19 @@ public interface Watcher<T> {
 
   /**
    * If the Watcher can reconnect itself after an error
+   * 
    * @return
    */
   default boolean reconnecting() {
     return false;
   }
 
+  /**
+   * Handle the given event.
+   * <p>
+   * Should not be implemented with long-running logic as this method is called directly from
+   * an IO thread.
+   */
   void eventReceived(Action action, T resource);
 
   /**
@@ -38,13 +45,20 @@ public interface Watcher<T> {
 
   /**
    * Invoked when the watcher closes due to an Exception.
-   *
+   * <p>
+   * Should not be implemented with long-running logic as this method is called directly from
+   * an IO thread.
+   * 
    * @param cause What caused the watcher to be closed.
    */
   void onClose(WatcherException cause);
 
   enum Action {
-    ADDED, MODIFIED, DELETED, ERROR, BOOKMARK
+    ADDED,
+    MODIFIED,
+    DELETED,
+    ERROR,
+    BOOKMARK
   }
 
 }

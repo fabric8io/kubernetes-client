@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +32,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -46,13 +46,14 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private volatile Optional<HttpClient.AsyncBody> asyncBody = Optional.empty();
-  private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
+  private final SerialExecutor serialExecutor;
 
-  public LogWatchCallback(OutputStream out) {
+  public LogWatchCallback(OutputStream out, Executor executor) {
     this.out = out;
     if (out != null) {
       outChannel = Channels.newChannel(out);
     }
+    this.serialExecutor = new SerialExecutor(executor);
   }
 
   @Override

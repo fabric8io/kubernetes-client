@@ -606,7 +606,7 @@ public class OperationSupport {
               retry = true;
             }
             if (retry) {
-              Utils.schedule(Utils.getCommonExecutorSerive(),
+              Utils.schedule(context.getExecutor(),
                   () -> retryWithExponentialBackoff(numRetries, client, request).whenComplete((fr, rt) -> {
                     if (rt != null) {
                       result.completeExceptionally(rt);

@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
-import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -38,6 +38,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -74,7 +75,8 @@ class PodUploadTest {
 
     when(mockClient.newBuilder().readTimeout(anyLong(), any(TimeUnit.class)).build()).thenReturn(mockClient);
 
-    Client client = Mockito.mock(Client.class);
+    BaseClient client = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(client.adapt(BaseClient.class).getExecutor()).thenReturn(ForkJoinPool.commonPool());
     Config config = Mockito.mock(Config.class, Mockito.RETURNS_DEEP_STUBS);
     when(config.getMasterUrl()).thenReturn("https://openshift.com:8443");
     when(config.getNamespace()).thenReturn("default");

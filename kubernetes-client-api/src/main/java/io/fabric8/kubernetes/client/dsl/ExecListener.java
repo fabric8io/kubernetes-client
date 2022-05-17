@@ -19,6 +19,12 @@ import io.fabric8.kubernetes.api.model.Status;
 
 import java.io.IOException;
 
+/**
+ * Provides callbacks for exec websocket events mainly for logging and testing
+ * <p>
+ * long running operations should not be called as these methods are called directly
+ * from the IO thread.
+ */
 public interface ExecListener {
 
   public interface Response {
