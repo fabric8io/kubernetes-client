@@ -142,8 +142,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     }
     if (!status) {
       try {
-        ObjectMeta metadata = item.getMetadata();
-        item = modifyItemForReplaceOrPatch(() -> requireFromServer(), item);
+        item = modifyItemForReplaceOrPatch(this::requireFromServer, item);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
       }

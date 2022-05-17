@@ -142,6 +142,7 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
+  @Deprecated
   public T patch(T item) {
     return resource.patch(item);
   }
