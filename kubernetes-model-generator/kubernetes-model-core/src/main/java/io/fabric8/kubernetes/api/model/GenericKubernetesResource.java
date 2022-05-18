@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -56,7 +57,8 @@ public class GenericKubernetesResource implements HasMetadata {
   @JsonProperty("kind")
   private String kind;
   @JsonProperty("metadata")
-  private ObjectMeta metadata;
+  @JsonInclude(value = Include.CUSTOM, valueFilter = ObjectMeta.class)
+  private ObjectMeta metadata = new ObjectMeta();
   @JsonIgnore
   private Map<String, Object> additionalProperties = new LinkedHashMap<>();
 
@@ -130,7 +132,7 @@ public class GenericKubernetesResource implements HasMetadata {
 
   /**
    * The same as {@link #get(Object...)}, but starting at any root raw object
-   * 
+   *
    * @param <T> type of the returned object (Map, Collection, or value).
    * @param root starting object
    * @param path of the field to retrieve.
