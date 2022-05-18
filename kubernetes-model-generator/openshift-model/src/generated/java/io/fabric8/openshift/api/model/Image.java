@@ -107,7 +107,8 @@ public class Image implements HasMetadata
     @JsonProperty("kind")
     private String kind = "Image";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("signatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageSignature> signatures = new ArrayList<ImageSignature>();

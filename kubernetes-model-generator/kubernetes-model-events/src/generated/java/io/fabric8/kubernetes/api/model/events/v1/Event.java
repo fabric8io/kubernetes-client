@@ -106,7 +106,8 @@ public class Event implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private java.lang.String kind = "Event";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("note")
     private java.lang.String note;
     @JsonProperty("reason")

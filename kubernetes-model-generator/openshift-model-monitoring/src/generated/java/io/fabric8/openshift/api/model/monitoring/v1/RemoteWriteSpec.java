@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -82,7 +83,8 @@ public class RemoteWriteSpec implements KubernetesResource
     @JsonProperty("bearerTokenFile")
     private java.lang.String bearerTokenFile;
     @JsonProperty("headers")
-    private Map<String, String> headers;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> headers = new LinkedHashMap<String, String>();
     @JsonProperty("metadataConfig")
     private MetadataConfig metadataConfig;
     @JsonProperty("name")

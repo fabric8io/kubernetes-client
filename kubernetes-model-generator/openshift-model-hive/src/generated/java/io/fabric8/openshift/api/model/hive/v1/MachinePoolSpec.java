@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -69,7 +70,8 @@ public class MachinePoolSpec implements KubernetesResource
     @JsonProperty("clusterDeploymentRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef;
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonProperty("platform")

@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -68,7 +69,8 @@ public class OAuth2 implements KubernetesResource
     @JsonProperty("clientSecret")
     private SecretKeySelector clientSecret;
     @JsonProperty("endpointParams")
-    private Map<String, String> endpointParams;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> endpointParams = new LinkedHashMap<String, String>();
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> scopes = new ArrayList<java.lang.String>();

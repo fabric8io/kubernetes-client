@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -81,7 +82,8 @@ public class ClusterProvisionSpec implements KubernetesResource
     @JsonProperty("installLog")
     private java.lang.String installLog;
     @JsonProperty("metadata")
-    private Map<String, Object> metadata;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> metadata = new LinkedHashMap<String, Object>();
     @JsonProperty("podSpec")
     private PodSpec podSpec;
     @JsonProperty("prevClusterID")

@@ -77,7 +77,8 @@ public class ImageStreamImage implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "ImageStreamImage";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 

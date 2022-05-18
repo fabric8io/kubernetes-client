@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -54,9 +55,11 @@ public class ConfigMap implements HasMetadata, Namespaced
     @JsonProperty("apiVersion")
     private java.lang.String apiVersion = "v1";
     @JsonProperty("binaryData")
-    private Map<String, String> binaryData;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> binaryData = new LinkedHashMap<String, String>();
     @JsonProperty("data")
-    private Map<String, String> data;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> data = new LinkedHashMap<String, String>();
     @JsonProperty("immutable")
     private Boolean immutable;
     /**
@@ -67,7 +70,8 @@ public class ConfigMap implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private java.lang.String kind = "ConfigMap";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -87,7 +91,7 @@ public class ConfigMap implements HasMetadata, Namespaced
      * @param binaryData
      * @param kind
      */
-    public ConfigMap(java.lang.String apiVersion, Map<String, String> binaryData, Map<String, String> data, Boolean immutable, java.lang.String kind, ObjectMeta metadata) {
+    public ConfigMap(java.lang.String apiVersion, Map<String, String> binaryData, Map<String, String> data, Boolean immutable, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.binaryData = binaryData;
@@ -168,12 +172,12 @@ public class ConfigMap implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

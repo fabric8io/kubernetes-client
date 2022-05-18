@@ -93,7 +93,8 @@ public class KubeSchema {
     @JsonProperty("ListOptions")
     private ListOptions listOptions;
     @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("ObjectReference")
     private io.fabric8.kubernetes.api.model.ObjectReference objectReference;
     @JsonProperty("Patch")

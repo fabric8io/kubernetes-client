@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -63,13 +64,15 @@ public class Rule implements KubernetesResource
     @JsonProperty("alert")
     private java.lang.String alert;
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("expr")
     private io.fabric8.kubernetes.api.model.IntOrString expr;
     @JsonProperty("for")
     private java.lang.String _for;
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("record")
     private java.lang.String record;
     @JsonIgnore

@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model.policy.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -73,7 +74,8 @@ public class PodDisruptionBudgetStatus implements KubernetesResource
     @JsonProperty("desiredHealthy")
     private Integer desiredHealthy;
     @JsonProperty("disruptedPods")
-    private Map<String, String> disruptedPods;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> disruptedPods = new LinkedHashMap<String, String>();
     @JsonProperty("disruptionsAllowed")
     private Integer disruptionsAllowed;
     @JsonProperty("expectedPods")

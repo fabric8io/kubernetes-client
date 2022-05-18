@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -73,7 +74,8 @@ public class OpenIDIdentityProvider implements KubernetesResource
     @JsonProperty("clientSecret")
     private SecretNameReference clientSecret;
     @JsonProperty("extraAuthorizeParameters")
-    private Map<String, String> extraAuthorizeParameters;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> extraAuthorizeParameters = new LinkedHashMap<String, String>();
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> extraScopes = new ArrayList<java.lang.String>();

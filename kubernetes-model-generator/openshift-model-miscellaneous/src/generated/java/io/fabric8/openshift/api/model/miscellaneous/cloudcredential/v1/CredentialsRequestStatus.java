@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -73,7 +74,8 @@ public class CredentialsRequestStatus implements KubernetesResource
     @JsonProperty("lastSyncTimestamp")
     private String lastSyncTimestamp;
     @JsonProperty("providerStatus")
-    private Map<String, Object> providerStatus;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> providerStatus = new LinkedHashMap<String, Object>();
     @JsonProperty("provisioned")
     private Boolean provisioned;
     @JsonIgnore

@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.tuned.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -63,7 +64,8 @@ public class TunedRecommend implements KubernetesResource
 {
 
     @JsonProperty("machineConfigLabels")
-    private Map<String, String> machineConfigLabels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> machineConfigLabels = new LinkedHashMap<String, String>();
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TunedMatch> match = new ArrayList<TunedMatch>();

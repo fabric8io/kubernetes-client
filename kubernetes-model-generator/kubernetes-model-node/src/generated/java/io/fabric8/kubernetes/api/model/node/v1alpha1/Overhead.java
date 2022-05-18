@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model.node.v1alpha1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -58,7 +59,8 @@ public class Overhead implements KubernetesResource
 {
 
     @JsonProperty("podFixed")
-    private Map<String, Quantity> podFixed;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> podFixed = new LinkedHashMap<String, Quantity>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

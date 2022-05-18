@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -93,9 +94,11 @@ public class ImageRegistrySpec implements KubernetesResource
     @JsonProperty("managementState")
     private java.lang.String managementState;
     @JsonProperty("nodeSelector")
-    private Map<String, String> nodeSelector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
     @JsonProperty("observedConfig")
-    private Map<String, Object> observedConfig;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> observedConfig = new LinkedHashMap<String, Object>();
     @JsonProperty("operatorLogLevel")
     private java.lang.String operatorLogLevel;
     @JsonProperty("proxy")
@@ -119,7 +122,8 @@ public class ImageRegistrySpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonProperty("unsupportedConfigOverrides")
-    private Map<String, Object> unsupportedConfigOverrides;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> unsupportedConfigOverrides = new LinkedHashMap<String, Object>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
 

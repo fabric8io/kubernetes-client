@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model.extensions;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -81,7 +82,8 @@ public class DeploymentRollback implements KubernetesResource
     @JsonProperty("rollbackTo")
     private RollbackConfig rollbackTo;
     @JsonProperty("updatedAnnotations")
-    private Map<String, String> updatedAnnotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> updatedAnnotations = new LinkedHashMap<String, String>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

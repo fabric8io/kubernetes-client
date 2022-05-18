@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.whereabouts.v1alpha1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -58,7 +59,8 @@ public class IPPoolSpec implements KubernetesResource
 {
 
     @JsonProperty("allocations")
-    private Map<String, IPAllocation> allocations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, IPAllocation> allocations = new LinkedHashMap<String, IPAllocation>();
     @JsonProperty("range")
     private java.lang.String range;
     @JsonIgnore

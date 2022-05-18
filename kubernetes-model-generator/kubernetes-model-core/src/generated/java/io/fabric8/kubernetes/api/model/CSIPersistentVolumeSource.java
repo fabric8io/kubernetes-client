@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -58,7 +59,8 @@ public class CSIPersistentVolumeSource implements KubernetesResource
     @JsonProperty("readOnly")
     private Boolean readOnly;
     @JsonProperty("volumeAttributes")
-    private Map<String, String> volumeAttributes;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> volumeAttributes = new LinkedHashMap<String, String>();
     @JsonProperty("volumeHandle")
     private java.lang.String volumeHandle;
     @JsonIgnore

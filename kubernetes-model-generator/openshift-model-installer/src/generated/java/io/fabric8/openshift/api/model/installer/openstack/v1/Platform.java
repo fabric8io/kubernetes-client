@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.installer.openstack.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -82,7 +83,8 @@ public class Platform implements KubernetesResource
     @JsonProperty("clusterOSImage")
     private java.lang.String clusterOSImage;
     @JsonProperty("clusterOSImageProperties")
-    private Map<String, String> clusterOSImageProperties;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> clusterOSImageProperties = new LinkedHashMap<String, String>();
     @JsonProperty("computeFlavor")
     private java.lang.String computeFlavor;
     @JsonProperty("defaultMachinePlatform")

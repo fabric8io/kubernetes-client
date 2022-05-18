@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -74,7 +75,8 @@ public class Identity implements HasMetadata
     @JsonProperty("apiVersion")
     private java.lang.String apiVersion = "user.openshift.io/v1";
     @JsonProperty("extra")
-    private Map<String, String> extra;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> extra = new LinkedHashMap<String, String>();
     /**
      * 
      * (Required)
@@ -83,7 +85,8 @@ public class Identity implements HasMetadata
     @JsonProperty("kind")
     private java.lang.String kind = "Identity";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("providerName")
     private java.lang.String providerName;
     @JsonProperty("providerUserName")

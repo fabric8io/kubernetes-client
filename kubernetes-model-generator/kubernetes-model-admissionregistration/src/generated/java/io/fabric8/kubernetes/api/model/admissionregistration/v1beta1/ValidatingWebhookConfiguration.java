@@ -81,7 +81,8 @@ public class ValidatingWebhookConfiguration implements HasMetadata
     @JsonProperty("kind")
     private String kind = "ValidatingWebhookConfiguration";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("webhooks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ValidatingWebhook> webhooks = new ArrayList<ValidatingWebhook>();

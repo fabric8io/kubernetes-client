@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -57,7 +58,8 @@ public class ProviderSpec implements KubernetesResource
 {
 
     @JsonProperty("value")
-    private Map<String, Object> value;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> value = new LinkedHashMap<String, Object>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
 

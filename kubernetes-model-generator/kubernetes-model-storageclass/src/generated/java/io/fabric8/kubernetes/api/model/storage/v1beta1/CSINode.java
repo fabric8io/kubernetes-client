@@ -79,7 +79,8 @@ public class CSINode implements HasMetadata
     @JsonProperty("kind")
     private String kind = "CSINode";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("spec")
     private CSINodeSpec spec;
     @JsonIgnore
