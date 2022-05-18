@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model.admission.v1beta1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -68,7 +69,8 @@ public class AdmissionResponse implements KubernetesResource
     @JsonProperty("allowed")
     private Boolean allowed;
     @JsonProperty("auditAnnotations")
-    private Map<String, String> auditAnnotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> auditAnnotations = new LinkedHashMap<String, String>();
     @JsonProperty("patch")
     private java.lang.String patch;
     @JsonProperty("patchType")

@@ -36,7 +36,8 @@ public class PersistentVolumeClaimTemplate implements KubernetesResource
 {
 
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("spec")
     private PersistentVolumeClaimSpec spec;
     @JsonIgnore
@@ -54,19 +55,19 @@ public class PersistentVolumeClaimTemplate implements KubernetesResource
      * @param metadata
      * @param spec
      */
-    public PersistentVolumeClaimTemplate(ObjectMeta metadata, PersistentVolumeClaimSpec spec) {
+    public PersistentVolumeClaimTemplate(io.fabric8.kubernetes.api.model.ObjectMeta metadata, PersistentVolumeClaimSpec spec) {
         super();
         this.metadata = metadata;
         this.spec = spec;
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

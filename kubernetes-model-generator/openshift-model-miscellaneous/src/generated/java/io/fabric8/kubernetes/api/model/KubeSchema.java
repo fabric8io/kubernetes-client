@@ -123,7 +123,8 @@ public class KubeSchema {
     @JsonProperty("NetworkAttachmentDefinitionList")
     private NetworkAttachmentDefinitionList networkAttachmentDefinitionList;
     @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("OperatorPKI")
     private OperatorPKI operatorPKI;
     @JsonProperty("OperatorPKIList")

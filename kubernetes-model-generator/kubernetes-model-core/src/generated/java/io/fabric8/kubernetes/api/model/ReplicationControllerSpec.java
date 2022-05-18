@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -43,7 +44,8 @@ public class ReplicationControllerSpec implements KubernetesResource
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("selector")
-    private Map<String, String> selector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> selector = new LinkedHashMap<String, String>();
     @JsonProperty("template")
     private PodTemplateSpec template;
     @JsonIgnore

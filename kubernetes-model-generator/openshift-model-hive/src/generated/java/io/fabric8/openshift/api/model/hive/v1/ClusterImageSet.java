@@ -80,7 +80,8 @@ public class ClusterImageSet implements HasMetadata
     @JsonProperty("kind")
     private String kind = "ClusterImageSet";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("spec")
     private ClusterImageSetSpec spec;
     @JsonProperty("status")

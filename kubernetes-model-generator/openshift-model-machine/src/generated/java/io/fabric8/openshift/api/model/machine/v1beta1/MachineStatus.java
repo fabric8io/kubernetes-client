@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -85,7 +86,8 @@ public class MachineStatus implements KubernetesResource
     @JsonProperty("phase")
     private java.lang.String phase;
     @JsonProperty("providerStatus")
-    private Map<String, Object> providerStatus;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> providerStatus = new LinkedHashMap<String, Object>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
 

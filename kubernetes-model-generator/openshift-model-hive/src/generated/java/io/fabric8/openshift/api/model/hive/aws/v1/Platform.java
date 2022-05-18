@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.hive.aws.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -68,7 +69,8 @@ public class Platform implements KubernetesResource
     @JsonProperty("region")
     private java.lang.String region;
     @JsonProperty("userTags")
-    private Map<String, String> userTags;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

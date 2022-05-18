@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -65,11 +66,13 @@ public class DeploymentStrategy implements KubernetesResource
     @JsonProperty("activeDeadlineSeconds")
     private Long activeDeadlineSeconds;
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("customParams")
     private CustomDeploymentStrategyParams customParams;
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("recreateParams")
     private RecreateDeploymentStrategyParams recreateParams;
     @JsonProperty("resources")

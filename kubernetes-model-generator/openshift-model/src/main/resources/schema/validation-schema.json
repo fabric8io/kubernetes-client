@@ -16389,10 +16389,10 @@
     },
     "clusternetworkentry": {
       "properties": {
-        "CIDR": {
+        "cidr": {
           "type": "string"
         },
-        "hostSubnetLength": {
+        "hostPrefix": {
           "type": "integer"
         }
       },

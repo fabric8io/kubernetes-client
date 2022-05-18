@@ -95,7 +95,8 @@ public class KubeSchema {
     @JsonProperty("LibvirtMachinePool")
     private io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirtMachinePool;
     @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("OpenStackMachinePool")
     private io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openStackMachinePool;
     @JsonProperty("OvirtMachinePool")

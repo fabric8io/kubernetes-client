@@ -87,7 +87,8 @@ public class KubeSchema {
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("OverlappingRangeIPReservation")
     private OverlappingRangeIPReservation overlappingRangeIPReservation;
     @JsonProperty("OverlappingRangeIPReservationList")

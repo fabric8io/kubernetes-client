@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -75,7 +76,8 @@ public class SubscriptionConfig implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvFromSource> envFrom = new ArrayList<EnvFromSource>();
     @JsonProperty("nodeSelector")
-    private Map<String, String> nodeSelector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonProperty("selector")

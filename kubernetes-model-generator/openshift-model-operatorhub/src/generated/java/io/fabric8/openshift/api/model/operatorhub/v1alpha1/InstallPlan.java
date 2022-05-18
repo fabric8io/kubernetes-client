@@ -81,7 +81,8 @@ public class InstallPlan implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "InstallPlan";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("spec")
     private InstallPlanSpec spec;
     @JsonProperty("status")

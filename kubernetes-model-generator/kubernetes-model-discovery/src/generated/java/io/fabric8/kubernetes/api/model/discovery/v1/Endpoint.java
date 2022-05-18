@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model.discovery.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -69,7 +70,8 @@ public class Endpoint implements KubernetesResource
     @JsonProperty("conditions")
     private EndpointConditions conditions;
     @JsonProperty("deprecatedTopology")
-    private Map<String, String> deprecatedTopology;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> deprecatedTopology = new LinkedHashMap<String, String>();
     @JsonProperty("hints")
     private EndpointHints hints;
     @JsonProperty("hostname")

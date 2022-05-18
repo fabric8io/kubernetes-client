@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.operator.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -64,7 +65,8 @@ public class ProxyConfig implements KubernetesResource
     @JsonProperty("iptablesSyncPeriod")
     private java.lang.String iptablesSyncPeriod;
     @JsonProperty("proxyArguments")
-    private Map<String, ArrayList<String>> proxyArguments;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, ArrayList<String>> proxyArguments = new LinkedHashMap<String, ArrayList<String>>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

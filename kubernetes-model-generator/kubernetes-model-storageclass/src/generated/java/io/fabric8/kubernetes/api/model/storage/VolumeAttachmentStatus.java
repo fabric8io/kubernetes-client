@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model.storage;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -64,7 +65,8 @@ public class VolumeAttachmentStatus implements KubernetesResource
     @JsonProperty("attached")
     private Boolean attached;
     @JsonProperty("attachmentMetadata")
-    private Map<String, String> attachmentMetadata;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> attachmentMetadata = new LinkedHashMap<String, String>();
     @JsonProperty("detachError")
     private VolumeError detachError;
     @JsonIgnore

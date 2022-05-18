@@ -86,7 +86,8 @@ public class PriorityClass implements HasMetadata
     @JsonProperty("kind")
     private String kind = "PriorityClass";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("preemptionPolicy")
     private String preemptionPolicy;
     @JsonProperty("value")

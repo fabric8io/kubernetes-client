@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model.metrics.v1beta1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -83,11 +84,13 @@ public class NodeMetrics implements HasMetadata
     @JsonProperty("kind")
     private java.lang.String kind = "NodeMetrics";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("timestamp")
     private String timestamp;
     @JsonProperty("usage")
-    private Map<String, Quantity> usage;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> usage = new LinkedHashMap<String, Quantity>();
     @JsonProperty("window")
     private Duration window;
     @JsonIgnore

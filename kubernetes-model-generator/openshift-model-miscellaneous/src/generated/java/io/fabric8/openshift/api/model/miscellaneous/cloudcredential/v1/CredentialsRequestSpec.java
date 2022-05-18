@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -60,7 +61,8 @@ public class CredentialsRequestSpec implements KubernetesResource
 {
 
     @JsonProperty("providerSpec")
-    private Map<String, Object> providerSpec;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> providerSpec = new LinkedHashMap<String, Object>();
     @JsonProperty("secretRef")
     private io.fabric8.kubernetes.api.model.ObjectReference secretRef;
     @JsonProperty("serviceAccountNames")

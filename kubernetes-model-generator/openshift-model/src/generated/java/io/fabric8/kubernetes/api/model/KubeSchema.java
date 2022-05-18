@@ -464,7 +464,8 @@ public class KubeSchema {
     @JsonProperty("OAuthList")
     private OAuthList oAuthList;
     @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("OpenShiftRoleBindingRestrictionList")
     private RoleBindingRestrictionList openShiftRoleBindingRestrictionList;
     @JsonProperty("OpenshiftClusterRole")

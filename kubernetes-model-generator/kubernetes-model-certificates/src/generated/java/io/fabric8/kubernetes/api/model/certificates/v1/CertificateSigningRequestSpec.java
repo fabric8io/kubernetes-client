@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model.certificates.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -68,7 +69,8 @@ public class CertificateSigningRequestSpec implements KubernetesResource
     @JsonProperty("expirationSeconds")
     private Integer expirationSeconds;
     @JsonProperty("extra")
-    private Map<String, ArrayList<String>> extra;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, ArrayList<String>> extra = new LinkedHashMap<String, ArrayList<String>>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> groups = new ArrayList<java.lang.String>();

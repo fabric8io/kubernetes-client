@@ -86,7 +86,8 @@ public class Event implements HasMetadata, Namespaced
     @JsonProperty("message")
     private java.lang.String message;
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("reason")
     private java.lang.String reason;
     @JsonProperty("related")
@@ -131,7 +132,7 @@ public class Event implements HasMetadata, Namespaced
      * @param eventTime
      * @param action
      */
-    public Event(java.lang.String action, java.lang.String apiVersion, Integer count, MicroTime eventTime, String firstTimestamp, ObjectReference involvedObject, java.lang.String kind, String lastTimestamp, java.lang.String message, ObjectMeta metadata, java.lang.String reason, ObjectReference related, java.lang.String reportingComponent, java.lang.String reportingInstance, EventSeries series, EventSource source, java.lang.String type) {
+    public Event(java.lang.String action, java.lang.String apiVersion, Integer count, MicroTime eventTime, String firstTimestamp, ObjectReference involvedObject, java.lang.String kind, String lastTimestamp, java.lang.String message, io.fabric8.kubernetes.api.model.ObjectMeta metadata, java.lang.String reason, ObjectReference related, java.lang.String reportingComponent, java.lang.String reportingInstance, EventSeries series, EventSource source, java.lang.String type) {
         super();
         this.action = action;
         this.apiVersion = apiVersion;
@@ -263,12 +264,12 @@ public class Event implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

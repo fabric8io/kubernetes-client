@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -41,15 +42,20 @@ public class LimitRangeItem implements KubernetesResource
 {
 
     @JsonProperty("default")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> _default;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> _default = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("defaultRequest")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> defaultRequest;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> defaultRequest = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("max")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> max;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> max = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("maxLimitRequestRatio")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> maxLimitRequestRatio;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> maxLimitRequestRatio = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("min")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> min;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> min = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore

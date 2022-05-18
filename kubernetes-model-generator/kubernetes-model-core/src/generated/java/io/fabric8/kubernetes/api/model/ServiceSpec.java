@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -91,7 +92,8 @@ public class ServiceSpec implements KubernetesResource
     @JsonProperty("publishNotReadyAddresses")
     private Boolean publishNotReadyAddresses;
     @JsonProperty("selector")
-    private Map<String, String> selector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> selector = new LinkedHashMap<String, String>();
     @JsonProperty("sessionAffinity")
     private java.lang.String sessionAffinity;
     @JsonProperty("sessionAffinityConfig")

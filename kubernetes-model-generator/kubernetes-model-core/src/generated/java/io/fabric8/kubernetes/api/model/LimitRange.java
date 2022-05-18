@@ -59,7 +59,8 @@ public class LimitRange implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "LimitRange";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("spec")
     private LimitRangeSpec spec;
     @JsonIgnore
@@ -79,7 +80,7 @@ public class LimitRange implements HasMetadata, Namespaced
      * @param kind
      * @param spec
      */
-    public LimitRange(String apiVersion, String kind, ObjectMeta metadata, LimitRangeSpec spec) {
+    public LimitRange(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, LimitRangeSpec spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -128,12 +129,12 @@ public class LimitRange implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -57,7 +58,8 @@ public class ClusterResourceQuotaSelector implements KubernetesResource
 {
 
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("labels")
     private io.fabric8.kubernetes.api.model.LabelSelector labels;
     @JsonIgnore

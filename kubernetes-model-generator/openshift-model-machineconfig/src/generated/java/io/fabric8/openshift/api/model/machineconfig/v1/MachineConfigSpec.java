@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.machineconfig.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -64,7 +65,8 @@ public class MachineConfigSpec implements KubernetesResource
 {
 
     @JsonProperty("config")
-    private Map<String, Object> config;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> config = new LinkedHashMap<String, Object>();
     @JsonProperty("extensions")
     private List<java.lang.String> extensions = new ArrayList<java.lang.String>();
     @JsonProperty("fips")

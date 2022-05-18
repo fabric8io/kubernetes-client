@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -60,7 +61,8 @@ public class StrategyDeploymentSpec implements KubernetesResource
 {
 
     @JsonProperty("label")
-    private Map<String, String> label;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> label = new LinkedHashMap<String, String>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonProperty("spec")

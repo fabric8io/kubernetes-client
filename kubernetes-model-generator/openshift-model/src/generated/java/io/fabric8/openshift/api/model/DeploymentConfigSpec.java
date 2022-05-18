@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -74,7 +75,8 @@ public class DeploymentConfigSpec implements KubernetesResource
     @JsonProperty("revisionHistoryLimit")
     private Integer revisionHistoryLimit;
     @JsonProperty("selector")
-    private Map<String, String> selector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> selector = new LinkedHashMap<String, String>();
     @JsonProperty("strategy")
     private DeploymentStrategy strategy;
     @JsonProperty("template")

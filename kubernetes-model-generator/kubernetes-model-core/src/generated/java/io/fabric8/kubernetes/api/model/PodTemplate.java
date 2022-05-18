@@ -59,7 +59,8 @@ public class PodTemplate implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "PodTemplate";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
     @JsonProperty("template")
     private PodTemplateSpec template;
     @JsonIgnore
@@ -79,7 +80,7 @@ public class PodTemplate implements HasMetadata, Namespaced
      * @param apiVersion
      * @param kind
      */
-    public PodTemplate(String apiVersion, String kind, ObjectMeta metadata, PodTemplateSpec template) {
+    public PodTemplate(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, PodTemplateSpec template) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -128,12 +129,12 @@ public class PodTemplate implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -51,9 +52,11 @@ public class NodeStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeAddress> addresses = new ArrayList<NodeAddress>();
     @JsonProperty("allocatable")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("capacity")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeCondition> conditions = new ArrayList<NodeCondition>();

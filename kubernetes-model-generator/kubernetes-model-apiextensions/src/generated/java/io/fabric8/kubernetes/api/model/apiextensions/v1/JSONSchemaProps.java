@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -115,9 +116,11 @@ public class JSONSchemaProps implements KubernetesResource
     @JsonProperty("default")
     private JsonNode _default;
     @JsonProperty("definitions")
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps>();
     @JsonProperty("dependencies")
-    private Map<String, JSONSchemaPropsOrStringArray> dependencies;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, JSONSchemaPropsOrStringArray> dependencies = new LinkedHashMap<String, JSONSchemaPropsOrStringArray>();
     @JsonProperty("description")
     private java.lang.String description;
     @JsonProperty("enum")
@@ -165,9 +168,11 @@ public class JSONSchemaProps implements KubernetesResource
     @JsonProperty("pattern")
     private java.lang.String pattern;
     @JsonProperty("patternProperties")
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps>();
     @JsonProperty("properties")
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> required = new ArrayList<java.lang.String>();

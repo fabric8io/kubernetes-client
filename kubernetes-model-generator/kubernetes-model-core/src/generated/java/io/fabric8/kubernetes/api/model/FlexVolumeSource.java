@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -44,7 +45,8 @@ public class FlexVolumeSource implements KubernetesResource
     @JsonProperty("fsType")
     private java.lang.String fsType;
     @JsonProperty("options")
-    private Map<String, String> options;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> options = new LinkedHashMap<String, String>();
     @JsonProperty("readOnly")
     private Boolean readOnly;
     @JsonProperty("secretRef")

@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -138,7 +139,8 @@ public class ThanosRulerSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("listenLocal")
     private Boolean listenLocal;
     @JsonProperty("logFormat")
@@ -148,7 +150,8 @@ public class ThanosRulerSpec implements KubernetesResource
     @JsonProperty("minReadySeconds")
     private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
-    private Map<String, String> nodeSelector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
     @JsonProperty("objectStorageConfig")
     private SecretKeySelector objectStorageConfig;
     @JsonProperty("objectStorageConfigFile")

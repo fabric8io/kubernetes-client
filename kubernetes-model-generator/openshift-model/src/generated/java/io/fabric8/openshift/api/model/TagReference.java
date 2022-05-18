@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -62,7 +63,8 @@ public class TagReference implements KubernetesResource
 {
 
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("from")
     private io.fabric8.kubernetes.api.model.ObjectReference from;
     @JsonProperty("generation")
