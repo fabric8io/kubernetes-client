@@ -30,7 +30,6 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -82,7 +81,7 @@ public class SecretCrudTest {
     secret2 = client.secrets().inNamespace("ns2").withName("secret2")
         .edit(s -> new SecretBuilder(s).removeFromData("one").build());
     assertNotNull(secret2);
-    assertNull(secret2.getData());
+    assertTrue(secret2.getData().isEmpty());
   }
 
   @Test
@@ -100,7 +99,7 @@ public class SecretCrudTest {
     assertEquals("Secret is invalid", kubernetesClientException.getStatus().getMessage());
     assertEquals(1, kubernetesClientException.getStatus().getDetails().getCauses().size());
     assertEquals("ValueRequired", kubernetesClientException.getStatus().getDetails().getCauses().get(0).getReason());
-    assertEquals("Required value: metadata is required",
+    assertEquals("Required value: name or generateName is required",
         kubernetesClientException.getStatus().getDetails().getCauses().get(0).getMessage());
   }
 }

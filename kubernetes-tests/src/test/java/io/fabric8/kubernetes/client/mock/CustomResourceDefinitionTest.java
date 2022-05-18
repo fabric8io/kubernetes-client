@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,8 +33,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -103,7 +104,7 @@ class CustomResourceDefinitionTest {
     assertNotNull(crd);
     assertEquals("sparkclusters.radanalytics.io", crd.getMetadata().getName());
     // Assertion to test behavior in https://github.com/fabric8io/kubernetes-client/issues/1486
-    assertNull(crd.getSpec().getValidation().getOpenAPIV3Schema().getDependencies());
+    assertFalse(Serialization.asYaml(crd.getSpec().getValidation()).contains("dependencies"));
   }
 
   @Test
