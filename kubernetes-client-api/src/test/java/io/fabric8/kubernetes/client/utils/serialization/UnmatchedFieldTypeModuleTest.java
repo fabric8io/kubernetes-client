@@ -29,6 +29,8 @@ import org.mockito.MockedStatic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,8 +57,7 @@ class UnmatchedFieldTypeModuleTest {
   @DisplayName("readValue, with unknown fields, values are set in additionalProperties map")
   void readValueWithUnknownFields() throws JsonProcessingException {
     // Given
-    final String json =
-      "{\"kind\": \"ConfigMap\"," +
+    final String json = "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
@@ -65,18 +66,17 @@ class UnmatchedFieldTypeModuleTest {
     final KubernetesResource result = objectMapper.readValue(json, KubernetesResource.class);
     // Then
     assertThat(result)
-      .isInstanceOf(ConfigMap.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "the-name")
-      .hasFieldOrPropertyWithValue("data.key", "value")
-      .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
+        .isInstanceOf(ConfigMap.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "the-name")
+        .hasFieldOrPropertyWithValue("data.key", "value")
+        .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
   }
 
   @Test
   @DisplayName("readValue, with unmatched type fields, values are set in additionalProperties map")
   void readValueWithUnmatchedTypeFields() throws JsonProcessingException {
     // Given
-    final String json =
-      "{\"kind\": \"ConfigMap\"," +
+    final String json = "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
@@ -86,19 +86,18 @@ class UnmatchedFieldTypeModuleTest {
     final KubernetesResource result = objectMapper.readValue(json, KubernetesResource.class);
     // Then
     assertThat(result)
-      .isInstanceOf(ConfigMap.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "the-name")
-      .hasFieldOrPropertyWithValue("immutable", null)
-      .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue")
-      .hasFieldOrPropertyWithValue("additionalProperties.immutable", "${immutable}");
+        .isInstanceOf(ConfigMap.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "the-name")
+        .hasFieldOrPropertyWithValue("immutable", null)
+        .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue")
+        .hasFieldOrPropertyWithValue("additionalProperties.immutable", "${immutable}");
   }
 
   @Test
   @DisplayName("readValue, with unmatched type nested fields, values are set in additionalProperties map")
   void readValueWithUnmatchedTypeNestedFields() throws JsonProcessingException {
     // Given
-    final String json =
-      "{\"kind\": \"Deployment\"," +
+    final String json = "{\"kind\": \"Deployment\"," +
         "\"apiVersion\": \"apps/v1\"," +
         "\"metadata\":{\"name\":\"deployment\", \"annotations\": \"${annotations}\"}," +
         "\"spec\":{\"replicas\":\"${replicas}\",\"paused\":true}," +
@@ -107,24 +106,24 @@ class UnmatchedFieldTypeModuleTest {
     final KubernetesResource result = objectMapper.readValue(json, KubernetesResource.class);
     // Then
     assertThat(result)
-      .isInstanceOf(Deployment.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "deployment")
-      .hasFieldOrPropertyWithValue("metadata.annotations", null)
-      .hasFieldOrPropertyWithValue("metadata.additionalProperties.annotations", "${annotations}")
-      .hasFieldOrPropertyWithValue("spec.paused", true)
-      .hasFieldOrPropertyWithValue("spec.replicas", null)
-      .hasFieldOrPropertyWithValue("spec.additionalProperties.replicas", "${replicas}")
-      .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
+        .isInstanceOf(Deployment.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "deployment")
+        .hasFieldOrPropertyWithValue("metadata.annotations", Collections.emptyMap())
+        .hasFieldOrPropertyWithValue("metadata.additionalProperties.annotations", "${annotations}")
+        .hasFieldOrPropertyWithValue("spec.paused", true)
+        .hasFieldOrPropertyWithValue("spec.replicas", null)
+        .hasFieldOrPropertyWithValue("spec.additionalProperties.replicas", "${replicas}")
+        .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
   }
 
   @Test
   @DisplayName("readValue, with no anySetter, should throw Exception")
-  void readValueWithNoAnySetterShouldThrowException()  {
+  void readValueWithNoAnySetterShouldThrowException() {
     // Given
     final String json = "{\"value\": false}";
     // When
-    final MismatchedInputException result = assertThrows(MismatchedInputException.class, () ->
-      objectMapper.readValue(json, Example.class));
+    final MismatchedInputException result = assertThrows(MismatchedInputException.class,
+        () -> objectMapper.readValue(json, Example.class));
     // Then
     assertThat(result).hasMessageStartingWith("Cannot deserialize value of type `int` from Boolean value");
   }
@@ -134,15 +133,14 @@ class UnmatchedFieldTypeModuleTest {
   void readValueWithRestrictToTemplatesAndUnmatchedTypeFields() {
     // Given
     unmatchedFieldTypeModule.setRestrictToTemplates(true);
-    final String json =
-      "{\"kind\": \"ConfigMap\"," +
+    final String json = "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
         "\"immutable\":\"${immutable}\"}";
     // When
-    final MismatchedInputException result = assertThrows(MismatchedInputException.class, () ->
-      objectMapper.readValue(json, KubernetesResource.class));
+    final MismatchedInputException result = assertThrows(MismatchedInputException.class,
+        () -> objectMapper.readValue(json, KubernetesResource.class));
     // Then
     assertThat(result).hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String");
   }
@@ -152,9 +150,9 @@ class UnmatchedFieldTypeModuleTest {
   void writeValueAsStringWithAdditionalPropertiesOverridingFields() throws JsonProcessingException {
     // Given
     final ConfigMap configMap = new ConfigMapBuilder()
-      .withNewMetadata().withName("name").addToAnnotations("key", "ignored").addToLabels("lKey", "value").endMetadata()
-      .withImmutable(true)
-      .build();
+        .withNewMetadata().withName("name").addToAnnotations("key", "ignored").addToLabels("lKey", "value").endMetadata()
+        .withImmutable(true)
+        .build();
     configMap.getAdditionalProperties().put("immutable", "${immutable}");
     configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getMetadata().getAdditionalProperties().put("annotations", "${annotations}");
@@ -162,12 +160,12 @@ class UnmatchedFieldTypeModuleTest {
     final String result = objectMapper.writeValueAsString(configMap);
     // Then
     assertThat(result).isEqualTo("{" +
-      "\"apiVersion\":\"v1\"," +
-      "\"kind\":\"ConfigMap\"," +
-      "\"metadata\":{\"labels\":{\"lKey\":\"value\"},\"name\":\"name\",\"annotations\":\"${annotations}\"}," +
-      "\"immutable\":\"${immutable}\"," +
-      "\"unknownField\":\"unknownValue\"" +
-      "}");
+        "\"apiVersion\":\"v1\"," +
+        "\"kind\":\"ConfigMap\"," +
+        "\"metadata\":{\"labels\":{\"lKey\":\"value\"},\"name\":\"name\",\"annotations\":\"${annotations}\"}," +
+        "\"immutable\":\"${immutable}\"," +
+        "\"unknownField\":\"unknownValue\"" +
+        "}");
   }
 
   @Test
@@ -177,9 +175,9 @@ class UnmatchedFieldTypeModuleTest {
       // Given
       unmatchedFieldTypeModule.setLogWarnings(true);
       final ConfigMap configMap = new ConfigMapBuilder()
-        .withNewMetadata().withName("name").endMetadata()
-        .withImmutable(true)
-        .build();
+          .withNewMetadata().withName("name").endMetadata()
+          .withImmutable(true)
+          .build();
       configMap.getAdditionalProperties().put("immutable", "I'll trigger a warning");
       final Logger mockLogger = mock(Logger.class, RETURNS_DEEP_STUBS);
       lfMock.when(() -> LoggerFactory.getLogger(any(Class.class))).thenReturn(mockLogger);
@@ -187,8 +185,8 @@ class UnmatchedFieldTypeModuleTest {
       objectMapper.writeValueAsString(configMap);
       // Then
       verify(mockLogger, times(1))
-        .warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
-          "immutable", "I'll trigger a warning", "io.fabric8.kubernetes.api.model.ConfigMap");
+          .warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
+              "immutable", "I'll trigger a warning", "io.fabric8.kubernetes.api.model.ConfigMap");
     }
   }
 
@@ -202,9 +200,9 @@ class UnmatchedFieldTypeModuleTest {
       om.registerModule(module);
       module.setLogWarnings(false);
       final ConfigMap configMap = new ConfigMapBuilder()
-        .withNewMetadata().withName("name").endMetadata()
-        .withImmutable(true)
-        .build();
+          .withNewMetadata().withName("name").endMetadata()
+          .withImmutable(true)
+          .build();
       configMap.getAdditionalProperties().put("immutable", "I'll trigger a warning");
       final Logger mockLogger = mock(Logger.class, RETURNS_DEEP_STUBS);
       lfMock.when(() -> LoggerFactory.getLogger(any(Class.class))).thenReturn(mockLogger);
@@ -212,8 +210,8 @@ class UnmatchedFieldTypeModuleTest {
       om.writeValueAsString(configMap);
       // Then
       verify(mockLogger, never())
-        .warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
-          "immutable", "I'll trigger a warning", "io.fabric8.kubernetes.api.model.ConfigMap");
+          .warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
+              "immutable", "I'll trigger a warning", "io.fabric8.kubernetes.api.model.ConfigMap");
     }
   }
 

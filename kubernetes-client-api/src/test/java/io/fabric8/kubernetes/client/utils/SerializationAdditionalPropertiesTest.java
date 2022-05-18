@@ -25,6 +25,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -40,8 +42,7 @@ class SerializationAdditionalPropertiesTest {
   @DisplayName("unmarshal, with unknown fields, values are set in additionalProperties map")
   void unmarshalWithUnknownFields() {
     // Given
-    final String marshalled =
-      "{\"kind\": \"ConfigMap\"," +
+    final String marshalled = "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
@@ -50,30 +51,29 @@ class SerializationAdditionalPropertiesTest {
     final KubernetesResource result = Serialization.unmarshal(marshalled);
     // Then
     assertThat(result)
-      .isInstanceOf(ConfigMap.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "the-name")
-      .hasFieldOrPropertyWithValue("data.key", "value")
-      .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
+        .isInstanceOf(ConfigMap.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "the-name")
+        .hasFieldOrPropertyWithValue("data.key", "value")
+        .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
   }
 
   @Test
   @DisplayName("unmarshal, with unmatched type fields, should throw Exception")
   void unmarshalWithUnmatchedTypeFieldsAndDefaults() {
     // Given
-    final String marshalled =
-      "{\"kind\": \"ConfigMap\"," +
+    final String marshalled = "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
         "\"immutable\":\"${immutable}\"}";
     // When
-    final KubernetesClientException result = assertThrows(KubernetesClientException.class, () ->
-      Serialization.unmarshal(marshalled));
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> Serialization.unmarshal(marshalled));
     // Then
     assertThat(result)
-      .getCause()
-      .isInstanceOf(InvalidFormatException.class)
-      .hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String \"${immutable}\"");
+        .getCause()
+        .isInstanceOf(InvalidFormatException.class)
+        .hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String \"${immutable}\"");
   }
 
   @Test
@@ -81,8 +81,7 @@ class SerializationAdditionalPropertiesTest {
   void unmarshalWithUnmatchedTypeFields() {
     // Given
     Serialization.UNMATCHED_FIELD_TYPE_MODULE.setRestrictToTemplates(false);
-    final String marshalled =
-      "{\"kind\": \"ConfigMap\"," +
+    final String marshalled = "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
@@ -92,11 +91,11 @@ class SerializationAdditionalPropertiesTest {
     final KubernetesResource result = Serialization.unmarshal(marshalled);
     // Then
     assertThat(result)
-      .isInstanceOf(ConfigMap.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "the-name")
-      .hasFieldOrPropertyWithValue("immutable", null)
-      .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue")
-      .hasFieldOrPropertyWithValue("additionalProperties.immutable", "${immutable}");
+        .isInstanceOf(ConfigMap.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "the-name")
+        .hasFieldOrPropertyWithValue("immutable", null)
+        .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue")
+        .hasFieldOrPropertyWithValue("additionalProperties.immutable", "${immutable}");
   }
 
   @Test
@@ -104,8 +103,7 @@ class SerializationAdditionalPropertiesTest {
   void unmarshalWithUnmatchedTypeNestedFields() {
     // Given
     Serialization.UNMATCHED_FIELD_TYPE_MODULE.setRestrictToTemplates(false);
-    final String marshalled =
-      "{\"kind\": \"Deployment\"," +
+    final String marshalled = "{\"kind\": \"Deployment\"," +
         "\"apiVersion\": \"apps/v1\"," +
         "\"metadata\":{\"name\":\"deployment\", \"annotations\": \"${annotations}\"}," +
         "\"spec\":{\"replicas\":\"${replicas}\",\"paused\":true}," +
@@ -114,14 +112,14 @@ class SerializationAdditionalPropertiesTest {
     final KubernetesResource result = Serialization.unmarshal(marshalled);
     // Then
     assertThat(result)
-      .isInstanceOf(Deployment.class)
-      .hasFieldOrPropertyWithValue("metadata.name", "deployment")
-      .hasFieldOrPropertyWithValue("metadata.annotations", null)
-      .hasFieldOrPropertyWithValue("metadata.additionalProperties.annotations", "${annotations}")
-      .hasFieldOrPropertyWithValue("spec.paused", true)
-      .hasFieldOrPropertyWithValue("spec.replicas", null)
-      .hasFieldOrPropertyWithValue("spec.additionalProperties.replicas", "${replicas}")
-      .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
+        .isInstanceOf(Deployment.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "deployment")
+        .hasFieldOrPropertyWithValue("metadata.annotations", Collections.emptyMap())
+        .hasFieldOrPropertyWithValue("metadata.additionalProperties.annotations", "${annotations}")
+        .hasFieldOrPropertyWithValue("spec.paused", true)
+        .hasFieldOrPropertyWithValue("spec.replicas", null)
+        .hasFieldOrPropertyWithValue("spec.additionalProperties.replicas", "${replicas}")
+        .hasFieldOrPropertyWithValue("additionalProperties.unknownField", "unknownValue");
   }
 
   @Test
@@ -129,9 +127,9 @@ class SerializationAdditionalPropertiesTest {
   void marshalWithAdditionalPropertiesOverridingFields() {
     // Given
     final ConfigMap configMap = new ConfigMapBuilder()
-      .withNewMetadata().withName("name").addToAnnotations("key", "value").endMetadata()
-      .withImmutable(true)
-      .build();
+        .withNewMetadata().withName("name").addToAnnotations("key", "value").endMetadata()
+        .withImmutable(true)
+        .build();
     configMap.getAdditionalProperties().put("immutable", "${immutable}");
     configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getMetadata().getAdditionalProperties().put("annotations", "${annotations}");
@@ -139,12 +137,12 @@ class SerializationAdditionalPropertiesTest {
     final String result = Serialization.asJson(configMap);
     // Then
     assertThat(result).isEqualTo("{" +
-      "\"apiVersion\":\"v1\"," +
-      "\"kind\":\"ConfigMap\"," +
-      "\"metadata\":{\"name\":\"name\",\"annotations\":\"${annotations}\"}," +
-      "\"immutable\":\"${immutable}\"," +
-      "\"unknownField\":\"unknownValue\"" +
-      "}");
+        "\"apiVersion\":\"v1\"," +
+        "\"kind\":\"ConfigMap\"," +
+        "\"metadata\":{\"name\":\"name\",\"annotations\":\"${annotations}\"}," +
+        "\"immutable\":\"${immutable}\"," +
+        "\"unknownField\":\"unknownValue\"" +
+        "}");
   }
 
 }

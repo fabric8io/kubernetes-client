@@ -30,7 +30,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
 public class StorageSpaceCrudTest {
@@ -68,7 +68,7 @@ public class StorageSpaceCrudTest {
     assertEquals(1, storageClassList.getItems().size());
     assertEquals("kubernetes.io/aws-ebs", storageClassList.getItems().get(0).getProvisioner());
     assertEquals("value", storageClassList.getItems().get(0).getParameters().get("key"));
-    assertNull(storageClassList.getItems().get(0).getMetadata().getLabels());
+    assertTrue(storageClassList.getItems().get(0).getMetadata().getLabels().isEmpty());
 
     //test update
     storageClass = client.storage().storageClasses().withName(name).edit(s -> new StorageClassBuilder(s).editOrNewMetadata()

@@ -69,7 +69,7 @@ class DryRunIT {
     assertNotNull(replacedConfigMap.getMetadata().getCreationTimestamp());
     assertNotNull(replacedConfigMap.getMetadata().getUid());
     ConfigMap configMapQueriedFromServer = client.configMaps().withName(name).get();
-    assertNull(configMapQueriedFromServer.getMetadata().getLabels());
+    assertTrue(configMapQueriedFromServer.getMetadata().getLabels().isEmpty());
   }
 
   @Test
