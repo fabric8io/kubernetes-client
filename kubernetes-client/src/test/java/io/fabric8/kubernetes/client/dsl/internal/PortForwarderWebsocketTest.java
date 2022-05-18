@@ -23,6 +23,7 @@ import org.mockito.Mockito;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ForkJoinPool;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -33,7 +34,7 @@ class PortForwarderWebsocketTest {
 
   @BeforeEach
   void initPortForwarderWebsocket() {
-    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient);
+    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient, ForkJoinPool.commonPool());
   }
 
   @Test
@@ -52,7 +53,7 @@ class PortForwarderWebsocketTest {
   @Test
   void testCreateNewInetSocketAddress() throws UnknownHostException {
     // Given
-    InetAddress inetAddress = InetAddress.getByAddress(new byte[] {10, 19, 21, 23});
+    InetAddress inetAddress = InetAddress.getByAddress(new byte[] { 10, 19, 21, 23 });
     int port = 8080;
 
     // When

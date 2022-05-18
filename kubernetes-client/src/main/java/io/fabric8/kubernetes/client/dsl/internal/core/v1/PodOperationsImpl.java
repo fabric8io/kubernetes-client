@@ -183,7 +183,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     try {
-      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port, in, out);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, in, out);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -192,7 +192,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public LocalPortForward portForward(int port) {
     try {
-      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -201,7 +201,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public LocalPortForward portForward(int port, int localPort) {
     try {
-      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port, localPort);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, localPort);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -210,7 +210,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public LocalPortForward portForward(int port, InetAddress localInetAddress, int localPort) {
     try {
-      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port, localInetAddress, localPort);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port,
+          localInetAddress, localPort);
     } catch (MalformedURLException ex) {
       throw KubernetesClientException.launderThrowable(ex);
     }

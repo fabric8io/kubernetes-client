@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -54,9 +55,11 @@ public class PortForwarderWebsocket implements PortForwarder {
   private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
   private final HttpClient client;
+  private final Executor executor;
 
-  public PortForwarderWebsocket(HttpClient client) {
+  public PortForwarderWebsocket(HttpClient client, Executor executor) {
     this.client = client;
+    this.executor = executor;
   }
 
   @Override
@@ -180,7 +183,7 @@ public class PortForwarderWebsocket implements PortForwarder {
       private int messagesRead = 0;
 
       private final ExecutorService pumperService = Executors.newSingleThreadExecutor();
-      private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
+      private final SerialExecutor serialExecutor = new SerialExecutor(executor);
 
       @Override
       public void onOpen(final WebSocket webSocket) {
