@@ -9,6 +9,7 @@
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
+* Fix #3625: ObjectMetadata and its annotations and labels are non-null by default.
 * Fix #3852: Deserializing kamelets fails with UnrecognizedPropertyException
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind

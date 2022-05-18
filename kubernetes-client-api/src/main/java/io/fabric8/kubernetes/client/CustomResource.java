@@ -46,36 +46,36 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
  *
  * Properties are set up automatically as follows:
  * <ul>
- *   <li>group is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getGroup(Class)}</li>
- *   <li>version is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getVersion(Class)}</li>
- *   <li>singular is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getSingular(Class)}</li>
- *   <li>plural is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getPlural(Class)}</li>
- *   <li>computed CRD name using {@link CustomResource#getCRDName(Class)}</li>
+ * <li>group is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getGroup(Class)}</li>
+ * <li>version is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getVersion(Class)}</li>
+ * <li>singular is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getSingular(Class)}</li>
+ * <li>plural is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getPlural(Class)}</li>
+ * <li>computed CRD name using {@link CustomResource#getCRDName(Class)}</li>
  * </ul>
  *
- * In addition, {@link CustomResource#setApiVersion(String)} and {@link CustomResource#setKind(String)} are overridden to not do anything since these values
+ * In addition, {@link CustomResource#setApiVersion(String)} and {@link CustomResource#setKind(String)} are overridden to not do
+ * anything since these values
  * are set.
  *
  * @param <S> the class providing the {@code Spec} part of this CustomResource
  * @param <T> the class providing the {@code Status} part of this CustomResource
  */
-@JsonDeserialize(
-  using = JsonDeserializer.None.class
-)
+@JsonDeserialize(using = JsonDeserializer.None.class)
 @JsonPropertyOrder({
-  "apiVersion",
-  "kind",
-  "metadata",
-  "spec",
-  "status"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec",
+    "status"
 })
 @JsonInclude(Include.NON_NULL)
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-  @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
 })
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 
+  @JsonInclude(value = Include.CUSTOM, valueFilter = ObjectMeta.class)
   private ObjectMeta metadata = new ObjectMeta();
 
   @JsonProperty("spec")
@@ -100,7 +100,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     final Class<? extends CustomResource> clazz = getClass();
     if (isNullOrEmpty(version)) {
       throw new IllegalArgumentException(clazz.getName() + " CustomResource must provide an API version using @"
-        + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
+          + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
     }
     this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
@@ -126,7 +126,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   /**
    * Override to provide your own Spec instance
-   * @return a new Spec instance or {@code null} if the responsibility of instantiating the Spec is left to users of this CustomResource
+   * 
+   * @return a new Spec instance or {@code null} if the responsibility of instantiating the Spec is left to users of this
+   *         CustomResource
    */
   protected S initSpec() {
     return null;
@@ -134,7 +136,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   /**
    * Override to provide your own Status instance
-   * @return a new Status instance or {@code null} if the responsibility of instantiating the Status is left to users of this CustomResource
+   * 
+   * @return a new Status instance or {@code null} if the responsibility of instantiating the Status is left to users of this
+   *         CustomResource
    */
   protected T initStatus() {
     return null;
@@ -143,12 +147,12 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   @Override
   public String toString() {
     return "CustomResource{" +
-      "kind='" + getKind() + '\'' +
-      ", apiVersion='" + getApiVersion() + '\'' +
-      ", metadata=" + metadata +
-      ", spec=" + spec +
-      ", status=" + status +
-      '}';
+        "kind='" + getKind() + '\'' +
+        ", apiVersion='" + getApiVersion() + '\'' +
+        ", metadata=" + metadata +
+        ", spec=" + spec +
+        ", status=" + status +
+        '}';
   }
 
   @Override
@@ -159,7 +163,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   @Override
   public void setApiVersion(String version) {
     // already set in constructor
-    LOG.debug("Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
+    LOG.debug(
+        "Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
   }
 
   @Override
@@ -190,6 +195,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     return HasMetadata.getPlural(clazz);
   }
 
+  @Override
   @JsonIgnore
   public String getPlural() {
     return plural;
@@ -203,6 +209,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     return HasMetadata.getSingular(clazz);
   }
 
+  @Override
   @JsonIgnore
   public String getSingular() {
     return singular;
@@ -232,8 +239,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    */
   public static String[] getShortNames(Class<? extends CustomResource> clazz) {
     return Optional.ofNullable(clazz.getAnnotation(ShortNames.class))
-      .map(ShortNames::value)
-      .orElse(new String[]{});
+        .map(ShortNames::value)
+        .orElse(new String[] {});
   }
 
   /**
@@ -284,21 +291,33 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof CustomResource)) return false;
+    if (this == o)
+      return true;
+    if (!(o instanceof CustomResource))
+      return false;
 
     CustomResource<?, ?> that = (CustomResource<?, ?>) o;
 
-    if (served != that.served) return false;
-    if (storage != that.storage) return false;
-    if (!metadata.equals(that.metadata)) return false;
-    if (!Objects.equals(spec, that.spec)) return false;
-    if (!Objects.equals(status, that.status)) return false;
-    if (!singular.equals(that.singular)) return false;
-    if (!crdName.equals(that.crdName)) return false;
-    if (!kind.equals(that.kind)) return false;
-    if (!apiVersion.equals(that.apiVersion)) return false;
-    if (!scope.equals(that.scope)) return false;
+    if (served != that.served)
+      return false;
+    if (storage != that.storage)
+      return false;
+    if (!metadata.equals(that.metadata))
+      return false;
+    if (!Objects.equals(spec, that.spec))
+      return false;
+    if (!Objects.equals(status, that.status))
+      return false;
+    if (!singular.equals(that.singular))
+      return false;
+    if (!crdName.equals(that.crdName))
+      return false;
+    if (!kind.equals(that.kind))
+      return false;
+    if (!apiVersion.equals(that.apiVersion))
+      return false;
+    if (!scope.equals(that.scope))
+      return false;
     return plural.equals(that.plural);
   }
 

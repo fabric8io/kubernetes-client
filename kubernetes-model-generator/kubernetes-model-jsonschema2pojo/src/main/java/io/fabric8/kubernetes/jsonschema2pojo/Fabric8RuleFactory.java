@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JPackage;
+import com.sun.codemodel.JType;
 import org.jsonschema2pojo.DefaultGenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 import org.jsonschema2pojo.SchemaStore;
@@ -22,9 +25,6 @@ import org.jsonschema2pojo.rules.Rule;
 import org.jsonschema2pojo.rules.RuleFactory;
 import org.jsonschema2pojo.util.NameHelper;
 import org.jsonschema2pojo.util.ParcelableHelper;
-
-import com.sun.codemodel.JPackage;
-import com.sun.codemodel.JType;
 
 public class Fabric8RuleFactory extends RuleFactory {
 
@@ -43,5 +43,10 @@ public class Fabric8RuleFactory extends RuleFactory {
   @Override
   public Rule<JPackage, JType> getObjectRule() {
     return new Fabric8ObjectRule(this, new ParcelableHelper(), getReflectionHelper());
+  }
+
+  @Override
+  public Rule<JFieldVar, JFieldVar> getDefaultRule() {
+    return new Fabric8DefaultRule(this);
   }
 }
