@@ -25,7 +25,8 @@ import java.util.concurrent.RejectedExecutionException;
  * See {@link Executor} docs
  *
  * <br>
- * Effectively creates a derived single thread executor
+ * Effectively creates a derived single thread executor, runnable tasks are executed in the order they are added.
+ * This is a replacement for Executors.newSingleThreadExecutor() that uses threads in a non-dedicated way
  * <br>
  * Added shutdown support
  */
