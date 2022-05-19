@@ -253,8 +253,8 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public LeaderElectorBuilder<? extends NamespacedKubernetesClient> leaderElector() {
-    return new LeaderElectorBuilder<>(this);
+  public LeaderElectorBuilder leaderElector() {
+    return new LeaderElectorBuilder(this, this.getExecutor());
   }
 
   @Override

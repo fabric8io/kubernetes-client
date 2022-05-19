@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,103 +30,123 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class LeaderElector<C extends NamespacedKubernetesClient> {
+public class LeaderElector {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LeaderElector.class);
 
   protected static final Double JITTER_FACTOR = 1.2;
 
-  private C kubernetesClient;
+  private KubernetesClient kubernetesClient;
   private LeaderElectionConfig leaderElectionConfig;
-  private final AtomicReference<LeaderElectionRecord> observedRecord;
-  private final AtomicReference<LocalDateTime> observedTime;
-  private final AtomicReference<String> reportedLeader;
+  private final AtomicReference<LeaderElectionRecord> observedRecord = new AtomicReference<>();
+  private final AtomicReference<LocalDateTime> observedTime = new AtomicReference<>();
+  private final Executor executor;
 
-  public LeaderElector(C kubernetesClient, LeaderElectionConfig leaderElectionConfig) {
+  public LeaderElector(KubernetesClient kubernetesClient, LeaderElectionConfig leaderElectionConfig, Executor executor) {
     this.kubernetesClient = kubernetesClient;
     this.leaderElectionConfig = leaderElectionConfig;
-    observedRecord = new AtomicReference<>();
-    observedTime = new AtomicReference<>();
-    reportedLeader = new AtomicReference<>();
+    this.executor = executor;
   }
 
   /**
    * Starts the leader election loop
+   * <p>
+   * {@link #start()} is preferred as it does not hold a thread.
    */
   public void run() {
-    LOGGER.debug("Leader election started");
-    if (!acquire()) {
-      return;
+    CompletableFuture<?> acquire = start();
+    try {
+      acquire.get();
+    } catch (InterruptedException e) {
+      acquire.cancel(true);
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException e) {
+      LOGGER.error("Exception during leader election", e);
     }
-    leaderElectionConfig.getLeaderCallbacks().onStartLeading();
-    renewWithTimeout();
-    leaderElectionConfig.getLeaderCallbacks().onStopLeading();
   }
 
-  private boolean acquire() {
+  /**
+   * Start a leader elector. The future may be cancelled to stop
+   * the leader elector.
+   * 
+   * @return the future
+   */
+  public CompletableFuture<?> start() {
+    LOGGER.debug("Leader election started");
+    CompletableFuture<Void> result = new CompletableFuture<>();
+
+    CompletableFuture<?> acquireFuture = acquire();
+
+    acquireFuture.whenComplete((v, t) -> {
+      if (t == null) {
+        CompletableFuture<?> renewFuture = renewWithTimeout();
+        result.whenComplete((v1, t1) -> renewFuture.cancel(true));
+        renewFuture.whenComplete((v1, t1) -> {
+          if (t1 != null) {
+            result.completeExceptionally(t1);
+          } else {
+            result.complete(null);
+          }
+        });
+      }
+    });
+    result.whenComplete((v, t) -> {
+      acquireFuture.cancel(true);
+      LeaderElectionRecord current = observedRecord.get();
+      // if cancelled we still want to notify of stopping leadership
+      if (current != null && Objects.equals(current.getHolderIdentity(), leaderElectionConfig.getLock().identity())) {
+        leaderElectionConfig.getLeaderCallbacks().onStopLeading();
+      }
+    });
+    return result;
+  }
+
+  private CompletableFuture<Void> acquire() {
     final String lockDescription = leaderElectionConfig.getLock().describe();
     LOGGER.debug("Attempting to acquire leader lease '{}'...", lockDescription);
-    final AtomicBoolean succeeded = new AtomicBoolean(false);
-    return loop(countDownLatch -> {
+    return loop(completion -> {
       try {
-        if (!succeeded.get()) {
-          succeeded.set(tryAcquireOrRenew());
-          reportTransitionIfLeaderChanged();
+        if (tryAcquireOrRenew()) {
+          completion.complete(null);
         }
-        if (succeeded.get()) {
-          LOGGER.debug("Successfully Acquired leader lease '{}'", lockDescription);
-          countDownLatch.countDown();
-        } else {
-          LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
-        }
-      } catch (Exception exception) {
+        LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
+      } catch (LockException | KubernetesClientException exception) {
         LOGGER.error("Exception occurred while acquiring lock '{}'", lockDescription, exception);
       }
-    }, jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis());
+    }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
   }
 
-  private void renewWithTimeout() {
+  private CompletableFuture<Void> renewWithTimeout() {
     final String lockDescription = leaderElectionConfig.getLock().describe();
     LOGGER.debug("Attempting to renew leader lease '{}'...", lockDescription);
-    loop(abortLatch -> {
-      final ExecutorService timeoutExecutorService = Executors.newSingleThreadScheduledExecutor();
-      final CountDownLatch renewSignal = new CountDownLatch(1);
-      try {
-        timeoutExecutorService.submit(() -> renew(abortLatch, renewSignal));
-        if (!renewSignal.await(leaderElectionConfig.getRenewDeadline().toMillis(), TimeUnit.MILLISECONDS)) {
-          LOGGER.debug("Renew deadline reached after {} seconds while renewing lock {}",
+    AtomicLong renewBy = new AtomicLong(System.currentTimeMillis() + leaderElectionConfig.getRenewDeadline().toMillis());
+    return loop(completion -> {
+      if (System.currentTimeMillis() > renewBy.get()) {
+        LOGGER.debug("Renew deadline reached after {} seconds while renewing lock {}",
             leaderElectionConfig.getRenewDeadline().get(ChronoUnit.SECONDS), lockDescription);
-          abortLatch.countDown();
+        completion.complete(null);
+        return;
+      }
+      try {
+        if (tryAcquireOrRenew()) {
+          renewBy.set(System.currentTimeMillis() + leaderElectionConfig.getRenewDeadline().toMillis());
+        } else {
+          // renewal failed, exit
+          completion.complete(null);
         }
-      } catch(InterruptedException ex) {
-        Thread.currentThread().interrupt();
-      } finally {
-        timeoutExecutorService.shutdown();
+      } catch (LockException | KubernetesClientException exception) {
+        LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
       }
-    }, leaderElectionConfig.getRetryPeriod().toMillis());
-  }
-
-  private void renew(CountDownLatch abortLatch, CountDownLatch renewSignal) {
-    try {
-      final boolean success = tryAcquireOrRenew();
-      reportTransitionIfLeaderChanged();
-      if (!success) {
-        abortLatch.countDown();
-      }
-    } catch(LockException exception) {
-      LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
-    }
-    renewSignal.countDown();
+    }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
 
   private boolean tryAcquireOrRenew() throws LockException {
@@ -133,7 +155,7 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
     final LeaderElectionRecord oldLeaderElectionRecord = lock.get(kubernetesClient);
     if (oldLeaderElectionRecord == null) {
       final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-        lock.identity(), leaderElectionConfig.getLeaseDuration(), now, now, 0);
+          lock.identity(), leaderElectionConfig.getLeaseDuration(), now, now, 0);
       lock.create(kubernetesClient, newLeaderElectionRecord);
       updateObserved(newLeaderElectionRecord);
       return true;
@@ -145,12 +167,11 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
       return false;
     }
     final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-      lock.identity(),
-      leaderElectionConfig.getLeaseDuration(),
-      isLeader ? oldLeaderElectionRecord.getAcquireTime() : now,
-      now,
-      isLeader ? (oldLeaderElectionRecord.getLeaderTransitions() + 1) : 0
-    );
+        lock.identity(),
+        leaderElectionConfig.getLeaseDuration(),
+        isLeader ? oldLeaderElectionRecord.getAcquireTime() : now,
+        now,
+        isLeader ? (oldLeaderElectionRecord.getLeaderTransitions() + 1) : 0);
     newLeaderElectionRecord.setVersion(oldLeaderElectionRecord.getVersion());
     leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
     updateObserved(newLeaderElectionRecord);
@@ -158,19 +179,21 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
   }
 
   private void updateObserved(LeaderElectionRecord leaderElectionRecord) {
-    if (!Objects.equals(leaderElectionRecord, observedRecord.get())) {
-      observedRecord.set(leaderElectionRecord);
+    final LeaderElectionRecord current = observedRecord.getAndSet(leaderElectionRecord);
+    if (!Objects.equals(leaderElectionRecord, current)) {
       observedTime.set(LocalDateTime.now());
-    }
-  }
-
-  private void reportTransitionIfLeaderChanged() {
-    final String currentLeader = reportedLeader.get();
-    final String newLeader = observedRecord.get().getHolderIdentity();
-    if (!Objects.equals(newLeader, currentLeader)) {
-      LOGGER.debug("Leader changed from {} to {}", currentLeader, newLeader);
-      reportedLeader.set(newLeader);
-      leaderElectionConfig.getLeaderCallbacks().onNewLeader(newLeader);
+      final String currentLeader = current == null ? null : current.getHolderIdentity();
+      final String newLeader = leaderElectionRecord.getHolderIdentity();
+      if (!Objects.equals(newLeader, currentLeader)) {
+        LOGGER.debug("Leader changed from {} to {}", currentLeader, newLeader);
+        leaderElectionConfig.getLeaderCallbacks().onNewLeader(newLeader);
+        if (Objects.equals(currentLeader, leaderElectionConfig.getLock().identity())) {
+          leaderElectionConfig.getLeaderCallbacks().onStopLeading();
+        } else if (Objects.equals(newLeader, leaderElectionConfig.getLock().identity())) {
+          LOGGER.debug("Successfully Acquired leader lease '{}'", leaderElectionConfig.getLock().describe());
+          leaderElectionConfig.getLeaderCallbacks().onStartLeading();
+        }
+      }
     }
   }
 
@@ -183,29 +206,20 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
   }
 
   /**
-   * Periodically (every provided period) runs the provided {@link Consumer} in a separate thread causing the current
-   * thread to wait until the supplied {@link CountDownLatch} is decremented by 1 unit.
+   * Periodically (every provided period) runs the provided {@link Consumer} in a separate thread
+   * until the supplied {@link CompletableFuture} is completed.
    *
    * @param consumer function to run in a separate thread
-   * @param periodInMillis to schedule the run of the provided consumer
-   * @return true if the current thread was not interrupted, false otherwise
+   * @param delaySupplier to schedule the run of the provided consumer
+   * @return the future to be completed
    */
-  protected static boolean loop(Consumer<CountDownLatch> consumer, long periodInMillis) {
-    final ScheduledExecutorService singleThreadExecutorService = Executors.newSingleThreadScheduledExecutor();
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-    final Future<?> future = singleThreadExecutorService.scheduleAtFixedRate(
-      () -> consumer.accept(countDownLatch), 0L, periodInMillis, TimeUnit.MILLISECONDS);
-    try {
-      countDownLatch.await();
-      return true;
-    } catch (InterruptedException e) {
-      LOGGER.debug("Loop thread interrupted: {}", e.getMessage());
-      Thread.currentThread().interrupt();
-      return false;
-    } finally {
-      future.cancel(true);
-      singleThreadExecutorService.shutdownNow();
-    }
+  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, Supplier<Long> delaySupplier,
+      Executor executor) {
+    CompletableFuture<Void> completion = new CompletableFuture<>();
+    Utils.scheduleWithVariableRate(completion, executor, () -> consumer.accept(completion), 0,
+        delaySupplier,
+        TimeUnit.MILLISECONDS);
+    return completion;
   }
 
   protected static ZonedDateTime now() {
@@ -215,7 +229,7 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
   /**
    * Returns a {@link Duration} between the provided duration and (duration + maxFactor*duration)
    *
-   * @param duration  to apply jitter to
+   * @param duration to apply jitter to
    * @param maxFactor for jitter
    * @return the jittered duration
    */

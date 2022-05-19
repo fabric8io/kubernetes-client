@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
 
@@ -27,11 +28,13 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.jitter;
@@ -56,31 +59,26 @@ class LeaderElectorTest {
   void runShouldAbortAfterRenewDeadlineExpired() throws Exception {
     // Given
     final Long renewDeadlineMillis = 1000L;
-    final ExecutorService executor = Executors.newSingleThreadExecutor();
-    final CountDownLatch signal = new CountDownLatch(1);
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     when(lec.getRenewDeadline()).thenReturn(Duration.ofMillis(renewDeadlineMillis));
     final Lock mockedLock = lec.getLock();
     doNothing().doAnswer(invocation -> {
       // Sleep so that RENEW DEADLINE is reached
-      Thread.sleep(renewDeadlineMillis*2);
-      return null;
+      Thread.sleep(renewDeadlineMillis * 2);
+      throw new LockException("");
     }).when(mockedLock).update(any(), any());
     // When
-    executor.submit(() -> {
-      new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).run();
-      signal.countDown();
-    });
-    signal.await(10, TimeUnit.SECONDS);
+    CompletableFuture<?> future = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, ForkJoinPool.commonPool())
+        .start();
+
     // Then
-    assertEquals(0, signal.getCount());
+    future.get(10, TimeUnit.SECONDS);
     verify(mockedLock, atLeast(2)).get(any());
     verify(mockedLock, times(1)).create(any(), any());
     verify(mockedLock, atLeast(2)).update(any(), any());
     verify(lec.getLeaderCallbacks(), atLeast(1)).onNewLeader(eq("1337"));
     verify(lec.getLeaderCallbacks(), times(1)).onStartLeading();
     verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
-    executor.shutdownNow();
   }
 
   @Test
@@ -96,7 +94,7 @@ class LeaderElectorTest {
       return null;
     }).when(mockedLock).update(any(), any());
     // When
-    executor.submit(() -> new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).run());
+    executor.submit(() -> new LeaderElector(mock(NamespacedKubernetesClient.class), lec, ForkJoinPool.commonPool()).run());
     signal.await(10, TimeUnit.SECONDS);
     // Then
     assertEquals(0, signal.getCount());
@@ -118,7 +116,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getHolderIdentity()).thenReturn("1337");
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).isLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).isLeader(ler);
     // Then
     assertTrue(result);
   }
@@ -131,7 +129,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getHolderIdentity()).thenReturn("1337");
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).isLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).isLeader(ler);
     // Then
     assertFalse(result);
   }
@@ -144,7 +142,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).canBecomeLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
     // Then
     assertTrue(result);
   }
@@ -157,45 +155,38 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC));
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).canBecomeLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
     // Then
     assertFalse(result);
   }
 
   @Test
-  void loopCompletesOkShouldShutdownExecutorService() throws Exception {
+  void loopCompletesOk() throws Exception {
     // Given
-    final CountDownLatch signal = new CountDownLatch(1);
-    final ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.submit(() -> loop(countDownLatch -> {
-      countDownLatch.countDown();
-      signal.countDown();
-    }, 1));
+    CompletableFuture<?> cf = loop(completion -> {
+      completion.complete(null);
+    }, () -> 1L, ForkJoinPool.commonPool());
     // When
-    signal.await(50, TimeUnit.MILLISECONDS);
-    // Then
-    assertEquals(0, signal.getCount());
-    executor.shutdownNow();
+    cf.get(500, TimeUnit.MILLISECONDS);
   }
 
   @Test
-  void loopInterruptedShouldShutdownExecutorService() throws Exception {
+  void loopCancel() throws Exception {
     // Given
-    final CountDownLatch signal = new CountDownLatch(1);
-    final ExecutorService executor = Executors.newSingleThreadExecutor();
-    final AtomicReference<CountDownLatch> loopCountDownLatch = new AtomicReference<>(null);
-    final Future<Boolean> futureLoop = executor.submit(() -> loop(countDownLatch -> {
-      loopCountDownLatch.set(countDownLatch);
-      signal.countDown();
-    }, 1));
+    AtomicInteger count = new AtomicInteger();
+    CompletableFuture<?> cf = loop(completion -> {
+      count.getAndIncrement();
+    }, () -> 10L, ForkJoinPool.commonPool());
     // When
-    signal.await(50, TimeUnit.MILLISECONDS);
-    futureLoop.cancel(true);
-    // Then
-    assertEquals(0, signal.getCount());
-    assertEquals(1, loopCountDownLatch.get().getCount());
-    executor.shutdownNow();
-    executor.awaitTermination(10, TimeUnit.SECONDS);
+    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
+
+    cf.cancel(true);
+
+    // make sure that the task is no longer running
+    Thread.sleep(100);
+    int sample = count.get();
+    Thread.sleep(100);
+    assertEquals(sample, count.get());
   }
 
   @Test

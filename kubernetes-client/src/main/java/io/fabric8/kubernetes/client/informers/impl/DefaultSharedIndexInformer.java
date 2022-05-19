@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -67,7 +67,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private final AtomicBoolean started = new AtomicBoolean();
   private volatile boolean stopped = false;
 
-  private ScheduledFuture<?> resyncFuture;
+  private Future<?> resyncFuture;
 
   private Stream<T> initialState;
 
@@ -242,7 +242,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return resyncCheckPeriodMillis;
   }
 
-  ScheduledFuture<?> getResyncFuture() {
+  Future<?> getResyncFuture() {
     return resyncFuture;
   }
 

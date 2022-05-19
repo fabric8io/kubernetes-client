@@ -82,6 +82,10 @@ class BuildConfigOperationsImplTest {
 
     // When
     ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[0]);
+    CompletableFuture<HttpResponse<byte[]>> future = new CompletableFuture<>();
+    future.completeExceptionally(new IOException());
+    when(httpClient.sendAsync(any(), eq(byte[].class))).thenReturn(future);
+
     KubernetesClientException exception = assertThrows(KubernetesClientException.class,
         () -> impl.submitToApiServer(inputStream, 0));
 

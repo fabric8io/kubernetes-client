@@ -478,10 +478,9 @@ public interface KubernetesClient extends Client {
   /**
    * API entrypoint for <code>LeaderElector</code> implementation for leader election.
    *
-   * @param <C> type parameter for the Namespaceable KubernetesClient
    * @return LeaderElectorBuilder to build LeaderElector instances
    */
-  <C extends NamespacedKubernetesClient> LeaderElectorBuilder<C> leaderElector();
+  LeaderElectorBuilder leaderElector();
 
   /**
    * API entrypoint for {@link Lease} related operations. Lease (coordination.k8s.io/v1)

@@ -36,7 +36,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,87 +52,85 @@ public class LeaderElectionTest {
   public void singleLeaderConfigMapLockCreateTest() throws Exception {
     // Given
     server.expect().post().withPath("/api/v1/namespaces/namespace/configmaps")
-      .andReturn(200, null).once();
+        .andReturn(200, null).once();
     // When - Then
     testAndAssertSingleLeader("lead-config-map",
-      new ConfigMapLock("namespace", "name", "lead-config-map"));
+        new ConfigMapLock("namespace", "name", "lead-config-map"));
   }
 
   @Test
   public void singleLeaderConfigMapLockUpdateTest() throws Exception {
     // Given
     server.expect().get().withPath("/api/v1/namespaces/namespace/configmaps/name")
-      .andReturn(200, new ConfigMapBuilder()
-        .withNewMetadata()
-        .withResourceVersion("1")
-        .withAnnotations(Collections.singletonMap(
-          "control-plane.alpha.kubernetes.io/leader",
-          "{\"holderIdentity\": \"not-lead-config-map\", \"leaseDuration\": 100, \"acquireTime\": 0, \"renewTime\": 0}"))
-        .endMetadata()
-        .build()).always();
+        .andReturn(200, new ConfigMapBuilder()
+            .withNewMetadata()
+            .withResourceVersion("1")
+            .withAnnotations(Collections.singletonMap(
+                "control-plane.alpha.kubernetes.io/leader",
+                "{\"holderIdentity\": \"not-lead-config-map\", \"leaseDuration\": 100, \"acquireTime\": 0, \"renewTime\": 0}"))
+            .endMetadata()
+            .build())
+        .always();
     server.expect().put().withPath("/api/v1/namespaces/namespace/configmaps/name")
-      .andReturn(200, null).once();
+        .andReturn(200, null).once();
     // When - Then
     testAndAssertSingleLeader("lead-config-map",
-      new ConfigMapLock("namespace", "name", "lead-config-map"));
+        new ConfigMapLock("namespace", "name", "lead-config-map"));
   }
 
   @Test
   public void singleLeaderLeaseLockCreateTest() throws Exception {
     // Given
     server.expect().post().withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases")
-      .andReturn(200, null).once();
+        .andReturn(200, null).once();
     // When - Then
     testAndAssertSingleLeader("lead-lease",
-      new LeaseLock("namespace", "name", "lead-lease"));
+        new LeaseLock("namespace", "name", "lead-lease"));
   }
 
   @Test
   public void singleLeaderLeaseLockUpdateTest() throws Exception {
     // Given
     server.expect().get().withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
-      .andReturn(200, new LeaseBuilder()
-        .withNewMetadata().withResourceVersion("1").endMetadata()
-        .withNewSpec()
-        .withHolderIdentity("not-lead-lease")
-        .withLeaseDurationSeconds(1)
-        .withAcquireTime(ZonedDateTime.now().minus(1, ChronoUnit.YEARS))
-        .withRenewTime(ZonedDateTime.now().minus(1, ChronoUnit.YEARS))
-        .withLeaseTransitions(0)
-        .endSpec()
-        .build()).always();
+        .andReturn(200, new LeaseBuilder()
+            .withNewMetadata().withResourceVersion("1").endMetadata()
+            .withNewSpec()
+            .withHolderIdentity("not-lead-lease")
+            .withLeaseDurationSeconds(1)
+            .withAcquireTime(ZonedDateTime.now().minus(1, ChronoUnit.YEARS))
+            .withRenewTime(ZonedDateTime.now().minus(1, ChronoUnit.YEARS))
+            .withLeaseTransitions(0)
+            .endSpec()
+            .build())
+        .always();
     server.expect().put().withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
-      .andReturn(200, null).once();
+        .andReturn(200, null).once();
     // When - Then
     testAndAssertSingleLeader("lead-lease",
-      new LeaseLock("namespace", "name", "lead-lease"));
+        new LeaseLock("namespace", "name", "lead-lease"));
   }
 
   private void testAndAssertSingleLeader(String id, Lock lock) throws Exception {
     // Given
     final CountDownLatch leaderLatch = new CountDownLatch(1);
     final AtomicReference<String> newLeaderRecord = new AtomicReference<>();
-    final AtomicBoolean stoppedLeading = new AtomicBoolean(false);
+    final CountDownLatch stoppedLeading = new CountDownLatch(1);
     final ExecutorService executorService = Executors.newSingleThreadExecutor();
     // When
-    final Future<?> leaderElectorTask = executorService.submit(() ->
-      assertThrows(InterruptedException.class, () ->
-        client.leaderElector()
-          .withConfig(new LeaderElectionConfigBuilder()
-            .withName("Integration test leader election configuration")
-            .withLeaseDuration(Duration.ofSeconds(15L))
-            .withLock(lock)
-            .withRenewDeadline(Duration.ofSeconds(10L))
-            .withRetryPeriod(Duration.ofSeconds(2L))
-            .withLeaderCallbacks(new LeaderCallbacks(
-              leaderLatch::countDown,
-              () -> stoppedLeading.set(true),
-              newLeaderRecord::set
-            ))
-            .build()
-          ).build().run()
-      )
-    );
+    final Future<?> leaderElectorTask = executorService.submit(() -> assertThrows(InterruptedException.class,
+        () -> client.leaderElector()
+            .withConfig(new LeaderElectionConfigBuilder()
+                .withName("Integration test leader election configuration")
+                .withLeaseDuration(Duration.ofSeconds(15L))
+                .withLock(lock)
+                .withRenewDeadline(Duration.ofSeconds(10L))
+                .withRetryPeriod(Duration.ofSeconds(2L))
+                .withLeaderCallbacks(new LeaderCallbacks(
+                    leaderLatch::countDown,
+                    stoppedLeading::countDown,
+                    newLeaderRecord::set))
+                .build())
+            .build().run()));
     // Then
     assertTrue(leaderLatch.await(5, TimeUnit.SECONDS));
     assertEquals(id, newLeaderRecord.get());
@@ -141,6 +138,6 @@ public class LeaderElectionTest {
     leaderElectorTask.cancel(true);
     executorService.shutdownNow();
     executorService.awaitTermination(5, TimeUnit.SECONDS);
-    assertTrue(stoppedLeading.get());
+    assertTrue(stoppedLeading.await(5, TimeUnit.SECONDS));
   }
 }

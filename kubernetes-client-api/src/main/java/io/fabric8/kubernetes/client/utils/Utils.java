@@ -43,15 +43,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Utils {
@@ -463,12 +468,53 @@ public class Utils {
 
   /**
    * Schedule a repeated task to run in the given {@link Executor} - which should run the task in a different thread as to not
-   * hold the scheduling thread
+   * hold the scheduling thread.
+   * <p>
+   * Has the same general contract as {@link ScheduledThreadPoolExecutor#scheduleAtFixedRate(Runnable, long, long, TimeUnit)}
    */
-  public static ScheduledFuture<?> scheduleAtFixedRate(Executor executor, Runnable command, long initialDelay, long delay,
+  public static CompletableFuture<?> scheduleAtFixedRate(Executor executor, Runnable command, long initialDelay, long delay,
       TimeUnit unit) {
-    // because of the hand-off to the other executor, there's no difference between rate and delay
-    return SHARED_SCHEDULER.scheduleWithFixedDelay(() -> executor.execute(command), initialDelay, delay, unit);
+    CompletableFuture<Void> completion = new CompletableFuture<>();
+    scheduleWithVariableRate(completion, executor, command, initialDelay, () -> delay, unit);
+    return completion;
+  }
+
+  /**
+   * Schedule a repeated task to run in the given {@link Executor} - which should run the task in a different thread as to not
+   * hold the scheduling thread.
+   * <p>
+   * 
+   * @param nextDelay provides the relative next delay - that is the values are applied cumulatively to the initial start
+   *        time. Supplying a fixed value produces a fixed rate.
+   */
+  public static void scheduleWithVariableRate(CompletableFuture<?> completion, Executor executor, Runnable command,
+      long initialDelay,
+      Supplier<Long> nextDelay, TimeUnit unit) {
+    AtomicReference<ScheduledFuture<?>> currentScheduledFuture = new AtomicReference<>();
+    AtomicLong next = new AtomicLong(unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS) + Math.max(0, initialDelay));
+    schedule(() -> CompletableFuture.runAsync(command, executor), initialDelay, unit, completion, nextDelay, next,
+        currentScheduledFuture);
+    // remove on cancel is true, so this may proactively clean up
+    completion.whenComplete((v, t) -> Optional.ofNullable(currentScheduledFuture.get()).ifPresent(s -> s.cancel(true)));
+  }
+
+  private static void schedule(Supplier<CompletableFuture<?>> runner, long delay, TimeUnit unit,
+      CompletableFuture<?> completion, Supplier<Long> nextDelay, AtomicLong next,
+      AtomicReference<ScheduledFuture<?>> currentScheduledFuture) {
+    currentScheduledFuture.set(SHARED_SCHEDULER.schedule(() -> {
+      if (completion.isDone()) {
+        return;
+      }
+      CompletableFuture<?> runAsync = runner.get();
+      runAsync.whenComplete((v, t) -> {
+        if (t != null) {
+          completion.completeExceptionally(t);
+        } else if (!completion.isDone()) {
+          schedule(runner, next.addAndGet(nextDelay.get()) - unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS),
+              unit, completion, nextDelay, next, currentScheduledFuture);
+        }
+      });
+    }, delay, unit));
   }
 
 }

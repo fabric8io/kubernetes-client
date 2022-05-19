@@ -311,7 +311,7 @@ class SerializationTest {
       .doesNotContain("status")
       .contains("spec: \"foo\"");
   }
-
+  
   @Test
   void quantityQuoting() {
     Quantity quantity = Serialization.unmarshal("amount: \"2\"\nformat: \"Gi\"", Quantity.class);

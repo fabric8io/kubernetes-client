@@ -379,7 +379,7 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   }
 
   @Override
-  public <C extends NamespacedKubernetesClient> LeaderElectorBuilder<C> leaderElector() {
+  public LeaderElectorBuilder leaderElector() {
     return getClient().leaderElector();
   }
 

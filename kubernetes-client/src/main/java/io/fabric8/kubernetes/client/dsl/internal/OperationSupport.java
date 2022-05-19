@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -554,8 +553,8 @@ public class OperationSupport {
       Map<String, String> parameters) {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
-    CompletableFuture<HttpResponse<byte[]>> futureResponse = retryWithExponentialBackoff(new AtomicInteger(),
-        Utils.getNonNullOrElse(client, httpClient), request);
+    CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
+    retryWithExponentialBackoff(futureResponse, new AtomicInteger(), Utils.getNonNullOrElse(client, httpClient), request);
 
     return futureResponse.thenApply(response -> {
       try {
@@ -573,56 +572,35 @@ public class OperationSupport {
     });
   }
 
-  // used a holder so that we can use thenCompose
-  private static class ResponseHolder<T> {
-    HttpResponse<T> response;
-    Throwable throwable;
-
-    public ResponseHolder(HttpResponse<T> response, Throwable exception) {
-      this.response = response;
-      if (exception instanceof CompletionException) {
-        exception = exception.getCause();
-      }
-      this.throwable = exception;
-    }
-  }
-
-  protected CompletableFuture<HttpResponse<byte[]>> retryWithExponentialBackoff(AtomicInteger numRetries,
+  protected void retryWithExponentialBackoff(CompletableFuture<HttpResponse<byte[]>> result,
+      AtomicInteger numRetries,
       HttpClient client, HttpRequest request) {
-    return client.sendAsync(request, byte[].class)
-        .handle(ResponseHolder::new).thenCompose(r -> {
+    client.sendAsync(request, byte[].class)
+        .whenComplete((response, throwable) -> {
           int retries = numRetries.getAndIncrement();
-          CompletableFuture<HttpResponse<byte[]>> result = new CompletableFuture<>();
           if (retries < requestRetryBackoffLimit) {
             long retryInterval = retryIntervalCalculator.getInterval(retries);
             boolean retry = false;
-            if (r.response != null && r.response.code() >= 500) {
+            if (response != null && response.code() >= 500) {
               LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                  request.uri(), r.response.code(), retryInterval);
+                  request.uri(), response.code(), retryInterval);
               retry = true;
-            } else if (r.throwable instanceof IOException) {
+            } else if (throwable instanceof IOException) {
               LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-                  request.uri(), retryInterval), r.throwable);
+                  request.uri(), retryInterval), throwable);
               retry = true;
             }
             if (retry) {
               Utils.schedule(context.getExecutor(),
-                  () -> retryWithExponentialBackoff(numRetries, client, request).whenComplete((fr, rt) -> {
-                    if (rt != null) {
-                      result.completeExceptionally(rt);
-                    } else {
-                      result.complete(fr);
-                    }
-                  }), retryInterval, TimeUnit.MILLISECONDS);
-              return result;
+                  () -> retryWithExponentialBackoff(result, numRetries, client, request), retryInterval, TimeUnit.MILLISECONDS);
+              return;
             }
           }
-          if (r.throwable != null) {
-            result.completeExceptionally(r.throwable);
+          if (throwable != null) {
+            result.completeExceptionally(throwable);
           } else {
-            result.complete(r.response);
+            result.complete(response);
           }
-          return result;
         });
   }
 
