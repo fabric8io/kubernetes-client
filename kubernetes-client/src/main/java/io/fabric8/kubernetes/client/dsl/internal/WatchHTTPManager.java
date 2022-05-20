@@ -71,6 +71,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     call.whenComplete((response, t) -> {
       if (!call.isCancelled() && t != null) {
         logger.info("Watch connection failed. reason: {}", t.getMessage());
+        scheduleReconnect();
       }
       if (response != null) {
         AsyncBody body = response.body();
