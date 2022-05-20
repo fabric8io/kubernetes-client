@@ -3,6 +3,7 @@
 
 #### Bugs
 * Fix #2860: ensure that lockexceptions won't inhibit notification
+* Fix #3300: addressed race connection with watch reconnects
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
 * Fix #3990: Throw exception when `HasMetadata` is used in `resources(...)` API
