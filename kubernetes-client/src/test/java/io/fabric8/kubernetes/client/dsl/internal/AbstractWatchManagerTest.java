@@ -29,7 +29,10 @@ import org.mockito.Mockito;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -147,6 +150,41 @@ class AbstractWatchManagerTest {
   }
 
   @Test
+  void reconnectRace() throws Exception {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    CompletableFuture<Void> done = new CompletableFuture<Void>();
+    final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0) {
+
+      boolean first = true;
+
+      @Override
+      protected void startWatch() {
+        if (first) {
+          first = false;
+          // simulate failing before the call to startWatch finishes
+          ForkJoinPool.commonPool().execute(this::scheduleReconnect);
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new AssertionError(e);
+          }
+        } else {
+          done.complete(null);
+        }
+      }
+    };
+
+    // When
+    awm.cancelReconnect();
+    // Then
+
+    done.get(5, TimeUnit.SECONDS);
+  }
+
+  @Test
   @DisplayName("isClosed, after close invocation, should return true")
   void isForceClosedWhenClosed() throws MalformedURLException {
     // Given
@@ -194,7 +232,7 @@ class AbstractWatchManagerTest {
     }
   }
 
-  private static final class WatchManager<T extends HasMetadata> extends AbstractWatchManager<T> {
+  private static class WatchManager<T extends HasMetadata> extends AbstractWatchManager<T> {
 
     private final AtomicInteger closeCount = new AtomicInteger(0);
 
@@ -205,7 +243,7 @@ class AbstractWatchManagerTest {
     }
 
     @Override
-    protected void run(URL url, Map<String, String> headers) {
+    protected void start(URL url, Map<String, String> headers) {
     }
 
     @Override
@@ -214,7 +252,7 @@ class AbstractWatchManagerTest {
     }
 
     @Override
-    protected void runWatch() {
+    protected void startWatch() {
     }
   }
 }
