@@ -27,6 +27,10 @@
   <artifactId>knative-extension-pom</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Knative :: Extension</name>
+  
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.knative.api.model</jsonschema2pojo.targetPackage>
+  </properties>
 
   <modules>
     <module>model</module>

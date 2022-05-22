@@ -28,6 +28,10 @@
   <artifactId>open-cluster-management</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Open Cluster Management :: Extension</name>
+  
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.openclustermanagement.api.model</jsonschema2pojo.targetPackage>
+  </properties>
 
   <modules>
     <module>model-apps</module>

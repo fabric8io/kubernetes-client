@@ -27,6 +27,10 @@
   <artifactId>istio-extension-pom</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Istio :: Extension</name>
+  
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.istio.api.model</jsonschema2pojo.targetPackage>
+  </properties>
 
   <modules>
     <module>model-v1alpha3</module>

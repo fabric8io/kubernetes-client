@@ -243,7 +243,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R load(InputStream is) {
-    return resource(unmarshal(is, type));
+    T unmarshal = unmarshal(is, type);
+    // if you do something like client.foo().v2().load(v1 resource)
+    // it will parse as v2, but have a v1 apiVersion, so we need to
+    // force the apiVersion
+    unmarshal.setApiVersion(apiVersion);
+    return resource(unmarshal);
   }
 
   @Override
