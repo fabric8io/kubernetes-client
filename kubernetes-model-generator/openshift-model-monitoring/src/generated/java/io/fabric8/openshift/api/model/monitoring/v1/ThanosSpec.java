@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -22,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
-import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.Volume;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -70,7 +72,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
 public class ThanosSpec implements KubernetesResource
 {
@@ -109,7 +115,7 @@ public class ThanosSpec implements KubernetesResource
     private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts = new ArrayList<io.fabric8.kubernetes.api.model.VolumeMount>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -140,7 +146,7 @@ public class ThanosSpec implements KubernetesResource
      * @param tag
      * @param objectStorageConfigFile
      */
-    public ThanosSpec(String baseImage, TLSConfig grpcServerTlsConfig, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts) {
+    public ThanosSpec(String baseImage, TLSConfig grpcServerTlsConfig, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts) {
         super();
         this.baseImage = baseImage;
         this.grpcServerTlsConfig = grpcServerTlsConfig;
@@ -322,12 +328,12 @@ public class ThanosSpec implements KubernetesResource
     }
 
     @JsonProperty("volumeMounts")
-    public List<VolumeMount> getVolumeMounts() {
+    public List<io.fabric8.kubernetes.api.model.VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
     @JsonProperty("volumeMounts")
-    public void setVolumeMounts(List<VolumeMount> volumeMounts) {
+    public void setVolumeMounts(List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 

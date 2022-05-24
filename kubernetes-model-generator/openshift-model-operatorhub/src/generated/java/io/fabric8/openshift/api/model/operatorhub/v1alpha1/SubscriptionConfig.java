@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvFromSource;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -24,8 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.Toleration;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -64,14 +62,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
 public class SubscriptionConfig implements KubernetesResource
 {
 
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<io.fabric8.kubernetes.api.model.EnvVar> env = new ArrayList<io.fabric8.kubernetes.api.model.EnvVar>();
     @JsonProperty("envFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvFromSource> envFrom = new ArrayList<EnvFromSource>();
@@ -87,10 +89,10 @@ public class SubscriptionConfig implements KubernetesResource
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts = new ArrayList<io.fabric8.kubernetes.api.model.VolumeMount>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Volume> volumes = new ArrayList<Volume>();
+    private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -112,7 +114,7 @@ public class SubscriptionConfig implements KubernetesResource
      * @param nodeSelector
      * @param volumeMounts
      */
-    public SubscriptionConfig(List<EnvVar> env, List<EnvFromSource> envFrom, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, io.fabric8.kubernetes.api.model.LabelSelector selector, List<Toleration> tolerations, List<VolumeMount> volumeMounts, List<Volume> volumes) {
+    public SubscriptionConfig(List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, io.fabric8.kubernetes.api.model.LabelSelector selector, List<Toleration> tolerations, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.env = env;
         this.envFrom = envFrom;
@@ -125,12 +127,12 @@ public class SubscriptionConfig implements KubernetesResource
     }
 
     @JsonProperty("env")
-    public List<EnvVar> getEnv() {
+    public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
 
     @JsonProperty("env")
-    public void setEnv(List<EnvVar> env) {
+    public void setEnv(List<io.fabric8.kubernetes.api.model.EnvVar> env) {
         this.env = env;
     }
 
@@ -185,22 +187,22 @@ public class SubscriptionConfig implements KubernetesResource
     }
 
     @JsonProperty("volumeMounts")
-    public List<VolumeMount> getVolumeMounts() {
+    public List<io.fabric8.kubernetes.api.model.VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
     @JsonProperty("volumeMounts")
-    public void setVolumeMounts(List<VolumeMount> volumeMounts) {
+    public void setVolumeMounts(List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
     @JsonProperty("volumes")
-    public List<Volume> getVolumes() {
+    public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
         return volumes;
     }
 
     @JsonProperty("volumes")
-    public void setVolumes(List<Volume> volumes) {
+    public void setVolumes(List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         this.volumes = volumes;
     }
 

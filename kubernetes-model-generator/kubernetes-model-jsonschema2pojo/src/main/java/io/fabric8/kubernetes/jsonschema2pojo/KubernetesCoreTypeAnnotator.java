@@ -59,7 +59,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
   protected String moduleName = null;
-  protected String deserializer;
 
   private final Set<String> handledClasses = new HashSet<>();
 
@@ -72,14 +71,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     // ensure every class is only processed once
     if (handledClasses.contains(clazz.fullName())) {
       return;
-    }
-
-    if (hasInterfaceFields(propertiesNode)) {
-      clazz.annotate(JsonDeserialize.class)
-          .param("using", JsonUnwrappedDeserializer.class);
-    } else {
-      annotateSerde(clazz, JsonDeserialize.class,
-          deserializer == null ? JsonDeserializer.None.class.getCanonicalName() : deserializer);
     }
 
     JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray(ANNOTATION_VALUE);
@@ -148,8 +139,17 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       annotateSerde(clazz, JsonSerialize.class, schema.get("serializer").asText());
     }
 
-    if (deserializer == null && schema.has("deserializer")) {
+    String deserializer = null;
+    if (schema.has("deserializer")) {
       deserializer = schema.get("deserializer").asText();
+    }
+
+    if (schema.has("properties") && hasInterfaceFields(schema.get("properties"))) {
+      clazz.annotate(JsonDeserialize.class)
+          .param("using", JsonUnwrappedDeserializer.class);
+    } else {
+      annotateSerde(clazz, JsonDeserialize.class,
+          deserializer == null ? JsonDeserializer.None.class.getCanonicalName() : deserializer);
     }
 
     super.propertyInclusion(clazz, schema);

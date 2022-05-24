@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -60,19 +62,23 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
 })
 public class DockerBuildStrategy implements KubernetesResource
 {
 
     @JsonProperty("buildArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> buildArgs = new ArrayList<EnvVar>();
+    private List<io.fabric8.kubernetes.api.model.EnvVar> buildArgs = new ArrayList<io.fabric8.kubernetes.api.model.EnvVar>();
     @JsonProperty("dockerfilePath")
     private String dockerfilePath;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<io.fabric8.kubernetes.api.model.EnvVar> env = new ArrayList<io.fabric8.kubernetes.api.model.EnvVar>();
     @JsonProperty("forcePull")
     private Boolean forcePull;
     @JsonProperty("from")
@@ -108,7 +114,7 @@ public class DockerBuildStrategy implements KubernetesResource
      * @param buildArgs
      * @param pullSecret
      */
-    public DockerBuildStrategy(List<EnvVar> buildArgs, String dockerfilePath, List<EnvVar> env, Boolean forcePull, io.fabric8.kubernetes.api.model.ObjectReference from, String imageOptimizationPolicy, Boolean noCache, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret, List<BuildVolume> volumes) {
+    public DockerBuildStrategy(List<io.fabric8.kubernetes.api.model.EnvVar> buildArgs, String dockerfilePath, List<io.fabric8.kubernetes.api.model.EnvVar> env, Boolean forcePull, io.fabric8.kubernetes.api.model.ObjectReference from, String imageOptimizationPolicy, Boolean noCache, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret, List<BuildVolume> volumes) {
         super();
         this.buildArgs = buildArgs;
         this.dockerfilePath = dockerfilePath;
@@ -122,12 +128,12 @@ public class DockerBuildStrategy implements KubernetesResource
     }
 
     @JsonProperty("buildArgs")
-    public List<EnvVar> getBuildArgs() {
+    public List<io.fabric8.kubernetes.api.model.EnvVar> getBuildArgs() {
         return buildArgs;
     }
 
     @JsonProperty("buildArgs")
-    public void setBuildArgs(List<EnvVar> buildArgs) {
+    public void setBuildArgs(List<io.fabric8.kubernetes.api.model.EnvVar> buildArgs) {
         this.buildArgs = buildArgs;
     }
 
@@ -142,12 +148,12 @@ public class DockerBuildStrategy implements KubernetesResource
     }
 
     @JsonProperty("env")
-    public List<EnvVar> getEnv() {
+    public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
 
     @JsonProperty("env")
-    public void setEnv(List<EnvVar> env) {
+    public void setEnv(List<io.fabric8.kubernetes.api.model.EnvVar> env) {
         this.env = env;
     }
 

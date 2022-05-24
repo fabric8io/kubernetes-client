@@ -2372,9 +2372,15 @@
     },
     "machinepool": {
       "properties": {
-        "osDisk": {
-          "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
+        "amiID": {
+          "type": "string"
+        },
+        "iamRole": {
+          "type": "string"
+        },
+        "rootVolume": {
+          "$ref": "#/definitions/os_installer_aws_v1_EC2RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2RootVolume"
         },
         "type": {
           "type": "string"
@@ -2609,16 +2615,8 @@
     },
     "osdisk": {
       "properties": {
-        "DiskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "DiskType": {
-          "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_installer_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.EncryptionKeyReference"
+        "diskSizeGB": {
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -2651,43 +2649,67 @@
     },
     "platform": {
       "properties": {
-        "amiID": {
+        "apiVIP": {
+          "type": "string"
+        },
+        "bootstrapOSImage": {
+          "type": "string"
+        },
+        "bootstrapProvisioningIP": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "clusterProvisioningIP": {
           "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_aws_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_baremetal_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool"
         },
-        "experimentalPropagateUserTags": {
+        "externalBridge": {
+          "type": "string"
+        },
+        "externalMACAddress": {
+          "type": "string"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_baremetal_v1_Host",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.baremetal.v1.Host"
+          }
+        },
+        "ingressVIP": {
+          "type": "string"
+        },
+        "libvirtURI": {
+          "type": "string"
+        },
+        "provisioningBridge": {
+          "type": "string"
+        },
+        "provisioningDHCPExternal": {
           "type": "boolean"
         },
-        "hostedZone": {
+        "provisioningDHCPRange": {
           "type": "string"
         },
-        "region": {
+        "provisioningHostIP": {
           "type": "string"
         },
-        "serviceEndpoints": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_installer_aws_v1_ServiceEndpoint",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.ServiceEndpoint"
-          }
+        "provisioningMACAddress": {
+          "type": "string"
         },
-        "subnets": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "provisioningNetwork": {
+          "type": "string"
         },
-        "userTags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        "provisioningNetworkCIDR": {
+          "type": "string"
+        },
+        "provisioningNetworkInterface": {
+          "type": "string"
         }
       },
       "additionalProperties": true

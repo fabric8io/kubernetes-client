@@ -11,12 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
@@ -114,7 +117,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PersistentVolumeClaim.class)
+    @BuildableReference(io.fabric8.kubernetes.api.model.PersistentVolumeClaim.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
 })
 public class KubeSchema {
 
@@ -157,7 +164,7 @@ public class KubeSchema {
     @JsonProperty("EndpointsList")
     private EndpointsList endpointsList;
     @JsonProperty("EnvVar")
-    private EnvVar envVar;
+    private io.fabric8.kubernetes.api.model.EnvVar envVar;
     @JsonProperty("GetOptions")
     private GetOptions getOptions;
     @JsonProperty("Info")
@@ -300,7 +307,7 @@ public class KubeSchema {
      * @param time
      * @param endpointPort
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, Binding binding, ComponentStatusList componentStatusList, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, ControllerRevision controllerRevision, ControllerRevisionList controllerRevisionList, CreateOptions createOptions, DaemonSet daemonSet, DaemonSetList daemonSetList, DeleteOptions deleteOptions, Deployment deployment, DeploymentList deploymentList, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, GetOptions getOptions, Info info, LimitRangeList limitRangeList, ListOptions listOptions, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, io.fabric8.kubernetes.api.model.PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicaSet replicaSet, ReplicaSetList replicaSetList, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, StatefulSet statefulSet, StatefulSetList statefulSetList, Status status, String time, Toleration toleration, TypeMeta typeMeta, UpdateOptions updateOptions) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, Binding binding, ComponentStatusList componentStatusList, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, ControllerRevision controllerRevision, ControllerRevisionList controllerRevisionList, CreateOptions createOptions, DaemonSet daemonSet, DaemonSetList daemonSetList, DeleteOptions deleteOptions, Deployment deployment, DeploymentList deploymentList, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, io.fabric8.kubernetes.api.model.EnvVar envVar, GetOptions getOptions, Info info, LimitRangeList limitRangeList, ListOptions listOptions, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, io.fabric8.kubernetes.api.model.PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicaSet replicaSet, ReplicaSetList replicaSetList, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, StatefulSet statefulSet, StatefulSetList statefulSetList, Status status, String time, Toleration toleration, TypeMeta typeMeta, UpdateOptions updateOptions) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -551,12 +558,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("EnvVar")
-    public EnvVar getEnvVar() {
+    public io.fabric8.kubernetes.api.model.EnvVar getEnvVar() {
         return envVar;
     }
 
     @JsonProperty("EnvVar")
-    public void setEnvVar(EnvVar envVar) {
+    public void setEnvVar(io.fabric8.kubernetes.api.model.EnvVar envVar) {
         this.envVar = envVar;
     }
 

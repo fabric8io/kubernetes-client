@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -63,7 +65,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
 })
 @Version("v1")
 @Group("build.openshift.io")
@@ -83,7 +89,7 @@ public class BuildRequest implements HasMetadata, Namespaced
     private DockerStrategyOptions dockerStrategyOptions;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<io.fabric8.kubernetes.api.model.EnvVar> env = new ArrayList<io.fabric8.kubernetes.api.model.EnvVar>();
     @JsonProperty("from")
     private io.fabric8.kubernetes.api.model.ObjectReference from;
     /**
@@ -132,7 +138,7 @@ public class BuildRequest implements HasMetadata, Namespaced
      * @param revision
      * @param triggeredBy
      */
-    public BuildRequest(String apiVersion, BinaryBuildSource binary, DockerStrategyOptions dockerStrategyOptions, List<EnvVar> env, io.fabric8.kubernetes.api.model.ObjectReference from, String kind, Long lastVersion, io.fabric8.kubernetes.api.model.ObjectMeta metadata, SourceRevision revision, SourceStrategyOptions sourceStrategyOptions, List<BuildTriggerCause> triggeredBy, io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage) {
+    public BuildRequest(String apiVersion, BinaryBuildSource binary, DockerStrategyOptions dockerStrategyOptions, List<io.fabric8.kubernetes.api.model.EnvVar> env, io.fabric8.kubernetes.api.model.ObjectReference from, String kind, Long lastVersion, io.fabric8.kubernetes.api.model.ObjectMeta metadata, SourceRevision revision, SourceStrategyOptions sourceStrategyOptions, List<BuildTriggerCause> triggeredBy, io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage) {
         super();
         this.apiVersion = apiVersion;
         this.binary = binary;
@@ -189,12 +195,12 @@ public class BuildRequest implements HasMetadata, Namespaced
     }
 
     @JsonProperty("env")
-    public List<EnvVar> getEnv() {
+    public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
 
     @JsonProperty("env")
-    public void setEnv(List<EnvVar> env) {
+    public void setEnv(List<io.fabric8.kubernetes.api.model.EnvVar> env) {
         this.env = env;
     }
 
