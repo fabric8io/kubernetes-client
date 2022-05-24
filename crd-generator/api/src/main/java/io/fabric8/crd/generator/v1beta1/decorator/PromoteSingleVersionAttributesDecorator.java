@@ -53,7 +53,7 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       spec.removeAllFromVersions(versions);
       spec.withVersions(newVersion);
     } else {
-      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources).collect(Collectors.toSet());
+      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources).filter(o -> o != null).collect(Collectors.toSet());
       Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream().map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).collect(Collectors.toSet());
       Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema).collect(Collectors.toSet());
       
@@ -61,9 +61,13 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
       boolean hasIdenticalSchemas = schemas.size() == 1;
       
+      if (hasIdenticalSubresources) {
+        spec.withSubresources(subresources.iterator().next());
+
+      }
+
       spec
         .withValidation(hasIdenticalSchemas ? schemas.iterator().next() : null)
-        .withSubresources(hasIdenticalSubresources ? subresources.iterator().next() : null)
         .withAdditionalPrinterColumns(hasIdenticalAdditionalPrinterColumns ? additionalPrinterColumns.iterator().next() : null);
 
       spec.removeAllFromVersions(versions);
