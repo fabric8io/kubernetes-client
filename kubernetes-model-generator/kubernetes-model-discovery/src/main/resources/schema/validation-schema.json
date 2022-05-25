@@ -1398,12 +1398,19 @@
           }
         },
         "conditions": {
-          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointConditions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions"
+          "$ref": "#/definitions/kubernetes_discovery_v1_EndpointConditions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointConditions"
+        },
+        "deprecatedTopology": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "hints": {
-          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointHints",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointHints"
+          "$ref": "#/definitions/kubernetes_discovery_v1_EndpointHints",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointHints"
         },
         "hostname": {
           "type": "string"
@@ -1415,12 +1422,8 @@
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
-        "topology": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        "zone": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1478,14 +1481,14 @@
         },
         "apiVersion": {
           "type": "string",
-          "default": "discovery.k8s.io/v1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "endpoints": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_Endpoint",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.Endpoint"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_Endpoint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.Endpoint"
           }
         },
         "kind": {
@@ -1500,8 +1503,8 @@
         "ports": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointPort",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointPort"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointPort",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort"
           }
         }
       },

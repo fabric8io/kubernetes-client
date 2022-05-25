@@ -89,8 +89,7 @@ public class GitOpsCluster implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "GitOpsCluster";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private GitOpsClusterSpec spec;
     @JsonProperty("status")

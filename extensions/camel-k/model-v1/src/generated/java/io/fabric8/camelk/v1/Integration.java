@@ -89,8 +89,7 @@ public class Integration implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "Integration";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private IntegrationSpec spec;
     @JsonProperty("status")

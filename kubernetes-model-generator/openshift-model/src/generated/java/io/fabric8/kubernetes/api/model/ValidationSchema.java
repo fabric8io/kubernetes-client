@@ -464,8 +464,7 @@ public class ValidationSchema {
     @JsonProperty("OAuthList")
     private OAuthList oAuthList;
     @JsonProperty("ObjectMeta")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
     @JsonProperty("OpenShiftRoleBindingRestrictionList")
     private RoleBindingRestrictionList openShiftRoleBindingRestrictionList;
     @JsonProperty("OpenshiftClusterRole")

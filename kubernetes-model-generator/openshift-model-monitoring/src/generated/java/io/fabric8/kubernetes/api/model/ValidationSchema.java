@@ -111,8 +111,7 @@ public class ValidationSchema {
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("ObjectMeta")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
     @JsonProperty("Patch")
     private Patch patch;
     @JsonProperty("PodMonitor")

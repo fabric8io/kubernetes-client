@@ -73,8 +73,7 @@ public class DetailsPerTemplate implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ComplianceHistory> history = new ArrayList<ComplianceHistory>();
     @JsonProperty("templateMeta")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta templateMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta templateMeta;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 

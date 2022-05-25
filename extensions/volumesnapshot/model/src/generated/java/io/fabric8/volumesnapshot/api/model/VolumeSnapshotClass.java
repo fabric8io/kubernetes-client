@@ -94,8 +94,7 @@ public class VolumeSnapshotClass implements HasMetadata
     @JsonProperty("kind")
     private java.lang.String kind = "VolumeSnapshotClass";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> parameters = new LinkedHashMap<String, String>();
