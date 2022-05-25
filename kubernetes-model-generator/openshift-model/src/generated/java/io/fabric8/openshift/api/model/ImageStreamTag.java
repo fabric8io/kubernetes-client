@@ -95,8 +95,7 @@ public class ImageStreamTag implements HasMetadata, Namespaced
     @JsonProperty("lookupPolicy")
     private ImageLookupPolicy lookupPolicy;
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("tag")
     private TagReference tag;
     @JsonIgnore

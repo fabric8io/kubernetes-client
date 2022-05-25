@@ -91,8 +91,7 @@ public class Template implements HasMetadata, Namespaced
     @JsonProperty("message")
     private java.lang.String message;
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("objects")
     private List<HasMetadata> objects = new ArrayList<HasMetadata>();
     @JsonProperty("parameters")

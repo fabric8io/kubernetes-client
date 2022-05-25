@@ -2372,19 +2372,19 @@
     },
     "machinepool": {
       "properties": {
+        "coresPerSocket": {
+          "type": "integer"
+        },
+        "cpus": {
+          "type": "integer"
+        },
+        "memoryMB": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
         "osDisk": {
-          "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
-        },
-        "type": {
-          "type": "string"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
         }
       },
       "additionalProperties": true
@@ -2609,16 +2609,8 @@
     },
     "osdisk": {
       "properties": {
-        "DiskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "DiskType": {
-          "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_installer_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.EncryptionKeyReference"
+        "diskSizeGB": {
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -2650,46 +2642,6 @@
       "additionalProperties": true
     },
     "platform": {
-      "properties": {
-        "amiID": {
-          "type": "string"
-        },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_aws_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.MachinePool"
-        },
-        "experimentalPropagateUserTags": {
-          "type": "boolean"
-        },
-        "hostedZone": {
-          "type": "string"
-        },
-        "region": {
-          "type": "string"
-        },
-        "serviceEndpoints": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_installer_aws_v1_ServiceEndpoint",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.ServiceEndpoint"
-          }
-        },
-        "subnets": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "userTags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
-        }
-      },
       "additionalProperties": true
     },
     "proxy": {

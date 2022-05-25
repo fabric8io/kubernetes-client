@@ -87,8 +87,7 @@ public class CSIStorageCapacity implements HasMetadata, Namespaced
     @JsonProperty("maximumVolumeSize")
     private Quantity maximumVolumeSize;
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("nodeTopology")
     private io.fabric8.kubernetes.api.model.LabelSelector nodeTopology;
     @JsonProperty("storageClassName")

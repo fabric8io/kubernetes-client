@@ -82,8 +82,7 @@ public class RangeAllocation implements HasMetadata
     @JsonProperty("kind")
     private String kind = "RangeAllocation";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("range")
     private String range;
     @JsonIgnore

@@ -79,8 +79,7 @@ public class MachineConfig implements HasMetadata
     @JsonProperty("kind")
     private String kind = "MachineConfig";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private MachineConfigSpec spec;
     @JsonIgnore
