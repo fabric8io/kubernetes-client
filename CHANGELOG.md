@@ -29,6 +29,7 @@ And Store.getKey can be used rather than directly referencing static Cache funct
 * Fix #4142: Added patch() and patch(PatchContext) methods for use with resource and load
 * Fix #4146: ManagedKubernetesClient and ManagedOpenShiftClient as delayed OSGi services
 * Fix #4093: adding a possibility to get a log as an `InputStream` from the `Loggable` resources
+* Fix #3625: adds default maps to mostly prevent the need for null checks on things like annotations and labels.
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0

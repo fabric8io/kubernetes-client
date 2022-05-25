@@ -16,8 +16,6 @@
 package io.fabric8.openshift.client.server.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -25,10 +23,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableKubernetesMockClient
+@EnableOpenShiftMockClient
 class OpenshiftRoleBindingTest {
 
-  KubernetesMockServer server;
+  OpenShiftMockServer server;
   OpenShiftClient client;
 
   private RoleBinding expectedRoleBinding = new RoleBindingBuilder()
@@ -279,7 +277,7 @@ class OpenshiftRoleBindingTest {
     assertEquals(expectedRoleBinding, response);
 
     assertEquals(
-        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
+        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
         server.getLastRequest().getBody().readUtf8());
   }
 
@@ -308,7 +306,7 @@ class OpenshiftRoleBindingTest {
     assertEquals(expectedRoleBinding, response);
 
     assertEquals(
-        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
+        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
         server.getLastRequest().getBody().readUtf8());
   }
 
@@ -341,7 +339,7 @@ class OpenshiftRoleBindingTest {
     assertEquals(expectedRoleBinding, response);
 
     assertEquals(
-        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
+        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
         server.getLastRequest().getBody().readUtf8());
   }
 

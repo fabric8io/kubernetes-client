@@ -1,7 +1,7 @@
 # Migration from 5.x to 6.x
 
 ## Contents:
-- [ObjectMetadata](#objectmetadata)
+- [Default Maps](#default-maps)
 - [Backwards Compatibility Interceptor](#backwards-compatibility-interceptor)
 - [Namespace Changes](#namespace-changes)
 - [API/Impl split](#api-impl-split)
@@ -20,14 +20,21 @@
 - [Delete Behavior](#delete-behavior)
 - [Stream Changes](#stream-changes)
 
-## ObjectMetadata
+## Default Maps
 
-ObjectMetadata will default to a non-null value.  All Maps in the generated object models, including ObjectMetadata.annotations and labels will also be non-null by default.  A small behavioral difference is that the default value will be omitted from serialization, previously if you did something like 
+All Maps in the generated object models, including ObjectMetadata.annotations and labels will also be non-null by default.  A small behavioral difference is that the default value will be omitted from serialization, previously if you did something like: 
+
 ```
-Pod p = new Pod();
-p.setMetadata(new ObjectMetadata());
+Pod p = new PodBuilder().withNewMetadata().withLabels(new HashMap()).endMetadata().build();
 ```
-p would serialize with "metadata: {}" - that will now be omitted.
+p would serialize with 
+
+```
+metadata: 
+  labels: {}
+```
+
+That empty map will now be omitted - which is the same as the existing behavior for arrays.
 
 ## Backwards Compatibility Interceptor
 

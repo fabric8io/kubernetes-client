@@ -36,8 +36,7 @@ public class PodTemplateSpec implements KubernetesResource
 {
 
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private ObjectMeta metadata;
     @JsonProperty("spec")
     private PodSpec spec;
     @JsonIgnore
@@ -55,19 +54,19 @@ public class PodTemplateSpec implements KubernetesResource
      * @param metadata
      * @param spec
      */
-    public PodTemplateSpec(io.fabric8.kubernetes.api.model.ObjectMeta metadata, PodSpec spec) {
+    public PodTemplateSpec(ObjectMeta metadata, PodSpec spec) {
         super();
         this.metadata = metadata;
         this.spec = spec;
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

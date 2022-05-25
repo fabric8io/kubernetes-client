@@ -81,8 +81,7 @@ public class BareMetalHost implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "BareMetalHost";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private BareMetalHostSpec spec;
     @JsonProperty("status")
