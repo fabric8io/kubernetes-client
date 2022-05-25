@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -81,7 +82,8 @@ public class ClusterServiceVersionSpec implements KubernetesResource
 {
 
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("apiservicedefinitions")
     private APIServiceDefinitions apiservicedefinitions;
     @JsonProperty("cleanup")
@@ -104,7 +106,8 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> keywords = new ArrayList<java.lang.String>();
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AppLink> links = new ArrayList<AppLink>();

@@ -37,8 +37,8 @@ on:
         required: true
         default: '8'
 
-permissions:
-  contents: read
+#permissions:
+#  contents: read
 
 jobs:
   release:

@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -60,7 +61,8 @@ public class DNSZone implements KubernetesResource
     @JsonProperty("id")
     private java.lang.String id;
     @JsonProperty("tags")
-    private Map<String, String> tags;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> tags = new LinkedHashMap<String, String>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

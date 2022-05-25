@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -42,7 +43,8 @@ public class LabelSelector implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LabelSelectorRequirement> matchExpressions = new ArrayList<LabelSelectorRequirement>();
     @JsonProperty("matchLabels")
-    private Map<String, String> matchLabels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> matchLabels = new LinkedHashMap<String, String>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -71,7 +72,8 @@ public class ClusterPoolSpec implements KubernetesResource
 {
 
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("baseDomain")
     private java.lang.String baseDomain;
     @JsonProperty("claimLifetime")
@@ -85,7 +87,8 @@ public class ClusterPoolSpec implements KubernetesResource
     @JsonProperty("installConfigSecretTemplateRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef;
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("maxConcurrent")
     private Integer maxConcurrent;
     @JsonProperty("maxSize")

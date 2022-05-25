@@ -103,7 +103,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
-  protected void run(URL url, Map<String, String> headers) {
+  protected void start(URL url, Map<String, String> headers) {
     this.listener = new WatcherWebSocketListener<>(this);
     Builder builder = client.newWebSocketBuilder();
     headers.forEach(builder::header);

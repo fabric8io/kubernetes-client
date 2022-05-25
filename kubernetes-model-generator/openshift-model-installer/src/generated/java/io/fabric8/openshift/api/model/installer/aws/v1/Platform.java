@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.installer.aws.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -82,7 +83,8 @@ public class Platform implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> subnets = new ArrayList<java.lang.String>();
     @JsonProperty("userTags")
-    private Map<String, String> userTags;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

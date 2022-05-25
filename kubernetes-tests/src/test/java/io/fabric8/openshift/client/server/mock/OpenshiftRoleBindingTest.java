@@ -30,206 +30,351 @@ class OpenshiftRoleBindingTest {
   OpenShiftClient client;
 
   private RoleBinding expectedRoleBinding = new RoleBindingBuilder()
-    .withNewMetadata().endMetadata()
-    .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-    .addToGroupNames("testgroup")
-    .addNewSubject().withKind("User").withName("testuser1").endSubject()
-    .addNewSubject().withKind("User").withName("testuser2").endSubject()
-    .addNewSubject().withKind("ServiceAccount").withNamespace("test").withName("svcacct").endSubject()
-    .addNewSubject().withKind("Group").withName("testgroup").endSubject()
-    .build();
+      .withNewMetadata()
+      .endMetadata()
+      .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+      .addToGroupNames("testgroup")
+      .addNewSubject()
+      .withKind("User")
+      .withName("testuser1")
+      .endSubject()
+      .addNewSubject()
+      .withKind("User")
+      .withName("testuser2")
+      .endSubject()
+      .addNewSubject()
+      .withKind("ServiceAccount")
+      .withNamespace("test")
+      .withName("svcacct")
+      .endSubject()
+      .addNewSubject()
+      .withKind("Group")
+      .withName("testgroup")
+      .endSubject()
+      .build();
 
   @Test
   void testCreateWithOnlySubjects() throws Exception {
-    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect()
+        .post()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings")
+        .andReturn(201, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().create(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addNewSubject().withKind("User").withName("testuser1").endSubject()
-        .addNewSubject().withKind("User").withName("testuser2").endSubject()
-        .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
-        .addNewSubject().withKind("Group").withName("testgroup").endSubject()
-      .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .create(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addNewSubject()
+                .withKind("User")
+                .withName("testuser1")
+                .endSubject()
+                .addNewSubject()
+                .withKind("User")
+                .withName("testuser2")
+                .endSubject()
+                .addNewSubject()
+                .withKind("ServiceAccount")
+                .withName("svcacct")
+                .endSubject()
+                .addNewSubject()
+                .withKind("Group")
+                .withName("testgroup")
+                .endSubject()
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().readByteArray()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().readByteArray()));
   }
 
   @Test
   void testCreateWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect()
+        .post()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings")
+        .andReturn(201, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().create(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-        .addToGroupNames("testgroup")
-      .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .create(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+                .addToGroupNames("testgroup")
+                .build());
     assertEquals(expectedRoleBinding, response);
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
   void testCreateWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect()
+        .post()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings")
+        .andReturn(201, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().create(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-        .addToGroupNames("testgroup")
-        .addNewSubject().withKind("User").withName("unexpected").endSubject()
-      .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .create(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+                .addToGroupNames("testgroup")
+                .addNewSubject()
+                .withKind("User")
+                .withName("unexpected")
+                .endSubject()
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
   void testReplaceWithOnlySubjects() throws Exception {
-    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
-    server.expect().put().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect()
+        .get()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
+    server.expect()
+        .put()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().withName("testrb").replace(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addNewSubject().withKind("User").withName("testuser1").endSubject()
-        .addNewSubject().withKind("User").withName("testuser2").endSubject()
-        .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
-        .addNewSubject().withKind("Group").withName("testgroup").endSubject()
-        .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .withName("testrb")
+        .replace(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addNewSubject()
+                .withKind("User")
+                .withName("testuser1")
+                .endSubject()
+                .addNewSubject()
+                .withKind("User")
+                .withName("testuser2")
+                .endSubject()
+                .addNewSubject()
+                .withKind("ServiceAccount")
+                .withName("svcacct")
+                .endSubject()
+                .addNewSubject()
+                .withKind("Group")
+                .withName("testgroup")
+                .endSubject()
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
   void testReplaceWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
-    server.expect().put().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect()
+        .get()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
+    server.expect()
+        .put()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().withName("testrb").replace(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-        .addToGroupNames("testgroup")
-        .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .withName("testrb")
+        .replace(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+                .addToGroupNames("testgroup")
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-
-       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
   void testReplaceWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
-    server.expect().put().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect()
+        .get()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
+    server.expect()
+        .put()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().withName("testrb").replace(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-        .addToGroupNames("testgroup")
-        .addNewSubject().withKind("User").withName("unexpected").endSubject()
-      .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .withName("testrb")
+        .replace(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+                .addToGroupNames("testgroup")
+                .addNewSubject()
+                .withKind("User")
+                .withName("unexpected")
+                .endSubject()
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
   void testPatchWithOnlySubjects() throws Exception {
-    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect()
+        .get()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build())
+        .once();
+    server.expect()
+        .patch()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().withName("testrb").patch(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addNewSubject().withKind("User").withName("testuser1").endSubject()
-        .addNewSubject().withKind("User").withName("testuser2").endSubject()
-        .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
-        .addNewSubject().withKind("Group").withName("testgroup").endSubject()
-        .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .withName("testrb")
+        .patch(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addNewSubject()
+                .withKind("User")
+                .withName("testuser1")
+                .endSubject()
+                .addNewSubject()
+                .withKind("User")
+                .withName("testuser2")
+                .endSubject()
+                .addNewSubject()
+                .withKind("ServiceAccount")
+                .withName("svcacct")
+                .endSubject()
+                .addNewSubject()
+                .withKind("Group")
+                .withName("testgroup")
+                .endSubject()
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-       assertEquals(
-      "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
-      server.getLastRequest().getBody().readUtf8()
-    );
+    assertEquals(
+        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
+        server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
   void testPatchWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect()
+        .get()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build())
+        .once();
+    server.expect()
+        .patch()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().withName("testrb").patch(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-        .addToGroupNames("testgroup")
-        .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .withName("testrb")
+        .patch(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+                .addToGroupNames("testgroup")
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-       assertEquals(
-      "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
-      server.getLastRequest().getBody().readUtf8()
-    );
+    assertEquals(
+        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
+        server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
   void testPatchWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect()
+        .get()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build())
+        .once();
+    server.expect()
+        .patch()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb")
+        .andReturn(200, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().withName("testrb").patch(
-      new RoleBindingBuilder()
-        .withNewMetadata().endMetadata()
-        .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
-        .addToGroupNames("testgroup")
-        .addNewSubject().withKind("User").withName("unexpected").endSubject()
-      .build()
-    );
+    RoleBinding response = client.roleBindings()
+        .withName("testrb")
+        .patch(
+            new RoleBindingBuilder()
+                .withNewMetadata()
+                .endMetadata()
+                .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
+                .addToGroupNames("testgroup")
+                .addNewSubject()
+                .withKind("User")
+                .withName("unexpected")
+                .endSubject()
+                .build());
     assertEquals(expectedRoleBinding, response);
 
-       assertEquals(
-      "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
-      server.getLastRequest().getBody().readUtf8()
-    );
+    assertEquals(
+        "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
+        server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
   void testCreateInline() throws Exception {
-    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect()
+        .post()
+        .withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings")
+        .andReturn(201, expectedRoleBinding)
+        .once();
 
-
-    RoleBinding response = client.roleBindings().create(new RoleBindingBuilder()
-      .withNewMetadata().endMetadata()
-      .addNewSubject().withKind("User").withName("testuser1").endSubject()
-      .addNewSubject().withKind("User").withName("testuser2").endSubject()
-      .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
-      .addNewSubject().withKind("Group").withName("testgroup").endSubject()
-      .build());
+    RoleBinding response = client.roleBindings()
+        .create(new RoleBindingBuilder()
+            .withNewMetadata()
+            .endMetadata()
+            .addNewSubject()
+            .withKind("User")
+            .withName("testuser1")
+            .endSubject()
+            .addNewSubject()
+            .withKind("User")
+            .withName("testuser2")
+            .endSubject()
+            .addNewSubject()
+            .withKind("ServiceAccount")
+            .withName("svcacct")
+            .endSubject()
+            .addNewSubject()
+            .withKind("Group")
+            .withName("testgroup")
+            .endSubject()
+            .build());
     assertEquals(expectedRoleBinding, response);
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
+    assertEquals(expectedRoleBinding,
+        new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
 }

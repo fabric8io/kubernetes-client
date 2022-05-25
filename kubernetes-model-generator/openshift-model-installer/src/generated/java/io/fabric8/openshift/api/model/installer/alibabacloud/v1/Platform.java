@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.installer.alibabacloud.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -73,7 +74,8 @@ public class Platform implements KubernetesResource
     @JsonProperty("resourceGroupID")
     private java.lang.String resourceGroupID;
     @JsonProperty("tags")
-    private Map<String, String> tags;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> tags = new LinkedHashMap<String, String>();
     @JsonProperty("vpcID")
     private java.lang.String vpcID;
     @JsonProperty("vswitchIDs")

@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -59,9 +60,11 @@ public class EmbeddedObjectMetadata implements KubernetesResource
 {
 
     @JsonProperty("annotations")
-    private Map<String, String> annotations;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonIgnore

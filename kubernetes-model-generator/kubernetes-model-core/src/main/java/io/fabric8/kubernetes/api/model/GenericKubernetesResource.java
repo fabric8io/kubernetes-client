@@ -130,7 +130,7 @@ public class GenericKubernetesResource implements HasMetadata {
 
   /**
    * The same as {@link #get(Object...)}, but starting at any root raw object
-   * 
+   *
    * @param <T> type of the returned object (Map, Collection, or value).
    * @param root starting object
    * @param path of the field to retrieve.

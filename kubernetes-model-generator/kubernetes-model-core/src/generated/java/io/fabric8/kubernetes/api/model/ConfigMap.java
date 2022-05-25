@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -54,9 +55,11 @@ public class ConfigMap implements HasMetadata, Namespaced
     @JsonProperty("apiVersion")
     private java.lang.String apiVersion = "v1";
     @JsonProperty("binaryData")
-    private Map<String, String> binaryData;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> binaryData = new LinkedHashMap<String, String>();
     @JsonProperty("data")
-    private Map<String, String> data;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> data = new LinkedHashMap<String, String>();
     @JsonProperty("immutable")
     private Boolean immutable;
     /**

@@ -68,8 +68,6 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private ListOptions listOptions;
   private URL requestUrl;
 
-  private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
-
   private final boolean receiveBookmarks;
 
   AbstractWatchManager(
@@ -91,10 +89,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.listOptions = listOptions;
     this.client = clientSupplier.get();
 
-    runWatch();
+    startWatch();
   }
 
-  protected abstract void run(URL url, Map<String, String> headers);
+  protected abstract void start(URL url, Map<String, String> headers);
 
   protected abstract void closeRequest();
 
@@ -126,14 +124,12 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
+  /**
+   * Called to reestablish the connection. Should only be called once per request.
+   */
   void scheduleReconnect() {
-    if (!reconnectPending.compareAndSet(false, true)) {
-      logger.debug("Reconnect already scheduled");
-      return;
-    }
-
     if (isForceClosed()) {
-      logger.debug("Ignoring error for already closed/closing connection");
+      logger.debug("Ignoring already closed/closing connection");
       return;
     }
 
@@ -147,23 +143,23 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     long delay = nextReconnectInterval();
 
     synchronized (this) {
-      reconnectAttempt = Utils.schedule(baseOperation.context.getExecutor(), () -> {
-        try {
-          runWatch();
-          if (isForceClosed()) {
-            closeRequest();
-          }
-        } catch (Exception e) {
-          // An unexpected error occurred and we didn't even get an onFailure callback.
-          logger.error("Exception in reconnect", e);
-          close(new WatcherException("Unhandled exception in reconnect attempt", e));
-        } finally {
-          reconnectPending.set(false);
-        }
-      }, delay, TimeUnit.MILLISECONDS);
+      reconnectAttempt = Utils.schedule(baseOperation.context.getExecutor(), this::reconnect, delay, TimeUnit.MILLISECONDS);
       if (isForceClosed()) {
         cancelReconnect();
       }
+    }
+  }
+
+  synchronized void reconnect() {
+    try {
+      startWatch();
+      if (isForceClosed()) {
+        closeRequest();
+      }
+    } catch (Exception e) {
+      // An unexpected error occurred and we didn't even get an onFailure callback.
+      logger.error("Exception in reconnect", e);
+      close(new WatcherException("Unhandled exception in reconnect attempt", e));
     }
   }
 
@@ -203,7 +199,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     resourceVersion.set(newResourceVersion);
   }
 
-  protected void runWatch() {
+  /**
+   * Async start of the watch
+   */
+  protected void startWatch() {
     listOptions.setResourceVersion(resourceVersion.get());
     URL url = BaseOperation.appendListOptionParams(requestUrl, listOptions);
 
@@ -218,7 +217,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     logger.debug("Watching {}...", url);
 
     closeRequest(); // only one can be active at a time
-    run(url, headers);
+    start(url, headers);
   }
 
   @Override

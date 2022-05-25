@@ -19,9 +19,12 @@ package io.fabric8.kubernetes.client.utils.internal;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class SerialExecutorTest {
@@ -51,6 +54,33 @@ class SerialExecutorTest {
     Thread t = future.join();
     t.interrupt(); // interrupt the first task
     assertFalse(interrupted.join()); // make sure the second is not interrrupted
+  }
+
+  @Test
+  void taskExecutedInOrderOfInsertion() throws InterruptedException {
+    final ExecutorService es = Executors.newSingleThreadExecutor();
+    try {
+      final StringBuffer sb = new StringBuffer();
+      final SerialExecutor se = new SerialExecutor(es);
+      final CountDownLatch latch = new CountDownLatch(1);
+      se.execute(() -> {
+        sb.append("1");
+        try {
+          Thread.sleep(100L);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      });
+      se.execute(() -> sb.append("2"));
+      se.execute(() -> sb.append("3"));
+      se.execute(() -> sb.append("4"));
+      se.execute(() -> sb.append("5"));
+      se.execute(latch::countDown);
+      assertThat(latch.await(500L, TimeUnit.MILLISECONDS)).isTrue();
+      assertThat(sb).hasToString("12345");
+    } finally {
+      es.shutdownNow();
+    }
   }
 
 }

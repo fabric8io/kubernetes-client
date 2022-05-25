@@ -61,7 +61,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  protected synchronized void run(URL url, Map<String, String> headers) {
+  protected synchronized void start(URL url, Map<String, String> headers) {
     HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url);
     headers.forEach(builder::header);
     call = client.consumeLines(builder.build(), (s, a) -> {
@@ -71,6 +71,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     call.whenComplete((response, t) -> {
       if (!call.isCancelled() && t != null) {
         logger.info("Watch connection failed. reason: {}", t.getMessage());
+        scheduleReconnect();
       }
       if (response != null) {
         AsyncBody body = response.body();

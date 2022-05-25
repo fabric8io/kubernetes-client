@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -76,7 +77,8 @@ public class PersistentVolumeSpec implements KubernetesResource
     @JsonProperty("azureFile")
     private AzureFilePersistentVolumeSource azureFile;
     @JsonProperty("capacity")
-    private Map<String, Quantity> capacity;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> capacity = new LinkedHashMap<String, Quantity>();
     @JsonProperty("cephfs")
     private CephFSPersistentVolumeSource cephfs;
     @JsonProperty("cinder")

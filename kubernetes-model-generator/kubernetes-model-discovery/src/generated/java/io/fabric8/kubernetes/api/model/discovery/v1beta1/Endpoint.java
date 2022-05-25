@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model.discovery.v1beta1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -76,7 +77,8 @@ public class Endpoint implements KubernetesResource
     @JsonProperty("targetRef")
     private io.fabric8.kubernetes.api.model.ObjectReference targetRef;
     @JsonProperty("topology")
-    private Map<String, String> topology;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> topology = new LinkedHashMap<String, String>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

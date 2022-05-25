@@ -2372,36 +2372,19 @@
     },
     "machinepool": {
       "properties": {
-        "additionalNetworkIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "coresPerSocket": {
+          "type": "integer"
         },
-        "additionalSecurityGroupIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "cpus": {
+          "type": "integer"
         },
-        "rootVolume": {
-          "$ref": "#/definitions/os_installer_openstack_v1_RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.RootVolume"
+        "memoryMB": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
-        "serverGroupPolicy": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
         }
       },
       "additionalProperties": true
@@ -2626,16 +2609,8 @@
     },
     "osdisk": {
       "properties": {
-        "DiskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "DiskType": {
-          "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_installer_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.EncryptionKeyReference"
+        "diskSizeGB": {
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -2667,51 +2642,6 @@
       "additionalProperties": true
     },
     "platform": {
-      "properties": {
-        "apiVIP": {
-          "type": "string"
-        },
-        "cluster": {
-          "type": "string"
-        },
-        "clusterOSImage": {
-          "type": "string"
-        },
-        "datacenter": {
-          "type": "string"
-        },
-        "defaultDatastore": {
-          "type": "string"
-        },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
-        },
-        "diskType": {
-          "type": "string"
-        },
-        "folder": {
-          "type": "string"
-        },
-        "ingressVIP": {
-          "type": "string"
-        },
-        "network": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "resourcePool": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "vCenter": {
-          "type": "string"
-        }
-      },
       "additionalProperties": true
     },
     "proxy": {

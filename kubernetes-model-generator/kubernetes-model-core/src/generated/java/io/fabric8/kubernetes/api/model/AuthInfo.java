@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -59,7 +60,8 @@ public class AuthInfo implements KubernetesResource
     @JsonProperty("as-uid")
     private java.lang.String asUid;
     @JsonProperty("as-user-extra")
-    private Map<String, ArrayList<String>> asUserExtra;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, ArrayList<String>> asUserExtra = new LinkedHashMap<String, ArrayList<String>>();
     @JsonProperty("auth-provider")
     private AuthProviderConfig authProvider;
     @JsonProperty("client-certificate")

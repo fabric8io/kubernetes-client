@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,7 +38,8 @@ public class AuthProviderConfig implements KubernetesResource
 {
 
     @JsonProperty("config")
-    private Map<String, String> config;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> config = new LinkedHashMap<String, String>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonIgnore

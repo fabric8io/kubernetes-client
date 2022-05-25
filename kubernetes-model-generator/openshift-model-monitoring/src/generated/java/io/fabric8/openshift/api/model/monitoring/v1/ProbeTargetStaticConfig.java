@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -61,7 +62,8 @@ public class ProbeTargetStaticConfig implements KubernetesResource
 {
 
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("relabelingConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> relabelingConfigs = new ArrayList<RelabelConfig>();

@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.machineconfig.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -87,7 +88,8 @@ public class ControllerConfigSpec implements KubernetesResource
     @JsonProperty("etcdDiscoveryDomain")
     private java.lang.String etcdDiscoveryDomain;
     @JsonProperty("images")
-    private Map<String, String> images;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> images = new LinkedHashMap<String, String>();
     @JsonProperty("infra")
     private Infrastructure infra;
     @JsonProperty("ipFamilies")

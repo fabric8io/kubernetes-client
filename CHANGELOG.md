@@ -3,6 +3,7 @@
 
 #### Bugs
 * Fix #2860: ensure that lockexceptions won't inhibit notification
+* Fix #3300: addressed race connection with watch reconnects
 * Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
 * Fix #3990: Throw exception when `HasMetadata` is used in `resources(...)` API
@@ -13,6 +14,7 @@
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
+* Fix #3625: adds default maps to mostly prevent the need for null checks on things like annotations and labels
 * Fix #3852: Deserializing kamelets fails with UnrecognizedPropertyException
 * Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind

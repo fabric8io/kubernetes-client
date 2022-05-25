@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -85,7 +86,8 @@ public class Template implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private java.lang.String kind = "Template";
     @JsonProperty("labels")
-    private Map<String, String> labels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("message")
     private java.lang.String message;
     @JsonProperty("metadata")

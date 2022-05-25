@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model.storage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -98,7 +99,8 @@ public class StorageClass implements HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> mountOptions = new ArrayList<java.lang.String>();
     @JsonProperty("parameters")
-    private Map<String, String> parameters;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> parameters = new LinkedHashMap<String, String>();
     @JsonProperty("provisioner")
     private java.lang.String provisioner;
     @JsonProperty("reclaimPolicy")

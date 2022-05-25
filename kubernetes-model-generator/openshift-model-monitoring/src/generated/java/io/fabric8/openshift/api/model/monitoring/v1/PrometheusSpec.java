@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -185,7 +186,8 @@ public class PrometheusSpec implements KubernetesResource
     @JsonProperty("evaluationInterval")
     private java.lang.String evaluationInterval;
     @JsonProperty("externalLabels")
-    private Map<String, String> externalLabels;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> externalLabels = new LinkedHashMap<String, String>();
     @JsonProperty("externalUrl")
     private java.lang.String externalUrl;
     @JsonProperty("ignoreNamespaceSelectors")
@@ -207,7 +209,8 @@ public class PrometheusSpec implements KubernetesResource
     @JsonProperty("minReadySeconds")
     private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
-    private Map<String, String> nodeSelector;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
     @JsonProperty("overrideHonorLabels")
     private Boolean overrideHonorLabels;
     @JsonProperty("overrideHonorTimestamps")

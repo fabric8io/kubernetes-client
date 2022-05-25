@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -86,7 +87,8 @@ public class RemoteReadSpec implements KubernetesResource
     @JsonProperty("remoteTimeout")
     private java.lang.String remoteTimeout;
     @JsonProperty("requiredMatchers")
-    private Map<String, String> requiredMatchers;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> requiredMatchers = new LinkedHashMap<String, String>();
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonProperty("url")

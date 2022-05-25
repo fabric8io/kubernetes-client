@@ -2,6 +2,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,9 +38,11 @@ public class ResourceQuotaStatus implements KubernetesResource
 {
 
     @JsonProperty("hard")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> hard;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> hard = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("used")
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> used;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> used = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 

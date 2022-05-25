@@ -61,7 +61,7 @@ class PatchIT {
 
     // Then
     assertThat(patchedConfigMap).isNotNull();
-    assertThat(patchedConfigMap.getMetadata().getAnnotations()).isNull();
+    assertThat(patchedConfigMap.getMetadata().getAnnotations()).isNullOrEmpty();
   }
 
   @Test

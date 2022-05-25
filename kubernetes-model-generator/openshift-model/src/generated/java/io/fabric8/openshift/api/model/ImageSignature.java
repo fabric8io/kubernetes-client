@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -98,7 +99,8 @@ public class ImageSignature implements HasMetadata
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("signedClaims")
-    private Map<String, String> signedClaims;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> signedClaims = new LinkedHashMap<String, String>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
