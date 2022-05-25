@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Collections;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -184,6 +186,18 @@ class SerializationTest {
         .isEqualTo(pod)
         .isNotSameAs(pod)
         .hasFieldOrPropertyWithValue("metadata.name", "pod");
+  }
+
+  @Test
+  void testCloneNonResource() {
+    // Given
+    Map<String, String> value = Collections.singletonMap("key", "value");
+    // When
+    Map<String, String> cloneValue = Serialization.clone(value);
+    // Then
+    assertThat(cloneValue)
+        .isEqualTo(value)
+        .isNotSameAs(value);
   }
 
   @Test
