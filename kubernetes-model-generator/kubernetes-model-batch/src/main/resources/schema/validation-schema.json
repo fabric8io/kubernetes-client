@@ -4747,14 +4747,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "batch/v1",
+          "default": "batch/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_batch_v1_CronJob",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJob"
+            "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJob",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob"
           }
         },
         "kind": {

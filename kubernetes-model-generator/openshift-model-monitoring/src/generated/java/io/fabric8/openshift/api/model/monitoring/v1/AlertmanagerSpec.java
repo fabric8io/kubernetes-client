@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Affinity;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -25,6 +23,8 @@ import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
+import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -96,11 +96,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 public class AlertmanagerSpec implements KubernetesResource
 {
@@ -194,10 +190,10 @@ public class AlertmanagerSpec implements KubernetesResource
     private java.lang.String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts = new ArrayList<io.fabric8.kubernetes.api.model.VolumeMount>();
+    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
+    private List<Volume> volumes = new ArrayList<Volume>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -252,7 +248,7 @@ public class AlertmanagerSpec implements KubernetesResource
      * @param affinity
      * @param clusterPeerTimeout
      */
-    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, java.lang.String clusterGossipInterval, java.lang.String clusterPeerTimeout, java.lang.String clusterPushpullInterval, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, Boolean forceEnableClusterMode, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, java.lang.String clusterGossipInterval, java.lang.String clusterPeerTimeout, java.lang.String clusterPushpullInterval, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, Boolean forceEnableClusterMode, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
         super();
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
@@ -688,22 +684,22 @@ public class AlertmanagerSpec implements KubernetesResource
     }
 
     @JsonProperty("volumeMounts")
-    public List<io.fabric8.kubernetes.api.model.VolumeMount> getVolumeMounts() {
+    public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
     @JsonProperty("volumeMounts")
-    public void setVolumeMounts(List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts) {
+    public void setVolumeMounts(List<VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
     @JsonProperty("volumes")
-    public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
+    public List<Volume> getVolumes() {
         return volumes;
     }
 
     @JsonProperty("volumes")
-    public void setVolumes(List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
     }
 

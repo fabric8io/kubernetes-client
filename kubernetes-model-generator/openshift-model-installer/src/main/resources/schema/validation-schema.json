@@ -2372,15 +2372,9 @@
     },
     "machinepool": {
       "properties": {
-        "amiID": {
-          "type": "string"
-        },
-        "iamRole": {
-          "type": "string"
-        },
-        "rootVolume": {
-          "$ref": "#/definitions/os_installer_aws_v1_EC2RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2RootVolume"
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
         },
         "type": {
           "type": "string"
@@ -2617,6 +2611,9 @@
       "properties": {
         "diskSizeGB": {
           "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true

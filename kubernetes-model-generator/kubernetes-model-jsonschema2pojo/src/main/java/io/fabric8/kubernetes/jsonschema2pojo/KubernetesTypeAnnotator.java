@@ -26,7 +26,7 @@ import org.jsonschema2pojo.GenerationConfig;
 
 public class KubernetesTypeAnnotator extends KubernetesCoreTypeAnnotator {
 
-  private static final String BUILDABLE_REFERENCE_VALUE = "value";
+  public static final String BUILDABLE_REFERENCE_VALUE = "value";
 
   public KubernetesTypeAnnotator(GenerationConfig generationConfig) {
     super(generationConfig);
@@ -61,17 +61,14 @@ public class KubernetesTypeAnnotator extends KubernetesCoreTypeAnnotator {
           new JCodeModel()._class("io.fabric8.kubernetes.api.model.LocalObjectReference"));
       arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
           new JCodeModel()._class("io.fabric8.kubernetes.api.model.PersistentVolumeClaim"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.EnvVar"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.ContainerPort"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.Volume"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.VolumeMount"));
+      addBuildableTypes(arrayMember);
     } catch (JClassAlreadyExistsException e) {
       e.printStackTrace();
     }
+  }
+
+  protected void addBuildableTypes(JAnnotationArrayMember arrayMember) throws JClassAlreadyExistsException {
+
   }
 
 }

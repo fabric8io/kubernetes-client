@@ -29,7 +29,7 @@
   <name>Fabric8 :: Camel-K :: Extension</name>
   
   <properties>
-    <jsonschema2pojo.targetPackage>io.fabric8.camel.api.model</jsonschema2pojo.targetPackage>
+    <jsonschema2pojo.targetPackage>io.fabric8.camelk.api.model</jsonschema2pojo.targetPackage>
   </properties>
 
   <modules>
