@@ -99,7 +99,7 @@ public class SecretCrudTest {
     assertEquals("Secret is invalid", kubernetesClientException.getStatus().getMessage());
     assertEquals(1, kubernetesClientException.getStatus().getDetails().getCauses().size());
     assertEquals("ValueRequired", kubernetesClientException.getStatus().getDetails().getCauses().get(0).getReason());
-    assertEquals("Required value: name or generateName is required",
+    assertEquals("Required value: metadata is required",
         kubernetesClientException.getStatus().getDetails().getCauses().get(0).getMessage());
   }
 }

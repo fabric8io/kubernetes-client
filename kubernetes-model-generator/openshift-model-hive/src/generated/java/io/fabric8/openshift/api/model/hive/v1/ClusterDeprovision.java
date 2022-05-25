@@ -81,8 +81,7 @@ public class ClusterDeprovision implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "ClusterDeprovision";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private ClusterDeprovisionSpec spec;
     @JsonProperty("status")

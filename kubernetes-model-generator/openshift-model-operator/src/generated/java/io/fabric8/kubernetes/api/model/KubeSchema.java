@@ -242,8 +242,7 @@ public class KubeSchema {
     @JsonProperty("NetworkList")
     private NetworkList networkList;
     @JsonProperty("ObjectMeta")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
     @JsonProperty("OpenShiftAPIServer")
     private OpenShiftAPIServer openShiftAPIServer;
     @JsonProperty("OpenShiftAPIServerList")

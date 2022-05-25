@@ -60,8 +60,7 @@ public class PersistentVolumeClaim implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "PersistentVolumeClaim";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private ObjectMeta metadata;
     @JsonProperty("spec")
     private PersistentVolumeClaimSpec spec;
     @JsonProperty("status")
@@ -84,7 +83,7 @@ public class PersistentVolumeClaim implements HasMetadata, Namespaced
      * @param spec
      * @param status
      */
-    public PersistentVolumeClaim(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, PersistentVolumeClaimSpec spec, PersistentVolumeClaimStatus status) {
+    public PersistentVolumeClaim(String apiVersion, String kind, ObjectMeta metadata, PersistentVolumeClaimSpec spec, PersistentVolumeClaimStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -134,12 +133,12 @@ public class PersistentVolumeClaim implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

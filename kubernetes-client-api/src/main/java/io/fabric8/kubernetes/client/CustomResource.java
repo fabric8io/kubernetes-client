@@ -75,7 +75,6 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 
-  @JsonInclude(value = Include.CUSTOM, valueFilter = ObjectMeta.class)
   private ObjectMeta metadata = new ObjectMeta();
 
   @JsonProperty("spec")

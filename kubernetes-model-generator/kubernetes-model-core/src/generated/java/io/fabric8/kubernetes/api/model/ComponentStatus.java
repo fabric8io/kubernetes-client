@@ -64,8 +64,7 @@ public class ComponentStatus implements HasMetadata
     @JsonProperty("kind")
     private String kind = "ComponentStatus";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private ObjectMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -83,7 +82,7 @@ public class ComponentStatus implements HasMetadata
      * @param kind
      * @param conditions
      */
-    public ComponentStatus(String apiVersion, List<ComponentCondition> conditions, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public ComponentStatus(String apiVersion, List<ComponentCondition> conditions, String kind, ObjectMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.conditions = conditions;
@@ -142,12 +141,12 @@ public class ComponentStatus implements HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

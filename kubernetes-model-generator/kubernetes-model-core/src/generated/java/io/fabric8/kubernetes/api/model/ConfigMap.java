@@ -70,8 +70,7 @@ public class ConfigMap implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private java.lang.String kind = "ConfigMap";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private ObjectMeta metadata;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -91,7 +90,7 @@ public class ConfigMap implements HasMetadata, Namespaced
      * @param binaryData
      * @param kind
      */
-    public ConfigMap(java.lang.String apiVersion, Map<String, String> binaryData, Map<String, String> data, Boolean immutable, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public ConfigMap(java.lang.String apiVersion, Map<String, String> binaryData, Map<String, String> data, Boolean immutable, java.lang.String kind, ObjectMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.binaryData = binaryData;
@@ -172,12 +171,12 @@ public class ConfigMap implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

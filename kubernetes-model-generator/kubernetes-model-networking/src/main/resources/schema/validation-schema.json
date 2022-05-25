@@ -2176,8 +2176,8 @@
     "httpingresspath": {
       "properties": {
         "backend": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressBackend",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBackend"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressBackend",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressBackend"
         },
         "path": {
           "type": "string"
@@ -2239,7 +2239,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "networking.k8s.io/v1",
+          "default": "networking.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2252,12 +2252,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressSpec"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressStatus"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressStatus"
         }
       },
       "additionalProperties": true
@@ -2279,7 +2279,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "networking.k8s.io/v1",
+          "default": "networking.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2292,8 +2292,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressClassSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassSpec"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClassSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassSpec"
         }
       },
       "additionalProperties": true

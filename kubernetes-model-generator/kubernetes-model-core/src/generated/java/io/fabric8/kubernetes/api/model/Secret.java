@@ -68,8 +68,7 @@ public class Secret implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private java.lang.String kind = "Secret";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private ObjectMeta metadata;
     @JsonProperty("stringData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> stringData = new LinkedHashMap<String, String>();
@@ -95,7 +94,7 @@ public class Secret implements HasMetadata, Namespaced
      * @param type
      * @param stringData
      */
-    public Secret(java.lang.String apiVersion, Map<String, String> data, Boolean immutable, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> stringData, java.lang.String type) {
+    public Secret(java.lang.String apiVersion, Map<String, String> data, Boolean immutable, java.lang.String kind, ObjectMeta metadata, Map<String, String> stringData, java.lang.String type) {
         super();
         this.apiVersion = apiVersion;
         this.data = data;
@@ -167,12 +166,12 @@ public class Secret implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

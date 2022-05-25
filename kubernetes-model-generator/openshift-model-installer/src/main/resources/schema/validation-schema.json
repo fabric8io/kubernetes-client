@@ -2372,19 +2372,19 @@
     },
     "machinepool": {
       "properties": {
+        "coresPerSocket": {
+          "type": "integer"
+        },
+        "cpus": {
+          "type": "integer"
+        },
+        "memoryMB": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
         "osDisk": {
-          "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
-        },
-        "type": {
-          "type": "string"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
         }
       },
       "additionalProperties": true
@@ -2611,9 +2611,6 @@
       "properties": {
         "diskSizeGB": {
           "type": "integer"
-        },
-        "diskType": {
-          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2645,70 +2642,6 @@
       "additionalProperties": true
     },
     "platform": {
-      "properties": {
-        "apiVIP": {
-          "type": "string"
-        },
-        "bootstrapOSImage": {
-          "type": "string"
-        },
-        "bootstrapProvisioningIP": {
-          "type": "string"
-        },
-        "clusterOSImage": {
-          "type": "string"
-        },
-        "clusterProvisioningIP": {
-          "type": "string"
-        },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_baremetal_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool"
-        },
-        "externalBridge": {
-          "type": "string"
-        },
-        "externalMACAddress": {
-          "type": "string"
-        },
-        "hosts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_installer_baremetal_v1_Host",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.baremetal.v1.Host"
-          }
-        },
-        "ingressVIP": {
-          "type": "string"
-        },
-        "libvirtURI": {
-          "type": "string"
-        },
-        "provisioningBridge": {
-          "type": "string"
-        },
-        "provisioningDHCPExternal": {
-          "type": "boolean"
-        },
-        "provisioningDHCPRange": {
-          "type": "string"
-        },
-        "provisioningHostIP": {
-          "type": "string"
-        },
-        "provisioningMACAddress": {
-          "type": "string"
-        },
-        "provisioningNetwork": {
-          "type": "string"
-        },
-        "provisioningNetworkCIDR": {
-          "type": "string"
-        },
-        "provisioningNetworkInterface": {
-          "type": "string"
-        }
-      },
       "additionalProperties": true
     },
     "proxy": {

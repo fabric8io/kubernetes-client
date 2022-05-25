@@ -54,8 +54,7 @@ public class Binding implements HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "Binding";
     @JsonProperty("metadata")
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = io.fabric8.kubernetes.api.model.ObjectMeta.class)
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata = new io.fabric8.kubernetes.api.model.ObjectMeta();
+    private ObjectMeta metadata;
     @JsonProperty("target")
     private ObjectReference target;
     @JsonIgnore
@@ -75,7 +74,7 @@ public class Binding implements HasMetadata, Namespaced
      * @param kind
      * @param target
      */
-    public Binding(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ObjectReference target) {
+    public Binding(String apiVersion, String kind, ObjectMeta metadata, ObjectReference target) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -124,12 +123,12 @@ public class Binding implements HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
