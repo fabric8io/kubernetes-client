@@ -34,9 +34,6 @@ import java.util.Map;
  */
 public class Fabric8DefaultRule extends DefaultRule {
 
-  public static final String OBJECTMETA = "io.fabric8.kubernetes.api.model.ObjectMeta";
-  public static final String ANNOTATION_VALUE_FILTER = "valueFilter";
-
   private final RuleFactory ruleFactory;
 
   public Fabric8DefaultRule(RuleFactory ruleFactory) {
