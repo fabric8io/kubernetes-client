@@ -18,6 +18,7 @@ package io.fabric8.crd.generator.zookeeper.v1;
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
 import io.fabric8.kubernetes.model.annotation.PrinterColumn;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
+
 import java.util.Map;
 
 public class ZookeeperStatus {
@@ -55,9 +56,8 @@ public class ZookeeperStatus {
   }
 
   public void setSize(int size) {
-    this.size=size;
+    this.size = size;
   }
-
 
   public Map<String, String> getSelector() {
     return selector;

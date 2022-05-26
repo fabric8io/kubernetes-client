@@ -15,13 +15,13 @@
  */
 package io.fabric8.crd.generator.inherited;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ChildCRDTest {
 
@@ -29,7 +29,7 @@ class ChildCRDTest {
   void testCrd() {
     CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader()
         .getResourceAsStream("META-INF/fabric8/children.acme.com-v1.yml"),
-      CustomResourceDefinition.class);
+        CustomResourceDefinition.class);
     assertNotNull(d);
     assertEquals("Child", d.getSpec().getNames().getKind());
     assertEquals("children", d.getSpec().getNames().getPlural());
