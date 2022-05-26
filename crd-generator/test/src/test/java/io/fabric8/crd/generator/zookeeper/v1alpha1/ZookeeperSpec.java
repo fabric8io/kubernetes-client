@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 
 public class ZookeeperSpec {
 
-    @SpecReplicas
-    private int size;
-    private String version;
-    private boolean ephemeral;
+  @SpecReplicas
+  private int size;
+  private String version;
+  private boolean ephemeral;
 }

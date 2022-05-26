@@ -15,10 +15,6 @@
  */
 package io.fabric8.crd.generator.zookeeper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
@@ -28,11 +24,17 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class ZookeeperCustomResourceTest {
 
   @Test
   void testCrd() {
-    CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader().getResourceAsStream("META-INF/fabric8/zookeepers.io.zookeeper-v1beta1.yml"), CustomResourceDefinition.class);
+    CustomResourceDefinition d = Serialization.unmarshal(
+        getClass().getClassLoader().getResourceAsStream("META-INF/fabric8/zookeepers.io.zookeeper-v1beta1.yml"),
+        CustomResourceDefinition.class);
     assertNotNull(d);
     assertEquals("Zookeeper", d.getSpec().getNames().getKind());
     assertEquals("zookeepers", d.getSpec().getNames().getPlural());
@@ -44,28 +46,29 @@ class ZookeeperCustomResourceTest {
     assertEquals(".spec.size", d.getSpec().getSubresources().getScale().getSpecReplicasPath());
     assertNotNull(d.getSpec().getSubresources().getStatus());
 
-    Optional<CustomResourceDefinitionVersion> v1 = d.getSpec().getVersions().stream().filter(v -> v.getName().equals("v1")).findFirst();
+    Optional<CustomResourceDefinitionVersion> v1 = d.getSpec().getVersions().stream().filter(v -> v.getName().equals("v1"))
+        .findFirst();
     assertTrue(v1.isPresent());
     v1.ifPresent(v -> {
-        //Let's check that version is marked as required
-        Object spec = v.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
-        assertNotNull(spec);
-        JSONSchemaProps props = (JSONSchemaProps) spec;
-        List<String> required = props.getRequired();
-        assertTrue(required.contains("version"));
-      });
+      //Let's check that version is marked as required
+      Object spec = v.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
+      assertNotNull(spec);
+      JSONSchemaProps props = (JSONSchemaProps) spec;
+      List<String> required = props.getRequired();
+      assertTrue(required.contains("version"));
+    });
 
-    Optional<CustomResourceDefinitionVersion> v1alpha1 = d.getSpec().getVersions().stream().filter(v -> v.getName().equals("v1alpha1")).findFirst();
+    Optional<CustomResourceDefinitionVersion> v1alpha1 = d.getSpec().getVersions().stream()
+        .filter(v -> v.getName().equals("v1alpha1")).findFirst();
     assertTrue(v1alpha1.isPresent());
     v1.ifPresent(v -> {
-        //Let's check that version is marked as required
-        Object spec = v.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
-        assertNotNull(spec);
-        JSONSchemaProps props = (JSONSchemaProps) spec;
-        List<String> required = props.getRequired();
-        assertTrue(required.contains("version"));
-      });
+      //Let's check that version is marked as required
+      Object spec = v.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
+      assertNotNull(spec);
+      JSONSchemaProps props = (JSONSchemaProps) spec;
+      List<String> required = props.getRequired();
+      assertTrue(required.contains("version"));
+    });
 
   }
 }
-

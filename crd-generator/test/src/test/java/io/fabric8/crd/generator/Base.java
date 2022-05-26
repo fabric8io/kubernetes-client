@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.CustomResource;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public abstract class Base<Spec extends BaseSpec, Status extends BaseStatus>
-  extends CustomResource<Spec, Status>
-  implements Namespaced {
+    extends CustomResource<Spec, Status>
+    implements Namespaced {
 
 }

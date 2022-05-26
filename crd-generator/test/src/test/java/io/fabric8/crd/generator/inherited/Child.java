@@ -24,5 +24,4 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @Group("acme.com")
 public class Child extends Base<ChildSpec, ChildStatus> implements Namespaced {
 
-
 }
