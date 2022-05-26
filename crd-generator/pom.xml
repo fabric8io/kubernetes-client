@@ -33,5 +33,6 @@
   <modules>
     <module>apt</module>
     <module>api</module>
+    <module>test</module>
   </modules>
 </project>
