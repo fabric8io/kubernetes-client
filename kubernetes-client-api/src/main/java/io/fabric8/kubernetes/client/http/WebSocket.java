@@ -22,20 +22,42 @@ import java.util.concurrent.CompletableFuture;
 
 public interface WebSocket {
 
+  /**
+   * Callback methods for websocket events. The methods are
+   * guaranteed to be called serially - except for {@link #onError(WebSocket, Throwable)}
+   */
   interface Listener {
 
     default void onOpen(WebSocket webSocket) {
     }
 
+    /**
+     * Called once the full text message has been built. {@link WebSocket#request()} must
+     * be called to receive more messages or onClose.
+     */
     default void onMessage(WebSocket webSocket, String text) {
+      webSocket.request();
     }
 
+    /**
+     * Called once the full binary message has been built. {@link WebSocket#request()} must
+     * be called to receive more messages or onClose.
+     */
     default void onMessage(WebSocket webSocket, ByteBuffer bytes) {
+      webSocket.request();
     }
 
+    /**
+     * Called when the remote input closes. It's a terminal event, calls to {@link WebSocket#request()}
+     * do nothing after this.
+     */
     default void onClose(WebSocket webSocket, int code, String reason) {
     }
 
+    /**
+     * Called when an error has occurred. It's a terminal event, calls to {@link WebSocket#request()}
+     * do nothing after this.
+     */
     default void onError(WebSocket webSocket, Throwable error) {
     }
 
@@ -93,6 +115,10 @@ public interface WebSocket {
    * received
    * <p>
    * request is implicitly called by {@link Listener#onOpen(WebSocket)}
+   * <p>
+   * depending on the websocket implementation request may trigger immediate / concurrent delivery
+   * of the close event - this means you'll generally want to call this method once you've completed the consumption
+   * of the current event.
    */
   void request();
 
