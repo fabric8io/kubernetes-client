@@ -54,34 +54,65 @@ public interface HttpClient extends AutoCloseable {
 
     DerivedClientBuilder readTimeout(long readTimeout, TimeUnit unit);
 
+    DerivedClientBuilder writeTimeout(long writeTimeout, TimeUnit unit);
+
+    /**
+     * Sets the HttpClient to be used to perform HTTP requests whose responses
+     * will be streamed.
+     *
+     * @return this Builder instance.
+     */
     DerivedClientBuilder forStreaming();
 
-    DerivedClientBuilder authenticatorNone();
-
-    DerivedClientBuilder writeTimeout(long timeout, TimeUnit timeoutUnit);
-
     DerivedClientBuilder addOrReplaceInterceptor(String name, Interceptor interceptor);
+
+    /**
+     * Prevents any built-in authenticator to respond to challenges from origin server.
+     * <p>
+     * <i>OkHttp specific option.</i>
+     *
+     * @return this Builder instance.
+     */
+    DerivedClientBuilder authenticatorNone();
   }
 
   interface Builder extends DerivedClientBuilder {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     HttpClient build();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Builder readTimeout(long readTimeout, TimeUnit unit);
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    Builder writeTimeout(long writeTimeout, TimeUnit unit);
+
     Builder connectTimeout(long connectTimeout, TimeUnit unit);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Builder forStreaming();
 
-    @Override
-    Builder writeTimeout(long timeout, TimeUnit timeoutUnit);
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Builder addOrReplaceInterceptor(String name, Interceptor interceptor);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Builder authenticatorNone();
 
@@ -93,7 +124,7 @@ public interface HttpClient extends AutoCloseable {
 
     Builder proxyAuthorization(String credentials);
 
-    Builder tlsVersions(TlsVersion[] tlsVersions);
+    Builder tlsVersions(TlsVersion... tlsVersions);
 
     Builder preferHttp11();
   }

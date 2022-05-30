@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -47,7 +46,7 @@ class OkHttpWebSocketImpl implements WebSocket {
 
     @Override
     public Builder uri(URI uri) {
-      builder.url(HttpUrl.get(uri));
+      builder.url(uri.toString());
       return this;
     }
 

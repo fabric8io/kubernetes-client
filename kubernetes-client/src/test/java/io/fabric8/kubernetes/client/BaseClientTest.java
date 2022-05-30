@@ -98,6 +98,19 @@ class BaseClientTest {
   }
 
   @Test
+  @DisplayName("supports Ingress, with no group+version registered in server, should check API server and return false")
+  void supportsNetworkingApiNotFound() {
+    try (MockedConstruction<OperationSupport> ignore = mockConstruction(OperationSupport.class,
+        (mock, ctx) -> when(mock.restCall(APIResourceList.class, "/apis", "networking.k8s.io/v1"))
+            .thenReturn(null))) {
+      // When
+      final boolean result = baseClient.supports(Ingress.class);
+      // Then
+      assertThat(result).isFalse();
+    }
+  }
+
+  @Test
   @DisplayName("supports Ingress, with support in server, should check API server and return true")
   void supportsIngressInServer() {
     try (MockedConstruction<OperationSupport> ignore = mockConstruction(OperationSupport.class,

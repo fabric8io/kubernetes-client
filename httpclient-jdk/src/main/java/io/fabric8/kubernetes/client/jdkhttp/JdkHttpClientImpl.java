@@ -35,6 +35,7 @@ import java.net.http.WebSocketHandshakeException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -130,6 +131,11 @@ public class JdkHttpClientImpl implements HttpClient {
     @Override
     public List<String> headers(String key) {
       return response.headers().allValues(key);
+    }
+
+    @Override
+    public Map<String, List<String>> headers() {
+      return response.headers().map();
     }
 
     @Override
@@ -334,13 +340,7 @@ public class JdkHttpClientImpl implements HttpClient {
     // use a responseholder to convey both the exception and the websocket
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
-    URI uri = request.uri();
-    if (uri.getScheme().startsWith("http")) {
-      // the jdk logic expects a ws uri
-      // after the https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8245245 it just does the reverse of this
-      // to convert back to http(s) ...
-      uri = URI.create("ws" + uri.toString().substring(4));
-    }
+    URI uri = WebSocket.toWebSocketUri(request.uri());
     newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((w, t) -> {
       if (t instanceof CompletionException && t.getCause() != null) {
         t = t.getCause();

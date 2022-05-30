@@ -86,6 +86,7 @@
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.13.3</jackson.version>
+    <jetty.version>11.0.9</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.5</maven-core.version>
     <maven-plugin-annotations.version>3.6.4</maven-plugin-annotations.version>
@@ -94,24 +95,21 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
+    <junit.version>5.8.2</junit.version>
     <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>15.6.0</approvaltests.version>
+    <mockito.version>4.6.1</mockito.version>
 
-    <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
-    <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <generex.version>1.0.2</generex.version>
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
-    <automaton.version>1.11-8</automaton.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <junit.version>5.8.2</junit.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
-    <mockito.version>4.6.1</mockito.version>
     <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.30</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
@@ -177,7 +175,7 @@
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
-    
+
     <jsonschema2pojo.targetPackage>io.fabric8.kubernetes.api.model</jsonschema2pojo.targetPackage>
   </properties>
   <modules>
@@ -402,7 +400,7 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-okhttp</artifactId>
-	    <version>${project.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.squareup.okhttp3</groupId>
@@ -412,6 +410,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-jdk</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-jetty</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -755,6 +758,21 @@
         <optional>true</optional>
       </dependency>
       <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-client</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.http2</groupId>
+        <artifactId>http2-http-client-transport</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.websocket</groupId>
+        <artifactId>websocket-jetty-client</artifactId>
+        <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
@@ -764,6 +782,12 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>provided</scope>
       </dependency>
 
       <!-- Testing and Mocking -->
@@ -1410,6 +1434,7 @@
       </activation>
       <modules>
         <module>httpclient-jdk</module>
+        <module>httpclient-jetty</module>
         <module>httpclient-tests</module>
       </modules>
     </profile>

@@ -166,6 +166,11 @@ public class OkHttpClientImpl implements HttpClient {
       return response.headers(key);
     }
 
+    @Override
+    public Map<String, List<String>> headers() {
+      return response.headers().toMultimap();
+    }
+
   }
 
   private final okhttp3.OkHttpClient httpClient;

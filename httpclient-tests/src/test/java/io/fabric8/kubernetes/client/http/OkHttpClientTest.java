@@ -23,24 +23,24 @@ import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
-import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests a {@link HttpClient} at or below the {@link KubernetesClient} level.
@@ -96,26 +96,20 @@ class OkHttpClientTest {
         .open()
         .done().always();
 
-    CompletableFuture<Void> onOpen = new CompletableFuture<Void>();
-
-    CompletableFuture<WebSocket> startedFuture = client.getHttpClient().newWebSocketBuilder()
+    final CompletableFuture<Boolean> opened = new CompletableFuture<>();
+    final CompletableFuture<Boolean> future = client.getHttpClient().newWebSocketBuilder()
         .uri(URI.create(client.getConfiguration().getMasterUrl() + "foo"))
         .buildAsync(new Listener() {
 
           @Override
           public void onOpen(WebSocket webSocket) {
-            onOpen.complete(null);
+            opened.complete(true);
           }
 
-        });
+        })
+        .thenCompose(ws -> opened);
 
-    // make sure onOpen has completed before this future
-    startedFuture.handle((w, t) -> {
-      assertTrue(onOpen.isDone());
-      return null;
-    });
-
-    startedFuture.get(10, TimeUnit.SECONDS);
+    assertThat(future.get(10, TimeUnit.SECONDS)).isTrue();
   }
 
   @Test
@@ -159,14 +153,9 @@ class OkHttpClientTest {
     CompletableFuture<HttpResponse<AsyncBody>> responseFuture = client.getHttpClient().consumeBytes(
         client.getHttpClient().newHttpRequestBuilder().uri(URI.create(client.getConfiguration().getMasterUrl() + "async"))
             .build(),
-        new HttpClient.BodyConsumer<List<ByteBuffer>>() {
-
-          @Override
-          public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
-            consumed.complete(true);
-            asyncBody.consume();
-          }
-
+        (value, asyncBody) -> {
+          consumed.complete(true);
+          asyncBody.consume();
         });
 
     responseFuture.whenComplete((r, t) -> {
@@ -189,28 +178,18 @@ class OkHttpClientTest {
     assertTrue(consumed.get(5, TimeUnit.SECONDS));
   }
 
-  @Test
-  void testSupportedTypes() throws Exception {
+  @DisplayName("Supported response body types")
+  @ParameterizedTest(name = "{index}: {0}")
+  @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })
+  void testSupportedTypes(Class<?> type) throws Exception {
     server.expect().withPath("/type").andReturn(200, "hello world").always();
-
-    testType(String.class);
-    testType(byte[].class);
-    testType(Reader.class);
-    testType(InputStream.class);
-  }
-
-  private <T> void testType(Class<T> type) throws Exception {
-    client.getHttpClient()
+    final HttpResponse<?> result = client.getHttpClient()
         .sendAsync(client.getHttpClient().newHttpRequestBuilder()
             .uri(URI.create(client.getConfiguration().getMasterUrl() + "type")).build(), type)
-        .whenComplete((r, t) -> {
-          assertTrue(type.isAssignableFrom(r.body().getClass()));
-          try {
-            assertEquals("hello world", r.bodyString());
-          } catch (IOException e) {
-            fail(e);
-          }
-        }).get();
+        .get(10, TimeUnit.SECONDS);
+    assertThat(result)
+        .satisfies(r -> assertThat(r.body()).isInstanceOf(type))
+        .satisfies(r -> assertThat(r.bodyString()).isEqualTo("hello world"));
   }
 
 }

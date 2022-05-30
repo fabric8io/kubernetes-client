@@ -84,4 +84,4 @@ jobs:
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
       - name: Build and release Java 11 modules
-        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" clean deploy
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" -pl "httpclient-jetty" clean deploy

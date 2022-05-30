@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.IOHelpers;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +45,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -137,31 +138,28 @@ class PodIT {
         .withSpec(pod1.getSpec())
         .build();
 
-    client.pods().withName(pod1.getMetadata().getName())
-        .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    client.pods().resource(pod1).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
-    client.pods().createOrReplace(pod2);
-    client.pods().withName(pod2.getMetadata().getName())
-        .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    client.pods().resource(pod2).createOrReplace();
+    client.pods().resource(pod2).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
-    client.policy().v1beta1().podDisruptionBudget().createOrReplace(pdb);
+    client.resource(pdb).createOrReplace();
 
     // the server needs to process the pdb before the eviction can proceed, so we'll need to wait here
     await().atMost(5, TimeUnit.MINUTES)
         .until(() -> client.pods().withName(pod2.getMetadata().getName()).evict());
 
     // cant evict because only one left
-    assertFalse(client.pods().withName(pod1.getMetadata().getName()).evict());
+    assertFalse(client.pods().resource(pod1).evict());
     // ensure it really is still up
-    assertTrue(Readiness.getInstance().isReady(client.pods().withName(pod1.getMetadata().getName()).fromServer().get()));
+    assertTrue(Readiness.getInstance().isReady(client.pods().resource(pod1).fromServer().get()));
 
     // create another pod to satisfy PDB
-    client.pods().createOrReplace(pod3);
-    client.pods().withName(pod3.getMetadata().getName())
-        .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    client.pods().resource(pod3).createOrReplace();
+    client.pods().resource(pod3).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     // can now evict
-    assertTrue(client.pods().withName(pod1.getMetadata().getName()).evict());
+    assertTrue(client.pods().resource(pod3).evict());
   }
 
   @Test
@@ -172,16 +170,17 @@ class PodIT {
   }
 
   @Test
-  void exec() throws InterruptedException, IOException {
+  void exec() throws Exception {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    AtomicBoolean closed = new AtomicBoolean();
+    final AtomicBoolean closed = new AtomicBoolean();
+    final AtomicBoolean failed = new AtomicBoolean();
+    final CompletableFuture<Status> exitStatus = new CompletableFuture<>();
     int[] exitCode = new int[] { Integer.MAX_VALUE };
-    ExecWatch execWatch = client.pods().withName("pod-standard")
+    client.pods().withName("pod-standard")
         .writingOutput(out)
-        .redirectingErrorChannel()
-        .withTTY().usingListener(new ExecListener() {
+        .usingListener(new ExecListener() {
           @Override
           public void onOpen() {
             logger.info("Shell was opened");
@@ -190,6 +189,7 @@ class PodIT {
           @Override
           public void onFailure(Throwable t, Response failureResponse) {
             logger.info("Shell barfed");
+            failed.set(true);
             execLatch.countDown();
           }
 
@@ -203,13 +203,15 @@ class PodIT {
           @Override
           public void onExit(int code, Status status) {
             exitCode[0] = code;
+            exitStatus.complete(status);
           }
-        }).exec("date");
-    // the stream must be read or closed to receive onClose
-    assertEquals("{\"metadata\":{},\"status\":\"Success\"}", IOHelpers.readFully(execWatch.getErrorChannel()));
-    execLatch.await(5, TimeUnit.SECONDS);
+        }).exec("sh", "-c", "echo 'hello world!'");
+    assertThat(exitStatus.get(5, TimeUnit.SECONDS))
+        .hasFieldOrPropertyWithValue("status", "Success");
+    assertTrue(execLatch.await(5, TimeUnit.SECONDS));
     assertEquals(0, exitCode[0]);
     assertTrue(closed.get());
+    assertFalse(failed.get());
     assertNotNull(out.toString());
   }
 
@@ -242,7 +244,7 @@ class PodIT {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     // Wait for resources to get ready
     final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
-    Files.write(tmpFile, Arrays.asList("I'm uploaded"));
+    Files.write(tmpFile, Collections.singletonList("I'm uploaded"));
 
     assertUploaded("pod-standard", tmpFile, "/tmp/toBeUploaded");
     assertUploaded("pod-standard", tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");

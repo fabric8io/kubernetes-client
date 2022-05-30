@@ -181,7 +181,7 @@ class JdkHttpClientBuilderImpl implements Builder {
   }
 
   @Override
-  public Builder tlsVersions(TlsVersion[] tlsVersions) {
+  public Builder tlsVersions(TlsVersion... tlsVersions) {
     this.tlsVersions = tlsVersions;
     return this;
   }
@@ -192,7 +192,6 @@ class JdkHttpClientBuilderImpl implements Builder {
     copy.readTimeout = this.readTimeout;
     copy.sslContext = this.sslContext;
     copy.interceptors = new LinkedHashMap<>(this.interceptors);
-    copy.followRedirects = this.followRedirects;
     copy.proxyAddress = this.proxyAddress;
     copy.proxyAuthorization = this.proxyAuthorization;
     copy.tlsVersions = this.tlsVersions;
