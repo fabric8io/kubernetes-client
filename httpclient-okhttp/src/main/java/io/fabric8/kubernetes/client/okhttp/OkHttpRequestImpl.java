@@ -32,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 class OkHttpRequestImpl implements HttpRequest {
 
@@ -154,6 +155,11 @@ class OkHttpRequestImpl implements HttpRequest {
   @Override
   public List<String> headers(String key) {
     return request.headers(key);
+  }
+
+  @Override
+  public Map<String, List<String>> headers() {
+    return request.headers().toMultimap();
   }
 
   @Override

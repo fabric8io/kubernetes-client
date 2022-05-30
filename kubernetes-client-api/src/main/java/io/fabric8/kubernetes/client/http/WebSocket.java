@@ -74,6 +74,21 @@ public interface WebSocket {
      */
     CompletableFuture<WebSocket> buildAsync(Listener listener);
 
+    /**
+     * Protocol used for WebSocket message exchange.
+     *
+     * <blockquote>
+     * The client can request that the server use a specific subprotocol by
+     * including the |Sec-WebSocket-Protocol| field in its handshake. If it
+     * is specified, the server needs to include the same field and one of
+     * the selected subprotocol values in its response for the connection to
+     * be established.
+     * </blockquote>
+     * <i>RFC 6455: Section 1.9, Subprotocols Using the WebSocket Protocol</i>
+     *
+     * @param protocol the protocol to be used.
+     * @return this builder.
+     */
     Builder subprotocol(String protocol);
 
     @Override
@@ -121,5 +136,24 @@ public interface WebSocket {
    * of the current event.
    */
   void request();
+
+  /**
+   * Converts http or https URIs to ws or wss URIs.
+   * <p>
+   * Clients such as JDK or Jetty require URIs to be performed to the ws protocol, other clients perform
+   * this same transformation automatically.
+   *
+   * @param httpUri the original URI to transform.
+   * @return a new URI with the converted protocol (if applicable).
+   */
+  static URI toWebSocketUri(URI httpUri) {
+    if (httpUri != null && httpUri.getScheme().startsWith("http")) {
+      // the jdk logic expects a ws uri
+      // after the https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8245245 it just does the reverse of this
+      // to convert back to http(s) ...
+      return URI.create("ws" + httpUri.toString().substring(4));
+    }
+    return httpUri;
+  }
 
 }

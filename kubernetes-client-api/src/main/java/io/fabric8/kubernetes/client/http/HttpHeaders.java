@@ -17,15 +17,23 @@
 package io.fabric8.kubernetes.client.http;
 
 import java.util.List;
+import java.util.Map;
 
 public interface HttpHeaders {
 
   /**
    * Returns a List of all the Header String values for the provided key/name.
-   * 
+   *
    * @param key The header key/name for which to provide the values.
    * @return the List of header values for the provided key.
    */
   List<String> headers(String key);
+
+  /**
+   * Returns a Map containing a list of String values for each Header.
+   *
+   * @return the Map of Headers and their list of values.
+   */
+  Map<String, List<String>> headers();
 
 }

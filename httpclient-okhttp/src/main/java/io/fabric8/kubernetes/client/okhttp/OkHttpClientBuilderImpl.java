@@ -200,7 +200,7 @@ class OkHttpClientBuilderImpl implements Builder {
   }
 
   @Override
-  public Builder tlsVersions(TlsVersion[] tlsVersions) {
+  public Builder tlsVersions(TlsVersion... tlsVersions) {
     ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
         .tlsVersions(Arrays.asList(tlsVersions)
             .stream()

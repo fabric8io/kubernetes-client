@@ -26,11 +26,12 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Flow.Subscriber;
 
-class JdkHttpRequestImpl implements HttpRequest {
+import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
 
-  private static final String CONTENT_TYPE = "Content-Type";
+class JdkHttpRequestImpl implements HttpRequest {
 
   public static class BuilderImpl implements Builder {
 
@@ -139,6 +140,11 @@ class JdkHttpRequestImpl implements HttpRequest {
   @Override
   public List<String> headers(String key) {
     return request.headers().allValues(key);
+  }
+
+  @Override
+  public Map<String, List<String>> headers() {
+    return request.headers().map();
   }
 
   @Override

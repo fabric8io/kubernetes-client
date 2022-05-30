@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * Basic {@link HttpHeaders} implementation to be used in tests instead of mocks or real headers.
- * 
+ *
  * @param <T> type for the return type of chained methods.
  */
 public class TestHttpHeaders<T extends HttpHeaders> implements HttpHeaders {
@@ -33,6 +33,11 @@ public class TestHttpHeaders<T extends HttpHeaders> implements HttpHeaders {
   @Override
   public List<String> headers(String key) {
     return headers.getOrDefault(key, Collections.emptyList());
+  }
+
+  @Override
+  public Map<String, List<String>> headers() {
+    return headers;
   }
 
   public T clearHeaders() {
