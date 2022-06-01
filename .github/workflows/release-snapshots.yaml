@@ -59,6 +59,7 @@ jobs:
       - name: Build and release Java 8 modules
         run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean deploy
   build-release-java-11-snapshot:
+    needs: build-release-java-8-snapshot
     name: Release Java 11 SNAPSHOT
     # Cheap way to prevent accidental releases
     # Modify the list to add users with release permissions
