@@ -390,4 +390,39 @@ class WatchTest {
     // initial failure, then the http retry
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> server.getRequestCount() == 2);
   }
+
+  @Test
+  void testWatcherException() throws InterruptedException {
+    // Given
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(pod1, "MODIFIED"))
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(pod1, "MODIFIED"))
+        .done()
+        .once();
+
+    CountDownLatch latch = new CountDownLatch(2);
+
+    client.pods().watch(new Watcher<Pod>() {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        latch.countDown();
+        if (latch.getCount() == 1) {
+          throw new RuntimeException();
+        }
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }
+    });
+
+    // ensure that the exception does not inhibit further message processing
+    assertTrue(latch.await(5, TimeUnit.SECONDS));
+  }
 }

@@ -50,8 +50,12 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
   public void onMessage(WebSocket webSocket, String text) {
     // onMesssage and onClose are serialized, but it's not specified if onError
     // may occur simultaneous with onMessage.  So we prevent concurrent processing
-    synchronized (this) {
-      manager.onMessage(text);
+    try {
+      synchronized (this) {
+        manager.onMessage(text);
+      }
+    } finally {
+      webSocket.request();
     }
     webSocket.request();
   }
