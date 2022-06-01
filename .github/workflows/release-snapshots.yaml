@@ -61,6 +61,8 @@ jobs:
           server-id: ossrh
           server-username: OSSRHUSERNAME
           server-password: OSSRHPASSWORD
-          # GPG can only be removed once by the action. We rely on the previous setup-java
+          gpg-private-key: ${{ secrets.SIGNINGKEY }}
+          gpg-passphrase: SIGNINGPASSWORD
+          # ~~~~GPG can only be removed once by the action. We rely on the previous setup-java~~~~
       - name: Build and release Java 11 modules
         run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" clean deploy
