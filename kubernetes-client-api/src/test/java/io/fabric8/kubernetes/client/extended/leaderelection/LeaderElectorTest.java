@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
@@ -32,7 +33,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -68,7 +68,7 @@ class LeaderElectorTest {
       throw new LockException("");
     }).when(mockedLock).update(any(), any());
     // When
-    CompletableFuture<?> future = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, ForkJoinPool.commonPool())
+    CompletableFuture<?> future = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get())
         .start();
 
     // Then
@@ -94,7 +94,7 @@ class LeaderElectorTest {
       return null;
     }).when(mockedLock).update(any(), any());
     // When
-    executor.submit(() -> new LeaderElector(mock(NamespacedKubernetesClient.class), lec, ForkJoinPool.commonPool()).run());
+    executor.submit(() -> new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get()).run());
     signal.await(10, TimeUnit.SECONDS);
     // Then
     assertEquals(0, signal.getCount());
@@ -165,7 +165,7 @@ class LeaderElectorTest {
     // Given
     CompletableFuture<?> cf = loop(completion -> {
       completion.complete(null);
-    }, () -> 1L, ForkJoinPool.commonPool());
+    }, () -> 1L, CommonThreadPool.get());
     // When
     cf.get(500, TimeUnit.MILLISECONDS);
   }
@@ -176,7 +176,7 @@ class LeaderElectorTest {
     AtomicInteger count = new AtomicInteger();
     CompletableFuture<?> cf = loop(completion -> {
       count.getAndIncrement();
-    }, () -> 10L, ForkJoinPool.commonPool());
+    }, () -> 10L, CommonThreadPool.get());
     // When
     Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
 

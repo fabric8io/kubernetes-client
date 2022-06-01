@@ -32,7 +32,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
@@ -47,7 +47,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private volatile boolean running;
   private volatile boolean watching;
   private volatile CompletableFuture<Watch> watchFuture;
-  private volatile ScheduledFuture<?> reconnectFuture;
+  private volatile Future<?> reconnectFuture;
 
   public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.apiTypeClass = apiTypeClass;
@@ -63,7 +63,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     running = false;
-    ScheduledFuture<?> future = reconnectFuture;
+    Future<?> future = reconnectFuture;
     if (future != null) {
       future.cancel(true);
     }

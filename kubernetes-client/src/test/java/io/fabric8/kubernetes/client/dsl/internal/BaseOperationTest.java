@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.TestHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -48,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -385,7 +385,7 @@ class BaseOperationTest {
     BaseClient client = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
     Mockito.when(client.getHttpClient()).thenReturn(httpClient);
     Mockito.when(client.getConfiguration()).thenReturn(config);
-    Mockito.when(client.getExecutor()).thenReturn(ForkJoinPool.commonPool());
+    Mockito.when(client.getExecutor()).thenReturn(CommonThreadPool.get());
     return client;
   }
 }

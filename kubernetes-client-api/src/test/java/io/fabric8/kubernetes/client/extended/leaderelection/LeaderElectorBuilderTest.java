@@ -17,12 +17,12 @@ package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.ConfigMapLock;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
 
 import java.time.Duration;
-import java.util.concurrent.ForkJoinPool;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,7 +53,7 @@ class LeaderElectorBuilderTest {
     // Given
     final LeaderElectionConfig validConfig = defaultConfigBuilder.build();
     // When
-    final LeaderElector leadElector = new LeaderElectorBuilder(mockKubernetesClient, ForkJoinPool.commonPool())
+    final LeaderElector leadElector = new LeaderElectorBuilder(mockKubernetesClient, CommonThreadPool.get())
         .withConfig(validConfig).build();
     // Expect
     assertNotNull(leadElector);
@@ -125,11 +125,11 @@ class LeaderElectorBuilderTest {
 
   private void assertRequiredField(LeaderElectionConfig invalidConfig) {
     assertThrows(NullPointerException.class,
-        () -> new LeaderElectorBuilder(mockKubernetesClient, ForkJoinPool.commonPool()).withConfig(invalidConfig).build());
+        () -> new LeaderElectorBuilder(mockKubernetesClient, CommonThreadPool.get()).withConfig(invalidConfig).build());
   }
 
   private void assertInvalidField(LeaderElectionConfig invalidConfig) {
     assertThrows(IllegalArgumentException.class,
-        () -> new LeaderElectorBuilder(mockKubernetesClient, ForkJoinPool.commonPool()).withConfig(invalidConfig).build());
+        () -> new LeaderElectorBuilder(mockKubernetesClient, CommonThreadPool.get()).withConfig(invalidConfig).build());
   }
 }

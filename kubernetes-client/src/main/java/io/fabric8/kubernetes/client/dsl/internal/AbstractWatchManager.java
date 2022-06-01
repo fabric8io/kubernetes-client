@@ -41,7 +41,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,7 +61,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private final int reconnectLimit;
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   final AtomicInteger currentReconnectAttempt;
-  private ScheduledFuture<?> reconnectAttempt;
+  private Future<?> reconnectAttempt;
 
   protected final HttpClient client;
   protected BaseOperation<T, ?, ?> baseOperation;

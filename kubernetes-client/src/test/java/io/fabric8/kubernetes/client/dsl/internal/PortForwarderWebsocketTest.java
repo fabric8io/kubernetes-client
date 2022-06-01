@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -23,7 +24,6 @@ import org.mockito.Mockito;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.ForkJoinPool;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -34,7 +34,7 @@ class PortForwarderWebsocketTest {
 
   @BeforeEach
   void initPortForwarderWebsocket() {
-    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient, ForkJoinPool.commonPool());
+    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient, CommonThreadPool.get());
   }
 
   @Test
