@@ -241,7 +241,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
       return count == requiredPodCount;
     });
 
-    Future<?> logger = Utils.scheduleAtFixedRate(Utils.getCommonExecutorSerive(),
+    Future<?> logger = Utils.scheduleAtFixedRate(Runnable::run,
         () -> LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
             podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace),
         0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
@@ -263,7 +263,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
    * Lets wait until the resource is actually deleted in the server
    */
   private void waitUntilDeleted(final String namespace, final String name) {
-    Future<?> logger = Utils.scheduleAtFixedRate(Utils.getCommonExecutorSerive(),
+    Future<?> logger = Utils.scheduleAtFixedRate(Runnable::run,
         () -> LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name),
         0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
     try {

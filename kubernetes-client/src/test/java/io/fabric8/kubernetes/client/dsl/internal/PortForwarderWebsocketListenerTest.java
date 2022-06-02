@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +77,7 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onOpen_shouldPipeInChannelToWebSocket() {
-    listener = new PortForwarderWebsocketListener(in, out);
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onOpen(webSocket);
     ArgumentCaptor<ByteBuffer> contentTypeCaptor = ArgumentCaptor.forClass(ByteBuffer.class);
     // Then
@@ -93,7 +94,7 @@ class PortForwarderWebsocketListenerTest {
   void onOpen_withException_shouldCloseWebSocketAndStoreException() throws IOException {
     final ReadableByteChannel inWithException = mock(ReadableByteChannel.class);
     when(inWithException.read(any())).thenThrow(new IOException("Error reading packets"));
-    listener = new PortForwarderWebsocketListener(inWithException, out);
+    listener = new PortForwarderWebsocketListener(inWithException, out, CommonThreadPool.get());
     listener.onOpen(webSocket);
     // Then
     verify(webSocket, timeout(10_000).times(1)).sendClose(anyInt(), anyString());
@@ -105,7 +106,7 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onError_shouldStoreExceptionAndCloseChannels() {
-    listener = new PortForwarderWebsocketListener(in, out);
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onError(webSocket, new RuntimeException("Server error"));
     // Then
     assertThat(listener.getServerThrowables())
@@ -118,7 +119,7 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onClose_shouldCloseChannels() {
-    listener = new PortForwarderWebsocketListener(in, out);
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onClose(webSocket, 1337, "Test ended");
     // Then
     assertThat(listener.getServerThrowables()).isEmpty();
@@ -128,7 +129,7 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onMessage_shouldSkipTwoMessagesAndPipeTheThird() {
-    listener = new PortForwarderWebsocketListener(in, out);
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     doAnswer(i -> {
       listener.onMessage(webSocket, "SKIP 2");
       return true;
@@ -147,7 +148,7 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onMessage_withEmptyMessage_shouldEndWithError() {
-    listener = new PortForwarderWebsocketListener(in, out);
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     doAnswer(i -> {
       listener.onMessage(webSocket, "SKIP 2");
       return true;
@@ -167,7 +168,7 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onMessage_withServerClose_shouldSkipTwoMessagesAndPipeTheThird() {
-    listener = new PortForwarderWebsocketListener(in, out);
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     doAnswer(i -> {
       listener.onMessage(webSocket, "SKIP 2");
       return true;
@@ -193,7 +194,7 @@ class PortForwarderWebsocketListenerTest {
     try (MockedStatic<LoggerFactory> loggerFactory = mockStatic(LoggerFactory.class)) {
       final Logger logger = mock(Logger.class);
       loggerFactory.when(() -> LoggerFactory.getLogger(PortForwarderWebsocketListener.class)).thenReturn(logger);
-      listener = new PortForwarderWebsocketListener(in, out);
+      listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
       doAnswer(i -> {
         listener.onMessage(webSocket, "SKIP 2");
         return true;

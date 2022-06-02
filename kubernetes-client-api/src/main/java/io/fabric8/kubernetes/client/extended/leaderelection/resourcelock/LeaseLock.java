@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseBuilder;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -40,42 +40,41 @@ public class LeaseLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends NamespacedKubernetesClient> LeaderElectionRecord get(C client) {
-    final Lease lease = client.inNamespace(leaseNamespace).leases().withName(leaseName).get();
+  public LeaderElectionRecord get(KubernetesClient client) {
+    final Lease lease = client.leases().inNamespace(leaseNamespace).withName(leaseName).get();
     return Optional.ofNullable(lease)
-      .map(Lease::getSpec)
-      .map(spec -> {
-        final LeaderElectionRecord ret = new LeaderElectionRecord(
-            spec.getHolderIdentity(),
-            Duration.ofSeconds(spec.getLeaseDurationSeconds()),
-            spec.getAcquireTime(),
-            spec.getRenewTime(),
-            Optional.ofNullable(spec.getLeaseTransitions()).orElse(0)
-          );
-        ret.setVersion(lease.getMetadata().getResourceVersion());
-        return ret;
-      })
-    .orElse(null);
+        .map(Lease::getSpec)
+        .map(spec -> {
+          final LeaderElectionRecord ret = new LeaderElectionRecord(
+              spec.getHolderIdentity(),
+              Duration.ofSeconds(spec.getLeaseDurationSeconds()),
+              spec.getAcquireTime(),
+              spec.getRenewTime(),
+              Optional.ofNullable(spec.getLeaseTransitions()).orElse(0));
+          ret.setVersion(lease.getMetadata().getResourceVersion());
+          return ret;
+        })
+        .orElse(null);
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public <C extends NamespacedKubernetesClient> void create(
-    C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
+  public void create(
+      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
-      client.inNamespace(leaseNamespace).leases().withName(leaseName).create(new LeaseBuilder()
-        .withNewMetadata().withNamespace(leaseNamespace).withName(leaseName).endMetadata()
-        .withNewSpec()
-        .withHolderIdentity(leaderElectionRecord.getHolderIdentity())
-        .withLeaseDurationSeconds((int)leaderElectionRecord.getLeaseDuration().get(ChronoUnit.SECONDS))
-        .withAcquireTime(leaderElectionRecord.getAcquireTime())
-        .withRenewTime(leaderElectionRecord.getRenewTime())
-        .withLeaseTransitions(leaderElectionRecord.getLeaderTransitions())
-        .endSpec()
-        .build());
+      client.leases().inNamespace(leaseNamespace).withName(leaseName).create(new LeaseBuilder()
+          .withNewMetadata().withNamespace(leaseNamespace).withName(leaseName).endMetadata()
+          .withNewSpec()
+          .withHolderIdentity(leaderElectionRecord.getHolderIdentity())
+          .withLeaseDurationSeconds((int) leaderElectionRecord.getLeaseDuration().get(ChronoUnit.SECONDS))
+          .withAcquireTime(leaderElectionRecord.getAcquireTime())
+          .withRenewTime(leaderElectionRecord.getRenewTime())
+          .withLeaseTransitions(leaderElectionRecord.getLeaderTransitions())
+          .endSpec()
+          .build());
     } catch (Exception e) {
       throw new LockException("Unable to create LeaseLock", e);
     }
@@ -85,20 +84,20 @@ public class LeaseLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends NamespacedKubernetesClient> void update(
-    C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
+  public void update(
+      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
-      final Lease toReplace = client.inNamespace(leaseNamespace).leases().withName(leaseName).get();
+      final Lease toReplace = client.leases().inNamespace(leaseNamespace).withName(leaseName).get();
       toReplace.getSpec().setHolderIdentity(leaderElectionRecord.getHolderIdentity());
-      toReplace.getSpec().setLeaseDurationSeconds((int)leaderElectionRecord.getLeaseDuration().get(ChronoUnit.SECONDS));
+      toReplace.getSpec().setLeaseDurationSeconds((int) leaderElectionRecord.getLeaseDuration().get(ChronoUnit.SECONDS));
       toReplace.getSpec().setAcquireTime(leaderElectionRecord.getAcquireTime());
       toReplace.getSpec().setRenewTime(leaderElectionRecord.getRenewTime());
       toReplace.getSpec().setLeaseTransitions(leaderElectionRecord.getLeaderTransitions());
       // Use replace instead of edit to avoid concurrent modifications, resourceVersion is locked to original record version
-      client.inNamespace(leaseNamespace).leases().withName(leaseName)
-        .lockResourceVersion((String) Objects.requireNonNull(leaderElectionRecord.getVersion()))
-        .replace(toReplace);
+      client.leases().inNamespace(leaseNamespace).withName(leaseName)
+          .lockResourceVersion((String) Objects.requireNonNull(leaderElectionRecord.getVersion()))
+          .replace(toReplace);
     } catch (Exception e) {
       throw new LockException("Unable to update LeaseLock", e);
     }

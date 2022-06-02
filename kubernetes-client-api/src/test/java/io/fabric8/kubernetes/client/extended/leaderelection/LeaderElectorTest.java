@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
@@ -67,7 +68,8 @@ class LeaderElectorTest {
       throw new LockException("");
     }).when(mockedLock).update(any(), any());
     // When
-    CompletableFuture<?> future = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).start();
+    CompletableFuture<?> future = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get())
+        .start();
 
     // Then
     future.get(10, TimeUnit.SECONDS);
@@ -92,7 +94,7 @@ class LeaderElectorTest {
       return null;
     }).when(mockedLock).update(any(), any());
     // When
-    executor.submit(() -> new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).run());
+    executor.submit(() -> new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get()).run());
     signal.await(10, TimeUnit.SECONDS);
     // Then
     assertEquals(0, signal.getCount());
@@ -114,7 +116,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getHolderIdentity()).thenReturn("1337");
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).isLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).isLeader(ler);
     // Then
     assertTrue(result);
   }
@@ -127,7 +129,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getHolderIdentity()).thenReturn("1337");
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).isLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).isLeader(ler);
     // Then
     assertFalse(result);
   }
@@ -140,7 +142,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).canBecomeLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
     // Then
     assertTrue(result);
   }
@@ -153,7 +155,7 @@ class LeaderElectorTest {
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC));
     // When
-    final boolean result = new LeaderElector<>(mock(NamespacedKubernetesClient.class), lec).canBecomeLeader(ler);
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
     // Then
     assertFalse(result);
   }
@@ -163,7 +165,7 @@ class LeaderElectorTest {
     // Given
     CompletableFuture<?> cf = loop(completion -> {
       completion.complete(null);
-    }, () -> 1L);
+    }, () -> 1L, CommonThreadPool.get());
     // When
     cf.get(500, TimeUnit.MILLISECONDS);
   }
@@ -174,7 +176,7 @@ class LeaderElectorTest {
     AtomicInteger count = new AtomicInteger();
     CompletableFuture<?> cf = loop(completion -> {
       count.getAndIncrement();
-    }, () -> 10L);
+    }, () -> 10L, CommonThreadPool.get());
     // When
     Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
 

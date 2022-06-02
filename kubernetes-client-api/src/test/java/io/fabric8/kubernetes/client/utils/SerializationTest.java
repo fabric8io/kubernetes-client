@@ -59,17 +59,17 @@ class SerializationTest {
     final CustomResourceDefinition crd = Serialization.unmarshal(input, CustomResourceDefinition.class);
     // When
     JSONSchemaProps spec = crd.getSpec()
-      .getValidation()
-      .getOpenAPIV3Schema()
-      .getProperties()
-      .get("spec");
+        .getValidation()
+        .getOpenAPIV3Schema()
+        .getProperties()
+        .get("spec");
     // Then
     assertThat(spec)
-      .hasFieldOrPropertyWithValue("properties.builderName.example", new TextNode("builder-example"))
-      .hasFieldOrPropertyWithValue("properties.hollow.default", BooleanNode.FALSE)
-      .hasFieldOrPropertyWithValue("properties.dimensions.properties.x.default", new IntNode(10))
-      .extracting(JSONSchemaProps::getRequired).asList()
-      .containsExactly("builderName", "edges", "dimensions");
+        .hasFieldOrPropertyWithValue("properties.builderName.example", new TextNode("builder-example"))
+        .hasFieldOrPropertyWithValue("properties.hollow.default", BooleanNode.FALSE)
+        .hasFieldOrPropertyWithValue("properties.dimensions.properties.x.default", new IntNode(10))
+        .extracting(JSONSchemaProps::getRequired).asList()
+        .containsExactly("builderName", "edges", "dimensions");
   }
 
   @Test
@@ -92,19 +92,19 @@ class SerializationTest {
     final KubernetesResource result = Serialization.unmarshal(crlfFile, KubernetesResource.class);
     // Then
     assertThat(result)
-      .asInstanceOf(InstanceOfAssertFactories.type(KubernetesList.class))
-      .extracting(KubernetesList::getItems).asList()
-      .hasSize(2)
-      .hasAtLeastOneElementOfType(Service.class)
-      .hasAtLeastOneElementOfType(Deployment.class);
+        .asInstanceOf(InstanceOfAssertFactories.type(KubernetesList.class))
+        .extracting(KubernetesList::getItems).asList()
+        .hasSize(2)
+        .hasAtLeastOneElementOfType(Service.class)
+        .hasAtLeastOneElementOfType(Deployment.class);
   }
 
   private String readYamlToString(String path) throws IOException {
     return Files.readAllLines(
-      new File(SerializationTest.class.getResource(path).getFile()).toPath(), StandardCharsets.UTF_8)
-      .stream()
-      .filter(line -> !line.startsWith("#"))
-      .collect(Collectors.joining("\n"));
+        new File(SerializationTest.class.getResource(path).getFile()).toPath(), StandardCharsets.UTF_8)
+        .stream()
+        .filter(line -> !line.startsWith("#"))
+        .collect(Collectors.joining("\n"));
   }
 
   @Test
@@ -159,19 +159,18 @@ class SerializationTest {
     Pod pod = Serialization.unmarshal(fileInputStream);
     // Then
     assertThat(pod)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "test-pod-with-alias")
-      .hasFieldOrPropertyWithValue("spec.nodeSelector.workload", "build")
-      .hasFieldOrPropertyWithValue("spec.tolerations.size", 1)
-      .hasFieldOrPropertyWithValue("spec.securityContext.runAsGroup", 1000L)
-      .hasFieldOrPropertyWithValue("spec.securityContext.runAsUser", 1000L)
-      .extracting(Pod::getSpec).extracting(PodSpec::getContainers).asList()
-      .hasSize(2)
-      .extracting("name", "image", "resources.requests.cpu")
-      .containsExactly(
-        new Tuple("ubuntu", "ubuntu:bionic", new Quantity("100m")),
-        new Tuple("python3", "python:3.7", new Quantity("100m"))
-      );
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-pod-with-alias")
+        .hasFieldOrPropertyWithValue("spec.nodeSelector.workload", "build")
+        .hasFieldOrPropertyWithValue("spec.tolerations.size", 1)
+        .hasFieldOrPropertyWithValue("spec.securityContext.runAsGroup", 1000L)
+        .hasFieldOrPropertyWithValue("spec.securityContext.runAsUser", 1000L)
+        .extracting(Pod::getSpec).extracting(PodSpec::getContainers).asList()
+        .hasSize(2)
+        .extracting("name", "image", "resources.requests.cpu")
+        .containsExactly(
+            new Tuple("ubuntu", "ubuntu:bionic", new Quantity("100m")),
+            new Tuple("python3", "python:3.7", new Quantity("100m")));
   }
 
   @Test
@@ -182,9 +181,9 @@ class SerializationTest {
     Pod clonePod = Serialization.clone(pod);
     // Then
     assertThat(clonePod)
-      .isEqualTo(pod)
-      .isNotSameAs(pod)
-      .hasFieldOrPropertyWithValue("metadata.name", "pod");
+        .isEqualTo(pod)
+        .isNotSameAs(pod)
+        .hasFieldOrPropertyWithValue("metadata.name", "pod");
   }
 
   @Test
@@ -192,16 +191,16 @@ class SerializationTest {
   void unmarshalWithValidCustomResourceShouldReturnGenericCustomResource() {
     // When
     final KubernetesResource result = Serialization.unmarshal(
-      SerializationTest.class.getResourceAsStream("/serialization/custom-resource.yml"));
+        SerializationTest.class.getResourceAsStream("/serialization/custom-resource.yml"));
     // Then
     assertThat(result)
-      .isNotNull()
-      .isInstanceOf(GenericKubernetesResource.class)
-      .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
-      .hasFieldOrPropertyWithValue("Kind", "SomeCustomResource")
-      .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
-      .hasFieldOrPropertyWithValue("additionalProperties.spec.field", "value")
-      .hasFieldOrPropertyWithValue("additionalProperties.status.reconciled", true);
+        .isNotNull()
+        .isInstanceOf(GenericKubernetesResource.class)
+        .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
+        .hasFieldOrPropertyWithValue("Kind", "SomeCustomResource")
+        .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
+        .hasFieldOrPropertyWithValue("additionalProperties.spec.field", "value")
+        .hasFieldOrPropertyWithValue("additionalProperties.status.reconciled", true);
   }
 
   @Test
@@ -213,7 +212,7 @@ class SerializationTest {
     final ClassCastException result = assertThrows(ClassCastException.class, () -> Serialization.unmarshal(is));
     // Then
     assertThat(result)
-      .hasMessageContainingAll("java.lang.String",  "cannot be cast to", "java.util.Map");
+        .hasMessageContainingAll("java.lang.String", "cannot be cast to", "java.util.Map");
   }
 
   @Test
@@ -221,8 +220,7 @@ class SerializationTest {
   void unmarshalWithInvalidResourceShouldReturnNull() {
     // When
     final KubernetesResource result = Serialization.unmarshal(
-      SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml")
-    );
+        SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml"));
     // Then
     assertThat(result).isNull();
   }
@@ -232,66 +230,58 @@ class SerializationTest {
   void unmarshalWithValidListShouldReturnKubernetesList() {
     // When
     final KubernetesResource result = Serialization.unmarshal(
-      SerializationTest.class.getResourceAsStream("/serialization/kubernetes-list.yml")
-    );
+        SerializationTest.class.getResourceAsStream("/serialization/kubernetes-list.yml"));
     // Then
     assertThat(result)
-      .asInstanceOf(InstanceOfAssertFactories.type(KubernetesList.class))
-      .extracting(KubernetesList::getItems).asList()
-      .hasSize(3)
-      .extracting("class", "apiVersion", "kind", "metadata.name")
-      .containsExactlyInAnyOrder(
-        new Tuple(GenericKubernetesResource.class, "custom.resource.example.com/v1", "Example", "a-custom-resource"),
-        new Tuple(Namespace.class, "v1", "Namespace", "a-namespace"),
-        new Tuple(Pod.class, "v1", "Pod", "a-pod")
-      );
+        .asInstanceOf(InstanceOfAssertFactories.type(KubernetesList.class))
+        .extracting(KubernetesList::getItems).asList()
+        .hasSize(3)
+        .extracting("class", "apiVersion", "kind", "metadata.name")
+        .containsExactlyInAnyOrder(
+            new Tuple(GenericKubernetesResource.class, "custom.resource.example.com/v1", "Example", "a-custom-resource"),
+            new Tuple(Namespace.class, "v1", "Namespace", "a-namespace"),
+            new Tuple(Pod.class, "v1", "Pod", "a-pod"));
   }
 
-  @JsonTypeInfo(
-          use = JsonTypeInfo.Id.NAME,
-          include = JsonTypeInfo.As.EXISTING_PROPERTY,
-          property = "type"
-  )
-  @JsonSubTypes(
-      @JsonSubTypes.Type(value = Typed.class, name = "x")
-  )
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
+  @JsonSubTypes(@JsonSubTypes.Type(value = Typed.class, name = "x"))
   public interface Typeable {
 
-      String getType();
+    String getType();
 
   }
 
   public static class Typed implements Typeable {
 
-      @Override
-      public String getType() {
-          return "x";
-      }
+    @Override
+    public String getType() {
+      return "x";
+    }
 
   }
 
   public static class Root {
 
-      private Typeable typeable;
+    private Typeable typeable;
 
-      public Typeable getTypeable() {
-          return typeable;
-      }
+    public Typeable getTypeable() {
+      return typeable;
+    }
 
-      public void setTypeable(Typeable typeable) {
-          this.typeable = typeable;
-      }
+    public void setTypeable(Typeable typeable) {
+      this.typeable = typeable;
+    }
   }
 
   @Test
   void testSerializeYamlWithJsonSubTypes() {
-      Root root = new Root();
-      root.setTypeable(new Typed());
-      final String result = Serialization.asYaml(root);
-      assertThat(result)
+    Root root = new Root();
+    root.setTypeable(new Typed());
+    final String result = Serialization.asYaml(root);
+    assertThat(result)
         .isEqualTo("---\n"
-              + "typeable:\n"
-              + "  type: \"x\"\n", Serialization.asYaml(root));
+            + "typeable:\n"
+            + "  type: \"x\"\n", Serialization.asYaml(root));
   }
 
   @Group("serialization.fabric8.io")
@@ -308,8 +298,8 @@ class SerializationTest {
     MyCR cr = new MyCR();
     final String s = Serialization.asYaml(cr);
     assertThat(s)
-      .doesNotContain("status")
-      .contains("spec: \"foo\"");
+        .doesNotContain("status")
+        .contains("spec: \"foo\"");
   }
 
   @Test

@@ -44,7 +44,6 @@ import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
-import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -677,14 +676,6 @@ public class DefaultOpenShiftClient extends DefaultKubernetesClient
   @Override
   public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
     return resources(ClusterRole.class, ClusterRoleList.class);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public LeaderElectorBuilder<NamespacedOpenShiftClient> leaderElector() {
-    return new LeaderElectorBuilder<>(this);
   }
 
   @Override

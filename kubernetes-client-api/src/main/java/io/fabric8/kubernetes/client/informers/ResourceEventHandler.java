@@ -25,14 +25,14 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
  * @param <T> resource
  */
 public interface ResourceEventHandler<T> {
-  
+
   /**
-   * Called after an empty list is retrieved on start or after an HTTP GONE when the {@link Store} is empty 
+   * Called after an empty list is retrieved on start or after an HTTP GONE when the {@link Store} is empty
    */
   default void onNothing() {
-    
+
   }
-  
+
   /**
    * Called when an object is added.
    *
@@ -44,9 +44,8 @@ public interface ResourceEventHandler<T> {
    * Called when an object is modified. Note that oldObj is the last
    * known state of the object -- it is possible that several changes
    * were combined together, so you can't use this to see every single
-   * change. It is also called when a re-list happens, and it will get
-   * called even if nothing changes. This is useful for periodically
-   * evaluating or syncing something.
+   * change. It is also called when a sync happens - oldObj will be
+   * the same as newObj.
    *
    * @param oldObj old object
    * @param newObj new object
@@ -63,5 +62,5 @@ public interface ResourceEventHandler<T> {
    * @param deletedFinalStateUnknown get final state of item if it is known or not.
    */
   void onDelete(T obj, boolean deletedFinalStateUnknown);
-  
+
 }

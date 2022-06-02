@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,9 +51,11 @@ public class PortForwarderWebsocket implements PortForwarder {
   private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
   private final HttpClient client;
+  private final Executor executor;
 
-  public PortForwarderWebsocket(HttpClient client) {
+  public PortForwarderWebsocket(HttpClient client, Executor executor) {
     this.client = client;
+    this.executor = executor;
   }
 
   @Override
@@ -166,7 +169,7 @@ public class PortForwarderWebsocket implements PortForwarder {
 
   @Override
   public PortForward forward(URL resourceBaseUrl, int port, final ReadableByteChannel in, final WritableByteChannel out) {
-    final PortForwarderWebsocketListener listener = new PortForwarderWebsocketListener(in, out);
+    final PortForwarderWebsocketListener listener = new PortForwarderWebsocketListener(in, out, executor);
     CompletableFuture<WebSocket> socket = client
         .newWebSocketBuilder()
         .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))

@@ -64,7 +64,7 @@ class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
 
     MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
-        .customResources(CronTab.class);
+        .resources(CronTab.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
@@ -98,7 +98,7 @@ class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
 
     MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
-        .customResources(CronTab.class);
+        .resources(CronTab.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
@@ -133,7 +133,7 @@ class CustomResourceCrudTest {
     cronTab.setStatus(status);
 
     NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
-        .customResources(CronTab.class).inNamespace("test-ns");
+        .resources(CronTab.class).inNamespace("test-ns");
 
     CronTab result = cronTabClient.create(cronTab);
 

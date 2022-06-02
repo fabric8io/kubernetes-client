@@ -42,17 +42,17 @@ class CustomResourceCrud1109Test {
   @BeforeEach
   void setUp() {
     customResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions()
-      .create(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(FooBar.class).build());
-    fooBarClient = client.customResources(FooBar.class);
+        .create(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(FooBar.class).build());
+    fooBarClient = client.resources(FooBar.class);
   }
 
   @Test
   @DisplayName("Generated customResourceDefinition has dashes in singular and plural but not in kind")
   void testGeneratedCRDHasDashesInNamesButNotInKind() {
     assertThat(customResourceDefinition)
-      .hasFieldOrPropertyWithValue("spec.names.kind", "FooBar")
-      .hasFieldOrPropertyWithValue("spec.names.singular", "foo-bar")
-      .hasFieldOrPropertyWithValue("spec.names.plural", "foo-bars");
+        .hasFieldOrPropertyWithValue("spec.names.kind", "FooBar")
+        .hasFieldOrPropertyWithValue("spec.names.singular", "foo-bar")
+        .hasFieldOrPropertyWithValue("spec.names.plural", "foo-bars");
   }
 
   @Test
@@ -63,7 +63,7 @@ class CustomResourceCrud1109Test {
     // Then
 
     assertThat(server.getLastRequest())
-      .hasFieldOrPropertyWithValue("path", "/apis/baz.example.com/v1alpha1/namespaces/my-namespace/foo-bars");
+        .hasFieldOrPropertyWithValue("path", "/apis/baz.example.com/v1alpha1/namespaces/my-namespace/foo-bars");
   }
 
   @Test
@@ -77,10 +77,10 @@ class CustomResourceCrud1109Test {
     final FooBar fooBar = fooBarClient.inNamespace("default").withName("example").get();
     // Then
     assertThat(fooBar)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "example")
-      .hasFieldOrPropertyWithValue("kind", "FooBar")
-      .isNotSameAs(fb1);
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "example")
+        .hasFieldOrPropertyWithValue("kind", "FooBar")
+        .isNotSameAs(fb1);
   }
 
   @Test
@@ -94,9 +94,9 @@ class CustomResourceCrud1109Test {
     final KubernetesResourceList<FooBar> fooBarList = fooBarClient.inNamespace("default").list();
     // Then
     assertThat(fooBarList)
-      .isNotNull()
-      .extracting(KubernetesResourceList::getItems)
-      .asList()
-      .hasSize(1);
+        .isNotNull()
+        .extracting(KubernetesResourceList::getItems)
+        .asList()
+        .hasSize(1);
   }
 }

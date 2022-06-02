@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderCallbacks;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectionConfigBuilder;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector;
@@ -173,7 +172,7 @@ public class LeaderElectionExamples {
       executorService.awaitTermination(10, TimeUnit.SECONDS);
     }
 
-    private LeaderElector<NamespacedKubernetesClient> leader(String id, Function<String, Lock> lockSupplier) {
+    private LeaderElector leader(String id, Function<String, Lock> lockSupplier) {
       return kubernetesClient.leaderElector()
           .withConfig(
               new LeaderElectionConfigBuilder()

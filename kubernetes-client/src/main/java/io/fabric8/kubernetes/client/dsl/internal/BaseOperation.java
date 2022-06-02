@@ -76,6 +76,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -860,7 +861,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     CompletableFuture<List<T>> future = new CompletableFuture<>();
 
     // create an informer that supplies the tester with events and empty list handling
-    SharedIndexInformer<T> informer = this.createInformer(0);
+    SharedIndexInformer<T> informer = this.createInformer(0, Runnable::run);
 
     // prevent unnecessary watches and handle closure
     future.whenComplete((r, t) -> informer.stop());
@@ -897,7 +898,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       public void onNothing() {
         test.accept(informer.getStore().list());
       }
-    }).run();
+    }).start().whenComplete((v, t) -> {
+      if (t != null) {
+        future.completeExceptionally(t);
+      }
+    });
     return future;
   }
 
@@ -937,7 +942,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<? super T> handler, long resync) {
-    DefaultSharedIndexInformer<T, L> result = createInformer(resync);
+    SharedIndexInformer<T> result = runnableInformer(resync);
     if (handler != null) {
       result.addEventHandler(handler);
     }
@@ -949,10 +954,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public SharedIndexInformer<T> runnableInformer(long resync) {
-    return createInformer(resync);
+    // create the informer using the client executor
+    return createInformer(resync, context.getExecutor());
   }
 
-  private DefaultSharedIndexInformer<T, L> createInformer(long resync) {
+  private DefaultSharedIndexInformer<T, L> createInformer(long resync, Executor executor) {
     T i = getItem();
     if (Utils.isNotNullOrEmpty(getName()) && i != null) {
       checkName(i);
@@ -960,7 +966,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
     // use the local context / namespace but without a resourceVersion
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(),
-        this.withResourceVersion(null).withLimit(this.limit), resync, Runnable::run); // just run the event notification in the websocket thread
+        this.withResourceVersion(null).withLimit(this.limit), resync, executor);
     if (indexers != null) {
       informer.addIndexers(indexers);
     }

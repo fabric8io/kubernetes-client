@@ -60,7 +60,6 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
@@ -100,7 +99,6 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
 
 public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesClient>
     extends ClientAdapter<NamespacedKubernetesClientAdapter<N>> implements NamespacedKubernetesClient {
@@ -153,26 +151,8 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   }
 
   @Override
-  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(
-      Class<T> resourceType) {
-    return getClient().customResources(resourceType);
-  }
-
-  @Override
   public <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources(Class<T> resourceType) {
     return getClient().resources(resourceType);
-  }
-
-  @Override
-  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
-      Class<T> resourceType, Class<L> listClass) {
-    return getClient().customResources(resourceType, listClass);
-  }
-
-  @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
-      ResourceDefinitionContext context, Class<T> resourceType, Class<L> listClass) {
-    return getClient().customResources(context, resourceType, listClass);
   }
 
   @Override
@@ -399,12 +379,7 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   }
 
   @Override
-  public SharedInformerFactory informers(ExecutorService executorService) {
-    return getClient().informers(executorService);
-  }
-
-  @Override
-  public <C extends NamespacedKubernetesClient> LeaderElectorBuilder<C> leaderElector() {
+  public LeaderElectorBuilder leaderElector() {
     return getClient().leaderElector();
   }
 

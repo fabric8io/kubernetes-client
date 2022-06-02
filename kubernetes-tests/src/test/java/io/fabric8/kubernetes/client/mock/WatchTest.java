@@ -134,7 +134,7 @@ class WatchTest {
         closeLatch.countDown();
       }
     };
-    final Watchable<Watcher<Pod>> watchable = client.pods().withName("pod1").withResourceVersion("1");
+    final Watchable<Pod> watchable = client.pods().withName("pod1").withResourceVersion("1");
     // When
     final KubernetesClientException result = Assertions.assertThrows(KubernetesClientException.class, () -> {
       try (Watch watch = watchable.watch(watcher)) {

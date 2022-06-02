@@ -85,7 +85,6 @@ import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
@@ -93,7 +92,6 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Main interface for Kubernetes client library.
@@ -125,25 +123,6 @@ public interface KubernetesClient extends Client {
   CertificatesAPIGroupDSL certificates();
 
   /**
-   * Typed API for managing CustomResources. You would need to provide POJOs for
-   * CustomResource into this and with it you would be able to instantiate a client
-   * specific to CustomResource.
-   *
-   * <p>
-   * Note: your CustomResource POJO (T in this context) must implement
-   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
-   * </p>
-   *
-   * @param resourceType Class for CustomResource
-   * @param <T> T type represents CustomResource type. If it's a namespaced resource, it must implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
-   * @return returns a MixedOperation object with which you can do basic CustomResource operations
-   * @deprecated use {@link #resources(Class)} instead
-   */
-  @Deprecated
-  <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
-
-  /**
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
    * <p>
@@ -162,64 +141,14 @@ public interface KubernetesClient extends Client {
   }
 
   /**
-   * Typed API for managing CustomResources. You would need to provide POJOs for
-   * CustomResource into this and with it you would be able to instantiate a client
-   * specific to CustomResource.
-   *
-   * <p>
-   * Note: your CustomResource POJO (T in this context) must implement
-   * {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
-   * </p>
-   *
-   * @param resourceType Class for CustomResource
-   * @param listClass Class for list object for CustomResource
-   * @param <T> T type represents CustomResource type. If it's a namespace-scoped resource, it must implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced}
-   * @param <L> L type represents CustomResourceList type
-   * @return returns a MixedOperation object with which you can do basic CustomResource operations
-   * @deprecated use {@link #resources(Class, Class)} instead
-   */
-  @Deprecated
-  <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
-      Class<T> resourceType, Class<L> listClass);
-
-  /**
-   * Typed API for managing CustomResources. You would need to provide POJOs for
-   * CustomResource into this and with it you would be able to instantiate a client
-   * specific to CustomResource.
-   *
-   * <p>
-   * Note: your CustomResource POJO (T in this context) must implement
-   * <a href=
-   * "https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
-   * io.fabric8.kubernetes.api.model.Namespaced
-   * </a> if it is a Namespaced scoped resource.
-   * </p>
-   *
-   * @deprecated Since 5.x versions of client {@link CustomResourceDefinitionContext} is now configured via annotations
-   *             inside POJOs, no need to provide it explicitly here.
-   * @param context ResourceDefinitionContext describes the core fields used to search for CustomResources
-   * @param resourceType Class for CustomResource
-   * @param listClass Class for list object for CustomResource
-   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
-   *        io.fabric8.kubernetes.api.model.Namespaced
-   * @param <L> L type represents CustomResourceList type
-   * @return returns a MixedOperation object with which you can do basic CustomResource operations
-   */
-  @Deprecated
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
-      ResourceDefinitionContext context, Class<T> resourceType, Class<L> listClass);
-
-  /**
    * Semi-Typed API for managing {@link GenericKubernetesResource}s which can represent any resource.
    *
-   * @param context ResourceDefinitionContext describes the core fields
+   * @param context ResourceDefinitionContext describes the core metadata
    * @return returns a MixedOperation object with which you can do basic operations
+   * @see #genericKubernetesResources(String, String) if you don't want to supply a complete {@link ResourceDefinitionContext}
    */
-  default MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
-      ResourceDefinitionContext context) {
-    return customResources(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
-  }
+  MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      ResourceDefinitionContext context);
 
   /**
    * Semi-typed API for managing resources.
@@ -539,28 +468,19 @@ public interface KubernetesClient extends Client {
    * Get an instance of Kubernetes Client informer factory. It allows you to construct and
    * cache informers for API types. With it you can subscribe to all the events related to
    * your Kubernetes type. It's like watch but a bit organized.
+   * <p>
+   * Each call to this method returns a new factory.
    *
    * @return SharedInformerFactory object
    */
   SharedInformerFactory informers();
 
   /**
-   * Get an instance of Kubernetes Client informer factory. It allows you to construct and
-   * cache informers for API types. With it you can subscribe to all the events related to
-   * your Kubernetes type. It's like watch but a bit organized.
-   *
-   * @param executorService thread pool for informer factory
-   * @return SharedInformerFactory object
-   */
-  SharedInformerFactory informers(ExecutorService executorService);
-
-  /**
    * API entrypoint for <code>LeaderElector</code> implementation for leader election.
    *
-   * @param <C> type parameter for the Namespaceable KubernetesClient
    * @return LeaderElectorBuilder to build LeaderElector instances
    */
-  <C extends NamespacedKubernetesClient> LeaderElectorBuilder<C> leaderElector();
+  LeaderElectorBuilder leaderElector();
 
   /**
    * API entrypoint for {@link Lease} related operations. Lease (coordination.k8s.io/v1)

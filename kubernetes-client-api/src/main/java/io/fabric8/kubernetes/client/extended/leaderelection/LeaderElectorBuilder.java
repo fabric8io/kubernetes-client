@@ -15,29 +15,32 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.JITTER_FACTOR;
 
-public class LeaderElectorBuilder<C extends NamespacedKubernetesClient> {
+public class LeaderElectorBuilder {
 
-  private final C client;
+  private final KubernetesClient client;
+  private final Executor executor;
   private LeaderElectionConfig leaderElectionConfig;
 
-  public LeaderElectorBuilder(C client) {
-     this.client = client;
+  public LeaderElectorBuilder(KubernetesClient client, Executor executor) {
+    this.client = client;
+    this.executor = executor;
   }
 
-  public LeaderElectorBuilder<C> withConfig(LeaderElectionConfig leaderElectionConfig) {
+  public LeaderElectorBuilder withConfig(LeaderElectionConfig leaderElectionConfig) {
     this.leaderElectionConfig = validate(leaderElectionConfig);
     return this;
   }
 
-  public LeaderElector<C> build() {
-    return new LeaderElector<>(client, leaderElectionConfig);
+  public LeaderElector build() {
+    return new LeaderElector(client, leaderElectionConfig, executor);
   }
 
   private static LeaderElectionConfig validate(LeaderElectionConfig leaderElectionConfig) {
@@ -52,8 +55,7 @@ public class LeaderElectorBuilder<C extends NamespacedKubernetesClient> {
       throw new IllegalArgumentException("leaseDuration must be greater than renewDeadLine");
     }
     final Duration maxRetryPeriod = leaderElectionConfig.getRetryPeriod().plusMillis(
-      (long)Math.ceil(leaderElectionConfig.getRetryPeriod().toMillis()*JITTER_FACTOR)
-    );
+        (long) Math.ceil(leaderElectionConfig.getRetryPeriod().toMillis() * JITTER_FACTOR));
     if (leaderElectionConfig.getRenewDeadline().compareTo(maxRetryPeriod) <= 0) {
       throw new IllegalArgumentException("renewDeadline must be greater than retryPeriod + retryPeriod*JITTER_FACTOR");
     }

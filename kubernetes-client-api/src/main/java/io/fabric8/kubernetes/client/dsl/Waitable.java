@@ -23,8 +23,10 @@ public interface Waitable<T, P> {
   T waitUntilReady(long amount, TimeUnit timeUnit);
 
   /**
-   * Wait for the given condition to be true. Only non-blocking conditions should be used.
-   *
+   * Wait for the given condition to be true.
+   * <p>
+   * The processing of events will be in the IO thread, blocking operations should be avoided.
+   * 
    * @param condition
    * @param amount
    * @param timeUnit

@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
@@ -32,28 +32,29 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class LeaderElector<C extends NamespacedKubernetesClient> {
+public class LeaderElector {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LeaderElector.class);
 
   protected static final Double JITTER_FACTOR = 1.2;
 
-  private C kubernetesClient;
+  private KubernetesClient kubernetesClient;
   private LeaderElectionConfig leaderElectionConfig;
-  private final AtomicReference<LeaderElectionRecord> observedRecord;
-  private final AtomicReference<LocalDateTime> observedTime;
+  private final AtomicReference<LeaderElectionRecord> observedRecord = new AtomicReference<>();
+  private final AtomicReference<LocalDateTime> observedTime = new AtomicReference<>();
+  private final Executor executor;
 
-  public LeaderElector(C kubernetesClient, LeaderElectionConfig leaderElectionConfig) {
+  public LeaderElector(KubernetesClient kubernetesClient, LeaderElectionConfig leaderElectionConfig, Executor executor) {
     this.kubernetesClient = kubernetesClient;
     this.leaderElectionConfig = leaderElectionConfig;
-    observedRecord = new AtomicReference<>();
-    observedTime = new AtomicReference<>();
+    this.executor = executor;
   }
 
   /**
@@ -121,7 +122,7 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
       } catch (LockException | KubernetesClientException exception) {
         LOGGER.error("Exception occurred while acquiring lock '{}'", lockDescription, exception);
       }
-    }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis());
+    }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
   }
 
   private CompletableFuture<Void> renewWithTimeout() {
@@ -145,7 +146,7 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
       } catch (LockException | KubernetesClientException exception) {
         LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
       }
-    }, () -> leaderElectionConfig.getRetryPeriod().toMillis());
+    }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
 
   private boolean tryAcquireOrRenew() throws LockException {
@@ -212,9 +213,10 @@ public class LeaderElector<C extends NamespacedKubernetesClient> {
    * @param delaySupplier to schedule the run of the provided consumer
    * @return the future to be completed
    */
-  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, Supplier<Long> delaySupplier) {
+  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, Supplier<Long> delaySupplier,
+      Executor executor) {
     CompletableFuture<Void> completion = new CompletableFuture<>();
-    Utils.scheduleWithVariableRate(completion, Utils.getCommonExecutorSerive(), () -> consumer.accept(completion), 0,
+    Utils.scheduleWithVariableRate(completion, executor, () -> consumer.accept(completion), 0,
         delaySupplier,
         TimeUnit.MILLISECONDS);
     return completion;

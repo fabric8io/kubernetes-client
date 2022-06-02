@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +27,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -42,7 +42,7 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
 
   private final ExecutorService pumperService = Executors.newSingleThreadExecutor();
 
-  private final SerialExecutor serialExecutor = new SerialExecutor(Utils.getCommonExecutorSerive());
+  private final SerialExecutor serialExecutor;
 
   private final AtomicBoolean alive = new AtomicBoolean(true);
 
@@ -58,9 +58,10 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
 
   private int messagesRead = 0;
 
-  public PortForwarderWebsocketListener(ReadableByteChannel in, WritableByteChannel out) {
+  public PortForwarderWebsocketListener(ReadableByteChannel in, WritableByteChannel out, Executor executor) {
     this.in = in;
     this.out = out;
+    this.serialExecutor = new SerialExecutor(executor);
   }
 
   @Override

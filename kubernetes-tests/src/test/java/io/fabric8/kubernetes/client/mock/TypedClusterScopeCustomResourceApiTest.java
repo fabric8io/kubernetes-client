@@ -49,7 +49,7 @@ class TypedClusterScopeCustomResourceApiTest {
   void create() {
     server.expect().post().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, getStar()).once();
 
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     Star returnedStar = starClient.inNamespace("test").create(getStar());
     assertNotNull(returnedStar);
@@ -61,7 +61,7 @@ class TypedClusterScopeCustomResourceApiTest {
     KubernetesResourceList<Star> starList = new CustomResourceList<>();
     ((CustomResourceList<Star>) starList).setItems(Collections.singletonList(getStar()));
     server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, starList).once();
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     starList = starClient.inNamespace("test").list();
     assertNotNull(starList);
@@ -78,7 +78,7 @@ class TypedClusterScopeCustomResourceApiTest {
     server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(HttpURLConnection.HTTP_OK, getStar())
         .once();
 
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
     Star returnedStar = starClient.inNamespace("test").createOrReplace(getStar());
 
     assertNotNull(returnedStar);
@@ -89,7 +89,7 @@ class TypedClusterScopeCustomResourceApiTest {
   void delete() {
     server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     boolean isDeleted = starClient.inNamespace("test").withName("sun").delete().size() == 1;
     assertTrue(isDeleted);
@@ -99,7 +99,7 @@ class TypedClusterScopeCustomResourceApiTest {
   void testCascadingDeletion() throws InterruptedException {
     server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     boolean isDeleted = starClient.inNamespace("test").withName("sun").cascading(true).delete().size() == 1;
     assertTrue(isDeleted);
@@ -113,7 +113,7 @@ class TypedClusterScopeCustomResourceApiTest {
   void testPropagationPolicyDeletion() throws InterruptedException {
     server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     boolean isDeleted = starClient.inNamespace("test").withName("sun").withPropagationPolicy(DeletionPropagation.ORPHAN)
         .delete().size() == 1;
@@ -133,7 +133,7 @@ class TypedClusterScopeCustomResourceApiTest {
     updatedStar.setStatus(starStatus);
 
     server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200, updatedStar).once();
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     starClient.inNamespace("test").updateStatus(updatedStar);
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -158,7 +158,7 @@ class TypedClusterScopeCustomResourceApiTest {
     server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200,
         "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"2\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}")
         .once();
-    starClient = client.customResources(Star.class);
+    starClient = client.resources(Star.class);
 
     Star replaced = starClient.inNamespace("test").replaceStatus(updatedStar);
     assertEquals("2", replaced.getMetadata().getResourceVersion());

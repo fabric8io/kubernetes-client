@@ -42,7 +42,7 @@ class BaseClientTest {
   @BeforeEach
   void setUp() {
     httpClient = mock(HttpClient.class, RETURNS_DEEP_STUBS);
-    baseClient = new BaseClient(httpClient, Config.empty()) {
+    baseClient = new BaseClient(httpClient, Config.empty(), () -> Runnable::run) {
       @Override
       BaseClient newInstance(Config config) {
         return baseClient;

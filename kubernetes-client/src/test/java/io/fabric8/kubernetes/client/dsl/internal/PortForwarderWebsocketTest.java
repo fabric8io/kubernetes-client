@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -33,7 +34,7 @@ class PortForwarderWebsocketTest {
 
   @BeforeEach
   void initPortForwarderWebsocket() {
-    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient);
+    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient, CommonThreadPool.get());
   }
 
   @Test
@@ -52,7 +53,7 @@ class PortForwarderWebsocketTest {
   @Test
   void testCreateNewInetSocketAddress() throws UnknownHostException {
     // Given
-    InetAddress inetAddress = InetAddress.getByAddress(new byte[] {10, 19, 21, 23});
+    InetAddress inetAddress = InetAddress.getByAddress(new byte[] { 10, 19, 21, 23 });
     int port = 8080;
 
     // When

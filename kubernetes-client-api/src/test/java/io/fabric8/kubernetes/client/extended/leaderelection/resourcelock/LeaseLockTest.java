@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseBuilder;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
 
 class LeaseLockTest {
 
-  private NamespacedKubernetesClient kc;
+  private KubernetesClient kc;
   private MixedOperation<Lease, LeaseList, Resource<Lease>> leases;
   private LeaseBuilder leaserBuilder;
   private LeaseBuilder.MetadataNested<LeaseBuilder> metadata;
@@ -55,15 +55,16 @@ class LeaseLockTest {
 
   @BeforeEach
   void setUp() {
-    kc = mock(NamespacedKubernetesClient.class, RETURNS_DEEP_STUBS);
+    kc = mock(KubernetesClient.class, RETURNS_DEEP_STUBS);
     leases = mock(MixedOperation.class, RETURNS_DEEP_STUBS);
     leaserBuilder = mock(LeaseBuilder.class, RETURNS_DEEP_STUBS);
     metadata = mock(LeaseBuilder.MetadataNested.class, RETURNS_DEEP_STUBS);
     spec = mock(LeaseBuilder.SpecNested.class, RETURNS_DEEP_STUBS);
-    when(kc.inNamespace(anyString()).leases()).thenReturn(leases);
+    when(kc.leases().inNamespace(anyString())).thenReturn(leases);
     when(leaserBuilder.withNewMetadata()).thenReturn(metadata);
     when(leaserBuilder.withNewSpec()).thenReturn(spec);
   }
+
   @Test
   void missingNamespaceShouldThrowException() {
     // Given
@@ -92,12 +93,12 @@ class LeaseLockTest {
   void getWithExistingLeaseShouldReturnLeaderElectionRecord() {
     // Given
     final Lease lease = new LeaseBuilder().withNewSpec()
-      .withHolderIdentity("1337")
-      .withLeaseDurationSeconds(15)
-      .withAcquireTime(ZonedDateTime.of(2015, 10, 21, 4, 29, 0, 0, ZoneId.of("UTC")))
-      .withRenewTime(ZonedDateTime.of(2015, 10, 21, 7, 28, 0, 0,  ZoneId.of("UTC")))
-      .withLeaseTransitions(0)
-      .endSpec().build();
+        .withHolderIdentity("1337")
+        .withLeaseDurationSeconds(15)
+        .withAcquireTime(ZonedDateTime.of(2015, 10, 21, 4, 29, 0, 0, ZoneId.of("UTC")))
+        .withRenewTime(ZonedDateTime.of(2015, 10, 21, 7, 28, 0, 0, ZoneId.of("UTC")))
+        .withLeaseTransitions(0)
+        .endSpec().build();
     when(leases.withName(eq("name")).get()).thenReturn(lease);
     lease.setMetadata(new ObjectMetaBuilder().withResourceVersion("313373").build());
     final LeaseLock lock = new LeaseLock("namespace", "name", "1337");
@@ -115,7 +116,7 @@ class LeaseLockTest {
   void createWithValidLeaderElectionRecordShouldSendPostRequest() throws Exception {
     // Given
     final LeaderElectionRecord record = new LeaderElectionRecord(
-      "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
+        "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     final LeaseLock lock = new LeaseLock("namespace", "name", "1337");
     // When
     lock.create(kc, record);
@@ -133,7 +134,7 @@ class LeaseLockTest {
     leaseInTheCluster.setSpec(new LeaseSpec());
     when(leaseResource.get()).thenReturn(leaseInTheCluster);
     final LeaderElectionRecord record = new LeaderElectionRecord(
-      "1337", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
+        "1337", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     record.setVersion("313373");
     final LeaseLock lock = new LeaseLock("namespace", "name", "1337");
     // When

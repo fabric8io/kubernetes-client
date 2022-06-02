@@ -15,32 +15,24 @@
  */
 package io.fabric8.kubernetes.client.informers.impl;
 
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Informable;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
@@ -53,242 +45,72 @@ import java.util.concurrent.Future;
 public class SharedInformerFactoryImpl implements SharedInformerFactory {
   private static final Logger log = LoggerFactory.getLogger(SharedInformerFactoryImpl.class);
 
-  private final List<Map.Entry<OperationContext, SharedIndexInformer<?>>> informers = new ArrayList<>();
-
-  private final ExecutorService informerExecutor;
+  private final List<SharedIndexInformer<?>> informers = new ArrayList<>();
 
   private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = new ConcurrentLinkedQueue<>();
-
-  private boolean allowShutdown = true;
 
   private String name;
   private String namespace;
 
-  private DefaultKubernetesClient client;
+  private KubernetesClient client;
 
-  public SharedInformerFactoryImpl(DefaultKubernetesClient client) {
-    // ideally this should be bounded.  The current implication is that there
-    // can be 1 thread used (not dedicated to) per informer - which
-    // could be problematic for a large number of informers.  however
-    // if okhttp is in use, it will use two threads per watch
-    this(client, Utils.getCommonExecutorSerive());
-    this.allowShutdown = false;
-  }
-
-  /**
-   * Constructor with thread pool specified.
-   *
-   * @param threadPool specified thread pool.
-   */
-  public SharedInformerFactoryImpl(DefaultKubernetesClient client, ExecutorService threadPool) {
-    this.informerExecutor = threadPool;
+  public SharedInformerFactoryImpl(KubernetesClient client) {
     this.client = client;
   }
 
-  /**
-   * Configure Namespace for {@link SharedInformerFactory}
-   *
-   * @param namespace namespace to configure
-   * @return {@link SharedInformerFactory} with namespace configured
-   * @deprecated use {@link Informable} instead
-   */
   @Override
-  @Deprecated
   public SharedInformerFactory inNamespace(String namespace) {
     this.namespace = namespace;
     return this;
   }
 
-  /**
-   * Configure Name for {@link SharedInformerFactory}
-   *
-   * @param name name to be configured
-   * @return {@link SharedInformerFactory} with name configured
-   * @deprecated use {@link Informable} instead
-   */
   @Override
-  @Deprecated
   public SharedInformerFactory withName(String name) {
     this.name = name;
     return this;
   }
 
-  /**
-   * Constructs and returns a shared index informer with resync period specified. And the
-   * informer cache will be overwritten.
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param apiTypeClass apiType class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced}) if Namespace scoped resource
-   * @return the shared index informer
-   */
   @Override
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass,
       long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, null, resyncPeriodInMillis,
-        ResourceDefinitionContext.fromResourceType(apiTypeClass));
-  }
+    MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources = client.resources(apiTypeClass);
 
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources.
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   * @deprecated Since 5.x versions of client {@link CustomResourceDefinitionContext} are configured via annotations in
-   *             CustomResource implementations, please use any of the alternative sharedIndexInformerForCustomResource methods
-   */
-  @Override
-  @Deprecated
-  public synchronized <T extends CustomResource<?, ?>, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(
-      CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass,
-      long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, resyncPeriodInMillis, customResourceContext);
-  }
+    Informable<T> informable = null;
 
-  /**
-   * Constructs and returns a shared index informer with resync period specified for a Custom Resource. You
-   * can use it for scenarios where you don't have a POJO for your custom type by specifying group, version and plural in
-   * {@link CustomResourceDefinitionContext}
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param genericResourceContext object containing details about resource like apiGroup, version and plural, etc.
-   * @param resyncPeriodInMillis resync period in milliseconds.
-   * @return {@link SharedIndexInformer} for GenericKubernetesResource
-   * @deprecated use {@link #sharedIndexInformerFor(Class, long)}
-   */
-  @Override
-  @Deprecated
-  public synchronized SharedIndexInformer<GenericKubernetesResource> sharedIndexInformerForCustomResource(
-      ResourceDefinitionContext genericResourceContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(GenericKubernetesResource.class, GenericKubernetesResourceList.class, resyncPeriodInMillis,
-        genericResourceContext);
-  }
+    if (namespace != null) {
+      NonNamespaceOperation<T, KubernetesResourceList<T>, Resource<T>> nonNamespaceOp = resources.inNamespace(namespace);
+      informable = nonNamespaceOp;
+      if (name != null) {
+        informable = nonNamespaceOp.withName(name);
+      }
+    } else if (name != null) {
+      informable = resources.withName(name);
+    } else {
+      informable = resources.inAnyNamespace();
+    }
 
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources.
-   * POJO
-   *
-   * @param apiTypeClass apiType class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @return the shared index informer
-   * @deprecated use {@link #sharedIndexInformerFor(Class, long)} instead
-   */
-  @Override
-  @Deprecated
-  public synchronized <T extends CustomResource<?, ?>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(
-      Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(apiTypeClass, (Class) null, resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources.
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   * @deprecated use {@link #sharedIndexInformerFor(Class, long)}
-   */
-  @Override
-  @Deprecated
-  public synchronized <T extends CustomResource<?, ?>, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(
-      Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, resyncPeriodInMillis,
-        ResourceDefinitionContext.fromResourceType(apiTypeClass));
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified. And the
-   * informer cache will be overwritten. You can use this method to specify namespace in {@link OperationContext}
-   * if you want to monitor for events in a dedicated namespace only or provide other filtering options.
-   *
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement
-   *        {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   */
-  private synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(
-      Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis, ResourceDefinitionContext rdc) {
-
-    HasMetadataOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, rdc);
-
-    // we want the resources to no longer reference a resourceVersion
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, resources.withResourceVersion(null),
-        resyncPeriodInMillis, informerExecutor);
-    this.informers.add(new AbstractMap.SimpleEntry<>(resources.getOperationContext(), informer));
+    SharedIndexInformer<T> informer = informable.runnableInformer(resyncPeriodInMillis);
+    this.informers.add(informer);
     return informer;
   }
 
-  private <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> getResourceOperation(
-      Class<T> apiTypeClass, Class<L> apiListTypeClass, ResourceDefinitionContext rdc) {
-
-    HasMetadataOperationsImpl<T, L> resources = client.customResources(rdc, apiTypeClass, apiListTypeClass);
-
-    if (namespace != null) {
-      resources = (HasMetadataOperationsImpl<T, L>) resources.inNamespace(namespace);
-    } else {
-      resources = (HasMetadataOperationsImpl<T, L>) resources.inAnyNamespace();
-    }
-    if (name != null) {
-      resources = (HasMetadataOperationsImpl<T, L>) resources.withName(name);
-    }
-
-    return resources;
-  }
-
-  /**
-   * Gets existing shared index informer, return null if the requesting informer
-   * is never constructed. If there are multiple SharedIndexInformer objects corresponding
-   * to a Kubernetes resource, then it returns the first one
-   *
-   * @param apiTypeClass API type class
-   * @param <T> type of API type
-   * @return SharedIndexInformer object
-   */
   @Override
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
-    for (Map.Entry<OperationContext, SharedIndexInformer<?>> entry : this.informers) {
-      if (entry.getValue().getApiTypeClass().equals(apiTypeClass)) {
-        return (SharedIndexInformer<T>) entry.getValue();
+    for (SharedIndexInformer<?> informer : this.informers) {
+      if (informer.getApiTypeClass().equals(apiTypeClass)) {
+        return (SharedIndexInformer<T>) informer;
       }
     }
     return null;
   }
 
-  /**
-   * Starts all registered informers in an asynchronous fashion.
-   *
-   * @return {@link Future} for status of all started informer tasks.
-   */
   @Override
   public synchronized Future<Void> startAllRegisteredInformers() {
     List<CompletableFuture<Void>> startInformerTasks = new ArrayList<>();
 
-    if (!informers.isEmpty() && !informerExecutor.isShutdown()) {
-      for (Map.Entry<OperationContext, SharedIndexInformer<?>> entry : informers) {
-        CompletableFuture<Void> future = entry.getValue().start();
+    if (!informers.isEmpty()) {
+      for (SharedIndexInformer<?> informer : informers) {
+        CompletableFuture<Void> future = informer.start();
         startInformerTasks.add(future);
         future.whenComplete((v, t) -> {
           if (t != null) {
@@ -296,7 +118,7 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
               log.warn("Failed to start informer", t);
             } else {
               this.eventListeners
-                  .forEach(listener -> listener.onException(entry.getValue(), KubernetesClientException.launderThrowable(t)));
+                  .forEach(listener -> listener.onException(informer, KubernetesClientException.launderThrowable(t)));
             }
           }
         });
@@ -305,25 +127,9 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
     return CompletableFuture.allOf(startInformerTasks.toArray(new CompletableFuture[] {}));
   }
 
-  /**
-   * Stop all registered informers and shut down thread pool.
-   */
   @Override
   public synchronized void stopAllRegisteredInformers() {
-    stopAllRegisteredInformers(true);
-  }
-
-  /**
-   * Stop all registered informers
-   *
-   * @param shutDownThreadPool Whether to shut down thread pool or not.
-   */
-  @Override
-  public synchronized void stopAllRegisteredInformers(boolean shutDownThreadPool) {
-    informers.forEach(e -> e.getValue().stop());
-    if (shutDownThreadPool && allowShutdown) {
-      informerExecutor.shutdown();
-    }
+    informers.forEach(SharedIndexInformer::stop);
   }
 
   @Override

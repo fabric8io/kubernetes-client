@@ -53,16 +53,15 @@ public class CustomResourceV1Example {
       // @formatter:on
       kc.apiextensions().v1().customResourceDefinitions().createOrReplace(crd);
       System.out.println("Created custom shows.example.com Kubernetes API");
-      final NonNamespaceOperation<Show, ShowList, Resource<Show>> shows =
-        kc.customResources(Show.class, ShowList.class)
-        .inNamespace("default");
+      final NonNamespaceOperation<Show, ShowList, Resource<Show>> shows = kc.resources(Show.class, ShowList.class)
+          .inNamespace("default");
       shows.list();
       shows.createOrReplace(new Show("breaking-bad", new ShowSpec("Breaking Bad", 10)));
       shows.createOrReplace(new Show("better-call-saul", new ShowSpec("Better call Saul", 8)));
       shows.createOrReplace(new Show("the-wire", new ShowSpec("The Wire", 10)));
       System.out.println("Added three shows");
       shows.list().getItems()
-        .forEach(s -> System.out.printf(" - %s%n", s.getSpec().name));
+          .forEach(s -> System.out.printf(" - %s%n", s.getSpec().name));
       final Show theWire = shows.withName("the-wire").fromServer().get();
       System.out.printf("The Wire Score is: %s%n", theWire.getSpec().score);
     }
@@ -76,13 +75,15 @@ public class CustomResourceV1Example {
     public Show() {
       super();
     }
+
     public Show(String metaName, ShowSpec spec) {
       setMetadata(new ObjectMetaBuilder().withName(metaName).build());
       setSpec(spec);
     }
   }
 
-  public static final class ShowList extends CustomResourceList<Show> {}
+  public static final class ShowList extends CustomResourceList<Show> {
+  }
 
   @SuppressWarnings("unused")
   public static final class ShowSpec implements Serializable {

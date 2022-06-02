@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -137,16 +139,20 @@ class AbstractWatchManagerTest {
   @DisplayName("cancelReconnect, with non-null attempt, should cancel")
   void cancelReconnectNonNullAttempt() throws MalformedURLException {
     // Given
-    final ScheduledFuture<?> sf = mock(ScheduledFuture.class);
+    final CompletableFuture<?> cf = mock(CompletableFuture.class);
+    ExecutorService executor = CommonThreadPool.get();
     final MockedStatic<Utils> utils = mockStatic(Utils.class);
-    utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(sf);
+    utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(cf);
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    awm.baseOperation.context = Mockito.mock(OperationContext.class);
+    Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
+
     awm.scheduleReconnect();
     // When
     awm.cancelReconnect();
     // Then
-    verify(sf, times(1)).cancel(true);
+    verify(cf, times(1)).cancel(true);
   }
 
   @Test

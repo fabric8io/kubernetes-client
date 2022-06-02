@@ -28,21 +28,21 @@ import io.fabric8.kubernetes.examples.crds.DummyList;
  * CustomResource is already created.
  */
 public class CustomResourceCreateDemo {
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-            // Dummy Client
-            MixedOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = null;
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
+      // Dummy Client
+      MixedOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = null;
 
-            // Initializing Dummy Client
-            dummyClient = k8s.customResources(Dummy.class, DummyList.class);
+      // Initializing Dummy Client
+      dummyClient = k8s.resources(Dummy.class, DummyList.class);
 
-            // Get Dummy CustomResource
-            Dummy dummy = dummyClient.load(CustomResourceCreateDemo.class.getResourceAsStream("/test-customresource.yaml")).get();
+      // Get Dummy CustomResource
+      Dummy dummy = dummyClient.load(CustomResourceCreateDemo.class.getResourceAsStream("/test-customresource.yaml")).get();
 
-            // Using Dummy Client to create Dummy resource
-            dummyClient.inNamespace("default").create(dummy);
-        }
-
+      // Using Dummy Client to create Dummy resource
+      dummyClient.inNamespace("default").create(dummy);
     }
+
+  }
 }

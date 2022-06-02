@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 
 public interface Lock {
 
@@ -25,32 +25,29 @@ public interface Lock {
    * Returns the current {@link LeaderElectionRecord} or null if none.
    *
    * @param client used to retrieve the LeaderElectionRecord
-   * @param <C> Type parameter for the Client
    * @return the current LeaderElectionRecord or null if none
    */
-  <C extends NamespacedKubernetesClient> LeaderElectionRecord get(C client);
+  LeaderElectionRecord get(KubernetesClient client);
 
   /**
    * Attempt to create a new {@link LeaderElectionRecord}.
    *
    * @param client used to retrieve the LeaderElectionRecord
    * @param leaderElectionRecord to update
-   * @param <C> Type parameter for the Client
    * @throws LockException if update was not possible
    */
-  <C extends NamespacedKubernetesClient> void create(
-    C client, LeaderElectionRecord leaderElectionRecord) throws LockException;
+  void create(
+      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException;
 
   /**
    * Attempts to update the current {@link LeaderElectionRecord}.
    *
    * @param client used to retrieve the LeaderElectionRecord
    * @param leaderElectionRecord to update
-   * @param <C> Type parameter for the Client
    * @throws LockException if update was not possible
    */
-  <C extends NamespacedKubernetesClient> void update(
-    C client, LeaderElectionRecord leaderElectionRecord) throws LockException;
+  void update(
+      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException;
 
   /**
    * Returns the unique id of the lock holder.

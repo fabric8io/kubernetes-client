@@ -46,7 +46,6 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
@@ -70,7 +69,6 @@ public class Utils {
   public static final String PATH_UNIX = "PATH";
   private static final Random random = new Random();
 
-  private static final ExecutorService SHARED_POOL = Executors.newCachedThreadPool();
   private static final CachedSingleThreadScheduler SHARED_SCHEDULER = new CachedSingleThreadScheduler();
 
   private Utils() {
@@ -463,8 +461,21 @@ public class Utils {
    * Schedule a task to run in the given {@link Executor} - which should run the task in a different thread as to not
    * hold the scheduling thread
    */
-  public static ScheduledFuture<?> schedule(Executor executor, Runnable command, long delay, TimeUnit unit) {
-    return SHARED_SCHEDULER.schedule(() -> executor.execute(command), delay, unit);
+  public static CompletableFuture<Void> schedule(Executor executor, Runnable command, long delay, TimeUnit unit) {
+    // to be replaced in java 9+ with CompletableFuture.runAsync(command, CompletableFuture.delayedExecutor(delay, unit, executor));
+    CompletableFuture<Void> result = new CompletableFuture<>();
+    ScheduledFuture<?> scheduledFuture = SHARED_SCHEDULER.schedule(() -> {
+      try {
+        executor.execute(command);
+        result.complete(null);
+      } catch (Throwable t) {
+        result.completeExceptionally(t);
+      }
+    }, delay, unit);
+    result.whenComplete((v, t) -> {
+      scheduledFuture.cancel(true);
+    });
+    return result;
   }
 
   /**
@@ -516,13 +527,6 @@ public class Utils {
         }
       });
     }, delay, unit));
-  }
-
-  /**
-   * Get the common executor service - callers should not shutdown this service
-   */
-  public static ExecutorService getCommonExecutorSerive() {
-    return SHARED_POOL;
   }
 
 }

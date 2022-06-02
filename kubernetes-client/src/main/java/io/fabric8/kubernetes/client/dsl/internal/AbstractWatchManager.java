@@ -41,7 +41,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,10 +61,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private final int reconnectLimit;
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   final AtomicInteger currentReconnectAttempt;
-  private ScheduledFuture<?> reconnectAttempt;
+  private Future<?> reconnectAttempt;
 
   protected final HttpClient client;
-  private BaseOperation<T, ?, ?> baseOperation;
+  protected BaseOperation<T, ?, ?> baseOperation;
   private ListOptions listOptions;
   private URL requestUrl;
 
@@ -143,7 +143,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     long delay = nextReconnectInterval();
 
     synchronized (this) {
-      reconnectAttempt = Utils.schedule(Utils.getCommonExecutorSerive(), this::reconnect, delay, TimeUnit.MILLISECONDS);
+      reconnectAttempt = Utils.schedule(baseOperation.context.getExecutor(), this::reconnect, delay, TimeUnit.MILLISECONDS);
       if (isForceClosed()) {
         cancelReconnect();
       }

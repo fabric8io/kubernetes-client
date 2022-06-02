@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.TestHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -380,10 +381,11 @@ class BaseOperationTest {
     assertTrue(future.isCancelled());
   }
 
-  private Client mockClient(HttpClient httpClient, Config config) {
-    Client client = Mockito.mock(Client.class);
+  private BaseClient mockClient(HttpClient httpClient, Config config) {
+    BaseClient client = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
     Mockito.when(client.getHttpClient()).thenReturn(httpClient);
     Mockito.when(client.getConfiguration()).thenReturn(config);
+    Mockito.when(client.getExecutor()).thenReturn(CommonThreadPool.get());
     return client;
   }
 }

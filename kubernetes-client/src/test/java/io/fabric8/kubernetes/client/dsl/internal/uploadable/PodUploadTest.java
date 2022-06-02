@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
-import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper.Writable;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +75,8 @@ class PodUploadTest {
 
     when(mockClient.newBuilder().readTimeout(anyLong(), any(TimeUnit.class)).build()).thenReturn(mockClient);
 
-    Client client = Mockito.mock(Client.class);
+    BaseClient client = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(client.adapt(BaseClient.class).getExecutor()).thenReturn(CommonThreadPool.get());
     Config config = Mockito.mock(Config.class, Mockito.RETURNS_DEEP_STUBS);
     when(config.getMasterUrl()).thenReturn("https://openshift.com:8443");
     when(config.getNamespace()).thenReturn("default");

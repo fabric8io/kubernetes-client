@@ -209,7 +209,7 @@ public class DeploymentConfigOperationsImpl
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
       waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
       URL url = getResourceLogUrl(false, true);
-      final LogWatchCallback callback = new LogWatchCallback(out);
+      final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
       return callback.callAndWait(this.httpClient, url);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);

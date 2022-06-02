@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -51,18 +51,18 @@ import static org.mockito.Mockito.when;
 
 class ConfigMapLockTest {
 
-  private NamespacedKubernetesClient kc;
+  private KubernetesClient kc;
   private MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps;
   private ConfigMapBuilder configMapBuilder;
   private ConfigMapBuilder.MetadataNested<ConfigMapBuilder> metadata;
 
   @BeforeEach
   void setUp() {
-    kc = mock(NamespacedKubernetesClient.class, RETURNS_DEEP_STUBS);
+    kc = mock(KubernetesClient.class, RETURNS_DEEP_STUBS);
     configMaps = mock(MixedOperation.class, RETURNS_DEEP_STUBS);
     configMapBuilder = Mockito.mock(ConfigMapBuilder.class, RETURNS_DEEP_STUBS);
     metadata = mock(ConfigMapBuilder.MetadataNested.class, RETURNS_DEEP_STUBS);
-    when(kc.inNamespace(anyString()).configMaps()).thenReturn(configMaps);
+    when(kc.configMaps().inNamespace(anyString())).thenReturn(configMaps);
     when(configMapBuilder.editOrNewMetadata()).thenReturn(metadata);
   }
 
@@ -104,11 +104,10 @@ class ConfigMapLockTest {
     final ConfigMap cm = new ConfigMap();
     when(configMaps.withName(ArgumentMatchers.eq("name")).get()).thenReturn(cm);
     cm.setMetadata(new ObjectMetaBuilder()
-      .withAnnotations(
-        Collections.singletonMap("control-plane.alpha.kubernetes.io/leader",
-          "{\"holderIdentity\":\"1337\",\"leaseDuration\":15,\"acquireTime\":1445401740,\"renewTime\":1445412480}")
-      )
-      .withResourceVersion("313373").build());
+        .withAnnotations(
+            Collections.singletonMap("control-plane.alpha.kubernetes.io/leader",
+                "{\"holderIdentity\":\"1337\",\"leaseDuration\":15,\"acquireTime\":1445401740,\"renewTime\":1445412480}"))
+        .withResourceVersion("313373").build());
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
     // When
     final LeaderElectionRecord result = lock.get(kc);
@@ -124,7 +123,7 @@ class ConfigMapLockTest {
   void createWithValidLeaderElectionRecordShouldSendPostRequest() throws Exception {
     // Given
     final LeaderElectionRecord record = new LeaderElectionRecord(
-      "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
+        "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
     // When
     lock.create(kc, record);
@@ -142,7 +141,7 @@ class ConfigMapLockTest {
     configMapInTheCluster.setMetadata(new ObjectMetaBuilder().withAnnotations(new HashMap<>()).build());
     when(configMapResource.get()).thenReturn(configMapInTheCluster);
     final LeaderElectionRecord record = new LeaderElectionRecord(
-      "1337", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
+        "1337", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     record.setVersion("313373");
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
     // When

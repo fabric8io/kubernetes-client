@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -483,6 +484,10 @@ public class OperationContext {
     }
 
     return getClient().adapt(BaseClient.class).newClient(newContext).adapt(clazz);
+  }
+
+  public Executor getExecutor() {
+    return getClient().adapt(BaseClient.class).getExecutor();
   }
 
 }

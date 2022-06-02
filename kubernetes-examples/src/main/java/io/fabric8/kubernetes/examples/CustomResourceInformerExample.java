@@ -35,30 +35,29 @@ public class CustomResourceInformerExample {
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
+      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerFor(Dummy.class, 60 * 1000L);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
-        new ResourceEventHandler<Dummy>() {
-          @Override
-          public void onAdd(Dummy pod) {
-            logger.info("{} dummy added", pod.getMetadata().getName());
-          }
+          new ResourceEventHandler<Dummy>() {
+            @Override
+            public void onAdd(Dummy pod) {
+              logger.info("{} dummy added", pod.getMetadata().getName());
+            }
 
-          @Override
-          public void onUpdate(Dummy oldPod, Dummy newPod) {
-            logger.info("{} dummy updated", oldPod.getMetadata().getName());
-          }
+            @Override
+            public void onUpdate(Dummy oldPod, Dummy newPod) {
+              logger.info("{} dummy updated", oldPod.getMetadata().getName());
+            }
 
-          @Override
-          public void onDelete(Dummy pod, boolean deletedFinalStateUnknown) {
-            logger.info("{} dummy deleted", pod.getMetadata().getName());
-          }
-        }
-      );
+            @Override
+            public void onDelete(Dummy pod, boolean deletedFinalStateUnknown) {
+              logger.info("{} dummy deleted", pod.getMetadata().getName());
+            }
+          });
 
-      sharedInformerFactory.addSharedInformerEventListener(ex ->
-        logger.error("Exception occurred, but caught: {}", ex.getMessage()));
+      sharedInformerFactory
+          .addSharedInformerEventListener(ex -> logger.error("Exception occurred, but caught: {}", ex.getMessage()));
 
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
@@ -84,10 +83,10 @@ public class CustomResourceInformerExample {
         toCreate.getMetadata().setNamespace(client.getNamespace());
       } else {
         toCreate.getMetadata().setNamespace(client.namespaces().list().getItems().stream().findFirst()
-          .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
+            .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
       }
 
-      client.customResources(Dummy.class).createOrReplace(toCreate);
+      client.resources(Dummy.class).createOrReplace(toCreate);
       // Wait for some time now
       TimeUnit.MINUTES.sleep(5);
     } catch (InterruptedException interruptedException) {

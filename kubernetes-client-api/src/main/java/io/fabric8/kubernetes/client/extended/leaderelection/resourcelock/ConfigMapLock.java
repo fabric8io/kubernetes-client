@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,41 +49,42 @@ public class ConfigMapLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends NamespacedKubernetesClient> LeaderElectionRecord get(C client) {
+  public LeaderElectionRecord get(KubernetesClient client) {
     final ConfigMap configMap = client
-      .inNamespace(configMapNamespace).configMaps().withName(configMapName).get();
+        .configMaps().inNamespace(configMapNamespace).withName(configMapName).get();
     return Optional.ofNullable(configMap)
-      .map(ConfigMap::getMetadata)
-      .map(ObjectMeta::getAnnotations)
-      .map(annotations -> annotations.get(LEADER_ELECTION_RECORD_ANNOTATION_KEY))
-      .map(annotation -> {
-        try {
-          return objectMapper.readValue(annotation, new TypeReference<LeaderElectionRecord>() {});
-        } catch (JsonProcessingException ex) {
-          LOGGER.error("Error deserializing LeaderElectionRecord from ConfigMap", ex);
-          return null;
-        }
-      })
-      .map(record -> {
-        record.setVersion(configMap.getMetadata().getResourceVersion());
-        return record;
-      })
-      .orElse(null);
+        .map(ConfigMap::getMetadata)
+        .map(ObjectMeta::getAnnotations)
+        .map(annotations -> annotations.get(LEADER_ELECTION_RECORD_ANNOTATION_KEY))
+        .map(annotation -> {
+          try {
+            return objectMapper.readValue(annotation, new TypeReference<LeaderElectionRecord>() {
+            });
+          } catch (JsonProcessingException ex) {
+            LOGGER.error("Error deserializing LeaderElectionRecord from ConfigMap", ex);
+            return null;
+          }
+        })
+        .map(record -> {
+          record.setVersion(configMap.getMetadata().getResourceVersion());
+          return record;
+        })
+        .orElse(null);
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public <C extends NamespacedKubernetesClient> void create(
-    C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
+  public void create(
+      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
-        client.inNamespace(configMapNamespace).configMaps().withName(configMapName).create(new ConfigMapBuilder()
-        .editOrNewMetadata().withNamespace(configMapNamespace).withName(configMapName)
-        .addToAnnotations(LEADER_ELECTION_RECORD_ANNOTATION_KEY, objectMapper.writeValueAsString(leaderElectionRecord))
-        .endMetadata()
-        .build());
+      client.configMaps().inNamespace(configMapNamespace).withName(configMapName).create(new ConfigMapBuilder()
+          .editOrNewMetadata().withNamespace(configMapNamespace).withName(configMapName)
+          .addToAnnotations(LEADER_ELECTION_RECORD_ANNOTATION_KEY, objectMapper.writeValueAsString(leaderElectionRecord))
+          .endMetadata()
+          .build());
     } catch (Exception e) {
       throw new LockException("Unable to create ConfigMapLock", e);
     }
@@ -93,17 +94,17 @@ public class ConfigMapLock implements Lock {
    * {@inheritDoc}
    */
   @Override
-  public <C extends NamespacedKubernetesClient> void update(
-    C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
+  public void update(
+      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
-      final ConfigMap toReplace = client.inNamespace(configMapNamespace).configMaps().withName(configMapName).get();
+      final ConfigMap toReplace = client.configMaps().inNamespace(configMapNamespace).withName(configMapName).get();
       toReplace.getMetadata().getAnnotations()
-        .put(LEADER_ELECTION_RECORD_ANNOTATION_KEY ,objectMapper.writeValueAsString(leaderElectionRecord));
+          .put(LEADER_ELECTION_RECORD_ANNOTATION_KEY, objectMapper.writeValueAsString(leaderElectionRecord));
       // Use replace instead of edit to avoid concurrent modifications, resourceVersion is locked to original record version
-      client.inNamespace(configMapNamespace).configMaps().withName(configMapName)
-        .lockResourceVersion((String)Objects.requireNonNull(leaderElectionRecord.getVersion()))
-        .replace(toReplace);
+      client.configMaps().inNamespace(configMapNamespace).withName(configMapName)
+          .lockResourceVersion((String) Objects.requireNonNull(leaderElectionRecord.getVersion()))
+          .replace(toReplace);
     } catch (Exception e) {
       throw new LockException("Unable to update ConfigMapLock", e);
     }

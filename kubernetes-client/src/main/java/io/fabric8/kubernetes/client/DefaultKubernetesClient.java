@@ -64,6 +64,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder.ExecutorSupplier;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
@@ -105,10 +106,8 @@ import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
@@ -130,7 +129,6 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Class for Default Kubernetes Client implementing KubernetesClient interface.
@@ -156,7 +154,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   public DefaultKubernetesClient(HttpClient httpClient, Config config) {
-    super(httpClient, config);
+    this(httpClient, config, null);
+  }
+
+  public DefaultKubernetesClient(HttpClient httpClient, Config config, ExecutorSupplier executorSupplier) {
+    super(httpClient, config, executorSupplier);
 
     this.getAdapters().registerClient(AppsAPIGroupDSL.class, new AppsAPIGroupClient());
     this.getAdapters().registerClient(AdmissionRegistrationAPIGroupDSL.class, new AdmissionRegistrationAPIGroupClient());
@@ -251,8 +253,8 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public LeaderElectorBuilder<? extends NamespacedKubernetesClient> leaderElector() {
-    return new LeaderElectorBuilder<>(this);
+  public LeaderElectorBuilder leaderElector() {
+    return new LeaderElectorBuilder(this, this.getExecutor());
   }
 
   @Override
@@ -493,24 +495,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return getHandlers().getNonListingOperation(TokenReview.class, this);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(
-      Class<T> resourceType) {
-    return customResources(resourceType, null);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
-      Class<T> resourceType, Class<L> listClass) {
-    return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
-  }
-
   @Override
   public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       String apiVersion, String kind) {
@@ -522,13 +506,10 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return genericKubernetesResources(context);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> customResources(
-      ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
-    return newHasMetadataOperation(rdContext, resourceType, listClass);
+  public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      ResourceDefinitionContext context) {
+    return newHasMetadataOperation(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
   }
 
   @Override
@@ -663,14 +644,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public SharedInformerFactory informers() {
     return new SharedInformerFactoryImpl(this);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public SharedInformerFactory informers(ExecutorService executorService) {
-    return new SharedInformerFactoryImpl(this, executorService);
   }
 
   /**

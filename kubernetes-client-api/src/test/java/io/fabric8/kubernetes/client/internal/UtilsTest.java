@@ -65,6 +65,7 @@ import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
 import io.fabric8.kubernetes.client.lib.FileSystem;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -393,7 +394,7 @@ class UtilsTest {
   void testSerialExecution() throws Exception {
     AtomicInteger counter = new AtomicInteger();
     CompletableFuture<?> completableFuture = new CompletableFuture<Void>();
-    Utils.scheduleWithVariableRate(completableFuture, Utils.getCommonExecutorSerive(), () -> {
+    Utils.scheduleWithVariableRate(completableFuture, CommonThreadPool.get(), () -> {
       counter.getAndIncrement();
       try {
         Thread.sleep(100);

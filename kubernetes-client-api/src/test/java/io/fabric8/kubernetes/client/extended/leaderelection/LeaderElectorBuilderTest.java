@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.ConfigMapLock;
+import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
@@ -36,12 +37,15 @@ class LeaderElectorBuilderTest {
   void setUp() {
     mockKubernetesClient = mock(NamespacedKubernetesClient.class, Answers.RETURNS_DEEP_STUBS);
     defaultConfigBuilder = new LeaderElectionConfigBuilder()
-      .withName("Valid Leader Election configuration")
-      .withLeaseDuration(Duration.ofSeconds(15L))
-      .withLock(new ConfigMapLock("fakeNamespace", "fakeName", "fakeIdentity"))
-      .withRenewDeadline(Duration.ofSeconds(10L))
-      .withRetryPeriod(Duration.ofSeconds(2L))
-      .withLeaderCallbacks(new LeaderCallbacks(() -> {}, () -> {}, newLeader -> {}));
+        .withName("Valid Leader Election configuration")
+        .withLeaseDuration(Duration.ofSeconds(15L))
+        .withLock(new ConfigMapLock("fakeNamespace", "fakeName", "fakeIdentity"))
+        .withRenewDeadline(Duration.ofSeconds(10L))
+        .withRetryPeriod(Duration.ofSeconds(2L))
+        .withLeaderCallbacks(new LeaderCallbacks(() -> {
+        }, () -> {
+        }, newLeader -> {
+        }));
   }
 
   @Test
@@ -49,8 +53,8 @@ class LeaderElectorBuilderTest {
     // Given
     final LeaderElectionConfig validConfig = defaultConfigBuilder.build();
     // When
-    final LeaderElector<NamespacedKubernetesClient> leadElector = new LeaderElectorBuilder<>(mockKubernetesClient)
-      .withConfig(validConfig).build();
+    final LeaderElector leadElector = new LeaderElectorBuilder(mockKubernetesClient, CommonThreadPool.get())
+        .withConfig(validConfig).build();
     // Expect
     assertNotNull(leadElector);
   }
@@ -88,34 +92,30 @@ class LeaderElectorBuilderTest {
   @Test
   void withConfigAndInvalidLeaseDurationComparedToRenewDeadlineShouldThrowException() {
     assertInvalidField(defaultConfigBuilder
-      .withLeaseDuration(Duration.ofSeconds(1)).withRenewDeadline(Duration.ofSeconds(2)).build()
-    );
+        .withLeaseDuration(Duration.ofSeconds(1)).withRenewDeadline(Duration.ofSeconds(2)).build());
   }
 
   @Test
   void withConfigAndInvalidRenewDeadlineComparedToRetryPeriodShouldThrowException() {
     assertInvalidField(defaultConfigBuilder
-      .withRenewDeadline(Duration.ofSeconds(1)).withRetryPeriod(Duration.ofMillis(8000L)).build()
-    );
+        .withRenewDeadline(Duration.ofSeconds(1)).withRetryPeriod(Duration.ofMillis(8000L)).build());
   }
 
   @Test
   void withConfigAndInvalidLeaseDurationShouldThrowException() {
     assertInvalidField(defaultConfigBuilder
-      .withLeaseDuration(Duration.ofNanos(15))
-      .withRenewDeadline(Duration.ofNanos(10))
-      .withRetryPeriod(Duration.ofNanos(2))
-      .build()
-    );
+        .withLeaseDuration(Duration.ofNanos(15))
+        .withRenewDeadline(Duration.ofNanos(10))
+        .withRetryPeriod(Duration.ofNanos(2))
+        .build());
   }
 
   @Test
   void withConfigAndInvalidRenewDeadlineShouldThrowException() {
     assertInvalidField(defaultConfigBuilder
-      .withRenewDeadline(Duration.ofNanos(10))
-      .withRetryPeriod(Duration.ofNanos(2))
-      .build()
-    );
+        .withRenewDeadline(Duration.ofNanos(10))
+        .withRetryPeriod(Duration.ofNanos(2))
+        .build());
   }
 
   @Test
@@ -124,12 +124,12 @@ class LeaderElectorBuilderTest {
   }
 
   private void assertRequiredField(LeaderElectionConfig invalidConfig) {
-    assertThrows(NullPointerException.class, () ->
-      new LeaderElectorBuilder<>(mockKubernetesClient).withConfig(invalidConfig).build());
+    assertThrows(NullPointerException.class,
+        () -> new LeaderElectorBuilder(mockKubernetesClient, CommonThreadPool.get()).withConfig(invalidConfig).build());
   }
 
   private void assertInvalidField(LeaderElectionConfig invalidConfig) {
-    assertThrows(IllegalArgumentException.class, () ->
-      new LeaderElectorBuilder<>(mockKubernetesClient).withConfig(invalidConfig).build());
+    assertThrows(IllegalArgumentException.class,
+        () -> new LeaderElectorBuilder(mockKubernetesClient, CommonThreadPool.get()).withConfig(invalidConfig).build());
   }
 }

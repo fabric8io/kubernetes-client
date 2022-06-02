@@ -557,7 +557,7 @@ class DefaultSharedIndexInformerTest {
         null);
 
     // When
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(PodSet.class,
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerFor(PodSet.class,
         60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPodSet, "podset1"));
@@ -578,7 +578,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1")
-        .sharedIndexInformerForCustomResource(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
+        .sharedIndexInformerFor(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPodSet, "podset1"));
     factory.startAllRegisteredInformers();
@@ -594,7 +594,7 @@ class DefaultSharedIndexInformerTest {
     setupMockServerExpectations(Star.class, null, this::getList, r -> new WatchEvent(getStar("star1", r), "ADDED"), null, null);
 
     // When
-    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Star.class, RESYNC_PERIOD);
+    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerFor(Star.class, RESYNC_PERIOD);
     CountDownLatch foundExistingStar = new CountDownLatch(1);
     starSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingStar, "star1"));
     factory.startAllRegisteredInformers();
@@ -650,7 +650,7 @@ class DefaultSharedIndexInformerTest {
         null, null);
 
     // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class,
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerFor(CronTab.class,
         60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
@@ -671,7 +671,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.inNamespace("ns1")
-        .sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+        .sharedIndexInformerFor(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
     factory.startAllRegisteredInformers();
@@ -689,7 +689,7 @@ class DefaultSharedIndexInformerTest {
         null, null);
 
     // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class,
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerFor(CronTab.class,
         60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
@@ -709,7 +709,7 @@ class DefaultSharedIndexInformerTest {
         null, null);
 
     // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class,
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerFor(CronTab.class,
         60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
@@ -730,7 +730,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.inNamespace("ns1")
-        .sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+        .sharedIndexInformerFor(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
     factory.startAllRegisteredInformers();
@@ -748,7 +748,7 @@ class DefaultSharedIndexInformerTest {
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
 
     // When
-    SharedIndexInformer<Animal> animalSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Animal.class,
+    SharedIndexInformer<Animal> animalSharedIndexInformer = factory.sharedIndexInformerFor(Animal.class,
         60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "red-panda"));
@@ -802,7 +802,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<CronTab> v1CronTabSharedIndexInformer = factory.inNamespace("default")
-        .sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+        .sharedIndexInformerFor(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
     ResourceDefinitionContext context = new ResourceDefinitionContext.Builder().withPlural(HasMetadata.getPlural(CronTab.class))
         .withGroup(HasMetadata.getGroup(CronTab.class))
         .withVersion("v1beta1")
@@ -909,12 +909,13 @@ class DefaultSharedIndexInformerTest {
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
 
     // When
-    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory
-        .sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
+        .genericKubernetesResources(animalContext).inAnyNamespace().runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
-    factory.startAllRegisteredInformers();
+    animalSharedIndexInformer.start();
     foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    animalSharedIndexInformer.stop();
 
     // Then
     assertEquals("test", client.getConfiguration().getNamespace());
@@ -928,12 +929,13 @@ class DefaultSharedIndexInformerTest {
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
 
     // When
-    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory.inNamespace("ns1")
-        .sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
+        .genericKubernetesResources(animalContext).inNamespace("ns1").runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
-    factory.startAllRegisteredInformers();
+    animalSharedIndexInformer.start();
     foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    animalSharedIndexInformer.stop();
 
     // Then
     assertEquals(0, foundExistingAnimal.getCount());
@@ -947,12 +949,13 @@ class DefaultSharedIndexInformerTest {
 
     // When
     KubernetesDeserializer.registerCustomKind("jungle.example.com/v1", "Animal", CronTab.class);
-    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory.inNamespace("ns1")
-        .sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
+        .genericKubernetesResources(animalContext).inNamespace("ns1").runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
-    factory.startAllRegisteredInformers();
+    animalSharedIndexInformer.start();
     foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    animalSharedIndexInformer.stop();
 
     // Then
     assertEquals(0, foundExistingAnimal.getCount());

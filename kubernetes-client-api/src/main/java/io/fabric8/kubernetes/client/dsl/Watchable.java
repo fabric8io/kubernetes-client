@@ -17,8 +17,9 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 
-public interface Watchable<W> {
+public interface Watchable<T> {
 
   /**
    * Watch returns {@link Watch} interface that watches requested resource
@@ -26,19 +27,21 @@ public interface Watchable<W> {
    * @param watcher Watcher interface of Kubernetes resource
    * @return watch interface {@link Watch}
    */
-    Watch watch(W watcher);
+  Watch watch(Watcher<T> watcher);
 
   /**
    * Watch returns {@link Watch} interface that watches requested resource
-   * <p>The passed in options may be modified as a side-effect of this call.
-   * <br>Values that already exist at this context, such as the labels, fields, 
+   * <p>
+   * The passed in options may be modified as a side-effect of this call.
+   * <br>
+   * Values that already exist at this context, such as the labels, fields,
    * and resourceVersion will be overridden on the passed in options regardless of initial values.
    *
    * @param options options available for watch operation
    * @param watcher Watcher interface of Kubernetes resource
    * @return watch interface {@link Watch}
    */
-    Watch watch(ListOptions options, W watcher);
+  Watch watch(ListOptions options, Watcher<T> watcher);
 
   /**
    * Watch returns {@link Watch} interface that watches requested resource from
@@ -46,10 +49,10 @@ public interface Watchable<W> {
    *
    * @param resourceVersion resource version from where to start watch
    * @param watcher Watcher interface of Kubernetes resource
-   * @deprecated Please use {@link #watch(ListOptions, Object)} instead, it has a parameter of resourceVersion
+   * @deprecated Please use {@link #watch(ListOptions, Watcher)} instead, it has a parameter of resourceVersion
    * @return watch interface {@link Watch}
    */
-    @Deprecated
-    Watch watch(String resourceVersion, W watcher);
+  @Deprecated
+  Watch watch(String resourceVersion, Watcher<T> watcher);
 
 }

@@ -57,6 +57,7 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
     } finally {
       webSocket.request();
     }
+    webSocket.request();
   }
 
   @Override
