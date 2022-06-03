@@ -15,10 +15,16 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.GoogleCredentials;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -118,6 +124,45 @@ class TokenRefreshInterceptorTest {
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
+      assertTrue(reissue);
+    } finally {
+      // Remove any side effect.
+      System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
+    }
+
+  }
+
+  @Test
+  void shouldRefreshGCPToken() throws Exception {
+    try {
+      // Prepare kubeconfig for autoconfiguration
+      File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig-gcp")),
+        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
+
+      String fakeToken = "new-fake-token";
+      String fakeTokenExpiry = "2121-08-05T02:30:24Z";
+      GoogleCredentials mockGC = Mockito.mock(GoogleCredentials.class);
+      GCPAuthenticatorUtils.setCredentials(mockGC);
+      Mockito.when(mockGC.getAccessToken())
+        .thenReturn(new AccessToken(fakeToken, Date.from(Instant.parse(fakeTokenExpiry))));
+
+      // Prepare HTTP call that will fail with 401 Unauthorized to trigger GCP token renewal.
+      HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+
+      // Loads the initial kubeconfig.
+      Config config = Config.autoConfigure(null);
+
+      // Copy over new config with following gcp auth provider configuration:
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig-gcp")),
+        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class));
+      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
+
+      // Make the call and check that renewed token was read at 401 Unauthorized.
+      Mockito.verify(builder).setHeader("Authorization", "Bearer new-fake-token");
       assertTrue(reissue);
     } finally {
       // Remove any side effect.

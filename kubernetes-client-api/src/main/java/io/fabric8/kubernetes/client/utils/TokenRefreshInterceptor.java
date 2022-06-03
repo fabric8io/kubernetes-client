@@ -52,7 +52,10 @@ public class TokenRefreshInterceptor implements Interceptor {
       if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
         newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(),
             factory.newBuilder());
-      } else {
+      } else if(newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("gcp")){
+        newAccessToken = GCPAuthenticatorUtils.resolveTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig());
+      }
+      else {
         newAccessToken = CompletableFuture.completedFuture(newestConfig.getOauthToken());
       }
 
