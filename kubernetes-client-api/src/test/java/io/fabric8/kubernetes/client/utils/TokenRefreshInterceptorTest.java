@@ -168,6 +168,5 @@ class TokenRefreshInterceptorTest {
       // Remove any side effect.
       System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
     }
-
   }
 }
