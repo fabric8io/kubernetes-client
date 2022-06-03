@@ -1908,7 +1908,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1beta1",
+          "default": "policy/v1",
           "required": true
         },
         "deleteOptions": {

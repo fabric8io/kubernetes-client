@@ -79,33 +79,6 @@
       <plugin>
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-        <version>${jsonschema2pojo.version}</version>
-        <configuration>
-          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
-          <targetPackage>io.fabric8.volcano.api.model</targetPackage>
-          <includeConstructors>true</includeConstructors>
-          <includeJsr303Annotations>false</includeJsr303Annotations>
-          <includeToString>false</includeToString>
-          <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-          <customAnnotator>io.fabric8.kubernetes.ModelAnnotator</customAnnotator>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>model-annotator</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

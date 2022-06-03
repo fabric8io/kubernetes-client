@@ -95,6 +95,6 @@ class KameletModelTest {
     assertNotNull(kamelet.getSpec().getDefinition().getProperties());
     assertNotNull(kamelet.getSpec().getDefinition().getProperties().get("validate"));
     assertEquals(Collections.singletonList("urn:alm:descriptor:com.tectonic.ui:checkbox"),
-        kamelet.getSpec().getDefinition().getProperties().get("validate").getxDescriptors());
+        kamelet.getSpec().getDefinition().getProperties().get("validate").getXDescriptors());
   }
 }

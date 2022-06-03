@@ -84,33 +84,6 @@
       <plugin>
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-        <version>${jsonschema2pojo.version}</version>
-        <configuration>
-          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
-          <targetPackage>io.fabric8.certmanager.api.model</targetPackage>
-          <includeConstructors>true</includeConstructors>
-          <includeJsr303Annotations>false</includeJsr303Annotations>
-          <includeToString>false</includeToString>
-          <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-          <customAnnotator>io.fabric8.kubernetes.ModelAnnotator</customAnnotator>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>model-annotator</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -121,10 +94,10 @@
               <target>
                 <echo>removing the duplicate generated class</echo>
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/acme/v1beta1/ACMEChallengeSolverHTTP01Ingress.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1beta1/ACMEChallengeSolverHTTP01Ingress.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/v1beta1/CertificateRequestSpec.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/v1beta1/CertificateRequestSpec.java"
                   verbose="true" />
               </target>
             </configuration>

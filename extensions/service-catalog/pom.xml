@@ -28,6 +28,10 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Service Catalog :: Extension</name>
 
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.servicecatalog.api.model</jsonschema2pojo.targetPackage>
+  </properties>
+
   <modules>
     <module>model</module>
     <module>client</module>

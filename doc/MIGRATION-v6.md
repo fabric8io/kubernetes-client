@@ -210,6 +210,8 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
 
 - io.fabric8.volumesnapshot.client.internal.XXXResource interfaces moved to io.fabric8.volumesnapshot.client.XXXResource to no longer be in an internal package.
 
+- the jsonschema2pojo logic was consolidated with the built-in models.  This introduces some previously excluded fields, such as PipelineSpec._finally.  It will also manipulate properties to conform to expectations of the builder logic - so rather than JSONSchemaPropsBuilder.getxDescriptors there will be getXDescriptors.
+
 ## Adapt Changes
 
 Client.isAdaptable and Client.adapt will check first if the existing client is an instance of the desired type.

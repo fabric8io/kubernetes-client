@@ -27,6 +27,10 @@
   <artifactId>certmanager-extension-pom</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Cert Manager :: Extension</name>
+  
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.certmanager.api.model</jsonschema2pojo.targetPackage>
+  </properties>
 
   <modules>
     <module>model-v1alpha2</module>

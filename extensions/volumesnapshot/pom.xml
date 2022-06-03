@@ -29,6 +29,10 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Volume Snapshot :: Extension</name>
 
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.volumesnapshot.api.model</jsonschema2pojo.targetPackage>
+  </properties>
+
   <modules>
     <module>model</module>
     <module>client</module>
