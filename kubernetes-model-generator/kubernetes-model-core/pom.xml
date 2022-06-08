@@ -155,7 +155,6 @@
             <artifactId>jsonschema2pojo-maven-plugin</artifactId>
             <configuration>
               <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.KubernetesCoreTypeAnnotator</customAnnotator>
-              <customRuleFactory>io.fabric8.kubernetes.jsonschema2pojo.Fabric8RuleFactory</customRuleFactory>
             </configuration>
           </plugin>
           <plugin>

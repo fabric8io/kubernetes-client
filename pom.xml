@@ -94,9 +94,9 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.23.0</assertj.core.version>
+    <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>15.5.0</approvaltests.version>
+    <approvaltests.version>15.6.0</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -111,8 +111,8 @@
     <junit.version>5.8.2</junit.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
+    <mockito.version>4.6.1</mockito.version>
     <google.version>1.3.0</google.version>
-    <mockito.version>4.6.0</mockito.version>
     <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.30</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
@@ -127,7 +127,7 @@
     <maven.bundle.plugin.version>5.1.6</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.3.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M6</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
     <maven.release.plugin.version>3.0.0-M5</maven.release.plugin.version>
@@ -147,7 +147,7 @@
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.22.5</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.22.6</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -178,9 +178,10 @@
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
+
+    <jsonschema2pojo.targetPackage>io.fabric8.kubernetes.api.model</jsonschema2pojo.targetPackage>
   </properties>
   <modules>
-    <module>model-annotator</module>
     <module>kubernetes-model-generator</module>
     <module>kubernetes-client-api</module>
     <module>kubernetes-client</module>
@@ -971,6 +972,38 @@
           <artifactId>sonar-maven-plugin</artifactId>
           <version>${sonar-maven-plugin.version}</version>
         </plugin>
+        <plugin>
+          <groupId>org.jsonschema2pojo</groupId>
+          <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+          <version>${jsonschema2pojo.version}</version>
+          <configuration>
+            <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.KubernetesTypeAnnotator</customAnnotator>
+            <customRuleFactory>io.fabric8.kubernetes.jsonschema2pojo.Fabric8RuleFactory</customRuleFactory>
+            <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
+            <targetPackage>${jsonschema2pojo.targetPackage}</targetPackage>
+            <includeConstructors>true</includeConstructors>
+            <includeJsr303Annotations>false</includeJsr303Annotations>
+            <includeToString>false</includeToString>
+            <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+            <removeOldOutput>true</removeOldOutput>
+            <outputDirectory>${generate.targetDirectory}</outputDirectory>
+            <annotationStyle>none</annotationStyle>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>io.fabric8</groupId>
+              <artifactId>kubernetes-model-jsonschema2pojo</artifactId>
+              <version>${project.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -1359,6 +1392,23 @@
       <properties>
         <maven.compiler.release>8</maven.compiler.release>
       </properties>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.jsonschema2pojo</groupId>
+              <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+              <dependencies>
+                <dependency>
+                  <groupId>javax.annotation</groupId>
+                  <artifactId>javax.annotation-api</artifactId>
+                  <version>1.3.2</version>
+                </dependency>
+              </dependencies>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
     <profile>
       <id>java-11</id>

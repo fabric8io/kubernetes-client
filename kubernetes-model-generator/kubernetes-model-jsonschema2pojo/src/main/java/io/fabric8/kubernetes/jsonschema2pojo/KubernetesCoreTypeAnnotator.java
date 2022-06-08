@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.jsonschema2pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -28,6 +29,7 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JFormatter;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.TemplateTransformation;
 import io.sundr.transform.annotations.TemplateTransformations;
@@ -40,8 +42,10 @@ import org.jsonschema2pojo.Jackson2Annotator;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String ANNOTATION_VALUE = "value";
@@ -49,11 +53,14 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String METADATA = "metadata";
   protected static final String KIND = "kind";
   protected static final String DEFAULT = "default";
+  protected static final String INTERFACE_TYPE_PROPERTY = "interfaceType";
   public static final String CORE_PACKAGE = "core";
   public static final String OPENSHIFT_PACKAGE = "openshift";
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
   protected String moduleName = null;
+
+  private final Set<String> handledClasses = new HashSet<>();
 
   public KubernetesCoreTypeAnnotator(GenerationConfig generationConfig) {
     super(generationConfig);
@@ -61,6 +68,11 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   @Override
   public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
+    // ensure every class is only processed once
+    if (handledClasses.contains(clazz.fullName())) {
+      return;
+    }
+
     JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray(ANNOTATION_VALUE);
 
     annotationValue.param(API_VERSION);
@@ -91,23 +103,23 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
       String resourceName = clazz.fullName();
       if (resourceName.endsWith("List")) {
-          resourceName = resourceName.substring(0, resourceName.length() - 4);
-          final JDefinedClass resourceClass = pendingResources.remove(resourceName);
-          if (resourceClass != null) {
-              annotate(clazz, apiVersion, apiGroup);
-              addClassesToPropertyFiles(resourceClass);
-          } else {
-              pendingLists.put(resourceName, clazz);
-          }
+        resourceName = resourceName.substring(0, resourceName.length() - 4);
+        final JDefinedClass resourceClass = pendingResources.remove(resourceName);
+        if (resourceClass != null) {
+          annotate(clazz, apiVersion, apiGroup);
+          addClassesToPropertyFiles(resourceClass);
+        } else {
+          pendingLists.put(resourceName, clazz);
+        }
       } else {
-          final JDefinedClass resourceListClass = pendingLists.remove(resourceName);
-          if (resourceListClass != null) {
-              annotate(resourceListClass, apiVersion, apiGroup);
-              addClassesToPropertyFiles(clazz);
-          } else {
-              annotate(clazz, apiVersion, apiGroup);
-              pendingResources.put(resourceName, clazz);
-          }
+        final JDefinedClass resourceListClass = pendingLists.remove(resourceName);
+        if (resourceListClass != null) {
+          annotate(resourceListClass, apiVersion, apiGroup);
+          addClassesToPropertyFiles(clazz);
+        } else {
+          annotate(clazz, apiVersion, apiGroup);
+          pendingResources.put(resourceName, clazz);
+        }
       }
     }
   }
@@ -119,7 +131,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   @Override
   public void propertyInclusion(JDefinedClass clazz, JsonNode schema) {
-    if (moduleName == null) {
+    if (moduleName == null && schema.has("$module")) {
       moduleName = schema.get("$module").textValue();
     }
 
@@ -127,10 +139,17 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       annotateSerde(clazz, JsonSerialize.class, schema.get("serializer").asText());
     }
 
+    String deserializer = null;
     if (schema.has("deserializer")) {
-      annotateSerde(clazz, JsonDeserialize.class, schema.get("deserializer").asText());
+      deserializer = schema.get("deserializer").asText();
+    }
+
+    if (schema.has("properties") && hasInterfaceFields(schema.get("properties"))) {
+      clazz.annotate(JsonDeserialize.class)
+          .param("using", JsonUnwrappedDeserializer.class);
     } else {
-      clazz.annotate(JsonDeserialize.class).param("using", JsonDeserializer.None.class);
+      annotateSerde(clazz, JsonDeserialize.class,
+          deserializer == null ? JsonDeserializer.None.class.getCanonicalName() : deserializer);
     }
 
     super.propertyInclusion(clazz, schema);
@@ -160,10 +179,15 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     if (propertyNode.has("javaOmitEmpty") && propertyNode.get("javaOmitEmpty").asBoolean(false)) {
       field.annotate(JsonInclude.class).param(ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
     }
+
+    // Annotate JsonUnwrapped for interfaces as they cannot be created when no implementations
+    if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
+      field.annotate(JsonUnwrapped.class);
+    }
   }
 
   protected void processBuildable(JDefinedClass clazz) {
-      clazz.annotate(Buildable.class)
+    clazz.annotate(Buildable.class)
         .param("editableEnabled", false)
         .param("validationEnabled", false)
         .param("generateBuilderPackage", true)
@@ -172,12 +196,15 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   }
 
   protected void addClassesToPropertyFiles(JDefinedClass clazz) {
-    String packageCategory = getPackageCategory(clazz.getPackage().name());
-    if (moduleName.equals(packageCategory) /*&& shouldIncludeClass(clazz.name())*/) {
+    if (moduleName == null || moduleName.equals(getPackageCategory(clazz.getPackage().name())) /*
+                                                                                                * &&
+                                                                                                * shouldIncludeClass(clazz.name(
+                                                                                                * ))
+                                                                                                */) {
       JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
-        .paramArray(ANNOTATION_VALUE);
+          .paramArray(ANNOTATION_VALUE);
       arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
-        .param("outputPath", moduleName + ".properties").param("gather", true);
+          .param("outputPath", (moduleName == null ? "model" : moduleName) + ".properties").param("gather", true);
     }
   }
 
@@ -198,6 +225,17 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       throw new IllegalArgumentException("Invalid package name encountered: " + packageName);
     }
     return parts[5];
+  }
+
+  private boolean hasInterfaceFields(JsonNode propertiesNode) {
+    for (Iterator<JsonNode> field = propertiesNode.elements(); field.hasNext();) {
+      JsonNode propertyNode = field.next();
+      if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

@@ -66,12 +66,14 @@ declare -a modules=(
     "../extensions/service-catalog/generator"
     "../extensions/tekton/generator-v1alpha1"
     "../extensions/tekton/generator-v1beta1"
+    "../extensions/tekton/generator-triggers"
     "../extensions/verticalpodautoscaler/generator-v1"
     "../extensions/volcano/generator-v1beta1"
     "../extensions/volumesnapshot/generator"
     "../extensions/istio/generator-v1alpha3"
     "../extensions/istio/generator-v1beta1"
     "../extensions/open-cluster-management/generator-apps"
+    "../extensions/open-cluster-management/generator-agent"
     "../extensions/open-cluster-management/generator-cluster"
     "../extensions/open-cluster-management/generator-discovery"
     "../extensions/open-cluster-management/generator-observability"
@@ -123,7 +125,6 @@ generateSingleModule() {
 }
 
 extensionInstallCommonModules() {
-    mvn clean install -f ../model-annotator/pom.xml
     mvn clean install -N -f ../extensions/pom.xml
     for parent in ${extensionModuleParents[*]}
     do

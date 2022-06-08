@@ -41,5 +41,19 @@
     <module>istio</module>
     <module>open-cluster-management</module>
   </modules>
-
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.jsonschema2pojo</groupId>
+          <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+          <configuration>
+            <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.ExtensionTypeAnnotator</customAnnotator>
+          </configuration>
+        </plugin> 
+      </plugins>
+    </pluginManagement>
+  </build>
+  
 </project>

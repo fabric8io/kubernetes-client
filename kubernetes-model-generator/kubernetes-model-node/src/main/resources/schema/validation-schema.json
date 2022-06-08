@@ -1116,11 +1116,8 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "node.k8s.io/v1",
+          "default": "node.k8s.io/v1alpha1",
           "required": true
-        },
-        "handler": {
-          "type": "string"
         },
         "kind": {
           "type": "string",
@@ -1131,13 +1128,9 @@
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "overhead": {
-          "$ref": "#/definitions/kubernetes_node_v1_Overhead",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.Overhead"
-        },
-        "scheduling": {
-          "$ref": "#/definitions/kubernetes_node_v1_Scheduling",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.Scheduling"
+        "spec": {
+          "$ref": "#/definitions/kubernetes_node_v1alpha_RuntimeClassSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClassSpec"
         }
       },
       "additionalProperties": true
@@ -1146,14 +1139,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "node.k8s.io/v1",
+          "default": "node.k8s.io/v1alpha1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_node_v1_RuntimeClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.RuntimeClass"
+            "$ref": "#/definitions/kubernetes_node_v1alpha_RuntimeClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClass"
           }
         },
         "kind": {

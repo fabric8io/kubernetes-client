@@ -27,6 +27,10 @@
   <artifactId>camel-k-extension-pom</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Camel-K :: Extension</name>
+  
+  <properties>
+    <jsonschema2pojo.targetPackage>io.fabric8.camelk.api.model</jsonschema2pojo.targetPackage>
+  </properties>
 
   <modules>
     <module>model-v1alpha1</module>

@@ -11,6 +11,7 @@
 * Fix #4140: changed StatefulSet rolling pause / resume to unsupported.  Also relying on default rolling logic to Deployments and StatefulSets
 * Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
 * Fix #4149: port forwarding can accept both blocking and non-blocking channels
+* Fix #4171: allowing any object in clone
 
 #### Improvements
 * Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
@@ -27,6 +28,7 @@ SharedIndexInformer allows for the addition and removal of indexes even after st
 And Store.getKey can be used rather than directly referencing static Cache functions.
 * Fix #4065: Client.getAPIResources("v1") can be used to obtain the core/legacy resources
 * Fix #4142: Added patch() and patch(PatchContext) methods for use with resource and load
+* Fix #3486: using a common jsonschema2pojo annotator - see the migration guide for possible changes to extension models.
 * Fix #4146: ManagedKubernetesClient and ManagedOpenShiftClient as delayed OSGi services
 * Fix #4093: adding a possibility to get a log as an `InputStream` from the `Loggable` resources
 

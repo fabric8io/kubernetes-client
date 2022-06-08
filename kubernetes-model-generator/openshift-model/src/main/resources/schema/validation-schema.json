@@ -21846,7 +21846,13 @@
     },
     "objectreference": {
       "properties": {
-        "group": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "kind": {
           "type": "string"
         },
         "name": {
@@ -21855,7 +21861,10 @@
         "namespace": {
           "type": "string"
         },
-        "resource": {
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
           "type": "string"
         }
       },

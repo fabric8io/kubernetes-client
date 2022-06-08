@@ -84,33 +84,6 @@
       <plugin>
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-        <version>${jsonschema2pojo.version}</version>
-        <configuration>
-          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
-          <targetPackage>io.fabric8.certmanager.api.model</targetPackage>
-          <includeConstructors>true</includeConstructors>
-          <includeJsr303Annotations>false</includeJsr303Annotations>
-          <includeToString>false</includeToString>
-          <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-          <customAnnotator>io.fabric8.kubernetes.ModelAnnotator</customAnnotator>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>model-annotator</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -121,40 +94,40 @@
               <target>
                 <echo>removing the duplicate generated class</echo>
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01Ingress.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01Ingress.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableVolume.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableVolume.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableObjectMeta.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableObjectMeta.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableContainer.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableContainer.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableContainerPort.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableContainerPort.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableVolumeMount.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableVolumeMount.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableLabelSelector.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableLabelSelector.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/EditableEnvVar.java"
+                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableEnvVar.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01IngressFluentImpl.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01IngressFluentImpl.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01IngressFluent.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01IngressFluent.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01IngressBuilder.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha2/ACMEChallengeSolverHTTP01IngressBuilder.java"
                   verbose="true" />
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/certmanager/api/model/acme/v1alpha2/EditableACMEChallengeSolverHTTP01Ingress.java"
+                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha2/EditableACMEChallengeSolverHTTP01Ingress.java"
                   verbose="true" />
               </target>
             </configuration>

@@ -7172,12 +7172,12 @@
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
         },
-        "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
-        },
         "message": {
           "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "reason": {
           "type": "string"

@@ -2372,19 +2372,25 @@
     },
     "machinepool": {
       "properties": {
-        "coresPerSocket": {
-          "type": "integer"
+        "amiID": {
+          "type": "string"
         },
-        "cpus": {
-          "type": "integer"
+        "iamRole": {
+          "type": "string"
         },
-        "memoryMB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "rootVolume": {
+          "$ref": "#/definitions/os_installer_aws_v1_EC2RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2RootVolume"
         },
-        "osDisk": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
+        "type": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -2642,6 +2648,52 @@
       "additionalProperties": true
     },
     "platform": {
+      "properties": {
+        "alibabacloud": {
+          "$ref": "#/definitions/os_installer_alibabacloud_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform"
+        },
+        "aws": {
+          "$ref": "#/definitions/os_installer_aws_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.Platform"
+        },
+        "azure": {
+          "$ref": "#/definitions/os_installer_azure_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.Platform"
+        },
+        "baremetal": {
+          "$ref": "#/definitions/os_installer_baremetal_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.baremetal.v1.Platform"
+        },
+        "gcp": {
+          "$ref": "#/definitions/os_installer_gcp_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.Platform"
+        },
+        "ibmcloud": {
+          "$ref": "#/definitions/os_installer_ibmcloud_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform"
+        },
+        "libvirt": {
+          "$ref": "#/definitions/os_installer_libvirt_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.Platform"
+        },
+        "none": {
+          "$ref": "#/definitions/os_installer_none_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.none.v1.Platform"
+        },
+        "openstack": {
+          "$ref": "#/definitions/os_installer_openstack_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.Platform"
+        },
+        "ovirt": {
+          "$ref": "#/definitions/os_installer_ovirt_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.Platform"
+        },
+        "vsphere": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Platform"
+        }
+      },
       "additionalProperties": true
     },
     "proxy": {
