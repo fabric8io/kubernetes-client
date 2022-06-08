@@ -35,4 +35,12 @@ On top of the http client threads the fabric8 client maintains a task thread poo
 Finally the fabric8 client will use 1 thread per PortForward and an additional thread per socket connection - this may be improved upon in the future.
 
 ### How to enable GKE auth support?
-Fabric8 now suppoer GKE auth token. Please read for more details to enable it [https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication#environments-without-gcloud]
+Fabric8 now support GKE auth token. To enable please add google-auth-library-oauth2-http library on your project
+
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>${google.version}</version>
+    </dependency>
+
+Further information [https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication#environments-without-gcloud](https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication#environments-without-gcloud)

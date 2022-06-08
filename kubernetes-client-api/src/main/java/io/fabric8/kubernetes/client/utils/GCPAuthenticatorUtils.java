@@ -61,7 +61,9 @@ public class GCPAuthenticatorUtils {
     try {
       if (credentials == null) {
         credentials = GoogleCredentials.getApplicationDefault().createScoped(scopes);
+        LOGGER.debug("GoogleCredentials: ", credentials);
       }
+      credentials.refresh();
       AccessToken accessToken = credentials.getAccessToken();
       currentAuthProviderConfig.put(ACCESS_TOKEN_PARAM, accessToken.getTokenValue());
       currentAuthProviderConfig.put(EXPIRY_PARAM,
@@ -75,7 +77,7 @@ public class GCPAuthenticatorUtils {
   }
 
   public static String[] parseScopes(Map<String, String> config) {
-    String scopes = (String) config.get(SCOPES);
+    String scopes = config.get(SCOPES);
     if (scopes == null) {
       return DEFAULT_SCOPES;
     }
