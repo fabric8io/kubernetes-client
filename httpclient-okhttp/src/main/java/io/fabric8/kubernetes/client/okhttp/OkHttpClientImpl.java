@@ -211,7 +211,7 @@ public class OkHttpClientImpl implements HttpClient {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<String>(consumer, s) {
       @Override
       protected String process(BufferedSource source) throws IOException {
-        return source.readUtf8LineStrict();
+        return source.readUtf8Line();
       }
     };
     return sendAsync(request, handler);

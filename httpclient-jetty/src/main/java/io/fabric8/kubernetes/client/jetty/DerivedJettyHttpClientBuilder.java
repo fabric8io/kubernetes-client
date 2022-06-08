@@ -24,7 +24,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unchecked")
-public abstract class DerivedJettyHttpClientBuilder<T extends HttpClient.DerivedClientBuilder> implements HttpClient.DerivedClientBuilder {
+public abstract class DerivedJettyHttpClientBuilder<T extends HttpClient.DerivedClientBuilder>
+    implements HttpClient.DerivedClientBuilder {
 
   final JettyHttpClientFactory factory;
   Duration readTimeout = Duration.ZERO;

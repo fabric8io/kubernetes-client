@@ -42,7 +42,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
 public class JettyHttpClientBuilder extends DerivedJettyHttpClientBuilder<JettyHttpClientBuilder>
-  implements Builder {
+    implements Builder {
 
   private Duration connectTimeout;
   private SSLContext sslContext;

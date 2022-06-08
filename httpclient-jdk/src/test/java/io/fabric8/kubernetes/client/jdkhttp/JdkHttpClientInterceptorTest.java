@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.AbstractInterceptorTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
 
 @SuppressWarnings("java:S2187")
 public class JdkHttpClientInterceptorTest extends AbstractInterceptorTest {
@@ -26,15 +25,4 @@ public class JdkHttpClientInterceptorTest extends AbstractInterceptorTest {
     return new JdkHttpClientFactory();
   }
 
-  // TODO: Check implementation
-  @Disabled("TODO: Check implementation")
-  @Override
-  public void afterHttpFailureReplacesResponseInConsumeLines() {
-  }
-
-  // TODO: Check implementation
-  @Disabled("TODO: Check implementation")
-  @Override
-  public void afterHttpFailureReplacesResponseInConsumeBytes() {
-  }
 }

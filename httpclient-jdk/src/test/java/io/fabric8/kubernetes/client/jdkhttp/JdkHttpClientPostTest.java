@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.http.AbstractHttpPostTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
 @SuppressWarnings("java:S2187")
-public class JdkHttpClientPostTest  extends AbstractHttpPostTest {
+public class JdkHttpClientPostTest extends AbstractHttpPostTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new JdkHttpClientFactory();

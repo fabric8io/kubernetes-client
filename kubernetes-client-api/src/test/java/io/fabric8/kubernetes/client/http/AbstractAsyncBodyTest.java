@@ -60,7 +60,7 @@ public abstract class AbstractAsyncBodyTest {
           client.newHttpRequestBuilder().uri(server.url("/consume-lines")).build(),
           (value, asyncBody) -> {
             responseText.append(value);
-            asyncBody.done().complete(null); // OkHttp requires this, not sure if it should
+            asyncBody.consume();
           })
           .get(10L, TimeUnit.SECONDS);
       assertThat(responseText).isEmpty();
@@ -80,7 +80,10 @@ public abstract class AbstractAsyncBodyTest {
       final StringBuffer responseText = new StringBuffer();
       final HttpResponse<HttpClient.AsyncBody> asyncBodyResponse = client
           .consumeLines(client.newHttpRequestBuilder()
-              .uri(server.url("/cancel")).build(), (value, asyncBody) -> responseText.append(value))
+              .uri(server.url("/cancel")).build(), (value, asyncBody) -> {
+                responseText.append(value);
+                asyncBody.consume();
+              })
           .get(10L, TimeUnit.SECONDS);
       asyncBodyResponse.body().cancel();
       asyncBodyResponse.body().consume();
@@ -103,7 +106,7 @@ public abstract class AbstractAsyncBodyTest {
           (value, asyncBody) -> {
             responseText.append(value.stream().map(StandardCharsets.UTF_8::decode)
                 .map(CharBuffer::toString).collect(Collectors.joining()));
-            asyncBody.done().complete(null); // OkHttp requires this, not sure if it should
+            asyncBody.consume();
           })
           .get(10L, TimeUnit.SECONDS);
       assertThat(responseText).isEmpty();

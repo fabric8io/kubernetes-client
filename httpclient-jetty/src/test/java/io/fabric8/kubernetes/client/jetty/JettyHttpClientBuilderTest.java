@@ -56,12 +56,11 @@ class JettyHttpClientBuilderTest {
   void underlyingHttpAndWsClientsDifferentTransports() {
     try (var client = factory.newBuilder().build()) {
       assertThat(client)
-        .satisfies(c -> assertThat(c.getJetty())
-          .isNotSameAs(c.getJettyWs().getHttpClient())
-          .returns(c.getJettyWs().getSslContextFactory(), HttpClient::getSslContextFactory)
-          .extracting(HttpClient::getTransport)
-          .isNotSameAs(c.getJettyWs().getHttpClient().getTransport())
-        );
+          .satisfies(c -> assertThat(c.getJetty())
+              .isNotSameAs(c.getJettyWs().getHttpClient())
+              .returns(c.getJettyWs().getSslContextFactory(), HttpClient::getSslContextFactory)
+              .extracting(HttpClient::getTransport)
+              .isNotSameAs(c.getJettyWs().getHttpClient().getTransport()));
     }
   }
 
@@ -70,9 +69,9 @@ class JettyHttpClientBuilderTest {
   void generatedWSClientHasDisabledIdleTimeout() {
     try (var client = factory.newBuilder().build()) {
       assertThat(client)
-        .extracting(JettyHttpClient::getJettyWs)
-        .extracting(WebSocketClient::getIdleTimeout)
-        .isEqualTo(Duration.ZERO);
+          .extracting(JettyHttpClient::getJettyWs)
+          .extracting(WebSocketClient::getIdleTimeout)
+          .isEqualTo(Duration.ZERO);
     }
   }
 
@@ -82,11 +81,11 @@ class JettyHttpClientBuilderTest {
     try (var client = factory.newBuilder().build()) {
       final var client2 = client.newBuilder().build();
       assertThat(client2)
-        .isInstanceOf(JettyHttpClient.class)
-        .asInstanceOf(InstanceOfAssertFactories.type(JettyHttpClient.class))
-        .isNotSameAs(client)
-        .returns(client.getJetty(), JettyHttpClient::getJetty)
-        .returns(client.getJettyWs(), JettyHttpClient::getJettyWs);
+          .isInstanceOf(JettyHttpClient.class)
+          .asInstanceOf(InstanceOfAssertFactories.type(JettyHttpClient.class))
+          .isNotSameAs(client)
+          .returns(client.getJetty(), JettyHttpClient::getJetty)
+          .returns(client.getJettyWs(), JettyHttpClient::getJettyWs);
     }
   }
 
@@ -95,8 +94,8 @@ class JettyHttpClientBuilderTest {
   void connectTimeout() {
     try (var client = factory.newBuilder().connectTimeout(1337, TimeUnit.MILLISECONDS).build()) {
       assertThat(client)
-        .returns(1337L, c -> c.getJetty().getConnectTimeout())
-        .returns(1337L, c -> c.getJettyWs().getConnectTimeout());
+          .returns(1337L, c -> c.getJetty().getConnectTimeout())
+          .returns(1337L, c -> c.getJettyWs().getConnectTimeout());
     }
   }
 
@@ -104,19 +103,19 @@ class JettyHttpClientBuilderTest {
   @DisplayName("followRedirects=false, no redirection")
   void followAllRedirectsDisabled() throws Exception {
     server.expect()
-      .withPath("/redirect-me")
-      .andReply(ResponseProviders.of(301, "", Collections.singletonMap("Location", "/new-location")))
-      .always();
+        .withPath("/redirect-me")
+        .andReply(ResponseProviders.of(301, "", Collections.singletonMap("Location", "/new-location")))
+        .always();
     server.expect()
-      .withPath("/new-location")
-      .andReturn(200, "You made it!")
-      .always();
+        .withPath("/new-location")
+        .andReturn(200, "You made it!")
+        .always();
     try (var client = factory.newBuilder().build()) {
       final var result = client
-        .sendAsync(client.newHttpRequestBuilder().uri(server.url("redirect-me")).build(), String.class)
+          .sendAsync(client.newHttpRequestBuilder().uri(server.url("redirect-me")).build(), String.class)
           .get(10, TimeUnit.SECONDS);
       assertThat(result)
-        .returns(301, HttpResponse::code);
+          .returns(301, HttpResponse::code);
     }
   }
 
@@ -124,26 +123,26 @@ class JettyHttpClientBuilderTest {
   @DisplayName("followAllRedirects=true, redirected")
   void followAllRedirectsEnabled() throws Exception {
     server.expect()
-      .withPath("/redirect-me")
-      .andReply(ResponseProviders.of(301, "", Collections.singletonMap("Location", "/new-location")))
-      .always();
+        .withPath("/redirect-me")
+        .andReply(ResponseProviders.of(301, "", Collections.singletonMap("Location", "/new-location")))
+        .always();
     server.expect()
-      .withPath("/new-location")
-      .andReturn(200, "You made it!")
-      .always();
+        .withPath("/new-location")
+        .andReturn(200, "You made it!")
+        .always();
     try (var client = factory.newBuilder().followAllRedirects().build()) {
       final var result = client
-        .sendAsync(client.newHttpRequestBuilder().uri(server.url("redirect-me")).build(), String.class)
+          .sendAsync(client.newHttpRequestBuilder().uri(server.url("redirect-me")).build(), String.class)
           .get(10, TimeUnit.SECONDS);
       assertThat(result)
-        .returns(200, HttpResponse::code)
-        .returns("You made it!", r -> {
-          try {
-            return r.bodyString();
-          } catch (IOException ignored) {
-            return null;
-          }
-        });
+          .returns(200, HttpResponse::code)
+          .returns("You made it!", r -> {
+            try {
+              return r.bodyString();
+            } catch (IOException ignored) {
+              return null;
+            }
+          });
     }
   }
 

@@ -25,7 +25,6 @@ import org.eclipse.jetty.client.api.Result;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 
 public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Adapter implements HttpClient.AsyncBody {
 
@@ -33,19 +32,20 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
   private final HttpClient.BodyConsumer<T> bodyConsumer;
   private final CompletableFuture<HttpResponse<HttpClient.AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private final CountDownLatch consumeLock;
+  private boolean consume;
 
   JettyAsyncResponseListener(HttpRequest httpRequest, HttpClient.BodyConsumer<T> bodyConsumer) {
     this.httpRequest = httpRequest;
     this.bodyConsumer = bodyConsumer;
     asyncResponse = new CompletableFuture<>();
     asyncBodyDone = new CompletableFuture<>();
-    consumeLock = new CountDownLatch(1);
+    consume = false;
   }
 
   @Override
-  public void consume() {
-    consumeLock.countDown();
+  public synchronized void consume() {
+    consume = true;
+    this.notifyAll();
   }
 
   @Override
@@ -76,7 +76,11 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
   @Override
   public void onContent(Response response, ByteBuffer content) {
     try {
-      consumeLock.await();
+      synchronized (this) {
+        while (!consume && !asyncBodyDone.isCancelled()) {
+          this.wait();
+        }
+      }
       if (!asyncBodyDone.isCancelled()) {
         bodyConsumer.consume(process(response, content), this);
       }

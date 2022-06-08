@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -106,16 +105,19 @@ public abstract class AbstractInterceptorTest {
             return CompletableFuture.completedFuture(true);
           }
         });
-    final AtomicReference<String> result = new AtomicReference<>();
+    final CompletableFuture<String> result = new CompletableFuture<>();
     // When
     try (HttpClient client = builder.build()) {
       final HttpResponse<HttpClient.AsyncBody> asyncR = client.consumeLines(
-          client.newHttpRequestBuilder().uri(server.url("/not-found")).build(), (s, ab) -> result.set(s))
+          client.newHttpRequestBuilder().uri(server.url("/not-found")).build(), (s, ab) -> {
+            result.complete(s);
+            ab.consume();
+          })
           .get(10L, TimeUnit.SECONDS);
       asyncR.body().consume();
       asyncR.body().done().get(10L, TimeUnit.SECONDS);
       // Then
-      assertThat(result).hasValue("This works");
+      assertThat(result.get()).isEqualTo("This works");
     }
   }
 
@@ -132,17 +134,20 @@ public abstract class AbstractInterceptorTest {
             return CompletableFuture.completedFuture(true);
           }
         });
-    final AtomicReference<String> result = new AtomicReference<>();
+    final CompletableFuture<String> result = new CompletableFuture<>();
     // When
     try (HttpClient client = builder.build()) {
       final HttpResponse<HttpClient.AsyncBody> asyncR = client.consumeBytes(
           client.newHttpRequestBuilder().uri(server.url("/not-found")).build(),
-          (s, ab) -> result.set(StandardCharsets.UTF_8.decode(s.iterator().next()).toString()))
+          (s, ab) -> {
+            result.complete(StandardCharsets.UTF_8.decode(s.iterator().next()).toString());
+            ab.consume();
+          })
           .get(10L, TimeUnit.SECONDS);
       asyncR.body().consume();
       asyncR.body().done().get(10L, TimeUnit.SECONDS);
       // Then
-      assertThat(result).hasValue("This works");
+      assertThat(result.get()).isEqualTo("This works");
     }
   }
 

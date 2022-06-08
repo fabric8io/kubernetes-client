@@ -76,14 +76,14 @@ class JettyHttpClientTest {
         originalBuilder, httpClient, webSocketClient, Collections.emptyList(), null)) {
       // When
       final var result = firstClient.newBuilder()
-        .readTimeout(313373, TimeUnit.SECONDS);
+          .readTimeout(313373, TimeUnit.SECONDS);
       // Then
       assertThat(result)
           .isNotNull()
           .isInstanceOf(DerivedJettyHttpClientBuilder.class)
           .isNotSameAs(originalBuilder);
       final var expected = Map.of(
-          "tlsVersions", new TlsVersion[]{TlsVersion.SSL_3_0},
+          "tlsVersions", new TlsVersion[] { TlsVersion.SSL_3_0 },
           "followAllRedirects", true);
       for (var entry : expected.entrySet()) {
         final var field = JettyHttpClientBuilder.class.getDeclaredField(entry.getKey());
@@ -132,7 +132,7 @@ class JettyHttpClientTest {
   @DisplayName("newWebSocketBuilder instantiates a JettyWebSocketBuilder")
   void newWebSocketBuilderInstantiatesJettyWebSocketBuilder() {
     try (var jettyHttpClient = new JettyHttpClient(
-      new JettyHttpClientBuilder(null), httpClient, webSocketClient, Collections.emptyList(), null)) {
+        new JettyHttpClientBuilder(null), httpClient, webSocketClient, Collections.emptyList(), null)) {
       // When
       final var result = jettyHttpClient.newWebSocketBuilder();
       // Then

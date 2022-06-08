@@ -44,6 +44,7 @@ import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 
 /**
  * TODO:
@@ -57,6 +58,9 @@ public class JdkHttpClientImpl implements HttpClient {
     private CompletableFuture<Void> done = new CompletableFuture<Void>();
     private final AtomicBoolean subscribed = new AtomicBoolean();
     private volatile Flow.Subscription subscription;
+    private T initialItem;
+    private boolean first = true;
+    private boolean isComplete;
 
     private AsyncBodySubscriber(BodyConsumer<T> consumer) {
       this.consumer = consumer;
@@ -69,11 +73,20 @@ public class JdkHttpClientImpl implements HttpClient {
         return;
       }
       this.subscription = subscription;
+      // the sendAsync future won't complete unless we do the initial request here
+      // so in onNext we'll trap the item until we're ready
       subscription.request(1);
     }
 
     @Override
     public void onNext(T item) {
+      synchronized (this) {
+        if (first) {
+          this.initialItem = item;
+          first = false;
+          return;
+        }
+      }
       try {
         if (item == null) {
           done.complete(null);
@@ -92,13 +105,32 @@ public class JdkHttpClientImpl implements HttpClient {
     }
 
     @Override
-    public void onComplete() {
+    public synchronized void onComplete() {
+      if (initialItem != null) {
+        this.isComplete = true;
+        return;
+      }
       done.complete(null);
     }
 
     @Override
-    public void consume() {
-      this.subscription.request(1);
+    public synchronized void consume() {
+      if (done.isDone()) {
+        return;
+      }
+      try {
+        first = false;
+        if (initialItem != null) {
+          T item = initialItem;
+          initialItem = null;
+          onNext(item);
+        }
+      } finally {
+        if (isComplete) {
+          done.complete(null);
+        }
+        this.subscription.request(1);
+      }
     }
 
     @Override
@@ -160,6 +192,26 @@ public class JdkHttpClientImpl implements HttpClient {
 
   }
 
+  static class AsyncResponse<T> {
+    java.net.http.HttpResponse<T> response;
+    AsyncBody asyncBody;
+
+    public AsyncResponse(java.net.http.HttpResponse<T> response, AsyncBody asyncBody) {
+      this.response = response;
+      this.asyncBody = asyncBody;
+    }
+  }
+
+  static class HandlerAndAsyncBody<T> {
+    BodyHandler<T> handler;
+    AsyncBody asyncBody;
+
+    public HandlerAndAsyncBody(BodyHandler<T> handler, AsyncBody asyncBody) {
+      this.handler = handler;
+      this.asyncBody = asyncBody;
+    }
+  }
+
   private JdkHttpClientBuilderImpl builder;
   private java.net.http.HttpClient httpClient;
 
@@ -185,20 +237,29 @@ public class JdkHttpClientImpl implements HttpClient {
 
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer) {
-    AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
-    BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
-    return sendAsync(request, handler).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, subscriber));
+    return sendAsync(request, () -> {
+      AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
+      BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
+      return new HandlerAndAsyncBody<>(handler, subscriber);
+    }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
   }
 
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer) {
-    AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
-    BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
-    return sendAsync(request, handler).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, subscriber));
+    return sendAsync(request, () -> {
+      AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
+      BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
+      return new HandlerAndAsyncBody<>(handler, subscriber);
+    }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
   }
 
   @Override
   public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
+    return sendAsync(request, () -> new HandlerAndAsyncBody<T>(toBodyHandler(type), null))
+        .thenApply(ar -> new JdkHttpResponseImpl<>(ar.response));
+  }
+
+  private <T> BodyHandler<T> toBodyHandler(Class<T> type) {
     BodyHandler<T> bodyHandler;
     if (type == null) {
       bodyHandler = (BodyHandler<T>) BodyHandlers.discarding();
@@ -218,10 +279,11 @@ public class JdkHttpClientImpl implements HttpClient {
         return (BodySubscriber<T>) downstream;
       };
     }
-    return sendAsync(request, bodyHandler).thenApply(JdkHttpResponseImpl::new);
+    return bodyHandler;
   }
 
-  public <T> CompletableFuture<java.net.http.HttpResponse<T>> sendAsync(HttpRequest request, BodyHandler<T> bodyHandler) {
+  public <T> CompletableFuture<AsyncResponse<T>> sendAsync(HttpRequest request,
+      Supplier<HandlerAndAsyncBody<T>> handlerAndAsyncBodySupplier) {
     JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl) request;
     JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
     for (Interceptor interceptor : builder.interceptors.values()) {
@@ -229,20 +291,26 @@ public class JdkHttpClientImpl implements HttpClient {
       jdkRequest = builderImpl.build();
     }
 
-    CompletableFuture<java.net.http.HttpResponse<T>> cf = this.getHttpClient().sendAsync(builderImpl.build().request,
-        bodyHandler);
+    HandlerAndAsyncBody<T> handlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
+
+    CompletableFuture<AsyncResponse<T>> cf = this.getHttpClient().sendAsync(builderImpl.build().request,
+        handlerAndAsyncBody.handler).thenApply(r -> new AsyncResponse<>(r, handlerAndAsyncBody.asyncBody));
 
     for (Interceptor interceptor : builder.interceptors.values()) {
-      cf = cf.thenCompose(response -> {
+      cf = cf.thenCompose(ar -> {
+        java.net.http.HttpResponse<T> response = ar.response;
         if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
           return interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response)).thenCompose(b -> {
             if (b) {
-              return this.getHttpClient().sendAsync(builderImpl.build().request, bodyHandler);
+              HandlerAndAsyncBody<T> interceptedHandlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
+
+              return this.getHttpClient().sendAsync(builderImpl.build().request, interceptedHandlerAndAsyncBody.handler)
+                  .thenApply(r -> new AsyncResponse<>(r, interceptedHandlerAndAsyncBody.asyncBody));
             }
-            return CompletableFuture.completedFuture(response);
+            return CompletableFuture.completedFuture(ar);
           });
         }
-        return CompletableFuture.completedFuture(response);
+        return CompletableFuture.completedFuture(ar);
       });
     }
 
