@@ -17,34 +17,12 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.AbstractAsyncBodyTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
-
 
 @SuppressWarnings("java:S2187")
-public class JdkHttpClientAsyncBodyTest  extends AbstractAsyncBodyTest {
+public class JdkHttpClientAsyncBodyTest extends AbstractAsyncBodyTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new JdkHttpClientFactory();
   }
 
-  // TODO: Check tests validate expected behavior
-  @Disabled("TODO: Check tests validate expected behavior")
-  @Override
-  public void consumeLinesProcessedAfterConsume() throws Exception {
-    super.consumeLinesProcessedAfterConsume();
-  }
-
-  // TODO: Check tests validate expected behavior
-  @Disabled("TODO: Check tests validate expected behavior")
-  @Override
-  public void consumeLinesNotProcessedIfCancelled() throws Exception {
-    super.consumeLinesNotProcessedIfCancelled();
-  }
-
-  // TODO: Check tests validate expected behavior
-  @Disabled("TODO: Check tests validate expected behavior")
-  @Override
-  public void consumeByteBufferLinesProcessedAfterConsume() throws Exception {
-    super.consumeByteBufferLinesProcessedAfterConsume();
-  }
 }

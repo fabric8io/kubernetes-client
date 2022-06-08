@@ -229,7 +229,7 @@ class JettyWebSocketTest {
     jws.setWebSocketSession(session);
     when(session.isOpen()).thenReturn(true);
     // When
-    jws.send(ByteBuffer.wrap(new byte[] {1, 3, 3, 7}));
+    jws.send(ByteBuffer.wrap(new byte[] { 1, 3, 3, 7 }));
     // Then
     assertThat(jws.queueSize()).isEqualTo(4L);
   }
