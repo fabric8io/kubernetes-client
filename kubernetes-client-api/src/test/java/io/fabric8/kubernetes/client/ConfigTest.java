@@ -25,6 +25,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.ClearEnvironmentVariable;
+import org.junitpioneer.jupiter.SetEnvironmentVariable;
+import org.junitpioneer.jupiter.SetSystemProperty;
 
 import java.io.File;
 import java.io.IOException;
@@ -666,5 +669,13 @@ public class ConfigTest {
           commandFolder.getAbsolutePath() + File.pathSeparator +
           "/opt/apache-maven/bin";
     }
+  }
+
+  @Test
+  @SetSystemProperty(key = "os.name", value = "Windows")
+  @SetEnvironmentVariable(key = "HOMEDRIVE", value = "C:\\Users\\")
+  @SetEnvironmentVariable(key = "HOMEPATH", value = "user")
+  void getHomeDir_shouldUseHomedriveHomepathOnWindows() {
+    assertEquals("C:\\Users\\user", Config.getHomeDir(f -> true));
   }
 }

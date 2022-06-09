@@ -96,6 +96,7 @@
 
     <!-- Testing versions -->
     <junit.version>5.9.1</junit.version>
+    <junit-pioneer.version>1.7.0</junit-pioneer.version>
     <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>18.5.0</approvaltests.version>
@@ -811,6 +812,13 @@
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
         <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.junit-pioneer</groupId>
+        <artifactId>junit-pioneer</artifactId>
+        <version>${junit-pioneer.version}</version>
         <scope>test</scope>
       </dependency>
 
