@@ -25,6 +25,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junitpioneer.jupiter.ClearEnvironmentVariable;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.junitpioneer.jupiter.SetSystemProperty;
@@ -49,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
 public class ConfigTest {
 
@@ -675,7 +677,48 @@ public class ConfigTest {
   @SetSystemProperty(key = "os.name", value = "Windows")
   @SetEnvironmentVariable(key = "HOMEDRIVE", value = "C:\\Users\\")
   @SetEnvironmentVariable(key = "HOMEPATH", value = "user")
-  void getHomeDir_shouldUseHomedriveHomepathOnWindows() {
+  @SetEnvironmentVariable(key = "USERPROFILE", value = "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\")
+  @ClearEnvironmentVariable(key = "HOME")
+  void getHomeDir_shouldUseHomedriveHomepathOnWindows_WhenHomeEnvVariableIsNotSet() {
     assertEquals("C:\\Users\\user", Config.getHomeDir(f -> true));
   }
+
+  @Test
+  @SetSystemProperty(key = "os.name", value = "Windows")
+  @ClearEnvironmentVariable(key = "HOMEDRIVE")
+  @ClearEnvironmentVariable(key = "HOMEPATH")
+  @SetEnvironmentVariable(key = "USERPROFILE", value = "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\")
+  @ClearEnvironmentVariable(key = "HOME")
+  void getHomeDir_shouldUseUserprofileOnWindows_WhenHomeHomedriveHomepathEnvVariablesAreNotSet() {
+    assertEquals("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\", Config.getHomeDir(f -> true));
+  }
+
+  @Test
+  @SetSystemProperty(key = "os.name", value = "Windows")
+  @SetEnvironmentVariable(key = "HOMEDRIVE", value = "C:\\Users\\")
+  @SetEnvironmentVariable(key = "HOMEPATH", value = "user")
+  @SetEnvironmentVariable(key = "HOME", value = "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\")
+  void getHomeDir_shouldUseHomeEnvVariableOnWindows_WhenHomeEnvVariableIsSet() {
+    assertEquals("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\", Config.getHomeDir(f -> true));
+  }
+
+  @Test
+  @EnabledOnOs({ WINDOWS })
+  @SetEnvironmentVariable(key = "HOMEDRIVE", value = "C:\\Users\\")
+  @SetEnvironmentVariable(key = "HOMEPATH", value = "user")
+  @SetEnvironmentVariable(key = "HOME", value = "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\")
+  void getHomeDir_shouldUseHomeEnvVariable_WhenEnabledOnWindows_WhenHomeEnvVariableIsSet() {
+    assertEquals("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\", Config.getHomeDir(f -> true));
+  }
+
+  @Test
+  @SetSystemProperty(key = "user.home", value = "/home/user")
+  @ClearEnvironmentVariable(key = "HOMEDRIVE")
+  @ClearEnvironmentVariable(key = "HOMEPATH")
+  @ClearEnvironmentVariable(key = "HOME")
+  @ClearEnvironmentVariable(key = "USERPROFILE")
+  void getHomeDir_shouldReturnUserHomeProp_WhenHomeEnvVariablesAreNotSet() {
+    assertEquals("/home/user", Config.getHomeDir(f -> true));
+  }
+
 }
