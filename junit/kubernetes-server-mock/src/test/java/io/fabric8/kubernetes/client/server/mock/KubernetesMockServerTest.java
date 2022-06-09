@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.VersionInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,6 +49,17 @@ class KubernetesMockServerTest {
     assertThat(client.getKubernetesVersion())
         .hasFieldOrPropertyWithValue("major", "0")
         .hasFieldOrPropertyWithValue("minor", "0");
+  }
+
+  @Test
+  @DisplayName("versionInfo can be modified after start")
+  void versionInfoModified() {
+    // When
+    server.setVersionInfo(new VersionInfo.Builder().withMajor("1").withMinor("337").build());
+    // Then
+    assertThat(client.getKubernetesVersion())
+        .hasFieldOrPropertyWithValue("major", "1")
+        .hasFieldOrPropertyWithValue("minor", "337");
   }
 
   @Test

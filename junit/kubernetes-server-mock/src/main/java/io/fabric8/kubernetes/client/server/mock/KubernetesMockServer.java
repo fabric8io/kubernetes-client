@@ -41,15 +41,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
 public class KubernetesMockServer extends DefaultMockServer implements Resetable {
 
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
-  private final VersionInfo versionInfo;
   private final Dispatcher dispatcher;
-  private List<Pattern> unsupportedPatterns = Collections.emptyList();
+  private VersionInfo versionInfo;
+  private List<Pattern> unsupportedPatterns;
 
   public KubernetesMockServer() {
     this(true);
@@ -84,12 +85,13 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     this.dispatcher = dispatcher;
     this.responses = responses;
     this.versionInfo = versionInfo;
+    unsupportedPatterns = Collections.emptyList();
   }
 
   @Override
   public void onStart() {
     expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
-    expect().get().withPath("/version").andReturn(200, versionInfo).always();
+    expect().get().withPath("/version").andReply(200, request -> versionInfo).always();
   }
 
   public void init() {
@@ -118,6 +120,15 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     client.adapt(BaseClient.class)
         .setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
     return client.adapt(NamespacedKubernetesClient.class);
+  }
+
+  /**
+   * Replace the current {@link VersionInfo} instance.
+   *
+   * @param versionInfo the new VersionInfo.
+   */
+  public final void setVersionInfo(VersionInfo versionInfo) {
+    this.versionInfo = Objects.requireNonNull(versionInfo);
   }
 
   /**
