@@ -877,6 +877,10 @@ public class Config {
   }
 
   protected static String getHomeDir(Predicate<String> directoryExists) {
+    String home = System.getenv("HOME");
+    if (home != null && !home.isEmpty() && directoryExists.test(home)) {
+      return home;
+    }
     String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
     if (osName.startsWith("win")) {
       String homeDrive = System.getenv("HOMEDRIVE");
@@ -891,10 +895,6 @@ public class Config {
       if (userProfile != null && !userProfile.isEmpty() && directoryExists.test(userProfile)) {
         return userProfile;
       }
-    }
-    String home = System.getenv("HOME");
-    if (home != null && !home.isEmpty() && directoryExists.test(home)) {
-      return home;
     }
 
     // Fall back to user.home should never really get here
