@@ -75,12 +75,12 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
   public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
-  private final Set<WatchEventsListener> watchEventListeners = new CopyOnWriteArraySet<>();
+  private final Set<WatchEventsListener> watchEventListeners;
   private final CustomResourceDefinitionProcessor crdProcessor;
   private final KubernetesAttributesExtractor kubernetesAttributesExtractor;
 
-  private AtomicLong resourceVersion = new AtomicLong();
-  private KubernetesResponseComposer kubernetesResponseComposer;
+  private final AtomicLong resourceVersion;
+  private final KubernetesResponseComposer kubernetesResponseComposer;
 
   public KubernetesCrudDispatcher() {
     this(Collections.emptyList());
@@ -95,7 +95,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
     super(new Context(Serialization.jsonMapper()), attributeExtractor, responseComposer);
     this.kubernetesAttributesExtractor = attributeExtractor;
     this.kubernetesResponseComposer = responseComposer;
+    watchEventListeners = new CopyOnWriteArraySet<>();
     crdProcessor = new CustomResourceDefinitionProcessor(kubernetesAttributesExtractor);
+    resourceVersion = new AtomicLong();
   }
 
   /**
@@ -450,8 +452,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
   static boolean shouldIncreaseGeneration(JsonNode differences) {
     if (differences != null && !differences.isEmpty()) {
       return StreamSupport.stream(differences.spliterator(), false)
-          .filter(n -> !n.get("path").asText().startsWith("/metadata/"))
-          .anyMatch(n -> !n.get("path").asText().startsWith("/status/"));
+          .filter(n -> !n.get("path").asText().matches("/metadata(/.*)?"))
+          .anyMatch(n -> !n.get("path").asText().matches("/status(/.*)?"));
     }
     return false;
   }

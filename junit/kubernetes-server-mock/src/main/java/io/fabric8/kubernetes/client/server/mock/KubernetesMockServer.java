@@ -46,8 +46,6 @@ import java.util.regex.Pattern;
 
 public class KubernetesMockServer extends DefaultMockServer implements Resetable {
 
-  private static final Context context = new Context(Serialization.jsonMapper());
-
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final VersionInfo versionInfo;
   private final Dispatcher dispatcher;
@@ -63,7 +61,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
 
   public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
       boolean useHttps) {
-    this(context, server, responses, useHttps);
+    this(new Context(Serialization.jsonMapper()), server, responses, useHttps);
   }
 
   public KubernetesMockServer(Context context, MockWebServer server,
