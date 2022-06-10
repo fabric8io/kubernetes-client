@@ -4,52 +4,51 @@
 #### Bugs
 * Fix #2860: ensure that lockexceptions won't inhibit notification
 * Fix #3300: addressed race connection with watch reconnects
-* Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3745: the client will throw better exceptions when a namespace is not discernible for an operation
+* Fix #3832 #1883: simplifying the isHttpsAvailable check
 * Fix #3990: Throw exception when `HasMetadata` is used in `resources(...)` API
+* Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
 * Fix #4106: removed listing from projectrequests
 * Fix #4140: changed StatefulSet rolling pause / resume to unsupported.  Also relying on default rolling logic to Deployments and StatefulSets
-* Fix #4081: moving Versionable.withResourceVersion to a method on WatchAndWaitable and removing Waitable from the return type
 * Fix #4139: status changes don't increment metadata.generation field
 * Fix #4149: port forwarding can accept both blocking and non-blocking channels
 * Fix #4171: allowing any object in clone
 
 #### Improvements
-* Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
-* Fix #3625: adds default maps to mostly prevent the need for null checks on things like annotations and labels
-* Fix #3852: Deserializing kamelets fails with UnrecognizedPropertyException
-* Fix #3889 : remove piped stream for file download
 * Fix #1285: removed references to manually calling registerCustomKind
-* Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 * Fix #2207: added LeaderElector.start to provide a CompletableFuture for easy cancellation.
-* Fix #3758: VersionInfo in KubernetesMockServer can be overridden
-* Fix #3969: relist will not trigger sync events
-* Fix #4082: improving informOnCondition to test the initial list instead of individual add events
-* Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts. 
-SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
-And Store.getKey can be used rather than directly referencing static Cache functions.
-* Fix #4065: Client.getAPIResources("v1") can be used to obtain the core/legacy resources
-* Fix #4142: Added patch() and patch(PatchContext) methods for use with resource and load
+* Fix #3334: adding basic support for server side apply.  Use patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service), or new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build() to override conflicts.
 * Fix #3486: using a common jsonschema2pojo annotator - see the migration guide for possible changes to extension models.
-* Fix #4146: ManagedKubernetesClient and ManagedOpenShiftClient as delayed OSGi services
+* Fix #3625: adds default maps to mostly prevent the need for null checks on things like annotations and labels
+* Fix #3758: VersionInfo in KubernetesMockServer can be overridden
+* Fix #3806: Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
+* Fix #3852: Deserializing kamelets fails with UnrecognizedPropertyException
+* Fix #3889: remove piped stream for file download
+* Fix #3968: SharedIndexInformer.initialState can be used to set the store state before the informer starts.
+  SharedIndexInformer allows for the addition and removal of indexes even after starting, and you can remove the default namespace index if you wish.
+  And Store.getKey can be used rather than directly referencing static Cache functions.
+* Fix #3969: relist will not trigger sync events
+* Fix #4065: Client.getAPIResources("v1") can be used to obtain the core/legacy resources
+* Fix #4082: improving informOnCondition to test the initial list instead of individual add events
 * Fix #4093: adding a possibility to get a log as an `InputStream` from the `Loggable` resources
+* Fix #4142: Added patch() and patch(PatchContext) methods for use with resource and load
+* Fix #4146: ManagedKubernetesClient and ManagedOpenShiftClient as delayed OSGi services
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0
 * Fix #3813: Handle exit code status messages with pod uploads
 * Fix #3947: Point CamelK Extension model to latest released version v1.8.2
-* Update Tekton Pipeline Model to v0.35.0
 * Fix #4031: Update Kubernetes Model to v1.24.0
+* Fix #4100: Update Tekton Pipeline Model to v0.35.0
 
 
 #### New Features
-* Fix #3407: Added Itemable.withItem to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  There is also client.resourceList(...).getResources() - that will provide the resource list as Resources.  This allows you to implement composite operations easily with lambda: client.resourceList(...).getResources().forEach(r -> r.delete());
-* Fix #3922: added Client.supports and Client.hasApiGroup methods
-* KubernetesMockServer has new methods - unsupported and reset - to control what apis are unsupported and to reset its state.
-* Fix #3407 #3973: Added resource(item) to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.  
-There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
-This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
+* Fix #3407 #3973: Added resource(item) to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item.
+  There is also client.resourceList(...).resources() and client.configMaps().resources() - that will provide a Resource stream.
+  This allows you to implement composite operations easily with lambda: client.secrets().resources().forEach(r -> r.delete());
 * Fix #3472 #3587: Allowing for customization of the Informer store/cache key function and how state is stored.  See BasicItemStore and ReducedStateItemStore and the SharedIndexInformer.itemStore function.
+* Fix #3922: added Client.supports and Client.hasApiGroup methods
+* Fix #3966: KubernetesMockServer has new methods - unsupported and reset - to control what apis are unsupported and to reset its state.
 * Fix #4112: Added TtyExecErrorable.terminateOnError to produce an exceptional outcome to the exitCode when a message is seen on stdErr.
 * Fix #3854: Camel-K: Missing method for manipulating KameletBindings
 * Fix #4117: Created new kubernetes-junit-jupiter module, adds a JUnit5 extension for Kubernetes
