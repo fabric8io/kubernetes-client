@@ -444,7 +444,7 @@ public class KubernetesResourceUtil {
     String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
 
     return new SecretBuilder()
-        .withNewMetadata().withName("harbor-secret").endMetadata()
+        .withNewMetadata().withName("docker-registry-secret").endMetadata()
         .withType("kubernetes.io/dockerconfigjson")
         .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
         .build();
