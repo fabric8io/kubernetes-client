@@ -18,6 +18,7 @@ name: Release to Maven Central
 
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  RELEASE_MAVEN_ARGS: -Prelease -DstagingProgressTimeoutMinutes=20
   OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
   OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
   SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
@@ -32,17 +33,13 @@ on:
         description: Java Distribution to use for release
         required: true
         default: 'temurin'
-      java_version:
-        description: Java Version to use for release
-        required: true
-        default: '8'
 
 #permissions:
 #  contents: read
 
 jobs:
-  release:
-    name: Release ${{ github.event.inputs.tag }}
+  release-java-8:
+    name: Release Java 8 ${{ github.event.inputs.tag }}
     # Cheap way to prevent accidental releases
     # Modify the list to add users with release permissions
     if: contains('["manusa","rohanKanojia"]', github.actor)
@@ -52,15 +49,49 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.tag }}
-      - name: Setup Java
+      - name: Cache .m2 registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: cache-release-${{ github.sha }}-${{ github.run_id }}
+      - name: Setup Java 8
         uses: actions/setup-java@v3
         with:
-          java-version: ${{ github.event.inputs.java_version }}
+          java-version: 8
           distribution: ${{ github.event.inputs.java_distribution }}
           server-id: ossrh
           server-username: OSSRHUSERNAME
           server-password: OSSRHPASSWORD
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
-      - name: Build and Release Project
-        run: ./mvnw ${MAVEN_ARGS} -Prelease clean deploy -DstagingProgressTimeoutMinutes=20
+      - name: Build and release Java 8 modules
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean deploy
+  release-java-11:
+    needs: release-java-8
+    name: Release Java 11 ${{ github.event.inputs.tag }}
+    # Cheap way to prevent accidental releases
+    # Modify the list to add users with release permissions
+    if: contains('["manusa","rohanKanojia"]', github.actor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.tag }}
+      - name: Cache .m2 registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: cache-release-${{ github.sha }}-${{ github.run_id }}
+      - name: Setup Java 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: ${{ github.event.inputs.java_distribution }}
+          server-id: ossrh
+          server-username: OSSRHUSERNAME
+          server-password: OSSRHPASSWORD
+          gpg-private-key: ${{ secrets.SIGNINGKEY }}
+          gpg-passphrase: SIGNINGPASSWORD
+      - name: Build and release Java 11 modules
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" -pl "httpclient-jetty" clean deploy
