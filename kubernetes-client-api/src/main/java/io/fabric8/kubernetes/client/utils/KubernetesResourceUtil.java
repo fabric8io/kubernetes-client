@@ -423,15 +423,14 @@ public class KubernetesResourceUtil {
 
   /**
    * Create Secret by using username and password.
-   *
+   * 
    * @param dockerServer User to store key value pair for auths map
-   * @param username     username that needs to be used during secret creation
-   * @param password     password that needs to be used during secret creation
-   * @param secretName   secretName that needs to be used during secret creation
+   * @param username username that needs to be used during secret creation
+   * @param password password that needs to be used during secret creation
    * @return an object of Secret
    */
-  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password, String secretName)
-    throws JsonProcessingException {
+  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password,String secretName)
+      throws JsonProcessingException {
     Map<String, Object> dockerConfigMap = new HashMap<>();
     Map<String, Object> auths = new HashMap<>();
     Map<String, Object> credentials = new HashMap<>();
@@ -445,9 +444,9 @@ public class KubernetesResourceUtil {
     String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
 
     return new SecretBuilder()
-      .withNewMetadata().withName(secretName).endMetadata()
-      .withType("kubernetes.io/dockerconfigjson")
-      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
-      .build();
+        .withNewMetadata().withName(secretName).endMetadata()
+        .withType("kubernetes.io/dockerconfigjson")
+        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
+        .build();
   }
 }
