@@ -238,6 +238,6 @@ class KubernetesResourceUtilTest {
     assertEquals(
       "{\"auths\":{\"http://harbor.inner.com\":{\"password\":\"TestingSecret\",\"auth\":\"U2VjcmV0QWRtaW46VGVzdGluZ1NlY3JldA==\",\"username\":\"SecretAdmin\"}}}",
       header);
-    assertEquals(secret.getMetadata().getName(), "TestSecretName");
+    assertEquals("TestSecretName", secret.getMetadata().getName());
   }
 }
