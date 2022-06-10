@@ -112,6 +112,7 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
     <mockito.version>4.6.1</mockito.version>
+    <google.version>1.3.0</google.version>
     <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.30</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
@@ -177,7 +178,7 @@
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
-    
+
     <jsonschema2pojo.targetPackage>io.fabric8.kubernetes.api.model</jsonschema2pojo.targetPackage>
   </properties>
   <modules>
@@ -764,6 +765,12 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auth</groupId>
+        <artifactId>google-auth-library-oauth2-http</artifactId>
+        <version>${google.version}</version>
+        <optional>true</optional>
       </dependency>
 
       <!-- Testing and Mocking -->

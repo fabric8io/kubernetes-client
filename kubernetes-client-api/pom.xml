@@ -155,6 +155,11 @@
       <artifactId>bcpkix-jdk15on</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <optional>true</optional>
+    </dependency>
 
     <!-- Compile Only Dependencies -->
     <dependency>

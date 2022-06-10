@@ -475,6 +475,16 @@ public class ConfigTest {
   }
 
   @Test
+  void testKubeConfigWithAuthConfigGCPProvider() throws URISyntaxException {
+    System.setProperty("kubeconfig", new File(getClass().getResource("/test-kubeconfig-gcp").toURI()).getAbsolutePath());
+    Config config = Config.autoConfigure("production/172-28-128-4:8443/mmosley");
+
+    assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
+    assertEquals(null, config.getOauthToken());
+    assertEquals("gcp", config.getAuthProvider().getName());
+  }
+
+  @Test
   void testEmptyConfig() {
     // Given
     Config emptyConfig = null;

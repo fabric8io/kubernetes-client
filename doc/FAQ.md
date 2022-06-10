@@ -33,3 +33,14 @@ For non-ResourceEventHandlers call backs long-running operation can be a problem
 On top of the http client threads the fabric8 client maintains a task thread pool for scheduled tasks and for potentially long-running tasks that are called from WebSocket operations, such as handling input and output streams and ResourceEventHandler call backs.  This thread pool defaults to an unlimited number of cached threads, which will be shutdown when the client is closed - that is a sensible default with either http client as the amount of concurrently running async tasks will typically be low.  If you would rather take full control over the threading use KubernetesClientBuilder.withExecutor or KubernetesClientBuilder.withExecutorSupplier - however note that constraining this thread pool too much will result in a build up of event processing queues.
 
 Finally the fabric8 client will use 1 thread per PortForward and an additional thread per socket connection - this may be improved upon in the future.
+
+### How to enable GKE auth support?
+Fabric8 now support GKE auth token. To enable please add google-auth-library-oauth2-http library on your project
+
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>${google.version}</version>
+    </dependency>
+
+Further information [https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication#environments-without-gcloud](https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication#environments-without-gcloud)
