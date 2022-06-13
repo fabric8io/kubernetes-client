@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
@@ -458,6 +460,13 @@ public class OperationSupport {
 
   protected Map<String, String> getParameters() {
     return Collections.emptyMap();
+  }
+
+  protected <T extends HasMetadata> T handleApproveOrDeny(T csr, Class<T> type) throws IOException, InterruptedException {
+    String uri = URLUtils.join(getResourceUrl(null, csr.getMetadata().getName(), false).toString(), "approval");
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+        .put(JSON, JSON_MAPPER.writeValueAsString(csr)).uri(uri);
+    return handleResponse(requestBuilder, type);
   }
 
   /**

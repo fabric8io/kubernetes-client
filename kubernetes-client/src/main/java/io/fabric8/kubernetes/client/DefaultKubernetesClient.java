@@ -219,6 +219,8 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     this.getHandlers().register(StatefulSet.class, StatefulSetOperationsImpl::new);
     this.getHandlers().register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class,
         CertificateSigningRequestOperationsImpl::new);
+    this.getHandlers().register(io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest.class,
+        io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1.CertificateSigningRequestOperationsImpl::new);
   }
 
   protected DefaultKubernetesClient(Config config, BaseClient client) {
