@@ -47,8 +47,9 @@ body:
       label: Fabric8 Kubernetes Client version
       description: Fabric8 Kubernetes Client version (can be found in pom.xml dependency or build.gradle implementation section)
       options:
-        - "5.12.2"
         - "SNAPSHOT"
+        - "6.0.0-RC1"
+        - "5.12.2"
         - "5.11.2"
         - "5.10.2"
         - "5.9.0"

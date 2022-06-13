@@ -1,5 +1,6 @@
 ## CHANGELOG
-### 6.0-SNAPSHOT
+
+### 6.0.0-RC1 (2022-06-13)
 
 #### Bugs
 * Fix #2860: ensure that lockexceptions won't inhibit notification
