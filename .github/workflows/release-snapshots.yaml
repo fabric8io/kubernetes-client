@@ -16,17 +16,22 @@
 
 name: Release to SNAPSHOTS Maven Central
 
+on:
+  workflow_dispatch:
+    inputs:
+      additional_args:
+        description: Additional Maven Args
+        required: true
+        default: ''
+  schedule:
+    - cron: '0 2 * * *' # Every day at 2am
+
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
   RELEASE_MAVEN_ARGS: -Prelease -Denforcer.skip=true
   OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
   OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
   SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 2 * * *' # Every day at 2am
 
 #permissions:
 #  contents: read
