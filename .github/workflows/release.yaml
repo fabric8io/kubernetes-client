@@ -16,23 +16,27 @@
 
 name: Release to Maven Central
 
-env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
-  RELEASE_MAVEN_ARGS: -Prelease -DstagingProgressTimeoutMinutes=20
-  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
-  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
-  SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
-
 on:
   workflow_dispatch:
     inputs:
       tag:
         description: Tag to release
         required: true
+      additional_args:
+        description: Additional Maven Args
+        required: false
+        default: ''
       java_distribution:
         description: Java Distribution to use for release
         required: true
         default: 'temurin'
+
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
+  RELEASE_MAVEN_ARGS: -Prelease -DstagingProgressTimeoutMinutes=20
+  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
+  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
+  SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
 
 #permissions:
 #  contents: read
