@@ -21,7 +21,7 @@ on:
     inputs:
       additional_args:
         description: Additional Maven Args
-        required: true
+        required: false
         default: ''
   schedule:
     - cron: '0 2 * * *' # Every day at 2am
