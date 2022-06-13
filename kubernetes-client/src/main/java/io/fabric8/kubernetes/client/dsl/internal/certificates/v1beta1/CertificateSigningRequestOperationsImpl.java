@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl.internal.certificates.v1;
+package io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1;
 
-import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition;
-import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
-import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus;
-import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatusBuilder;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatusBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.CertificateSigningRequestResource;
+import io.fabric8.kubernetes.client.dsl.V1beta1CertificateSigningRequestResource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -31,15 +31,15 @@ import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import java.io.IOException;
 
 public class CertificateSigningRequestOperationsImpl extends
-    HasMetadataOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>>
-    implements CertificateSigningRequestResource<CertificateSigningRequest> {
+    HasMetadataOperation<CertificateSigningRequest, CertificateSigningRequestList, V1beta1CertificateSigningRequestResource<CertificateSigningRequest>>
+    implements V1beta1CertificateSigningRequestResource<CertificateSigningRequest> {
   public CertificateSigningRequestOperationsImpl(Client client) {
     this(HasMetadataOperationsImpl.defaultContext(client));
   }
 
   CertificateSigningRequestOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("certificates.k8s.io")
-        .withApiGroupVersion("v1")
+        .withApiGroupVersion("v1beta1")
         .withPlural("certificatesigningrequests"), CertificateSigningRequest.class, CertificateSigningRequestList.class);
   }
 
@@ -58,6 +58,13 @@ public class CertificateSigningRequestOperationsImpl extends
     return addStatusToCSRAndSubmit(certificateSigningRequestCondition);
   }
 
+  private CertificateSigningRequestStatus createCertificateSigningRequestStatus(
+      CertificateSigningRequestCondition certificateSigningRequestCondition) {
+    return new CertificateSigningRequestStatusBuilder()
+        .addToConditions(certificateSigningRequestCondition)
+        .build();
+  }
+
   private CertificateSigningRequest addStatusToCSRAndSubmit(
       CertificateSigningRequestCondition certificateSigningRequestCondition) {
     try {
@@ -70,12 +77,5 @@ public class CertificateSigningRequestOperationsImpl extends
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("approval " + type), e);
     }
-  }
-
-  private CertificateSigningRequestStatus createCertificateSigningRequestStatus(
-      CertificateSigningRequestCondition certificateSigningRequestCondition) {
-    return new CertificateSigningRequestStatusBuilder()
-        .addToConditions(certificateSigningRequestCondition)
-        .build();
   }
 }

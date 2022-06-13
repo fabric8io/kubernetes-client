@@ -3,6 +3,7 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
+* Fix #2811: Approve/Reject CSR not supported in v1beta1 CertificateSigningRequest API
 * Fix #4216: Update metadata when `replaceStatus()` is called
 
 #### Improvements
