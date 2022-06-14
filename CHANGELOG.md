@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.0-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
 ### 6.0.0-RC1 (2022-06-13)
 
 #### Bugs
@@ -41,7 +53,6 @@
 * Fix #3947: Point CamelK Extension model to latest released version v1.8.2
 * Fix #4031: Update Kubernetes Model to v1.24.0
 * Fix #4100: Update Tekton Pipeline Model to v0.35.0
-
 
 #### New Features
 * Fix #3407 #3973: Added resource(item) to directly associate a resource with the DSL.  It can be used as an alternative to Loadable.load when you already have the item
