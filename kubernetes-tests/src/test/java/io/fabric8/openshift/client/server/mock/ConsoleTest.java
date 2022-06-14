@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.Console;
-import io.fabric8.openshift.api.model.ConsoleBuilder;
-import io.fabric8.openshift.api.model.ConsoleList;
-import io.fabric8.openshift.api.model.ConsoleListBuilder;
+import io.fabric8.openshift.api.model.config.v1.Console;
+import io.fabric8.openshift.api.model.config.v1.ConsoleBuilder;
+import io.fabric8.openshift.api.model.config.v1.ConsoleList;
+import io.fabric8.openshift.api.model.config.v1.ConsoleListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

@@ -22,7 +22,6 @@ import (
   appsapi "github.com/openshift/api/apps/v1"
   authapi "github.com/openshift/api/authorization/v1"
   buildapi "github.com/openshift/api/build/v1"
-  openshiftconfigapi "github.com/openshift/api/config/v1"
   imageapi "github.com/openshift/api/image/v1"
   networkapi "github.com/openshift/api/network/v1"
   oauthapi "github.com/openshift/api/oauth/v1"
@@ -150,38 +149,6 @@ type Schema struct {
   EgressNetworkPolicyList                  networkapi.EgressNetworkPolicyList
   HostSubnet                               networkapi.HostSubnet
   HostSubnetList                           networkapi.HostSubnetList
-  DNSZone                                  openshiftconfigapi.DNSZone
-  ClusterVersion                           openshiftconfigapi.ClusterVersion
-  ClusterVersionList                       openshiftconfigapi.ClusterVersionList
-  SecretNameReference                      openshiftconfigapi.SecretNameReference
-  ConfigMapFileReference                   openshiftconfigapi.ConfigMapFileReference
-  APIServer                                openshiftconfigapi.APIServer
-  APIServerList                            openshiftconfigapi.APIServerList
-  ClusterOperator                          openshiftconfigapi.ClusterOperator
-  ClusterOperatorList                      openshiftconfigapi.ClusterOperatorList
-  FeatureGate                              openshiftconfigapi.FeatureGate
-  FeatureGateList                          openshiftconfigapi.FeatureGateList
-  Infrastructure                           openshiftconfigapi.Infrastructure
-  InfrastructureList                       openshiftconfigapi.InfrastructureList
-  OAuth                                    openshiftconfigapi.OAuth
-  OAuthList                                openshiftconfigapi.OAuthList
-  OperatorHub                              openshiftconfigapi.OperatorHub
-  OperatorHubList                          openshiftconfigapi.OperatorHubList
-  Proxy                                    openshiftconfigapi.Proxy
-  ProxyList                                openshiftconfigapi.ProxyList
-  Scheduler                                openshiftconfigapi.Scheduler
-  SchedulerList                            openshiftconfigapi.SchedulerList
-  TLSProfileSpec                           openshiftconfigapi.TLSProfileSpec
-  Ingress                                  openshiftconfigapi.Ingress
-  IngressList                              openshiftconfigapi.IngressList
-  Authentication                           openshiftconfigapi.Authentication
-  AuthenticationList                       openshiftconfigapi.AuthenticationList
-  Console                                  openshiftconfigapi.Console
-  ConsoleList                              openshiftconfigapi.ConsoleList
-  DNS                                      openshiftconfigapi.DNS
-  DNSList                                  openshiftconfigapi.DNSList
-  Network                                  openshiftconfigapi.Network
-  NetworkList                              openshiftconfigapi.NetworkList
   AppliedClusterResourceQuota              quotaapi.AppliedClusterResourceQuota
   AppliedClusterResourceQuotaList          quotaapi.AppliedClusterResourceQuotaList
   ClusterResourceQuota                     quotaapi.ClusterResourceQuota
@@ -216,7 +183,7 @@ func main() {
     {"github.com/openshift/api/project/v1", "", "io.fabric8.openshift.api.model", "os_project_", true},
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_", true},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_", true},
-    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_v1_", true},
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model.config.v1", "os_config_v1_", false},
     {"github.com/openshift/api/quota/v1", "", "io.fabric8.openshift.api.model", "os_quota_", true},
     {"github.com/openshift/api/helm/v1beta1", "", "io.fabric8.openshift.api.model", "os_helm_v1beta1_", true},
 

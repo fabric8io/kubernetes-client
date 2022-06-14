@@ -6,6 +6,7 @@
 * Fix #4216: Update metadata when `replaceStatus()` is called
 
 #### Improvements
+* Fix #3227 : Move `config.openshift.io` apiGroup resources out of `openshift-model/`
 * Fix #4006: Remove outdated shared test classes in `kubernetes-client/` and `openshift-client/` modules
 
 #### Dependency Upgrade

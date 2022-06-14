@@ -19,6 +19,7 @@
 - [evict Changes](#evict-changes)
 - [Delete Behavior](#delete-behavior)
 - [Stream Changes](#stream-changes)
+- [OpenShift Config Model Changes](#openshift-config-model-changes)
 
 ## API/Impl split
 
@@ -305,3 +306,7 @@ The usage of Piped streams is no longer supported - they make assumptions about 
 `TtyExecErrorChannelable` methods have been deprecated in favor of `ExecWatch.exitCode` and `ExecListener.onExit`.
 
 `ContainerResource.readingInput(InputStream in)` has been deprecated - use `redirectingInput` instead.
+
+## OpenShift Config Model Changes
+
+All OpenShift resources belonging to `config.openshift.io/v1` apigroup have been moved out of `io.fabric8.openshift.api.model` package. They should now be available in `io.fabric8.openshift.api.model.config.v1` package.

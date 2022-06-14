@@ -16,8 +16,8 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.openshift.api.model.GitHubIdentityProviderBuilder;
-import io.fabric8.openshift.api.model.IdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -32,72 +32,74 @@ class SelectorSyncIdentityProviderTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-selectorsyncidentityprovider.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
-    final SelectorSyncIdentityProvider selectorSyncIdentityProvider = mapper.readValue(originalJson, SelectorSyncIdentityProvider.class);
+    final SelectorSyncIdentityProvider selectorSyncIdentityProvider = mapper.readValue(originalJson,
+        SelectorSyncIdentityProvider.class);
     final String serializedJson = mapper.writeValueAsString(selectorSyncIdentityProvider);
-    final SelectorSyncIdentityProvider selectorSyncIdentityProviderFromSerializedJson = mapper.readValue(serializedJson, SelectorSyncIdentityProvider.class);
+    final SelectorSyncIdentityProvider selectorSyncIdentityProviderFromSerializedJson = mapper.readValue(serializedJson,
+        SelectorSyncIdentityProvider.class);
 
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(selectorSyncIdentityProvider)
-      .isNotNull()
-      .isEqualTo(selectorSyncIdentityProviderFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
-      .extracting("spec.identityProviders").asList()
-      .hasSize(1).first()
-      .hasFieldOrPropertyWithValue("name", "my_allow_provider")
-      .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
-      .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
-      .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
-      .hasFieldOrPropertyWithValue("github.hostname", "github.com");
+        .isNotNull()
+        .isEqualTo(selectorSyncIdentityProviderFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
+        .extracting("spec.identityProviders").asList()
+        .hasSize(1).first()
+        .hasFieldOrPropertyWithValue("name", "my_allow_provider")
+        .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
+        .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
+        .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
+        .hasFieldOrPropertyWithValue("github.hostname", "github.com");
     assertThat(selectorSyncIdentityProvider.getSpec().getClusterDeploymentSelector().getMatchLabels())
-      .hasSize(1)
-      .hasFieldOrPropertyWithValue("cluster-group", "abutcher");
+        .hasSize(1)
+        .hasFieldOrPropertyWithValue("cluster-group", "abutcher");
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     SelectorSyncIdentityProviderBuilder selectorSyncIdentityProviderBuilder = new SelectorSyncIdentityProviderBuilder()
-      .withNewMetadata()
-      .withName("allowall-identity-provider")
-      .endMetadata()
-      .withNewSpec()
-      .addToIdentityProviders(new IdentityProviderBuilder()
-        .withName("my_allow_provider")
-        .withType("GitHubIdentityProvider")
-        .withGithub(new GitHubIdentityProviderBuilder()
-          .withClientID("sample-client-id")
-          .withNewClientSecret()
-          .withName("foo")
-          .endClientSecret()
-          .withHostname("github.com")
-          .build())
-        .build())
-      .withNewClusterDeploymentSelector()
-      .addToMatchLabels("cluster-group", "abutcher")
-      .endClusterDeploymentSelector()
-      .endSpec();
+        .withNewMetadata()
+        .withName("allowall-identity-provider")
+        .endMetadata()
+        .withNewSpec()
+        .addToIdentityProviders(new IdentityProviderBuilder()
+            .withName("my_allow_provider")
+            .withType("GitHubIdentityProvider")
+            .withGithub(new GitHubIdentityProviderBuilder()
+                .withClientID("sample-client-id")
+                .withNewClientSecret()
+                .withName("foo")
+                .endClientSecret()
+                .withHostname("github.com")
+                .build())
+            .build())
+        .withNewClusterDeploymentSelector()
+        .addToMatchLabels("cluster-group", "abutcher")
+        .endClusterDeploymentSelector()
+        .endSpec();
 
     // When
     SelectorSyncIdentityProvider selectorSyncIdentityProvider = selectorSyncIdentityProviderBuilder.build();
 
     // Then
     assertThat(selectorSyncIdentityProvider)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
-      .extracting("spec.identityProviders").asList()
-      .hasSize(1).first()
-      .hasFieldOrPropertyWithValue("name", "my_allow_provider")
-      .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
-      .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
-      .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
-      .hasFieldOrPropertyWithValue("github.hostname", "github.com");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
+        .extracting("spec.identityProviders").asList()
+        .hasSize(1).first()
+        .hasFieldOrPropertyWithValue("name", "my_allow_provider")
+        .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
+        .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
+        .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
+        .hasFieldOrPropertyWithValue("github.hostname", "github.com");
     assertThat(selectorSyncIdentityProvider.getSpec().getClusterDeploymentSelector().getMatchLabels())
-      .hasSize(1)
-      .hasFieldOrPropertyWithValue("cluster-group", "abutcher");
+        .hasSize(1)
+        .hasFieldOrPropertyWithValue("cluster-group", "abutcher");
   }
 }

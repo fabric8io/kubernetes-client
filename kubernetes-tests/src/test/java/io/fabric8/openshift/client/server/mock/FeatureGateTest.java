@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.FeatureGate;
-import io.fabric8.openshift.api.model.FeatureGateBuilder;
-import io.fabric8.openshift.api.model.FeatureGateList;
-import io.fabric8.openshift.api.model.FeatureGateListBuilder;
+import io.fabric8.openshift.api.model.config.v1.FeatureGate;
+import io.fabric8.openshift.api.model.config.v1.FeatureGateBuilder;
+import io.fabric8.openshift.api.model.config.v1.FeatureGateList;
+import io.fabric8.openshift.api.model.config.v1.FeatureGateListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

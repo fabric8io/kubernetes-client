@@ -860,7 +860,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_ConfigMapFileReference": {
+    "os_config_v1_ConfigMapFileReference": {
       "type": "object",
       "properties": {
         "key": {
@@ -871,12 +871,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.ConfigMapFileReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapFileReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_ConfigMapNameReference": {
+    "os_config_v1_ConfigMapNameReference": {
       "type": "object",
       "properties": {
         "name": {
@@ -884,12 +884,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.ConfigMapNameReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_CustomTLSProfile": {
+    "os_config_v1_CustomTLSProfile": {
       "type": "object",
       "properties": {
         "ciphers": {
@@ -903,12 +903,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.CustomTLSProfile",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.CustomTLSProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_DNSZone": {
+    "os_config_v1_DNSZone": {
       "type": "object",
       "properties": {
         "id": {
@@ -923,36 +923,36 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.DNSZone",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.DNSZone",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_IntermediateTLSProfile": {
+    "os_config_v1_IntermediateTLSProfile": {
       "type": "object",
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.IntermediateTLSProfile",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IntermediateTLSProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_ModernTLSProfile": {
+    "os_config_v1_ModernTLSProfile": {
       "type": "object",
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.ModernTLSProfile",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ModernTLSProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_OldTLSProfile": {
+    "os_config_v1_OldTLSProfile": {
       "type": "object",
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.OldTLSProfile",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OldTLSProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_SecretNameReference": {
+    "os_config_v1_SecretNameReference": {
       "type": "object",
       "properties": {
         "name": {
@@ -960,12 +960,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.SecretNameReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_TLSProfileSpec": {
+    "os_config_v1_TLSProfileSpec": {
       "type": "object",
       "properties": {
         "ciphers": {
@@ -979,36 +979,36 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.TLSProfileSpec",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSProfileSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_config_TLSSecurityProfile": {
+    "os_config_v1_TLSSecurityProfile": {
       "type": "object",
       "properties": {
         "custom": {
-          "$ref": "#/definitions/os_config_CustomTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.CustomTLSProfile"
+          "$ref": "#/definitions/os_config_v1_CustomTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.CustomTLSProfile"
         },
         "intermediate": {
-          "$ref": "#/definitions/os_config_IntermediateTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.IntermediateTLSProfile"
+          "$ref": "#/definitions/os_config_v1_IntermediateTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IntermediateTLSProfile"
         },
         "modern": {
-          "$ref": "#/definitions/os_config_ModernTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.ModernTLSProfile"
+          "$ref": "#/definitions/os_config_v1_ModernTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ModernTLSProfile"
         },
         "old": {
-          "$ref": "#/definitions/os_config_OldTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.OldTLSProfile"
+          "$ref": "#/definitions/os_config_v1_OldTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OldTLSProfile"
         },
         "type": {
           "type": "string"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.TLSSecurityProfile",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1326,8 +1326,8 @@
           "type": "string"
         },
         "tlsClientCert": {
-          "$ref": "#/definitions/os_config_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
         }
       },
       "additionalProperties": true,
@@ -1759,8 +1759,8 @@
           }
         },
         "clientCA": {
-          "$ref": "#/definitions/os_config_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapNameReference"
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
         },
         "clientCertificatePolicy": {
           "type": "string"
@@ -2211,8 +2211,8 @@
           "type": "string"
         },
         "secret": {
-          "$ref": "#/definitions/os_config_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
         }
       },
       "additionalProperties": true,
@@ -2232,8 +2232,8 @@
           "type": "string"
         },
         "customLogoFile": {
-          "$ref": "#/definitions/os_config_ConfigMapFileReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
+          "$ref": "#/definitions/os_config_v1_ConfigMapFileReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapFileReference"
         },
         "customProductName": {
           "type": "string"
@@ -2695,8 +2695,8 @@
           }
         },
         "dnsZone": {
-          "$ref": "#/definitions/os_config_DNSZone",
-          "existingJavaType": "io.fabric8.openshift.api.model.DNSZone"
+          "$ref": "#/definitions/os_config_v1_DNSZone",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.DNSZone"
         }
       },
       "additionalProperties": true,
@@ -3384,8 +3384,8 @@
           "type": "string"
         },
         "httpErrorCodePages": {
-          "$ref": "#/definitions/os_config_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapNameReference"
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
         },
         "httpHeaders": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerHTTPHeaders",
@@ -3415,8 +3415,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "tlsSecurityProfile": {
-          "$ref": "#/definitions/os_config_TLSSecurityProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.TLSSecurityProfile"
+          "$ref": "#/definitions/os_config_v1_TLSSecurityProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile"
         },
         "tuningOptions": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerTuningOptions",
@@ -3462,8 +3462,8 @@
           "type": "string"
         },
         "tlsProfile": {
-          "$ref": "#/definitions/os_config_TLSProfileSpec",
-          "existingJavaType": "io.fabric8.openshift.api.model.TLSProfileSpec"
+          "$ref": "#/definitions/os_config_v1_TLSProfileSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSProfileSpec"
         }
       },
       "additionalProperties": true,
@@ -5961,8 +5961,8 @@
       "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConfigList"
     },
     "ConfigMapFileReference": {
-      "$ref": "#/definitions/os_config_ConfigMapFileReference",
-      "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
+      "$ref": "#/definitions/os_config_v1_ConfigMapFileReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapFileReference"
     },
     "Console": {
       "$ref": "#/definitions/os_operator_v1_Console",
@@ -6101,8 +6101,8 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
     },
     "SecretNameReference": {
-      "$ref": "#/definitions/os_config_SecretNameReference",
-      "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+      "$ref": "#/definitions/os_config_v1_SecretNameReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
     },
     "ServiceCA": {
       "$ref": "#/definitions/os_operator_v1_ServiceCA",
@@ -6429,8 +6429,8 @@
           }
         },
         "clientCA": {
-          "$ref": "#/definitions/os_config_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapNameReference"
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
         },
         "clientCertificatePolicy": {
           "type": "string"
@@ -6822,8 +6822,8 @@
           "type": "string"
         },
         "secret": {
-          "$ref": "#/definitions/os_config_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
         }
       },
       "additionalProperties": true
@@ -6838,8 +6838,8 @@
           "type": "string"
         },
         "customLogoFile": {
-          "$ref": "#/definitions/os_config_ConfigMapFileReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
+          "$ref": "#/definitions/os_config_v1_ConfigMapFileReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapFileReference"
         },
         "customProductName": {
           "type": "string"
@@ -7429,8 +7429,8 @@
           }
         },
         "dnsZone": {
-          "$ref": "#/definitions/os_config_DNSZone",
-          "existingJavaType": "io.fabric8.openshift.api.model.DNSZone"
+          "$ref": "#/definitions/os_config_v1_DNSZone",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.DNSZone"
         }
       },
       "additionalProperties": true
@@ -8112,8 +8112,8 @@
           "type": "string"
         },
         "httpErrorCodePages": {
-          "$ref": "#/definitions/os_config_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapNameReference"
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
         },
         "httpHeaders": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerHTTPHeaders",
@@ -8143,8 +8143,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "tlsSecurityProfile": {
-          "$ref": "#/definitions/os_config_TLSSecurityProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.TLSSecurityProfile"
+          "$ref": "#/definitions/os_config_v1_TLSSecurityProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile"
         },
         "tuningOptions": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerTuningOptions",
@@ -8185,8 +8185,8 @@
           "type": "string"
         },
         "tlsProfile": {
-          "$ref": "#/definitions/os_config_TLSProfileSpec",
-          "existingJavaType": "io.fabric8.openshift.api.model.TLSProfileSpec"
+          "$ref": "#/definitions/os_config_v1_TLSProfileSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSProfileSpec"
         }
       },
       "additionalProperties": true
@@ -9890,8 +9890,8 @@
           "type": "string"
         },
         "tlsClientCert": {
-          "$ref": "#/definitions/os_config_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
         }
       },
       "additionalProperties": true
@@ -10846,20 +10846,20 @@
     "tlssecurityprofile": {
       "properties": {
         "custom": {
-          "$ref": "#/definitions/os_config_CustomTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.CustomTLSProfile"
+          "$ref": "#/definitions/os_config_v1_CustomTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.CustomTLSProfile"
         },
         "intermediate": {
-          "$ref": "#/definitions/os_config_IntermediateTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.IntermediateTLSProfile"
+          "$ref": "#/definitions/os_config_v1_IntermediateTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IntermediateTLSProfile"
         },
         "modern": {
-          "$ref": "#/definitions/os_config_ModernTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.ModernTLSProfile"
+          "$ref": "#/definitions/os_config_v1_ModernTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ModernTLSProfile"
         },
         "old": {
-          "$ref": "#/definitions/os_config_OldTLSProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.OldTLSProfile"
+          "$ref": "#/definitions/os_config_v1_OldTLSProfile",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OldTLSProfile"
         },
         "type": {
           "type": "string"

@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.Authentication;
-import io.fabric8.openshift.api.model.AuthenticationBuilder;
-import io.fabric8.openshift.api.model.AuthenticationList;
-import io.fabric8.openshift.api.model.AuthenticationListBuilder;
+import io.fabric8.openshift.api.model.config.v1.Authentication;
+import io.fabric8.openshift.api.model.config.v1.AuthenticationBuilder;
+import io.fabric8.openshift.api.model.config.v1.AuthenticationList;
+import io.fabric8.openshift.api.model.config.v1.AuthenticationListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

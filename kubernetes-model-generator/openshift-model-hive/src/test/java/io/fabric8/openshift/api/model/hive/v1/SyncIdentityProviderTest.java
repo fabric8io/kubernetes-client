@@ -16,8 +16,8 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.openshift.api.model.GitHubIdentityProviderBuilder;
-import io.fabric8.openshift.api.model.IdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -32,72 +32,73 @@ class SyncIdentityProviderTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-syncidentityprovider.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final SyncIdentityProvider syncIdentityProvider = mapper.readValue(originalJson, SyncIdentityProvider.class);
     final String serializedJson = mapper.writeValueAsString(syncIdentityProvider);
-    final SyncIdentityProvider syncIdentityProviderFromSerializedJson = mapper.readValue(serializedJson, SyncIdentityProvider.class);
+    final SyncIdentityProvider syncIdentityProviderFromSerializedJson = mapper.readValue(serializedJson,
+        SyncIdentityProvider.class);
 
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(syncIdentityProvider)
-      .isNotNull()
-      .isEqualTo(syncIdentityProviderFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
-      .extracting("spec.identityProviders").asList()
-      .hasSize(1).first()
-      .hasFieldOrPropertyWithValue("name", "myprovider")
-      .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
-      .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
-      .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
-      .hasFieldOrPropertyWithValue("github.hostname", "github.com");
+        .isNotNull()
+        .isEqualTo(syncIdentityProviderFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
+        .extracting("spec.identityProviders").asList()
+        .hasSize(1).first()
+        .hasFieldOrPropertyWithValue("name", "myprovider")
+        .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
+        .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
+        .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
+        .hasFieldOrPropertyWithValue("github.hostname", "github.com");
     assertThat(syncIdentityProvider.getSpec().getClusterDeploymentRefs())
-      .hasSize(1)
-      .first()
-      .hasFieldOrPropertyWithValue("name", "MyCluster");
+        .hasSize(1)
+        .first()
+        .hasFieldOrPropertyWithValue("name", "MyCluster");
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     SyncIdentityProviderBuilder syncIdentityProviderBuilder = new SyncIdentityProviderBuilder()
-      .withNewMetadata()
-      .withName("allowall-identity-provider")
-      .endMetadata()
-      .withNewSpec()
-      .addNewClusterDeploymentRef("MyCluster")
-      .addToIdentityProviders(new IdentityProviderBuilder()
-        .withName("myprovider")
-        .withType("GitHubIdentityProvider")
-        .withGithub(new GitHubIdentityProviderBuilder()
-          .withClientID("sample-client-id")
-          .withNewClientSecret()
-          .withName("foo")
-          .endClientSecret()
-          .withHostname("github.com")
-          .build())
-        .build())
-      .endSpec();
+        .withNewMetadata()
+        .withName("allowall-identity-provider")
+        .endMetadata()
+        .withNewSpec()
+        .addNewClusterDeploymentRef("MyCluster")
+        .addToIdentityProviders(new IdentityProviderBuilder()
+            .withName("myprovider")
+            .withType("GitHubIdentityProvider")
+            .withGithub(new GitHubIdentityProviderBuilder()
+                .withClientID("sample-client-id")
+                .withNewClientSecret()
+                .withName("foo")
+                .endClientSecret()
+                .withHostname("github.com")
+                .build())
+            .build())
+        .endSpec();
 
     // When
     SyncIdentityProvider syncIdentityProvider = syncIdentityProviderBuilder.build();
 
     // Then
     assertThat(syncIdentityProvider)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
-      .extracting("spec.identityProviders").asList()
-      .hasSize(1).first()
-      .hasFieldOrPropertyWithValue("name", "myprovider")
-      .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
-      .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
-      .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
-      .hasFieldOrPropertyWithValue("github.hostname", "github.com");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "allowall-identity-provider")
+        .extracting("spec.identityProviders").asList()
+        .hasSize(1).first()
+        .hasFieldOrPropertyWithValue("name", "myprovider")
+        .hasFieldOrPropertyWithValue("type", "GitHubIdentityProvider")
+        .hasFieldOrPropertyWithValue("github.clientID", "sample-client-id")
+        .hasFieldOrPropertyWithValue("github.clientSecret.name", "foo")
+        .hasFieldOrPropertyWithValue("github.hostname", "github.com");
     assertThat(syncIdentityProvider.getSpec().getClusterDeploymentRefs())
-      .hasSize(1)
-      .first()
-      .hasFieldOrPropertyWithValue("name", "MyCluster");
+        .hasSize(1)
+        .first()
+        .hasFieldOrPropertyWithValue("name", "MyCluster");
   }
 }

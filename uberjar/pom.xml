@@ -148,6 +148,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-config</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-machineconfig</artifactId>
     </dependency>
     <dependency>
@@ -285,6 +289,7 @@
                   <include>io.fabric8:openshift-model</include>
                   <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
+                  <include>io.fabric8:openshift-model-config</include>
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>
                   <include>io.fabric8:openshift-model-machineconfig</include>
@@ -343,6 +348,7 @@
                   <include>io.fabric8:openshift-model</include>
                   <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
+                  <include>io.fabric8:openshift-model-config</include>
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>
                   <include>io.fabric8:openshift-model-machineconfig</include>

@@ -93,7 +93,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
     {"k8s.io/api/rbac/v1", "", "io.fabric8.kubernetes.api.model.rbac", "kubernetes_rbac_", false},
-    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_v1_", false}, 
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model.config.v1", "os_config_v1_", false}, 
     {"github.com/openshift/hive/apis/hive/v1", "hive", "io.fabric8.openshift.api.model.hive.v1", "os_hive_v1_", true},
     {"github.com/openshift/hive/apis/hive/v1/aws", "hive", "io.fabric8.openshift.api.model.hive.aws.v1", "os_hive_aws_v1_", true},
     {"github.com/openshift/hive/apis/hive/v1/azure", "hive", "io.fabric8.openshift.api.model.hive.azure.v1", "os_hive_azure_v1_", true},
