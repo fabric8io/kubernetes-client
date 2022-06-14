@@ -229,6 +229,19 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
+  void testCreateDefaultDockerRegistrySecret() throws JsonProcessingException {
+    Secret secret = KubernetesResourceUtil.createDockerRegistrySecret("http://harbor.inner.com", "SecretAdmin",
+        "TestingSecret");
+
+    String header = new String(Base64.getDecoder().decode(secret.getData().get(".dockerconfigjson")));
+
+    assertEquals(
+        "{\"auths\":{\"http://harbor.inner.com\":{\"password\":\"TestingSecret\",\"auth\":\"U2VjcmV0QWRtaW46VGVzdGluZ1NlY3JldA==\",\"username\":\"SecretAdmin\"}}}",
+        header);
+    assertEquals("docker-registry-secret", secret.getMetadata().getName());
+  }
+
+  @Test
   void testCreateDockerRegistrySecret() throws JsonProcessingException {
     Secret secret = KubernetesResourceUtil.createDockerRegistrySecret("http://harbor.inner.com", "SecretAdmin",
         "TestingSecret", "TestSecretName");

@@ -50,6 +50,7 @@ public class KubernetesResourceUtil {
 
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
   private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
+  private static final String DEFAULT_DOCKER_REGISTRY_SECRET_NAME = "docker-registry-secret";
 
   /**
    * Returns the resource version for the entity or null if it does not have one
@@ -427,11 +428,42 @@ public class KubernetesResourceUtil {
    * @param dockerServer User to store key value pair for auths map
    * @param username username that needs to be used during secret creation
    * @param password password that needs to be used during secret creation
+   * @return an object of Secret
+   */
+  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password)
+      throws JsonProcessingException {
+    Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
+    String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
+
+    return new SecretBuilder()
+        .withNewMetadata().withName(DEFAULT_DOCKER_REGISTRY_SECRET_NAME).endMetadata()
+        .withType("kubernetes.io/dockerconfigjson")
+        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
+        .build();
+  }
+
+  /**
+   * Create Secret by using username,password and secretName.
+   *
+   * @param dockerServer User to store key value pair for auths map
+   * @param username username that needs to be used during secret creation
+   * @param password password that needs to be used during secret creation
    * @param secretName secretName that needs to be used during secret creation
    * @return an object of Secret
    */
   public static Secret createDockerRegistrySecret(String dockerServer, String username, String password, String secretName)
       throws JsonProcessingException {
+    Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
+    String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
+
+    return new SecretBuilder()
+        .withNewMetadata().withName(secretName).endMetadata()
+        .withType("kubernetes.io/dockerconfigjson")
+        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
+        .build();
+  }
+
+  private static Map<String, Object> createDockerRegistryConfigMap(String dockerServer, String username, String password) {
     Map<String, Object> dockerConfigMap = new HashMap<>();
     Map<String, Object> auths = new HashMap<>();
     Map<String, Object> credentials = new HashMap<>();
@@ -441,13 +473,6 @@ public class KubernetesResourceUtil {
     credentials.put("auth", Base64.getEncoder().encodeToString(usernameAndPasswordAuth.getBytes(StandardCharsets.UTF_8)));
     auths.put(dockerServer, credentials);
     dockerConfigMap.put("auths", auths);
-
-    String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
-
-    return new SecretBuilder()
-        .withNewMetadata().withName(secretName).endMetadata()
-        .withType("kubernetes.io/dockerconfigjson")
-        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
-        .build();
+    return dockerConfigMap;
   }
 }
