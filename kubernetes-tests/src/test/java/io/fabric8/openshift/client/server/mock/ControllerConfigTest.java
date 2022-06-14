@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.InfrastructureBuilder;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureBuilder;
 import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfig;
 import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigBuilder;
 import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigList;

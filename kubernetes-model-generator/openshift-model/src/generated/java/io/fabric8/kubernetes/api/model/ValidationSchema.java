@@ -21,12 +21,8 @@ import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.rbac.AggregationRule;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.fabric8.openshift.api.model.APIServer;
-import io.fabric8.openshift.api.model.APIServerList;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
-import io.fabric8.openshift.api.model.Authentication;
-import io.fabric8.openshift.api.model.AuthenticationList;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -34,8 +30,6 @@ import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.ClusterNetwork;
 import io.fabric8.openshift.api.model.ClusterNetworkList;
-import io.fabric8.openshift.api.model.ClusterOperator;
-import io.fabric8.openshift.api.model.ClusterOperatorList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterRole;
@@ -43,20 +37,10 @@ import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.api.model.ClusterRoleList;
 import io.fabric8.openshift.api.model.ClusterRoleScopeRestriction;
-import io.fabric8.openshift.api.model.ClusterVersion;
-import io.fabric8.openshift.api.model.ClusterVersionList;
-import io.fabric8.openshift.api.model.ConfigMapFileReference;
-import io.fabric8.openshift.api.model.Console;
-import io.fabric8.openshift.api.model.ConsoleList;
-import io.fabric8.openshift.api.model.DNS;
-import io.fabric8.openshift.api.model.DNSList;
-import io.fabric8.openshift.api.model.DNSZone;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.EgressNetworkPolicy;
 import io.fabric8.openshift.api.model.EgressNetworkPolicyList;
-import io.fabric8.openshift.api.model.FeatureGate;
-import io.fabric8.openshift.api.model.FeatureGateList;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.api.model.HelmChartRepository;
@@ -74,17 +58,10 @@ import io.fabric8.openshift.api.model.ImageStreamMapping;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.api.model.ImageTag;
 import io.fabric8.openshift.api.model.ImageTagList;
-import io.fabric8.openshift.api.model.Infrastructure;
-import io.fabric8.openshift.api.model.InfrastructureList;
-import io.fabric8.openshift.api.model.Ingress;
-import io.fabric8.openshift.api.model.IngressList;
 import io.fabric8.openshift.api.model.LocalResourceAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.NetNamespace;
 import io.fabric8.openshift.api.model.NetNamespaceList;
-import io.fabric8.openshift.api.model.Network;
-import io.fabric8.openshift.api.model.NetworkList;
-import io.fabric8.openshift.api.model.OAuth;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -93,17 +70,12 @@ import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientAuthorization;
 import io.fabric8.openshift.api.model.OAuthClientAuthorizationList;
 import io.fabric8.openshift.api.model.OAuthClientList;
-import io.fabric8.openshift.api.model.OAuthList;
-import io.fabric8.openshift.api.model.OperatorHub;
-import io.fabric8.openshift.api.model.OperatorHubList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.ProjectRequest;
-import io.fabric8.openshift.api.model.Proxy;
-import io.fabric8.openshift.api.model.ProxyList;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.ResourceAccessReview;
@@ -117,16 +89,12 @@ import io.fabric8.openshift.api.model.RoleBindingRestrictionSpec;
 import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
-import io.fabric8.openshift.api.model.Scheduler;
-import io.fabric8.openshift.api.model.SchedulerList;
-import io.fabric8.openshift.api.model.SecretNameReference;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
-import io.fabric8.openshift.api.model.TLSProfileSpec;
 import io.fabric8.openshift.api.model.TagEvent;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateInstance;
@@ -152,13 +120,9 @@ import lombok.experimental.Accessors;
     "metadata",
     "APIGroup",
     "APIGroupList",
-    "APIServer",
-    "APIServerList",
     "AggregationRule",
     "AppliedClusterResourceQuota",
     "AppliedClusterResourceQuotaList",
-    "Authentication",
-    "AuthenticationList",
     "BaseKubernetesList",
     "BrokerTemplateInstance",
     "BrokerTemplateInstanceList",
@@ -167,27 +131,15 @@ import lombok.experimental.Accessors;
     "BuildRequest",
     "ClusterNetwork",
     "ClusterNetworkList",
-    "ClusterOperator",
-    "ClusterOperatorList",
     "ClusterResourceQuota",
     "ClusterResourceQuotaList",
-    "ClusterVersion",
-    "ClusterVersionList",
     "Config",
-    "ConfigMapFileReference",
-    "Console",
-    "ConsoleList",
     "CreateOptions",
-    "DNS",
-    "DNSList",
-    "DNSZone",
     "DeleteOptions",
     "DeploymentConfig",
     "DeploymentConfigList",
     "EgressNetworkPolicy",
     "EgressNetworkPolicyList",
-    "FeatureGate",
-    "FeatureGateList",
     "GetOptions",
     "Group",
     "GroupList",
@@ -207,18 +159,11 @@ import lombok.experimental.Accessors;
     "ImageTag",
     "ImageTagList",
     "Info",
-    "Infrastructure",
-    "InfrastructureList",
-    "Ingress",
-    "IngressList",
     "ListOptions",
     "LocalResourceAccessReview",
     "LocalSubjectAccessReview",
     "NetNamespace",
     "NetNamespaceList",
-    "Network",
-    "NetworkList",
-    "OAuth",
     "OAuthAccessToken",
     "OAuthAccessTokenList",
     "OAuthAuthorizeToken",
@@ -227,7 +172,6 @@ import lombok.experimental.Accessors;
     "OAuthClientAuthorization",
     "OAuthClientAuthorizationList",
     "OAuthClientList",
-    "OAuthList",
     "ObjectMeta",
     "OpenShiftRoleBindingRestrictionList",
     "OpenshiftClusterRole",
@@ -241,8 +185,6 @@ import lombok.experimental.Accessors;
     "OpenshiftRoleBindingRestriction",
     "OpenshiftRoleBindingRestrictionSpec",
     "OpenshiftRoleList",
-    "OperatorHub",
-    "OperatorHubList",
     "Patch",
     "PatchOptions",
     "PodSecurityPolicyReview",
@@ -251,8 +193,6 @@ import lombok.experimental.Accessors;
     "Project",
     "ProjectList",
     "ProjectRequest",
-    "Proxy",
-    "ProxyList",
     "Quantity",
     "RangeAllocation",
     "RangeAllocationList",
@@ -261,9 +201,6 @@ import lombok.experimental.Accessors;
     "RootPaths",
     "Route",
     "RouteList",
-    "Scheduler",
-    "SchedulerList",
-    "SecretNameReference",
     "SecurityContextConstraints",
     "SecurityContextConstraintsList",
     "SelfSubjectRulesReview",
@@ -271,7 +208,6 @@ import lombok.experimental.Accessors;
     "SubjectAccessReview",
     "SubjectAccessReviewResponse",
     "SubjectRulesReview",
-    "TLSProfileSpec",
     "TagEvent",
     "Template",
     "TemplateInstance",
@@ -311,20 +247,12 @@ public class ValidationSchema {
     private APIGroup aPIGroup;
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("APIServer")
-    private APIServer aPIServer;
-    @JsonProperty("APIServerList")
-    private APIServerList aPIServerList;
     @JsonProperty("AggregationRule")
     private AggregationRule aggregationRule;
     @JsonProperty("AppliedClusterResourceQuota")
     private AppliedClusterResourceQuota appliedClusterResourceQuota;
     @JsonProperty("AppliedClusterResourceQuotaList")
     private AppliedClusterResourceQuotaList appliedClusterResourceQuotaList;
-    @JsonProperty("Authentication")
-    private Authentication authentication;
-    @JsonProperty("AuthenticationList")
-    private AuthenticationList authenticationList;
     @JsonProperty("BaseKubernetesList")
     private BaseKubernetesList baseKubernetesList;
     @JsonProperty("BrokerTemplateInstance")
@@ -341,34 +269,14 @@ public class ValidationSchema {
     private ClusterNetwork clusterNetwork;
     @JsonProperty("ClusterNetworkList")
     private ClusterNetworkList clusterNetworkList;
-    @JsonProperty("ClusterOperator")
-    private ClusterOperator clusterOperator;
-    @JsonProperty("ClusterOperatorList")
-    private ClusterOperatorList clusterOperatorList;
     @JsonProperty("ClusterResourceQuota")
     private ClusterResourceQuota clusterResourceQuota;
     @JsonProperty("ClusterResourceQuotaList")
     private ClusterResourceQuotaList clusterResourceQuotaList;
-    @JsonProperty("ClusterVersion")
-    private ClusterVersion clusterVersion;
-    @JsonProperty("ClusterVersionList")
-    private ClusterVersionList clusterVersionList;
     @JsonProperty("Config")
     private Config config;
-    @JsonProperty("ConfigMapFileReference")
-    private ConfigMapFileReference configMapFileReference;
-    @JsonProperty("Console")
-    private Console console;
-    @JsonProperty("ConsoleList")
-    private ConsoleList consoleList;
     @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("DNS")
-    private DNS dns;
-    @JsonProperty("DNSList")
-    private DNSList dNSList;
-    @JsonProperty("DNSZone")
-    private DNSZone dNSZone;
     @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
     @JsonProperty("DeploymentConfig")
@@ -379,10 +287,6 @@ public class ValidationSchema {
     private EgressNetworkPolicy egressNetworkPolicy;
     @JsonProperty("EgressNetworkPolicyList")
     private EgressNetworkPolicyList egressNetworkPolicyList;
-    @JsonProperty("FeatureGate")
-    private FeatureGate featureGate;
-    @JsonProperty("FeatureGateList")
-    private FeatureGateList featureGateList;
     @JsonProperty("GetOptions")
     private GetOptions getOptions;
     @JsonProperty("Group")
@@ -421,14 +325,6 @@ public class ValidationSchema {
     private ImageTagList imageTagList;
     @JsonProperty("Info")
     private Info info;
-    @JsonProperty("Infrastructure")
-    private Infrastructure infrastructure;
-    @JsonProperty("InfrastructureList")
-    private InfrastructureList infrastructureList;
-    @JsonProperty("Ingress")
-    private Ingress ingress;
-    @JsonProperty("IngressList")
-    private IngressList ingressList;
     @JsonProperty("ListOptions")
     private ListOptions listOptions;
     @JsonProperty("LocalResourceAccessReview")
@@ -439,12 +335,6 @@ public class ValidationSchema {
     private NetNamespace netNamespace;
     @JsonProperty("NetNamespaceList")
     private NetNamespaceList netNamespaceList;
-    @JsonProperty("Network")
-    private Network network;
-    @JsonProperty("NetworkList")
-    private NetworkList networkList;
-    @JsonProperty("OAuth")
-    private OAuth oAuth;
     @JsonProperty("OAuthAccessToken")
     private OAuthAccessToken oAuthAccessToken;
     @JsonProperty("OAuthAccessTokenList")
@@ -461,8 +351,6 @@ public class ValidationSchema {
     private OAuthClientAuthorizationList oAuthClientAuthorizationList;
     @JsonProperty("OAuthClientList")
     private OAuthClientList oAuthClientList;
-    @JsonProperty("OAuthList")
-    private OAuthList oAuthList;
     @JsonProperty("ObjectMeta")
     private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
     @JsonProperty("OpenShiftRoleBindingRestrictionList")
@@ -489,10 +377,6 @@ public class ValidationSchema {
     private RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec;
     @JsonProperty("OpenshiftRoleList")
     private RoleList openshiftRoleList;
-    @JsonProperty("OperatorHub")
-    private OperatorHub operatorHub;
-    @JsonProperty("OperatorHubList")
-    private OperatorHubList operatorHubList;
     @JsonProperty("Patch")
     private Patch patch;
     @JsonProperty("PatchOptions")
@@ -509,10 +393,6 @@ public class ValidationSchema {
     private ProjectList projectList;
     @JsonProperty("ProjectRequest")
     private ProjectRequest projectRequest;
-    @JsonProperty("Proxy")
-    private Proxy proxy;
-    @JsonProperty("ProxyList")
-    private ProxyList proxyList;
     @JsonProperty("Quantity")
     private Quantity quantity;
     @JsonProperty("RangeAllocation")
@@ -529,12 +409,6 @@ public class ValidationSchema {
     private Route route;
     @JsonProperty("RouteList")
     private RouteList routeList;
-    @JsonProperty("Scheduler")
-    private Scheduler scheduler;
-    @JsonProperty("SchedulerList")
-    private SchedulerList schedulerList;
-    @JsonProperty("SecretNameReference")
-    private SecretNameReference secretNameReference;
     @JsonProperty("SecurityContextConstraints")
     private SecurityContextConstraints securityContextConstraints;
     @JsonProperty("SecurityContextConstraintsList")
@@ -549,8 +423,6 @@ public class ValidationSchema {
     private SubjectAccessReviewResponse subjectAccessReviewResponse;
     @JsonProperty("SubjectRulesReview")
     private SubjectRulesReview subjectRulesReview;
-    @JsonProperty("TLSProfileSpec")
-    private TLSProfileSpec tLSProfileSpec;
     @JsonProperty("TagEvent")
     private TagEvent tagEvent;
     @JsonProperty("Template")
@@ -593,7 +465,6 @@ public class ValidationSchema {
      * 
      * @param listOptions
      * @param aPIGroupList
-     * @param schedulerList
      * @param aggregationRule
      * @param hostSubnetList
      * @param openshiftClusterRole
@@ -602,17 +473,13 @@ public class ValidationSchema {
      * @param oAuthClientAuthorizationList
      * @param templateInstance
      * @param userList
-     * @param oAuthList
      * @param userIdentityMapping
      * @param openshiftClusterRoleBindingList
      * @param hostSubnet
      * @param appliedClusterResourceQuota
      * @param deleteOptions
      * @param clusterResourceQuotaList
-     * @param operatorHubList
      * @param helmChartRepository
-     * @param clusterVersionList
-     * @param dns
      * @param imageStreamImage
      * @param groupList
      * @param userOAuthAccessTokenList
@@ -620,18 +487,15 @@ public class ValidationSchema {
      * @param imageTagList
      * @param projectRequest
      * @param clusterResourceQuota
-     * @param proxy
      * @param userOAuthAccessToken
      * @param route
      * @param tokenReview
      * @param getOptions
      * @param imageList
-     * @param consoleList
      * @param status
      * @param template
      * @param buildRequest
      * @param rangeAllocationList
-     * @param ingressList
      * @param selfSubjectRulesReview
      * @param baseKubernetesList
      * @param subjectAccessReviewResponse
@@ -643,11 +507,9 @@ public class ValidationSchema {
      * @param oAuthAccessTokenList
      * @param buildList
      * @param rootPaths
-     * @param featureGate
      * @param oAuthClientList
      * @param patchOptions
      * @param oAuthAuthorizeTokenList
-     * @param aPIServerList
      * @param imageStreamMapping
      * @param openshiftRoleBindingRestrictionSpec
      * @param rangeAllocation
@@ -660,18 +522,13 @@ public class ValidationSchema {
      * @param routeList
      * @param securityContextConstraints
      * @param resourceAccessReview
-     * @param secretNameReference
      * @param openshiftRole
-     * @param infrastructureList
      * @param netNamespaceList
      * @param openshiftClusterRoleScopeRestriction
      * @param project
      * @param brokerTemplateInstanceList
-     * @param oAuth
      * @param openShiftRoleBindingRestrictionList
-     * @param clusterOperator
      * @param podSecurityPolicyReview
-     * @param authenticationList
      * @param deploymentConfig
      * @param openshiftClusterRoleBinding
      * @param egressNetworkPolicy
@@ -680,65 +537,44 @@ public class ValidationSchema {
      * @param projectList
      * @param oAuthAccessToken
      * @param openshiftClusterRoleList
-     * @param operatorHub
      * @param imageStreamImport
-     * @param aPIServer
      * @param imageStreamList
      * @param oAuthClientAuthorization
      * @param localResourceAccessReview
      * @param imageStreamTagList
      * @param resourceAccessReviewResponse
      * @param openshiftRoleList
-     * @param dNSZone
      * @param buildConfigList
-     * @param ingress
-     * @param proxyList
      * @param identityList
-     * @param configMapFileReference
      * @param helmChartRepositoryList
      * @param subjectAccessReview
-     * @param networkList
      * @param openshiftRoleBinding
-     * @param featureGateList
      * @param clusterNetworkList
      * @param templateInstanceList
      * @param podSecurityPolicySubjectReview
      * @param updateOptions
      * @param brokerTemplateInstance
-     * @param clusterVersion
-     * @param network
-     * @param scheduler
      * @param netNamespace
      * @param oAuthAuthorizeToken
-     * @param clusterOperatorList
-     * @param dNSList
      * @param appliedClusterResourceQuotaList
-     * @param authentication
      * @param localSubjectAccessReview
-     * @param console
      * @param imageSignature
      * @param quantity
      * @param templateList
      * @param deploymentConfigList
      * @param podSecurityPolicySelfSubjectReview
      * @param typeMeta
-     * @param infrastructure
-     * @param tLSProfileSpec
      * @param time
      * @param imageTag
      * @param user
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, Authentication authentication, AuthenticationList authenticationList, BaseKubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, Config config, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, CreateOptions createOptions, DNS dns, DNSList dNSList, DNSZone dNSZone, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, FeatureGate featureGate, FeatureGateList featureGateList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, Network network, NetworkList networkList, OAuth oAuth, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectList projectList, ProjectRequest projectRequest, Proxy proxy, ProxyList proxyList, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TLSProfileSpec tLSProfileSpec, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, BaseKubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, Config config, CreateOptions createOptions, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectList projectList, ProjectRequest projectRequest, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
-        this.aPIServer = aPIServer;
-        this.aPIServerList = aPIServerList;
         this.aggregationRule = aggregationRule;
         this.appliedClusterResourceQuota = appliedClusterResourceQuota;
         this.appliedClusterResourceQuotaList = appliedClusterResourceQuotaList;
-        this.authentication = authentication;
-        this.authenticationList = authenticationList;
         this.baseKubernetesList = baseKubernetesList;
         this.brokerTemplateInstance = brokerTemplateInstance;
         this.brokerTemplateInstanceList = brokerTemplateInstanceList;
@@ -747,27 +583,15 @@ public class ValidationSchema {
         this.buildRequest = buildRequest;
         this.clusterNetwork = clusterNetwork;
         this.clusterNetworkList = clusterNetworkList;
-        this.clusterOperator = clusterOperator;
-        this.clusterOperatorList = clusterOperatorList;
         this.clusterResourceQuota = clusterResourceQuota;
         this.clusterResourceQuotaList = clusterResourceQuotaList;
-        this.clusterVersion = clusterVersion;
-        this.clusterVersionList = clusterVersionList;
         this.config = config;
-        this.configMapFileReference = configMapFileReference;
-        this.console = console;
-        this.consoleList = consoleList;
         this.createOptions = createOptions;
-        this.dns = dns;
-        this.dNSList = dNSList;
-        this.dNSZone = dNSZone;
         this.deleteOptions = deleteOptions;
         this.deploymentConfig = deploymentConfig;
         this.deploymentConfigList = deploymentConfigList;
         this.egressNetworkPolicy = egressNetworkPolicy;
         this.egressNetworkPolicyList = egressNetworkPolicyList;
-        this.featureGate = featureGate;
-        this.featureGateList = featureGateList;
         this.getOptions = getOptions;
         this.group = group;
         this.groupList = groupList;
@@ -787,18 +611,11 @@ public class ValidationSchema {
         this.imageTag = imageTag;
         this.imageTagList = imageTagList;
         this.info = info;
-        this.infrastructure = infrastructure;
-        this.infrastructureList = infrastructureList;
-        this.ingress = ingress;
-        this.ingressList = ingressList;
         this.listOptions = listOptions;
         this.localResourceAccessReview = localResourceAccessReview;
         this.localSubjectAccessReview = localSubjectAccessReview;
         this.netNamespace = netNamespace;
         this.netNamespaceList = netNamespaceList;
-        this.network = network;
-        this.networkList = networkList;
-        this.oAuth = oAuth;
         this.oAuthAccessToken = oAuthAccessToken;
         this.oAuthAccessTokenList = oAuthAccessTokenList;
         this.oAuthAuthorizeToken = oAuthAuthorizeToken;
@@ -807,7 +624,6 @@ public class ValidationSchema {
         this.oAuthClientAuthorization = oAuthClientAuthorization;
         this.oAuthClientAuthorizationList = oAuthClientAuthorizationList;
         this.oAuthClientList = oAuthClientList;
-        this.oAuthList = oAuthList;
         this.objectMeta = objectMeta;
         this.openShiftRoleBindingRestrictionList = openShiftRoleBindingRestrictionList;
         this.openshiftClusterRole = openshiftClusterRole;
@@ -821,8 +637,6 @@ public class ValidationSchema {
         this.openshiftRoleBindingRestriction = openshiftRoleBindingRestriction;
         this.openshiftRoleBindingRestrictionSpec = openshiftRoleBindingRestrictionSpec;
         this.openshiftRoleList = openshiftRoleList;
-        this.operatorHub = operatorHub;
-        this.operatorHubList = operatorHubList;
         this.patch = patch;
         this.patchOptions = patchOptions;
         this.podSecurityPolicyReview = podSecurityPolicyReview;
@@ -831,8 +645,6 @@ public class ValidationSchema {
         this.project = project;
         this.projectList = projectList;
         this.projectRequest = projectRequest;
-        this.proxy = proxy;
-        this.proxyList = proxyList;
         this.quantity = quantity;
         this.rangeAllocation = rangeAllocation;
         this.rangeAllocationList = rangeAllocationList;
@@ -841,9 +653,6 @@ public class ValidationSchema {
         this.rootPaths = rootPaths;
         this.route = route;
         this.routeList = routeList;
-        this.scheduler = scheduler;
-        this.schedulerList = schedulerList;
-        this.secretNameReference = secretNameReference;
         this.securityContextConstraints = securityContextConstraints;
         this.securityContextConstraintsList = securityContextConstraintsList;
         this.selfSubjectRulesReview = selfSubjectRulesReview;
@@ -851,7 +660,6 @@ public class ValidationSchema {
         this.subjectAccessReview = subjectAccessReview;
         this.subjectAccessReviewResponse = subjectAccessReviewResponse;
         this.subjectRulesReview = subjectRulesReview;
-        this.tLSProfileSpec = tLSProfileSpec;
         this.tagEvent = tagEvent;
         this.template = template;
         this.templateInstance = templateInstance;
@@ -888,26 +696,6 @@ public class ValidationSchema {
         this.aPIGroupList = aPIGroupList;
     }
 
-    @JsonProperty("APIServer")
-    public APIServer getAPIServer() {
-        return aPIServer;
-    }
-
-    @JsonProperty("APIServer")
-    public void setAPIServer(APIServer aPIServer) {
-        this.aPIServer = aPIServer;
-    }
-
-    @JsonProperty("APIServerList")
-    public APIServerList getAPIServerList() {
-        return aPIServerList;
-    }
-
-    @JsonProperty("APIServerList")
-    public void setAPIServerList(APIServerList aPIServerList) {
-        this.aPIServerList = aPIServerList;
-    }
-
     @JsonProperty("AggregationRule")
     public AggregationRule getAggregationRule() {
         return aggregationRule;
@@ -936,26 +724,6 @@ public class ValidationSchema {
     @JsonProperty("AppliedClusterResourceQuotaList")
     public void setAppliedClusterResourceQuotaList(AppliedClusterResourceQuotaList appliedClusterResourceQuotaList) {
         this.appliedClusterResourceQuotaList = appliedClusterResourceQuotaList;
-    }
-
-    @JsonProperty("Authentication")
-    public Authentication getAuthentication() {
-        return authentication;
-    }
-
-    @JsonProperty("Authentication")
-    public void setAuthentication(Authentication authentication) {
-        this.authentication = authentication;
-    }
-
-    @JsonProperty("AuthenticationList")
-    public AuthenticationList getAuthenticationList() {
-        return authenticationList;
-    }
-
-    @JsonProperty("AuthenticationList")
-    public void setAuthenticationList(AuthenticationList authenticationList) {
-        this.authenticationList = authenticationList;
     }
 
     @JsonProperty("BaseKubernetesList")
@@ -1038,26 +806,6 @@ public class ValidationSchema {
         this.clusterNetworkList = clusterNetworkList;
     }
 
-    @JsonProperty("ClusterOperator")
-    public ClusterOperator getClusterOperator() {
-        return clusterOperator;
-    }
-
-    @JsonProperty("ClusterOperator")
-    public void setClusterOperator(ClusterOperator clusterOperator) {
-        this.clusterOperator = clusterOperator;
-    }
-
-    @JsonProperty("ClusterOperatorList")
-    public ClusterOperatorList getClusterOperatorList() {
-        return clusterOperatorList;
-    }
-
-    @JsonProperty("ClusterOperatorList")
-    public void setClusterOperatorList(ClusterOperatorList clusterOperatorList) {
-        this.clusterOperatorList = clusterOperatorList;
-    }
-
     @JsonProperty("ClusterResourceQuota")
     public ClusterResourceQuota getClusterResourceQuota() {
         return clusterResourceQuota;
@@ -1078,26 +826,6 @@ public class ValidationSchema {
         this.clusterResourceQuotaList = clusterResourceQuotaList;
     }
 
-    @JsonProperty("ClusterVersion")
-    public ClusterVersion getClusterVersion() {
-        return clusterVersion;
-    }
-
-    @JsonProperty("ClusterVersion")
-    public void setClusterVersion(ClusterVersion clusterVersion) {
-        this.clusterVersion = clusterVersion;
-    }
-
-    @JsonProperty("ClusterVersionList")
-    public ClusterVersionList getClusterVersionList() {
-        return clusterVersionList;
-    }
-
-    @JsonProperty("ClusterVersionList")
-    public void setClusterVersionList(ClusterVersionList clusterVersionList) {
-        this.clusterVersionList = clusterVersionList;
-    }
-
     @JsonProperty("Config")
     public Config getConfig() {
         return config;
@@ -1108,36 +836,6 @@ public class ValidationSchema {
         this.config = config;
     }
 
-    @JsonProperty("ConfigMapFileReference")
-    public ConfigMapFileReference getConfigMapFileReference() {
-        return configMapFileReference;
-    }
-
-    @JsonProperty("ConfigMapFileReference")
-    public void setConfigMapFileReference(ConfigMapFileReference configMapFileReference) {
-        this.configMapFileReference = configMapFileReference;
-    }
-
-    @JsonProperty("Console")
-    public Console getConsole() {
-        return console;
-    }
-
-    @JsonProperty("Console")
-    public void setConsole(Console console) {
-        this.console = console;
-    }
-
-    @JsonProperty("ConsoleList")
-    public ConsoleList getConsoleList() {
-        return consoleList;
-    }
-
-    @JsonProperty("ConsoleList")
-    public void setConsoleList(ConsoleList consoleList) {
-        this.consoleList = consoleList;
-    }
-
     @JsonProperty("CreateOptions")
     public CreateOptions getCreateOptions() {
         return createOptions;
@@ -1146,36 +844,6 @@ public class ValidationSchema {
     @JsonProperty("CreateOptions")
     public void setCreateOptions(CreateOptions createOptions) {
         this.createOptions = createOptions;
-    }
-
-    @JsonProperty("DNS")
-    public DNS getDns() {
-        return dns;
-    }
-
-    @JsonProperty("DNS")
-    public void setDns(DNS dns) {
-        this.dns = dns;
-    }
-
-    @JsonProperty("DNSList")
-    public DNSList getDNSList() {
-        return dNSList;
-    }
-
-    @JsonProperty("DNSList")
-    public void setDNSList(DNSList dNSList) {
-        this.dNSList = dNSList;
-    }
-
-    @JsonProperty("DNSZone")
-    public DNSZone getDNSZone() {
-        return dNSZone;
-    }
-
-    @JsonProperty("DNSZone")
-    public void setDNSZone(DNSZone dNSZone) {
-        this.dNSZone = dNSZone;
     }
 
     @JsonProperty("DeleteOptions")
@@ -1226,26 +894,6 @@ public class ValidationSchema {
     @JsonProperty("EgressNetworkPolicyList")
     public void setEgressNetworkPolicyList(EgressNetworkPolicyList egressNetworkPolicyList) {
         this.egressNetworkPolicyList = egressNetworkPolicyList;
-    }
-
-    @JsonProperty("FeatureGate")
-    public FeatureGate getFeatureGate() {
-        return featureGate;
-    }
-
-    @JsonProperty("FeatureGate")
-    public void setFeatureGate(FeatureGate featureGate) {
-        this.featureGate = featureGate;
-    }
-
-    @JsonProperty("FeatureGateList")
-    public FeatureGateList getFeatureGateList() {
-        return featureGateList;
-    }
-
-    @JsonProperty("FeatureGateList")
-    public void setFeatureGateList(FeatureGateList featureGateList) {
-        this.featureGateList = featureGateList;
     }
 
     @JsonProperty("GetOptions")
@@ -1438,46 +1086,6 @@ public class ValidationSchema {
         this.info = info;
     }
 
-    @JsonProperty("Infrastructure")
-    public Infrastructure getInfrastructure() {
-        return infrastructure;
-    }
-
-    @JsonProperty("Infrastructure")
-    public void setInfrastructure(Infrastructure infrastructure) {
-        this.infrastructure = infrastructure;
-    }
-
-    @JsonProperty("InfrastructureList")
-    public InfrastructureList getInfrastructureList() {
-        return infrastructureList;
-    }
-
-    @JsonProperty("InfrastructureList")
-    public void setInfrastructureList(InfrastructureList infrastructureList) {
-        this.infrastructureList = infrastructureList;
-    }
-
-    @JsonProperty("Ingress")
-    public Ingress getIngress() {
-        return ingress;
-    }
-
-    @JsonProperty("Ingress")
-    public void setIngress(Ingress ingress) {
-        this.ingress = ingress;
-    }
-
-    @JsonProperty("IngressList")
-    public IngressList getIngressList() {
-        return ingressList;
-    }
-
-    @JsonProperty("IngressList")
-    public void setIngressList(IngressList ingressList) {
-        this.ingressList = ingressList;
-    }
-
     @JsonProperty("ListOptions")
     public ListOptions getListOptions() {
         return listOptions;
@@ -1526,36 +1134,6 @@ public class ValidationSchema {
     @JsonProperty("NetNamespaceList")
     public void setNetNamespaceList(NetNamespaceList netNamespaceList) {
         this.netNamespaceList = netNamespaceList;
-    }
-
-    @JsonProperty("Network")
-    public Network getNetwork() {
-        return network;
-    }
-
-    @JsonProperty("Network")
-    public void setNetwork(Network network) {
-        this.network = network;
-    }
-
-    @JsonProperty("NetworkList")
-    public NetworkList getNetworkList() {
-        return networkList;
-    }
-
-    @JsonProperty("NetworkList")
-    public void setNetworkList(NetworkList networkList) {
-        this.networkList = networkList;
-    }
-
-    @JsonProperty("OAuth")
-    public OAuth getOAuth() {
-        return oAuth;
-    }
-
-    @JsonProperty("OAuth")
-    public void setOAuth(OAuth oAuth) {
-        this.oAuth = oAuth;
     }
 
     @JsonProperty("OAuthAccessToken")
@@ -1636,16 +1214,6 @@ public class ValidationSchema {
     @JsonProperty("OAuthClientList")
     public void setOAuthClientList(OAuthClientList oAuthClientList) {
         this.oAuthClientList = oAuthClientList;
-    }
-
-    @JsonProperty("OAuthList")
-    public OAuthList getOAuthList() {
-        return oAuthList;
-    }
-
-    @JsonProperty("OAuthList")
-    public void setOAuthList(OAuthList oAuthList) {
-        this.oAuthList = oAuthList;
     }
 
     @JsonProperty("ObjectMeta")
@@ -1778,26 +1346,6 @@ public class ValidationSchema {
         this.openshiftRoleList = openshiftRoleList;
     }
 
-    @JsonProperty("OperatorHub")
-    public OperatorHub getOperatorHub() {
-        return operatorHub;
-    }
-
-    @JsonProperty("OperatorHub")
-    public void setOperatorHub(OperatorHub operatorHub) {
-        this.operatorHub = operatorHub;
-    }
-
-    @JsonProperty("OperatorHubList")
-    public OperatorHubList getOperatorHubList() {
-        return operatorHubList;
-    }
-
-    @JsonProperty("OperatorHubList")
-    public void setOperatorHubList(OperatorHubList operatorHubList) {
-        this.operatorHubList = operatorHubList;
-    }
-
     @JsonProperty("Patch")
     public Patch getPatch() {
         return patch;
@@ -1876,26 +1424,6 @@ public class ValidationSchema {
     @JsonProperty("ProjectRequest")
     public void setProjectRequest(ProjectRequest projectRequest) {
         this.projectRequest = projectRequest;
-    }
-
-    @JsonProperty("Proxy")
-    public Proxy getProxy() {
-        return proxy;
-    }
-
-    @JsonProperty("Proxy")
-    public void setProxy(Proxy proxy) {
-        this.proxy = proxy;
-    }
-
-    @JsonProperty("ProxyList")
-    public ProxyList getProxyList() {
-        return proxyList;
-    }
-
-    @JsonProperty("ProxyList")
-    public void setProxyList(ProxyList proxyList) {
-        this.proxyList = proxyList;
     }
 
     @JsonProperty("Quantity")
@@ -1978,36 +1506,6 @@ public class ValidationSchema {
         this.routeList = routeList;
     }
 
-    @JsonProperty("Scheduler")
-    public Scheduler getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("Scheduler")
-    public void setScheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
-    }
-
-    @JsonProperty("SchedulerList")
-    public SchedulerList getSchedulerList() {
-        return schedulerList;
-    }
-
-    @JsonProperty("SchedulerList")
-    public void setSchedulerList(SchedulerList schedulerList) {
-        this.schedulerList = schedulerList;
-    }
-
-    @JsonProperty("SecretNameReference")
-    public SecretNameReference getSecretNameReference() {
-        return secretNameReference;
-    }
-
-    @JsonProperty("SecretNameReference")
-    public void setSecretNameReference(SecretNameReference secretNameReference) {
-        this.secretNameReference = secretNameReference;
-    }
-
     @JsonProperty("SecurityContextConstraints")
     public SecurityContextConstraints getSecurityContextConstraints() {
         return securityContextConstraints;
@@ -2076,16 +1574,6 @@ public class ValidationSchema {
     @JsonProperty("SubjectRulesReview")
     public void setSubjectRulesReview(SubjectRulesReview subjectRulesReview) {
         this.subjectRulesReview = subjectRulesReview;
-    }
-
-    @JsonProperty("TLSProfileSpec")
-    public TLSProfileSpec getTLSProfileSpec() {
-        return tLSProfileSpec;
-    }
-
-    @JsonProperty("TLSProfileSpec")
-    public void setTLSProfileSpec(TLSProfileSpec tLSProfileSpec) {
-        this.tLSProfileSpec = tLSProfileSpec;
     }
 
     @JsonProperty("TagEvent")

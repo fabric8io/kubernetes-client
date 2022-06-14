@@ -18,34 +18,42 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.openshift.api.model.APIServer;
-import io.fabric8.openshift.api.model.APIServerList;
-import io.fabric8.openshift.api.model.Authentication;
-import io.fabric8.openshift.api.model.AuthenticationList;
-import io.fabric8.openshift.api.model.ClusterOperator;
-import io.fabric8.openshift.api.model.ClusterOperatorList;
-import io.fabric8.openshift.api.model.ClusterVersion;
-import io.fabric8.openshift.api.model.ClusterVersionList;
-import io.fabric8.openshift.api.model.Console;
-import io.fabric8.openshift.api.model.ConsoleList;
-import io.fabric8.openshift.api.model.DNS;
-import io.fabric8.openshift.api.model.DNSList;
-import io.fabric8.openshift.api.model.FeatureGate;
-import io.fabric8.openshift.api.model.FeatureGateList;
-import io.fabric8.openshift.api.model.Infrastructure;
-import io.fabric8.openshift.api.model.InfrastructureList;
-import io.fabric8.openshift.api.model.Ingress;
-import io.fabric8.openshift.api.model.IngressList;
-import io.fabric8.openshift.api.model.Network;
-import io.fabric8.openshift.api.model.NetworkList;
-import io.fabric8.openshift.api.model.OAuth;
-import io.fabric8.openshift.api.model.OAuthList;
-import io.fabric8.openshift.api.model.OperatorHub;
-import io.fabric8.openshift.api.model.OperatorHubList;
-import io.fabric8.openshift.api.model.Proxy;
-import io.fabric8.openshift.api.model.ProxyList;
-import io.fabric8.openshift.api.model.Scheduler;
-import io.fabric8.openshift.api.model.SchedulerList;
+import io.fabric8.openshift.api.model.config.v1.APIServer;
+import io.fabric8.openshift.api.model.config.v1.APIServerList;
+import io.fabric8.openshift.api.model.config.v1.Authentication;
+import io.fabric8.openshift.api.model.config.v1.AuthenticationList;
+import io.fabric8.openshift.api.model.config.v1.Build;
+import io.fabric8.openshift.api.model.config.v1.BuildList;
+import io.fabric8.openshift.api.model.config.v1.ClusterOperator;
+import io.fabric8.openshift.api.model.config.v1.ClusterOperatorList;
+import io.fabric8.openshift.api.model.config.v1.ClusterVersion;
+import io.fabric8.openshift.api.model.config.v1.ClusterVersionList;
+import io.fabric8.openshift.api.model.config.v1.Console;
+import io.fabric8.openshift.api.model.config.v1.ConsoleList;
+import io.fabric8.openshift.api.model.config.v1.DNS;
+import io.fabric8.openshift.api.model.config.v1.DNSList;
+import io.fabric8.openshift.api.model.config.v1.FeatureGate;
+import io.fabric8.openshift.api.model.config.v1.FeatureGateList;
+import io.fabric8.openshift.api.model.config.v1.Image;
+import io.fabric8.openshift.api.model.config.v1.ImageContentPolicy;
+import io.fabric8.openshift.api.model.config.v1.ImageContentPolicyList;
+import io.fabric8.openshift.api.model.config.v1.ImageList;
+import io.fabric8.openshift.api.model.config.v1.Infrastructure;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureList;
+import io.fabric8.openshift.api.model.config.v1.Ingress;
+import io.fabric8.openshift.api.model.config.v1.IngressList;
+import io.fabric8.openshift.api.model.config.v1.Network;
+import io.fabric8.openshift.api.model.config.v1.NetworkList;
+import io.fabric8.openshift.api.model.config.v1.OAuth;
+import io.fabric8.openshift.api.model.config.v1.OAuthList;
+import io.fabric8.openshift.api.model.config.v1.OperatorHub;
+import io.fabric8.openshift.api.model.config.v1.OperatorHubList;
+import io.fabric8.openshift.api.model.config.v1.Project;
+import io.fabric8.openshift.api.model.config.v1.ProjectList;
+import io.fabric8.openshift.api.model.config.v1.Proxy;
+import io.fabric8.openshift.api.model.config.v1.ProxyList;
+import io.fabric8.openshift.api.model.config.v1.Scheduler;
+import io.fabric8.openshift.api.model.config.v1.SchedulerList;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 
 public class OpenShiftConfigAPIGroupClient extends ClientAdapter<OpenShiftConfigAPIGroupClient>
@@ -64,6 +72,11 @@ public class OpenShiftConfigAPIGroupClient extends ClientAdapter<OpenShiftConfig
   @Override
   public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
     return resources(Authentication.class, AuthenticationList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<Build, BuildList, Resource<Build>> builds() {
+    return resources(Build.class, BuildList.class);
   }
 
   @Override
@@ -102,6 +115,16 @@ public class OpenShiftConfigAPIGroupClient extends ClientAdapter<OpenShiftConfig
   }
 
   @Override
+  public NonNamespaceOperation<Image, ImageList, Resource<Image>> images() {
+    return resources(Image.class, ImageList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ImageContentPolicy, ImageContentPolicyList, Resource<ImageContentPolicy>> imageContentPolicies() {
+    return resources(ImageContentPolicy.class, ImageContentPolicyList.class);
+  }
+
+  @Override
   public NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks() {
     return resources(Network.class, NetworkList.class);
   }
@@ -114,6 +137,11 @@ public class OpenShiftConfigAPIGroupClient extends ClientAdapter<OpenShiftConfig
   @Override
   public NonNamespaceOperation<OperatorHub, OperatorHubList, Resource<OperatorHub>> operatorHubs() {
     return resources(OperatorHub.class, OperatorHubList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<Project, ProjectList, Resource<Project>> projects() {
+    return resources(Project.class, ProjectList.class);
   }
 
   @Override

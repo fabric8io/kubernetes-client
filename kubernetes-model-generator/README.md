@@ -40,6 +40,8 @@
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model)
 * openshift-model-console: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-console.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-console)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-console/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-console)
+* openshift-model-config: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-config.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-config)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-config/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-config)
 * openshift-model-monitoring: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-monitoring.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-monitoring)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-monitoring/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-monitoring)
 * openshift-model-operator: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-operator.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-operator)

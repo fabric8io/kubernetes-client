@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock.hive;
 
-import io.fabric8.openshift.api.model.GitHubIdentityProviderBuilder;
-import io.fabric8.openshift.api.model.IdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProvider;
 import io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProviderBuilder;
 import io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProviderList;

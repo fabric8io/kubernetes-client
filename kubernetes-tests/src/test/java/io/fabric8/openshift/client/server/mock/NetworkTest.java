@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.Network;
-import io.fabric8.openshift.api.model.NetworkBuilder;
-import io.fabric8.openshift.api.model.NetworkList;
-import io.fabric8.openshift.api.model.NetworkListBuilder;
+import io.fabric8.openshift.api.model.config.v1.Network;
+import io.fabric8.openshift.api.model.config.v1.NetworkBuilder;
+import io.fabric8.openshift.api.model.config.v1.NetworkList;
+import io.fabric8.openshift.api.model.config.v1.NetworkListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -86,7 +86,7 @@ class NetworkTest {
         .withNewSpec()
         .addNewClusterNetwork()
         .withCidr("10.217.0.0/22")
-        .withHostSubnetLength(23)
+        .withHostPrefix(23)
         .endClusterNetwork()
         .withNewExternalIP().withNewPolicy().endPolicy().endExternalIP()
         .withNetworkType("OpenShiftSDN")

@@ -66,7 +66,7 @@ func main() {
     {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_", false},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
-    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_v1_", false},
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model.config.v1", "os_config_v1_", false},
     {"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1", "machineconfiguration", "io.fabric8.openshift.api.model.machineconfig.v1", "os_machineconfig_v1_", true},
   }
 

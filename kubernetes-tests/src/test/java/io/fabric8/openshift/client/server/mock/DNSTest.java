@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.DNS;
-import io.fabric8.openshift.api.model.DNSBuilder;
-import io.fabric8.openshift.api.model.DNSList;
-import io.fabric8.openshift.api.model.DNSListBuilder;
+import io.fabric8.openshift.api.model.config.v1.DNS;
+import io.fabric8.openshift.api.model.config.v1.DNSBuilder;
+import io.fabric8.openshift.api.model.config.v1.DNSList;
+import io.fabric8.openshift.api.model.config.v1.DNSListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

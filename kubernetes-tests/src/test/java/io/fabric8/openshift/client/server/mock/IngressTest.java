@@ -16,10 +16,10 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.openshift.api.model.Ingress;
-import io.fabric8.openshift.api.model.IngressBuilder;
-import io.fabric8.openshift.api.model.IngressList;
-import io.fabric8.openshift.api.model.IngressListBuilder;
+import io.fabric8.openshift.api.model.config.v1.Ingress;
+import io.fabric8.openshift.api.model.config.v1.IngressBuilder;
+import io.fabric8.openshift.api.model.config.v1.IngressList;
+import io.fabric8.openshift.api.model.config.v1.IngressListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
