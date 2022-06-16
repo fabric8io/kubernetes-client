@@ -136,7 +136,7 @@ class DefaultKubernetesClientTest {
 
     final Config config = new ConfigBuilder()
       .withImpersonateUsername("a")
-      .withImpersonateGroup("b")
+      .withImpersonateGroups("b")
       .withImpersonateExtras(extras)
       .build();
 
