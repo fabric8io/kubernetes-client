@@ -284,28 +284,6 @@ public class RequestConfig {
     return impersonateUsername;
   }
 
-  /**
-   * Method to set Impersonate Group
-   *
-   * @param impersonateGroup impersonate group string
-   * @deprecated Use {@link #setImpersonateGroups(String...)} instead
-   */
-  @Deprecated
-  public void setImpersonateGroup(String impersonateGroup) {
-    setImpersonateGroups(impersonateGroup);
-  }
-
-  /**
-   * Method for getting Impersonate Groups
-   *
-   * @return Impersonate group string
-   * @deprecated Use {@link #getImpersonateGroups()} instead
-   */
-  @Deprecated
-  public String getImpersonateGroup() {
-    return (impersonateGroups == null || impersonateGroups.length == 0) ? null : impersonateGroups[0];
-  }
-
   public void setImpersonateGroups(String... impersonateGroups) {
     this.impersonateGroups = impersonateGroups == null ? new String[0] : Arrays.copyOf(impersonateGroups, impersonateGroups.length);
   }

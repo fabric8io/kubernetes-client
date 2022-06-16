@@ -51,10 +51,13 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(allowGetters = true, allowSetters = true)
@@ -420,8 +423,7 @@ public class Config {
     config.setImpersonateUsername(
         Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_USERNAME, config.getImpersonateUsername()));
 
-    String configuredImpersonateGroups = Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_GROUP,
-        config.getImpersonateGroup());
+    String configuredImpersonateGroups = Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_GROUP, Arrays.stream(Optional.ofNullable(config.getImpersonateGroups()).orElse(new String[0])).collect(Collectors.joining(",")));
     if (configuredImpersonateGroups != null) {
       config.setImpersonateGroups(configuredImpersonateGroups.split(","));
     }
@@ -939,25 +941,6 @@ public class Config {
   }
 
   public void setImpersonateGroups(String... impersonateGroup) {
-    this.requestConfig.setImpersonateGroups(impersonateGroup);
-  }
-
-  /**
-   * @deprecated Use {@link #getImpersonateGroups()} instead
-   * @return returns string of impersonate group
-   */
-  @Deprecated
-  @JsonProperty("impersonateGroup")
-  public String getImpersonateGroup() {
-    return getRequestConfig().getImpersonateGroup();
-  }
-
-  /**
-   * @param impersonateGroup ImpersonateGroup string
-   * @deprecated Use {@link #setImpersonateGroups(String...)} instead
-   */
-  @Deprecated
-  public void setImpersonateGroup(String impersonateGroup) {
     this.requestConfig.setImpersonateGroups(impersonateGroup);
   }
 
