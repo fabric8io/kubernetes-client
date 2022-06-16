@@ -23,20 +23,22 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
+public class PromoteSingleVersionAttributesDecorator
+    extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
-	public PromoteSingleVersionAttributesDecorator(String name) {
-		super(name);
-	}
+  public PromoteSingleVersionAttributesDecorator(String name) {
+    super(name);
+  }
 
-	@Override
-	public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
+  @Override
+  public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
     List<CustomResourceDefinitionVersion> versions = spec.buildVersions();
 
     if (versions.size() == 1) {
@@ -44,7 +46,6 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       spec.withSubresources(version.getSubresources())
           .withValidation(version.getSchema())
           .withAdditionalPrinterColumns(version.getAdditionalPrinterColumns());
-        
 
       CustomResourceDefinitionVersion newVersion = new CustomResourceDefinitionVersionBuilder(version).build();
       newVersion.setSubresources(null);
@@ -54,14 +55,17 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       spec.removeAllFromVersions(versions);
       spec.withVersions(newVersion);
     } else {
-      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources).filter(o -> o != null).collect(Collectors.toSet());
-      Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream().map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).filter(o -> o != null).collect(Collectors.toSet());
-      Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema).filter(o -> o != null).collect(Collectors.toSet());
-      
+      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources)
+          .filter(o -> o != null).collect(Collectors.toSet());
+      Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream()
+          .map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).filter(o -> o != null).collect(Collectors.toSet());
+      Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema)
+          .filter(o -> o != null).collect(Collectors.toSet());
+
       boolean hasIdenticalSubresources = subresources.size() == 1;
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
       boolean hasIdenticalSchemas = schemas.size() == 1;
-      
+
       if (hasIdenticalSchemas) {
         spec.withValidation(schemas.iterator().next());
       }
@@ -92,17 +96,17 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
 
       spec.withVersions(newVersions);
     }
-	}
+  }
 
-	@Override
-	public Class<? extends Decorator>[] after() {
-    return new Class[]{
-      AddCustomResourceDefinitionResourceDecorator.class,
-      AddCustomResourceDefinitionVersionDecorator.class,
-      CustomResourceDefinitionVersionDecorator.class,
-      AddSchemaToCustomResourceDefinitionVersionDecorator.class,
-      AddSubresourcesDecorator.class, AddStatusSubresourceDecorator.class,
-      AddStatusReplicasPathDecorator.class, AddSpecReplicasPathDecorator.class,
-      AddLabelSelectorPathDecorator.class};
-	}
+  @Override
+  public Class<? extends Decorator>[] after() {
+    return new Class[] {
+        AddCustomResourceDefinitionResourceDecorator.class,
+        AddCustomResourceDefinitionVersionDecorator.class,
+        CustomResourceDefinitionVersionDecorator.class,
+        AddSchemaToCustomResourceDefinitionVersionDecorator.class,
+        AddSubresourcesDecorator.class, AddStatusSubresourceDecorator.class,
+        AddStatusReplicasPathDecorator.class, AddSpecReplicasPathDecorator.class,
+        AddLabelSelectorPathDecorator.class };
+  }
 }
