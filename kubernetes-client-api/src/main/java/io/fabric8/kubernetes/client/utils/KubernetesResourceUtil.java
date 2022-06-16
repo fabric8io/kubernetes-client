@@ -452,7 +452,7 @@ public class KubernetesResourceUtil {
     Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
     String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
 
-    return createDockerSecret(secretName,dockerConfigAsStr);
+    return createDockerSecret(secretName, dockerConfigAsStr);
   }
 
   private static Map<String, Object> createDockerRegistryConfigMap(String dockerServer, String username, String password) {
@@ -470,9 +470,9 @@ public class KubernetesResourceUtil {
 
   private static Secret createDockerSecret(String secretName, String dockerConfig) {
     return new SecretBuilder()
-      .withNewMetadata().withName(secretName).endMetadata()
-      .withType("kubernetes.io/dockerconfigjson")
-      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfig.getBytes(StandardCharsets.UTF_8)))
-      .build();
+        .withNewMetadata().withName(secretName).endMetadata()
+        .withType("kubernetes.io/dockerconfigjson")
+        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfig.getBytes(StandardCharsets.UTF_8)))
+        .build();
   }
 }
