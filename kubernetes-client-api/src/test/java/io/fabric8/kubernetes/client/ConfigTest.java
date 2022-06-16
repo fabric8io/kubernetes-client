@@ -322,7 +322,7 @@ public class ConfigTest {
     File configFile = new File(TEST_KUBECONFIG_FILE);
     final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
     final Config config = Config.fromKubeconfig(configYAML);
-    assertEquals("https://172.28.128.4:8443", config.getMasterUrl());
+    assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
   }
 
   @Test

@@ -339,7 +339,6 @@ public class Config {
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, int requestRetryBackoffLimit,
       int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout) {
-    this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
     this.trustCerts = trustCerts;
@@ -370,22 +369,17 @@ public class Config {
     this.errorMessages = errorMessages;
     this.userAgent = userAgent;
     this.tlsVersions = tlsVersions;
-
-    if (!this.masterUrl.toLowerCase(Locale.ROOT).startsWith(HTTP_PROTOCOL_PREFIX)
-        && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
-      this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
-    }
-
-    if (!this.masterUrl.endsWith("/")) {
-      this.masterUrl = this.masterUrl + "/";
-    }
-
     this.trustStoreFile = trustStoreFile;
     this.trustStorePassphrase = trustStorePassphrase;
     this.keyStoreFile = keyStoreFile;
     this.keyStorePassphrase = keyStorePassphrase;
     this.oauthTokenProvider = oauthTokenProvider;
     this.customHeaders = customHeaders;
+
+    //We need to keep this after ssl configuration & masterUrl
+    //We set the masterUrl because it's needed by ensureHttps
+    this.masterUrl = masterUrl;
+    this.masterUrl = ensureEndsWithSlash(ensureHttps(masterUrl, this));
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -1063,7 +1057,9 @@ public class Config {
   }
 
   public void setMasterUrl(String masterUrl) {
+    //We set the masterUrl because it's needed by ensureHttps
     this.masterUrl = masterUrl;
+    this.masterUrl = ensureEndsWithSlash(ensureHttps(masterUrl, this));
   }
 
   @JsonProperty("trustCerts")

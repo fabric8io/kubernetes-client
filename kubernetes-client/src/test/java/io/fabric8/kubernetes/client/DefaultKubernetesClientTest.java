@@ -109,7 +109,7 @@ class DefaultKubernetesClientTest {
     File configYml = new File(TEST_CONFIG_YML_FILE);
     try (InputStream is = new FileInputStream(configYml)){
       KubernetesClient client = DefaultKubernetesClient.fromConfig(is);
-      assertEquals("http://some.url", client.getMasterUrl().toString());
+      assertEquals("http://some.url/", client.getMasterUrl().toString());
     } catch (Exception e) {
       fail();
     }
