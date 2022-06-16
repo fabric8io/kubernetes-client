@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubre
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,18 +54,25 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       spec.removeAllFromVersions(versions);
       spec.withVersions(newVersion);
     } else {
-      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources).collect(Collectors.toSet());
-      Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream().map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).collect(Collectors.toSet());
-      Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema).collect(Collectors.toSet());
+      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources).filter(o -> o != null).collect(Collectors.toSet());
+      Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream().map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).filter(o -> o != null).collect(Collectors.toSet());
+      Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema).filter(o -> o != null).collect(Collectors.toSet());
       
       boolean hasIdenticalSubresources = subresources.size() == 1;
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
       boolean hasIdenticalSchemas = schemas.size() == 1;
       
-      spec
-        .withValidation(hasIdenticalSchemas ? schemas.iterator().next() : null)
-        .withSubresources(hasIdenticalSubresources ? subresources.iterator().next() : null)
-        .withAdditionalPrinterColumns(hasIdenticalAdditionalPrinterColumns ? additionalPrinterColumns.iterator().next() : null);
+      if (hasIdenticalSchemas) {
+        spec.withValidation(schemas.iterator().next());
+      }
+
+      if (hasIdenticalSubresources) {
+        spec.withSubresources(subresources.iterator().next());
+      }
+
+      if (hasIdenticalAdditionalPrinterColumns) {
+        spec.withAdditionalPrinterColumns(additionalPrinterColumns.iterator().next());
+      }
 
       spec.removeAllFromVersions(versions);
       List<CustomResourceDefinitionVersion> newVersions = new ArrayList<>();
