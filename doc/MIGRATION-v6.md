@@ -4,6 +4,7 @@
 - [API/Impl split](#apiimpl-split)
 - [Default Maps](#default-maps)
 - [Backwards Compatibility Interceptor](#backwards-compatibility-interceptor)
+- [CustomResource Package Change](#customresource-package-change)
 - [Namespace Changes](#namespace-changes)
 - [Deserialization Resolution](#deserialization-resolution)
 - [Deprecation Removals](#deprecation-removals)
@@ -80,6 +81,10 @@ Now, that empty map will be omitted - which is the same as the existing behavior
 
 The Backwards Compatibility interceptor is now **disabled** by default.
 The property `kubernetes.backwardsCompatibilityInterceptor.disable` or environment variable `KUBERNETES_BACKWARDSCOMPATIBILITYINTERCEPTOR_DISABLE` setting now defaults to `true`, rather than `false`.  If you need backwards compatibility support, please set this property to false.
+
+## CustomResource Package Change
+
+Class `io.fabric8.kubernetes.client.CustomResource` has been moved to Kubernetes Model Core. It should now be available in `io.fabric8.kubernetes.api.model.CustomResource` package
 
 ## Namespace Changes
 

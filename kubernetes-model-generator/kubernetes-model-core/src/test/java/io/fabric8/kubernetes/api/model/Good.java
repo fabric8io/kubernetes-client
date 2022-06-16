@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.api.model;
 
-import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
-import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-/**
- * @deprecated use DefaultKubernetesResourceList instead
- */
-@Deprecated
-public class CustomResourceList<T extends HasMetadata> extends DefaultKubernetesResourceList<T> {
+@Version(Good.VERSION)
+@Group(Good.GROUP)
+public
+class Good extends CustomResource {
+  public static final String VERSION = "v1beta1";
+  public static final String GROUP = "sample.fabric8.io";
 }

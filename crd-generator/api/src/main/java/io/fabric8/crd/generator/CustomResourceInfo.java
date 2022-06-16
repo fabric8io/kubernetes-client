@@ -17,7 +17,7 @@ package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
-import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.api.model.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
 import io.sundr.model.TypeDef;

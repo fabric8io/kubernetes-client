@@ -35,7 +35,7 @@ import io.fabric8.crd.example.simplest.SimplestStatus;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.*;
-import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.api.model.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
 import org.junit.jupiter.api.Test;

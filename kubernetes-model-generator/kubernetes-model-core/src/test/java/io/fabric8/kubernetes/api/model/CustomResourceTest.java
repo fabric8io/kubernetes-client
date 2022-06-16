@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.api.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -87,7 +87,7 @@ class CustomResourceTest {
   
   @Group("example.com")
   @Version("v1")
-  private static class Untyped extends CustomResource{}
+  private static class Untyped extends CustomResource {}
   
   @Group("example.com")
   @Version("v1")

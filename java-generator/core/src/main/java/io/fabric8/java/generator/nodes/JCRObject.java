@@ -111,7 +111,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     }
 
     ClassOrInterfaceType crType = new ClassOrInterfaceType()
-        .setName("io.fabric8.kubernetes.client.CustomResource")
+        .setName("io.fabric8.kubernetes.api.model.CustomResource")
         .setTypeArguments(spec, status);
 
     clz.addExtendedType(crType);

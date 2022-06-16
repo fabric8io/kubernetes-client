@@ -23,7 +23,7 @@ dependencies {
 }
 ```
 
-Now you can define a `class` that extends `io.fabric8.kubernetes.client.CustomResource`
+Now you can define a `class` that extends `io.fabric8.kubernetes.api.model.CustomResource`
 and the corresponding CRD is generated in the folder: `target/classes/META-INF/fabric8`
 
 For example, for code similar to:

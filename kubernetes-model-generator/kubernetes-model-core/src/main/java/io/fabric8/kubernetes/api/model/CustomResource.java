@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,9 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
@@ -37,8 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.Optional;
-
-import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 /**
  * A base class for implementing a custom resource kind. Implementations must be annotated with
@@ -69,9 +64,6 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
     "status"
 })
 @JsonInclude(Include.NON_NULL)
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-})
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 
@@ -97,7 +89,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   public CustomResource() {
     final String version = HasMetadata.super.getApiVersion();
     final Class<? extends CustomResource> clazz = getClass();
-    if (isNullOrEmpty(version)) {
+    if (version == null || version.isEmpty()) {
       throw new IllegalArgumentException(clazz.getName() + " CustomResource must provide an API version using @"
           + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
     }

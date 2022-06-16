@@ -23,7 +23,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.api.model.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

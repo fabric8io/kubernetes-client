@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
-import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.api.model.CustomResourceList;
 
 public class EntandoBundleReleaseList extends CustomResourceList<EntandoBundleRelease> {
 }

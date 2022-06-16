@@ -17,6 +17,7 @@ package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.*;
+import io.fabric8.kubernetes.api.model.CustomResource;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.model.AnnotationRef;
 import io.sundr.model.Property;
@@ -111,7 +112,7 @@ public abstract class AbstractCustomResourceHandler {
    * These paths
    *
    * @param config the gathered {@link CustomResourceInfo} used as basis for the CRD generation
-   * @param def the {@link TypeDef} associated with the {@link io.fabric8.kubernetes.client.CustomResource} from which the CRD is generated
+   * @param def the {@link TypeDef} associated with the {@link io.fabric8.kubernetes.api.model.CustomResource} from which the CRD is generated
    * @param specReplicasPath an optionally detected path of field defining spec replicas
    * @param statusReplicasPath an optionally detected path of field defining status replicas
    * @param labelSelectorPath  an optionally detected path of field defining `status.selector`
