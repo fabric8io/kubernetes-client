@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4006: Remove outdated shared test classes in `kubernetes-client/` and `openshift-client/` modules
 
 #### Dependency Upgrade
 
