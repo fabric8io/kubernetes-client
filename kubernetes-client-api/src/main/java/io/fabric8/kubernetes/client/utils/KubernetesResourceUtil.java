@@ -50,7 +50,7 @@ public class KubernetesResourceUtil {
 
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
   private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
-  private static final String DEFAULT_DOCKER_REGISTRY_SECRET_NAME = "docker-registry-secret";
+  private static final String DEFAULT_CONTAINER_IMAGE_REGISTRY_SECRET_NAME = "container-image-registry-secret";
 
   /**
    * Returns the resource version for the entity or null if it does not have one
@@ -435,11 +435,7 @@ public class KubernetesResourceUtil {
     Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
     String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
 
-    return new SecretBuilder()
-        .withNewMetadata().withName(DEFAULT_DOCKER_REGISTRY_SECRET_NAME).endMetadata()
-        .withType("kubernetes.io/dockerconfigjson")
-        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
-        .build();
+    return createDockerSecret(DEFAULT_CONTAINER_IMAGE_REGISTRY_SECRET_NAME, dockerConfigAsStr);
   }
 
   /**
@@ -456,11 +452,7 @@ public class KubernetesResourceUtil {
     Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
     String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
 
-    return new SecretBuilder()
-        .withNewMetadata().withName(secretName).endMetadata()
-        .withType("kubernetes.io/dockerconfigjson")
-        .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
-        .build();
+    return createDockerSecret(secretName,dockerConfigAsStr);
   }
 
   private static Map<String, Object> createDockerRegistryConfigMap(String dockerServer, String username, String password) {
@@ -474,5 +466,13 @@ public class KubernetesResourceUtil {
     auths.put(dockerServer, credentials);
     dockerConfigMap.put("auths", auths);
     return dockerConfigMap;
+  }
+
+  private static Secret createDockerSecret(String secretName, String dockerConfig) {
+    return new SecretBuilder()
+      .withNewMetadata().withName(secretName).endMetadata()
+      .withType("kubernetes.io/dockerconfigjson")
+      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfig.getBytes(StandardCharsets.UTF_8)))
+      .build();
   }
 }

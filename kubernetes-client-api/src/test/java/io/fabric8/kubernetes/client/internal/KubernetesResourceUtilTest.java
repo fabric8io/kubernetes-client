@@ -238,7 +238,7 @@ class KubernetesResourceUtilTest {
     assertEquals(
         "{\"auths\":{\"http://harbor.inner.com\":{\"password\":\"TestingSecret\",\"auth\":\"U2VjcmV0QWRtaW46VGVzdGluZ1NlY3JldA==\",\"username\":\"SecretAdmin\"}}}",
         header);
-    assertEquals("docker-registry-secret", secret.getMetadata().getName());
+    assertEquals("container-image-registry-secret", secret.getMetadata().getName());
   }
 
   @Test
