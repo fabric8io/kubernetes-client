@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.server.mock;
+package io.fabric8.kubernetes.client.server.mock.crud;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,11 +25,11 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher.shouldIncreaseGeneration;
+import static io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudPersistence.shouldIncreaseGeneration;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class KubernetesCrudDispatcherTest {
+class KubernetesCrudPersistenceTest {
 
   private static final ObjectMapper MAPPER = Serialization.jsonMapper();
 

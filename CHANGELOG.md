@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #4216: Update metadata when `replaceStatus()` is called
+* Fix #4217: patchStatus doesn't increment metadata.generation field in Kubernetes Mock Server (CRUD)
 
 #### Improvements
 * Fix #4006: Remove outdated shared test classes in `kubernetes-client/` and `openshift-client/` modules

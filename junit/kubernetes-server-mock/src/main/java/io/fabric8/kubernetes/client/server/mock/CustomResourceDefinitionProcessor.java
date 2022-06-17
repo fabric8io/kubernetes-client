@@ -55,7 +55,7 @@ public class CustomResourceDefinitionProcessor {
     }
   }
 
-  public boolean isStatusSubresource(Map<String, String> pathValues) {
+  public boolean isStatusSubresourceEnabledForResource(Map<String, String> pathValues) {
     CustomResourceDefinitionContext context = extractor.getCrdContext(pathValues.get(KubernetesAttributesExtractor.API),
         pathValues.get(KubernetesAttributesExtractor.VERSION), pathValues.get(KubernetesAttributesExtractor.PLURAL));
     if (context == null) {
