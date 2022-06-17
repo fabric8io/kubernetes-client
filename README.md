@@ -33,6 +33,8 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
     - [Passing a reference of a resource to the client](#passing-a-reference-of-a-resource-to-the-client)
     - [Adapting a client](#adapting-the-client)
         - [Adapting and close](#adapting-and-close)
+- [Generating CRD from Java](doc/CRD-generator.md)
+- [Generating Java from CRD](doc/java-generation-from-CRD.md)
 - [Mocking Kubernetes](#mocking-kubernetes)
 - [Who Uses Fabric8 Kubernetes Client?](#who-uses-kubernetes--openshift-java-client)
 - [Kubernetes Operators in Java Written using Fabric8 Kubernetes Client](./doc/KubernetesOperatorsInJavaWrittenUsingFabric8.md)
