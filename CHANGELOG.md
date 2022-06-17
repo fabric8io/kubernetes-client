@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #2811: Approve/Reject CSR not supported in v1beta1 CertificateSigningRequest API
 * Fix #4216: Update metadata when `replaceStatus()` is called
+* Fix #4217: patchStatus doesn't increment metadata.generation field in Kubernetes Mock Server (CRUD)
 
 #### Improvements
 * Fix #3227 : Move `config.openshift.io` apiGroup resources out of `openshift-model/`
