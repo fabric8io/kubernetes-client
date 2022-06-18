@@ -250,7 +250,6 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
         }
 
         setDefaultMetadata(updated, pathValues, source);
-
         String updatedAsString = Serialization.asJson(updated);
 
         return validateRequestBodyAndHandleRequest(updatedAsString, h -> {
@@ -414,8 +413,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Resetabl
           if (isStatusPath(path)) {
             JsonNode status = removeStatus(updated);
             // set the status on the existing node
-            updated = existingNode;
+            updated = existingNode.deepCopy();
             setStatus(updated, status);
+            setDefaultMetadata(updated, pathValues, existingNode);
           } else {
             // preserve status and generated fields
             if (statusSubresource) {
