@@ -429,7 +429,7 @@ public class KubernetesResourceUtil {
    * @param username username that needs to be used during secret creation
    * @param password password that needs to be used during secret creation
    *
-   * secret's default name : "container-image-registry-secret" is the default name for secret
+   *        secret's default name : "container-image-registry-secret" is the default name for secret
    * @return an object of Secret
    */
   public static Secret createDockerRegistrySecret(String dockerServer, String username, String password)
