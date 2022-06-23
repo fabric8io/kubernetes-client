@@ -25,8 +25,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,6 +44,9 @@ public class ProcessorStoreTest {
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
     Pod pod = new PodBuilder().withNewMetadata().withName("pod").endMetadata().build();
+    
+    // initial sync complete
+    processorStore.retainAll(Collections.emptySet());
     
     // add notification
     processorStore.add(pod);
@@ -60,21 +65,19 @@ public class ProcessorStoreTest {
     Mockito.when(podCache.remove(pod)).thenReturn(pod);
     processorStore.delete(pod);
 
-    Mockito.verify(processor, Mockito.times(4)).distribute(notificationCaptor.capture(), syncCaptor.capture());
+    Mockito.verify(processor, Mockito.times(3)).distribute(notificationCaptor.capture(), syncCaptor.capture());
     
     List<Notification<Pod>> notifications = notificationCaptor.getAllValues();
     
     assertThat(notifications.get(0)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(1)).isInstanceOf(AddNotification.class);
-    assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
-    assertThat(notifications.get(3)).isInstanceOf(DeleteNotification.class);
+    assertThat(notifications.get(2)).isInstanceOf(DeleteNotification.class);
     
     List<Boolean> syncValues = syncCaptor.getAllValues();
     
     assertThat(syncValues.get(0)).isFalse();
     assertThat(syncValues.get(1)).isFalse();
-    assertThat(syncValues.get(2)).isTrue(); // same object/revision, so it's sync
-    assertThat(syncValues.get(3)).isFalse();
+    assertThat(syncValues.get(2)).isFalse();
   }
   
   @Test
@@ -86,12 +89,19 @@ public class ProcessorStoreTest {
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
     
-    Pod pod = new PodBuilder().withNewMetadata().endMetadata().build();
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod1").withResourceVersion("1").endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
     
     // replace empty store with two values
     processorStore.add(pod);
     processorStore.add(pod2);
+
+    // add events should not be called until retainAll
+    Mockito.verify(processor, Mockito.times(0)).distribute(notificationCaptor.capture(), syncCaptor.capture());
+
+    List<Pod> pods = Arrays.asList(pod, pod2);
+    
+    processorStore.retainAll(pods.stream().map(Cache::metaNamespaceKeyFunc).collect(Collectors.toSet()));
 
     // resync two values
     processorStore.resync();
