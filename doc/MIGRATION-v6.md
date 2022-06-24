@@ -244,9 +244,10 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
 
 - DSL methods available off of a resource context involving a resource - `client.configMaps().withName("name").create(configMap)` - should instead use a no-argument method - `client.configMaps().resource(configMap).create()` or `client.resource(configMap).create()`.
 
-- DSL methods available off of a collection context involving a resource - `client.configMaps().create(configMap)` - should instead use a no-argument method - `client.configMaps().resource(configMap).create()` or `client.resource(configMap).create()`.
-
+- DSL methods available off of a collection context involving a resource - `client.configMaps().create(configMap)` - should instead use a no-argument method - `client.configMaps().resource(configMap).create()` or `client.resource(configMap).create()`.  
 The only exception to the above is `patch(PatchContext, item)` - it is valid to be called after withName. 
+
+- CustomResourceList was deprecated - use DefaultKubernetesResourceList instead.
 
 ## Object Sorting
 
