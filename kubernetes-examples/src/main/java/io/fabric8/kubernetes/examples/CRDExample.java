@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -111,23 +110,23 @@ public class CRDExample {
         System.out.println("Found CRD: " + dummyCRD.getMetadata().getSelfLink());
       } else {
         dummyCRD = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(Dummy.class)
-          .editSpec()
-          .editVersion(0)
-          .withNewSchema()
-          .withNewOpenAPIV3Schema()
-          .withTitle("dummy")
-          .withType("object")
-          .addToRequired("spec")
-          .addToProperties("spec", new JSONSchemaPropsBuilder()
+            .editSpec()
+            .editVersion(0)
+            .withNewSchema()
+            .withNewOpenAPIV3Schema()
+            .withTitle("dummy")
             .withType("object")
-            .addToProperties("foo", new JSONSchemaPropsBuilder().withType("string").build())
-            .addToProperties("bar", new JSONSchemaPropsBuilder().withType("string").build())
-            .build())
-          .endOpenAPIV3Schema()
-          .endSchema()
-          .endVersion()
-          .endSpec()
-          .build();
+            .addToRequired("spec")
+            .addToProperties("spec", new JSONSchemaPropsBuilder()
+                .withType("object")
+                .addToProperties("foo", new JSONSchemaPropsBuilder().withType("string").build())
+                .addToProperties("bar", new JSONSchemaPropsBuilder().withType("string").build())
+                .build())
+            .endOpenAPIV3Schema()
+            .endSchema()
+            .endVersion()
+            .endSpec()
+            .build();
 
         client.apiextensions().v1().customResourceDefinitions().create(dummyCRD);
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
@@ -141,7 +140,7 @@ public class CRDExample {
       if (resourceNamespaced) {
         dummyClient = ((MixedOperation<Dummy, DummyList, Resource<Dummy>>) dummyClient).inNamespace(namespace);
       }
-      CustomResourceList<Dummy> dummyList = dummyClient.list();
+      DummyList dummyList = dummyClient.list();
       List<Dummy> items = dummyList.getItems();
       System.out.println("  found " + items.size() + " dummies");
       for (Dummy item : items) {
