@@ -95,10 +95,20 @@ public class AnnotatedSpec {
   }
 
   public enum AnnotatedEnum {
-    non,
+    non("N"),
     @JsonProperty("oui")
-    Yes,
+    es("O"),
     @JsonIgnore
-    Maybe
+    Maybe("Maybe");
+
+    private final String abbreviation;
+
+    AnnotatedEnum(String abbreviation) {
+      this.abbreviation = abbreviation;
+    }
+
+    public String getAbbreviation() {
+      return abbreviation;
+    }
   }
 }

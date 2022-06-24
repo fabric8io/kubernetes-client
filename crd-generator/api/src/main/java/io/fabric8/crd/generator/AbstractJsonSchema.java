@@ -23,12 +23,29 @@ import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.sundr.builder.internal.functions.TypeAs;
-import io.sundr.model.*;
+import io.sundr.model.AnnotationRef;
+import io.sundr.model.ClassRef;
+import io.sundr.model.Method;
+import io.sundr.model.PrimitiveRefBuilder;
+import io.sundr.model.Property;
+import io.sundr.model.TypeDef;
+import io.sundr.model.TypeRef;
 import io.sundr.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static io.sundr.model.utils.Types.BOOLEAN_REF;
 import static io.sundr.model.utils.Types.DOUBLE_REF;
@@ -664,6 +681,8 @@ public abstract class AbstractJsonSchema<T, B> {
           // check if we're dealing with an enum
           if (def.isEnum()) {
             final JsonNode[] enumValues = def.getProperties().stream()
+                .filter(property -> property.isStatic() && property.isPublic()
+                    && def.getFullyQualifiedName().equals(property.getTypeRef().toString()))
                 .map(this::extractUpdatedNameFromJacksonPropertyIfPresent)
                 .filter(n -> !n.startsWith("$"))
                 .map(JsonNodeFactory.instance::textNode)
