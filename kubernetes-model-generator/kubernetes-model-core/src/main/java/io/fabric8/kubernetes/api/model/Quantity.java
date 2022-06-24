@@ -1,4 +1,4 @@
-  /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,7 +40,6 @@ import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Quantity is fixed point representation of a number.
  * It provides convenient marshalling/unmarshalling in JSON or YAML,
@@ -53,8 +53,8 @@ import java.util.Map;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class Quantity  implements Serializable {
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
+public class Quantity implements Serializable {
 
   private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";
   private String amount;
@@ -108,6 +108,27 @@ public class Quantity  implements Serializable {
     this.format = format;
   }
 
+  /**
+   * If this is a memory Quantity, the result will represent bytes.<br>
+   * If this is a cpu Quantity, the result will represent cores.
+   *
+   * @return the formated amount as a number
+   * @throws ArithmeticException
+   */
+  @JsonIgnore
+  public BigDecimal getNumericalAmount() throws ArithmeticException {
+    return getAmountInBytes(this);
+  }
+
+  /**
+   * If the quantity is a memory Quantity, the result will represent bytes.<br>
+   * If the quantity is a cpu Quantity, the result will represent cores.
+   *
+   * @see #getNumericalAmount()
+   * @param quantity
+   * @return a BigDecimal of the bytes
+   * @throws ArithmeticException
+   */
   public static BigDecimal getAmountInBytes(Quantity quantity) throws ArithmeticException {
     String value = "";
     if (quantity.getAmount() != null && quantity.getFormat() != null) {
@@ -121,7 +142,7 @@ public class Quantity  implements Serializable {
     }
     // Append Extra zeroes if starting with decimal
     if (!Character.isDigit(value.indexOf(0)) && value.startsWith(".")) {
-        value = "0" + value;
+      value = "0" + value;
     }
 
     Quantity amountFormatPair = parse(value);
@@ -204,7 +225,7 @@ public class Quantity  implements Serializable {
 
     Quantity quantity = (Quantity) o;
     return getAmountInBytes(this)
-      .compareTo(getAmountInBytes(quantity)) == 0;
+        .compareTo(getAmountInBytes(quantity)) == 0;
   }
 
   @Override
@@ -252,7 +273,8 @@ public class Quantity  implements Serializable {
   public static class Serializer extends JsonSerializer<Quantity> {
 
     @Override
-    public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider)
+        throws IOException, JsonProcessingException {
       if (value != null) {
         StringBuilder objAsStringBuilder = new StringBuilder();
         if (value.getAmount() != null) {
@@ -271,7 +293,8 @@ public class Quantity  implements Serializable {
   public static class Deserializer extends JsonDeserializer<Quantity> {
 
     @Override
-    public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException, JsonProcessingException {
       ObjectCodec oc = jsonParser.getCodec();
       JsonNode node = oc.readTree(jsonParser);
       Quantity quantity = null;

@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
 
 #### Dependency Upgrade
 
