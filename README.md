@@ -107,7 +107,7 @@ System properties are preferred over environment variables. The following system
 | `kubernetes.logging.interval` / `KUBERNETES_LOGGING_INTERVAL` | Logging interval in ms | `20000` |
 | `kubernetes.scale.timeout` / `KUBERNETES_SCALE_TIMEOUT` | Scale timeout in ms | `600000` |
 | `kubernetes.websocket.timeout` / `KUBERNETES_WEBSOCKET_TIMEOUT` | Websocket timeout in ms | `5000` |
-| `kubernetes.websocket.ping.interval` / `kubernetes_websocket_ping_interval` | Websocket ping interval in ms | `30000` |
+| `kubernetes.websocket.ping.interval` / `KUBERNETES_WEBSOCKET_PING_INTERVAL` | Websocket ping interval in ms | `30000` |
 | `kubernetes.max.concurrent.requests` / `KUBERNETES_MAX_CONCURRENT_REQUESTS` | | `64` |
 | `kubernetes.max.concurrent.requests.per.host` / `KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST` | | `5` |
 | `kubernetes.impersonate.username` / `KUBERNETES_IMPERSONATE_USERNAME` | `Impersonate-User` HTTP header value | |
