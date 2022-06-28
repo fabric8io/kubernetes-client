@@ -18,6 +18,16 @@ By default kubenetes-client has a runtime dependency on OkHttp (kubernetes-httpc
 
 If you wish to use another HttpClient implementation typically you will exclude kubernetes-httpclient-okhttp and include the other runtime dependency instead.
 
+### What is Bouncy Castle Optional dependency and When is it required?
+[BouncyCastle](https://bouncycastle.org/) is a Java library that complements the default Java Cryptographic Extension (JCE) and it is required for using some KubernetesClient features. To use support for EC Keys you must explicitly add this dependency to classpath. For example, in case of a Maven project add the required dependencies to `pom.xml` file such as:
+```xml
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcpkix-jdk15on</artifactId>
+    <version>${bouncycastle.version}</version>
+</dependency>
+```
+
 ### What threading concerns are there?
 
 There has been a lot of changes under the covers with thread utilization in the fabric8 client over the 5.x and 6.x releases.  So the exact details of what threads are created / used where will depend on the particular release version.
