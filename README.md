@@ -609,7 +609,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 
   CI Plugins:
   - [Deployment Pipeline Plugin (Jenkins)](https://github.com/pearsontechnology/deployment-pipeline-jenkins-plugin)
-  - [Kubernetes Eleastic Agent (GoCD)](https://github.com/gocd/kubernetes-elastic-agents)
+  - [Kubernetes Elastic Agent (GoCD)](https://github.com/gocd/kubernetes-elastic-agents)
   - [Kubernetes Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-plugin)
   - [Kubernetes Pipeline Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-pipeline-plugin)
   - [OpenShift Sync Plugin (Jenkins)](https://github.com/openshift/jenkins-sync-plugin)
