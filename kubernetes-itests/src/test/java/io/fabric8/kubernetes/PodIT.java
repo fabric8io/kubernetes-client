@@ -32,6 +32,8 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -216,6 +219,43 @@ class PodIT {
   }
 
   @Test
+  void execExitCode() throws Exception {
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ExecWatch watch = client.pods().withName("pod-standard")
+        .writingOutput(out)
+        .exec("sh", "-c", "echo 'hello world!'");
+    assertEquals(0, watch.exitCode().join());
+    assertNotNull("hello world!", out.toString());
+  }
+
+  @Test
+  void execInteractiveShell() throws Exception {
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ExecWatch watch = client.pods().withName("pod-standard")
+        .redirectingInput()
+        .redirectingOutput()
+        .redirectingError()
+        .withTTY()
+        .exec("sh", "-i");
+
+    InputStreamPumper.pump(watch.getOutput(), baos::write, Executors.newSingleThreadExecutor());
+
+    watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+
+    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
+      return new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root");
+    });
+
+    watch.close();
+
+    // no error is expected
+    assertEquals(-1, watch.getError().read());
+  }
+
+  @Test
   void readFile() throws IOException {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     try (
@@ -283,6 +323,19 @@ class PodIT {
         assertEquals("I'm uploaded" + System.lineSeparator() + fileName, result);
       }
     }
+  }
+
+  @Test
+  void copyDir() throws IOException {
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+
+    final Path tmpDir = Files.createTempDirectory("copyFile");
+
+    PodResource podResource = client.pods().withName("pod-standard");
+    podResource.dir("/etc").copy(tmpDir);
+
+    Path msg = tmpDir.resolve("/etc/hosts");
+    assertTrue(Files.exists(msg));
   }
 
   @Test

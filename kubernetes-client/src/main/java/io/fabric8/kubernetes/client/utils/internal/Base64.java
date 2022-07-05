@@ -17,6 +17,9 @@ package io.fabric8.kubernetes.client.utils.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
+import java.io.IOException;
+
+//@formatter:off
 /**
  * <p>Encodes and decodes to and from Base64 notation.</p>
  * <p>Homepage: <a href="http://iharder.net/base64">http://iharder.net/base64</a>.</p>
@@ -1329,7 +1332,7 @@ public class Base64
    * @see Base64
    * @since 1.3
    */
-  public static class InputStream extends java.io.FilterInputStream {
+  public static class InputStream extends java.io.InputStream {
 
     private boolean encode;         // Encoding or decoding
     private int     position;       // Current position in the buffer
@@ -1340,6 +1343,7 @@ public class Base64
     private boolean breakLines;     // Break lines at less than 80 characters
     private int     options;        // Record options used to create the stream.
     private byte[]  decodabet;      // Local copies to avoid extra method calls
+    private java.io.InputStream in;
 
 
     /**
@@ -1375,7 +1379,7 @@ public class Base64
      */
     public InputStream( java.io.InputStream in, int options ) {
 
-      super( in );
+      this.in = in;
       this.options      = options; // Record for later
       this.breakLines   = (options & DO_BREAK_LINES) > 0;
       this.encode       = (options & ENCODE) > 0;
@@ -1385,6 +1389,11 @@ public class Base64
       this.lineLength   = 0;
       this.decodabet    = getDecodabet(options);
     }   // end constructor
+    
+    @Override
+    public void close() throws IOException {
+      in.close();
+    }
 
     /**
      * Reads enough of the input stream to convert
@@ -1487,40 +1496,6 @@ public class Base64
       else {
         throw new java.io.IOException( "Error in Base64 code reading stream." );
       }   // end else
-    }   // end read
-
-
-    /**
-     * Calls {@link #read()} repeatedly until the end of stream
-     * is reached or <var>len</var> bytes are read.
-     * Returns number of bytes read into array or -1 if
-     * end of stream is encountered.
-     *
-     * @param dest array to hold values
-     * @param off offset for array
-     * @param len max number of bytes to read into array
-     * @return bytes read into array or -1 if end of stream is encountered.
-     * @since 1.3
-     */
-    @Override
-    public int read( byte[] dest, int off, int len )
-      throws java.io.IOException {
-      int i;
-      int b;
-      for( i = 0; i < len; i++ ) {
-        b = read();
-
-        if( b >= 0 ) {
-          dest[off + i] = (byte) b;
-        }
-        else if( i == 0 ) {
-          return -1;
-        }
-        else {
-          break; // Out of 'for' loop
-        } // Out of 'for' loop
-      }   // end for: each byte read
-      return i;
     }   // end read
 
   }   // end inner class InputStream
@@ -1756,3 +1731,4 @@ public class Base64
 
 
 }   // end class Base64
+//@formatter:on
