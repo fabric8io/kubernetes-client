@@ -15,8 +15,12 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -50,6 +54,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SerializationTest {
@@ -320,6 +326,46 @@ class SerializationTest {
   void quantityQuoting() {
     Quantity quantity = Serialization.unmarshal("amount: \"2\"\nformat: \"Gi\"", Quantity.class);
     assertThat(Serialization.asYaml(quantity)).isEqualTo("--- \"2Gi\"\n");
+  }
+
+  @JsonTypeResolver(io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder.class)
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  @JsonSubTypes({
+      @JsonSubTypes.Type(Named.class),
+      @JsonSubTypes.Type(Counted.class)
+  })
+  @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+  interface Poly {
+
+  }
+
+  @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  static class Named implements Poly {
+    public String name;
+  }
+
+  @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+  static class Counted implements Poly {
+    public int count;
+  }
+
+  @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  static class PolyParent {
+    @JsonUnwrapped
+    public Poly poly;
+    public int other;
+  }
+
+  @Test
+  void polymorphicUnwrap() {
+    PolyParent parent = Serialization.unmarshal("other: 1\nname: x", PolyParent.class);
+    assertEquals("x", ((Named) parent.poly).name);
+
+    // should be null if it can't be deduced
+    parent = Serialization.unmarshal("other: 1", PolyParent.class);
+    assertNull(parent.poly);
   }
 
 }
