@@ -7,6 +7,8 @@
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
 * Fix #4247: NO_PROXY with invalid entries throws exception
 * Fix #4320: corrected leader transitions field on leader election leases
+* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
+
 
 #### Improvements
 * Fix #4254: adding debug logging for exec stream messages
@@ -23,6 +25,7 @@
 * Fix #2271: Support periodic refresh of access tokens before they expire
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4206: The Serialization utility class will throw an Exception, instead of returning null, if an untyped unmarshall method is used on something that lacks type information
 
 ### 5.12.3 (2022-07-27)
 
