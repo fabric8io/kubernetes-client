@@ -171,7 +171,7 @@ public class Serialization {
 
   /**
    * Unmarshals a stream optionally performing placeholder substitution to the stream.
-   * 
+   *
    * @param is The {@link InputStream}.
    * @param parameters A {@link Map} with parameters for placeholder substitution.
    * @param <T> The target type.
@@ -191,7 +191,7 @@ public class Serialization {
 
   /**
    * Unmarshals a stream.
-   * 
+   *
    * @param is The {@link InputStream}.
    * @param mapper The {@link ObjectMapper} to use.
    * @param <T> The target type.
@@ -203,7 +203,7 @@ public class Serialization {
 
   /**
    * Unmarshals a stream optionally performing placeholder substitution to the stream.
-   * 
+   *
    * @param is The {@link InputStream}.
    * @param mapper The {@link ObjectMapper} to use.
    * @param parameters A {@link Map} with parameters for placeholder substitution.
@@ -211,6 +211,15 @@ public class Serialization {
    * @return returns de-serialized object
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
+    return unmarshal(is, mapper, new TypeReference<T>() {
+      @Override
+      public Type getType() {
+        return KubernetesResource.class;
+      }
+    }, parameters);
+  }
+
+  private static <T> T unmarshal(InputStream is, ObjectMapper mapper, TypeReference<T> type, Map<String, String> parameters) {
     try (
         InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters)
             : is;
@@ -222,10 +231,24 @@ public class Serialization {
       } while (intch > -1 && Character.isWhitespace(intch));
       bis.reset();
 
+      final T result;
       if (intch != '{') {
-        return unmarshalYaml(bis, null);
+        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
+        final Map<String, Object> obj = yaml.load(bis);
+        result = mapper.convertValue(obj, type);
+      } else {
+        result = mapper.readerFor(type).readValue(bis);
       }
-      return mapper.readerFor(KubernetesResource.class).readValue(bis);
+      // because the deserializer will always return a generic, we need to check the validity
+      if (result instanceof GenericKubernetesResource
+          && type.getType().getTypeName().equals(KubernetesResource.class.getName())) {
+        GenericKubernetesResource gkr = (GenericKubernetesResource) result;
+        if (Utils.isNullOrEmpty(gkr.getKind()) || Utils.isNullOrEmpty(gkr.getApiVersion())) {
+          throw new KubernetesClientException(
+              "Could not parse the input as a KubernetesResource as it lacks kind or apiVersion fields.");
+        }
+      }
+      return result;
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -233,7 +256,7 @@ public class Serialization {
 
   /**
    * Unmarshals a {@link String}
-   * 
+   *
    * @param str The {@link String}.
    * @param <T> template argument denoting type
    * @return returns de-serialized object
@@ -248,7 +271,7 @@ public class Serialization {
 
   /**
    * Unmarshals a {@link String}
-   * 
+   *
    * @param str The {@link String}.
    * @param type The target type.
    * @param <T> template argument denoting type
@@ -260,7 +283,7 @@ public class Serialization {
 
   /**
    * Unmarshals a {@link String} optionally performing placeholder substitution to the String.
-   * 
+   *
    * @param str The {@link String}.
    * @param type The target type.
    * @param <T> Template argument denoting type
@@ -283,7 +306,7 @@ public class Serialization {
 
   /**
    * Unmarshals an {@link InputStream}.
-   * 
+   *
    * @param is The {@link InputStream}.
    * @param type The type.
    * @param <T> Template argument denoting type
@@ -295,7 +318,7 @@ public class Serialization {
 
   /**
    * Unmarshals an {@link InputStream} optionally performing placeholder substitution to the stream.
-   * 
+   *
    * @param is The {@link InputStream}.
    * @param type The type.
    * @param parameters A {@link Map} with parameters for placeholder substitution.
@@ -313,7 +336,7 @@ public class Serialization {
 
   /**
    * Unmarshals an {@link InputStream}.
-   * 
+   *
    * @param is The {@link InputStream}.
    * @param type The {@link TypeReference}.
    * @param <T> Template argument denoting type
@@ -334,25 +357,7 @@ public class Serialization {
    * @return returns de-serialized object
    */
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {
-    try (
-        InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters)
-            : is;
-        BufferedInputStream bis = new BufferedInputStream(wrapped)) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = JSON_MAPPER;
-      if (intch != '{') {
-        return unmarshalYaml(bis, type);
-      }
-      return mapper.readValue(bis, type);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return unmarshal(is, JSON_MAPPER, type, parameters);
   }
 
   private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
@@ -404,23 +409,9 @@ public class Serialization {
     }
   }
 
-  private static <T> T unmarshalYaml(InputStream is, TypeReference<T> type) throws JsonProcessingException {
-    final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
-    Map<String, Object> obj = yaml.load(is);
-    String objAsJsonStr = JSON_MAPPER.writeValueAsString(obj);
-    return unmarshalJsonStr(objAsJsonStr, type);
-  }
-
-  private static <T> T unmarshalJsonStr(String jsonString, TypeReference<T> type) throws JsonProcessingException {
-    if (type != null) {
-      return JSON_MAPPER.readValue(jsonString, type);
-    }
-    return JSON_MAPPER.readerFor(KubernetesResource.class).readValue(jsonString);
-  }
-
   /**
    * Create a copy of the resource via serialization.
-   * 
+   *
    * @return a deep clone of the resource
    * @throws IllegalArgumentException if the cloning cannot be performed
    */
