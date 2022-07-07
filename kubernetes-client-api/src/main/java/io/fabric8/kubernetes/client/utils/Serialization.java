@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
@@ -52,6 +53,7 @@ public class Serialization {
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   static {
     JSON_MAPPER.registerModules(new JavaTimeModule(), UNMATCHED_FIELD_TYPE_MODULE);
+    JSON_MAPPER.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
   }
 
   private static volatile ObjectMapper YAML_MAPPER;
