@@ -187,6 +187,15 @@ public class Serialization {
    * @return returns de-serialized object
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
+    return unmarshal(is, mapper, new TypeReference<T>() {
+      @Override
+      public Type getType() {
+        return KubernetesResource.class;
+      }
+    }, parameters);
+  }
+
+  private static <T> T unmarshal(InputStream is, ObjectMapper mapper, TypeReference<T> type, Map<String, String> parameters) {
     try (
       InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters) : is;
       BufferedInputStream bis = new BufferedInputStream(wrapped)
@@ -198,10 +207,24 @@ public class Serialization {
       } while (intch > -1 && Character.isWhitespace(intch));
       bis.reset();
 
+      final T result;
       if (intch != '{') {
-        return unmarshalYaml(bis, null);
+        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
+        final Map<String, Object> obj = yaml.load(bis);
+        result = mapper.convertValue(obj, type);
+      } else {
+        result = mapper.readerFor(type).readValue(bis);
       }
-      return mapper.readerFor(KubernetesResource.class).readValue(bis);
+      // because the deserializer will always return a generic, we need to check the validity
+      if (result instanceof GenericKubernetesResource
+          && type.getType().getTypeName().equals(KubernetesResource.class.getName())) {
+        GenericKubernetesResource gkr = (GenericKubernetesResource) result;
+        if (Utils.isNullOrEmpty(gkr.getKind()) || Utils.isNullOrEmpty(gkr.getApiVersion())) {
+          throw new KubernetesClientException(
+              "Could not parse the input as a KubernetesResource as it lacks kind or apiVersion fields.");
+        }
+      }
+      return result;
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -305,25 +328,7 @@ public class Serialization {
    * @return returns de-serialized object
    */
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {
-    try (
-      InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters) : is;
-      BufferedInputStream bis = new BufferedInputStream(wrapped)
-    ) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = JSON_MAPPER;
-      if (intch != '{') {
-        return unmarshalYaml(bis, type);
-      }
-      return mapper.readValue(bis, type);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return unmarshal(is, JSON_MAPPER, type, parameters);
   }
 
   private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
@@ -373,20 +378,6 @@ public class Serialization {
     } catch (IOException e) {
       throw new RuntimeException("Unable to read InputStream." + e);
     }
-  }
-
-  private static <T> T unmarshalYaml(InputStream is, TypeReference<T> type) throws JsonProcessingException {
-    final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
-    Map<String, Object> obj = yaml.load(is);
-    String objAsJsonStr = JSON_MAPPER.writeValueAsString(obj);
-    return unmarshalJsonStr(objAsJsonStr, type);
-  }
-
-  private static <T> T unmarshalJsonStr(String jsonString, TypeReference<T> type) throws JsonProcessingException {
-    if (type != null) {
-      return JSON_MAPPER.readValue(jsonString, type);
-    }
-    return JSON_MAPPER.readerFor(KubernetesResource.class).readValue(jsonString);
   }
 
   /**

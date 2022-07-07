@@ -32,6 +32,7 @@ import java.util.stream.StreamSupport;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
@@ -116,26 +117,26 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
 
     private static KubernetesResource fromObjectNode(JsonParser jp, JsonNode node) throws IOException {
         TypeKey key = getKey(node);
-        if (key != null) {
-            Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
-            if (resourceType == null) {
-              return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
-            } else if (KubernetesResource.class.isAssignableFrom(resourceType)){
-              boolean inTemplate = false;
-              if (TEMPLATE_CLASS_NAME.equals(resourceType.getName())) {
-                inTemplate = true;
-                IN_TEMPLATE.set(true);
-              }
-              try {
-                return jp.getCodec().treeToValue(node, resourceType);
-              } finally {
-                if (inTemplate) {
-                  IN_TEMPLATE.remove();
-                }
-              }
+        Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
+        if (resourceType == null) {
+          return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
+        } else if (KubernetesResource.class.isAssignableFrom(resourceType)) {
+          boolean inTemplate = false;
+          if (TEMPLATE_CLASS_NAME.equals(resourceType.getName())) {
+            inTemplate = true;
+            IN_TEMPLATE.set(true);
+          }
+          try {
+            return jp.getCodec().treeToValue(node, resourceType);
+          } finally {
+            if (inTemplate) {
+              IN_TEMPLATE.remove();
             }
+          }
         }
-        return null;
+        throw new JsonMappingException(jp, String.format(
+          "There's a class loading issue, %s is registered as a KubernetesResource, but is not an instance of KubernetesResource",
+          resourceType.getName()));
     }
 
     /**

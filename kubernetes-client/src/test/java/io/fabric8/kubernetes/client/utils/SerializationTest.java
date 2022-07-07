@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -41,6 +42,8 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -228,14 +231,10 @@ class SerializationTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with invalid YAML resource, should return null")
-  void unmarshalWithInvalidResourceShouldReturnNull() {
-    // When
-    final KubernetesResource result = Serialization.unmarshal(
-      SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml")
-    );
-    // Then
-    assertThat(result).isNull();
+  @DisplayName("unmarshal, with invalid YAML resource, should throw exception")
+  void unmarshalWithInvalidResourceShouldThrowException() {
+    InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml");
+    assertThrows(KubernetesClientException.class, () -> Serialization.unmarshal(is));
   }
 
   @Test
@@ -327,6 +326,24 @@ class SerializationTest {
   void quantityQuoting() {
     Quantity quantity = Serialization.unmarshal("amount: \"2\"\nformat: \"Gi\"", Quantity.class);
     assertThat(Serialization.asYaml(quantity)).isEqualTo("--- \"2Gi\"\n");
+  }
+
+  @Test
+  void parseConfigWithRaw() {
+    Config config = Serialization.unmarshal("extensions: \n"
+        + "- name: foo\n"
+        + "  extension:\n"
+        + "    not: kubernetesresource", Config.class);
+
+    // ensure that the extenion is preserved
+    assertThat(Serialization.asYaml(config)).isEqualTo("---\n"
+        + "clusters: []\n"
+        + "contexts: []\n"
+        + "extensions:\n"
+        + "- extension:\n"
+        + "    not: \"kubernetesresource\"\n"
+        + "  name: \"foo\"\n"
+        + "users: []\n");
   }
 
   @JsonTypeResolver(io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder.class)
