@@ -66,15 +66,15 @@ public class PromoteSingleVersionAttributesDecorator
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
       boolean hasIdenticalSchemas = schemas.size() == 1;
 
-      if (hasIdenticalSchemas) {
+      if(hasIdenticalSchemas) {
         spec.withValidation(schemas.iterator().next());
       }
 
-      if (hasIdenticalSubresources) {
+      if(hasIdenticalSubresources) {
         spec.withSubresources(subresources.iterator().next());
       }
 
-      if (hasIdenticalAdditionalPrinterColumns) {
+      if(hasIdenticalAdditionalPrinterColumns) {
         spec.withAdditionalPrinterColumns(additionalPrinterColumns.iterator().next());
       }
 
