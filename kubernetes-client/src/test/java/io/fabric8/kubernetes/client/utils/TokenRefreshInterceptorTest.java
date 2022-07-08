@@ -27,6 +27,8 @@ import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY;
@@ -54,6 +56,31 @@ public class TokenRefreshInterceptorTest {
       boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null).afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
+    } finally {
+      // Remove any side effect
+      System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
+  void shouldAutoconfigureAfter1Minute() throws Exception {
+    try {
+      // Prepare kubeconfig for autoconfiguration
+      File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
+        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
+
+      HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+
+      // Call
+      TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null);
+      // Replace kubeconfig file
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig.new")),
+        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      tokenRefreshInterceptor.setLastRefresh(Instant.now().minus(61, ChronoUnit.SECONDS));
+      tokenRefreshInterceptor.before(builder, null);
+      Mockito.verify(builder).setHeader("Authorization", "Bearer new token");
     } finally {
       // Remove any side effect
       System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
