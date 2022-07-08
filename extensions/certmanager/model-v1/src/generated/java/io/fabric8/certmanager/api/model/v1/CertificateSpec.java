@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -86,7 +85,7 @@ public class CertificateSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> dnsNames = new ArrayList<String>();
     @JsonProperty("duration")
-    private Duration duration;
+    private io.fabric8.kubernetes.api.model.Duration duration;
     @JsonProperty("emailAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> emailAddresses = new ArrayList<String>();
@@ -104,7 +103,7 @@ public class CertificateSpec implements KubernetesResource
     @JsonProperty("privateKey")
     private CertificatePrivateKey privateKey;
     @JsonProperty("renewBefore")
-    private Duration renewBefore;
+    private io.fabric8.kubernetes.api.model.Duration renewBefore;
     @JsonProperty("secretName")
     private String secretName;
     @JsonProperty("subject")
@@ -143,7 +142,7 @@ public class CertificateSpec implements KubernetesResource
      * @param ipAddresses
      * @param usages
      */
-    public CertificateSpec(String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, CertificatePrivateKey privateKey, Duration renewBefore, String secretName, X509Subject subject, List<String> uris, List<String> usages) {
+    public CertificateSpec(String commonName, List<String> dnsNames, io.fabric8.kubernetes.api.model.Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, CertificatePrivateKey privateKey, io.fabric8.kubernetes.api.model.Duration renewBefore, String secretName, X509Subject subject, List<String> uris, List<String> usages) {
         super();
         this.commonName = commonName;
         this.dnsNames = dnsNames;
@@ -183,12 +182,12 @@ public class CertificateSpec implements KubernetesResource
     }
 
     @JsonProperty("duration")
-    public Duration getDuration() {
+    public io.fabric8.kubernetes.api.model.Duration getDuration() {
         return duration;
     }
 
     @JsonProperty("duration")
-    public void setDuration(Duration duration) {
+    public void setDuration(io.fabric8.kubernetes.api.model.Duration duration) {
         this.duration = duration;
     }
 
@@ -263,12 +262,12 @@ public class CertificateSpec implements KubernetesResource
     }
 
     @JsonProperty("renewBefore")
-    public Duration getRenewBefore() {
+    public io.fabric8.kubernetes.api.model.Duration getRenewBefore() {
         return renewBefore;
     }
 
     @JsonProperty("renewBefore")
-    public void setRenewBefore(Duration renewBefore) {
+    public void setRenewBefore(io.fabric8.kubernetes.api.model.Duration renewBefore) {
         this.renewBefore = renewBefore;
     }
 

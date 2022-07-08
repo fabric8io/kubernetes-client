@@ -1,5 +1,5 @@
 
-package io.fabric8.tekton.pipeline.v1beta1;
+package io.fabric8.certmanager.api.model.acme.v1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +37,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "finally",
-    "pipeline",
-    "tasks"
+    "class",
+    "ingressTemplate",
+    "name",
+    "podTemplate",
+    "serviceType"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,75 +65,103 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class TimeoutFields implements KubernetesResource
+public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
 {
 
-    @JsonProperty("finally")
-    private io.fabric8.kubernetes.api.model.Duration _finally;
-    @JsonProperty("pipeline")
-    private io.fabric8.kubernetes.api.model.Duration pipeline;
-    @JsonProperty("tasks")
-    private io.fabric8.kubernetes.api.model.Duration tasks;
+    @JsonProperty("class")
+    private String _class;
+    @JsonProperty("ingressTemplate")
+    private ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate;
+    @JsonProperty("name")
+    private java.lang.String name;
+    @JsonProperty("podTemplate")
+    private ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate;
+    @JsonProperty("serviceType")
+    private java.lang.String serviceType;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public TimeoutFields() {
+    public ACMEChallengeSolverHTTP01Ingress() {
     }
 
     /**
      * 
-     * @param pipeline
-     * @param _finally
-     * @param tasks
+     * @param serviceType
+     * @param ingressTemplate
+     * @param name
+     * @param podTemplate
+     * @param _class
      */
-    public TimeoutFields(io.fabric8.kubernetes.api.model.Duration _finally, io.fabric8.kubernetes.api.model.Duration pipeline, io.fabric8.kubernetes.api.model.Duration tasks) {
+    public ACMEChallengeSolverHTTP01Ingress(String _class, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, java.lang.String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, java.lang.String serviceType) {
         super();
-        this._finally = _finally;
-        this.pipeline = pipeline;
-        this.tasks = tasks;
+        this._class = _class;
+        this.ingressTemplate = ingressTemplate;
+        this.name = name;
+        this.podTemplate = podTemplate;
+        this.serviceType = serviceType;
     }
 
-    @JsonProperty("finally")
-    public io.fabric8.kubernetes.api.model.Duration getFinally() {
-        return _finally;
+    @JsonProperty("class")
+    public String getClass_() {
+        return _class;
     }
 
-    @JsonProperty("finally")
-    public void setFinally(io.fabric8.kubernetes.api.model.Duration _finally) {
-        this._finally = _finally;
+    @JsonProperty("class")
+    public void setClass_(String _class) {
+        this._class = _class;
     }
 
-    @JsonProperty("pipeline")
-    public io.fabric8.kubernetes.api.model.Duration getPipeline() {
-        return pipeline;
+    @JsonProperty("ingressTemplate")
+    public ACMEChallengeSolverHTTP01IngressTemplate getIngressTemplate() {
+        return ingressTemplate;
     }
 
-    @JsonProperty("pipeline")
-    public void setPipeline(io.fabric8.kubernetes.api.model.Duration pipeline) {
-        this.pipeline = pipeline;
+    @JsonProperty("ingressTemplate")
+    public void setIngressTemplate(ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate) {
+        this.ingressTemplate = ingressTemplate;
     }
 
-    @JsonProperty("tasks")
-    public io.fabric8.kubernetes.api.model.Duration getTasks() {
-        return tasks;
+    @JsonProperty("name")
+    public java.lang.String getName() {
+        return name;
     }
 
-    @JsonProperty("tasks")
-    public void setTasks(io.fabric8.kubernetes.api.model.Duration tasks) {
-        this.tasks = tasks;
+    @JsonProperty("name")
+    public void setName(java.lang.String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("podTemplate")
+    public ACMEChallengeSolverHTTP01IngressPodTemplate getPodTemplate() {
+        return podTemplate;
+    }
+
+    @JsonProperty("podTemplate")
+    public void setPodTemplate(ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate) {
+        this.podTemplate = podTemplate;
+    }
+
+    @JsonProperty("serviceType")
+    public java.lang.String getServiceType() {
+        return serviceType;
+    }
+
+    @JsonProperty("serviceType")
+    public void setServiceType(java.lang.String serviceType) {
+        this.serviceType = serviceType;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

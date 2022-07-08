@@ -1,7 +1,9 @@
 
-package io.fabric8.tekton.pipeline.v1beta1;
+package io.fabric8.certmanager.api.model.v1beta1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,13 +14,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -37,9 +39,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "finally",
-    "pipeline",
-    "tasks"
+    "duration",
+    "isCA",
+    "issuerRef",
+    "request",
+    "usages"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -63,15 +67,20 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class TimeoutFields implements KubernetesResource
+public class CertificateRequestSpec implements KubernetesResource
 {
 
-    @JsonProperty("finally")
-    private io.fabric8.kubernetes.api.model.Duration _finally;
-    @JsonProperty("pipeline")
-    private io.fabric8.kubernetes.api.model.Duration pipeline;
-    @JsonProperty("tasks")
-    private io.fabric8.kubernetes.api.model.Duration tasks;
+    @JsonProperty("duration")
+    private Duration duration;
+    @JsonProperty("isCA")
+    private Boolean isCA;
+    @JsonProperty("issuerRef")
+    private io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef;
+    @JsonProperty("request")
+    private String request;
+    @JsonProperty("usages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> usages = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -79,50 +88,74 @@ public class TimeoutFields implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public TimeoutFields() {
+    public CertificateRequestSpec() {
     }
 
     /**
      * 
-     * @param pipeline
-     * @param _finally
-     * @param tasks
+     * @param duration
+     * @param request
+     * @param isCA
+     * @param issuerRef
+     * @param usages
      */
-    public TimeoutFields(io.fabric8.kubernetes.api.model.Duration _finally, io.fabric8.kubernetes.api.model.Duration pipeline, io.fabric8.kubernetes.api.model.Duration tasks) {
+    public CertificateRequestSpec(Duration duration, Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String request, List<String> usages) {
         super();
-        this._finally = _finally;
-        this.pipeline = pipeline;
-        this.tasks = tasks;
+        this.duration = duration;
+        this.isCA = isCA;
+        this.issuerRef = issuerRef;
+        this.request = request;
+        this.usages = usages;
     }
 
-    @JsonProperty("finally")
-    public io.fabric8.kubernetes.api.model.Duration getFinally() {
-        return _finally;
+    @JsonProperty("duration")
+    public Duration getDuration() {
+        return duration;
     }
 
-    @JsonProperty("finally")
-    public void setFinally(io.fabric8.kubernetes.api.model.Duration _finally) {
-        this._finally = _finally;
+    @JsonProperty("duration")
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
-    @JsonProperty("pipeline")
-    public io.fabric8.kubernetes.api.model.Duration getPipeline() {
-        return pipeline;
+    @JsonProperty("isCA")
+    public Boolean getIsCA() {
+        return isCA;
     }
 
-    @JsonProperty("pipeline")
-    public void setPipeline(io.fabric8.kubernetes.api.model.Duration pipeline) {
-        this.pipeline = pipeline;
+    @JsonProperty("isCA")
+    public void setIsCA(Boolean isCA) {
+        this.isCA = isCA;
     }
 
-    @JsonProperty("tasks")
-    public io.fabric8.kubernetes.api.model.Duration getTasks() {
-        return tasks;
+    @JsonProperty("issuerRef")
+    public io.fabric8.certmanager.api.model.meta.v1.ObjectReference getIssuerRef() {
+        return issuerRef;
     }
 
-    @JsonProperty("tasks")
-    public void setTasks(io.fabric8.kubernetes.api.model.Duration tasks) {
-        this.tasks = tasks;
+    @JsonProperty("issuerRef")
+    public void setIssuerRef(io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef) {
+        this.issuerRef = issuerRef;
+    }
+
+    @JsonProperty("request")
+    public String getRequest() {
+        return request;
+    }
+
+    @JsonProperty("request")
+    public void setRequest(String request) {
+        this.request = request;
+    }
+
+    @JsonProperty("usages")
+    public List<String> getUsages() {
+        return usages;
+    }
+
+    @JsonProperty("usages")
+    public void setUsages(List<String> usages) {
+        this.usages = usages;
     }
 
     @JsonAnyGetter

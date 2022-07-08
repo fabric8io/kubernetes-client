@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -75,10 +74,10 @@ public class ManagedClusterStatus implements KubernetesResource
 
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> allocatable = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> capacity = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("clusterClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ManagedClusterClaim> clusterClaims = new ArrayList<ManagedClusterClaim>();
@@ -104,7 +103,7 @@ public class ManagedClusterStatus implements KubernetesResource
      * @param version
      * @param capacity
      */
-    public ManagedClusterStatus(Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<ManagedClusterClaim> clusterClaims, List<Condition> conditions, ManagedClusterVersion version) {
+    public ManagedClusterStatus(Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<ManagedClusterClaim> clusterClaims, List<Condition> conditions, ManagedClusterVersion version) {
         super();
         this.allocatable = allocatable;
         this.capacity = capacity;
@@ -114,22 +113,22 @@ public class ManagedClusterStatus implements KubernetesResource
     }
 
     @JsonProperty("allocatable")
-    public Map<String, Quantity> getAllocatable() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getAllocatable() {
         return allocatable;
     }
 
     @JsonProperty("allocatable")
-    public void setAllocatable(Map<String, Quantity> allocatable) {
+    public void setAllocatable(Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable) {
         this.allocatable = allocatable;
     }
 
     @JsonProperty("capacity")
-    public Map<String, Quantity> getCapacity() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getCapacity() {
         return capacity;
     }
 
     @JsonProperty("capacity")
-    public void setCapacity(Map<String, Quantity> capacity) {
+    public void setCapacity(Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity) {
         this.capacity = capacity;
     }
 

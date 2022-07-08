@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -82,10 +81,10 @@ public class ContainerResourcePolicy implements KubernetesResource
     private String controlledValues;
     @JsonProperty("maxAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> maxAllowed = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> maxAllowed = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("minAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> minAllowed = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> minAllowed = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("mode")
     private String mode;
     @JsonIgnore
@@ -107,7 +106,7 @@ public class ContainerResourcePolicy implements KubernetesResource
      * @param minAllowed
      * @param controlledResources
      */
-    public ContainerResourcePolicy(java.lang.String containerName, List<java.lang.String> controlledResources, String controlledValues, Map<String, Quantity> maxAllowed, Map<String, Quantity> minAllowed, String mode) {
+    public ContainerResourcePolicy(java.lang.String containerName, List<java.lang.String> controlledResources, String controlledValues, Map<String, io.fabric8.kubernetes.api.model.Quantity> maxAllowed, Map<String, io.fabric8.kubernetes.api.model.Quantity> minAllowed, String mode) {
         super();
         this.containerName = containerName;
         this.controlledResources = controlledResources;
@@ -148,22 +147,22 @@ public class ContainerResourcePolicy implements KubernetesResource
     }
 
     @JsonProperty("maxAllowed")
-    public Map<String, Quantity> getMaxAllowed() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getMaxAllowed() {
         return maxAllowed;
     }
 
     @JsonProperty("maxAllowed")
-    public void setMaxAllowed(Map<String, Quantity> maxAllowed) {
+    public void setMaxAllowed(Map<String, io.fabric8.kubernetes.api.model.Quantity> maxAllowed) {
         this.maxAllowed = maxAllowed;
     }
 
     @JsonProperty("minAllowed")
-    public Map<String, Quantity> getMinAllowed() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getMinAllowed() {
         return minAllowed;
     }
 
     @JsonProperty("minAllowed")
-    public void setMinAllowed(Map<String, Quantity> minAllowed) {
+    public void setMinAllowed(Map<String, io.fabric8.kubernetes.api.model.Quantity> minAllowed) {
         this.minAllowed = minAllowed;
     }
 

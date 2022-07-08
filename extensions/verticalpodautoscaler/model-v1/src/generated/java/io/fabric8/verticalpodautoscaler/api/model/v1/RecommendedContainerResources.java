@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -74,16 +73,16 @@ public class RecommendedContainerResources implements KubernetesResource
     private java.lang.String containerName;
     @JsonProperty("lowerBound")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> lowerBound = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> lowerBound = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("target")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> target = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> target = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("uncappedTarget")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> uncappedTarget = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> uncappedTarget = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonProperty("upperBound")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> upperBound = new LinkedHashMap<String, Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> upperBound = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -102,7 +101,7 @@ public class RecommendedContainerResources implements KubernetesResource
      * @param lowerBound
      * @param target
      */
-    public RecommendedContainerResources(java.lang.String containerName, Map<String, Quantity> lowerBound, Map<String, Quantity> target, Map<String, Quantity> uncappedTarget, Map<String, Quantity> upperBound) {
+    public RecommendedContainerResources(java.lang.String containerName, Map<String, io.fabric8.kubernetes.api.model.Quantity> lowerBound, Map<String, io.fabric8.kubernetes.api.model.Quantity> target, Map<String, io.fabric8.kubernetes.api.model.Quantity> uncappedTarget, Map<String, io.fabric8.kubernetes.api.model.Quantity> upperBound) {
         super();
         this.containerName = containerName;
         this.lowerBound = lowerBound;
@@ -122,42 +121,42 @@ public class RecommendedContainerResources implements KubernetesResource
     }
 
     @JsonProperty("lowerBound")
-    public Map<String, Quantity> getLowerBound() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getLowerBound() {
         return lowerBound;
     }
 
     @JsonProperty("lowerBound")
-    public void setLowerBound(Map<String, Quantity> lowerBound) {
+    public void setLowerBound(Map<String, io.fabric8.kubernetes.api.model.Quantity> lowerBound) {
         this.lowerBound = lowerBound;
     }
 
     @JsonProperty("target")
-    public Map<String, Quantity> getTarget() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getTarget() {
         return target;
     }
 
     @JsonProperty("target")
-    public void setTarget(Map<String, Quantity> target) {
+    public void setTarget(Map<String, io.fabric8.kubernetes.api.model.Quantity> target) {
         this.target = target;
     }
 
     @JsonProperty("uncappedTarget")
-    public Map<String, Quantity> getUncappedTarget() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getUncappedTarget() {
         return uncappedTarget;
     }
 
     @JsonProperty("uncappedTarget")
-    public void setUncappedTarget(Map<String, Quantity> uncappedTarget) {
+    public void setUncappedTarget(Map<String, io.fabric8.kubernetes.api.model.Quantity> uncappedTarget) {
         this.uncappedTarget = uncappedTarget;
     }
 
     @JsonProperty("upperBound")
-    public Map<String, Quantity> getUpperBound() {
+    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getUpperBound() {
         return upperBound;
     }
 
     @JsonProperty("upperBound")
-    public void setUpperBound(Map<String, Quantity> upperBound) {
+    public void setUpperBound(Map<String, io.fabric8.kubernetes.api.model.Quantity> upperBound) {
         this.upperBound = upperBound;
     }
 

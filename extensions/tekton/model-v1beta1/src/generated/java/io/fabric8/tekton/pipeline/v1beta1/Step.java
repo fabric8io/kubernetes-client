@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.Probe;
 import io.fabric8.kubernetes.api.model.SecurityContext;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeDevice;
@@ -112,7 +111,7 @@ public class Step implements KubernetesResource
     @JsonProperty("lifecycle")
     private Lifecycle lifecycle;
     @JsonProperty("livenessProbe")
-    private Probe livenessProbe;
+    private io.fabric8.kubernetes.api.model.Probe livenessProbe;
     @JsonProperty("name")
     private String name;
     @JsonProperty("onError")
@@ -121,7 +120,7 @@ public class Step implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ContainerPort> ports = new ArrayList<io.fabric8.kubernetes.api.model.ContainerPort>();
     @JsonProperty("readinessProbe")
-    private Probe readinessProbe;
+    private io.fabric8.kubernetes.api.model.Probe readinessProbe;
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonProperty("script")
@@ -129,7 +128,7 @@ public class Step implements KubernetesResource
     @JsonProperty("securityContext")
     private SecurityContext securityContext;
     @JsonProperty("startupProbe")
-    private Probe startupProbe;
+    private io.fabric8.kubernetes.api.model.Probe startupProbe;
     @JsonProperty("stdin")
     private Boolean stdin;
     @JsonProperty("stdinOnce")
@@ -192,7 +191,7 @@ public class Step implements KubernetesResource
      * @param tty
      * @param stdinOnce
      */
-    public Step(List<String> args, List<String> command, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, String onError, List<io.fabric8.kubernetes.api.model.ContainerPort> ports, Probe readinessProbe, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String script, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String terminationMessagePath, String terminationMessagePolicy, Duration timeout, Boolean tty, List<VolumeDevice> volumeDevices, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, String workingDir, List<WorkspaceUsage> workspaces) {
+    public Step(List<String> args, List<String> command, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, io.fabric8.kubernetes.api.model.Probe livenessProbe, String name, String onError, List<io.fabric8.kubernetes.api.model.ContainerPort> ports, io.fabric8.kubernetes.api.model.Probe readinessProbe, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String script, SecurityContext securityContext, io.fabric8.kubernetes.api.model.Probe startupProbe, Boolean stdin, Boolean stdinOnce, String terminationMessagePath, String terminationMessagePolicy, Duration timeout, Boolean tty, List<VolumeDevice> volumeDevices, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, String workingDir, List<WorkspaceUsage> workspaces) {
         super();
         this.args = args;
         this.command = command;
@@ -293,12 +292,12 @@ public class Step implements KubernetesResource
     }
 
     @JsonProperty("livenessProbe")
-    public Probe getLivenessProbe() {
+    public io.fabric8.kubernetes.api.model.Probe getLivenessProbe() {
         return livenessProbe;
     }
 
     @JsonProperty("livenessProbe")
-    public void setLivenessProbe(Probe livenessProbe) {
+    public void setLivenessProbe(io.fabric8.kubernetes.api.model.Probe livenessProbe) {
         this.livenessProbe = livenessProbe;
     }
 
@@ -333,12 +332,12 @@ public class Step implements KubernetesResource
     }
 
     @JsonProperty("readinessProbe")
-    public Probe getReadinessProbe() {
+    public io.fabric8.kubernetes.api.model.Probe getReadinessProbe() {
         return readinessProbe;
     }
 
     @JsonProperty("readinessProbe")
-    public void setReadinessProbe(Probe readinessProbe) {
+    public void setReadinessProbe(io.fabric8.kubernetes.api.model.Probe readinessProbe) {
         this.readinessProbe = readinessProbe;
     }
 
@@ -373,12 +372,12 @@ public class Step implements KubernetesResource
     }
 
     @JsonProperty("startupProbe")
-    public Probe getStartupProbe() {
+    public io.fabric8.kubernetes.api.model.Probe getStartupProbe() {
         return startupProbe;
     }
 
     @JsonProperty("startupProbe")
-    public void setStartupProbe(Probe startupProbe) {
+    public void setStartupProbe(io.fabric8.kubernetes.api.model.Probe startupProbe) {
         this.startupProbe = startupProbe;
     }
 
