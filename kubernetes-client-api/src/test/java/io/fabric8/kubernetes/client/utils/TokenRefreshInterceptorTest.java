@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -59,6 +61,33 @@ class TokenRefreshInterceptorTest {
       System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
     }
   }
+
+  @Test
+  void shouldAutoconfigureAfter1Minute() throws Exception {
+    try {
+      // Prepare kubeconfig for autoconfiguration
+      File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
+        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
+
+      HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+
+      // Call
+      TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null);
+      // Replace kubeconfig file
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig.new")),
+        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      tokenRefreshInterceptor.setLastRefresh(Instant.now().minus(61, ChronoUnit.SECONDS));
+      tokenRefreshInterceptor.before(builder, null);
+      Mockito.verify(builder).setHeader("Authorization", "Bearer new token");
+    } finally {
+      // Remove any side effect
+      System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+
 
   @Test
   void shouldReloadInClusterServiceAccount() throws Exception {
