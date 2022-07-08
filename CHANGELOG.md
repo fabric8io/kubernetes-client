@@ -11,6 +11,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2271: Support periodic refresh of access tokens before they expire
 
 #### _**Note**_: Breaking changes in the API
 
