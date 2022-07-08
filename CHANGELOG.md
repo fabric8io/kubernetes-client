@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #2271: Support periodic refresh of access tokens before they expire
 * Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 * Fix #4365: backport of stopped future for informers to obtain the termination exception
 * Fix #4383: bump snakeyaml from 1.28 to 1.33
