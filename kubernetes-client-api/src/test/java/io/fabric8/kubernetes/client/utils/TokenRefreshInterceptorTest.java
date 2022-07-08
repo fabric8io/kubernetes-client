@@ -19,8 +19,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -28,6 +26,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY;
@@ -68,7 +68,7 @@ class TokenRefreshInterceptorTest {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
@@ -77,7 +77,7 @@ class TokenRefreshInterceptorTest {
       TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null);
       // Replace kubeconfig file
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig.new")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       tokenRefreshInterceptor.setLastRefresh(Instant.now().minus(61, ChronoUnit.SECONDS));
       tokenRefreshInterceptor.before(builder, null);
       Mockito.verify(builder).setHeader("Authorization", "Bearer new token");
@@ -86,8 +86,6 @@ class TokenRefreshInterceptorTest {
       System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
     }
   }
-
-
 
   @Test
   void shouldReloadInClusterServiceAccount() throws Exception {

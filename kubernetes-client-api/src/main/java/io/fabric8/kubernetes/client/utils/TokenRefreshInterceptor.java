@@ -52,7 +52,6 @@ public class TokenRefreshInterceptor implements Interceptor {
     }
   }
 
-
   @Override
   public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -70,7 +69,7 @@ public class TokenRefreshInterceptor implements Interceptor {
     Config newestConfig = Config.autoConfigure(currentContextName);
     if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
       newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(),
-        factory.newBuilder());
+          factory.newBuilder());
     } else {
       newAccessToken = CompletableFuture.completedFuture(newestConfig.getOauthToken());
     }
