@@ -56,11 +56,11 @@ public class PromoteSingleVersionAttributesDecorator
       spec.withVersions(newVersion);
     } else {
       Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources)
-          .filter(o -> o != null).collect(Collectors.toSet());
+          .filter(Objects::nonNull).collect(Collectors.toSet());
       Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream()
-          .map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).filter(o -> o != null).collect(Collectors.toSet());
+          .map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).filter(Objects::nonNull).collect(Collectors.toSet());
       Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema)
-          .filter(o -> o != null).collect(Collectors.toSet());
+          .filter(Objects::nonNull).collect(Collectors.toSet());
 
       boolean hasIdenticalSubresources = subresources.size() == 1;
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
