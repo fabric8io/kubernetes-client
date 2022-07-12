@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.0-SNAPSHOT
+### 6.0.0 (2022-07-12)
 
 #### Bugs
 * Fix #2811: Approve/Reject CSR not supported in v1beta1 CertificateSigningRequest API
