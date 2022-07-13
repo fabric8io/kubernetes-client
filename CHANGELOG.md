@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.1-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
 ### 6.0.0 (2022-07-12)
 
 #### Bugs
@@ -11,12 +23,6 @@
 #### Improvements
 * Fix #3227 : Move `config.openshift.io` apiGroup resources out of `openshift-model/`
 * Fix #4006: Remove outdated shared test classes in `kubernetes-client/` and `openshift-client/` modules
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes in the API
 
 ### 6.0.0-RC1 (2022-06-13)
 
