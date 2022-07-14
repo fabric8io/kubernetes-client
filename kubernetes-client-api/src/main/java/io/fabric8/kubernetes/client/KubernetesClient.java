@@ -511,4 +511,11 @@ public interface KubernetesClient extends Client {
    * @return {@link NonNamespaceOperation} for RuntimeClass
    */
   NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses();
+
+  /**
+   * Visit all resources with the given {@link ApiVisitor}.
+   * 
+   * @param visitor
+   */
+  void visitResources(ApiVisitor visitor);
 }

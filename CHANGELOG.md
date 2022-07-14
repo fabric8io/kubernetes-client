@@ -7,6 +7,7 @@
 #### Improvements
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
 * Fix #4241: added more context to informer logs with the endpoint path
+* Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 
 #### Dependency Upgrade
 

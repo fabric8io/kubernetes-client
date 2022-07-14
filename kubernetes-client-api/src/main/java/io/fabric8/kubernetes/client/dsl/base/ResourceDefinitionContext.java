@@ -15,10 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.APIResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
+
+import java.util.Optional;
 
 public class ResourceDefinitionContext {
   protected String group;
@@ -59,16 +63,26 @@ public class ResourceDefinitionContext {
   public static ResourceDefinitionContext fromResourceType(Class<? extends KubernetesResource> resource) {
     try {
       return new Builder()
-        .withGroup(HasMetadata.getGroup(resource))
-        .withVersion(HasMetadata.getVersion(resource))
-        .withNamespaced(Utils.isResourceNamespaced(resource))
-        .withPlural(HasMetadata.getPlural(resource))
-        .withKind(HasMetadata.getKind(resource))
-        .build();
+          .withGroup(HasMetadata.getGroup(resource))
+          .withVersion(HasMetadata.getVersion(resource))
+          .withNamespaced(Utils.isResourceNamespaced(resource))
+          .withPlural(HasMetadata.getPlural(resource))
+          .withKind(HasMetadata.getKind(resource))
+          .build();
     } catch (IllegalArgumentException e) {
       throw new KubernetesClientException(
           String.format("%s is not annotated appropriately: %s", resource.getName(), e.getMessage()), e);
     }
+  }
+
+  public static ResourceDefinitionContext fromApiResource(String apiVersion, APIResource resource) {
+    return new Builder()
+        .withGroup(Optional.ofNullable(ApiVersionUtil.trimGroupOrNull(apiVersion)).orElse(""))
+        .withVersion(ApiVersionUtil.trimVersion(apiVersion))
+        .withNamespaced(Boolean.TRUE.equals(resource.getNamespaced()))
+        .withPlural(resource.getName())
+        .withKind(resource.getKind())
+        .build();
   }
 
   public static class Builder {

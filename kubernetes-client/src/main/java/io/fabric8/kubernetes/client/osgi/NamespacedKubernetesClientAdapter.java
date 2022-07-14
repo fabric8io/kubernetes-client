@@ -59,6 +59,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
+import io.fabric8.kubernetes.client.ApiVisitor;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -401,6 +402,11 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   @Override
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return getClient().runtimeClasses();
+  }
+
+  @Override
+  public void visitResources(ApiVisitor visitor) {
+    getClient().visitResources(visitor);
   }
 
 }

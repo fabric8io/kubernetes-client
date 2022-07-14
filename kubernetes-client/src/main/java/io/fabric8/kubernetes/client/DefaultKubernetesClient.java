@@ -17,6 +17,9 @@ package io.fabric8.kubernetes.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import io.fabric8.kubernetes.api.model.APIGroup;
+import io.fabric8.kubernetes.api.model.APIGroupBuilder;
+import io.fabric8.kubernetes.api.model.APIResource;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
@@ -28,6 +31,8 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
+import io.fabric8.kubernetes.api.model.GroupVersionForDiscovery;
+import io.fabric8.kubernetes.api.model.GroupVersionForDiscoveryBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -64,6 +69,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
+import io.fabric8.kubernetes.client.ApiVisitor.ApiVisitResult;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder.ExecutorSupplier;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
@@ -128,7 +134,9 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Class for Default Kubernetes Client implementing KubernetesClient interface.
@@ -681,6 +689,49 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     result.httpClient = client;
     result.setDerivedFields();
     return result;
+  }
+
+  @Override
+  public void visitResources(ApiVisitor visitor) {
+    if (visitGroups(visitor, Arrays.asList(new APIGroupBuilder().withName("")
+        .withVersions(new GroupVersionForDiscoveryBuilder().withGroupVersion("v1").build()).build()))) {
+      return; // user terminated
+    }
+    visitGroups(visitor, getApiGroups().getGroups());
+  }
+
+  private boolean visitGroups(ApiVisitor visitor, List<APIGroup> groups) {
+    for (APIGroup group : groups) {
+      switch (visitor.visitApi(group.getName())) {
+        case TERMINATE:
+          return true;
+        case SKIP:
+          continue;
+        case CONTINUE:
+          for (GroupVersionForDiscovery groupForDiscovery : group.getVersions()) {
+            String groupVersion = groupForDiscovery.getGroupVersion();
+            ApiVisitResult versionResult = visitor.visitApiVersion(groupVersion);
+            switch (versionResult) {
+              case TERMINATE:
+                return true;
+              case SKIP:
+                continue;
+              case CONTINUE:
+                for (APIResource resource : this.getApiResources(groupVersion).getResources()) {
+                  if (resource.getName().contains("/")) { // skip subresources
+                    continue;
+                  }
+                  ApiVisitResult resourceResult = visitor.visitResources(groupVersion, resource,
+                      this.genericKubernetesResources(ResourceDefinitionContext.fromApiResource(groupVersion, resource)));
+                  if (resourceResult == ApiVisitResult.TERMINATE) {
+                    return true;
+                  }
+                }
+            }
+          }
+      }
+    }
+    return false;
   }
 
 }
