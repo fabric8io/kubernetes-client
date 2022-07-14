@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
@@ -84,13 +85,22 @@ class LeaderElectorTest {
   }
 
   @Test
-  void runShouldEndlesslyRun() throws Exception {
+  void runShouldEndlesslyRunWithLockException() throws Exception {
+    runShouldEndlesslyRun(new LockException("Exception won't affect execution"));
+  }
+
+  @Test
+  void runShouldEndlesslyRunWithKubernetesClientException() throws Exception {
+    runShouldEndlesslyRun(new KubernetesClientException("Connection refused"));
+  }
+
+  private void runShouldEndlesslyRun(Exception expectedException) throws Exception {
     // Given
     final ExecutorService executor = Executors.newSingleThreadExecutor();
     final CountDownLatch signal = new CountDownLatch(1);
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     final Lock mockedLock = lec.getLock();
-    doNothing().doThrow(new LockException("Exception won't affect execution")).doNothing().doAnswer(invocation -> {
+    doNothing().doThrow(expectedException).doNothing().doAnswer(invocation -> {
       // Force dedicated thread to gracefully end after a couple of updates
       signal.countDown();
       return null;

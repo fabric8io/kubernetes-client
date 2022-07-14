@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
@@ -122,7 +123,7 @@ public class LeaderElector<C extends Namespaceable<C> & KubernetesClient> {
       if (!success) {
         abortLatch.countDown();
       }
-    } catch(LockException exception) {
+    } catch(LockException | KubernetesClientException exception) {
       LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
     }
     renewSignal.countDown();
