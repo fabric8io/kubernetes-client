@@ -49,13 +49,15 @@ public class SharedProcessor<T> {
   private final List<ProcessorListener<T>> listeners = new ArrayList<>();
   private final List<ProcessorListener<T>> syncingListeners = new ArrayList<>();
   private final SerialExecutor executor;
+  private final String informerDescription;
 
   public SharedProcessor() {
-    this(Runnable::run);
+    this(Runnable::run, "informer");
   }
 
-  public SharedProcessor(Executor executor) {
+  public SharedProcessor(Executor executor, String informerDescription) {
     this.executor = new SerialExecutor(executor);
+    this.informerDescription = informerDescription;
   }
 
   /**
@@ -107,7 +109,8 @@ public class SharedProcessor<T> {
           try {
             operation.accept(listener);
           } catch (Exception ex) {
-            log.error("Failed invoking {} event handler: {}", listener.getHandler(), ex.getMessage(), ex);
+            log.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
+                ex);
           }
         }
       });

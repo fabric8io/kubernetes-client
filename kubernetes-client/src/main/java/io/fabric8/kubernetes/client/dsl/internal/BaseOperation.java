@@ -1071,4 +1071,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return create(getNonNullItem());
   }
 
+  @Override
+  public String getApiEndpointPath() {
+    List<String> parts = getRootUrlParts();
+    parts.remove(0); // root
+    parts.remove(0); // api(s)
+    addNamespacedUrlPathParts(parts, this.namespace, this.resourceT);
+    return parts.stream().collect(Collectors.joining("/"));
+  }
+
 }

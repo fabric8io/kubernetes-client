@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
-import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
@@ -54,6 +52,7 @@ import java.io.InterruptedIOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -145,26 +144,39 @@ public class OperationSupport {
     return true;
   }
 
-  public URL getRootUrl() {
-    try {
-      if (!Utils.isNullOrEmpty(apiGroupName)) {
-        return new URL(URLUtils.join(config.getMasterUrl(), "apis", apiGroupName, apiGroupVersion));
-      }
-      return new URL(URLUtils.join(config.getMasterUrl(), "api", apiGroupVersion));
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
+  protected List<String> getRootUrlParts() {
+    ArrayList<String> result = new ArrayList<>();
+    result.add(config.getMasterUrl());
+    if (!Utils.isNullOrEmpty(apiGroupName)) {
+      result.add("apis");
+      result.add(apiGroupName);
+      result.add(apiGroupVersion);
+    } else {
+      result.add("api");
+      result.add(apiGroupVersion);
     }
+    return result;
+  }
+
+  protected URL getNamespacedUrl(String namespace, String type) throws MalformedURLException {
+    List<String> parts = getRootUrlParts();
+    addNamespacedUrlPathParts(parts, namespace, type);
+    URL requestUrl = new URL(URLUtils.join(parts.toArray(new String[parts.size()])));
+    return requestUrl;
   }
 
   public URL getNamespacedUrl(String namespace) throws MalformedURLException {
-    URL requestUrl = getRootUrl();
+    return getNamespacedUrl(namespace, resourceT);
+  }
+
+  protected void addNamespacedUrlPathParts(List<String> parts, String namespace, String type) {
     if (!isResourceNamespaced()) {
       //if resource is not namespaced don't even bother to check the namespace.
     } else if (Utils.isNotNullOrEmpty(namespace)) {
-      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", namespace));
+      parts.add("namespaces");
+      parts.add(namespace);
     }
-    requestUrl = new URL(URLUtils.join(requestUrl.toString(), resourceT));
-    return requestUrl;
+    parts.add(type);
   }
 
   public URL getNamespacedUrl() throws MalformedURLException {

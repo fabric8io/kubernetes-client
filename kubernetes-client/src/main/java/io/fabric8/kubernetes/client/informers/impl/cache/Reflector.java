@@ -40,7 +40,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
 
   private volatile String lastSyncResourceVersion;
-  private final Class<T> apiTypeClass;
   private final ListerWatcher<T, L> listerWatcher;
   private final SyncableStore<T> store;
   private final ReflectorWatcher watcher;
@@ -49,8 +48,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private volatile CompletableFuture<Watch> watchFuture;
   private volatile Future<?> reconnectFuture;
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
-    this.apiTypeClass = apiTypeClass;
+  public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher();
@@ -102,7 +100,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       store.retainAll(nextKeys);
       final String latestResourceVersion = result.getMetadata().getResourceVersion();
       lastSyncResourceVersion = latestResourceVersion;
-      log.debug("Listing items ({}) for resource {} v{}", nextKeys.size(), apiTypeClass, latestResourceVersion);
+      log.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
       CompletableFuture<Watch> started = startWatcher(latestResourceVersion);
       if (started != null) {
         // outside of the lock
@@ -138,8 +136,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private void stopWatch(Watch w) {
-    String ns = listerWatcher.getNamespace();
-    log.debug("Stopping watcher for resource {} v{} in namespace {}", apiTypeClass, lastSyncResourceVersion, ns);
+    log.debug("Stopping watcher for {} at v{}", this, lastSyncResourceVersion);
     w.close();
     watchStopped(); // proactively report as stopped
   }
@@ -148,7 +145,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     if (!running) {
       return null;
     }
-    log.debug("Starting watcher for resource {} v{}", apiTypeClass, latestResourceVersion);
+    log.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
     // there's no need to stop the old watch, that will happen automatically when this call completes
     watchFuture = listerWatcher.submitWatch(new ListOptionsBuilder().withResourceVersion(latestResourceVersion)
         .withTimeoutSeconds(null)
@@ -177,14 +174,14 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     @Override
     public void eventReceived(Action action, T resource) {
       if (action == null) {
-        throw new KubernetesClientException("Unrecognized event");
+        throw new KubernetesClientException("Unrecognized event for " + Reflector.this);
       }
       if (resource == null) {
-        throw new KubernetesClientException("Unrecognized resource");
+        throw new KubernetesClientException("Unrecognized resource for " + Reflector.this);
       }
       if (log.isDebugEnabled()) {
-        log.debug("Event received {} {} resourceVersion {}", action.name(), resource.getKind(),
-            resource.getMetadata().getResourceVersion());
+        log.debug("Event received {} {} resourceVersion v{} for {}", action.name(), resource.getKind(),
+            resource.getMetadata().getResourceVersion(), Reflector.this);
       }
       switch (action) {
         case ERROR:
@@ -209,7 +206,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       boolean restarted = false;
       try {
         if (exception.isHttpGone()) {
-          log.debug("Watch restarting due to http gone");
+          if (log.isDebugEnabled()) {
+            log.debug("Watch restarting due to http gone for {}", Reflector.this);
+          }
           listSyncAndWatch().whenComplete((v, t) -> {
             if (t != null) {
               watchStopped();
@@ -221,7 +220,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           });
           restarted = true;
         } else {
-          log.warn("Watch closing with exception", exception);
+          log.warn("Watch closing with exception for {}", Reflector.this, exception);
           running = false; // shouldn't happen, but it means the watch won't restart
         }
       } finally {
@@ -234,7 +233,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     @Override
     public void onClose() {
       watchStopped();
-      log.debug("Watch gracefully closed");
+      log.debug("Watch gracefully closed for {}", Reflector.this);
     }
 
     @Override
@@ -246,6 +245,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   ReflectorWatcher getWatcher() {
     return watcher;
+  }
+
+  @Override
+  public String toString() {
+    return listerWatcher.getApiEndpointPath();
   }
 
 }

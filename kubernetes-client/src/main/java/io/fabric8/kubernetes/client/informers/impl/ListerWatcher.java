@@ -35,7 +35,7 @@ public interface ListerWatcher<T, L> {
 
   Long getLimit();
 
-  String getNamespace();
-
   int getWatchReconnectInterval();
+
+  String getApiEndpointPath();
 }

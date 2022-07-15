@@ -210,12 +210,7 @@ public class TemplateOperationsImpl
   }
 
   private URL getProcessUrl() throws MalformedURLException {
-    URL requestUrl = getRootUrl();
-    if (getNamespace() != null) {
-      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", getNamespace()));
-    }
-    requestUrl = new URL(URLUtils.join(requestUrl.toString(), "processedtemplates"));
-    return requestUrl;
+    return getNamespacedUrl(getNamespace(), "processedtemplates");
   }
 
   @Override
