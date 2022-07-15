@@ -115,7 +115,7 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
         future.whenComplete((v, t) -> {
           if (t != null) {
             if (this.eventListeners.isEmpty()) {
-              log.warn("Failed to start informer", t);
+              log.warn("Failed to start informer {}", informer.toString(), t);
             } else {
               this.eventListeners
                   .forEach(listener -> listener.onException(informer, KubernetesClientException.launderThrowable(t)));
