@@ -56,7 +56,8 @@ class KubernetesResourceUtilTest {
 
   @Group("samples.fabric8.io")
   @Version("v1beta1")
-  private static class Good extends CustomResource<Void, Void> { }
+  private static class Good extends CustomResource<Void, Void> {
+  }
 
   @BeforeEach
   public void createTestResource() {

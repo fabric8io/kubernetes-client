@@ -21,11 +21,12 @@ import io.fabric8.kubernetes.api.model.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
 import io.sundr.model.TypeDef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CustomResourceInfo {
 
@@ -48,9 +49,9 @@ public class CustomResourceInfo {
   private final int hash;
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
-    String plural, String[] shortNames, boolean storage, boolean served,
-    Scope scope, TypeDef definition, String crClassName,
-    String specClassName, String statusClassName) {
+      String plural, String[] shortNames, boolean storage, boolean served,
+      Scope scope, TypeDef definition, String crClassName,
+      String specClassName, String statusClassName) {
     this.group = group;
     this.version = version;
     this.kind = kind;
@@ -143,14 +144,16 @@ public class CustomResourceInfo {
 
       SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
       if (specAndStatus.isUnreliable()) {
-        LOGGER.warn("Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",
-          customResource.getCanonicalName());
+        LOGGER.warn(
+            "Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",
+            customResource.getCanonicalName());
       }
 
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
-        instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope, definition,
-        customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
-        specAndStatus.getStatusClassName());
+          instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope,
+          definition,
+          customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
+          specAndStatus.getStatusClassName());
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

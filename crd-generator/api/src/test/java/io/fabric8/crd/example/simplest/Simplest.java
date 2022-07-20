@@ -21,6 +21,6 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Group("samples.fabric8.io")
 @Version("v1alpha1")
-public class Simplest extends CustomResource<SimplestSpec,SimplestStatus> {
+public class Simplest extends CustomResource<SimplestSpec, SimplestStatus> {
 
 }

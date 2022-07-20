@@ -21,6 +21,6 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Group("map.fabric8.io")
 @Version("v1alpha1")
-public class ContainingMaps extends  CustomResource<ContainingMapsSpec, Void> {
+public class ContainingMaps extends CustomResource<ContainingMapsSpec, Void> {
 
 }

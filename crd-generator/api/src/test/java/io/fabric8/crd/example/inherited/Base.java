@@ -15,11 +15,11 @@
  */
 package io.fabric8.crd.example.inherited;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.CustomResource;
+import io.fabric8.kubernetes.api.model.Namespaced;
 
 public abstract class Base<Spec extends BaseSpec, Status extends BaseStatus>
-  extends CustomResource<Spec, Status>
-  implements Namespaced {
+    extends CustomResource<Spec, Status>
+    implements Namespaced {
 
 }
