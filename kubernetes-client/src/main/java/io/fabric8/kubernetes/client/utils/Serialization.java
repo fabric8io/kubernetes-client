@@ -41,8 +41,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.resolver.Resolver;
 
 public class Serialization {
   private Serialization() { }
@@ -372,7 +376,7 @@ public class Serialization {
   }
 
   private static <T> T unmarshalYaml(InputStream is, TypeReference<T> type) throws JsonProcessingException {
-    final Yaml yaml = new Yaml(new SafeConstructor());
+    final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
     Map<String, Object> obj = yaml.load(is);
     String objAsJsonStr = JSON_MAPPER.writeValueAsString(obj);
     return unmarshalJsonStr(objAsJsonStr, type);
@@ -404,6 +408,19 @@ public class Serialization {
         });
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
+    }
+  }
+
+  private static class CustomYamlTagResolver extends Resolver {
+    @Override
+    public void addImplicitResolver(Tag tag, Pattern regexp, String first) {
+      if (tag == Tag.TIMESTAMP)
+        return;
+      if (tag.equals(Tag.BOOL)) {
+        regexp = Pattern.compile("^(?:true|True|TRUE|false|False|FALSE)$");
+        first = "tTfF";
+      }
+      super.addImplicitResolver(tag, regexp, first);
     }
   }
 }
