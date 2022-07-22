@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.serialization;
+package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -40,6 +40,8 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
   private boolean logWarnings;
   private boolean restrictToTemplates;
 
+  private static final ThreadLocal<Boolean> IN_TEMPLATE = ThreadLocal.withInitial(() -> false);
+
   public UnmatchedFieldTypeModule() {
     this(true, true);
   }
@@ -50,19 +52,22 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
     setDeserializerModifier(new BeanDeserializerModifier() {
 
       @Override
-      public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc, BeanDeserializerBuilder builder) {
-        builder.getProperties().forEachRemaining(p ->
-          builder.addOrReplaceProperty(new SettableBeanPropertyDelegate(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::isRestrictToTemplates) {
-          }, true));
+      public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc,
+          BeanDeserializerBuilder builder) {
+        builder.getProperties().forEachRemaining(p -> builder.addOrReplaceProperty(
+            new SettableBeanPropertyDelegate(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::useAnySetter) {
+            }, true));
         return builder;
       }
     });
     setSerializerModifier(new BeanSerializerModifier() {
       @Override
-      public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc, BeanSerializerBuilder builder) {
-        builder.setProperties(builder.getProperties().stream().map(p ->
-          new BeanPropertyWriterDelegate(p, builder.getBeanDescription().findAnyGetter(), UnmatchedFieldTypeModule.this::isLogWarnings))
-          .collect(Collectors.toList()));
+      public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc,
+          BeanSerializerBuilder builder) {
+        builder.setProperties(builder.getProperties().stream()
+            .map(p -> new BeanPropertyWriterDelegate(p, builder.getBeanDescription().findAnyGetter(),
+                UnmatchedFieldTypeModule.this::isLogWarnings))
+            .collect(Collectors.toList()));
         return builder;
       }
     });
@@ -85,6 +90,10 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
     return restrictToTemplates;
   }
 
+  boolean useAnySetter() {
+    return !restrictToTemplates || isInTemplate();
+  }
+
   /**
    * Sets if the DeserializerModifier should only be applied to Templates or object trees contained in Templates.
    *
@@ -93,4 +102,17 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
   public void setRestrictToTemplates(boolean restrictToTemplates) {
     this.restrictToTemplates = restrictToTemplates;
   }
+
+  public static boolean isInTemplate() {
+    return Boolean.TRUE.equals(IN_TEMPLATE.get());
+  }
+
+  public static void setInTemplate() {
+    IN_TEMPLATE.set(true);
+  }
+
+  public static void removeInTemplate() {
+    IN_TEMPLATE.remove();
+  }
+
 }

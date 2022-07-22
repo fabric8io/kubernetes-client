@@ -10422,7 +10422,8 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
+      ],
+      "deserializer": "io.fabric8.openshift.api.model.TemplateDeserializer.class"
     },
     "os_template_TemplateInstance": {
       "type": "object",
