@@ -25,7 +25,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
+import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -419,17 +419,8 @@ public class Serialization {
     // if full serialization seems too expensive, there is also
     //return (T) JSON_MAPPER.convertValue(resource, resource.getClass());
     try {
-      return JSON_MAPPER.readValue(
-          JSON_MAPPER.writeValueAsString(resource), new TypeReference<T>() {
-            @Override
-            public Type getType() {
-              if (resource instanceof KubernetesResource) {
-                // Force KubernetesResource so that the KubernetesDeserializer takes over any resource configured deserializer
-                return resource instanceof GenericKubernetesResource ? resource.getClass() : KubernetesResource.class;
-              }
-              return resource.getClass();
-            }
-          });
+      return (T) JSON_MAPPER.readValue(
+          JSON_MAPPER.writeValueAsString(resource), resource.getClass());
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
     }

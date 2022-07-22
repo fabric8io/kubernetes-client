@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.serialization;
+package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -25,29 +25,29 @@ import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
-import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * This concrete sub-class encapsulates a {@link SettableBeanProperty} delegate that is always tried first.
  *
- * <p> A fall-back mechanism is implemented in the deserializeAndSet methods to allow field values that don't match the
+ * <p>
+ * A fall-back mechanism is implemented in the deserializeAndSet methods to allow field values that don't match the
  * target type to be preserved in the anySetter method if exists.
  */
 public class SettableBeanPropertyDelegate extends SettableBeanProperty {
 
   private final SettableBeanProperty delegate;
   private final SettableAnyProperty anySetter;
-  private final transient Supplier<Boolean> restrictToTemplates;
+  private final transient BooleanSupplier useAnySetter;
 
-  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter, Supplier<Boolean> restrictToTemplates) {
+  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter, BooleanSupplier useAnySetter) {
     super(delegate);
     this.delegate = delegate;
     this.anySetter = anySetter;
-    this.restrictToTemplates = restrictToTemplates;
+    this.useAnySetter = useAnySetter;
   }
 
   /**
@@ -55,7 +55,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
-    return new SettableBeanPropertyDelegate(delegate.withValueDeserializer(deser), anySetter, restrictToTemplates);
+    return new SettableBeanPropertyDelegate(delegate.withValueDeserializer(deser), anySetter, useAnySetter);
   }
 
   /**
@@ -63,7 +63,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withName(PropertyName newName) {
-    return new SettableBeanPropertyDelegate(delegate.withName(newName), anySetter, restrictToTemplates);
+    return new SettableBeanPropertyDelegate(delegate.withName(newName), anySetter, useAnySetter);
   }
 
   /**
@@ -71,7 +71,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withNullProvider(NullValueProvider nva) {
-    return new SettableBeanPropertyDelegate(delegate.withNullProvider(nva), anySetter, restrictToTemplates);
+    return new SettableBeanPropertyDelegate(delegate.withNullProvider(nva), anySetter, useAnySetter);
   }
 
   /**
@@ -117,13 +117,16 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
   /**
    * Method called to deserialize appropriate value, given parser (and context), and set it using appropriate mechanism.
    *
-   * <p> Deserialization is first tried through the delegate. In case a {@link MismatchedInputException} is caught,
+   * <p>
+   * Deserialization is first tried through the delegate. In case a {@link MismatchedInputException} is caught,
    * the field is stored in the bean's {@link SettableAnyProperty} anySetter field if it exists.
    *
-   * <p> This allows deserialization processes propagate values that initially don't match the target bean type for the
+   * <p>
+   * This allows deserialization processes propagate values that initially don't match the target bean type for the
    * applicable field.
    *
-   * <p> An example use-case is the use of placeholders (e.g. {@code ${aValue}}) in a field.
+   * <p>
+   * An example use-case is the use of placeholders (e.g. {@code ${aValue}}) in a field.
    */
   @Override
   public void deserializeAndSet(JsonParser p, DeserializationContext ctxt, Object instance) throws IOException {
@@ -171,9 +174,6 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
     if (anySetter == null) {
       return false;
     }
-    if (Boolean.TRUE.equals(restrictToTemplates.get()) ) {
-      return KubernetesDeserializer.isInTemplate();
-    }
-    return true;
+    return useAnySetter.getAsBoolean();
   }
 }

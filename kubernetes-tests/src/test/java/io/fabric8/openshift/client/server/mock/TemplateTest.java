@@ -60,27 +60,44 @@ class TemplateTest {
 
   @Test
   void testList() {
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates")
-        .andReturn(200, new TemplateListBuilder().build()).once();
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates").andReturn(200, new TemplateListBuilder()
-        .addNewItem().and()
-        .addNewItem().and().build()).once();
-    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-        .addNewGroup()
-        .withApiVersion("v1")
-        .withName("autoscaling.k8s.io")
-        .endGroup()
-        .addNewGroup()
-        .withApiVersion("v1")
-        .withName("security.openshift.io")
-        .endGroup()
-        .build()).always();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates")
+        .andReturn(200, new TemplateListBuilder().build())
+        .once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates")
+        .andReturn(200, new TemplateListBuilder()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .build())
+        .once();
+    server.expect()
+        .withPath("/apis")
+        .andReturn(200, new APIGroupListBuilder()
+            .addNewGroup()
+            .withApiVersion("v1")
+            .withName("autoscaling.k8s.io")
+            .endGroup()
+            .addNewGroup()
+            .withApiVersion("v1")
+            .withName("security.openshift.io")
+            .endGroup()
+            .build())
+        .always();
 
-    server.expect().withPath("/apis/template.openshift.io/v1/templates").andReturn(200, new TemplateListBuilder()
-        .addNewItem().and()
-        .addNewItem().and()
-        .addNewItem()
-        .and().build()).once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/templates")
+        .andReturn(200, new TemplateListBuilder()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .build())
+        .once();
 
     TemplateList templateList = client.templates().list();
     assertNotNull(templateList);
@@ -111,15 +128,21 @@ class TemplateTest {
 
   @Test
   void testGet() {
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
         .andReturn(200, new TemplateBuilder()
-            .withNewMetadata().withName("tmpl1").endMetadata()
+            .withNewMetadata()
+            .withName("tmpl1")
+            .endMetadata()
             .build())
         .once();
 
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2")
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2")
         .andReturn(200, new TemplateBuilder()
-            .withNewMetadata().withName("tmpl2").endMetadata()
+            .withNewMetadata()
+            .withName("tmpl2")
+            .endMetadata()
             .build())
         .once();
 
@@ -137,10 +160,14 @@ class TemplateTest {
 
   @Test
   void testDelete() {
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
-        .andReturn(200, new TemplateBuilder().build()).once();
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2")
-        .andReturn(200, new TemplateBuilder().build()).once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+        .andReturn(200, new TemplateBuilder().build())
+        .once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2")
+        .andReturn(200, new TemplateBuilder().build())
+        .once();
 
     boolean deleted = client.templates().withName("tmpl1").delete().size() == 1;
 
@@ -160,9 +187,14 @@ class TemplateTest {
         .endMetadata()
         .build();
 
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates").andReturn(200, template).once();
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl3")
-        .andReturn(404, new StatusBuilder().withCode(404).build()).once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates")
+        .andReturn(200, template)
+        .once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl3")
+        .andReturn(404, new StatusBuilder().withCode(404).build())
+        .once();
 
     Template created = client.resource(template).createOrReplace();
     assertNotNull(created);
@@ -170,10 +202,14 @@ class TemplateTest {
 
   @Test
   void testProcess() {
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
-        .andReturn(200, new TemplateBuilder().build()).once();
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/processedtemplates")
-        .andReturn(201, new KubernetesListBuilder().build()).once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+        .andReturn(200, new TemplateBuilder().build())
+        .once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/processedtemplates")
+        .andReturn(201, new KubernetesListBuilder().build())
+        .once();
 
     KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));
     assertNotNull(list);
@@ -184,12 +220,16 @@ class TemplateTest {
     OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
-    KubernetesList list = client.templates().withParameters(map)
-        .load(getClass().getResourceAsStream("/template-with-number-params.yml")).processLocally(map);
+    KubernetesList list = client.templates()
+        .withParameters(map)
+        .load(getClass().getResourceAsStream("/template-with-number-params.yml"))
+        .processLocally(map);
     assertListIsServiceWithPort8080(list);
     assertThat(list.getItems()).singleElement()
         .isInstanceOf(Service.class)
-        .extracting("spec.ports").asList().singleElement()
+        .extracting("spec.ports")
+        .asList()
+        .singleElement()
         .hasFieldOrPropertyWithValue("port", 8080);
   }
 
@@ -198,10 +238,35 @@ class TemplateTest {
     OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Template template = client.templates().load(getClass().getResourceAsStream("/template-with-number-params.yml")).get();
     assertThat(template)
-        .extracting(Template::getObjects).asList()
+        .extracting(Template::getObjects)
+        .asList()
         .singleElement()
         .isInstanceOf(Service.class)
-        .extracting("spec.ports").asList().singleElement()
+        .extracting("spec.ports")
+        .asList()
+        .singleElement()
+        .hasFieldOrPropertyWithValue("additionalProperties.port", "${PORT}");
+  }
+
+  @Test
+  void shouldGetTemplateFromServerWithNumberParameters() {
+    Template template = client.templates().load(getClass().getResourceAsStream("/template-with-number-params.yml")).get();
+
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/foo")
+        .andReturn(200, template)
+        .once();
+
+    template = client.templates().withName("foo").get();
+
+    assertThat(template)
+        .extracting(Template::getObjects)
+        .asList()
+        .singleElement()
+        .isInstanceOf(Service.class)
+        .extracting("spec.ports")
+        .asList()
+        .singleElement()
         .hasFieldOrPropertyWithValue("additionalProperties.port", "${PORT}");
   }
 
@@ -210,15 +275,20 @@ class TemplateTest {
     OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Template template = client.templates().load(getClass().getResourceAsStream("/template-with-multiple-objects.yml")).get();
     assertThat(template)
-        .extracting(Template::getObjects).asList()
+        .extracting(Template::getObjects)
+        .asList()
         .hasSize(3)
         .satisfies(l -> assertThat(l).first()
             .isInstanceOf(Service.class)
-            .extracting("spec.ports").asList().singleElement()
+            .extracting("spec.ports")
+            .asList()
+            .singleElement()
             .hasFieldOrPropertyWithValue("additionalProperties.port", "${PORT}"))
         .satisfies(l -> assertThat(l).element(1)
             .isInstanceOf(Service.class)
-            .extracting("spec.ports").asList().singleElement()
+            .extracting("spec.ports")
+            .asList()
+            .singleElement()
             .hasFieldOrPropertyWithValue("additionalProperties.port", "${BAZ_PORT}"))
         .satisfies(l -> assertThat(l).element(2)
             .isInstanceOf(ConfigMap.class)
@@ -248,7 +318,10 @@ class TemplateTest {
   @Test
   void testLoadParameterizedNumberTemplate() throws IOException {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+        .andReturn(200, json)
+        .once();
 
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
@@ -261,7 +334,10 @@ class TemplateTest {
   @Test
   void testProcessParameterizedNumberTemplate() throws IOException {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+        .andReturn(200, json)
+        .once();
 
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
@@ -272,9 +348,12 @@ class TemplateTest {
 
   @Test
   void testNullParameterMapValueShouldNotThrowNullPointerException() {
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
         .andReturn(200, new TemplateBuilder()
-            .withNewMetadata().withName("tmpl1").endMetadata()
+            .withNewMetadata()
+            .withName("tmpl1")
+            .endMetadata()
             .withParameters(new ParameterBuilder().withName("key").build())
             .build())
         .once();
@@ -285,9 +364,12 @@ class TemplateTest {
 
   @Test
   void testEmptyParameterMapValueShouldNotThrowNullPointerException() {
-    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
+    server.expect()
+        .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
         .andReturn(200, new TemplateBuilder()
-            .withNewMetadata().withName("tmpl1").endMetadata()
+            .withNewMetadata()
+            .withName("tmpl1")
+            .endMetadata()
             .withParameters(new ParameterBuilder().withName("key").build())
             .build())
         .once();
@@ -300,7 +382,9 @@ class TemplateTest {
   void testCreateOrReplaceOpenShif4() {
     // Given
     Template template = getTemplateBuilder().build();
-    server.expect().post().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates")
+    server.expect()
+        .post()
+        .withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates")
         .andReturn(HttpURLConnection.HTTP_OK, template)
         .once();
 
@@ -313,10 +397,15 @@ class TemplateTest {
 
   private TemplateBuilder getTemplateBuilder() {
     Pod pod = new PodBuilder()
-        .withNewMetadata().withName("redis-master").endMetadata()
+        .withNewMetadata()
+        .withName("redis-master")
+        .endMetadata()
         .withNewSpec()
         .addNewContainer()
-        .addNewEnv().withName("REDIS_PASSWORD").withValue("${REDIS_PASSWORD}").endEnv()
+        .addNewEnv()
+        .withName("REDIS_PASSWORD")
+        .withValue("${REDIS_PASSWORD}")
+        .endEnv()
         .withImage("dockerfile/redis")
         .addNewPort()
         .withContainerPort(6379)

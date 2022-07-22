@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.serialization;
+package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
@@ -24,6 +24,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,12 +42,14 @@ class SettableBeanPropertyDelegateTest {
   private SettableBeanProperty delegateMock;
   private SettableAnyProperty anySetterMock;
   private SettableBeanPropertyDelegate settableBeanPropertyDelegate;
+  private AtomicBoolean useAnySetter = new AtomicBoolean();
 
   @BeforeEach
   void setUp() {
     delegateMock = mock(SettableBeanProperty.class, RETURNS_DEEP_STUBS);
     anySetterMock = mock(SettableAnyProperty.class);
-    settableBeanPropertyDelegate = new SettableBeanPropertyDelegate(delegateMock, anySetterMock, () -> false);
+    useAnySetter.set(false);
+    settableBeanPropertyDelegate = new SettableBeanPropertyDelegate(delegateMock, anySetterMock, () -> useAnySetter.get());
   }
 
   @Test
@@ -58,10 +61,10 @@ class SettableBeanPropertyDelegateTest {
     final SettableBeanProperty result = settableBeanPropertyDelegate.withValueDeserializer(null);
     // Then
     assertThat(result)
-      .isInstanceOf(SettableBeanPropertyDelegate.class)
-      .isNotSameAs(settableBeanPropertyDelegate)
-      .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
-      .hasFieldOrPropertyWithValue("delegate", delegateMock);
+        .isInstanceOf(SettableBeanPropertyDelegate.class)
+        .isNotSameAs(settableBeanPropertyDelegate)
+        .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
+        .hasFieldOrPropertyWithValue("delegate", delegateMock);
   }
 
   @Test
@@ -73,10 +76,10 @@ class SettableBeanPropertyDelegateTest {
     final SettableBeanProperty result = settableBeanPropertyDelegate.withName(null);
     // Then
     assertThat(result)
-      .isInstanceOf(SettableBeanPropertyDelegate.class)
-      .isNotSameAs(settableBeanPropertyDelegate)
-      .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
-      .hasFieldOrPropertyWithValue("delegate", delegateMock);
+        .isInstanceOf(SettableBeanPropertyDelegate.class)
+        .isNotSameAs(settableBeanPropertyDelegate)
+        .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
+        .hasFieldOrPropertyWithValue("delegate", delegateMock);
   }
 
   @Test
@@ -88,10 +91,10 @@ class SettableBeanPropertyDelegateTest {
     final SettableBeanProperty result = settableBeanPropertyDelegate.withNullProvider(null);
     // Then
     assertThat(result)
-      .isInstanceOf(SettableBeanPropertyDelegate.class)
-      .isNotSameAs(settableBeanPropertyDelegate)
-      .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
-      .hasFieldOrPropertyWithValue("delegate", delegateMock);
+        .isInstanceOf(SettableBeanPropertyDelegate.class)
+        .isNotSameAs(settableBeanPropertyDelegate)
+        .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
+        .hasFieldOrPropertyWithValue("delegate", delegateMock);
   }
 
   @Test
@@ -186,9 +189,10 @@ class SettableBeanPropertyDelegateTest {
     final Object instance = new Object();
     when(delegateMock.getName()).thenReturn("the-property");
     when(delegateMock.deserializeSetAndReturn(any(), any(), eq(instance)))
-      .thenThrow(MismatchedInputException.from(null, Integer.class, "The Mocked Exception"));
+        .thenThrow(MismatchedInputException.from(null, Integer.class, "The Mocked Exception"));
     doThrow(MismatchedInputException.from(null, Integer.class, "The Mocked Exception"))
-      .when(delegateMock).deserializeAndSet(any(), any(), eq(instance));
+        .when(delegateMock).deserializeAndSet(any(), any(), eq(instance));
+    useAnySetter.set(true);
     // When
     final Object result = settableBeanPropertyDelegate.deserializeSetAndReturn(mock(JsonParser.class), null, instance);
     // Then

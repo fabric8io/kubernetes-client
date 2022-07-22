@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.serialization;
+package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -29,10 +29,12 @@ import java.util.function.Supplier;
  * Variant of {@link BeanPropertyWriter} which prevents property values present in the {@link AnnotatedMember} anyGetter
  * to be serialized twice.
  *
- * <p> Any property that's present in the anyGetter is ignored upon serialization. The values present in the anyGetter
+ * <p>
+ * Any property that's present in the anyGetter is ignored upon serialization. The values present in the anyGetter
  * take precedence over those stored in the Bean's fields.
  *
- * <p> This BeanPropertyWriter implementation is intended to be used in combination with
+ * <p>
+ * This BeanPropertyWriter implementation is intended to be used in combination with
  * the {@link SettableBeanPropertyDelegate} to allow the propagation of deserialized properties that don't match the
  * target field types.
  */
@@ -64,7 +66,7 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
       delegate.serializeAsField(bean, gen, prov);
     } else if (Boolean.TRUE.equals(logDuplicateWarning.get())) {
       logger.warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
-        delegate.getName(), valueInAnyGetter, bean.getClass().getName());
+          delegate.getName(), valueInAnyGetter, bean.getClass().getName());
     }
   }
 }
