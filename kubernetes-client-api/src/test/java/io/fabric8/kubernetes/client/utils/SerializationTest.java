@@ -24,10 +24,12 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpec;
@@ -36,6 +38,8 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
+import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -49,12 +53,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -365,7 +369,62 @@ class SerializationTest {
 
     // should be null if it can't be deduced
     parent = Serialization.unmarshal("other: 1", PolyParent.class);
-    assertNull(parent.poly);
+    assertThat(parent.poly).isNull();
+  }
+
+  @Test
+  void unmarshal_podWithYYYYMMDDAnnotation_shouldNotConvertToDate() {
+    // Given
+    InputStream inputStream = getClass().getResourceAsStream("/serialization/test-pod-manifest-dateformat-annotation.yml");
+
+    // When
+    Pod pod = Serialization.unmarshal(inputStream);
+
+    // Then
+    assertThat(pod)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("spec.shareProcessNamespace", false)
+        .hasFieldOrPropertyWithValue("spec.terminationGracePeriodSeconds", 2L)
+        .extracting(Pod::getMetadata)
+        .extracting(ObjectMeta::getAnnotations)
+        .isEqualTo(Collections.singletonMap("report_date", "2020-01-01"));
+  }
+
+  @Test
+  void unmarshal_leaseWithTypedValues_ShouldConvertToTypedFields() {
+    // Given
+    InputStream inputStream = getClass().getResourceAsStream("/serialization/test-lease-manifest-typed-fields.yml");
+
+    // When
+    Lease lease = Serialization.unmarshal(inputStream);
+
+    // Then
+    assertThat(lease)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.annotations",
+            Collections.singletonMap("creationTimestamp", "2022-07-22T10:42:02Z"))
+        .hasFieldOrPropertyWithValue("spec.leaseDurationSeconds", 2)
+        .hasFieldOrPropertyWithValue("spec.leaseTransitions", 3)
+        .extracting(Lease::getSpec)
+        .extracting(LeaseSpec::getAcquireTime)
+        .isInstanceOf(ZonedDateTime.class);
+  }
+
+  @Test
+  void unmarshal_configMapWithBoolAndDateData_shouldBeDeserializedAsString() {
+    // Given
+    InputStream inputStream = getClass().getResourceAsStream("/serialization/test-configmap-manifest-bool-dateformat.yml");
+
+    // When
+    ConfigMap configMap = Serialization.unmarshal(inputStream);
+
+    // Then
+    assertThat(configMap)
+        .isNotNull()
+        .extracting(ConfigMap::getData)
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .containsEntry("bool", "NO")
+        .containsEntry("date", "2022-07-22");
   }
 
 }

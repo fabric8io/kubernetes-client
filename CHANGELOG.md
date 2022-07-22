@@ -3,6 +3,7 @@
 ### 6.1-SNAPSHOT
 
 #### Bugs
+* Configure SnakeYaml to ignore converting timestamps to Date objects
 
 #### Improvements
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
