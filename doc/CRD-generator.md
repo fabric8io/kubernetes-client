@@ -175,6 +175,102 @@ The field will be marked as `required` in the generated CRD, such as:
             type: object
 ```
 
+### javax.validation.constraints.Min
+
+If a field or one of its accessors is annotated with `javax.validation.constraints.Min`
+
+```java
+public class ExampleSpec {
+  @Min(-1)
+  int someValue;
+}
+```
+
+The field will have the `minimum` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                minimum: -1.0
+                type: integer
+            required:
+            - someValue
+            type: object
+```
+
+### javax.validation.constraints.Max
+
+If a field or one of its accessors is annotated with `javax.validation.constraints.Max`
+
+```java
+public class ExampleSpec {
+  @Min(1)
+  int someValue;
+}
+```
+
+The field will have the `maximum` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                maximum: 1.0
+                type: integer
+            required:
+            - someValue
+            type: object
+```
+
+### javax.validation.constraints.Pattern
+
+If a field or one of its accessors is annotated with `javax.validation.constraints.Pattern`
+
+```java
+public class ExampleSpec {
+  @Pattern("\\b[1-9]\\b")
+  String someValue;
+}
+```
+
+The field will have the `pattern` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                maximum: "\\b[1-9]\\b"
+                type: string
+            required:
+            - someValue
+            type: object
+```
+
+### io.fabric8.crd.generator.annotation.constraints.Nullable
+
+If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.constraints.Nullable`
+
+```java
+public class ExampleSpec {
+  @Nullable
+  String someValue;
+}
+```
+
+The field will have the `nullable` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                nullable: true
+                type: string
+            required:
+            - someValue
+            type: object
+```
+
 ### io.fabric8.crd.generator.annotation.SchemaFrom
 
 If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.SchemaFrom`
@@ -269,6 +365,10 @@ Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in 
 | `com.fasterxml.jackson.annotation.JsonAnyGetter`          | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
 | `com.fasterxml.jackson.annotation.JsonAnySetter`          | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
 | `javax.validation.constraints.NotNull`                    | The field is marked as `required`                                                     |
+| `javax.validation.constraints.Min`                        | The field defines a validation `min`                                                  |
+| `javax.validation.constraints.Max`                        | The field defines a validation `max`                                                  |
+| `javax.validation.constraints.Pattern`                    | The field defines a validation `pattern`                                              |
+| `io.fabric8.crd.generator.annotation.constraints.Nullable`| The field is marked as `nullable`                                                     |
 | `io.fabric8.crd.generator.annotation.SchemaFrom`          | The field type for the generation is the one coming from the annotation               |
 | `io.fabric8.crd.generator.annotation.SchemaSwap`          | Same as SchemaFrom, but can be applied at any point in the class hierarchy            |
 
