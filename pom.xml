@@ -126,7 +126,7 @@
     <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
-    <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
+    <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
     <maven.release.plugin.version>3.0.0-M6</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.4.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
