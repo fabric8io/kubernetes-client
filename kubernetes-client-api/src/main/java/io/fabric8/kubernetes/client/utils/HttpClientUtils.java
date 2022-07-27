@@ -69,18 +69,8 @@ public class HttpClientUtils {
   public static URL getProxyUrl(Config config) throws MalformedURLException {
     URL master = new URL(config.getMasterUrl());
     String host = master.getHost();
-    if (config.getNoProxy() != null) {
-      for (String noProxy : config.getNoProxy()) {
-        if (isIpAddress(noProxy)) {
-          if (new IpAddressMatcher(noProxy).matches(host)) {
-            return null;
-          }
-        } else {
-          if (host.contains(noProxy)) {
-            return null;
-          }
-        }
-      }
+    if (isValidNoProxy(config.getNoProxy()) && isHostPresentInNoProxy(host, config.getNoProxy())) {
+      return null;
     }
     String proxy = config.getHttpsProxy();
     if (master.getProtocol().equals("http")) {
@@ -94,11 +84,6 @@ public class HttpClientUtils {
       return proxyUrl;
     }
     return null;
-  }
-
-  private static boolean isIpAddress(String ipAddress) {
-    Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
-    return ipMatcher.matches();
   }
 
   public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config,
@@ -225,4 +210,39 @@ public class HttpClientUtils {
     HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
   }
 
+  private static boolean isHostPresentInNoProxy(String host, String[] noProxyList) {
+    for (String noProxy : noProxyList) {
+      if (isIpAddressRange(noProxy)) {
+        if (new IpAddressMatcher(noProxy).matches(host)) {
+          return true;
+        }
+      } else {
+        if (host.endsWith(noProxy)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private static boolean isValidNoProxy(String[] noProxy) throws MalformedURLException {
+    if (noProxy != null) {
+      for (String np : noProxy) {
+        if (np.indexOf('*') > -1) {
+          throw new MalformedURLException("Wildcard not supported in NO_PROXY URL");
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private static boolean isIpAddress(String ipAddress) {
+    Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
+    return ipMatcher.matches();
+  }
+
+  private static boolean isIpAddressRange(String ipAddress) {
+    return isIpAddress(ipAddress) && ipAddress.contains("/");
+  }
 }
