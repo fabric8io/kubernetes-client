@@ -20,6 +20,7 @@ env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
