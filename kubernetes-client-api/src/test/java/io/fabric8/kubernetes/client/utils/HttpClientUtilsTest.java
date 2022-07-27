@@ -26,7 +26,8 @@ import java.util.Collection;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class HttpClientUtilsTest {
   @Test
@@ -67,27 +68,18 @@ class HttpClientUtilsTest {
   @Test
   void getProxyUrl_whenHttpsProxyUrlWithNoPort_shouldReturnValidProxyUrl() {
     // Given
-    Config config = new ConfigBuilder()
-        .withMasterUrl("http://localhost")
-        .withHttpProxy("http://192.168.0.1")
-        .build();
+    Config config = createNewConfig("http://localhost", "http://192.168.0.1", null);
 
-    // When
-    final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
-        () -> HttpClientUtils.getProxyUrl(config));
-
-    // Then
-    assertThat(illegalArgumentException)
-        .hasMessage("Failure in creating proxy URL. Proxy port is required!");
+    // When + Then
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> HttpClientUtils.getProxyUrl(config))
+        .withMessage("Failure in creating proxy URL. Proxy port is required!");
   }
 
   @Test
   void getProxyUrl_whenHttpsProxyUrlWithPort_shouldReturnValidProxyUrl() throws MalformedURLException {
     // Given
-    Config config = new ConfigBuilder()
-        .withMasterUrl("http://localhost")
-        .withHttpProxy("http://192.168.0.1:3128")
-        .build();
+    Config config = createNewConfig("http://localhost", "http://192.168.0.1:3128", null);
 
     // When
     URL url = HttpClientUtils.getProxyUrl(config);
@@ -96,5 +88,62 @@ class HttpClientUtilsTest {
     assertThat(url).isNotNull()
         .hasPort(3128)
         .hasHost("192.168.0.1");
+  }
+
+  @Test
+  void getProxyUrl_whenNoProxyProvided_shouldReturnNull() throws MalformedURLException {
+    // Given
+    Config config = createNewConfig("http://api.example.x812.my.domain.com:6443", "http://93.2.12.169:3128", ".my.domain.com");
+
+    // When
+    URL url = HttpClientUtils.getProxyUrl(config);
+
+    // Then
+    assertThat(url).isNull();
+  }
+
+  @Test
+  void getProxyUrl_whenHostInNoProxyIPAddressRange_shouldReturnNull() throws MalformedURLException {
+    // Given
+    Config config = createNewConfig("http://192.168.1.100:6443", "http://93.2.12.169:3128", "192.168.1.0/24");
+
+    // When
+    URL url = HttpClientUtils.getProxyUrl(config);
+
+    // Then
+    assertThat(url).isNull();
+  }
+
+  @Test
+  void getProxyUrl_whenHostNotInNoProxyIPAddressRange_shouldReturnProxyUrl() throws MalformedURLException {
+    // Given
+    Config config = createNewConfig("http://192.168.2.100:6443", "http://93.2.12.169:3128", "192.168.1.0/24");
+
+    // When
+    URL url = HttpClientUtils.getProxyUrl(config);
+
+    // Then
+    assertThat(url).isNotNull().hasHost("93.2.12.169");
+  }
+
+  @Test
+  void getProxyUrl_whenNoProxyContainsWildcard_thenThrowException() {
+    // Given
+    Config config = createNewConfig("http://api.example.x812.my.domain.com:6443", "http://93.2.12.169:3128", "*.my.domain.com");
+
+    // When + Then
+    assertThatThrownBy(() -> HttpClientUtils.getProxyUrl(config))
+        .isInstanceOf(MalformedURLException.class)
+        .hasMessage("Wildcard not supported in NO_PROXY URL");
+  }
+
+  private Config createNewConfig(String masterUrl, String httpProxy, String noProxy) {
+    ConfigBuilder configBuilder = new ConfigBuilder()
+        .withMasterUrl(masterUrl)
+        .withHttpProxy(httpProxy);
+    if (noProxy != null) {
+      configBuilder.withNoProxy(noProxy);
+    }
+    return configBuilder.build();
   }
 }
