@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.12.3
+### 5.12.3 (2022-07-27)
 * Fix #3969: relist will not trigger sync events
 * Fix #4049: properly populate exception metadata with resource information if available
 * Fix #4222: backport of #4082 - to not process events until the cache is complete
