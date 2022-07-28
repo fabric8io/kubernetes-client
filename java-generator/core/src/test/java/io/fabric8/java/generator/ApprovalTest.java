@@ -19,118 +19,66 @@ import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.approvaltests.Approvals;
-import org.junit.jupiter.api.Test;
+import org.approvaltests.namer.NamedEnvironment;
+import org.approvaltests.namer.NamerFactory;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ApprovalTest {
 
-  CRGeneratorRunner runner = new CRGeneratorRunner(new Config());
+  private static Stream<Arguments> getCRDGenerationInputData() {
+    return Stream.of(
+        Arguments.of("testCrontabCrd", "crontab-crd.yml", "CronTab", "CrontabJavaCr", new Config()),
+        Arguments.of("testCrontabExtraAnnotationsCrd", "crontab-crd.yml", "CronTab", "CrontabJavaExtraAnnotationsCr",
+            new Config(null, null, null, null, Boolean.TRUE, null)),
+        Arguments.of("testKeycloakCrd", "keycloak-crd.yml", "Keycloak", "KeycloakJavaCr", new Config()),
+        Arguments.of("testJokeCrd", "jokerequests-crd.yml", "JokeRequest", "JokeRequestJavaCr", new Config()),
+        Arguments.of("testAkkaMicroservicesCrd", "akka-microservices-crd.yml", "AkkaMicroservice", "AkkaMicroserviceJavaCr",
+            new Config()));
+  }
 
-  CustomResourceDefinition getCRD(String name) {
+  @ParameterizedTest
+  @MethodSource("getCRDGenerationInputData")
+  void generate_withValidCrd_shouldGeneratePojos(String parameter, String crdYaml, String customResourceName,
+      String approvalLabel, Config config) {
+    try (NamedEnvironment en = NamerFactory.withParameters(parameter)) {
+      // Arrange
+      CRGeneratorRunner runner = new CRGeneratorRunner(config);
+      CustomResourceDefinition crd = getCRD(crdYaml);
+
+      // Act
+      List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
+
+      // Assert
+      assertThat(writables).hasSize(1);
+
+      WritableCRCompilationUnit writable = writables.get(0);
+
+      List<String> underTest = new ArrayList<>();
+      List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+      underTest.add(getJavaClass(crl, customResourceName));
+      underTest.add(getJavaClass(crl, customResourceName + "Spec"));
+      underTest.add(getJavaClass(crl, customResourceName + "Status"));
+
+      Approvals.verifyAll(approvalLabel, underTest);
+    }
+  }
+
+  private CustomResourceDefinition getCRD(String name) {
     return Serialization.unmarshal(
         this.getClass().getClassLoader().getResourceAsStream(name),
         CustomResourceDefinition.class);
   }
 
-  String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
+  private String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
     GeneratorResult.ClassResult cr = classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
     return cr.getCompilationUnit().toString();
-  }
-
-  @Test
-  void testCrontabCrd() {
-    // Arrange
-    CustomResourceDefinition crd = getCRD("crontab-crd.yml");
-
-    // Act
-    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
-
-    // Assert
-    assertEquals(1, writables.size());
-    assertThat(writables.size()).isEqualTo(1);
-
-    WritableCRCompilationUnit writable = writables.get(0);
-
-    List<String> underTest = new ArrayList<>();
-    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-    underTest.add(getJavaClass(crl, "CronTab"));
-    underTest.add(getJavaClass(crl, "CronTabSpec"));
-    underTest.add(getJavaClass(crl, "CronTabStatus"));
-
-    Approvals.verifyAll("CrontabJavaCr", underTest);
-  }
-
-  @Test
-  void testKeycloakCrd() {
-    // Arrange
-    CustomResourceDefinition crd = getCRD("keycloak-crd.yml");
-
-    // Act
-    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
-
-    // Assert
-    assertEquals(1, writables.size());
-    assertThat(writables.size()).isEqualTo(1);
-
-    WritableCRCompilationUnit writable = writables.get(0);
-
-    List<String> underTest = new ArrayList<>();
-    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-    underTest.add(getJavaClass(crl, "Keycloak"));
-    underTest.add(getJavaClass(crl, "KeycloakSpec"));
-    underTest.add(getJavaClass(crl, "KeycloakStatus"));
-
-    Approvals.verifyAll("KeycloakJavaCr", underTest);
-  }
-
-  @Test
-  void testJokeCrd() {
-    // Arrange
-    CustomResourceDefinition crd = getCRD("jokerequests-crd.yml");
-
-    // Act
-    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
-
-    // Assert
-    assertEquals(1, writables.size());
-    assertThat(writables.size()).isEqualTo(1);
-
-    WritableCRCompilationUnit writable = writables.get(0);
-
-    List<String> underTest = new ArrayList<>();
-    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-    underTest.add(getJavaClass(crl, "JokeRequest"));
-    underTest.add(getJavaClass(crl, "JokeRequestSpec"));
-    underTest.add(getJavaClass(crl, "JokeRequestStatus"));
-
-    Approvals.verifyAll("JokeRequestJavaCr", underTest);
-  }
-
-  @Test
-  void testAkkaMicroservicesCrd() {
-    // Arrange
-    CustomResourceDefinition crd = getCRD("akka-microservices-crd.yml");
-
-    // Act
-    List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
-
-    // Assert
-    assertEquals(1, writables.size());
-    assertThat(writables.size()).isEqualTo(1);
-
-    WritableCRCompilationUnit writable = writables.get(0);
-
-    List<String> underTest = new ArrayList<>();
-    List<GeneratorResult.ClassResult> crl = writable.getClassResults();
-    underTest.add(getJavaClass(crl, "AkkaMicroservice"));
-    underTest.add(getJavaClass(crl, "AkkaMicroserviceSpec"));
-    underTest.add(getJavaClass(crl, "AkkaMicroserviceStatus"));
-
-    Approvals.verifyAll("AkkaMicroserviceJavaCr", underTest);
   }
 }

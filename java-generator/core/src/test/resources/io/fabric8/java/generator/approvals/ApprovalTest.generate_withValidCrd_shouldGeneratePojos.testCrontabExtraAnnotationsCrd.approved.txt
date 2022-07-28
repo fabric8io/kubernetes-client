@@ -1,0 +1,134 @@
+CrontabJavaExtraAnnotationsCr[0] = package org.test.v1;
+
+@io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
+@io.fabric8.kubernetes.model.annotation.Group("stable.example.com")
+@lombok.ToString()
+@lombok.EqualsAndHashCode(callSuper = true)
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class CronTab extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.CronTabSpec, org.test.v1.CronTabStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+}
+
+CrontabJavaExtraAnnotationsCr[1] = package org.test.v1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"cronSpec","image","replicas"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@lombok.ToString()
+@lombok.EqualsAndHashCode()
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonProperty("cronSpec")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String cronSpec;
+
+    public String getCronSpec() {
+        return cronSpec;
+    }
+
+    public void setCronSpec(String cronSpec) {
+        this.cronSpec = cronSpec;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("image")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("replicas")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Long replicas;
+
+    public Long getReplicas() {
+        return replicas;
+    }
+
+    public void setReplicas(Long replicas) {
+        this.replicas = replicas;
+    }
+}
+
+CrontabJavaExtraAnnotationsCr[2] = package org.test.v1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"labelSelector","replicas"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@lombok.ToString()
+@lombok.EqualsAndHashCode()
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class CronTabStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonProperty("labelSelector")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String labelSelector;
+
+    public String getLabelSelector() {
+        return labelSelector;
+    }
+
+    public void setLabelSelector(String labelSelector) {
+        this.labelSelector = labelSelector;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("replicas")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Long replicas;
+
+    public Long getReplicas() {
+        return replicas;
+    }
+
+    public void setReplicas(Long replicas) {
+        this.replicas = replicas;
+    }
+}
+
