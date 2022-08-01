@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #4256: crd-generator-apt pom.xml includes transitive dependencies
+* Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
 
 #### Improvements
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
