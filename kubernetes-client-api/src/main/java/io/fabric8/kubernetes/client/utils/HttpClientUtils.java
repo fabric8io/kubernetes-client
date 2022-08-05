@@ -34,12 +34,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
@@ -47,29 +47,21 @@ import javax.net.ssl.TrustManager;
 public class HttpClientUtils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
-
-  public static final String HEADER_INTERCEPTOR = "HEADER";
+  private static final String HEADER_INTERCEPTOR = "HEADER";
+  private static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
+  private static final String BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT = "true";
+  private static final Pattern IPV4_PATTERN = Pattern.compile(
+      "(http://|https://)?(?<ipAddressOrSubnet>(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?)");
+  private static final Pattern INVALID_HOST_PATTERN = Pattern.compile("[^\\da-zA-Z.-/:]+");
+  private static final AtomicBoolean MULTIPLE_HTTP_CLIENT_WARNING_LOGGED = new AtomicBoolean();
 
   private HttpClientUtils() {
-  }
-
-  private static Pattern VALID_IPV4_PATTERN = null;
-  public static final String ipv4Pattern = "(http:\\/\\/|https:\\/\\/)?(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?";
-  protected static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
-  protected static final String BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT = "true";
-
-  static {
-    try {
-      VALID_IPV4_PATTERN = Pattern.compile(ipv4Pattern, Pattern.CASE_INSENSITIVE);
-    } catch (PatternSyntaxException e) {
-      throw KubernetesClientException.launderThrowable("Unable to compile ipv4address pattern.", e);
-    }
   }
 
   public static URL getProxyUrl(Config config) throws MalformedURLException {
     URL master = new URL(config.getMasterUrl());
     String host = master.getHost();
-    if (isValidNoProxy(config.getNoProxy()) && isHostPresentInNoProxy(host, config.getNoProxy())) {
+    if (isHostMatchedByNoProxy(host, config.getNoProxy())) {
       return null;
     }
     String proxy = config.getHttpsProxy();
@@ -131,8 +123,6 @@ public class HttpClientUtils {
     return "Basic " + encoded;
   }
 
-  private static final AtomicBoolean WARNED = new AtomicBoolean();
-
   /**
    * @deprecated you should not need to call this method directly. Please create your own HttpClient.Factory
    *             should you need to customize your clients.
@@ -143,7 +133,7 @@ public class HttpClientUtils {
     HttpClient.Factory factory = null;
     for (Iterator<HttpClient.Factory> iter = loader.iterator(); iter.hasNext();) {
       HttpClient.Factory possible = iter.next();
-      if (factory != null && WARNED.compareAndSet(false, true)) {
+      if (factory != null && MULTIPLE_HTTP_CLIENT_WARNING_LOGGED.compareAndSet(false, true)) {
         LOGGER.warn("There are multiple httpclient implementation in the classpath, "
             + "choosing the first non-default implementation. "
             + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.");
@@ -210,10 +200,14 @@ public class HttpClientUtils {
     HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
   }
 
-  private static boolean isHostPresentInNoProxy(String host, String[] noProxyList) {
-    for (String noProxy : noProxyList) {
-      if (isIpAddressRange(noProxy)) {
-        if (new IpAddressMatcher(noProxy).matches(host)) {
+  private static boolean isHostMatchedByNoProxy(String host, String[] noProxies) throws MalformedURLException {
+    for (String noProxy : noProxies == null ? new String[0] : noProxies) {
+      if (INVALID_HOST_PATTERN.matcher(noProxy).find()) {
+        throw new MalformedURLException("NO_PROXY URL contains invalid entry: '" + noProxy + "'");
+      }
+      final Optional<String> noProxyIpOrSubnet = extractIpAddressOrSubnet(noProxy);
+      if (noProxyIpOrSubnet.isPresent()) {
+        if (new IpAddressMatcher(noProxyIpOrSubnet.get()).matches(host)) {
           return true;
         }
       } else {
@@ -225,24 +219,11 @@ public class HttpClientUtils {
     return false;
   }
 
-  private static boolean isValidNoProxy(String[] noProxy) throws MalformedURLException {
-    if (noProxy != null) {
-      for (String np : noProxy) {
-        if (np.indexOf('*') > -1) {
-          throw new MalformedURLException("Wildcard not supported in NO_PROXY URL");
-        }
-      }
-      return true;
+  private static Optional<String> extractIpAddressOrSubnet(String ipAddressOrSubnet) {
+    final Matcher ipMatcher = IPV4_PATTERN.matcher(ipAddressOrSubnet);
+    if (ipMatcher.find()) {
+      return Optional.of(ipMatcher.group("ipAddressOrSubnet"));
     }
-    return false;
-  }
-
-  private static boolean isIpAddress(String ipAddress) {
-    Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
-    return ipMatcher.matches();
-  }
-
-  private static boolean isIpAddressRange(String ipAddress) {
-    return isIpAddress(ipAddress) && ipAddress.contains("/");
+    return Optional.empty();
   }
 }
