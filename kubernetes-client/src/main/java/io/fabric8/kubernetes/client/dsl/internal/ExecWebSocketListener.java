@@ -100,17 +100,29 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   private final class ListenerStream {
     private MessageHandler handler;
     private ExecWatchInputStream inputStream;
+    private String name;
+
+    public ListenerStream(String name) {
+      this.name = name;
+    }
 
     private void handle(ByteBuffer byteString, WebSocket webSocket) throws IOException {
       if (handler != null) {
         handler.handle(byteString);
       } else {
+        if (LOGGER.isDebugEnabled()) {
+          String message = ExecWebSocketListener.toString(byteString);
+          if (message.length() > 200) {
+            message = message.substring(0, 197) + "...";
+          }
+          LOGGER.debug("exec message received on channel {}: {}", name, message);
+        }
         webSocket.request();
       }
     }
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
+  static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
   private static final String HEIGHT = "Height";
   private static final String WIDTH = "Width";
 
@@ -152,14 +164,14 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
 
     this.terminateOnError = context.isTerminateOnError();
-    this.out = createStream(context.getOutput());
-    this.error = createStream(context.getError());
-    this.errorChannel = createStream(context.getErrorChannel());
+    this.out = createStream("stdOut", context.getOutput());
+    this.error = createStream("stdErr", context.getError());
+    this.errorChannel = createStream("errorChannel", context.getErrorChannel());
     this.serialExecutor = new SerialExecutor(executor);
   }
 
-  private ListenerStream createStream(StreamContext streamContext) {
-    ListenerStream stream = new ListenerStream();
+  private ListenerStream createStream(String name, StreamContext streamContext) {
+    ListenerStream stream = new ListenerStream(name);
     if (streamContext == null) {
       return stream;
     }
