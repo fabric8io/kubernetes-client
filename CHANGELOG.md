@@ -8,6 +8,7 @@
 * Fix #4247: NO_PROXY with invalid entries throws exception
 
 #### Improvements
+* Fix #4254: adding debug logging for exec stream messages
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
 * Fix #4241: added more context to informer logs with the endpoint path
 * Fix #4250: allowing for deserialization of polymorphic unwrapped fields
