@@ -55,6 +55,8 @@ import static org.mockito.Mockito.when;
 
 class LeaderElectorTest {
 
+  final static AtomicReference<LeaderElectionRecord> activeLer = new AtomicReference<>(null);
+
   @Test
   void runShouldAbortAfterRenewDeadlineExpired() throws Exception {
     // Given
@@ -106,6 +108,29 @@ class LeaderElectorTest {
     executor.shutdownNow();
     executor.awaitTermination(5, TimeUnit.SECONDS);
     verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
+  }
+
+  @Test
+  void shouldReleaseWhenCanceled() throws Exception {
+    // Given
+    final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
+    final CountDownLatch signal = new CountDownLatch(1);
+    final Lock mockedLock = lec.getLock();
+    when(lec.isReleaseOnCancel()).thenReturn(true);
+    doAnswer(invocation -> {
+      activeLer.set(invocation.getArgument(1, LeaderElectionRecord.class));
+      signal.countDown();
+      return null;
+    }).when(mockedLock).update(any(), any());
+
+    // When
+    LeaderElector leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    CompletableFuture<?> started = leaderElector.start();
+    assertTrue(signal.await(10, TimeUnit.SECONDS));
+    started.cancel(true);
+
+    // Then
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> activeLer.get().getLeaseDuration().equals(Duration.ZERO));
   }
 
   @Test
@@ -225,7 +250,6 @@ class LeaderElectorTest {
   }
 
   private static LeaderElectionConfig mockLeaderElectionConfiguration() throws Exception {
-    final AtomicReference<LeaderElectionRecord> activeLer = new AtomicReference<>(null);
     final LeaderElectionConfig lec = mock(LeaderElectionConfig.class, Answers.RETURNS_DEEP_STUBS);
     when(lec.getLeaseDuration()).thenReturn(Duration.ofSeconds(2L));
     when(lec.getRenewDeadline()).thenReturn(Duration.ofSeconds(1L));

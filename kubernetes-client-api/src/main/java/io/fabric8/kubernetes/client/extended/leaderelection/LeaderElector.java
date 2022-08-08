@@ -77,7 +77,7 @@ public class LeaderElector {
   /**
    * Start a leader elector. The future may be cancelled to stop
    * the leader elector.
-   * 
+   *
    * @return the future
    */
   public CompletableFuture<?> start() {
@@ -91,23 +91,49 @@ public class LeaderElector {
         CompletableFuture<?> renewFuture = renewWithTimeout();
         result.whenComplete((v1, t1) -> renewFuture.cancel(true));
         renewFuture.whenComplete((v1, t1) -> {
+          stopLeading();
           if (t1 != null) {
             result.completeExceptionally(t1);
           } else {
             result.complete(null);
           }
         });
+      } else {
+        // there's a possibility that we'll obtain the lock, but get cancelled
+        // before completing the future
+        stopLeading();
       }
     });
     result.whenComplete((v, t) -> {
       acquireFuture.cancel(true);
-      LeaderElectionRecord current = observedRecord.get();
-      // if cancelled we still want to notify of stopping leadership
-      if (current != null && Objects.equals(current.getHolderIdentity(), leaderElectionConfig.getLock().identity())) {
-        leaderElectionConfig.getLeaderCallbacks().onStopLeading();
-      }
     });
     return result;
+  }
+
+  private void stopLeading() {
+    LeaderElectionRecord current = observedRecord.get();
+    if (current == null || !Objects.equals(current.getHolderIdentity(), leaderElectionConfig.getLock().identity())) {
+      return; // not leading
+    }
+    try {
+      if (leaderElectionConfig.isReleaseOnCancel()) {
+        final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
+            leaderElectionConfig.getLock().identity(),
+            Duration.ZERO,
+            current.getAcquireTime(),
+            current.getRenewTime(),
+            current.getLeaderTransitions());
+        newLeaderElectionRecord.setVersion(current.getVersion());
+
+        leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+      }
+    } catch (LockException | KubernetesClientException e) {
+      final String lockDescription = leaderElectionConfig.getLock().describe();
+      LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
+    } finally {
+      // called regardless of isReleaseOnCancel
+      leaderElectionConfig.getLeaderCallbacks().onStopLeading();
+    }
   }
 
   private CompletableFuture<Void> acquire() {
@@ -171,7 +197,7 @@ public class LeaderElector {
         leaderElectionConfig.getLeaseDuration(),
         isLeader ? oldLeaderElectionRecord.getAcquireTime() : now,
         now,
-        isLeader ? (oldLeaderElectionRecord.getLeaderTransitions() + 1) : 0);
+        oldLeaderElectionRecord.getLeaderTransitions() + (isLeader ? 0 : 1));
     newLeaderElectionRecord.setVersion(oldLeaderElectionRecord.getVersion());
     leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
     updateObserved(newLeaderElectionRecord);
