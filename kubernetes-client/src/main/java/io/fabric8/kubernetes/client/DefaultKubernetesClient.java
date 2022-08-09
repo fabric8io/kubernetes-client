@@ -129,8 +129,10 @@ import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -702,7 +704,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   private boolean visitGroups(ApiVisitor visitor, List<APIGroup> groups) {
     for (APIGroup group : groups) {
-      switch (visitor.visitApi(group.getName())) {
+      switch (visitor.visitApiGroup(group.getName())) {
         case TERMINATE:
           return true;
         case SKIP:
@@ -710,7 +712,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
         case CONTINUE:
           for (GroupVersionForDiscovery groupForDiscovery : group.getVersions()) {
             String groupVersion = groupForDiscovery.getGroupVersion();
-            ApiVisitResult versionResult = visitor.visitApiVersion(groupVersion);
+            String groupName = Utils.getNonNullOrElse(ApiVersionUtil.trimGroupOrNull(groupVersion), "");
+            String version = ApiVersionUtil.trimVersion(groupVersion);
+            ApiVisitResult versionResult = visitor.visitApiGroupVersion(groupName, version);
             switch (versionResult) {
               case TERMINATE:
                 return true;
@@ -721,7 +725,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
                   if (resource.getName().contains("/")) { // skip subresources
                     continue;
                   }
-                  ApiVisitResult resourceResult = visitor.visitResources(groupVersion, resource,
+                  ApiVisitResult resourceResult = visitor.visitResource(groupName, version, resource,
                       this.genericKubernetesResources(ResourceDefinitionContext.fromApiResource(groupVersion, resource)));
                   if (resourceResult == ApiVisitResult.TERMINATE) {
                     return true;

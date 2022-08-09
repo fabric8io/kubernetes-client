@@ -79,14 +79,14 @@ class ApiGroupResourceListsIT {
     client.visitResources(new ApiVisitor() {
 
       @Override
-      public ApiVisitResult visitApi(String api) {
+      public ApiVisitResult visitApiGroup(String group) {
         groupCount.incrementAndGet();
         return ApiVisitResult.CONTINUE;
       }
 
       @Override
-      public ApiVisitResult visitResources(String apiVersion, APIResource apiResource,
-          MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> mixedOperation) {
+      public ApiVisitResult visitResource(String group, String version, APIResource apiResource,
+          MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> operation) {
         return ApiVisitResult.CONTINUE;
       }
 
@@ -95,20 +95,20 @@ class ApiGroupResourceListsIT {
     // visit all groups + the core group
     assertEquals(list.getGroups().size() + 1, groupCount.get());
 
-    // visit again to make sure we terminate as expected 
+    // visit again to make sure we terminate as expected
     CompletableFuture<Boolean> done = new CompletableFuture<>();
     client.visitResources(new ApiVisitor() {
 
       @Override
-      public ApiVisitResult visitApi(String api) {
-        if (api.isEmpty()) {
+      public ApiVisitResult visitApiGroup(String group) {
+        if (group.isEmpty()) {
           return ApiVisitResult.CONTINUE;
         }
         return ApiVisitResult.TERMINATE;
       }
 
       @Override
-      public ApiVisitResult visitResources(String apiVersion, APIResource apiResource,
+      public ApiVisitResult visitResource(String group, String version, APIResource apiResource,
           MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> operation) {
         assertFalse(done.isDone());
         if (apiResource.getName().equals("configmaps")) {

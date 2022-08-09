@@ -44,36 +44,39 @@ public interface ApiVisitor {
   }
 
   /**
-   * Visit the api. The core/legacy group will be an empty string.
-   * 
-   * @param api the group name
-   * @return the result to control future actions. {@link ApiVisitResult#SKIP} will skip visiting all versions of this api.
+   * Visit the api group.
+   *
+   * @param group the group name, will be empty for the core group
+   * @return the result to control future actions. {@link ApiVisitResult#SKIP} will skip visiting all versions of this api
+   *         group.
    */
-  default ApiVisitResult visitApi(String api) {
+  default ApiVisitResult visitApiGroup(String group) {
     return ApiVisitResult.CONTINUE;
   }
 
   /**
-   * Visit the apiVersion, which will be in the form of api/version or just v1 for the core.
+   * Visit the group version.
    * Use {@link ApiVersionUtil} to separate components if needed.
-   * 
+   *
+   * @param group the group name, will be empty for the core group
    * @return the result to control future actions. {@link ApiVisitResult#SKIP} will skip visiting all resources under this
-   *         apiVersion.
+   *         api group version.
    */
-  default ApiVisitResult visitApiVersion(String apiVersion) {
+  default ApiVisitResult visitApiGroupVersion(String group, String version) {
     return ApiVisitResult.CONTINUE;
   }
 
   /**
    * Visit the resource.
-   * 
-   * @param apiVersion in the form of api/version or just v1 for the core
+   *
+   * @param group the group name, will be empty for the core group. Generally used instead of {@link APIResource#getGroup()}
+   * @param version generally used instead of {@link APIResource#getVersion()}
    * @param apiResource can be used to look at applicable verbs and other resource information
    * @param operation the {@link GenericKubernetesResource} operation for the current resource. Will be in the namespace of the
    *        client by default.
    * @return {@link ApiVisitResult#TERMINATE} to terminate. SKIP and CONTINUE will both continue visiting.
    */
-  ApiVisitResult visitResources(String apiVersion, APIResource apiResource,
+  ApiVisitResult visitResource(String group, String version, APIResource apiResource,
       MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> operation);
 
 }
