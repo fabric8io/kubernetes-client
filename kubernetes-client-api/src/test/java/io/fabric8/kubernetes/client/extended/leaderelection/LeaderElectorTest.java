@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderE
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
@@ -130,7 +131,14 @@ class LeaderElectorTest {
     started.cancel(true);
 
     // Then
-    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> activeLer.get().getLeaseDuration().equals(Duration.ZERO));
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
+    assertEquals(0, activeLer.get().getLeaderTransitions());
+
+    // the leader is now empty/null, we should be able to re-acquire
+    assertTrue(leaderElector.tryAcquireOrRenew());
+
+    // there should be a transition
+    assertEquals(1, activeLer.get().getLeaderTransitions());
   }
 
   @Test
@@ -142,6 +150,20 @@ class LeaderElectorTest {
     when(ler.getHolderIdentity()).thenReturn("1337");
     // When
     final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).isLeader(ler);
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  void isLeaderTrueEmptyIdentity() {
+    // Given
+    final LeaderElectionConfig lec = mock(LeaderElectionConfig.class, Answers.RETURNS_DEEP_STUBS);
+    when(lec.getLock().identity()).thenReturn("1337");
+    when(lec.getLeaseDuration()).thenReturn(Duration.ofMinutes(59L));
+    final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
+    when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC));
+    // When
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
     // Then
     assertTrue(result);
   }
@@ -165,6 +187,7 @@ class LeaderElectorTest {
     final LeaderElectionConfig lec = mock(LeaderElectionConfig.class);
     when(lec.getLeaseDuration()).thenReturn(Duration.ofMinutes(59L));
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
+    when(ler.getHolderIdentity()).thenReturn("someone");
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
     // When
     final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
@@ -178,6 +201,7 @@ class LeaderElectorTest {
     final LeaderElectionConfig lec = mock(LeaderElectionConfig.class);
     when(lec.getLeaseDuration()).thenReturn(Duration.ofHours(1L));
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
+    when(ler.getHolderIdentity()).thenReturn("someone");
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC));
     // When
     final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
