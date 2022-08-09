@@ -70,54 +70,55 @@ This will use settings from different sources in the following order of priority
 
 System properties are preferred over environment variables. The following system properties & environment variables can be used for configuration:
 
-| Property / Environment Variable | Description | Default value |
-|---------------------------------|-------------|---------------|
-| `kubernetes.disable.autoConfig` / `KUBERNETES_DISABLE_AUTOCONFIG` | Disable automatic configuration | `false` |
-| `kubernetes.master` / `KUBERNETES_MASTER` | Kubernetes master URL | `https://kubernetes.default.svc` |
-| `kubernetes.api.version` / `KUBERNETES_API_VERSION` | API version | `v1` |
-| `openshift.url` / `OPENSHIFT_URL` | OpenShift master URL | Kubernetes master URL value |
-| `kubernetes.oapi.version` / `KUBERNETES_OAPI_VERSION` | OpenShift API version | `v1` |
-| `kubernetes.trust.certificates` / `KUBERNETES_TRUST_CERTIFICATES`| Trust all certificates | `false` |
-| `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION` | | `false` |
-| `kubernetes.certs.ca.file` / `KUBERNETES_CERTS_CA_FILE` | | |
-| `kubernetes.certs.ca.data` / `KUBERNETES_CERTS_CA_DATA` | | |
-| `kubernetes.certs.client.file` / `KUBERNETES_CERTS_CLIENT_FILE` | | |
-| `kubernetes.certs.client.data` / `KUBERNETES_CERTS_CLIENT_DATA` | | |
-| `kubernetes.certs.client.key.file` / `KUBERNETES_CERTS_CLIENT_KEY_FILE` | | |
-| `kubernetes.certs.client.key.data` / `KUBERNETES_CERTS_CLIENT_KEY_DATA` | | |
-| `kubernetes.certs.client.key.algo` / `KUBERNETES_CERTS_CLIENT_KEY_ALGO` | Client key encryption algorithm | `RSA` |
-| `kubernetes.certs.client.key.passphrase` / `KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE` | | |
-| `kubernetes.auth.basic.username` / `KUBERNETES_AUTH_BASIC_USERNAME` | | |
-| `kubernetes.auth.basic.password` / `KUBERNETES_AUTH_BASIC_PASSWORD` | | |
-| `kubernetes.auth.serviceAccount.token` / `KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN` | Name of the service account token file | `/var/run/secrets/kubernetes.io/serviceaccount/token`|
-| `kubernetes.auth.tryKubeConfig` / `KUBERNETES_AUTH_TRYKUBECONFIG` | Configure client using Kubernetes config | `true` |
-| `kubeconfig` / `KUBECONFIG` | Name of the kubernetes config file to read | `~/.kube/config` |
-| `kubernetes.auth.tryServiceAccount` / `KUBERNETES_AUTH_TRYSERVICEACCOUNT` | Configure client from Service account | `true` |
-| `kubernetes.tryNamespacePath` / `KUBERNETES_TRYNAMESPACEPATH` | Configure client namespace from Kubernetes service account namespace path | `true` |
-| `kubernetes.auth.token` / `KUBERNETES_AUTH_TOKEN` | | |
-| `kubernetes.watch.reconnectInterval` / `KUBERNETES_WATCH_RECONNECTINTERVAL` | Watch reconnect interval in ms | `1000` |
-| `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT` | Number of reconnect attempts (-1 for infinite) | `-1` |
-| `kubernetes.connection.timeout` / `KUBERNETES_CONNECTION_TIMEOUT` | Connection timeout in ms (0 for no timeout) | `10000` |
-| `kubernetes.request.timeout` / `KUBERNETES_REQUEST_TIMEOUT` | Read timeout in ms | `10000` |
-| `kubernetes.upload.connection.timeout` / `KUBERNETES_UPLOAD_CONNECTION_TIMEOUT` | Pod upload connection timeout in ms | `10000` |
-| `kubernetes.upload.request.timeout` / `KUBERNETES_UPLOAD_REQUEST_TIMEOUT` | Pod upload request timeout in ms | `120000` |
-| `kubernetes.request.retry.backoffLimit` / `KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT` | Number of retry attempts | `0` |
-| `kubernetes.request.retry.backoffInterval` / `KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL` | Retry initial backoff interval in ms | `1000` |
-| `kubernetes.rolling.timeout` / `KUBERNETES_ROLLING_TIMEOUT` | Rolling timeout in ms | `900000` |
-| `kubernetes.logging.interval` / `KUBERNETES_LOGGING_INTERVAL` | Logging interval in ms | `20000` |
-| `kubernetes.scale.timeout` / `KUBERNETES_SCALE_TIMEOUT` | Scale timeout in ms | `600000` |
-| `kubernetes.websocket.timeout` / `KUBERNETES_WEBSOCKET_TIMEOUT` | Websocket timeout in ms | `5000` |
-| `kubernetes.websocket.ping.interval` / `KUBERNETES_WEBSOCKET_PING_INTERVAL` | Websocket ping interval in ms | `30000` |
-| `kubernetes.max.concurrent.requests` / `KUBERNETES_MAX_CONCURRENT_REQUESTS` | | `64` |
-| `kubernetes.max.concurrent.requests.per.host` / `KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST` | | `5` |
-| `kubernetes.impersonate.username` / `KUBERNETES_IMPERSONATE_USERNAME` | `Impersonate-User` HTTP header value | |
-| `kubernetes.impersonate.group` / `KUBERNETES_IMPERSONATE_GROUP` |  `Impersonate-Group` HTTP header value | |
-| `kubernetes.tls.versions` / `KUBERNETES_TLS_VERSIONS` | TLS versions separated by `,` | `TLSv1.2` |
-| `kubernetes.truststore.file` / `KUBERNETES_TRUSTSTORE_FILE` | | |
-| `kubernetes.truststore.passphrase` / `KUBERNETES_TRUSTSTORE_PASSPHRASE` | | |
-| `kubernetes.keystore.file` / `KUBERNETES_KEYSTORE_FILE` | | |
-| `kubernetes.keystore.passphrase` / `KUBERNETES_KEYSTORE_PASSPHRASE` | | |
-| `kubernetes.backwardsCompatibilityInterceptor.disable` / `KUBERNETES_BACKWARDSCOMPATIBILITYINTERCEPTOR_DISABLE` | `Disable BackwardsCompatibilityInterceptor`| `true` |
+| Property / Environment Variable                                                                                 | Description                                                                                                                              | Default value                                         |
+|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| `kubernetes.disable.autoConfig` / `KUBERNETES_DISABLE_AUTOCONFIG`                                               | Disable automatic configuration                                                                                                          | `false`                                               |
+| `kubernetes.master` / `KUBERNETES_MASTER`                                                                       | Kubernetes master URL                                                                                                                    | `https://kubernetes.default.svc`                      |
+| `kubernetes.api.version` / `KUBERNETES_API_VERSION`                                                             | API version                                                                                                                              | `v1`                                                  |
+| `openshift.url` / `OPENSHIFT_URL`                                                                               | OpenShift master URL                                                                                                                     | Kubernetes master URL value                           |
+| `kubernetes.oapi.version` / `KUBERNETES_OAPI_VERSION`                                                           | OpenShift API version                                                                                                                    | `v1`                                                  |
+| `kubernetes.trust.certificates` / `KUBERNETES_TRUST_CERTIFICATES`                                               | Trust all certificates                                                                                                                   | `false`                                               |
+| `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION`                         |                                                                                                                                          | `false`                                               |
+| `kubernetes.certs.ca.file` / `KUBERNETES_CERTS_CA_FILE`                                                         |                                                                                                                                          |                                                       |
+| `kubernetes.certs.ca.data` / `KUBERNETES_CERTS_CA_DATA`                                                         |                                                                                                                                          |                                                       |
+| `kubernetes.certs.client.file` / `KUBERNETES_CERTS_CLIENT_FILE`                                                 |                                                                                                                                          |                                                       |
+| `kubernetes.certs.client.data` / `KUBERNETES_CERTS_CLIENT_DATA`                                                 |                                                                                                                                          |                                                       |
+| `kubernetes.certs.client.key.file` / `KUBERNETES_CERTS_CLIENT_KEY_FILE`                                         |                                                                                                                                          |                                                       |
+| `kubernetes.certs.client.key.data` / `KUBERNETES_CERTS_CLIENT_KEY_DATA`                                         |                                                                                                                                          |                                                       |
+| `kubernetes.certs.client.key.algo` / `KUBERNETES_CERTS_CLIENT_KEY_ALGO`                                         | Client key encryption algorithm                                                                                                          | `RSA`                                                 |
+| `kubernetes.certs.client.key.passphrase` / `KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE`                             |                                                                                                                                          |                                                       |
+| `kubernetes.auth.basic.username` / `KUBERNETES_AUTH_BASIC_USERNAME`                                             |                                                                                                                                          |                                                       |
+| `kubernetes.auth.basic.password` / `KUBERNETES_AUTH_BASIC_PASSWORD`                                             |                                                                                                                                          |                                                       |
+| `kubernetes.auth.serviceAccount.token` / `KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN`                                 | Name of the service account token file                                                                                                   | `/var/run/secrets/kubernetes.io/serviceaccount/token` |
+| `kubernetes.auth.tryKubeConfig` / `KUBERNETES_AUTH_TRYKUBECONFIG`                                               | Configure client using Kubernetes config                                                                                                 | `true`                                                |
+| `kubeconfig` / `KUBECONFIG`                                                                                     | Name of the kubernetes config file to read                                                                                               | `~/.kube/config`                                      |
+| `kubernetes.auth.tryServiceAccount` / `KUBERNETES_AUTH_TRYSERVICEACCOUNT`                                       | Configure client from Service account                                                                                                    | `true`                                                |
+| `kubernetes.tryNamespacePath` / `KUBERNETES_TRYNAMESPACEPATH`                                                   | Configure client namespace from Kubernetes service account namespace path                                                                | `true`                                                |
+| `kubernetes.auth.token` / `KUBERNETES_AUTH_TOKEN`                                                               |                                                                                                                                          |                                                       |
+| `kubernetes.watch.reconnectInterval` / `KUBERNETES_WATCH_RECONNECTINTERVAL`                                     | Watch reconnect interval in ms                                                                                                           | `1000`                                                |
+| `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT`                                           | Number of reconnect attempts (-1 for infinite)                                                                                           | `-1`                                                  |
+| `kubernetes.connection.timeout` / `KUBERNETES_CONNECTION_TIMEOUT`                                               | Connection timeout in ms (0 for no timeout)                                                                                              | `10000`                                               |
+| `kubernetes.request.timeout` / `KUBERNETES_REQUEST_TIMEOUT`                                                     | Read timeout in ms                                                                                                                       | `10000`                                               |
+| `kubernetes.upload.connection.timeout` / `KUBERNETES_UPLOAD_CONNECTION_TIMEOUT`                                 | Pod upload connection timeout in ms                                                                                                      | `10000`                                               |
+| `kubernetes.upload.request.timeout` / `KUBERNETES_UPLOAD_REQUEST_TIMEOUT`                                       | Pod upload request timeout in ms                                                                                                         | `120000`                                              |
+| `kubernetes.request.retry.backoffLimit` / `KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT`                               | Number of retry attempts                                                                                                                 | `0`                                                   |
+| `kubernetes.request.retry.backoffInterval` / `KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL`                         | Retry initial backoff interval in ms                                                                                                     | `1000`                                                |
+| `kubernetes.rolling.timeout` / `KUBERNETES_ROLLING_TIMEOUT`                                                     | Rolling timeout in ms                                                                                                                    | `900000`                                              |
+| `kubernetes.logging.interval` / `KUBERNETES_LOGGING_INTERVAL`                                                   | Logging interval in ms                                                                                                                   | `20000`                                               |
+| `kubernetes.scale.timeout` / `KUBERNETES_SCALE_TIMEOUT`                                                         | Scale timeout in ms                                                                                                                      | `600000`                                              |
+| `kubernetes.websocket.timeout` / `KUBERNETES_WEBSOCKET_TIMEOUT`                                                 | Websocket timeout in ms                                                                                                                  | `5000`                                                |
+| `kubernetes.websocket.ping.interval` / `KUBERNETES_WEBSOCKET_PING_INTERVAL`                                     | Websocket ping interval in ms                                                                                                            | `30000`                                               |
+| `kubernetes.max.concurrent.requests` / `KUBERNETES_MAX_CONCURRENT_REQUESTS`                                     |                                                                                                                                          | `64`                                                  |
+| `kubernetes.max.concurrent.requests.per.host` / `KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST`                   |                                                                                                                                          | `5`                                                   |
+| `kubernetes.impersonate.username` / `KUBERNETES_IMPERSONATE_USERNAME`                                           | `Impersonate-User` HTTP header value                                                                                                     |                                                       |
+| `kubernetes.impersonate.group` / `KUBERNETES_IMPERSONATE_GROUP`                                                 | `Impersonate-Group` HTTP header value                                                                                                    |                                                       |
+| `kubernetes.tls.versions` / `KUBERNETES_TLS_VERSIONS`                                                           | TLS versions separated by `,`                                                                                                            | `TLSv1.2`                                             |
+| `kubernetes.truststore.file` / `KUBERNETES_TRUSTSTORE_FILE`                                                     |                                                                                                                                          |                                                       |
+| `kubernetes.truststore.passphrase` / `KUBERNETES_TRUSTSTORE_PASSPHRASE`                                         |                                                                                                                                          |                                                       |
+| `kubernetes.keystore.file` / `KUBERNETES_KEYSTORE_FILE`                                                         |                                                                                                                                          |                                                       |
+| `kubernetes.keystore.passphrase` / `KUBERNETES_KEYSTORE_PASSPHRASE`                                             |                                                                                                                                          |                                                       |
+| `kubernetes.backwardsCompatibilityInterceptor.disable` / `KUBERNETES_BACKWARDSCOMPATIBILITYINTERCEPTOR_DISABLE` | Disable the `BackwardsCompatibilityInterceptor`                                                                                          | `true`                                                |
+| `no.proxy` / `NO_PROXY`                                                                                         | comma-separated list of domain extensions [proxy](http://www.gnu.org/software/wget/manual/html_node/Proxies.html) should not be used for |                                                       |
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 
@@ -404,6 +405,7 @@ class ExampleTest {
 |                          | K8s 1.23.3 | K8s 1.22.1 | K8s 1.21.1 | K8s 1.20.2 | K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 | K8s 1.7.0 | K8s 1.6.0 |
 |--------------------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|-----------|-----------|
 | kubernetes-client 6.0.0  | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |
+| kubernetes-client 5.12.3 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |
 | kubernetes-client 5.12.2 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |
 | kubernetes-client 5.12.1 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |
 | kubernetes-client 5.12.0 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |
@@ -492,6 +494,7 @@ class ExampleTest {
 |                         | OCP 4.9.8 | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 | OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
 |-------------------------|-----------|------------|-----------|-----------|------------|------------|-----------|-----------|-----------|
 | openshift-client 6.0.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
+| openshift-client 5.12.3 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 5.12.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 5.12.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 5.11.2 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |

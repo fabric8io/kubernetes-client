@@ -17,23 +17,31 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.Utils;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class KubernetesClientException extends RuntimeException {
 
-  private int code;
-  private Status status;
-  private String group;
-  private String version;
-  private String resourcePlural;
-  private String namespace;
+  private final int code;
+  private final Status status;
+  private final RequestMetadata requestMetadata;
 
   public KubernetesClientException(String message) {
-    super(message);
+    this(message, null);
   }
 
   public KubernetesClientException(String message, Throwable t) {
-    super(message, t);
+    this(message, t, -1, null, (RequestMetadata) null);
   }
 
   public KubernetesClientException(Status status) {
@@ -41,25 +49,38 @@ public class KubernetesClientException extends RuntimeException {
   }
 
   public KubernetesClientException(String message, int code, Status status) {
-    this(message, code, status, null, null, null, null);
+    this(message, null, code, status, (RequestMetadata) null);
   }
 
-  public KubernetesClientException(String message, int code, Status status, String group, String version, String resourcePlural, String namespace) {
-    super(message);
+  public KubernetesClientException(String message, Throwable t, int code, Status status, HttpRequest httpRequest) {
+    this(message, t, code, status, RequestMetadata.from(httpRequest));
+  }
+
+  private KubernetesClientException(String message, Throwable t, int code, Status status, RequestMetadata requestMetadata) {
+    super(message, t);
     this.code = code;
     this.status = status;
-    this.group = group;
-    this.version = version;
-    this.resourcePlural = resourcePlural;
-    this.namespace = namespace;
+    this.requestMetadata = requestMetadata;
   }
 
-  public KubernetesClientException(String message, Throwable t, String group, String version, String resourcePlural, String namespace) {
-    super(message, t);
-    this.group = group;
-    this.version = version;
-    this.resourcePlural = resourcePlural;
-    this.namespace = namespace;
+  /**
+   * @deprecated use {@link #KubernetesClientException(String, Throwable, int, Status, HttpRequest)} instead
+   */
+  @Deprecated
+  public KubernetesClientException(String message, int code, Status status, String group, String version, String resourcePlural,
+      String namespace) {
+    this(message, null, code, status,
+        RequestMetadata.builder().group(group).version(version).plural(resourcePlural).namespace(namespace).build());
+  }
+
+  /**
+   * @deprecated use {@link #KubernetesClientException(String, Throwable, int, Status, HttpRequest)} instead
+   */
+  @Deprecated
+  public KubernetesClientException(String message, Throwable t, String group, String version, String resourcePlural,
+      String namespace) {
+    this(message, t, -1, null,
+        RequestMetadata.builder().group(group).version(version).plural(resourcePlural).namespace(namespace).build());
   }
 
   public Status getStatus() {
@@ -71,24 +92,28 @@ public class KubernetesClientException extends RuntimeException {
   }
 
   public String getGroup() {
-    return group;
+    return requestMetadata.group;
   }
 
   public String getVersion() {
-    return version;
+    return requestMetadata.version;
   }
 
   public String getResourcePlural() {
-    return resourcePlural;
+    return requestMetadata.plural;
   }
 
   public String getNamespace() {
-    return namespace;
+    return requestMetadata.namespace;
+  }
+
+  public String getName() {
+    return requestMetadata.name;
   }
 
   public String getFullResourceName() {
-    if(resourcePlural != null && group != null) {
-      return HasMetadata.getFullResourceName(resourcePlural, group);
+    if (requestMetadata.plural != null && requestMetadata.group != null) {
+      return HasMetadata.getFullResourceName(requestMetadata.plural, requestMetadata.group);
     }
     return null;
   }
@@ -99,7 +124,8 @@ public class KubernetesClientException extends RuntimeException {
 
   public static RuntimeException launderThrowable(String message, Throwable cause) {
     RuntimeException processed = processCause(cause);
-    if (processed != null) return processed;
+    if (processed != null)
+      return processed;
     throw new KubernetesClientException(message, cause);
   }
 
@@ -116,7 +142,8 @@ public class KubernetesClientException extends RuntimeException {
 
   public static RuntimeException launderThrowable(OperationInfo spec, Throwable cause) {
     RuntimeException processed = processCause(cause);
-    if (processed != null) return processed;
+    if (processed != null)
+      return processed;
 
     StringBuilder sb = new StringBuilder();
     sb.append(describeOperation(spec)).append(" failed.");
@@ -127,7 +154,9 @@ public class KubernetesClientException extends RuntimeException {
       }
     }
 
-    throw new KubernetesClientException(sb.toString(), cause, spec.getGroup(), spec.getVersion(), spec.getPlural(), spec.getNamespace());
+    throw new KubernetesClientException(sb.toString(), cause, -1, null, RequestMetadata.builder()
+        .group(spec.getGroup()).version(spec.getVersion()).plural(spec.getPlural())
+        .namespace(spec.getNamespace()).name(spec.getName()).build());
   }
 
   /**
@@ -136,23 +165,69 @@ public class KubernetesClientException extends RuntimeException {
   @Deprecated
   public static RuntimeException launderThrowable(OperationInfo spec, Status status, Throwable cause) {
     StringBuilder sb = new StringBuilder();
-    sb.append(describeOperation(spec)+ " failed.");
+    sb.append(describeOperation(spec)).append(" failed.");
     if (status != null && Utils.isNotNullOrEmpty(status.getMessage())) {
       sb.append("Reason: ").append(status.getMessage());
     }
     return launderThrowable(sb.toString(), cause);
   }
 
-  private static final String describeOperation(OperationInfo operation) {
+  private static String describeOperation(OperationInfo operation) {
     StringBuilder sb = new StringBuilder();
     sb.append("Operation");
     if (Utils.isNotNullOrEmpty(operation.getOperationType())) {
-      sb.append(": [").append(operation.getOperationType() + "]");
+      sb.append(": [").append(operation.getOperationType()).append("]");
     }
     sb.append(" ");
     sb.append(" for kind: [").append(operation.getKind()).append("] ");
     sb.append(" with name: [").append(operation.getName()).append("] ");
     sb.append(" in namespace: [").append(operation.getNamespace()).append("] ");
     return sb.toString();
+  }
+
+  @Builder
+  @EqualsAndHashCode
+  @AllArgsConstructor(access = AccessLevel.PRIVATE)
+  private static class RequestMetadata implements Serializable {
+
+    private static final RequestMetadata EMPTY = new RequestMetadata(null, null, null, null, null);
+
+    final String group;
+    final String version;
+    final String plural;
+    final String namespace;
+    final String name;
+
+    static RequestMetadata from(HttpRequest request) {
+      return from(request.uri());
+    }
+
+    static RequestMetadata from(URI request) {
+      final List<String> segments = Arrays.stream(request.getRawPath().split("/"))
+          .filter(s -> !s.isEmpty()).collect(Collectors.toList());
+      switch (segments.size()) {
+        case 3:
+          // cluster URL for historic resources
+          return RequestMetadata.builder().group("").version(segments.get(1)).plural(segments.get(2)).build();
+        case 4:
+          // cluster URL
+          return RequestMetadata.builder().group(segments.get(1)).version(segments.get(2)).plural(segments.get(3)).build();
+        case 6:
+          // namespaced URL with potential name
+          final String root = segments.get(0);
+          if ("api".equals(root)) {
+            return RequestMetadata.builder().group("").version(segments.get(1)).plural(segments.get(4))
+                .namespace(segments.get(3)).name(segments.get(5)).build();
+          }
+          return RequestMetadata.builder().group(segments.get(1)).version(segments.get(2)).plural(segments.get(5))
+              .namespace(segments.get(4)).build();
+        case 7:
+          // namespaced URL with name
+          return RequestMetadata.builder().group(segments.get(1)).version(segments.get(2)).plural(segments.get(5))
+              .namespace(segments.get(4)).name(segments.get(6)).build();
+        default:
+          return EMPTY;
+      }
+    }
   }
 }

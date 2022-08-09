@@ -15,52 +15,51 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.client.Config;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class IpAddressMatcherTest {
 
-  @Test
-  void testIpRangeMatcher() {
-    assertTrue(new IpAddressMatcher("192.168.10.110").matches("192.168.10.110"));
-    assertTrue(new IpAddressMatcher("192.168.1.0/8").matches("192.168.10.110"));
-    assertTrue(new IpAddressMatcher("192.168.1.0/24").matches("192.168.1.100"));
-    assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("193.168.1.10"));
-    assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
-    assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
-    assertFalse(new IpAddressMatcher("192.168.1.0/8").matches("193.168.1.10"));
-    assertFalse(new IpAddressMatcher(Config.KUBERNETES_NO_PROXY).matches("kubernetes.default.svc"));
+  @DisplayName("matches returns true for matching IPs and IP/Netmask subnets")
+  @ParameterizedTest(name = "{index}: IP ''{1}'' matches ''{0}'' IP/Netmask")
+  @MethodSource("matchesTrueInput")
+  void matchesTrue(String ipOrSubnet, String ip) {
+    assertThat(new IpAddressMatcher(ipOrSubnet).matches(ip)).isTrue();
   }
 
-  @Test
-  void testIpAddressRegexp() {
-    try {
-      Pattern pattern = Pattern.compile(HttpClientUtils.ipv4Pattern, Pattern.CASE_INSENSITIVE);
-      Matcher matcherPlain = pattern.matcher("192.168.0.1");
-      assertTrue(matcherPlain.matches());
+  static Stream<Arguments> matchesTrueInput() {
+    return Stream.of(
+        arguments("192.168.1.0/24", "192.168.1.104"),
+        arguments("192.168.10.110", "192.168.10.110"),
+        arguments("192.168.1.0/8", "192.168.10.110"),
+        arguments("192.168.1.0/24", "192.168.1.100"),
+        arguments("0.0.0.0/0", "123.4.5.6"),
+        arguments("0.0.0.0/0", "192.168.0.159"),
+        arguments("192.168.0.159/0", "123.4.5.6"),
+        arguments("192.168.0.159/0", "192.168.0.159"));
+  }
 
-      Matcher matcherPlainProtocol = pattern.matcher("http://192.168.0.1");
-      assertTrue(matcherPlainProtocol.matches());
+  @DisplayName("matches returns false for non-matching IPs and IP/Netmask subnets")
+  @ParameterizedTest(name = "{index}: IP ''{1}'' does not match ''{0}'' IP/Netmask")
+  @MethodSource("matchesFalseInput")
+  void matchesFalse(String ipOrSubnet, String ip) {
+    assertThat(new IpAddressMatcher(ipOrSubnet).matches(ip)).isFalse();
+  }
 
-      Matcher matcherPlainProtocol2 = pattern.matcher("https://192.168.0.1");
-      assertTrue(matcherPlainProtocol2.matches());
-
-      Matcher matcherRange = pattern.matcher("192.168.0.1/24");
-      assertTrue(matcherRange.matches());
-
-      Matcher matcherRangeProtocol = pattern.matcher("http://192.168.0.1/24");
-      assertTrue(matcherRangeProtocol.matches());
-
-      Matcher matcherRangeProtocol2 = pattern.matcher("https://192.168.0.1/24");
-      assertTrue(matcherRangeProtocol2.matches());
-    } catch (Exception e) {
-      throw new IllegalStateException("Failed to compile pattern.");
-    }
+  static Stream<Arguments> matchesFalseInput() {
+    return Stream.of(
+        arguments("192.168.10.110", "192.168.1.0/8"),
+        arguments("192.168.1.0/24", "193.168.1.10"),
+        arguments("192.168.1.0/24", "192.168.2.10"),
+        arguments("192.168.1.0/8", "193.168.1.10"),
+        arguments("192.168.1.128/25", "192.168.1.104"),
+        arguments("kubernetes.default.svc", "kubernetes.default.svc"));
   }
 }

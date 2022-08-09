@@ -53,7 +53,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -711,9 +710,7 @@ public class OperationSupport {
       sb.append(" Received status: ").append(status).append(".");
     }
 
-    final RequestMetadata metadata = RequestMetadata.from(request);
-    return new KubernetesClientException(sb.toString(), status.getCode(), status, metadata.group, metadata.version,
-        metadata.plural, metadata.namespace);
+    return new KubernetesClientException(sb.toString(), null, status.getCode(), status, request);
   }
 
   public static KubernetesClientException requestException(HttpRequest request, Throwable e, String message) {
@@ -726,42 +723,11 @@ public class OperationSupport {
         .append(" at: ").append(request.uri())
         .append(". Cause: ").append(e.getMessage());
 
-    final RequestMetadata metadata = RequestMetadata.from(request);
-    return new KubernetesClientException(sb.toString(), e, metadata.group, metadata.version, metadata.plural,
-        metadata.namespace);
+    return new KubernetesClientException(sb.toString(), e, -1, null, request);
   }
 
   public static KubernetesClientException requestException(HttpRequest request, Exception e) {
     return requestException(request, e, null);
-  }
-
-  private static class RequestMetadata {
-    private final String group;
-    private final String version;
-    private final String plural;
-    private final String namespace;
-    private static final RequestMetadata EMPTY = new RequestMetadata(null, null, null, null);
-
-    private RequestMetadata(String group, String version, String plural, String namespace) {
-      this.group = group;
-      this.version = version;
-      this.plural = plural;
-      this.namespace = namespace;
-    }
-
-    static RequestMetadata from(HttpRequest request) {
-      final List<String> segments = Arrays.asList(request.uri().getRawPath().split("\\/"));
-      switch (segments.size()) {
-        case 4:
-          // cluster URL
-          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(3), null);
-        case 6:
-          // namespaced URL
-          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(5), segments.get(4));
-        default:
-          return EMPTY;
-      }
-    }
   }
 
   protected static <T> T unmarshal(InputStream is) {

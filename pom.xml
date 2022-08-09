@@ -95,10 +95,10 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <junit.version>5.8.2</junit.version>
+    <junit.version>5.9.0</junit.version>
     <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>17.1.0</approvaltests.version>
+    <approvaltests.version>17.2.1</approvaltests.version>
     <mockito.version>4.6.1</mockito.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
@@ -121,22 +121,22 @@
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.0.0</buildnumber.plugin.version>
     <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-    <maven.bundle.plugin.version>5.1.7</maven.bundle.plugin.version>
+    <maven.bundle.plugin.version>5.1.8</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.3.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
-    <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
+    <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
     <maven.release.plugin.version>3.0.0-M6</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.4.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.1.0</maven.enforcer.plugin.version>
-    <maven.deploy.plugin.version>3.0.0-M2</maven.deploy.plugin.version>
+    <maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.3.0</maven.shade.plugin.version>
-    <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+    <maven.install.plugin.version>3.0.1</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.3.0</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.6.4</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
@@ -144,7 +144,7 @@
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.23.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.24.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>

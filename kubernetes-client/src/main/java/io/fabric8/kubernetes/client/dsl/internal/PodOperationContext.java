@@ -164,10 +164,11 @@ public class PodOperationContext {
     if (in != null || redirectingIn) {
       httpUrlBuilder.addQueryParameter("stdin", "true");
     }
-    if (output != null) {
+    boolean debug = ExecWebSocketListener.LOGGER.isDebugEnabled();
+    if (output != null || debug) {
       httpUrlBuilder.addQueryParameter("stdout", "true");
     }
-    if (error != null || terminateOnError) {
+    if (error != null || terminateOnError || debug) {
       httpUrlBuilder.addQueryParameter("stderr", "true");
     }
   }

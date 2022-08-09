@@ -74,7 +74,7 @@ class DefaultKubernetesClientTest {
     final Config configWithCustomerHeaders = new ConfigBuilder().withCustomHeaders(customHeaders).build();
 
     BasicBuilder basicBuilder = Mockito.mock(BasicBuilder.class);
-    HttpClientUtils.createApplicableInterceptors(configWithCustomerHeaders, null).get(HttpClientUtils.HEADER_INTERCEPTOR)
+    HttpClientUtils.createApplicableInterceptors(configWithCustomerHeaders, null).get("HEADER")
         .before(basicBuilder, Mockito.mock(HttpHeaders.class));
     Mockito.verify(basicBuilder, Mockito.times(1)).header("user-id", "test-user");
   }
@@ -84,7 +84,7 @@ class DefaultKubernetesClientTest {
     final Config defaultEmptyConfig = new ConfigBuilder().build();
 
     BasicBuilder basicBuilder = Mockito.mock(BasicBuilder.class);
-    HttpClientUtils.createApplicableInterceptors(defaultEmptyConfig, null).get(HttpClientUtils.HEADER_INTERCEPTOR)
+    HttpClientUtils.createApplicableInterceptors(defaultEmptyConfig, null).get("HEADER")
         .before(basicBuilder, Mockito.mock(HttpHeaders.class));
 
     Mockito.verify(basicBuilder, Mockito.never()).header("user-id", "test-user");

@@ -106,10 +106,6 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
         ? new ClassOrInterfaceType().setName(this.pkg + "." + this.statusClassName)
         : jlVoid;
 
-    if (config.isObjectExtraAnnotations()) {
-      addExtraAnnotations(clz);
-    }
-
     ClassOrInterfaceType crType = new ClassOrInterfaceType()
         .setName("io.fabric8.kubernetes.client.CustomResource")
         .setTypeArguments(spec, status);
@@ -117,6 +113,9 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     clz.addExtendedType(crType);
     clz.addImplementedType("io.fabric8.kubernetes.api.model.Namespaced");
 
+    if (config.isObjectExtraAnnotations()) {
+      addExtraAnnotations(clz);
+    }
     return new GeneratorResult(
         Collections.singletonList(new GeneratorResult.ClassResult(className, cu)));
   }
