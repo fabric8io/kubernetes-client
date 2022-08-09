@@ -112,27 +112,34 @@ public class LeaderElector {
 
   private void stopLeading() {
     LeaderElectionRecord current = observedRecord.get();
-    if (current == null || !Objects.equals(current.getHolderIdentity(), leaderElectionConfig.getLock().identity())) {
+    if (current == null || !isLeader(current)) {
       return; // not leading
     }
     try {
       if (leaderElectionConfig.isReleaseOnCancel()) {
-        final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-            leaderElectionConfig.getLock().identity(),
-            Duration.ZERO,
-            current.getAcquireTime(),
-            current.getRenewTime(),
-            current.getLeaderTransitions());
-        newLeaderElectionRecord.setVersion(current.getVersion());
-
-        leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+        release(current);
       }
-    } catch (LockException | KubernetesClientException e) {
-      final String lockDescription = leaderElectionConfig.getLock().describe();
-      LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
     } finally {
       // called regardless of isReleaseOnCancel
       leaderElectionConfig.getLeaderCallbacks().onStopLeading();
+    }
+  }
+
+  private void release(LeaderElectionRecord current) {
+    try {
+      ZonedDateTime now = now();
+      final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
+          null,
+          Duration.ofSeconds(1),
+          now,
+          now,
+          current.getLeaderTransitions());
+      newLeaderElectionRecord.setVersion(current.getVersion());
+
+      leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+    } catch (LockException | KubernetesClientException e) {
+      final String lockDescription = leaderElectionConfig.getLock().describe();
+      LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
     }
   }
 
@@ -175,7 +182,7 @@ public class LeaderElector {
     }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
 
-  private boolean tryAcquireOrRenew() throws LockException {
+  boolean tryAcquireOrRenew() throws LockException {
     final Lock lock = leaderElectionConfig.getLock();
     final ZonedDateTime now = now();
     final LeaderElectionRecord oldLeaderElectionRecord = lock.get(kubernetesClient);
@@ -228,7 +235,8 @@ public class LeaderElector {
   }
 
   protected final boolean canBecomeLeader(LeaderElectionRecord leaderElectionRecord) {
-    return !leaderElectionRecord.getRenewTime().plus(leaderElectionConfig.getLeaseDuration()).isAfter(now());
+    return Utils.isNullOrEmpty(leaderElectionRecord.getHolderIdentity())
+        || !leaderElectionRecord.getRenewTime().plus(leaderElectionConfig.getLeaseDuration()).isAfter(now());
   }
 
   /**

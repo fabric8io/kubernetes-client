@@ -30,7 +30,8 @@ import java.util.Objects;
  * This information should be used for observational purposes only and could be replaced
  * with a random string (e.g. UUID) with only slight modification of this code.
  *
- * @see <a href="https://github.com/kubernetes/client-go/blob/1aa326d7304eba6aedc8c89daad615cc7499d1f7/tools/leaderelection/resourcelock/interface.go">leaderelection/resourcelock/interface.go</a>
+ * @see <a href=
+ *      "https://github.com/kubernetes/client-go/blob/1aa326d7304eba6aedc8c89daad615cc7499d1f7/tools/leaderelection/resourcelock/interface.go">leaderelection/resourcelock/interface.go</a>
  */
 public class LeaderElectionRecord {
 
@@ -46,11 +47,11 @@ public class LeaderElectionRecord {
 
   @JsonCreator
   public LeaderElectionRecord(
-    @JsonProperty("holderIdentity") String holderIdentity, @JsonProperty("leaseDuration") Duration leaseDuration,
-    @JsonProperty("acquireTime") ZonedDateTime acquireTime, @JsonProperty("renewTime") ZonedDateTime renewTime,
-    @JsonProperty("leaderTransitions") int leaderTransitions) {
+      @JsonProperty("holderIdentity") String holderIdentity, @JsonProperty("leaseDuration") Duration leaseDuration,
+      @JsonProperty("acquireTime") ZonedDateTime acquireTime, @JsonProperty("renewTime") ZonedDateTime renewTime,
+      @JsonProperty("leaderTransitions") int leaderTransitions) {
 
-    this.holderIdentity = Objects.requireNonNull(holderIdentity, "holderIdentity is required");
+    this.holderIdentity = holderIdentity;
     this.leaseDuration = Objects.requireNonNull(leaseDuration, "leaseDuration is required");
     this.acquireTime = Objects.requireNonNull(acquireTime, "acquireTime is required");
     this.renewTime = Objects.requireNonNull(renewTime, "renewTime is required");
@@ -87,19 +88,22 @@ public class LeaderElectionRecord {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
     LeaderElectionRecord that = (LeaderElectionRecord) o;
     return leaderTransitions == that.leaderTransitions &&
-      Objects.equals(holderIdentity, that.holderIdentity) &&
-      Objects.equals(leaseDuration, that.leaseDuration) &&
-      Objects.equals(acquireTime, that.acquireTime) &&
-      Objects.equals(renewTime, that.renewTime) &&
-      Objects.equals(version, that.version);
+        Objects.equals(holderIdentity, that.holderIdentity) &&
+        Objects.equals(leaseDuration, that.leaseDuration) &&
+        Objects.equals(acquireTime, that.acquireTime) &&
+        Objects.equals(renewTime, that.renewTime) &&
+        Objects.equals(version, that.version);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(holderIdentity, leaseDuration, acquireTime, renewTime, leaderTransitions, version);
   }
+
 }
