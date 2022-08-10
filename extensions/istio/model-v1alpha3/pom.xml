@@ -113,6 +113,19 @@
               </artifacts>
             </configuration>
           </execution>
+          <execution>
+            <id>add-source</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/generated/java</source>
+                <source>target/generated-sources/annotations</source>
+              </sources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
