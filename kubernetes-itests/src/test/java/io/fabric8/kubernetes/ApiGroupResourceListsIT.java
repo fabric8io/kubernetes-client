@@ -18,10 +18,21 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
+import io.fabric8.kubernetes.api.model.APIResource;
 import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
+import io.fabric8.kubernetes.client.ApiVisitor;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,5 +68,58 @@ class ApiGroupResourceListsIT {
     list = client.getApiResources("v1");
 
     assertTrue(list.getResources().stream().anyMatch(r -> "configmaps".equals(r.getName())));
+  }
+
+  @Test
+  void testApiVisiting() {
+    APIGroupList list = client.getApiGroups();
+
+    AtomicInteger groupCount = new AtomicInteger();
+
+    client.visitResources(new ApiVisitor() {
+
+      @Override
+      public ApiVisitResult visitApiGroup(String group) {
+        groupCount.incrementAndGet();
+        return ApiVisitResult.CONTINUE;
+      }
+
+      @Override
+      public ApiVisitResult visitResource(String group, String version, APIResource apiResource,
+          MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> operation) {
+        return ApiVisitResult.CONTINUE;
+      }
+
+    });
+
+    // visit all groups + the core group
+    assertEquals(list.getGroups().size() + 1, groupCount.get());
+
+    // visit again to make sure we terminate as expected
+    CompletableFuture<Boolean> done = new CompletableFuture<>();
+    client.visitResources(new ApiVisitor() {
+
+      @Override
+      public ApiVisitResult visitApiGroup(String group) {
+        if (group.isEmpty()) {
+          return ApiVisitResult.CONTINUE;
+        }
+        return ApiVisitResult.TERMINATE;
+      }
+
+      @Override
+      public ApiVisitResult visitResource(String group, String version, APIResource apiResource,
+          MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> operation) {
+        assertFalse(done.isDone());
+        if (apiResource.getName().equals("configmaps")) {
+          done.complete(!operation.inAnyNamespace().list().getItems().isEmpty());
+          return ApiVisitResult.TERMINATE;
+        }
+        return ApiVisitResult.CONTINUE;
+      }
+
+    });
+
+    assertTrue(done.join());
   }
 }
