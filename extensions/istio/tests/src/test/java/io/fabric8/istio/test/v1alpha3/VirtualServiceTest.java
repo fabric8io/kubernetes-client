@@ -15,17 +15,17 @@
  */
 package io.fabric8.istio.test.v1alpha3;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.InputStream;
-
-import org.junit.jupiter.api.Test;
-
+import io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseLevel;
 import io.fabric8.istio.api.networking.v1alpha3.Percent;
 import io.fabric8.istio.api.networking.v1alpha3.VirtualService;
 import io.fabric8.istio.api.networking.v1alpha3.VirtualServiceBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
 
 public class VirtualServiceTest {
 
@@ -33,20 +33,20 @@ public class VirtualServiceTest {
   public void roundtripBasicVirtualServiceShouldWork() throws Exception {
     final String apiVersion = "networking.istio.io/v1alpha3";
     final VirtualService virtualService = new VirtualServiceBuilder().withApiVersion(apiVersion)
-      .withNewMetadata().withName("vs_name").withNamespace("ns").endMetadata()
-      .withNewSpec().withHosts("svc_name")
-      .addNewHttp()
-      .withNewFault()
-      .withNewDelay()
-      .withNewHTTPFaultInjectionDelayFixedHttpType()
-      .withFixedDelay("1s")
-      .endHTTPFaultInjectionDelayFixedHttpType()
-      .withPercent(10)
-      .endDelay()
-      .endFault()
-      .endHttp()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("vs_name").withNamespace("ns").endMetadata()
+        .withNewSpec().withHosts("svc_name")
+        .addNewHttp()
+        .withNewFault()
+        .withNewDelay()
+        .withNewHTTPFaultInjectionDelayFixedHttpType()
+        .withFixedDelay("1s")
+        .endHTTPFaultInjectionDelayFixedHttpType()
+        .withPercent(10)
+        .endDelay()
+        .endFault()
+        .endHttp()
+        .endSpec()
+        .build();
     final String output = Serialization.yamlMapper().writeValueAsString(virtualService);
 
     HasMetadata reloaded = Serialization.yamlMapper().readValue(output, HasMetadata.class);
@@ -59,19 +59,28 @@ public class VirtualServiceTest {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1alpha3/virtual-service-issue103.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 
-        /*
-        ...
-        spec:
-  http:
-    - fault:
-        delay:
-          fixedDelay: 6s
-          percentage:
-            value: 90.0
-
-              ...
-         */
+    /*
+     * ...
+     * spec:
+     * http:
+     * - fault:
+     * delay:
+     * fixedDelay: 6s
+     * percentage:
+     * value: 90.0
+     * 
+     * ...
+     */
     final Percent percentage = virtualService.getSpec().getHttp().get(0).getFault().getDelay().getPercentage();
     assertEquals(90, percentage.getValue().intValue());
+  }
+
+  @Test
+  public void loadingVirtualServiceWithValidationMessages() throws Exception {
+    final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1alpha3/virtual-service-issue4315.yaml");
+    final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
+    assertEquals(2, virtualService.getStatus().getValidationMessages().size());
+    assertEquals(AnalysisMessageBaseLevel.ERROR, virtualService.getStatus().getValidationMessages().get(0).getLevel());
+    assertEquals(AnalysisMessageBaseLevel.INFO, virtualService.getStatus().getValidationMessages().get(1).getLevel());
   }
 }

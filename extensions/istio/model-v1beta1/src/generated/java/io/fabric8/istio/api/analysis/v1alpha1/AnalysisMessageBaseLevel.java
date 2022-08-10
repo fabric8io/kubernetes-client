@@ -8,7 +8,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum AnalysisMessageBaseLevel {
 
-    UNKNOWN("UNKNOWN");
+    UNKNOWN("UNKNOWN"),
+    ERROR("ERROR"),
+    WARNING("WARNING"),
+    INFO("INFO");
     private final String value;
     private final static Map<String, AnalysisMessageBaseLevel> CONSTANTS = new HashMap<String, AnalysisMessageBaseLevel>();
 
