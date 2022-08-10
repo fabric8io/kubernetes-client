@@ -551,10 +551,10 @@ func (g *schemaGenerator) getEnumDescriptor(t reflect.Type) EnumDescriptor {
 
 	// Note that at the moment, this only supports "string" types, for others, it must be
 	// defined in the extensions using the "enumTypes"
-	var index int64
+	var index int64 = 0
 	end := false
-	index = 0
-	for !end {
+	// We stop trying to find enum values when end is true (last index was not found) AND when at least 50 indexes have been checked.
+	for !end || index < 50 {
 		instance.SetInt(index)
 		enumJavaName := fmt.Sprintf("%v", instance.Interface())
 		if enumJavaName == strconv.FormatInt(index, 10) {

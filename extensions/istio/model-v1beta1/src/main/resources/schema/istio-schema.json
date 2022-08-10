@@ -27,10 +27,22 @@
       "javaEnums": [
         {
           "name": "UNKNOWN"
+        },
+        {
+          "name": "ERROR"
+        },
+        {
+          "name": "WARNING"
+        },
+        {
+          "name": "INFO"
         }
       ],
       "enum": [
-        "UNKNOWN"
+        "UNKNOWN",
+        "ERROR",
+        "WARNING",
+        "INFO"
       ],
       "javaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseLevel"
     },
