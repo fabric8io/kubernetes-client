@@ -4,40 +4,43 @@ package io.fabric8.istio.api.networking.v1alpha3;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum HTTPRedirectRedirectPortSelection {
 
-    FROM_PROTOCOL_DEFAULT("FROM_PROTOCOL_DEFAULT"),
-    FROM_REQUEST_PORT("FROM_REQUEST_PORT");
-    private final String value;
-    private final static Map<String, HTTPRedirectRedirectPortSelection> CONSTANTS = new HashMap<String, HTTPRedirectRedirectPortSelection>();
+    FROM_PROTOCOL_DEFAULT(0),
+    FROM_REQUEST_PORT(1);
+    private final Integer value;
+    private final static Map<Integer, HTTPRedirectRedirectPortSelection> CONSTANTS = new HashMap<Integer, HTTPRedirectRedirectPortSelection>();
+    private final static Map<String, HTTPRedirectRedirectPortSelection> NAME_CONSTANTS = new HashMap<String, HTTPRedirectRedirectPortSelection>();
 
     static {
         for (HTTPRedirectRedirectPortSelection c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (HTTPRedirectRedirectPortSelection c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private HTTPRedirectRedirectPortSelection(String value) {
+    private HTTPRedirectRedirectPortSelection(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static HTTPRedirectRedirectPortSelection fromValue(String value) {
+    public static HTTPRedirectRedirectPortSelection fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                HTTPRedirectRedirectPortSelection constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         HTTPRedirectRedirectPortSelection constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

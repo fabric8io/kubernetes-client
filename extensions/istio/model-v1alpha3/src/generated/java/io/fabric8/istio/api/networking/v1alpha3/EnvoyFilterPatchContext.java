@@ -4,42 +4,45 @@ package io.fabric8.istio.api.networking.v1alpha3;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EnvoyFilterPatchContext {
 
-    ANY("ANY"),
-    SIDECAR_INBOUND("SIDECAR_INBOUND"),
-    SIDECAR_OUTBOUND("SIDECAR_OUTBOUND"),
-    GATEWAY("GATEWAY");
-    private final String value;
-    private final static Map<String, EnvoyFilterPatchContext> CONSTANTS = new HashMap<String, EnvoyFilterPatchContext>();
+    ANY(0),
+    SIDECAR_INBOUND(1),
+    SIDECAR_OUTBOUND(2),
+    GATEWAY(3);
+    private final Integer value;
+    private final static Map<Integer, EnvoyFilterPatchContext> CONSTANTS = new HashMap<Integer, EnvoyFilterPatchContext>();
+    private final static Map<String, EnvoyFilterPatchContext> NAME_CONSTANTS = new HashMap<String, EnvoyFilterPatchContext>();
 
     static {
         for (EnvoyFilterPatchContext c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (EnvoyFilterPatchContext c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private EnvoyFilterPatchContext(String value) {
+    private EnvoyFilterPatchContext(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static EnvoyFilterPatchContext fromValue(String value) {
+    public static EnvoyFilterPatchContext fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                EnvoyFilterPatchContext constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         EnvoyFilterPatchContext constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

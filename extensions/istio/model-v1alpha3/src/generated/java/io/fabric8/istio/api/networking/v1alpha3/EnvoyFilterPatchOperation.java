@@ -4,46 +4,49 @@ package io.fabric8.istio.api.networking.v1alpha3;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EnvoyFilterPatchOperation {
 
-    INVALID("INVALID"),
-    MERGE("MERGE"),
-    ADD("ADD"),
-    REMOVE("REMOVE"),
-    INSERT_BEFORE("INSERT_BEFORE"),
-    INSERT_AFTER("INSERT_AFTER"),
-    INSERT_FIRST("INSERT_FIRST"),
-    REPLACE("REPLACE");
-    private final String value;
-    private final static Map<String, EnvoyFilterPatchOperation> CONSTANTS = new HashMap<String, EnvoyFilterPatchOperation>();
+    INVALID(0),
+    MERGE(1),
+    ADD(2),
+    REMOVE(3),
+    INSERT_BEFORE(4),
+    INSERT_AFTER(5),
+    INSERT_FIRST(6),
+    REPLACE(7);
+    private final Integer value;
+    private final static Map<Integer, EnvoyFilterPatchOperation> CONSTANTS = new HashMap<Integer, EnvoyFilterPatchOperation>();
+    private final static Map<String, EnvoyFilterPatchOperation> NAME_CONSTANTS = new HashMap<String, EnvoyFilterPatchOperation>();
 
     static {
         for (EnvoyFilterPatchOperation c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (EnvoyFilterPatchOperation c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private EnvoyFilterPatchOperation(String value) {
+    private EnvoyFilterPatchOperation(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static EnvoyFilterPatchOperation fromValue(String value) {
+    public static EnvoyFilterPatchOperation fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                EnvoyFilterPatchOperation constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         EnvoyFilterPatchOperation constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

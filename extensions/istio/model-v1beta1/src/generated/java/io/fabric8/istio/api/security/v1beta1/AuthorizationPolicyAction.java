@@ -4,42 +4,45 @@ package io.fabric8.istio.api.security.v1beta1;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum AuthorizationPolicyAction {
 
-    ALLOW("ALLOW"),
-    DENY("DENY"),
-    AUDIT("AUDIT"),
-    CUSTOM("CUSTOM");
-    private final String value;
-    private final static Map<String, AuthorizationPolicyAction> CONSTANTS = new HashMap<String, AuthorizationPolicyAction>();
+    ALLOW(0),
+    DENY(1),
+    AUDIT(2),
+    CUSTOM(3);
+    private final Integer value;
+    private final static Map<Integer, AuthorizationPolicyAction> CONSTANTS = new HashMap<Integer, AuthorizationPolicyAction>();
+    private final static Map<String, AuthorizationPolicyAction> NAME_CONSTANTS = new HashMap<String, AuthorizationPolicyAction>();
 
     static {
         for (AuthorizationPolicyAction c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (AuthorizationPolicyAction c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private AuthorizationPolicyAction(String value) {
+    private AuthorizationPolicyAction(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static AuthorizationPolicyAction fromValue(String value) {
+    public static AuthorizationPolicyAction fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                AuthorizationPolicyAction constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         AuthorizationPolicyAction constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

@@ -562,9 +562,7 @@ func (g *schemaGenerator) getEnumDescriptor(t reflect.Type) EnumDescriptor {
 		} else {
 			enumValues = append(enumValues, EnumValueDescriptor{
 				Name: enumJavaName,
-				// For "string" type, the Value is the same as the Name
-				// but for "integer" type, the Value would be the index, so we need both fields.
-				Value: enumJavaName,
+				Value: index,
 			})
 		}
 
@@ -572,7 +570,7 @@ func (g *schemaGenerator) getEnumDescriptor(t reflect.Type) EnumDescriptor {
 	}
 
 	return EnumDescriptor{
-		Type:   "string", // TODO: To be auto discovered.
+		Type:   "integer",
 		Values: enumValues,
 	}
 }

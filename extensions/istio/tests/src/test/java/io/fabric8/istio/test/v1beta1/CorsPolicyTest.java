@@ -15,48 +15,47 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.istio.api.networking.v1beta1.CorsPolicy;
 import io.fabric8.istio.api.networking.v1beta1.CorsPolicyBuilder;
 import io.fabric8.istio.api.networking.v1beta1.StringMatch;
 import io.fabric8.istio.api.networking.v1beta1.StringMatchPrefix;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class CorsPolicyTest {
-	@Test
-	public void roundtripShouldWork() throws Exception {
-		final String prefix = "example.com";
-		final String allowOrigin = "bar.com";
-		final CorsPolicy policy = new CorsPolicyBuilder()
-				.addNewAllowOrigin()
-      .withNewStringMatchPrefixType(prefix)
-				.endAllowOrigin()
+  @Test
+  public void roundtripShouldWork() throws Exception {
+    final String prefix = "example.com";
+    final String allowOrigin = "bar.com";
+    final CorsPolicy policy = new CorsPolicyBuilder()
+        .addNewAllowOrigin()
+        .withNewStringMatchPrefixType(prefix)
+        .endAllowOrigin()
         .addToDeprecatedAllowOrigin(allowOrigin)
-				.build();
+        .build();
 
-		final String output = Serialization.yamlMapper().writeValueAsString(policy);
+    final String output = Serialization.yamlMapper().writeValueAsString(policy);
 
-		CorsPolicy reloaded = Serialization.yamlMapper().readValue(output, CorsPolicy.class);
+    CorsPolicy reloaded = Serialization.yamlMapper().readValue(output, CorsPolicy.class);
 
-		assertEquals(1, reloaded.getAllowOrigins().size());
-		final StringMatch match = reloaded.getAllowOrigins().get(0);
-		if (match.getMatchType() instanceof StringMatchPrefix) {
+    assertEquals(1, reloaded.getAllowOrigins().size());
+    final StringMatch match = reloaded.getAllowOrigins().get(0);
+    if (match.getMatchType() instanceof StringMatchPrefix) {
       StringMatchPrefix prefixMatchType = (StringMatchPrefix) match.getMatchType();
-			assertEquals(prefix, prefixMatchType.getPrefix());
-		} else {
-			fail();
-		}
+      assertEquals(prefix, prefixMatchType.getPrefix());
+    } else {
+      fail();
+    }
 
-		assertEquals(1, reloaded.getDeprecatedAllowOrigin().size());
-		assertEquals(allowOrigin, reloaded.getDeprecatedAllowOrigin().get(0));
+    assertEquals(1, reloaded.getDeprecatedAllowOrigin().size());
+    assertEquals(allowOrigin, reloaded.getDeprecatedAllowOrigin().get(0));
 
-		assertEquals(policy, reloaded);
-	}
+    assertEquals(policy, reloaded);
+  }
 }

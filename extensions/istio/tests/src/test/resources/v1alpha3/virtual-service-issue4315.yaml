@@ -25,8 +25,11 @@ spec:
 status:
   validationMessages:
     - documentation_url: https://istio.io/v1.11/docs/reference/config/analysis/ist0101/?ref=status-controller
-      level: ERROR
+      level: 3
       code: IST0101
     - documentation_url: https://istio.io/v1.11/docs/reference/config/analysis/ist0101/?ref=status-controller
       level: INFO
+      code: IST0101
+    - documentation_url: https://istio.io/v1.11/docs/reference/config/analysis/ist0101/?ref=status-controller
+      level: Info
       code: IST0101

@@ -4,43 +4,46 @@ package io.fabric8.istio.api.networking.v1alpha3;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ServerTLSSettingsTLSmode {
 
-    PASSTHROUGH("PASSTHROUGH"),
-    SIMPLE("SIMPLE"),
-    MUTUAL("MUTUAL"),
-    AUTO_PASSTHROUGH("AUTO_PASSTHROUGH"),
-    ISTIO_MUTUAL("ISTIO_MUTUAL");
-    private final String value;
-    private final static Map<String, ServerTLSSettingsTLSmode> CONSTANTS = new HashMap<String, ServerTLSSettingsTLSmode>();
+    PASSTHROUGH(0),
+    SIMPLE(1),
+    MUTUAL(2),
+    AUTO_PASSTHROUGH(3),
+    ISTIO_MUTUAL(4);
+    private final Integer value;
+    private final static Map<Integer, ServerTLSSettingsTLSmode> CONSTANTS = new HashMap<Integer, ServerTLSSettingsTLSmode>();
+    private final static Map<String, ServerTLSSettingsTLSmode> NAME_CONSTANTS = new HashMap<String, ServerTLSSettingsTLSmode>();
 
     static {
         for (ServerTLSSettingsTLSmode c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (ServerTLSSettingsTLSmode c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private ServerTLSSettingsTLSmode(String value) {
+    private ServerTLSSettingsTLSmode(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static ServerTLSSettingsTLSmode fromValue(String value) {
+    public static ServerTLSSettingsTLSmode fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                ServerTLSSettingsTLSmode constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         ServerTLSSettingsTLSmode constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }
