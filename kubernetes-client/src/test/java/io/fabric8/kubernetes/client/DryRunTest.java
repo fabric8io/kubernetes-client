@@ -53,7 +53,8 @@ class DryRunTest {
     builders.clear();
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, "{}");
+    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK,
+      "{\"kind\":\"Pod\", \"apiVersion\":\"v1\"}");
     when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
     kubernetesClient = new DefaultKubernetesClient(mockClient, config);
     Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
@@ -208,16 +209,16 @@ class DryRunTest {
   private void assertRequest(String method, String url, String queryParam) {
     assertRequest(0, method, url, queryParam);
   }
-  
+
   private void assertRequest(int index, String method, String url, String queryParam) {
     ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
     Builder mock = builders.get(index);
     verify(mock).url(urlCaptor.capture());
-    
+
     URL capturedURL = urlCaptor.getValue();
     assertEquals(url, capturedURL.getPath());
     PatchTest.validateMethod(method, null, mock);
-    
+
     assertEquals(queryParam, capturedURL.getQuery());
   }
 }
