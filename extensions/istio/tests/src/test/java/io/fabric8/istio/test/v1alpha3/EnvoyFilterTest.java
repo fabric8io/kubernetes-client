@@ -15,18 +15,17 @@
  */
 package io.fabric8.istio.test.v1alpha3;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.InputStream;
-import java.util.Map;
-
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilter;
 import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilterEnvoyConfigObjectMatch;
 import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilterEnvoyConfigObjectPatch;
 import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilterPatchContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -42,28 +41,27 @@ public class EnvoyFilterTest {
     final EnvoyFilterEnvoyConfigObjectMatch match = configObjectPatch.getMatch();
     assertEquals(EnvoyFilterPatchContext.SIDECAR_OUTBOUND, match.getContext());
 
-
-		/*
-		value:
-          name: istio.stats
-          typed_config:
-            '@type': type.googleapis.com/udpa.type.v1.TypedStruct
-            type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
-            value:
-              config:
-                configuration: |
-                  {
-                    "debug": "false",
-                    "stat_prefix": "istio"
-                  }
-                root_id: stats_outbound
-                vm_config:
-                  code:
-                    local:
-                      inline_string: envoy.wasm.stats
-                  runtime: envoy.wasm.runtime.null
-                  vm_id: stats_outbound
-		 */
+    /*
+     * value:
+     * name: istio.stats
+     * typed_config:
+     * '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+     * type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+     * value:
+     * config:
+     * configuration: |
+     * {
+     * "debug": "false",
+     * "stat_prefix": "istio"
+     * }
+     * root_id: stats_outbound
+     * vm_config:
+     * code:
+     * local:
+     * inline_string: envoy.wasm.stats
+     * runtime: envoy.wasm.runtime.null
+     * vm_id: stats_outbound
+     */
     final Map<String, Object> value = configObjectPatch.getPatch().getValue();
     Map<String, Object> typedConfigStruct = (Map<String, Object>) value.get("typed_config");
     Map<String, Object> valueStruct = (Map<String, Object>) typedConfigStruct.get("value");

@@ -4,39 +4,42 @@ package io.fabric8.istio.api.internal.protobuf.types;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum NullValue {
 
-    NULL_VALUE("NULL_VALUE");
-    private final String value;
-    private final static Map<String, NullValue> CONSTANTS = new HashMap<String, NullValue>();
+    NULL_VALUE(0);
+    private final Integer value;
+    private final static Map<Integer, NullValue> CONSTANTS = new HashMap<Integer, NullValue>();
+    private final static Map<String, NullValue> NAME_CONSTANTS = new HashMap<String, NullValue>();
 
     static {
         for (NullValue c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (NullValue c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private NullValue(String value) {
+    private NullValue(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static NullValue fromValue(String value) {
+    public static NullValue fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                NullValue constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         NullValue constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

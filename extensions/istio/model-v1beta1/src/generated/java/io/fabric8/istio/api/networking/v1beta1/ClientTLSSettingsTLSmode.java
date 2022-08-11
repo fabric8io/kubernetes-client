@@ -4,42 +4,45 @@ package io.fabric8.istio.api.networking.v1beta1;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ClientTLSSettingsTLSmode {
 
-    DISABLE("DISABLE"),
-    SIMPLE("SIMPLE"),
-    MUTUAL("MUTUAL"),
-    ISTIO_MUTUAL("ISTIO_MUTUAL");
-    private final String value;
-    private final static Map<String, ClientTLSSettingsTLSmode> CONSTANTS = new HashMap<String, ClientTLSSettingsTLSmode>();
+    DISABLE(0),
+    SIMPLE(1),
+    MUTUAL(2),
+    ISTIO_MUTUAL(3);
+    private final Integer value;
+    private final static Map<Integer, ClientTLSSettingsTLSmode> CONSTANTS = new HashMap<Integer, ClientTLSSettingsTLSmode>();
+    private final static Map<String, ClientTLSSettingsTLSmode> NAME_CONSTANTS = new HashMap<String, ClientTLSSettingsTLSmode>();
 
     static {
         for (ClientTLSSettingsTLSmode c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (ClientTLSSettingsTLSmode c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private ClientTLSSettingsTLSmode(String value) {
+    private ClientTLSSettingsTLSmode(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static ClientTLSSettingsTLSmode fromValue(String value) {
+    public static ClientTLSSettingsTLSmode fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                ClientTLSSettingsTLSmode constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         ClientTLSSettingsTLSmode constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

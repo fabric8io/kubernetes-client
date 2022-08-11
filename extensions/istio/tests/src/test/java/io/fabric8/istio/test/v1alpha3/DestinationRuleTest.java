@@ -15,36 +15,35 @@
  */
 package io.fabric8.istio.test.v1alpha3;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.InputStream;
-
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.istio.api.networking.v1alpha3.DestinationRule;
 import io.fabric8.istio.api.networking.v1alpha3.IsLoadBalancerSettingsConsistentHashLBHashKey;
 import io.fabric8.istio.api.networking.v1alpha3.IsLoadBalancerSettingsLbPolicy;
 import io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHash;
 import io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpCookie;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class DestinationRuleTest {
 
-	@Test
-	public void loadingFromYAMLIssue82ShouldWork() throws Exception {
-		final InputStream inputStream = DestinationRuleTest.class.getResourceAsStream("/v1alpha3/destination-rule-issue82.yaml");
-		final DestinationRule destinationRule = Serialization.yamlMapper().readValue(inputStream, DestinationRule.class);
+  @Test
+  public void loadingFromYAMLIssue82ShouldWork() throws Exception {
+    final InputStream inputStream = DestinationRuleTest.class.getResourceAsStream("/v1alpha3/destination-rule-issue82.yaml");
+    final DestinationRule destinationRule = Serialization.yamlMapper().readValue(inputStream, DestinationRule.class);
 
-		final IsLoadBalancerSettingsLbPolicy policy = destinationRule.getSpec().getTrafficPolicy().getLoadBalancer().getLbPolicy();
-		assertTrue(policy instanceof LoadBalancerSettingsConsistentHash);
-		final LoadBalancerSettingsConsistentHash consistentHashLbPolicy = (LoadBalancerSettingsConsistentHash) policy;
-		final IsLoadBalancerSettingsConsistentHashLBHashKey hashKey = consistentHashLbPolicy.getConsistentHash().getHashKey();
-		assertTrue(hashKey instanceof LoadBalancerSettingsConsistentHashLBHttpCookie);
-		final LoadBalancerSettingsConsistentHashLBHttpCookie httpCookieHashKey = (LoadBalancerSettingsConsistentHashLBHttpCookie) hashKey;
-		assertEquals("user", httpCookieHashKey.getHttpCookie().getName());
-	}
+    final IsLoadBalancerSettingsLbPolicy policy = destinationRule.getSpec().getTrafficPolicy().getLoadBalancer().getLbPolicy();
+    assertTrue(policy instanceof LoadBalancerSettingsConsistentHash);
+    final LoadBalancerSettingsConsistentHash consistentHashLbPolicy = (LoadBalancerSettingsConsistentHash) policy;
+    final IsLoadBalancerSettingsConsistentHashLBHashKey hashKey = consistentHashLbPolicy.getConsistentHash().getHashKey();
+    assertTrue(hashKey instanceof LoadBalancerSettingsConsistentHashLBHttpCookie);
+    final LoadBalancerSettingsConsistentHashLBHttpCookie httpCookieHashKey = (LoadBalancerSettingsConsistentHashLBHttpCookie) hashKey;
+    assertEquals("user", httpCookieHashKey.getHttpCookie().getName());
+  }
 }

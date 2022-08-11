@@ -79,8 +79,9 @@ public class VirtualServiceTest {
   public void loadingVirtualServiceWithValidationMessages() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1alpha3/virtual-service-issue4315.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
-    assertEquals(2, virtualService.getStatus().getValidationMessages().size());
+    assertEquals(3, virtualService.getStatus().getValidationMessages().size());
     assertEquals(AnalysisMessageBaseLevel.ERROR, virtualService.getStatus().getValidationMessages().get(0).getLevel());
     assertEquals(AnalysisMessageBaseLevel.INFO, virtualService.getStatus().getValidationMessages().get(1).getLevel());
+    assertEquals(AnalysisMessageBaseLevel.INFO, virtualService.getStatus().getValidationMessages().get(2).getLevel());
   }
 }

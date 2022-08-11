@@ -4,49 +4,52 @@ package io.fabric8.istio.api.networking.v1alpha3;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EnvoyFilterApplyTo {
 
-    INVALID("INVALID"),
-    LISTENER("LISTENER"),
-    FILTER_CHAIN("FILTER_CHAIN"),
-    NETWORK_FILTER("NETWORK_FILTER"),
-    HTTP_FILTER("HTTP_FILTER"),
-    ROUTE_CONFIGURATION("ROUTE_CONFIGURATION"),
-    VIRTUAL_HOST("VIRTUAL_HOST"),
-    HTTP_ROUTE("HTTP_ROUTE"),
-    CLUSTER("CLUSTER"),
-    EXTENSION_CONFIG("EXTENSION_CONFIG"),
-    BOOTSTRAP("BOOTSTRAP");
-    private final String value;
-    private final static Map<String, EnvoyFilterApplyTo> CONSTANTS = new HashMap<String, EnvoyFilterApplyTo>();
+    INVALID(0),
+    LISTENER(1),
+    FILTER_CHAIN(2),
+    NETWORK_FILTER(3),
+    HTTP_FILTER(4),
+    ROUTE_CONFIGURATION(5),
+    VIRTUAL_HOST(6),
+    HTTP_ROUTE(7),
+    CLUSTER(8),
+    EXTENSION_CONFIG(9),
+    BOOTSTRAP(10);
+    private final Integer value;
+    private final static Map<Integer, EnvoyFilterApplyTo> CONSTANTS = new HashMap<Integer, EnvoyFilterApplyTo>();
+    private final static Map<String, EnvoyFilterApplyTo> NAME_CONSTANTS = new HashMap<String, EnvoyFilterApplyTo>();
 
     static {
         for (EnvoyFilterApplyTo c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (EnvoyFilterApplyTo c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private EnvoyFilterApplyTo(String value) {
+    private EnvoyFilterApplyTo(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static EnvoyFilterApplyTo fromValue(String value) {
+    public static EnvoyFilterApplyTo fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                EnvoyFilterApplyTo constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         EnvoyFilterApplyTo constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }

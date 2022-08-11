@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
+import com.sun.codemodel.JClassContainer;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
@@ -48,5 +49,10 @@ public class Fabric8RuleFactory extends RuleFactory {
   @Override
   public Rule<JFieldVar, JFieldVar> getDefaultRule() {
     return new Fabric8DefaultRule(this);
+  }
+
+  @Override
+  public Rule<JClassContainer, JType> getEnumRule() {
+    return new Fabric8EnumRule(this);
   }
 }

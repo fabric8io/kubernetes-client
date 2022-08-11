@@ -4,42 +4,45 @@ package io.fabric8.istio.api.networking.v1beta1;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ServiceEntryResolution {
 
-    NONE("NONE"),
-    STATIC("STATIC"),
-    DNS("DNS"),
-    DNS_ROUND_ROBIN("DNS_ROUND_ROBIN");
-    private final String value;
-    private final static Map<String, ServiceEntryResolution> CONSTANTS = new HashMap<String, ServiceEntryResolution>();
+    NONE(0),
+    STATIC(1),
+    DNS(2),
+    DNS_ROUND_ROBIN(3);
+    private final Integer value;
+    private final static Map<Integer, ServiceEntryResolution> CONSTANTS = new HashMap<Integer, ServiceEntryResolution>();
+    private final static Map<String, ServiceEntryResolution> NAME_CONSTANTS = new HashMap<String, ServiceEntryResolution>();
 
     static {
         for (ServiceEntryResolution c: values()) {
             CONSTANTS.put(c.value, c);
         }
+        for (ServiceEntryResolution c: values()) {
+            NAME_CONSTANTS.put(c.name().toLowerCase(), c);
+        }
     }
 
-    private ServiceEntryResolution(String value) {
+    private ServiceEntryResolution(Integer value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-        return this.value;
-    }
-
     @JsonCreator
-    public static ServiceEntryResolution fromValue(String value) {
+    public static ServiceEntryResolution fromValue(Object value) {
+        if (value instanceof String) {
+            {
+                ServiceEntryResolution constant = NAME_CONSTANTS.get(((String) value).toLowerCase());
+                if (constant == null) {
+                    throw new IllegalArgumentException((value +""));
+                } else {
+                    return constant;
+                }
+            }
+        }
         ServiceEntryResolution constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(value);
+            throw new IllegalArgumentException((value +""));
         } else {
             return constant;
         }
