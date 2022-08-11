@@ -55,7 +55,8 @@ class DryRunTest {
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
     when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
-        .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, "{}")));
+        .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200,
+            "{\"kind\":\"Pod\", \"apiVersion\":\"v1\"}")));
     kubernetesClient = new DefaultKubernetesClient(mockClient, config);
     Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
