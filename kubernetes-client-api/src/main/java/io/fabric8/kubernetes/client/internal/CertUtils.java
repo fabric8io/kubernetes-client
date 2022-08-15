@@ -15,14 +15,6 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.Utils;
-import org.bouncycastle.openssl.PEMKeyPair;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,6 +41,15 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.fabric8.kubernetes.client.utils.Utils;
 
 public class CertUtils {
   private CertUtils() { }
@@ -138,31 +139,36 @@ public class CertUtils {
 
       throw new InvalidKeySpecException("Unknown type of PKCS8 Private Key, tried RSA and ECDSA");
   }
+  
+  private static void addStandardBCProvider()
+  {
+    try {
+      new Callable<Object>() {
+      	@Override
+      	public Object call() throws NoClassDefFoundError {
+      		Security.addProvider(new BouncyCastleProvider());
+      		return null;
+      	}
+      }.call();
+    } catch (NoClassDefFoundError e) {
+    }
+  }
 
   private static PrivateKey handleECKey(InputStream keyInputStream) {
     // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
     try {
-      return new Callable<PrivateKey>() {
-        @Override
-        public PrivateKey call() {
-          try {
-            if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
-              Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-            }
-            PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
-            return new
-              JcaPEMKeyConverter().
-              getKeyPair(keys).
-              getPrivate();
-          } catch (IOException exception) {
-            exception.printStackTrace();
-          }
-          return null;
-        }
-      }.call();
-    } catch (NoClassDefFoundError e) {
-      throw new KubernetesClientException("JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
+      if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
+        addStandardBCProvider();
+      }
+      PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
+      return new
+        JcaPEMKeyConverter().
+        getKeyPair(keys).
+        getPrivate();
+    } catch (IOException exception) {
+      exception.printStackTrace();
     }
+    return null;
   }
 
   private static PrivateKey handleOtherKeys(InputStream keyInputStream, String clientKeyAlgo) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
