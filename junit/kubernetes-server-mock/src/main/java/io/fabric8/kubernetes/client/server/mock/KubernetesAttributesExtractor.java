@@ -33,9 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -89,23 +87,14 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
   private static final String SCHEME = "http";
   private static final String HOST = "localhost";
 
-  private final Map<List<String>, CustomResourceDefinitionContext> crdContexts;
-
-  public KubernetesAttributesExtractor() {
-    this(Collections.emptyList());
-  }
-
-  public KubernetesAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
-    this.crdContexts = crdContexts.stream()
-        .collect(Collectors.toMap(KubernetesAttributesExtractor::pluralKey, Function.identity()));
-  }
-
-  private static List<String> pluralKey(CustomResourceDefinitionContext c) {
-    return pluralKey(c.getGroup(), c.getVersion(), c.getPlural());
-  }
-
-  private static List<String> pluralKey(String api, String version, String plural) {
+  static List<String> pluralKey(String api, String version, String plural) {
     return Arrays.asList(api, version, plural);
+  }
+
+  private CustomResourceDefinitionProcessor customResourceDefinitionProcessor;
+
+  public void setCustomResourceDefinitionProcessor(CustomResourceDefinitionProcessor customResourceDefinitionProcessor) {
+    this.customResourceDefinitionProcessor = customResourceDefinitionProcessor;
   }
 
   private HttpUrl parseUrlFromPathAndQuery(String s) {
@@ -165,6 +154,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
   public AttributeSet extract(HasMetadata hasMetadata) {
     AttributeSet metadataAttributes = new AttributeSet();
     String apiVersion = hasMetadata.getApiVersion();
+    String kind = hasMetadata.getKind();
     String api = null;
     String version = null;
     if (!Utils.isNullOrEmpty(apiVersion)) {
@@ -194,20 +184,13 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
     }
     if (!(hasMetadata instanceof GenericKubernetesResource)) {
       metadataAttributes = metadataAttributes.add(new Attribute(PLURAL, hasMetadata.getPlural()));
-    } else {
-      Optional<CustomResourceDefinitionContext> context = findCrd(api, version);
+    } else if (customResourceDefinitionProcessor != null) {
+      Optional<CustomResourceDefinitionContext> context = customResourceDefinitionProcessor.findCrd(api, version, kind);
       if (context.isPresent()) {
         metadataAttributes = metadataAttributes.add(new Attribute(PLURAL, context.get().getPlural()));
       } // else we shouldn't infer the plural without a crd registered - it will come from the path instead
     }
     return metadataAttributes;
-  }
-
-  private Optional<CustomResourceDefinitionContext> findCrd(String api, String version) {
-    return crdContexts.values()
-        .stream()
-        .filter(c -> Objects.equals(api, c.getGroup()) && Objects.equals(version, c.getVersion()))
-        .findFirst();
   }
 
   private Map<String, String> extract(Matcher m) {
@@ -343,15 +326,4 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
     return result;
   }
 
-  public CustomResourceDefinitionContext getCrdContext(String api, String version, String plural) {
-    return this.crdContexts.get(pluralKey(api, version, plural));
-  }
-
-  public void removeCrdContext(CustomResourceDefinitionContext context) {
-    this.crdContexts.remove(pluralKey(context));
-  }
-
-  public void addCrdContext(CustomResourceDefinitionContext context) {
-    this.crdContexts.put(pluralKey(context), context);
-  }
 }

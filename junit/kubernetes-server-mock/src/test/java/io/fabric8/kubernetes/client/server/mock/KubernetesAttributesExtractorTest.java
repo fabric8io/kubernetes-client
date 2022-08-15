@@ -237,15 +237,7 @@ public class KubernetesAttributesExtractorTest {
 
   @Test
   void shouldHandleCrds() {
-    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-        .withScope("Namespaced")
-        .withPlural("crds")
-        .withVersion("v1")
-        .withGroup("test.com")
-        .withKind("crd")
-        .build();
-
-    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
 
     AttributeSet expected = new AttributeSet();
@@ -258,7 +250,7 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
-  void shouldHandleCrdSubresources() {
+  void shouldHandleCustomResources() {
     CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
         .withScope("Namespaced")
         .withPlural("crds")
@@ -267,7 +259,27 @@ public class KubernetesAttributesExtractorTest {
         .withKind("crd")
         .build();
 
-    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    CustomResourceDefinitionProcessor processor = new CustomResourceDefinitionProcessor();
+    processor.addCrdContext(crdContext);
+    extractor.setCustomResourceDefinitionProcessor(processor);
+    String resource = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"crd\", \"apiVersion\":\"test.com/v1\"}";
+    AttributeSet attributes = extractor.fromResource(resource);
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "crds"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "myresource"));
+    expected = expected.add(new Attribute("metadata.name", "myresource"));
+    expected = expected.add(new Attribute("metadata.namespace", "myns"));
+    expected = expected.add(new Attribute("api", "test.com"));
+    expected = expected.add(new Attribute("version", "v1"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleCrdSubresources() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     String[] subresources = new String[] { "status", "scale" };
 
     String basePath = "/apis/test.com/v1/namespaces/myns/crds/mycrd/";
@@ -494,15 +506,7 @@ public class KubernetesAttributesExtractorTest {
 
   @Test
   void testCustomResourceAttributesExtraction() {
-    // Given
-    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-        .withScope("Namespaced")
-        .withPlural("customdatabases")
-        .withVersion("v1alpha1")
-        .withGroup("demo.fabric8.io")
-        .withKind("CustomDatabase")
-        .build();
-    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Collections.singletonList(crdContext));
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 
     // When
     AttributeSet attributes = extractor

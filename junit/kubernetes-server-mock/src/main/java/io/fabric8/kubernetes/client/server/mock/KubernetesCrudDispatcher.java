@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudDispatcherHandler.process;
 
-public class KubernetesCrudDispatcher extends CrudDispatcher implements KubernetesCrudPersistence {
+public class KubernetesCrudDispatcher extends CrudDispatcher implements KubernetesCrudPersistence, CustomResourceAware {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
   private final Set<WatchEventsListener> watchEventListeners;
@@ -65,21 +65,18 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   }
 
   public KubernetesCrudDispatcher(List<CustomResourceDefinitionContext> crdContexts) {
-    this(new KubernetesAttributesExtractor(crdContexts), new KubernetesResponseComposer());
-  }
-
-  public KubernetesCrudDispatcher(KubernetesAttributesExtractor attributeExtractor,
-      KubernetesResponseComposer responseComposer) {
-    super(new Context(Serialization.jsonMapper()), attributeExtractor, responseComposer);
-    this.kubernetesAttributesExtractor = attributeExtractor;
-    this.kubernetesResponseComposer = responseComposer;
+    super(new Context(Serialization.jsonMapper()), new KubernetesAttributesExtractor(), new KubernetesResponseComposer());
+    this.kubernetesAttributesExtractor = (KubernetesAttributesExtractor) this.attributeExtractor;
+    this.kubernetesResponseComposer = (KubernetesResponseComposer) this.responseComposer;
     watchEventListeners = new CopyOnWriteArraySet<>();
-    crdProcessor = new CustomResourceDefinitionProcessor(kubernetesAttributesExtractor);
+    crdProcessor = new CustomResourceDefinitionProcessor();
+    this.kubernetesAttributesExtractor.setCustomResourceDefinitionProcessor(crdProcessor);
     resourceVersion = new AtomicLong();
 
-    postHandler = new PostHandler(attributeExtractor, this);
+    postHandler = new PostHandler(this.kubernetesAttributesExtractor, this);
     putHandler = new PutHandler(this);
     patchHandler = new PatchHandler(this);
+    crdContexts.stream().forEach(this::expectCustomResource);
   }
 
   /**
@@ -147,7 +144,16 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
         response.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
       }
     } else {
-      response.setBody(kubernetesResponseComposer.compose(items, String.valueOf(resourceVersion.get())));
+      // if there are no items, and this is a get it may be an api metadata request
+      String metadataResult = null;
+      if (items.isEmpty() && eventProcessor == null) {
+        metadataResult = crdProcessor.getApiResources(path);
+      }
+      if (metadataResult != null) {
+        response.setBody(metadataResult);
+      } else {
+        response.setBody(kubernetesResponseComposer.compose(items, String.valueOf(resourceVersion.get())));
+      }
       response.setResponseCode(HttpURLConnection.HTTP_OK);
     }
     return response;
@@ -294,5 +300,12 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   @Override
   public void reset() {
     map.clear();
+    // what about the initial crds? That should likely be deprecated
+    this.crdProcessor.reset();
+  }
+
+  @Override
+  public void expectCustomResource(CustomResourceDefinitionContext rdc) {
+    this.crdProcessor.addCrdContext(rdc);
   }
 }

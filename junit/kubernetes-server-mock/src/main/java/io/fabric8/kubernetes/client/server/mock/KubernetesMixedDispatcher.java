@@ -40,7 +40,7 @@ import java.util.Queue;
  * <p>
  * This dispatcher is useful to use the KubernetesMockServer in a mixed CRUD mode.
  */
-public class KubernetesMixedDispatcher extends Dispatcher implements Resetable {
+public class KubernetesMixedDispatcher extends Dispatcher implements Resetable, CustomResourceAware {
 
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final MockDispatcher mockDispatcher;
@@ -70,5 +70,10 @@ public class KubernetesMixedDispatcher extends Dispatcher implements Resetable {
   @Override
   public void reset() {
     this.kubernetesCrudDispatcher.reset();
+  }
+
+  @Override
+  public void expectCustomResource(CustomResourceDefinitionContext rdc) {
+    this.kubernetesCrudDispatcher.expectCustomResource(rdc);
   }
 }

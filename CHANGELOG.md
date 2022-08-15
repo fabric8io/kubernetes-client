@@ -17,6 +17,7 @@
 * Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 * Fix #4250: allowing for deserialization of polymorphic unwrapped fields
 * Fix #4318: implemented LeaderElection releaseOnCancel
+* Fix #3960: adding a KubernetesMockServer.expectCustomResource helper method and additional mock crd support
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 
 #### Dependency Upgrade
