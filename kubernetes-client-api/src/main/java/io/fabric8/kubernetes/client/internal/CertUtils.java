@@ -138,31 +138,37 @@ public class CertUtils {
 
       throw new InvalidKeySpecException("Unknown type of PKCS8 Private Key, tried RSA and ECDSA");
   }
-
-  private static PrivateKey handleECKey(InputStream keyInputStream) {
-    // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
+  
+  private static void addStandardBCProvider()
+  {
     try {
-      return new Callable<PrivateKey>() {
-        @Override
-        public PrivateKey call() {
-          try {
-            if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
-              Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-            }
-            PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
-            return new
-              JcaPEMKeyConverter().
-              getKeyPair(keys).
-              getPrivate();
-          } catch (IOException exception) {
-            exception.printStackTrace();
-          }
-          return null;
-        }
+      new Callable<Object>() {
+      	@Override
+      	public Object call() throws NoClassDefFoundError {
+      		Security.addProvider(new BouncyCastleProvider());
+      		return null;
+      	}
       }.call();
     } catch (NoClassDefFoundError e) {
       throw new KubernetesClientException("JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
     }
+  }
+
+  private static PrivateKey handleECKey(InputStream keyInputStream) {
+    // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
+    try {
+      if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
+        addStandardBCProvider();
+      }
+      PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
+      return new
+        JcaPEMKeyConverter().
+        getKeyPair(keys).
+        getPrivate();
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+    return null;
   }
 
   private static PrivateKey handleOtherKeys(InputStream keyInputStream, String clientKeyAlgo) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
