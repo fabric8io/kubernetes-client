@@ -40,8 +40,11 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.mockwebserver.internal.WebSocketMessage;
 import okio.ByteString;
+import org.awaitility.Awaitility;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,6 +67,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -337,23 +341,135 @@ class PodTest {
 
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ExecWatch watch = client.pods().withName("pod1").writingOutput(baos).usingListener(new ExecListener() {
-
-      @Override
-      public void onFailure(Throwable t, Response failureResponse) {
-        execLatch.countDown();
-      }
-
-      @Override
-      public void onClose(int code, String reason) {
-        execLatch.countDown();
-      }
-    }).exec("ls");
+    ExecWatch watch = client.pods().withName("pod1")
+        .writingOutput(baos)
+        .usingListener(createCountDownLatchListener(execLatch))
+        .exec("ls");
 
     execLatch.await(10, TimeUnit.MINUTES);
     assertNotNull(watch);
     assertEquals(expectedOutput, baos.toString());
     watch.close();
+  }
+
+  @Test
+  void testAttachWithWritingOutput() throws InterruptedException, IOException {
+    // Given
+    String validInput = "input";
+    String expectedOutput = "output";
+
+    String invalidInput = "invalid";
+    String expectedError = "error";
+
+    String shutdownInput = "shutdown";
+
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/attach?stdin=true&stdout=true&stderr=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("\u0000" + validInput) // \u0000 is the file descriptor for stdin
+        .andEmit(new WebSocketMessage(0L, "\u0001" + expectedOutput, false, true)) // \u0001 is the file descriptor for stdout
+        .always()
+        .expect("\u0000" + invalidInput)
+        .andEmit(new WebSocketMessage(0L, "\u0002" + expectedError, false, true)) // \u0002 is the file descriptor for stderr
+        .always()
+        .expect("\u0000" + shutdownInput)
+        .andEmit(new WebSocketMessage(0L, "\u0003shutdown", false, true))
+        .always()
+        .done()
+        .always();
+
+    ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+    ByteArrayOutputStream stderr = new ByteArrayOutputStream();
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    // When
+    ExecWatch watch = client.pods().withName("pod1")
+        .redirectingInput()
+
+        .writingOutput(stdout)
+        .writingError(stderr)
+        .usingListener(createCountDownLatchListener(latch))
+        .attach();
+
+    watch.getInput().write(validInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+    watch.getInput().write(invalidInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+    watch.getInput().write(shutdownInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+
+    latch.await(1, TimeUnit.MINUTES);
+
+    // Then
+    assertEquals(expectedOutput, stdout.toString());
+    assertEquals(expectedError, stderr.toString());
+
+    watch.close();
+  }
+
+  @Test
+  void testAttachWithRedirectOutput() throws InterruptedException, IOException {
+    // Given
+    String validInput = "input";
+    String expectedOutput = "output";
+
+    String invalidInput = "invalid";
+    String expectedError = "error";
+
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/attach?stdin=true&stdout=true&stderr=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("\u0000" + validInput) // \u0000 is the file descriptor for stdin
+        .andEmit(new WebSocketMessage(0L, "\u0001" + expectedOutput, false, true)) // \u0001 is the file descriptor for stdout
+        .always()
+        .expect("\u0000" + invalidInput)
+        .andEmit(new WebSocketMessage(0L, "\u0002" + expectedError, false, true)) // \u0002 is the file descriptor for stderr
+        .always()
+        .done()
+        .always();
+
+    ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+    ByteArrayOutputStream stderr = new ByteArrayOutputStream();
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    // When
+    ExecWatch watch = client.pods().withName("pod1")
+        .redirectingInput()
+        .redirectingOutput()
+        .redirectingError()
+        .usingListener(createCountDownLatchListener(latch))
+        .attach();
+
+    watch.getInput().write(validInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+    watch.getInput().write(invalidInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+
+    InputStreamPumper.pump(watch.getOutput(), stdout::write, Executors.newSingleThreadExecutor());
+    InputStreamPumper.pump(watch.getError(), stderr::write, Executors.newSingleThreadExecutor());
+
+    // Then
+    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+        .until(() -> stdout.toString().equals(expectedOutput) && stderr.toString().equals(expectedError));
+
+    watch.close();
+    latch.await(1, TimeUnit.MINUTES);
+  }
+
+  private ExecListener createCountDownLatchListener(CountDownLatch latch) {
+    return new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        latch.countDown();
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+        latch.countDown();
+      }
+    };
   }
 
   @Test
