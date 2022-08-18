@@ -71,6 +71,7 @@ import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -271,37 +272,54 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public ExecWatch exec(String... command) {
     String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
     try {
-      URL url = getURLWithCommandParams(actualCommands);
-      HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor());
-      CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
-          .subprotocol("v4.channel.k8s.io")
-          .uri(url.toURI())
-          .buildAsync(execWebSocketListener);
-      startedFuture.whenComplete((w, t) -> {
-        if (t != null) {
-          execWebSocketListener.onError(w, t);
-        }
-      });
-      Utils.waitUntilReadyOrFail(startedFuture, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
-      return execWebSocketListener;
+      URL url = getExecURLWithCommandParams(actualCommands);
+      return setupConnectionToPod(url.toURI());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("exec"), t);
     }
   }
 
-  URL getURLWithCommandParams(String[] commands) throws MalformedURLException {
+  @Override
+  public ExecWatch attach() {
+    try {
+      URL url = getAttachURL();
+      return setupConnectionToPod(url.toURI());
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("attach"), t);
+    }
+  }
+
+  private URL getExecURLWithCommandParams(String[] commands) throws MalformedURLException {
     String url = URLUtils.join(getResourceUrl().toString(), "exec");
-
     URLBuilder httpUrlBuilder = new URLBuilder(url);
-
     for (String cmd : commands) {
       httpUrlBuilder.addQueryParameter("command", cmd);
     }
-
     getContext().addQueryParameters(httpUrlBuilder);
-
     return httpUrlBuilder.build();
+  }
+
+  private URL getAttachURL() throws MalformedURLException {
+    String url = URLUtils.join(getResourceUrl().toString(), "attach");
+    URLBuilder httpUrlBuilder = new URLBuilder(url);
+    getContext().addQueryParameters(httpUrlBuilder);
+    return httpUrlBuilder.build();
+  }
+
+  private ExecWebSocketListener setupConnectionToPod(URI uri) {
+    HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+    ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor());
+    CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
+        .subprotocol("v4.channel.k8s.io")
+        .uri(uri)
+        .buildAsync(execWebSocketListener);
+    startedFuture.whenComplete((w, t) -> {
+      if (t != null) {
+        execWebSocketListener.onError(w, t);
+      }
+    });
+    Utils.waitUntilReadyOrFail(startedFuture, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
+    return execWebSocketListener;
   }
 
   @Override

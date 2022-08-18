@@ -28,6 +28,7 @@
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire
+* Fix #4333: Implement "attach to pod" functionality
 
 #### _**Note**_: Breaking changes in the API
 * Fix #4206: The Serialization utility class will throw an Exception, instead of returning null, if an untyped unmarshall method is used on something that lacks type information

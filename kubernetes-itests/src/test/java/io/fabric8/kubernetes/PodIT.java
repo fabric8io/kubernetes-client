@@ -256,6 +256,50 @@ class PodIT {
   }
 
   @Test
+  void attach() throws Exception {
+    client.pods().withName("pod-interactive").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+
+    CountDownLatch latch = new CountDownLatch(1);
+    ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+    AtomicBoolean closed = new AtomicBoolean();
+    AtomicBoolean failed = new AtomicBoolean();
+
+    ExecWatch watch = client.pods().withName("pod-interactive")
+        .redirectingInput()
+        .redirectingOutput()
+        .redirectingError()
+        .withTTY()
+        .usingListener(new ExecListener() {
+          @Override
+          public void onFailure(Throwable t, Response failureResponse) {
+            failed.set(true);
+            latch.countDown();
+          }
+
+          @Override
+          public void onClose(int i, String s) {
+            closed.set(true);
+            latch.countDown();
+          }
+        })
+        .attach();
+
+    watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+
+    InputStreamPumper.pump(watch.getOutput(), stdout::write, Executors.newSingleThreadExecutor());
+
+    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+        .until(() -> stdout.toString().contains("root"));
+
+    watch.close();
+
+    assertTrue(latch.await(5, TimeUnit.SECONDS));
+    assertTrue(closed.get());
+    assertFalse(failed.get());
+  }
+
+  @Test
   void readFile() throws IOException {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     try (
