@@ -49,6 +49,7 @@ import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 public class CertUtils {
@@ -142,6 +143,7 @@ public class CertUtils {
   
   private static void addStandardBCProvider()
   {
+    // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
     try {
       new Callable<Object>() {
       	@Override
@@ -151,11 +153,11 @@ public class CertUtils {
       	}
       }.call();
     } catch (NoClassDefFoundError e) {
+      throw new KubernetesClientException("JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
     }
   }
 
   private static PrivateKey handleECKey(InputStream keyInputStream) {
-    // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
     try {
       if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
         addStandardBCProvider();

@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-extensions</artifactId>
-    <version>6.0.0</version>
+    <version>6.0.0-dmx-patch1</version>
   </parent>
 
   <artifactId>camel-k-extension-pom</artifactId>
