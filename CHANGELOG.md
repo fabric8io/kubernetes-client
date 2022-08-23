@@ -3,11 +3,12 @@
 ### 6.1-SNAPSHOT
 
 #### Bugs
+* Fix #4109: Templates with parameters can be retrieved from OpenShift
+* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource
+* Fix #4247: NO_PROXY with invalid entries throws exception
 * Fix #4256: crd-generator-apt pom.xml includes transitive dependencies
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
-* Fix #4247: NO_PROXY with invalid entries throws exception
 * Fix #4320: corrected leader transitions field on leader election leases
-* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
 
 
 #### Improvements
