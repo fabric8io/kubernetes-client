@@ -15,31 +15,30 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.junit.jupiter.api.Test;
 
-public class JsonUnwrappedDeserializerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class JsonUnwrappedDeserializerTest {
 
   private static final String EXPECTED_VALUE_A = "Value A";
   private static final String EXPECTED_VALUE_B = "Value B";
   private static final String EXPECTED_VALUE_C = "Value C";
 
   @Test
-  public void shouldDeserializeInterfacesWithJsonWrapped() throws JsonProcessingException {
+  void shouldDeserializeInterfacesWithJsonWrapped() throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     RootClass instance = mapper.readValue("{ \"stringField\": \"" + EXPECTED_VALUE_A + "\", "
-      + "\"extendedField\": \"" + EXPECTED_VALUE_B + "\", "
-      + "\"nestedField\": \"" + EXPECTED_VALUE_C + "\" }", RootClass.class);
+        + "\"extendedField\": \"" + EXPECTED_VALUE_B + "\", "
+        + "\"nestedField\": \"" + EXPECTED_VALUE_C + "\" }", RootClass.class);
     // Verify normal fields works along to the json-wrapped fields
     assertEquals(EXPECTED_VALUE_A, instance.stringField);
 
