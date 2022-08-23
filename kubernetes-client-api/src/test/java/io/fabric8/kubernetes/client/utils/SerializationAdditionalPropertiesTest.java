@@ -19,8 +19,10 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SerializationAdditionalPropertiesTest {
@@ -71,7 +74,7 @@ class SerializationAdditionalPropertiesTest {
         () -> Serialization.unmarshal(marshalled));
     // Then
     assertThat(result)
-        .getCause()
+        .cause()
         .isInstanceOf(InvalidFormatException.class)
         .hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String \"${immutable}\"");
   }
@@ -145,4 +148,49 @@ class SerializationAdditionalPropertiesTest {
         "}");
   }
 
+  @Test
+  @DisplayName("clone, with unmatched type fields and unrestricted, values are in additionalProperties map are cloned")
+  void cloneShouldPreserveAdditionalProperties() {
+    // Given
+    Serialization.UNMATCHED_FIELD_TYPE_MODULE.setRestrictToTemplates(false);
+    final ConfigMap configMap = new ConfigMapBuilder()
+        .withNewMetadata().withName("name").addToAnnotations("key", "value").endMetadata()
+        .build();
+    configMap.getMetadata().getAdditionalProperties().put("annotations", "${annotations}");
+    configMap.getAdditionalProperties().put("immutable", "${immutable}");
+    configMap.getAdditionalProperties().put("unknownField", "unknownValue");
+    // When
+    final ConfigMap result = Serialization.clone(configMap);
+    // Then
+    assertThat(result)
+        .satisfies(cm -> assertThat(cm.getMetadata())
+            .returns(Collections.emptyMap(), ObjectMeta::getAnnotations)
+            .hasFieldOrPropertyWithValue("name", "name")
+            .extracting(ObjectMeta::getAdditionalProperties)
+            .asInstanceOf(InstanceOfAssertFactories.map(String.class, Object.class))
+            .containsExactly(
+                entry("annotations", "${annotations}")))
+        .extracting(ConfigMap::getAdditionalProperties)
+        .asInstanceOf(InstanceOfAssertFactories.map(String.class, Object.class))
+        .containsExactly(
+            entry("immutable", "${immutable}"),
+            entry("unknownField", "unknownValue"));
+  }
+
+  @Test
+  @DisplayName("clone, with unmatched type fields, should throw Exception")
+  void cloneShouldThrowException() {
+    // Given
+    final ConfigMap configMap = new ConfigMapBuilder().withNewMetadata().withName("name").endMetadata().build();
+    configMap.getAdditionalProperties().put("immutable", "${immutable}");
+    configMap.getAdditionalProperties().put("unknownField", "unknownValue");
+    // When
+    final IllegalStateException result = assertThrows(IllegalStateException.class,
+        () -> Serialization.clone(configMap));
+    // Then
+    assertThat(result)
+        .cause()
+        .isInstanceOf(InvalidFormatException.class)
+        .hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String \"${immutable}\"");
+  }
 }
