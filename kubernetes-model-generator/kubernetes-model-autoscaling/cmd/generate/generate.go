@@ -24,6 +24,7 @@ import (
   "k8s.io/apimachinery/pkg/api/resource"
   apimachineryversion "k8s.io/apimachinery/pkg/version"
 
+  autoscalingapiv2 "k8s.io/api/autoscaling/v2"
   autoscalingapiv1 "k8s.io/api/autoscaling/v1"
   autoscalingapiv2beta1 "k8s.io/api/autoscaling/v2beta1"
   autoscalingapiv2beta2 "k8s.io/api/autoscaling/v2beta2"
@@ -58,6 +59,8 @@ type Schema struct {
   Quantity                                 resource.Quantity
 
   Scale                                    autoscalingapiv1.Scale
+  V2HorizontalPodAutoscaler                autoscalingapiv2.HorizontalPodAutoscaler
+  V2HorizontalPodAutoscalerList            autoscalingapiv2.HorizontalPodAutoscalerList
   V1HorizontalPodAutoscaler                autoscalingapiv1.HorizontalPodAutoscaler
   V1HorizontalPodAutoscalerList            autoscalingapiv1.HorizontalPodAutoscalerList
   V2beta1HorizontalPodAutoscaler           autoscalingapiv2beta1.HorizontalPodAutoscaler
@@ -76,6 +79,7 @@ func main() {
     {"k8s.io/api/autoscaling/v2beta2", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta2", "kubernetes_autoscaling_v2beta2_", true},
     {"k8s.io/api/autoscaling/v2beta1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta1", "kubernetes_autoscaling_v2beta1_", true},
     {"k8s.io/api/autoscaling/v1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v1", "kubernetes_autoscaling_v1_", true},
+    {"k8s.io/api/autoscaling/v2", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2", "kubernetes_autoscaling_v2_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

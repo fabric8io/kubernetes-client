@@ -15,6 +15,7 @@
 * Fix #4243: Update Tekton pipeline model to v0.39.0
 * Fix #4243: Update Tekton triggers model to v0.20.2
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
+* Fix #4347: Update Kubernetes Model to v1.25.0
 
 #### New Features
 

@@ -256,9 +256,6 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "clusterName": {
-          "type": "string"
-        },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1982,8 +1979,31 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
+        "creationTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "finalizers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "generateName": {
           "type": "string"
+        },
+        "generation": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
@@ -1991,6 +2011,14 @@
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "managedFields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
+          }
         },
         "name": {
           "type": "string"
@@ -2007,6 +2035,15 @@
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
             "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference"
           }
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
         }
       },
       "additionalProperties": true

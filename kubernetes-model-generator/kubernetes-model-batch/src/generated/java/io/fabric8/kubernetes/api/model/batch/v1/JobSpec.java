@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "completions",
     "manualSelector",
     "parallelism",
+    "podFailurePolicy",
     "selector",
     "suspend",
     "template",
@@ -75,6 +76,8 @@ public class JobSpec implements KubernetesResource
     private Boolean manualSelector;
     @JsonProperty("parallelism")
     private Integer parallelism;
+    @JsonProperty("podFailurePolicy")
+    private PodFailurePolicy podFailurePolicy;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonProperty("suspend")
@@ -104,9 +107,10 @@ public class JobSpec implements KubernetesResource
      * @param completionMode
      * @param selector
      * @param activeDeadlineSeconds
+     * @param podFailurePolicy
      * @param ttlSecondsAfterFinished
      */
-    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, String completionMode, Integer completions, Boolean manualSelector, Integer parallelism, io.fabric8.kubernetes.api.model.LabelSelector selector, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
+    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, String completionMode, Integer completions, Boolean manualSelector, Integer parallelism, PodFailurePolicy podFailurePolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.backoffLimit = backoffLimit;
@@ -114,6 +118,7 @@ public class JobSpec implements KubernetesResource
         this.completions = completions;
         this.manualSelector = manualSelector;
         this.parallelism = parallelism;
+        this.podFailurePolicy = podFailurePolicy;
         this.selector = selector;
         this.suspend = suspend;
         this.template = template;
@@ -178,6 +183,16 @@ public class JobSpec implements KubernetesResource
     @JsonProperty("parallelism")
     public void setParallelism(Integer parallelism) {
         this.parallelism = parallelism;
+    }
+
+    @JsonProperty("podFailurePolicy")
+    public PodFailurePolicy getPodFailurePolicy() {
+        return podFailurePolicy;
+    }
+
+    @JsonProperty("podFailurePolicy")
+    public void setPodFailurePolicy(PodFailurePolicy podFailurePolicy) {
+        this.podFailurePolicy = podFailurePolicy;
     }
 
     @JsonProperty("selector")

@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -23,8 +25,11 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "labelSelector",
+    "matchLabelKeys",
     "maxSkew",
     "minDomains",
+    "nodeAffinityPolicy",
+    "nodeTaintsPolicy",
     "topologyKey",
     "whenUnsatisfiable"
 })
@@ -41,10 +46,17 @@ public class TopologySpreadConstraint implements KubernetesResource
 
     @JsonProperty("labelSelector")
     private LabelSelector labelSelector;
+    @JsonProperty("matchLabelKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> matchLabelKeys = new ArrayList<String>();
     @JsonProperty("maxSkew")
     private Integer maxSkew;
     @JsonProperty("minDomains")
     private Integer minDomains;
+    @JsonProperty("nodeAffinityPolicy")
+    private String nodeAffinityPolicy;
+    @JsonProperty("nodeTaintsPolicy")
+    private String nodeTaintsPolicy;
     @JsonProperty("topologyKey")
     private String topologyKey;
     @JsonProperty("whenUnsatisfiable")
@@ -61,17 +73,23 @@ public class TopologySpreadConstraint implements KubernetesResource
 
     /**
      * 
+     * @param nodeTaintsPolicy
      * @param whenUnsatisfiable
      * @param maxSkew
+     * @param nodeAffinityPolicy
      * @param labelSelector
      * @param minDomains
      * @param topologyKey
+     * @param matchLabelKeys
      */
-    public TopologySpreadConstraint(LabelSelector labelSelector, Integer maxSkew, Integer minDomains, String topologyKey, String whenUnsatisfiable) {
+    public TopologySpreadConstraint(LabelSelector labelSelector, List<String> matchLabelKeys, Integer maxSkew, Integer minDomains, String nodeAffinityPolicy, String nodeTaintsPolicy, String topologyKey, String whenUnsatisfiable) {
         super();
         this.labelSelector = labelSelector;
+        this.matchLabelKeys = matchLabelKeys;
         this.maxSkew = maxSkew;
         this.minDomains = minDomains;
+        this.nodeAffinityPolicy = nodeAffinityPolicy;
+        this.nodeTaintsPolicy = nodeTaintsPolicy;
         this.topologyKey = topologyKey;
         this.whenUnsatisfiable = whenUnsatisfiable;
     }
@@ -84,6 +102,16 @@ public class TopologySpreadConstraint implements KubernetesResource
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
+    }
+
+    @JsonProperty("matchLabelKeys")
+    public List<String> getMatchLabelKeys() {
+        return matchLabelKeys;
+    }
+
+    @JsonProperty("matchLabelKeys")
+    public void setMatchLabelKeys(List<String> matchLabelKeys) {
+        this.matchLabelKeys = matchLabelKeys;
     }
 
     @JsonProperty("maxSkew")
@@ -104,6 +132,26 @@ public class TopologySpreadConstraint implements KubernetesResource
     @JsonProperty("minDomains")
     public void setMinDomains(Integer minDomains) {
         this.minDomains = minDomains;
+    }
+
+    @JsonProperty("nodeAffinityPolicy")
+    public String getNodeAffinityPolicy() {
+        return nodeAffinityPolicy;
+    }
+
+    @JsonProperty("nodeAffinityPolicy")
+    public void setNodeAffinityPolicy(String nodeAffinityPolicy) {
+        this.nodeAffinityPolicy = nodeAffinityPolicy;
+    }
+
+    @JsonProperty("nodeTaintsPolicy")
+    public String getNodeTaintsPolicy() {
+        return nodeTaintsPolicy;
+    }
+
+    @JsonProperty("nodeTaintsPolicy")
+    public void setNodeTaintsPolicy(String nodeTaintsPolicy) {
+        this.nodeTaintsPolicy = nodeTaintsPolicy;
     }
 
     @JsonProperty("topologyKey")

@@ -27,6 +27,7 @@ import (
 
   networking "k8s.io/api/networking/v1"
   networkingv1beta1 "k8s.io/api/networking/v1beta1"
+  networkingv1alpha1 "k8s.io/api/networking/v1alpha1"
 
   "log"
   "reflect"
@@ -68,7 +69,8 @@ type Schema struct {
   IngressList                              networkingv1beta1.IngressList
   IngressClass                             networkingv1beta1.IngressClass
   IngressClassList                         networkingv1beta1.IngressClassList
-
+  V1Alpha1ClusterCIDR                      networkingv1alpha1.ClusterCIDR
+  V1Alpha1ClusterCIDRList                 networkingv1alpha1.ClusterCIDRList
 }
 
 func main() {
@@ -80,6 +82,7 @@ func main() {
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
     {"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking.v1", "kubernetes_networking_v1_", true},
     {"k8s.io/api/networking/v1beta1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking.v1beta1", "kubernetes_networking_v1beta1_", true},
+    {"k8s.io/api/networking/v1alpha1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking.v1alpha1", "kubernetes_networking_v1alpha1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

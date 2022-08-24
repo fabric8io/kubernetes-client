@@ -1,0 +1,82 @@
+{
+  "apiVersion": "apiextensions.k8s.io/v1",
+  "kind": "CustomResourceDefinition",
+  "metadata": {
+    "name": "toys.test.fabric8.io"
+  },
+  "spec": {
+    "group": "test.fabric8.io",
+    "versions": [
+      {
+        "name": "v1",
+        "served": true,
+        "storage": true,
+        "schema": {
+          "openAPIV3Schema": {
+            "type": "object",
+            "properties": {
+              "spec": {
+                "x-kubernetes-validations": [
+                  {
+                    "rule": "self.minReplicas <= self.maxReplicas",
+                    "message": "minReplicas cannot be larger than maxReplicas"
+                  },
+                  {
+                    "rule": "self.health.startsWith('ok')",
+                    "message": "Validate a 'health' string field has the prefix 'ok'"
+                  },
+                  {
+                    "rule": "self.metadata.name.startsWith(self.prefix)",
+                    "message": "Validate that an object's name has the prefix of another field value"
+                  },
+                  {
+                    "rule": "has(self.expired) && self.created + self.ttl < self.expired",
+                    "message": "Validate that 'expired' date is after a 'create' date plus a 'ttl' duration"
+                  }
+                ],
+                "type": "object",
+                "properties": {
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "health": {
+                    "type": "string"
+                  },
+                  "minReplicas": {
+                    "type": "integer"
+                  },
+                  "maxReplicas": {
+                    "type": "integer"
+                  },
+                  "created": {
+                    "type": "integer"
+                  },
+                  "expired": {
+                    "type": "integer"
+                  },
+                  "ttl": {
+                    "type": "integer"
+                  },
+                  "prefix": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "scope": "Namespaced",
+    "names": {
+      "plural": "toys",
+      "singular": "toy",
+      "kind": "Toy"
+    }
+  }
+}

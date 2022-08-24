@@ -353,9 +353,6 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "clusterName": {
-          "type": "string"
-        },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1398,19 +1395,12 @@
           }
         },
         "conditions": {
-          "$ref": "#/definitions/kubernetes_discovery_v1_EndpointConditions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointConditions"
-        },
-        "deprecatedTopology": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointConditions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions"
         },
         "hints": {
-          "$ref": "#/definitions/kubernetes_discovery_v1_EndpointHints",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointHints"
+          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointHints",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointHints"
         },
         "hostname": {
           "type": "string"
@@ -1422,8 +1412,12 @@
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
-        "zone": {
-          "type": "string"
+        "topology": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         }
       },
       "additionalProperties": true
@@ -1481,14 +1475,14 @@
         },
         "apiVersion": {
           "type": "string",
-          "default": "discovery.k8s.io/v1beta1",
+          "default": "discovery.k8s.io/v1",
           "required": true
         },
         "endpoints": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1beta1_Endpoint",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.Endpoint"
+            "$ref": "#/definitions/kubernetes_discovery_v1_Endpoint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.Endpoint"
           }
         },
         "kind": {
@@ -1503,8 +1497,8 @@
         "ports": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointPort",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort"
+            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointPort",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointPort"
           }
         }
       },
@@ -1514,14 +1508,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "discovery.k8s.io/v1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointSlice",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointSlice",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice"
           }
         },
         "kind": {
@@ -1735,9 +1729,6 @@
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
-        },
-        "clusterName": {
-          "type": "string"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",

@@ -117,9 +117,6 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "clusterName": {
-          "type": "string"
-        },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -967,9 +964,6 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "clusterName": {
-          "type": "string"
-        },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1139,14 +1133,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "node.k8s.io/v1alpha1",
+          "default": "node.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_node_v1alpha_RuntimeClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClass"
+            "$ref": "#/definitions/kubernetes_node_v1beta1_RuntimeClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass"
           }
         },
         "kind": {
