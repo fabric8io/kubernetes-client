@@ -21,6 +21,7 @@
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 
 #### Dependency Upgrade
+* Bump Knative model to v0.34.0
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire

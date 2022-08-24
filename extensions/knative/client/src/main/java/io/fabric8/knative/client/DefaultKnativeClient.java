@@ -59,6 +59,8 @@ import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
+import io.fabric8.knative.serving.v1beta1.DomainMapping;
+import io.fabric8.knative.serving.v1beta1.DomainMappingList;
 import io.fabric8.knative.sources.v1.ApiServerSource;
 import io.fabric8.knative.sources.v1.ApiServerSourceList;
 import io.fabric8.knative.sources.v1.ContainerSource;
@@ -120,6 +122,11 @@ public class DefaultKnativeClient extends ExtensionRootClientAdapter<DefaultKnat
   @Override
   public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
     return resources(Configuration.class, ConfigurationList.class);
+  }
+
+  @Override
+  public MixedOperation<DomainMapping, DomainMappingList, Resource<DomainMapping>> domainMappings() {
+    return resources(DomainMapping.class, DomainMappingList.class);
   }
 
   @Override

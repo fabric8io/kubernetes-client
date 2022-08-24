@@ -1,8 +1,9 @@
 
-package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
+package io.fabric8.knative.serving.v1beta1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec;
+import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -41,11 +42,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "delivery",
-    "numPartitions",
-    "replicationFactor",
-    "retentionDuration",
-    "subscribers"
+    "address",
+    "annotations",
+    "conditions",
+    "observedGeneration",
+    "url"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,104 +70,105 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class KafkaChannelSpec implements KubernetesResource
+public class DomainMappingStatus implements KubernetesResource
 {
 
-    @JsonProperty("delivery")
-    private DeliverySpec delivery;
-    @JsonProperty("numPartitions")
-    private Integer numPartitions;
-    @JsonProperty("replicationFactor")
-    private Integer replicationFactor;
-    @JsonProperty("retentionDuration")
-    private String retentionDuration;
-    @JsonProperty("subscribers")
+    @JsonProperty("address")
+    private Addressable address;
+    @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
+    @JsonProperty("url")
+    private java.lang.String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public KafkaChannelSpec() {
+    public DomainMappingStatus() {
     }
 
     /**
      * 
-     * @param delivery
-     * @param replicationFactor
-     * @param subscribers
-     * @param numPartitions
-     * @param retentionDuration
+     * @param address
+     * @param annotations
+     * @param conditions
+     * @param observedGeneration
+     * @param url
      */
-    public KafkaChannelSpec(DeliverySpec delivery, Integer numPartitions, Integer replicationFactor, String retentionDuration, List<SubscriberSpec> subscribers) {
+    public DomainMappingStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, java.lang.String url) {
         super();
-        this.delivery = delivery;
-        this.numPartitions = numPartitions;
-        this.replicationFactor = replicationFactor;
-        this.retentionDuration = retentionDuration;
-        this.subscribers = subscribers;
+        this.address = address;
+        this.annotations = annotations;
+        this.conditions = conditions;
+        this.observedGeneration = observedGeneration;
+        this.url = url;
     }
 
-    @JsonProperty("delivery")
-    public DeliverySpec getDelivery() {
-        return delivery;
+    @JsonProperty("address")
+    public Addressable getAddress() {
+        return address;
     }
 
-    @JsonProperty("delivery")
-    public void setDelivery(DeliverySpec delivery) {
-        this.delivery = delivery;
+    @JsonProperty("address")
+    public void setAddress(Addressable address) {
+        this.address = address;
     }
 
-    @JsonProperty("numPartitions")
-    public Integer getNumPartitions() {
-        return numPartitions;
+    @JsonProperty("annotations")
+    public Map<String, String> getAnnotations() {
+        return annotations;
     }
 
-    @JsonProperty("numPartitions")
-    public void setNumPartitions(Integer numPartitions) {
-        this.numPartitions = numPartitions;
+    @JsonProperty("annotations")
+    public void setAnnotations(Map<String, String> annotations) {
+        this.annotations = annotations;
     }
 
-    @JsonProperty("replicationFactor")
-    public Integer getReplicationFactor() {
-        return replicationFactor;
+    @JsonProperty("conditions")
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("replicationFactor")
-    public void setReplicationFactor(Integer replicationFactor) {
-        this.replicationFactor = replicationFactor;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
-    @JsonProperty("retentionDuration")
-    public String getRetentionDuration() {
-        return retentionDuration;
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
     }
 
-    @JsonProperty("retentionDuration")
-    public void setRetentionDuration(String retentionDuration) {
-        this.retentionDuration = retentionDuration;
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
-    @JsonProperty("subscribers")
-    public List<SubscriberSpec> getSubscribers() {
-        return subscribers;
+    @JsonProperty("url")
+    public java.lang.String getUrl() {
+        return url;
     }
 
-    @JsonProperty("subscribers")
-    public void setSubscribers(List<SubscriberSpec> subscribers) {
-        this.subscribers = subscribers;
+    @JsonProperty("url")
+    public void setUrl(java.lang.String url) {
+        this.url = url;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

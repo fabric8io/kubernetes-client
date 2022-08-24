@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "accessToken",
+    "ceOverrides",
     "eventTypes",
     "projectUrl",
     "secretToken",
@@ -75,6 +77,8 @@ public class GitLabSourceSpec implements KubernetesResource
 
     @JsonProperty("accessToken")
     private SecretValueFromSource accessToken;
+    @JsonProperty("ceOverrides")
+    private CloudEventOverrides ceOverrides;
     @JsonProperty("eventTypes")
     private List<String> eventTypes = new ArrayList<String>();
     @JsonProperty("projectUrl")
@@ -105,11 +109,13 @@ public class GitLabSourceSpec implements KubernetesResource
      * @param sink
      * @param secretToken
      * @param accessToken
+     * @param ceOverrides
      * @param eventTypes
      */
-    public GitLabSourceSpec(SecretValueFromSource accessToken, List<String> eventTypes, String projectUrl, SecretValueFromSource secretToken, String serviceAccountName, Destination sink, Boolean sslverify) {
+    public GitLabSourceSpec(SecretValueFromSource accessToken, CloudEventOverrides ceOverrides, List<String> eventTypes, String projectUrl, SecretValueFromSource secretToken, String serviceAccountName, Destination sink, Boolean sslverify) {
         super();
         this.accessToken = accessToken;
+        this.ceOverrides = ceOverrides;
         this.eventTypes = eventTypes;
         this.projectUrl = projectUrl;
         this.secretToken = secretToken;
@@ -126,6 +132,16 @@ public class GitLabSourceSpec implements KubernetesResource
     @JsonProperty("accessToken")
     public void setAccessToken(SecretValueFromSource accessToken) {
         this.accessToken = accessToken;
+    }
+
+    @JsonProperty("ceOverrides")
+    public CloudEventOverrides getCeOverrides() {
+        return ceOverrides;
+    }
+
+    @JsonProperty("ceOverrides")
+    public void setCeOverrides(CloudEventOverrides ceOverrides) {
+        this.ceOverrides = ceOverrides;
     }
 
     @JsonProperty("eventTypes")

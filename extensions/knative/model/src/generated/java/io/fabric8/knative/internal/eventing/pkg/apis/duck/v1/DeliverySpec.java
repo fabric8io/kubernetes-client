@@ -41,7 +41,9 @@ import lombok.experimental.Accessors;
     "backoffDelay",
     "backoffPolicy",
     "deadLetterSink",
-    "retry"
+    "retry",
+    "retryAfterMax",
+    "timeout"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +78,10 @@ public class DeliverySpec implements KubernetesResource
     private Destination deadLetterSink;
     @JsonProperty("retry")
     private Integer retry;
+    @JsonProperty("retryAfterMax")
+    private String retryAfterMax;
+    @JsonProperty("timeout")
+    private String timeout;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -90,15 +96,19 @@ public class DeliverySpec implements KubernetesResource
      * 
      * @param deadLetterSink
      * @param backoffPolicy
+     * @param retryAfterMax
      * @param retry
+     * @param timeout
      * @param backoffDelay
      */
-    public DeliverySpec(String backoffDelay, String backoffPolicy, Destination deadLetterSink, Integer retry) {
+    public DeliverySpec(String backoffDelay, String backoffPolicy, Destination deadLetterSink, Integer retry, String retryAfterMax, String timeout) {
         super();
         this.backoffDelay = backoffDelay;
         this.backoffPolicy = backoffPolicy;
         this.deadLetterSink = deadLetterSink;
         this.retry = retry;
+        this.retryAfterMax = retryAfterMax;
+        this.timeout = timeout;
     }
 
     @JsonProperty("backoffDelay")
@@ -139,6 +149,26 @@ public class DeliverySpec implements KubernetesResource
     @JsonProperty("retry")
     public void setRetry(Integer retry) {
         this.retry = retry;
+    }
+
+    @JsonProperty("retryAfterMax")
+    public String getRetryAfterMax() {
+        return retryAfterMax;
+    }
+
+    @JsonProperty("retryAfterMax")
+    public void setRetryAfterMax(String retryAfterMax) {
+        this.retryAfterMax = retryAfterMax;
+    }
+
+    @JsonProperty("timeout")
+    public String getTimeout() {
+        return timeout;
+    }
+
+    @JsonProperty("timeout")
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
     }
 
     @JsonAnyGetter

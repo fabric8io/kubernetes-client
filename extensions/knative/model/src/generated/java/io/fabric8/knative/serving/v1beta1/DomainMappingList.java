@@ -1,5 +1,5 @@
 
-package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
+package io.fabric8.knative.serving.v1beta1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,14 +12,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -28,6 +28,8 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -41,11 +43,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "delivery",
-    "numPartitions",
-    "replicationFactor",
-    "retentionDuration",
-    "subscribers"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,20 +67,29 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class KafkaChannelSpec implements KubernetesResource
+@Version("v1beta1")
+@Group("serving.knative.dev")
+public class DomainMappingList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.serving.v1beta1.DomainMapping>
 {
 
-    @JsonProperty("delivery")
-    private DeliverySpec delivery;
-    @JsonProperty("numPartitions")
-    private Integer numPartitions;
-    @JsonProperty("replicationFactor")
-    private Integer replicationFactor;
-    @JsonProperty("retentionDuration")
-    private String retentionDuration;
-    @JsonProperty("subscribers")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "serving.knative.dev/v1beta1";
+    @JsonProperty("items")
+    private List<io.fabric8.knative.serving.v1beta1.DomainMapping> items = new ArrayList<io.fabric8.knative.serving.v1beta1.DomainMapping>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "DomainMappingList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -90,74 +97,82 @@ public class KafkaChannelSpec implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public KafkaChannelSpec() {
+    public DomainMappingList() {
     }
 
     /**
      * 
-     * @param delivery
-     * @param replicationFactor
-     * @param subscribers
-     * @param numPartitions
-     * @param retentionDuration
+     * @param metadata
+     * @param apiVersion
+     * @param kind
+     * @param items
      */
-    public KafkaChannelSpec(DeliverySpec delivery, Integer numPartitions, Integer replicationFactor, String retentionDuration, List<SubscriberSpec> subscribers) {
+    public DomainMappingList(String apiVersion, List<io.fabric8.knative.serving.v1beta1.DomainMapping> items, String kind, ListMeta metadata) {
         super();
-        this.delivery = delivery;
-        this.numPartitions = numPartitions;
-        this.replicationFactor = replicationFactor;
-        this.retentionDuration = retentionDuration;
-        this.subscribers = subscribers;
+        this.apiVersion = apiVersion;
+        this.items = items;
+        this.kind = kind;
+        this.metadata = metadata;
     }
 
-    @JsonProperty("delivery")
-    public DeliverySpec getDelivery() {
-        return delivery;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("delivery")
-    public void setDelivery(DeliverySpec delivery) {
-        this.delivery = delivery;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("numPartitions")
-    public Integer getNumPartitions() {
-        return numPartitions;
+    @JsonProperty("items")
+    public List<io.fabric8.knative.serving.v1beta1.DomainMapping> getItems() {
+        return items;
     }
 
-    @JsonProperty("numPartitions")
-    public void setNumPartitions(Integer numPartitions) {
-        this.numPartitions = numPartitions;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.knative.serving.v1beta1.DomainMapping> items) {
+        this.items = items;
     }
 
-    @JsonProperty("replicationFactor")
-    public Integer getReplicationFactor() {
-        return replicationFactor;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("replicationFactor")
-    public void setReplicationFactor(Integer replicationFactor) {
-        this.replicationFactor = replicationFactor;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
-    @JsonProperty("retentionDuration")
-    public String getRetentionDuration() {
-        return retentionDuration;
+    @JsonProperty("metadata")
+    public ListMeta getMetadata() {
+        return metadata;
     }
 
-    @JsonProperty("retentionDuration")
-    public void setRetentionDuration(String retentionDuration) {
-        this.retentionDuration = retentionDuration;
-    }
-
-    @JsonProperty("subscribers")
-    public List<SubscriberSpec> getSubscribers() {
-        return subscribers;
-    }
-
-    @JsonProperty("subscribers")
-    public void setSubscribers(List<SubscriberSpec> subscribers) {
-        this.subscribers = subscribers;
+    @JsonProperty("metadata")
+    public void setMetadata(ListMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonAnyGetter

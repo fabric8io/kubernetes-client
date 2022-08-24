@@ -1,9 +1,7 @@
 
-package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
+package io.fabric8.knative.serving.v1beta1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.KReference;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -41,11 +38,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "delivery",
-    "numPartitions",
-    "replicationFactor",
-    "retentionDuration",
-    "subscribers"
+    "ref",
+    "tls"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,20 +63,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class KafkaChannelSpec implements KubernetesResource
+public class DomainMappingSpec implements KubernetesResource
 {
 
-    @JsonProperty("delivery")
-    private DeliverySpec delivery;
-    @JsonProperty("numPartitions")
-    private Integer numPartitions;
-    @JsonProperty("replicationFactor")
-    private Integer replicationFactor;
-    @JsonProperty("retentionDuration")
-    private String retentionDuration;
-    @JsonProperty("subscribers")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
+    @JsonProperty("ref")
+    private KReference ref;
+    @JsonProperty("tls")
+    private SecretTLS tls;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -90,74 +77,38 @@ public class KafkaChannelSpec implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public KafkaChannelSpec() {
+    public DomainMappingSpec() {
     }
 
     /**
      * 
-     * @param delivery
-     * @param replicationFactor
-     * @param subscribers
-     * @param numPartitions
-     * @param retentionDuration
+     * @param ref
+     * @param tls
      */
-    public KafkaChannelSpec(DeliverySpec delivery, Integer numPartitions, Integer replicationFactor, String retentionDuration, List<SubscriberSpec> subscribers) {
+    public DomainMappingSpec(KReference ref, SecretTLS tls) {
         super();
-        this.delivery = delivery;
-        this.numPartitions = numPartitions;
-        this.replicationFactor = replicationFactor;
-        this.retentionDuration = retentionDuration;
-        this.subscribers = subscribers;
+        this.ref = ref;
+        this.tls = tls;
     }
 
-    @JsonProperty("delivery")
-    public DeliverySpec getDelivery() {
-        return delivery;
+    @JsonProperty("ref")
+    public KReference getRef() {
+        return ref;
     }
 
-    @JsonProperty("delivery")
-    public void setDelivery(DeliverySpec delivery) {
-        this.delivery = delivery;
+    @JsonProperty("ref")
+    public void setRef(KReference ref) {
+        this.ref = ref;
     }
 
-    @JsonProperty("numPartitions")
-    public Integer getNumPartitions() {
-        return numPartitions;
+    @JsonProperty("tls")
+    public SecretTLS getTls() {
+        return tls;
     }
 
-    @JsonProperty("numPartitions")
-    public void setNumPartitions(Integer numPartitions) {
-        this.numPartitions = numPartitions;
-    }
-
-    @JsonProperty("replicationFactor")
-    public Integer getReplicationFactor() {
-        return replicationFactor;
-    }
-
-    @JsonProperty("replicationFactor")
-    public void setReplicationFactor(Integer replicationFactor) {
-        this.replicationFactor = replicationFactor;
-    }
-
-    @JsonProperty("retentionDuration")
-    public String getRetentionDuration() {
-        return retentionDuration;
-    }
-
-    @JsonProperty("retentionDuration")
-    public void setRetentionDuration(String retentionDuration) {
-        this.retentionDuration = retentionDuration;
-    }
-
-    @JsonProperty("subscribers")
-    public List<SubscriberSpec> getSubscribers() {
-        return subscribers;
-    }
-
-    @JsonProperty("subscribers")
-    public void setSubscribers(List<SubscriberSpec> subscribers) {
-        this.subscribers = subscribers;
+    @JsonProperty("tls")
+    public void setTls(SecretTLS tls) {
+        this.tls = tls;
     }
 
     @JsonAnyGetter
