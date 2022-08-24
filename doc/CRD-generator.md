@@ -152,9 +152,107 @@ The field will be skipped in the generated CRD and will not appear in the schema
             type: object
 ```
 
-### javax.validation.constraints.NotNull
+### io.fabric8.generator.annotation.Min
 
-If a field or one of its accessors is annotated with `javax.validation.constraints.NotNull`
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Min`
+
+```java
+public class ExampleSpec {
+  @Min(-1)
+  int someValue;
+}
+```
+
+The field will have the `minimum` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                minimum: -1.0
+                type: integer
+            required:
+            - someValue
+            type: object
+```
+
+### io.fabric8.generator.annotation.Max
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Max`
+
+```java
+public class ExampleSpec {
+  @Min(1)
+  int someValue;
+}
+```
+
+The field will have the `maximum` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                maximum: 1.0
+                type: integer
+            required:
+            - someValue
+            type: object
+```
+
+### io.fabric8.generator.annotation.Pattern
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Pattern`
+
+```java
+public class ExampleSpec {
+  @Pattern("\\b[1-9]\\b")
+  String someValue;
+}
+```
+
+The field will have the `pattern` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                maximum: "\\b[1-9]\\b"
+                type: string
+            required:
+            - someValue
+            type: object
+```
+
+### io.fabric8.generator.annotation.Nullable
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Nullable`
+
+```java
+public class ExampleSpec {
+  @Nullable
+  String someValue;
+}
+```
+
+The field will have the `nullable` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                nullable: true
+                type: string
+            required:
+            - someValue
+            type: object
+```
+
+### io.fabric8.generator.annotation.Required
+
+__DEPRECATED:__ `javax.validation.constraints.NotNull`
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Required`
 
 ```java
 public class ExampleSpec {
@@ -268,7 +366,11 @@ Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in 
 | `com.fasterxml.jackson.annotation.JsonIgnore`             | The field is ignored                                                                  |
 | `com.fasterxml.jackson.annotation.JsonAnyGetter`          | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
 | `com.fasterxml.jackson.annotation.JsonAnySetter`          | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
-| `javax.validation.constraints.NotNull`                    | The field is marked as `required`                                                     |
+| `io.fabric8.generator.annotation.Min`                     | The field defines a validation `min`                                                  |
+| `io.fabric8.generator.annotation.Max`                     | The field defines a validation `max`                                                  |
+| `io.fabric8.generator.annotation.Pattern`                 | The field defines a validation `pattern`                                              |
+| `io.fabric8.generator.annotation.Nullable`                | The field is marked as `nullable`                                                     |
+| `io.fabric8.generator.annotation.Required`                | The field is marked as `required`                                                     |
 | `io.fabric8.crd.generator.annotation.SchemaFrom`          | The field type for the generation is the one coming from the annotation               |
 | `io.fabric8.crd.generator.annotation.SchemaSwap`          | Same as SchemaFrom, but can be applied at any point in the class hierarchy            |
 

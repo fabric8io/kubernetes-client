@@ -38,6 +38,11 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>generator-annotations</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-common</artifactId>
     </dependency>
 

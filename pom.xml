@@ -192,6 +192,7 @@
     <module>platforms</module>
     <module>kubernetes-tests</module>
     <module>uberjar</module>
+    <module>generator-annotations</module>
     <module>crd-generator</module>
     <module>java-generator</module>
     <module>httpclient-okhttp</module>
@@ -200,6 +201,11 @@
   <dependencyManagement>
     <dependencies>
       <!-- Internal -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>generator-annotations</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>java-generator-core</artifactId>
