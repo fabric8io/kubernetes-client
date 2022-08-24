@@ -21,6 +21,11 @@ import io.fabric8.kubernetes.client.extension.ClientAdapter;
 public class AutoscalingAPIGroupClient extends ClientAdapter<AutoscalingAPIGroupClient> implements AutoscalingAPIGroupDSL {
 
   @Override
+  public V2AutoscalingAPIGroupDSL v2() {
+    return adapt(V2AutoscalingAPIGroupClient.class);
+  }
+
+  @Override
   public V1AutoscalingAPIGroupDSL v1() {
     return adapt(V1AutoscalingAPIGroupClient.class);
   }

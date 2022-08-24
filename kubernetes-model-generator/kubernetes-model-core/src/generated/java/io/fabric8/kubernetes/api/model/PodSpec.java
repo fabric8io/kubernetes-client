@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "hostIPC",
     "hostNetwork",
     "hostPID",
+    "hostUsers",
     "hostname",
     "imagePullSecrets",
     "initContainers",
@@ -99,6 +100,8 @@ public class PodSpec implements KubernetesResource
     private Boolean hostNetwork;
     @JsonProperty("hostPID")
     private Boolean hostPID;
+    @JsonProperty("hostUsers")
+    private Boolean hostUsers;
     @JsonProperty("hostname")
     private java.lang.String hostname;
     @JsonProperty("imagePullSecrets")
@@ -198,13 +201,14 @@ public class PodSpec implements KubernetesResource
      * @param priority
      * @param restartPolicy
      * @param shareProcessNamespace
+     * @param hostUsers
      * @param subdomain
      * @param containers
      * @param initContainers
      * @param affinity
      * @param hostPID
      */
-    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, java.lang.String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, java.lang.String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, java.lang.String restartPolicy, java.lang.String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, java.lang.String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, java.lang.String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, java.lang.String restartPolicy, java.lang.String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -218,6 +222,7 @@ public class PodSpec implements KubernetesResource
         this.hostIPC = hostIPC;
         this.hostNetwork = hostNetwork;
         this.hostPID = hostPID;
+        this.hostUsers = hostUsers;
         this.hostname = hostname;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
@@ -362,6 +367,16 @@ public class PodSpec implements KubernetesResource
     @JsonProperty("hostPID")
     public void setHostPID(Boolean hostPID) {
         this.hostPID = hostPID;
+    }
+
+    @JsonProperty("hostUsers")
+    public Boolean getHostUsers() {
+        return hostUsers;
+    }
+
+    @JsonProperty("hostUsers")
+    public void setHostUsers(Boolean hostUsers) {
+        this.hostUsers = hostUsers;
     }
 
     @JsonProperty("hostname")

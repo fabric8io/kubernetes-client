@@ -112,6 +112,7 @@ import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta2FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
@@ -179,6 +180,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     this.getAdapters().registerClient(ApiextensionsAPIGroupDSL.class, new ApiextensionsAPIGroupClient());
     this.getAdapters().registerClient(AuthorizationAPIGroupDSL.class, new AuthorizationAPIGroupClient());
     this.getAdapters().registerClient(V1AutoscalingAPIGroupDSL.class, new V1AutoscalingAPIGroupClient());
+    this.getAdapters().registerClient(V2AutoscalingAPIGroupDSL.class, new V2AutoscalingAPIGroupClient());
     this.getAdapters().registerClient(V2beta1AutoscalingAPIGroupDSL.class, new V2beta1AutoscalingAPIGroupClient());
     this.getAdapters().registerClient(V2beta2AutoscalingAPIGroupDSL.class, new V2beta2AutoscalingAPIGroupClient());
     this.getAdapters().registerClient(BatchAPIGroupDSL.class, new BatchAPIGroupClient());
@@ -190,6 +192,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     this.getAdapters().registerClient(V1beta1EventingAPIGroupDSL.class, new V1beta1EventingAPIGroupClient());
     this.getAdapters().registerClient(FlowControlAPIGroupDSL.class, new FlowControlAPIGroupClient());
     this.getAdapters().registerClient(V1beta1FlowControlAPIGroupDSL.class, new V1beta1FlowControlAPIGroupClient());
+    this.getAdapters().registerClient(V1beta2FlowControlAPIGroupDSL.class, new V1beta2FlowControlAPIGroupClient());
     this.getAdapters().registerClient(MetricAPIGroupDSL.class, new MetricAPIGroupClient());
     this.getAdapters().registerClient(NetworkAPIGroupDSL.class, new NetworkAPIGroupClient());
     this.getAdapters().registerClient(PolicyAPIGroupDSL.class, new PolicyAPIGroupClient());

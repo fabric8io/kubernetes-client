@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR;
+import io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDRList;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -57,6 +59,8 @@ import lombok.experimental.Accessors;
     "Time",
     "TypeMeta",
     "UpdateOptions",
+    "V1Alpha1ClusterCIDR",
+    "V1Alpha1ClusterCIDRList",
     "V1Ingress",
     "V1IngressClass",
     "V1IngressClassList",
@@ -130,6 +134,10 @@ public class ValidationSchema {
     private TypeMeta typeMeta;
     @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
+    @JsonProperty("V1Alpha1ClusterCIDR")
+    private ClusterCIDR v1Alpha1ClusterCIDR;
+    @JsonProperty("V1Alpha1ClusterCIDRList")
+    private ClusterCIDRList v1Alpha1ClusterCIDRList;
     @JsonProperty("V1Ingress")
     private io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress;
     @JsonProperty("V1IngressClass")
@@ -157,6 +165,7 @@ public class ValidationSchema {
      * @param ingressClass
      * @param updateOptions
      * @param patch
+     * @param v1Alpha1ClusterCIDR
      * @param ingressClassList
      * @param rootPaths
      * @param v1Ingress
@@ -168,6 +177,7 @@ public class ValidationSchema {
      * @param networkPolicy
      * @param objectReference
      * @param createOptions
+     * @param v1Alpha1ClusterCIDRList
      * @param aPIGroup
      * @param ingress
      * @param typeMeta
@@ -179,7 +189,7 @@ public class ValidationSchema {
      * @param v1IngressList
      * @param status
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress ingress, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass ingressClass, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList ingressClassList, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList ingressList, ListOptions listOptions, NetworkPolicy networkPolicy, NetworkPolicyList networkPolicyList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress, io.fabric8.kubernetes.api.model.networking.v1.IngressClass v1IngressClass, io.fabric8.kubernetes.api.model.networking.v1.IngressClassList v1IngressClassList, io.fabric8.kubernetes.api.model.networking.v1.IngressList v1IngressList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress ingress, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass ingressClass, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList ingressClassList, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList ingressList, ListOptions listOptions, NetworkPolicy networkPolicy, NetworkPolicyList networkPolicyList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, ClusterCIDR v1Alpha1ClusterCIDR, ClusterCIDRList v1Alpha1ClusterCIDRList, io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress, io.fabric8.kubernetes.api.model.networking.v1.IngressClass v1IngressClass, io.fabric8.kubernetes.api.model.networking.v1.IngressClassList v1IngressClassList, io.fabric8.kubernetes.api.model.networking.v1.IngressList v1IngressList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -205,6 +215,8 @@ public class ValidationSchema {
         this.time = time;
         this.typeMeta = typeMeta;
         this.updateOptions = updateOptions;
+        this.v1Alpha1ClusterCIDR = v1Alpha1ClusterCIDR;
+        this.v1Alpha1ClusterCIDRList = v1Alpha1ClusterCIDRList;
         this.v1Ingress = v1Ingress;
         this.v1IngressClass = v1IngressClass;
         this.v1IngressClassList = v1IngressClassList;
@@ -449,6 +461,26 @@ public class ValidationSchema {
     @JsonProperty("UpdateOptions")
     public void setUpdateOptions(UpdateOptions updateOptions) {
         this.updateOptions = updateOptions;
+    }
+
+    @JsonProperty("V1Alpha1ClusterCIDR")
+    public ClusterCIDR getV1Alpha1ClusterCIDR() {
+        return v1Alpha1ClusterCIDR;
+    }
+
+    @JsonProperty("V1Alpha1ClusterCIDR")
+    public void setV1Alpha1ClusterCIDR(ClusterCIDR v1Alpha1ClusterCIDR) {
+        this.v1Alpha1ClusterCIDR = v1Alpha1ClusterCIDR;
+    }
+
+    @JsonProperty("V1Alpha1ClusterCIDRList")
+    public ClusterCIDRList getV1Alpha1ClusterCIDRList() {
+        return v1Alpha1ClusterCIDRList;
+    }
+
+    @JsonProperty("V1Alpha1ClusterCIDRList")
+    public void setV1Alpha1ClusterCIDRList(ClusterCIDRList v1Alpha1ClusterCIDRList) {
+        this.v1Alpha1ClusterCIDRList = v1Alpha1ClusterCIDRList;
     }
 
     @JsonProperty("V1Ingress")

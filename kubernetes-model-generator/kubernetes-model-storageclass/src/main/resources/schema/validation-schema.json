@@ -388,9 +388,6 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "clusterName": {
-          "type": "string"
-        },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -879,6 +876,10 @@
         },
         "fsType": {
           "type": "string"
+        },
+        "nodeExpandSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_SecretReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "nodePublishSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
@@ -1862,6 +1863,9 @@
         "requiresRepublish": {
           "type": "boolean"
         },
+        "seLinuxMount": {
+          "type": "boolean"
+        },
         "storageCapacity": {
           "type": "boolean"
         },
@@ -2401,6 +2405,9 @@
           "type": "boolean"
         },
         "requiresRepublish": {
+          "type": "boolean"
+        },
+        "seLinuxMount": {
           "type": "boolean"
         },
         "storageCapacity": {
@@ -3027,6 +3034,9 @@
         "requiresRepublish": {
           "type": "boolean"
         },
+        "seLinuxMount": {
+          "type": "boolean"
+        },
         "storageCapacity": {
           "type": "boolean"
         },
@@ -3052,7 +3062,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3065,8 +3075,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_CSINodeSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec"
         }
       },
       "additionalProperties": true
@@ -3074,8 +3084,8 @@
     "csinodedriver": {
       "properties": {
         "allocatable": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_VolumeNodeResources",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
+          "$ref": "#/definitions/kubernetes_storageclass_VolumeNodeResources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeNodeResources"
         },
         "name": {
           "type": "string"
@@ -3096,14 +3106,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
+            "$ref": "#/definitions/kubernetes_storageclass_CSINode",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
           }
         },
         "kind": {
@@ -3146,6 +3156,10 @@
         "fsType": {
           "type": "string"
         },
+        "nodeExpandSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_SecretReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
+        },
         "nodePublishSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
@@ -3174,7 +3188,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "capacity": {
@@ -3723,9 +3737,6 @@
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
-        },
-        "clusterName": {
-          "type": "string"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",

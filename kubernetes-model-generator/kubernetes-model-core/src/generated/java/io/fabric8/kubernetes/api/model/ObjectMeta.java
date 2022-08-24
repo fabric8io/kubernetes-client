@@ -26,7 +26,6 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "annotations",
-    "clusterName",
     "creationTimestamp",
     "deletionGracePeriodSeconds",
     "deletionTimestamp",
@@ -56,8 +55,6 @@ public class ObjectMeta implements KubernetesResource
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
-    @JsonProperty("clusterName")
-    private java.lang.String clusterName;
     @JsonProperty("creationTimestamp")
     private String creationTimestamp;
     @JsonProperty("deletionGracePeriodSeconds")
@@ -114,15 +111,13 @@ public class ObjectMeta implements KubernetesResource
      * @param deletionGracePeriodSeconds
      * @param uid
      * @param managedFields
-     * @param clusterName
      * @param creationTimestamp
      * @param name
      * @param namespace
      */
-    public ObjectMeta(Map<String, String> annotations, java.lang.String clusterName, String creationTimestamp, Long deletionGracePeriodSeconds, String deletionTimestamp, List<java.lang.String> finalizers, java.lang.String generateName, Long generation, Map<String, String> labels, List<ManagedFieldsEntry> managedFields, java.lang.String name, java.lang.String namespace, List<OwnerReference> ownerReferences, java.lang.String resourceVersion, java.lang.String selfLink, java.lang.String uid) {
+    public ObjectMeta(Map<String, String> annotations, String creationTimestamp, Long deletionGracePeriodSeconds, String deletionTimestamp, List<java.lang.String> finalizers, java.lang.String generateName, Long generation, Map<String, String> labels, List<ManagedFieldsEntry> managedFields, java.lang.String name, java.lang.String namespace, List<OwnerReference> ownerReferences, java.lang.String resourceVersion, java.lang.String selfLink, java.lang.String uid) {
         super();
         this.annotations = annotations;
-        this.clusterName = clusterName;
         this.creationTimestamp = creationTimestamp;
         this.deletionGracePeriodSeconds = deletionGracePeriodSeconds;
         this.deletionTimestamp = deletionTimestamp;
@@ -147,16 +142,6 @@ public class ObjectMeta implements KubernetesResource
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
-    }
-
-    @JsonProperty("clusterName")
-    public java.lang.String getClusterName() {
-        return clusterName;
-    }
-
-    @JsonProperty("clusterName")
-    public void setClusterName(java.lang.String clusterName) {
-        this.clusterName = clusterName;
     }
 
     @JsonProperty("creationTimestamp")

@@ -431,9 +431,6 @@
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "clusterName": {
-          "type": "string"
-        },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
