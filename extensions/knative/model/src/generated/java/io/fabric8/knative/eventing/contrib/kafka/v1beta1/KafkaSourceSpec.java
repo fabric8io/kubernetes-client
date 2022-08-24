@@ -44,6 +44,8 @@ import lombok.experimental.Accessors;
     "bootstrapServers",
     "ceOverrides",
     "consumerGroup",
+    "consumers",
+    "initialOffset",
     "net",
     "sink",
     "topics"
@@ -79,6 +81,10 @@ public class KafkaSourceSpec implements KubernetesResource
     private CloudEventOverrides ceOverrides;
     @JsonProperty("consumerGroup")
     private String consumerGroup;
+    @JsonProperty("consumers")
+    private Integer consumers;
+    @JsonProperty("initialOffset")
+    private String initialOffset;
     @JsonProperty("net")
     private KafkaNetSpec net;
     @JsonProperty("sink")
@@ -100,15 +106,19 @@ public class KafkaSourceSpec implements KubernetesResource
      * @param bootstrapServers
      * @param sink
      * @param topics
+     * @param consumers
      * @param ceOverrides
      * @param net
      * @param consumerGroup
+     * @param initialOffset
      */
-    public KafkaSourceSpec(List<String> bootstrapServers, CloudEventOverrides ceOverrides, String consumerGroup, KafkaNetSpec net, Destination sink, List<String> topics) {
+    public KafkaSourceSpec(List<String> bootstrapServers, CloudEventOverrides ceOverrides, String consumerGroup, Integer consumers, String initialOffset, KafkaNetSpec net, Destination sink, List<String> topics) {
         super();
         this.bootstrapServers = bootstrapServers;
         this.ceOverrides = ceOverrides;
         this.consumerGroup = consumerGroup;
+        this.consumers = consumers;
+        this.initialOffset = initialOffset;
         this.net = net;
         this.sink = sink;
         this.topics = topics;
@@ -142,6 +152,26 @@ public class KafkaSourceSpec implements KubernetesResource
     @JsonProperty("consumerGroup")
     public void setConsumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
+    }
+
+    @JsonProperty("consumers")
+    public Integer getConsumers() {
+        return consumers;
+    }
+
+    @JsonProperty("consumers")
+    public void setConsumers(Integer consumers) {
+        this.consumers = consumers;
+    }
+
+    @JsonProperty("initialOffset")
+    public String getInitialOffset() {
+        return initialOffset;
+    }
+
+    @JsonProperty("initialOffset")
+    public void setInitialOffset(String initialOffset) {
+        this.initialOffset = initialOffset;
     }
 
     @JsonProperty("net")

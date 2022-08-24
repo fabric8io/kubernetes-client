@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.Placement;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes;
 import io.fabric8.kubernetes.api.model.Container;
@@ -44,8 +45,13 @@ import lombok.experimental.Accessors;
     "metadata",
     "annotations",
     "ceAttributes",
+    "claims",
     "conditions",
+    "consumers",
+    "maxAllowedVReplicas",
     "observedGeneration",
+    "placements",
+    "selector",
     "sinkUri"
 })
 @ToString
@@ -79,11 +85,22 @@ public class KafkaSourceStatus implements KubernetesResource
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
+    @JsonProperty("claims")
+    private java.lang.String claims;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("consumers")
+    private java.lang.Integer consumers;
+    @JsonProperty("maxAllowedVReplicas")
+    private Integer maxAllowedVReplicas;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("placements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Placement> placements = new ArrayList<Placement>();
+    @JsonProperty("selector")
+    private java.lang.String selector;
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonIgnore
@@ -100,16 +117,26 @@ public class KafkaSourceStatus implements KubernetesResource
      * 
      * @param sinkUri
      * @param ceAttributes
+     * @param claims
      * @param annotations
+     * @param consumers
+     * @param placements
+     * @param selector
      * @param conditions
+     * @param maxAllowedVReplicas
      * @param observedGeneration
      */
-    public KafkaSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, java.lang.String sinkUri) {
+    public KafkaSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, java.lang.String claims, List<Condition> conditions, java.lang.Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, java.lang.String selector, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
         this.ceAttributes = ceAttributes;
+        this.claims = claims;
         this.conditions = conditions;
+        this.consumers = consumers;
+        this.maxAllowedVReplicas = maxAllowedVReplicas;
         this.observedGeneration = observedGeneration;
+        this.placements = placements;
+        this.selector = selector;
         this.sinkUri = sinkUri;
     }
 
@@ -133,6 +160,16 @@ public class KafkaSourceStatus implements KubernetesResource
         this.ceAttributes = ceAttributes;
     }
 
+    @JsonProperty("claims")
+    public java.lang.String getClaims() {
+        return claims;
+    }
+
+    @JsonProperty("claims")
+    public void setClaims(java.lang.String claims) {
+        this.claims = claims;
+    }
+
     @JsonProperty("conditions")
     public List<Condition> getConditions() {
         return conditions;
@@ -143,6 +180,26 @@ public class KafkaSourceStatus implements KubernetesResource
         this.conditions = conditions;
     }
 
+    @JsonProperty("consumers")
+    public java.lang.Integer getConsumers() {
+        return consumers;
+    }
+
+    @JsonProperty("consumers")
+    public void setConsumers(java.lang.Integer consumers) {
+        this.consumers = consumers;
+    }
+
+    @JsonProperty("maxAllowedVReplicas")
+    public Integer getMaxAllowedVReplicas() {
+        return maxAllowedVReplicas;
+    }
+
+    @JsonProperty("maxAllowedVReplicas")
+    public void setMaxAllowedVReplicas(Integer maxAllowedVReplicas) {
+        this.maxAllowedVReplicas = maxAllowedVReplicas;
+    }
+
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
@@ -151,6 +208,26 @@ public class KafkaSourceStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("placements")
+    public List<Placement> getPlacements() {
+        return placements;
+    }
+
+    @JsonProperty("placements")
+    public void setPlacements(List<Placement> placements) {
+        this.placements = placements;
+    }
+
+    @JsonProperty("selector")
+    public java.lang.String getSelector() {
+        return selector;
+    }
+
+    @JsonProperty("selector")
+    public void setSelector(java.lang.String selector) {
+        this.selector = selector;
     }
 
     @JsonProperty("sinkUri")

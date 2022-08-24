@@ -141,7 +141,7 @@ class EventsContribResourcesTest {
         .withNewSecretKeyRef("accessToken", "githubsecret", false)
         .endSecretToken()
         .withNewSink()
-        .withNewRef("messaging.knative.dev/v1alpha1", "InMemoryChannel", "githubchannel", "ns1")
+        .withNewRef("v1alpha1", "messaging.knative.dev", "InMemoryChannel", "githubchannel", "ns1")
         .endSink()
         .endSpec()
         .build();
@@ -172,7 +172,7 @@ class EventsContribResourcesTest {
         .withNewSecretKeyRef("accessToken", "gitlabsecret", false)
         .endSecretToken()
         .withNewSink()
-        .withNewRef("messaging.knative.dev/v1alpha1", "InMemoryChannel", "gitlabchannel", "ns1")
+        .withNewRef("v1alpha1", "messaging.knative.dev", "InMemoryChannel", "gitlabchannel", "ns1")
         .endSink()
         .endSpec()
         .build();
