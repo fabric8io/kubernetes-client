@@ -59,6 +59,10 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace github.com/fabric8io/kubernetes-client/generator v0.0.0 => ./../../../generator
+replace (
+	github.com/fabric8io/kubernetes-client/generator v0.0.0 => ./../../../generator
+	github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.2
+	gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.4.0
+)
 
 go 1.17

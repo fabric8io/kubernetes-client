@@ -33,7 +33,10 @@
 
 #### _**Note**_: Breaking changes in the API
 * Fix #4206: The Serialization utility class will throw an Exception, instead of returning null, if an untyped unmarshall method is used on something that lacks type information
-
+* In ChaosMesh Model, some types have been renamed. These are
+  - `io.fabric8.chaosmesh.v1alpha1.AwsChaos` => `io.fabric8.chaosmesh.v1alpha1.AWSChaos`
+  - `io.fabric8.chaosmesh.v1alpha1.IoChaos` => `io.fabric8.chaosmesh.v1alpha1.IOChaos`
+  - `io.fabric8.chaosmesh.v1alpha1.PodIoChaos` => `io.fabric8.chaosmesh.v1alpha1.PodIOChaos`
 ### 5.12.3 (2022-07-27)
 
 #### Bugs
