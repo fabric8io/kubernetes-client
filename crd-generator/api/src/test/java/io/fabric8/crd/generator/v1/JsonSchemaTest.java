@@ -18,9 +18,11 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.extraction.DeeplyNestedSchemaSwaps;
 import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction2;
+import io.fabric8.crd.example.extraction.MultipleSchemaSwaps;
 import io.fabric8.crd.example.json.ContainingJson;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
@@ -28,6 +30,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.sundr.model.TypeDef;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,8 +44,7 @@ class JsonSchemaTest {
     TypeDef person = Types.typeDefFrom(Person.class);
     JSONSchemaProps schema = JsonSchema.from(person);
     assertNotNull(schema);
-    Map<String, JSONSchemaProps> properties = schema.getProperties();
-    assertEquals(7, properties.size());
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 7);
     final List<String> personTypes = properties.get("type").getEnum().stream().map(JsonNode::asText)
         .collect(Collectors.toList());
     assertEquals(2, personTypes.size());
@@ -76,11 +78,9 @@ class JsonSchemaTest {
     TypeDef annotated = Types.typeDefFrom(Annotated.class);
     JSONSchemaProps schema = JsonSchema.from(annotated);
     assertNotNull(schema);
-    Map<String, JSONSchemaProps> properties = schema.getProperties();
-    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(11, spec.size());
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 11);
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
@@ -144,11 +144,9 @@ class JsonSchemaTest {
     TypeDef containingJson = Types.typeDefFrom(ContainingJson.class);
     JSONSchemaProps schema = JsonSchema.from(containingJson);
     assertNotNull(schema);
-    Map<String, JSONSchemaProps> properties = schema.getProperties();
-    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(3, spec.size());
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 3);
 
     // check preserve unknown fields is present
     assertTrue(spec.containsKey("free"));
@@ -172,11 +170,9 @@ class JsonSchemaTest {
     TypeDef extraction = Types.typeDefFrom(Extraction.class);
     JSONSchemaProps schema = JsonSchema.from(extraction);
     assertNotNull(schema);
-    Map<String, JSONSchemaProps> properties = schema.getProperties();
-    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(2, spec.size());
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 2);
 
     // check typed SchemaFrom
     JSONSchemaProps foo = spec.get("foo");
@@ -204,14 +200,92 @@ class JsonSchemaTest {
   }
 
   @Test
+  void shouldExtractPropertiesSchemaFromSchemaSwapAnnotations() {
+    TypeDef extraction = Types.typeDefFrom(MultipleSchemaSwaps.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    final JSONSchemaProps specSchema = properties.get("spec");
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 4);
+
+    // 'first' is replaced by SchemaSwap from int to string
+    JSONSchemaProps first = spec.get("first");
+    assertPropertyHasType(first, "shouldBeString", "string");
+
+    // 'second' is replaced by the same SchemaSwap that is applied multiple times
+    JSONSchemaProps second = spec.get("second");
+    assertPropertyHasType(second, "shouldBeString", "string");
+
+    // 'third' is replaced by another SchemaSwap
+    JSONSchemaProps third = spec.get("third");
+    assertPropertyHasType(third, "shouldBeInt", "integer");
+
+    // 'fourth' is replaced by another SchemaSwap and its property deleted
+    JSONSchemaProps fourth = spec.get("fourth");
+    Map<String, JSONSchemaProps> properties4 = fourth.getProperties();
+    assertNotNull(properties);
+    assertTrue(properties4.isEmpty());
+  }
+
+  @Test
+  void shouldApplySchemaSwapsMultipleTimesInDeepClassHierarchy() {
+    TypeDef extraction = Types.typeDefFrom(DeeplyNestedSchemaSwaps.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(properties.get("spec"), 2);
+
+    assertPropertyHasType(spec.get("myObject"), "shouldBeString", "string");
+    Map<String, JSONSchemaProps> level1 = assertSchemaHasNumberOfProperties(spec.get("level1"), 3);
+
+    assertPropertyHasType(level1.get("myObject"), "shouldBeString", "string");
+    List<Map<String, JSONSchemaProps>> levels2 = new ArrayList<>();
+    levels2.add(assertSchemaHasNumberOfProperties(level1.get("level2a"), 3));
+    levels2.add(assertSchemaHasNumberOfProperties(level1.get("level2b"), 3));
+
+    for (Map<String, JSONSchemaProps> level2 : levels2) {
+      assertPropertyHasType(level2.get("myObject1"), "shouldBeString", "string");
+      assertPropertyHasType(level2.get("myObject2"), "shouldBeString", "string");
+
+      Map<String, JSONSchemaProps> level3 = assertSchemaHasNumberOfProperties(level2.get("level3"), 2);
+      assertPropertyHasType(level3.get("myObject1"), "shouldBeString", "string");
+      assertPropertyHasType(level3.get("myObject2"), "shouldBeString", "string");
+    }
+  }
+
+  @Test
   void shouldThrowIfSchemaSwapHasUnmatchedField() {
     TypeDef incorrectExtraction = Types.typeDefFrom(IncorrectExtraction.class);
-    assertThrows(IllegalArgumentException.class, () -> JsonSchema.from(incorrectExtraction));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(incorrectExtraction));
+    assertEquals(
+        "Unmatched SchemaSwaps: @SchemaSwap(originalType=io.fabric8.crd.example.extraction.ExtractionSpec, fieldName=\"FOO\", targetType=io"
+            + ".fabric8.crd.example.extraction.FooExtractor) on io.fabric8.crd.example.extraction.IncorrectExtraction",
+        exception.getMessage());
   }
 
   @Test
   void shouldThrowIfSchemaSwapHasUnmatchedClass() {
     TypeDef incorrectExtraction2 = Types.typeDefFrom(IncorrectExtraction2.class);
-    assertThrows(IllegalArgumentException.class, () -> JsonSchema.from(incorrectExtraction2));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(incorrectExtraction2));
+    assertEquals(
+        "Unmatched SchemaSwaps: @SchemaSwap(originalType=io.fabric8.crd.example.basic.BasicSpec, fieldName=\"bar\", targetType=io.fabric8.crd"
+            + ".example.extraction.FooExtractor) on io.fabric8.crd.example.extraction.IncorrectExtraction2",
+        exception.getMessage());
+  }
+
+  private static Map<String, JSONSchemaProps> assertSchemaHasNumberOfProperties(JSONSchemaProps specSchema, int expected) {
+    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
+    assertEquals(expected, spec.size());
+    return spec;
+  }
+
+  private static void assertPropertyHasType(JSONSchemaProps spec, String name, String expectedType) {
+    Map<String, JSONSchemaProps> properties = spec.getProperties();
+    assertNotNull(properties);
+    JSONSchemaProps property = properties.get(name);
+    assertNotNull(property, "Property " + name + " should exist");
+    assertEquals(expectedType, property.getType(), "Property " + name + " should have expected type");
   }
 }

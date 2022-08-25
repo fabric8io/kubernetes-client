@@ -323,6 +323,8 @@ The CRD generator will perform the same substitution as a `SchemaFrom` annotatio
             type: object
 ```
 
+The name of the field is restricted to the original `fieldName` and should be backed by a matching concrete field of the matching class. Getters, setters, and constructors are not taken into consideration.
+
 ### Generating `x-kubernetes-preserve-unknown-fields: true`
 
 If a field or one of its accessors is annotated with

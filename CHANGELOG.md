@@ -3,6 +3,7 @@
 ### 6.2-SNAPSHOT
 
 #### Bugs
+* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
@@ -12,6 +13,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
 
 ### 6.1.1 (2022-09-01)
 
@@ -28,6 +30,7 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
 * Fix #4320: corrected leader transitions field on leader election leases
 * Fix #4360: JUnit dependencies aren't leaked in child modules
+
 
 #### Improvements
 * Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
