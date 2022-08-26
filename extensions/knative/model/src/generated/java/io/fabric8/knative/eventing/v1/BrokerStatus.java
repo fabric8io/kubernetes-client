@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "address",
     "annotations",
     "conditions",
+    "deadLetterSinkUri",
     "observedGeneration"
 })
 @ToString
@@ -80,6 +81,8 @@ public class BrokerStatus implements KubernetesResource
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("deadLetterSinkUri")
+    private java.lang.String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
@@ -95,15 +98,17 @@ public class BrokerStatus implements KubernetesResource
     /**
      * 
      * @param address
+     * @param deadLetterSinkUri
      * @param annotations
      * @param conditions
      * @param observedGeneration
      */
-    public BrokerStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration) {
+    public BrokerStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration) {
         super();
         this.address = address;
         this.annotations = annotations;
         this.conditions = conditions;
+        this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
     }
 
@@ -135,6 +140,16 @@ public class BrokerStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("deadLetterSinkUri")
+    public java.lang.String getDeadLetterSinkUri() {
+        return deadLetterSinkUri;
+    }
+
+    @JsonProperty("deadLetterSinkUri")
+    public void setDeadLetterSinkUri(java.lang.String deadLetterSinkUri) {
+        this.deadLetterSinkUri = deadLetterSinkUri;
     }
 
     @JsonProperty("observedGeneration")

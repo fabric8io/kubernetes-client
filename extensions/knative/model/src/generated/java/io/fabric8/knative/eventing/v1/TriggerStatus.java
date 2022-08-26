@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "annotations",
     "conditions",
+    "deadLetterSinkUri",
     "observedGeneration",
     "subscriberUri"
 })
@@ -77,6 +78,8 @@ public class TriggerStatus implements KubernetesResource
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("deadLetterSinkUri")
+    private java.lang.String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("subscriberUri")
@@ -94,14 +97,16 @@ public class TriggerStatus implements KubernetesResource
     /**
      * 
      * @param subscriberUri
+     * @param deadLetterSinkUri
      * @param annotations
      * @param conditions
      * @param observedGeneration
      */
-    public TriggerStatus(Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, java.lang.String subscriberUri) {
+    public TriggerStatus(Map<String, String> annotations, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration, java.lang.String subscriberUri) {
         super();
         this.annotations = annotations;
         this.conditions = conditions;
+        this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
         this.subscriberUri = subscriberUri;
     }
@@ -124,6 +129,16 @@ public class TriggerStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("deadLetterSinkUri")
+    public java.lang.String getDeadLetterSinkUri() {
+        return deadLetterSinkUri;
+    }
+
+    @JsonProperty("deadLetterSinkUri")
+    public void setDeadLetterSinkUri(java.lang.String deadLetterSinkUri) {
+        this.deadLetterSinkUri = deadLetterSinkUri;
     }
 
     @JsonProperty("observedGeneration")

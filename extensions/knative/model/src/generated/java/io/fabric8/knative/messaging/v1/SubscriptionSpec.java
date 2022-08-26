@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.KReference;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -20,6 +21,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -57,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -69,7 +71,7 @@ public class SubscriptionSpec implements KubernetesResource
 {
 
     @JsonProperty("channel")
-    private io.fabric8.kubernetes.api.model.ObjectReference channel;
+    private KReference channel;
     @JsonProperty("delivery")
     private DeliverySpec delivery;
     @JsonProperty("reply")
@@ -93,7 +95,7 @@ public class SubscriptionSpec implements KubernetesResource
      * @param channel
      * @param reply
      */
-    public SubscriptionSpec(io.fabric8.kubernetes.api.model.ObjectReference channel, DeliverySpec delivery, Destination reply, Destination subscriber) {
+    public SubscriptionSpec(KReference channel, DeliverySpec delivery, Destination reply, Destination subscriber) {
         super();
         this.channel = channel;
         this.delivery = delivery;
@@ -102,12 +104,12 @@ public class SubscriptionSpec implements KubernetesResource
     }
 
     @JsonProperty("channel")
-    public io.fabric8.kubernetes.api.model.ObjectReference getChannel() {
+    public KReference getChannel() {
         return channel;
     }
 
     @JsonProperty("channel")
-    public void setChannel(io.fabric8.kubernetes.api.model.ObjectReference channel) {
+    public void setChannel(KReference channel) {
         this.channel = channel;
     }
 

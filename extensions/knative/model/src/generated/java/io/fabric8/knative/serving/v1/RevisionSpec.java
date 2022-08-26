@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodDNSConfig;
+import io.fabric8.kubernetes.api.model.PodOS;
 import io.fabric8.kubernetes.api.model.PodReadinessGate;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -60,15 +61,18 @@ import lombok.experimental.Accessors;
     "hostNetwork",
     "hostPID",
     "hostname",
+    "idleTimeoutSeconds",
     "imagePullSecrets",
     "initContainers",
     "nodeName",
     "nodeSelector",
+    "os",
     "overhead",
     "preemptionPolicy",
     "priority",
     "priorityClassName",
     "readinessGates",
+    "responseStartTimeoutSeconds",
     "restartPolicy",
     "runtimeClassName",
     "schedulerName",
@@ -139,6 +143,8 @@ public class RevisionSpec implements KubernetesResource
     private java.lang.Boolean hostPID;
     @JsonProperty("hostname")
     private java.lang.String hostname;
+    @JsonProperty("idleTimeoutSeconds")
+    private Long idleTimeoutSeconds;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
@@ -150,6 +156,8 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    @JsonProperty("os")
+    private PodOS os;
     @JsonProperty("overhead")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> overhead = new LinkedHashMap<String, Quantity>();
@@ -162,6 +170,8 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("readinessGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodReadinessGate> readinessGates = new ArrayList<PodReadinessGate>();
+    @JsonProperty("responseStartTimeoutSeconds")
+    private Long responseStartTimeoutSeconds;
     @JsonProperty("restartPolicy")
     private java.lang.String restartPolicy;
     @JsonProperty("runtimeClassName")
@@ -222,8 +232,10 @@ public class RevisionSpec implements KubernetesResource
      * @param runtimeClassName
      * @param tolerations
      * @param automountServiceAccountToken
+     * @param responseStartTimeoutSeconds
      * @param schedulerName
      * @param activeDeadlineSeconds
+     * @param os
      * @param setHostnameAsFQDN
      * @param enableServiceLinks
      * @param overhead
@@ -232,6 +244,7 @@ public class RevisionSpec implements KubernetesResource
      * @param volumes
      * @param ephemeralContainers
      * @param serviceAccount
+     * @param idleTimeoutSeconds
      * @param priority
      * @param restartPolicy
      * @param shareProcessNamespace
@@ -243,7 +256,7 @@ public class RevisionSpec implements KubernetesResource
      * @param affinity
      * @param hostPID
      */
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<io.fabric8.kubernetes.api.model.Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, java.lang.Boolean hostIPC, java.lang.Boolean hostNetwork, java.lang.Boolean hostPID, java.lang.String hostname, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, java.lang.String restartPolicy, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<io.fabric8.kubernetes.api.model.Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, java.lang.Boolean hostIPC, java.lang.Boolean hostNetwork, java.lang.Boolean hostPID, java.lang.String hostname, Long idleTimeoutSeconds, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, Long responseStartTimeoutSeconds, java.lang.String restartPolicy, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -259,15 +272,18 @@ public class RevisionSpec implements KubernetesResource
         this.hostNetwork = hostNetwork;
         this.hostPID = hostPID;
         this.hostname = hostname;
+        this.idleTimeoutSeconds = idleTimeoutSeconds;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
         this.nodeName = nodeName;
         this.nodeSelector = nodeSelector;
+        this.os = os;
         this.overhead = overhead;
         this.preemptionPolicy = preemptionPolicy;
         this.priority = priority;
         this.priorityClassName = priorityClassName;
         this.readinessGates = readinessGates;
+        this.responseStartTimeoutSeconds = responseStartTimeoutSeconds;
         this.restartPolicy = restartPolicy;
         this.runtimeClassName = runtimeClassName;
         this.schedulerName = schedulerName;
@@ -424,6 +440,16 @@ public class RevisionSpec implements KubernetesResource
         this.hostname = hostname;
     }
 
+    @JsonProperty("idleTimeoutSeconds")
+    public Long getIdleTimeoutSeconds() {
+        return idleTimeoutSeconds;
+    }
+
+    @JsonProperty("idleTimeoutSeconds")
+    public void setIdleTimeoutSeconds(Long idleTimeoutSeconds) {
+        this.idleTimeoutSeconds = idleTimeoutSeconds;
+    }
+
     @JsonProperty("imagePullSecrets")
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
@@ -462,6 +488,16 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
+    }
+
+    @JsonProperty("os")
+    public PodOS getOs() {
+        return os;
+    }
+
+    @JsonProperty("os")
+    public void setOs(PodOS os) {
+        this.os = os;
     }
 
     @JsonProperty("overhead")
@@ -512,6 +548,16 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("readinessGates")
     public void setReadinessGates(List<PodReadinessGate> readinessGates) {
         this.readinessGates = readinessGates;
+    }
+
+    @JsonProperty("responseStartTimeoutSeconds")
+    public Long getResponseStartTimeoutSeconds() {
+        return responseStartTimeoutSeconds;
+    }
+
+    @JsonProperty("responseStartTimeoutSeconds")
+    public void setResponseStartTimeoutSeconds(Long responseStartTimeoutSeconds) {
+        this.responseStartTimeoutSeconds = responseStartTimeoutSeconds;
     }
 
     @JsonProperty("restartPolicy")

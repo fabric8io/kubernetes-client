@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "delivery",
     "numPartitions",
     "replicationFactor",
+    "retentionDuration",
     "subscribers"
 })
 @ToString
@@ -77,6 +78,8 @@ public class KafkaChannelSpec implements KubernetesResource
     private Integer numPartitions;
     @JsonProperty("replicationFactor")
     private Integer replicationFactor;
+    @JsonProperty("retentionDuration")
+    private String retentionDuration;
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
@@ -96,12 +99,14 @@ public class KafkaChannelSpec implements KubernetesResource
      * @param replicationFactor
      * @param subscribers
      * @param numPartitions
+     * @param retentionDuration
      */
-    public KafkaChannelSpec(DeliverySpec delivery, Integer numPartitions, Integer replicationFactor, List<SubscriberSpec> subscribers) {
+    public KafkaChannelSpec(DeliverySpec delivery, Integer numPartitions, Integer replicationFactor, String retentionDuration, List<SubscriberSpec> subscribers) {
         super();
         this.delivery = delivery;
         this.numPartitions = numPartitions;
         this.replicationFactor = replicationFactor;
+        this.retentionDuration = retentionDuration;
         this.subscribers = subscribers;
     }
 
@@ -133,6 +138,16 @@ public class KafkaChannelSpec implements KubernetesResource
     @JsonProperty("replicationFactor")
     public void setReplicationFactor(Integer replicationFactor) {
         this.replicationFactor = replicationFactor;
+    }
+
+    @JsonProperty("retentionDuration")
+    public String getRetentionDuration() {
+        return retentionDuration;
+    }
+
+    @JsonProperty("retentionDuration")
+    public void setRetentionDuration(String retentionDuration) {
+        this.retentionDuration = retentionDuration;
     }
 
     @JsonProperty("subscribers")

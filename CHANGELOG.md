@@ -3,24 +3,27 @@
 ### 6.1-SNAPSHOT
 
 #### Bugs
+* Fix #4109: Templates with parameters can be retrieved from OpenShift
+* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource
+* Fix #4247: NO_PROXY with invalid entries throws exception
 * Fix #4256: crd-generator-apt pom.xml includes transitive dependencies
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
-* Fix #4247: NO_PROXY with invalid entries throws exception
 * Fix #4320: corrected leader transitions field on leader election leases
-* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
 
 
 #### Improvements
-* Fix #4254: adding debug logging for exec stream messages
+* Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
 * Fix #4241: added more context to informer logs with the endpoint path
-* Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 * Fix #4250: allowing for deserialization of polymorphic unwrapped fields
+* Fix #4254: adding debug logging for exec stream messages
+* Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
+* Fix #4287: added WorkloadGroup for Istio v1alpha3 extension generator
 * Fix #4318: implemented LeaderElection releaseOnCancel
 * Fix #3960: adding a KubernetesMockServer.expectCustomResource helper method and additional mock crd support
-* Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 
 #### Dependency Upgrade
+* Bump Knative model to v0.34.0
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire

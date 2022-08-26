@@ -198,6 +198,18 @@ func main() {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return
   }
+  
+  serdes := map[string]*schemagen.JavaSerDeDescriptor{
+    "os_template_Template": &schemagen.JavaSerDeDescriptor{
+      Deserializer: "io.fabric8.openshift.api.model.TemplateDeserializer.class",
+    },
+  }
+
+  for definitionKey, descriptor := range serdes {
+    val := schema.Definitions[definitionKey]
+    val.JavaSerDeDescriptor = descriptor
+    schema.Definitions[definitionKey] = val
+  }
 
   args := os.Args[1:]
   if len(args) < 1 || args[0] != "validation" {

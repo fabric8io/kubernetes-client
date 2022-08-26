@@ -80,6 +80,7 @@ public class SequenceStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("channelStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SequenceChannelStatus> channelStatuses = new ArrayList<SequenceChannelStatus>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -87,6 +88,7 @@ public class SequenceStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("subscriptionStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SequenceSubscriptionStatus> subscriptionStatuses = new ArrayList<SequenceSubscriptionStatus>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
