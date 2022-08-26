@@ -17,6 +17,10 @@ package io.fabric8.generator.annotation;
 
 import java.lang.annotation.*;
 
+/*
+ * Java representation of the `required` field of JSONSchemaProps
+ * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#jsonschemaprops-v1-apiextensions-k8s-io
+ */
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Required {
