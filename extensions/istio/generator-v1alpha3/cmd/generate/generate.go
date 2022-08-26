@@ -45,6 +45,7 @@ func main() {
 		reflect.TypeOf(client_networking_v1alpha3.VirtualServiceList{}):  schemagen.Namespaced,
 		reflect.TypeOf(client_networking_v1alpha3.WorkloadEntryList{}):   schemagen.Namespaced,
 		reflect.TypeOf(client_networking_v1alpha3.EnvoyFilterList{}):     schemagen.Namespaced,
+		reflect.TypeOf(client_networking_v1alpha3.WorkloadGroupList{}):   schemagen.Namespaced,
 	}
 
 	// custom types descriptors
@@ -103,6 +104,7 @@ func main() {
 		"istio.io/api/networking/v1alpha3/isLoadBalancerSettings_ConsistentHashLB_HashKey":  {reflect.TypeOf(api_networking_v1alpha3.LoadBalancerSettings_ConsistentHashLB_HttpHeaderName{}), reflect.TypeOf(api_networking_v1alpha3.LoadBalancerSettings_ConsistentHashLB_HttpCookie{}), reflect.TypeOf(api_networking_v1alpha3.LoadBalancerSettings_ConsistentHashLB_UseSourceIp{}), reflect.TypeOf(api_networking_v1alpha3.LoadBalancerSettings_ConsistentHashLB_HttpQueryParameterName{})},
 		"istio.io/api/networking/v1alpha3/isHTTPRedirect_RedirectPort":                      {reflect.TypeOf(api_networking_v1alpha3.HTTPRedirect_Port{}), reflect.TypeOf(api_networking_v1alpha3.HTTPRedirect_DerivePort{})},
 		"istio.io/api/networking/v1alpha3/isEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes": {reflect.TypeOf(api_networking_v1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_Listener{}), reflect.TypeOf(api_networking_v1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration{}), reflect.TypeOf(api_networking_v1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_Cluster{})},
+		"istio.io/api/networking/v1alpha3/isReadinessProbe_HealthCheckMethod":               {reflect.TypeOf(api_networking_v1alpha3.ReadinessProbe_Exec{}), reflect.TypeOf(api_networking_v1alpha3.ReadinessProbe_HttpGet{}), reflect.TypeOf(api_networking_v1alpha3.ReadinessProbe_TcpSocket{})},
 	}
 
 	// custom name rules
@@ -116,6 +118,7 @@ func main() {
 			reflect.TypeOf(api_networking_v1alpha3.Sidecar{}):         "io.fabric8.istio.api.networking.v1alpha3.SidecarSpec",
 			reflect.TypeOf(api_networking_v1alpha3.VirtualService{}):  "io.fabric8.istio.api.networking.v1alpha3.VirtualServiceSpec",
 			reflect.TypeOf(api_networking_v1alpha3.WorkloadEntry{}):   "io.fabric8.istio.api.networking.v1alpha3.WorkloadEntrySpec",
+			reflect.TypeOf(api_networking_v1alpha3.WorkloadGroup{}):   "io.fabric8.istio.api.networking.v1alpha3.WorkloadGroupSpec",
 			reflect.TypeOf(types.Value{}):                             "io.fabric8.istio.api.internal.protobuf.types.Value",
 
 			// Avoid same name for:
