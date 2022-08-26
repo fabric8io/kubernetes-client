@@ -44,7 +44,6 @@ import lombok.experimental.Accessors;
     "dependencies",
     "flows",
     "integrationKit",
-    "kit",
     "profile",
     "replicas",
     "repositories",
@@ -90,8 +89,6 @@ public class IntegrationSpec implements KubernetesResource
     private List<JsonNode> flows = new ArrayList<JsonNode>();
     @JsonProperty("integrationKit")
     private io.fabric8.kubernetes.api.model.ObjectReference integrationKit;
-    @JsonProperty("kit")
-    private java.lang.String kit;
     @JsonProperty("profile")
     private java.lang.String profile;
     @JsonProperty("replicas")
@@ -128,23 +125,21 @@ public class IntegrationSpec implements KubernetesResource
      * @param traits
      * @param sources
      * @param configuration
+     * @param flows
+     * @param repositories
      * @param integrationKit
      * @param replicas
      * @param serviceAccountName
      * @param profile
      * @param resources
      * @param dependencies
-     * @param flows
-     * @param repositories
-     * @param kit
      */
-    public IntegrationSpec(List<ConfigurationSpec> configuration, List<java.lang.String> dependencies, List<JsonNode> flows, io.fabric8.kubernetes.api.model.ObjectReference integrationKit, java.lang.String kit, java.lang.String profile, Integer replicas, List<java.lang.String> repositories, List<ResourceSpec> resources, java.lang.String serviceAccountName, List<SourceSpec> sources, PodSpecTemplate template, Map<String, TraitSpec> traits) {
+    public IntegrationSpec(List<ConfigurationSpec> configuration, List<java.lang.String> dependencies, List<JsonNode> flows, io.fabric8.kubernetes.api.model.ObjectReference integrationKit, java.lang.String profile, Integer replicas, List<java.lang.String> repositories, List<ResourceSpec> resources, java.lang.String serviceAccountName, List<SourceSpec> sources, PodSpecTemplate template, Map<String, TraitSpec> traits) {
         super();
         this.configuration = configuration;
         this.dependencies = dependencies;
         this.flows = flows;
         this.integrationKit = integrationKit;
-        this.kit = kit;
         this.profile = profile;
         this.replicas = replicas;
         this.repositories = repositories;
@@ -193,16 +188,6 @@ public class IntegrationSpec implements KubernetesResource
     @JsonProperty("integrationKit")
     public void setIntegrationKit(io.fabric8.kubernetes.api.model.ObjectReference integrationKit) {
         this.integrationKit = integrationKit;
-    }
-
-    @JsonProperty("kit")
-    public java.lang.String getKit() {
-        return kit;
-    }
-
-    @JsonProperty("kit")
-    public void setKit(java.lang.String kit) {
-        this.kit = kit;
     }
 
     @JsonProperty("profile")
