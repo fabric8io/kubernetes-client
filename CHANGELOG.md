@@ -12,13 +12,14 @@
 
 
 #### Improvements
-* Fix #4254: adding debug logging for exec stream messages
+* Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
 * Fix #4241: added more context to informer logs with the endpoint path
-* Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 * Fix #4250: allowing for deserialization of polymorphic unwrapped fields
-* Fix #4318: implemented LeaderElection releaseOnCancel
+* Fix #4254: adding debug logging for exec stream messages
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
+* Fix #4287: added WorkloadGroup for Istio v1alpha3 extension generator
+* Fix #4318: implemented LeaderElection releaseOnCancel
 
 #### Dependency Upgrade
 
