@@ -1,10 +1,8 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -40,11 +38,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "artifactId",
-    "dependencies",
-    "groupId",
-    "languages",
-    "version"
+    "configuration",
+    "id",
+    "password",
+    "username"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,24 +65,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class CamelLoader implements KubernetesResource
+public class Server implements KubernetesResource
 {
 
-    @JsonProperty("artifactId")
-    private java.lang.String artifactId;
-    @JsonProperty("dependencies")
+    @JsonProperty("configuration")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MavenArtifact> dependencies = new ArrayList<MavenArtifact>();
-    @JsonProperty("groupId")
-    private java.lang.String groupId;
-    @JsonProperty("languages")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> languages = new ArrayList<java.lang.String>();
-    @JsonProperty("metadata")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> metadata = new LinkedHashMap<String, String>();
-    @JsonProperty("version")
-    private java.lang.String version;
+    private Map<String, String> configuration = new LinkedHashMap<String, String>();
+    @JsonProperty("id")
+    private java.lang.String id;
+    @JsonProperty("password")
+    private java.lang.String password;
+    @JsonProperty("username")
+    private java.lang.String username;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -93,86 +84,62 @@ public class CamelLoader implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public CamelLoader() {
+    public Server() {
     }
 
     /**
      * 
-     * @param metadata
-     * @param languages
-     * @param groupId
-     * @param artifactId
-     * @param version
-     * @param dependencies
+     * @param password
+     * @param configuration
+     * @param id
+     * @param username
      */
-    public CamelLoader(java.lang.String artifactId, List<MavenArtifact> dependencies, java.lang.String groupId, List<java.lang.String> languages, Map<String, String> metadata, java.lang.String version) {
+    public Server(Map<String, String> configuration, java.lang.String id, java.lang.String password, java.lang.String username) {
         super();
-        this.artifactId = artifactId;
-        this.dependencies = dependencies;
-        this.groupId = groupId;
-        this.languages = languages;
-        this.metadata = metadata;
-        this.version = version;
+        this.configuration = configuration;
+        this.id = id;
+        this.password = password;
+        this.username = username;
     }
 
-    @JsonProperty("artifactId")
-    public java.lang.String getArtifactId() {
-        return artifactId;
+    @JsonProperty("configuration")
+    public Map<String, String> getConfiguration() {
+        return configuration;
     }
 
-    @JsonProperty("artifactId")
-    public void setArtifactId(java.lang.String artifactId) {
-        this.artifactId = artifactId;
+    @JsonProperty("configuration")
+    public void setConfiguration(Map<String, String> configuration) {
+        this.configuration = configuration;
     }
 
-    @JsonProperty("dependencies")
-    public List<MavenArtifact> getDependencies() {
-        return dependencies;
+    @JsonProperty("id")
+    public java.lang.String getId() {
+        return id;
     }
 
-    @JsonProperty("dependencies")
-    public void setDependencies(List<MavenArtifact> dependencies) {
-        this.dependencies = dependencies;
+    @JsonProperty("id")
+    public void setId(java.lang.String id) {
+        this.id = id;
     }
 
-    @JsonProperty("groupId")
-    public java.lang.String getGroupId() {
-        return groupId;
+    @JsonProperty("password")
+    public java.lang.String getPassword() {
+        return password;
     }
 
-    @JsonProperty("groupId")
-    public void setGroupId(java.lang.String groupId) {
-        this.groupId = groupId;
+    @JsonProperty("password")
+    public void setPassword(java.lang.String password) {
+        this.password = password;
     }
 
-    @JsonProperty("languages")
-    public List<java.lang.String> getLanguages() {
-        return languages;
+    @JsonProperty("username")
+    public java.lang.String getUsername() {
+        return username;
     }
 
-    @JsonProperty("languages")
-    public void setLanguages(List<java.lang.String> languages) {
-        this.languages = languages;
-    }
-
-    @JsonProperty("metadata")
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("version")
-    public java.lang.String getVersion() {
-        return version;
-    }
-
-    @JsonProperty("version")
-    public void setVersion(java.lang.String version) {
-        this.version = version;
+    @JsonProperty("username")
+    public void setUsername(java.lang.String username) {
+        this.username = username;
     }
 
     @JsonAnyGetter

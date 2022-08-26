@@ -23,6 +23,7 @@
 
 #### Dependency Upgrade
 * Bump Knative model to v0.34.0
+* Bump Apache Camel-K to v1.9.2
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire

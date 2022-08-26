@@ -486,6 +486,10 @@
             "type": "string"
           }
         },
+        "metadata": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
         "version": {
           "type": "string"
         }
@@ -926,6 +930,10 @@
     "github_com_apache_camel-k_pkg_apis_camel_v1_IntegrationPlatformBuildSpec": {
       "type": "object",
       "properties": {
+        "PublishStrategyOptions": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
         "baseImage": {
           "type": "string"
         },
@@ -1182,9 +1190,6 @@
         "integrationKit": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
-        "kit": {
-          "type": "string"
-        },
         "profile": {
           "type": "string"
         },
@@ -1289,9 +1294,6 @@
         },
         "integrationKit": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-        },
-        "kit": {
-          "type": "string"
         },
         "lastInitTimestamp": {
           "existingJavaType": "java.lang.String"
@@ -1400,6 +1402,13 @@
         "caSecret": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretKeySelector"
         },
+        "caSecrets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.SecretKeySelector"
+          }
+        },
         "cliOptions": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1430,12 +1439,17 @@
             "existingJavaType": "io.fabric8.camelk.v1.Repository"
           }
         },
+        "servers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1_Server",
+            "existingJavaType": "io.fabric8.camelk.v1.Server"
+          }
+        },
         "settings": {
           "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1_ValueSource",
           "existingJavaType": "io.fabric8.camelk.v1.ValueSource"
-        },
-        "timeout": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         }
       },
       "javaType": "io.fabric8.camelk.v1.MavenBuildSpec",
@@ -1448,6 +1462,13 @@
       "properties": {
         "caSecret": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretKeySelector"
+        },
+        "caSecrets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.SecretKeySelector"
+          }
         },
         "cliOptions": {
           "type": "array",
@@ -1474,9 +1495,6 @@
         "settings": {
           "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1_ValueSource",
           "existingJavaType": "io.fabric8.camelk.v1.ValueSource"
-        },
-        "timeout": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         }
       },
       "javaType": "io.fabric8.camelk.v1.MavenSpec",
@@ -1713,6 +1731,28 @@
         }
       },
       "javaType": "io.fabric8.camelk.v1.S2iTask",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1_Server": {
+      "type": "object",
+      "properties": {
+        "configuration": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "id": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1.Server",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2073,6 +2113,10 @@
     "github_com_apache_camel-k_pkg_apis_camel_v1_S2iTask": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1_S2iTask",
       "existingJavaType": "io.fabric8.camelk.v1.S2iTask"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1_Server": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1_Server",
+      "existingJavaType": "io.fabric8.camelk.v1.Server"
     },
     "github_com_apache_camel-k_pkg_apis_camel_v1_SourceSpec": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1_SourceSpec",
