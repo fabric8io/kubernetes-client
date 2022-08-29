@@ -52,6 +52,7 @@
     <bundle>mvn:io.fabric8/kubernetes-model-events/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-extensions/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-flowcontrol/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-gatewayapi/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-networking/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-node/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-metrics/${project.version}</bundle>
