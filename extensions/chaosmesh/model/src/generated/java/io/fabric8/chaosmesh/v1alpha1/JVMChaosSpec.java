@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -39,13 +40,19 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "action",
+    "class",
+    "containerNames",
+    "cpuCount",
     "duration",
-    "flags",
-    "matchers",
+    "exception",
+    "latency",
+    "memType",
+    "method",
     "mode",
-    "scheduler",
+    "name",
+    "port",
+    "ruleData",
     "selector",
-    "target",
     "value"
 })
 @ToString
@@ -75,22 +82,32 @@ public class JVMChaosSpec implements KubernetesResource
 
     @JsonProperty("action")
     private java.lang.String action;
+    @JsonProperty("class")
+    private java.lang.String className;
+    @JsonProperty("containerNames")
+    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    @JsonProperty("cpuCount")
+    private Integer cpuCount;
     @JsonProperty("duration")
     private String duration;
-    @JsonProperty("flags")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> flags = new LinkedHashMap<String, String>();
-    @JsonProperty("matchers")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> matchers = new LinkedHashMap<String, String>();
+    @JsonProperty("exception")
+    private java.lang.String exception;
+    @JsonProperty("latency")
+    private Integer latency;
+    @JsonProperty("memType")
+    private java.lang.String memType;
+    @JsonProperty("method")
+    private java.lang.String method;
     @JsonProperty("mode")
     private java.lang.String mode;
-    @JsonProperty("scheduler")
-    private SchedulerSpec scheduler;
+    @JsonProperty("name")
+    private java.lang.String name;
+    @JsonProperty("port")
+    private Integer port;
+    @JsonProperty("ruleData")
+    private java.lang.String ruleData;
     @JsonProperty("selector")
-    private SelectorSpec selector;
-    @JsonProperty("target")
-    private java.lang.String target;
+    private PodSelectorSpec selector;
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
@@ -105,26 +122,38 @@ public class JVMChaosSpec implements KubernetesResource
 
     /**
      * 
+     * @param exception
+     * @param method
+     * @param latency
+     * @param memType
+     * @param className
+     * @param containerNames
      * @param duration
      * @param mode
-     * @param scheduler
-     * @param matchers
-     * @param flags
+     * @param port
+     * @param name
      * @param action
      * @param selector
+     * @param ruleData
      * @param value
-     * @param target
+     * @param cpuCount
      */
-    public JVMChaosSpec(java.lang.String action, String duration, Map<String, String> flags, Map<String, String> matchers, java.lang.String mode, SchedulerSpec scheduler, SelectorSpec selector, java.lang.String target, java.lang.String value) {
+    public JVMChaosSpec(java.lang.String action, java.lang.String className, List<java.lang.String> containerNames, Integer cpuCount, String duration, java.lang.String exception, Integer latency, java.lang.String memType, java.lang.String method, java.lang.String mode, java.lang.String name, Integer port, java.lang.String ruleData, PodSelectorSpec selector, java.lang.String value) {
         super();
         this.action = action;
+        this.className = className;
+        this.containerNames = containerNames;
+        this.cpuCount = cpuCount;
         this.duration = duration;
-        this.flags = flags;
-        this.matchers = matchers;
+        this.exception = exception;
+        this.latency = latency;
+        this.memType = memType;
+        this.method = method;
         this.mode = mode;
-        this.scheduler = scheduler;
+        this.name = name;
+        this.port = port;
+        this.ruleData = ruleData;
         this.selector = selector;
-        this.target = target;
         this.value = value;
     }
 
@@ -138,6 +167,36 @@ public class JVMChaosSpec implements KubernetesResource
         this.action = action;
     }
 
+    @JsonProperty("class")
+    public java.lang.String getClassName() {
+        return className;
+    }
+
+    @JsonProperty("class")
+    public void setClassName(java.lang.String className) {
+        this.className = className;
+    }
+
+    @JsonProperty("containerNames")
+    public List<java.lang.String> getContainerNames() {
+        return containerNames;
+    }
+
+    @JsonProperty("containerNames")
+    public void setContainerNames(List<java.lang.String> containerNames) {
+        this.containerNames = containerNames;
+    }
+
+    @JsonProperty("cpuCount")
+    public Integer getCpuCount() {
+        return cpuCount;
+    }
+
+    @JsonProperty("cpuCount")
+    public void setCpuCount(Integer cpuCount) {
+        this.cpuCount = cpuCount;
+    }
+
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
@@ -148,24 +207,44 @@ public class JVMChaosSpec implements KubernetesResource
         this.duration = duration;
     }
 
-    @JsonProperty("flags")
-    public Map<String, String> getFlags() {
-        return flags;
+    @JsonProperty("exception")
+    public java.lang.String getException() {
+        return exception;
     }
 
-    @JsonProperty("flags")
-    public void setFlags(Map<String, String> flags) {
-        this.flags = flags;
+    @JsonProperty("exception")
+    public void setException(java.lang.String exception) {
+        this.exception = exception;
     }
 
-    @JsonProperty("matchers")
-    public Map<String, String> getMatchers() {
-        return matchers;
+    @JsonProperty("latency")
+    public Integer getLatency() {
+        return latency;
     }
 
-    @JsonProperty("matchers")
-    public void setMatchers(Map<String, String> matchers) {
-        this.matchers = matchers;
+    @JsonProperty("latency")
+    public void setLatency(Integer latency) {
+        this.latency = latency;
+    }
+
+    @JsonProperty("memType")
+    public java.lang.String getMemType() {
+        return memType;
+    }
+
+    @JsonProperty("memType")
+    public void setMemType(java.lang.String memType) {
+        this.memType = memType;
+    }
+
+    @JsonProperty("method")
+    public java.lang.String getMethod() {
+        return method;
+    }
+
+    @JsonProperty("method")
+    public void setMethod(java.lang.String method) {
+        this.method = method;
     }
 
     @JsonProperty("mode")
@@ -178,34 +257,44 @@ public class JVMChaosSpec implements KubernetesResource
         this.mode = mode;
     }
 
-    @JsonProperty("scheduler")
-    public SchedulerSpec getScheduler() {
-        return scheduler;
+    @JsonProperty("name")
+    public java.lang.String getName() {
+        return name;
     }
 
-    @JsonProperty("scheduler")
-    public void setScheduler(SchedulerSpec scheduler) {
-        this.scheduler = scheduler;
+    @JsonProperty("name")
+    public void setName(java.lang.String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    @JsonProperty("ruleData")
+    public java.lang.String getRuleData() {
+        return ruleData;
+    }
+
+    @JsonProperty("ruleData")
+    public void setRuleData(java.lang.String ruleData) {
+        this.ruleData = ruleData;
     }
 
     @JsonProperty("selector")
-    public SelectorSpec getSelector() {
+    public PodSelectorSpec getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(SelectorSpec selector) {
+    public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
-    }
-
-    @JsonProperty("target")
-    public java.lang.String getTarget() {
-        return target;
-    }
-
-    @JsonProperty("target")
-    public void setTarget(java.lang.String target) {
-        this.target = target;
     }
 
     @JsonProperty("value")

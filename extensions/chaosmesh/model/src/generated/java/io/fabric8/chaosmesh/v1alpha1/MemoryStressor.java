@@ -69,7 +69,6 @@ public class MemoryStressor implements KubernetesResource
 {
 
     @JsonProperty("options")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> options = new ArrayList<String>();
     @JsonProperty("size")
     private String size;

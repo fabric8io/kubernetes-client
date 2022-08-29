@@ -37,9 +37,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "experiment",
     "failedMessage",
-    "scheduler"
+    "observedGeneration"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,12 +65,10 @@ import lombok.experimental.Accessors;
 public class PodNetworkChaosStatus implements KubernetesResource
 {
 
-    @JsonProperty("experiment")
-    private ExperimentStatus experiment;
     @JsonProperty("failedMessage")
     private String failedMessage;
-    @JsonProperty("scheduler")
-    private ScheduleStatus scheduler;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -84,25 +81,13 @@ public class PodNetworkChaosStatus implements KubernetesResource
 
     /**
      * 
-     * @param scheduler
-     * @param experiment
      * @param failedMessage
+     * @param observedGeneration
      */
-    public PodNetworkChaosStatus(ExperimentStatus experiment, String failedMessage, ScheduleStatus scheduler) {
+    public PodNetworkChaosStatus(String failedMessage, Long observedGeneration) {
         super();
-        this.experiment = experiment;
         this.failedMessage = failedMessage;
-        this.scheduler = scheduler;
-    }
-
-    @JsonProperty("experiment")
-    public ExperimentStatus getExperiment() {
-        return experiment;
-    }
-
-    @JsonProperty("experiment")
-    public void setExperiment(ExperimentStatus experiment) {
-        this.experiment = experiment;
+        this.observedGeneration = observedGeneration;
     }
 
     @JsonProperty("failedMessage")
@@ -115,14 +100,14 @@ public class PodNetworkChaosStatus implements KubernetesResource
         this.failedMessage = failedMessage;
     }
 
-    @JsonProperty("scheduler")
-    public ScheduleStatus getScheduler() {
-        return scheduler;
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
     }
 
-    @JsonProperty("scheduler")
-    public void setScheduler(ScheduleStatus scheduler) {
-        this.scheduler = scheduler;
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     @JsonAnyGetter

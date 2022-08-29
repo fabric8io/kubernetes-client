@@ -1,7 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,9 +39,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "experiment",
-    "failedMessage",
-    "scheduler"
+    "conditions",
+    "experiment"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,12 +67,11 @@ import lombok.experimental.Accessors;
 public class JVMChaosStatus implements KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
-    @JsonProperty("failedMessage")
-    private String failedMessage;
-    @JsonProperty("scheduler")
-    private ScheduleStatus scheduler;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -84,15 +84,23 @@ public class JVMChaosStatus implements KubernetesResource
 
     /**
      * 
-     * @param scheduler
      * @param experiment
-     * @param failedMessage
+     * @param conditions
      */
-    public JVMChaosStatus(ExperimentStatus experiment, String failedMessage, ScheduleStatus scheduler) {
+    public JVMChaosStatus(List<ChaosCondition> conditions, ExperimentStatus experiment) {
         super();
+        this.conditions = conditions;
         this.experiment = experiment;
-        this.failedMessage = failedMessage;
-        this.scheduler = scheduler;
+    }
+
+    @JsonProperty("conditions")
+    public List<ChaosCondition> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<ChaosCondition> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonProperty("experiment")
@@ -103,26 +111,6 @@ public class JVMChaosStatus implements KubernetesResource
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;
-    }
-
-    @JsonProperty("failedMessage")
-    public String getFailedMessage() {
-        return failedMessage;
-    }
-
-    @JsonProperty("failedMessage")
-    public void setFailedMessage(String failedMessage) {
-        this.failedMessage = failedMessage;
-    }
-
-    @JsonProperty("scheduler")
-    public ScheduleStatus getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("scheduler")
-    public void setScheduler(ScheduleStatus scheduler) {
-        this.scheduler = scheduler;
     }
 
     @JsonAnyGetter

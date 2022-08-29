@@ -43,15 +43,16 @@ import lombok.experimental.Accessors;
     "bandwidth",
     "corrupt",
     "delay",
+    "device",
     "direction",
     "duplicate",
     "duration",
     "externalTargets",
     "loss",
     "mode",
-    "scheduler",
     "selector",
     "target",
+    "targetDevice",
     "value"
 })
 @ToString
@@ -87,6 +88,8 @@ public class NetworkChaosSpec implements KubernetesResource
     private CorruptSpec corrupt;
     @JsonProperty("delay")
     private DelaySpec delay;
+    @JsonProperty("device")
+    private java.lang.String device;
     @JsonProperty("direction")
     private java.lang.String direction;
     @JsonProperty("duplicate")
@@ -94,18 +97,17 @@ public class NetworkChaosSpec implements KubernetesResource
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("externalTargets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> externalTargets = new ArrayList<java.lang.String>();
     @JsonProperty("loss")
     private LossSpec loss;
     @JsonProperty("mode")
     private java.lang.String mode;
-    @JsonProperty("scheduler")
-    private SchedulerSpec scheduler;
     @JsonProperty("selector")
-    private SelectorSpec selector;
+    private PodSelectorSpec selector;
     @JsonProperty("target")
-    private Target target;
+    private PodSelector target;
+    @JsonProperty("targetDevice")
+    private java.lang.String targetDevice;
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
@@ -127,29 +129,31 @@ public class NetworkChaosSpec implements KubernetesResource
      * @param target
      * @param duration
      * @param mode
-     * @param scheduler
      * @param loss
      * @param delay
      * @param action
      * @param selector
+     * @param targetDevice
+     * @param device
      * @param value
      * @param direction
      */
-    public NetworkChaosSpec(java.lang.String action, BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, java.lang.String direction, DuplicateSpec duplicate, String duration, List<java.lang.String> externalTargets, LossSpec loss, java.lang.String mode, SchedulerSpec scheduler, SelectorSpec selector, Target target, java.lang.String value) {
+    public NetworkChaosSpec(java.lang.String action, BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, java.lang.String device, java.lang.String direction, DuplicateSpec duplicate, String duration, List<java.lang.String> externalTargets, LossSpec loss, java.lang.String mode, PodSelectorSpec selector, PodSelector target, java.lang.String targetDevice, java.lang.String value) {
         super();
         this.action = action;
         this.bandwidth = bandwidth;
         this.corrupt = corrupt;
         this.delay = delay;
+        this.device = device;
         this.direction = direction;
         this.duplicate = duplicate;
         this.duration = duration;
         this.externalTargets = externalTargets;
         this.loss = loss;
         this.mode = mode;
-        this.scheduler = scheduler;
         this.selector = selector;
         this.target = target;
+        this.targetDevice = targetDevice;
         this.value = value;
     }
 
@@ -191,6 +195,16 @@ public class NetworkChaosSpec implements KubernetesResource
     @JsonProperty("delay")
     public void setDelay(DelaySpec delay) {
         this.delay = delay;
+    }
+
+    @JsonProperty("device")
+    public java.lang.String getDevice() {
+        return device;
+    }
+
+    @JsonProperty("device")
+    public void setDevice(java.lang.String device) {
+        this.device = device;
     }
 
     @JsonProperty("direction")
@@ -253,34 +267,34 @@ public class NetworkChaosSpec implements KubernetesResource
         this.mode = mode;
     }
 
-    @JsonProperty("scheduler")
-    public SchedulerSpec getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("scheduler")
-    public void setScheduler(SchedulerSpec scheduler) {
-        this.scheduler = scheduler;
-    }
-
     @JsonProperty("selector")
-    public SelectorSpec getSelector() {
+    public PodSelectorSpec getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(SelectorSpec selector) {
+    public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 
     @JsonProperty("target")
-    public Target getTarget() {
+    public PodSelector getTarget() {
         return target;
     }
 
     @JsonProperty("target")
-    public void setTarget(Target target) {
+    public void setTarget(PodSelector target) {
         this.target = target;
+    }
+
+    @JsonProperty("targetDevice")
+    public java.lang.String getTargetDevice() {
+        return targetDevice;
+    }
+
+    @JsonProperty("targetDevice")
+    public void setTargetDevice(java.lang.String targetDevice) {
+        this.targetDevice = targetDevice;
     }
 
     @JsonProperty("value")

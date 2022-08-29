@@ -40,10 +40,10 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "action",
+    "containerNames",
     "duration",
     "mode",
     "patterns",
-    "scheduler",
     "selector",
     "value"
 })
@@ -74,16 +74,16 @@ public class DNSChaosSpec implements KubernetesResource
 
     @JsonProperty("action")
     private java.lang.String action;
+    @JsonProperty("containerNames")
+    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
     private java.lang.String mode;
     @JsonProperty("patterns")
     private List<java.lang.String> patterns = new ArrayList<java.lang.String>();
-    @JsonProperty("scheduler")
-    private SchedulerSpec scheduler;
     @JsonProperty("selector")
-    private SelectorSpec selector;
+    private PodSelectorSpec selector;
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
@@ -100,19 +100,19 @@ public class DNSChaosSpec implements KubernetesResource
      * 
      * @param duration
      * @param mode
-     * @param scheduler
      * @param patterns
      * @param action
      * @param selector
      * @param value
+     * @param containerNames
      */
-    public DNSChaosSpec(java.lang.String action, String duration, java.lang.String mode, List<java.lang.String> patterns, SchedulerSpec scheduler, SelectorSpec selector, java.lang.String value) {
+    public DNSChaosSpec(java.lang.String action, List<java.lang.String> containerNames, String duration, java.lang.String mode, List<java.lang.String> patterns, PodSelectorSpec selector, java.lang.String value) {
         super();
         this.action = action;
+        this.containerNames = containerNames;
         this.duration = duration;
         this.mode = mode;
         this.patterns = patterns;
-        this.scheduler = scheduler;
         this.selector = selector;
         this.value = value;
     }
@@ -125,6 +125,16 @@ public class DNSChaosSpec implements KubernetesResource
     @JsonProperty("action")
     public void setAction(java.lang.String action) {
         this.action = action;
+    }
+
+    @JsonProperty("containerNames")
+    public List<java.lang.String> getContainerNames() {
+        return containerNames;
+    }
+
+    @JsonProperty("containerNames")
+    public void setContainerNames(List<java.lang.String> containerNames) {
+        this.containerNames = containerNames;
     }
 
     @JsonProperty("duration")
@@ -157,23 +167,13 @@ public class DNSChaosSpec implements KubernetesResource
         this.patterns = patterns;
     }
 
-    @JsonProperty("scheduler")
-    public SchedulerSpec getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("scheduler")
-    public void setScheduler(SchedulerSpec scheduler) {
-        this.scheduler = scheduler;
-    }
-
     @JsonProperty("selector")
-    public SelectorSpec getSelector() {
+    public PodSelectorSpec getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(SelectorSpec selector) {
+    public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 

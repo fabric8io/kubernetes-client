@@ -1,8 +1,10 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -38,10 +40,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "conditions",
     "experiment",
-    "failedMessage",
-    "instances",
-    "scheduler"
+    "instances"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,15 +69,14 @@ import lombok.experimental.Accessors;
 public class StressChaosStatus implements KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
-    @JsonProperty("failedMessage")
-    private java.lang.String failedMessage;
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, StressInstance> instances = new LinkedHashMap<String, StressInstance>();
-    @JsonProperty("scheduler")
-    private ScheduleStatus scheduler;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -89,17 +89,25 @@ public class StressChaosStatus implements KubernetesResource
 
     /**
      * 
-     * @param scheduler
      * @param experiment
      * @param instances
-     * @param failedMessage
+     * @param conditions
      */
-    public StressChaosStatus(ExperimentStatus experiment, java.lang.String failedMessage, Map<String, StressInstance> instances, ScheduleStatus scheduler) {
+    public StressChaosStatus(List<ChaosCondition> conditions, ExperimentStatus experiment, Map<String, StressInstance> instances) {
         super();
+        this.conditions = conditions;
         this.experiment = experiment;
-        this.failedMessage = failedMessage;
         this.instances = instances;
-        this.scheduler = scheduler;
+    }
+
+    @JsonProperty("conditions")
+    public List<ChaosCondition> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<ChaosCondition> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonProperty("experiment")
@@ -112,16 +120,6 @@ public class StressChaosStatus implements KubernetesResource
         this.experiment = experiment;
     }
 
-    @JsonProperty("failedMessage")
-    public java.lang.String getFailedMessage() {
-        return failedMessage;
-    }
-
-    @JsonProperty("failedMessage")
-    public void setFailedMessage(java.lang.String failedMessage) {
-        this.failedMessage = failedMessage;
-    }
-
     @JsonProperty("instances")
     public Map<String, StressInstance> getInstances() {
         return instances;
@@ -130,16 +128,6 @@ public class StressChaosStatus implements KubernetesResource
     @JsonProperty("instances")
     public void setInstances(Map<String, StressInstance> instances) {
         this.instances = instances;
-    }
-
-    @JsonProperty("scheduler")
-    public ScheduleStatus getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("scheduler")
-    public void setScheduler(ScheduleStatus scheduler) {
-        this.scheduler = scheduler;
     }
 
     @JsonAnyGetter

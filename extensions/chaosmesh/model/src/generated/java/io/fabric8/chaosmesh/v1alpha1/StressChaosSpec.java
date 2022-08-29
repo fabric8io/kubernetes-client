@@ -1,7 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,10 +39,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "containerName",
+    "containerNames",
     "duration",
     "mode",
-    "scheduler",
     "selector",
     "stressngStressors",
     "stressors",
@@ -71,16 +72,14 @@ import lombok.experimental.Accessors;
 public class StressChaosSpec implements KubernetesResource
 {
 
-    @JsonProperty("containerName")
-    private String containerName;
+    @JsonProperty("containerNames")
+    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
     private java.lang.String mode;
-    @JsonProperty("scheduler")
-    private SchedulerSpec scheduler;
     @JsonProperty("selector")
-    private SelectorSpec selector;
+    private PodSelectorSpec selector;
     @JsonProperty("stressngStressors")
     private java.lang.String stressngStressors;
     @JsonProperty("stressors")
@@ -101,33 +100,31 @@ public class StressChaosSpec implements KubernetesResource
      * 
      * @param duration
      * @param mode
-     * @param scheduler
      * @param stressngStressors
-     * @param containerName
      * @param selector
      * @param stressors
      * @param value
+     * @param containerNames
      */
-    public StressChaosSpec(String containerName, String duration, java.lang.String mode, SchedulerSpec scheduler, SelectorSpec selector, java.lang.String stressngStressors, Stressors stressors, java.lang.String value) {
+    public StressChaosSpec(List<java.lang.String> containerNames, String duration, java.lang.String mode, PodSelectorSpec selector, java.lang.String stressngStressors, Stressors stressors, java.lang.String value) {
         super();
-        this.containerName = containerName;
+        this.containerNames = containerNames;
         this.duration = duration;
         this.mode = mode;
-        this.scheduler = scheduler;
         this.selector = selector;
         this.stressngStressors = stressngStressors;
         this.stressors = stressors;
         this.value = value;
     }
 
-    @JsonProperty("containerName")
-    public String getContainerName() {
-        return containerName;
+    @JsonProperty("containerNames")
+    public List<java.lang.String> getContainerNames() {
+        return containerNames;
     }
 
-    @JsonProperty("containerName")
-    public void setContainerName(String containerName) {
-        this.containerName = containerName;
+    @JsonProperty("containerNames")
+    public void setContainerNames(List<java.lang.String> containerNames) {
+        this.containerNames = containerNames;
     }
 
     @JsonProperty("duration")
@@ -150,23 +147,13 @@ public class StressChaosSpec implements KubernetesResource
         this.mode = mode;
     }
 
-    @JsonProperty("scheduler")
-    public SchedulerSpec getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("scheduler")
-    public void setScheduler(SchedulerSpec scheduler) {
-        this.scheduler = scheduler;
-    }
-
     @JsonProperty("selector")
-    public SelectorSpec getSelector() {
+    public PodSelectorSpec getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(SelectorSpec selector) {
+    public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 

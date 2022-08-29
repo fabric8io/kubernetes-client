@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "bandwidth",
     "corrupt",
     "delay",
+    "device",
     "duplicate",
     "ipset",
     "loss",
@@ -77,6 +78,8 @@ public class RawTrafficControl implements KubernetesResource
     private CorruptSpec corrupt;
     @JsonProperty("delay")
     private DelaySpec delay;
+    @JsonProperty("device")
+    private String device;
     @JsonProperty("duplicate")
     private DuplicateSpec duplicate;
     @JsonProperty("ipset")
@@ -107,12 +110,14 @@ public class RawTrafficControl implements KubernetesResource
      * @param duplicate
      * @param source
      * @param type
+     * @param device
      */
-    public RawTrafficControl(BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, DuplicateSpec duplicate, String ipset, LossSpec loss, String source, String type) {
+    public RawTrafficControl(BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, String device, DuplicateSpec duplicate, String ipset, LossSpec loss, String source, String type) {
         super();
         this.bandwidth = bandwidth;
         this.corrupt = corrupt;
         this.delay = delay;
+        this.device = device;
         this.duplicate = duplicate;
         this.ipset = ipset;
         this.loss = loss;
@@ -148,6 +153,16 @@ public class RawTrafficControl implements KubernetesResource
     @JsonProperty("delay")
     public void setDelay(DelaySpec delay) {
         this.delay = delay;
+    }
+
+    @JsonProperty("device")
+    public String getDevice() {
+        return device;
+    }
+
+    @JsonProperty("device")
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     @JsonProperty("duplicate")
