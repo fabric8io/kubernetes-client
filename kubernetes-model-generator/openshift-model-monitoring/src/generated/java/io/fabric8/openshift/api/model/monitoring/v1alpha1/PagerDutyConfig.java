@@ -1,20 +1,10 @@
-/**
- * Copyright (C) 2015 Red Hat, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,11 +29,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -98,7 +83,7 @@ public class PagerDutyConfig implements KubernetesResource
     private String description;
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyValue> details = new ArrayList<>();
+    private List<KeyValue> details = new ArrayList<KeyValue>();
     @JsonProperty("group")
     private String group;
     @JsonProperty("httpConfig")
@@ -114,15 +99,31 @@ public class PagerDutyConfig implements KubernetesResource
     @JsonProperty("url")
     private String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<>();
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
-     *
+     * 
      */
     public PagerDutyConfig() {
     }
 
+    /**
+     * 
+     * @param severity
+     * @param clientURL
+     * @param description
+     * @param className
+     * @param url
+     * @param component
+     * @param sendResolved
+     * @param httpConfig
+     * @param client
+     * @param details
+     * @param serviceKey
+     * @param routingKey
+     * @param group
+     */
     public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String url) {
         super();
         this.className = className;
