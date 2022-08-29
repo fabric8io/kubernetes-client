@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIResource;
+import io.fabric8.kubernetes.api.model.APIResourceBuilder;
+import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
@@ -24,8 +28,10 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.VersionInfo;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.DefaultMockServer;
@@ -35,6 +41,7 @@ import io.fabric8.mockwebserver.internal.MockDispatcher;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +52,7 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
-public class KubernetesMockServer extends DefaultMockServer implements Resetable {
+public class KubernetesMockServer extends DefaultMockServer implements Resetable, CustomResourceAware {
 
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final Dispatcher dispatcher;
@@ -186,6 +193,42 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     unsupportedPatterns.clear();
     if (this.dispatcher instanceof Resetable) {
       ((Resetable) this.dispatcher).reset();
+    }
+  }
+
+  /**
+   * Ensure that the server will supply an {@link APIResourceList} containing an {@link APIResource}
+   * representing the {@link CustomResourceDefinitionContext} from the apis/group/version endpoint.
+   * <p>
+   * This is useful when testing calls through the {@link KubernetesClient#genericKubernetesResources(String, String)}
+   * entry point.
+   * <p>
+   * If this is a crud server, the custom resource will be added to the set of previously added resources
+   * and the resources inferred from custom resource definitions that have been added.
+   * <p>
+   * If this server is not crud, this call will add a single expectation for the given resource. Direct handling of
+   * multiple resources for a given api group/version has not yet been added.
+   *
+   * @param rdc the resource definition context
+   */
+  @Override
+  public void expectCustomResource(CustomResourceDefinitionContext rdc) {
+    if (this.dispatcher instanceof CustomResourceAware) {
+      ((CustomResourceAware) this.dispatcher).expectCustomResource(rdc);
+    } else {
+      expect()
+          .get()
+          .withPath(String.format("/apis/%s/%s", rdc.getGroup(), rdc.getVersion()))
+          .andReturn(HttpURLConnection.HTTP_OK,
+              new APIResourceListBuilder()
+                  .withResources(
+                      new APIResourceBuilder().withKind(rdc.getKind())
+                          .withNamespaced(rdc.isNamespaceScoped())
+                          .withName(rdc.getPlural())
+                          .build())
+                  .withGroupVersion(ApiVersionUtil.joinApiGroupAndVersion(rdc.getGroup(), rdc.getVersion()))
+                  .build())
+          .once();
     }
   }
 }

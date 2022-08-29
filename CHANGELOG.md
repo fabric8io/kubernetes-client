@@ -20,6 +20,7 @@
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 * Fix #4287: added WorkloadGroup for Istio v1alpha3 extension generator
 * Fix #4318: implemented LeaderElection releaseOnCancel
+* Fix #3960: adding a KubernetesMockServer.expectCustomResource helper method and additional mock crd support
 
 #### Dependency Upgrade
 * Bump Knative model to v0.34.0
