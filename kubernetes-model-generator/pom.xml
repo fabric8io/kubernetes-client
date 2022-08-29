@@ -35,6 +35,7 @@
     <module>kubernetes-model-common</module>
     <module>kubernetes-model-jsonschema2pojo</module>
     <module>kubernetes-model-core</module>
+    <module>kubernetes-model-gatewayapi</module>
     <module>kubernetes-model-rbac</module>
     <module>kubernetes-model-admissionregistration</module>
     <module>kubernetes-model-apiextensions</module>

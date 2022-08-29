@@ -287,6 +287,11 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-gatewayapi</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-networking</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -1214,6 +1219,7 @@
                   <include>io.fabric8:kubernetes-model-discovery*</include>
                   <include>io.fabric8:kubernetes-model-events*</include>
                   <include>io.fabric8:kubernetes-model-extensions*</include>
+                  <include>io.fabric8:kubernetes-model-gatewayapi*</include>
                   <include>io.fabric8:kubernetes-model-networking*</include>
                   <include>io.fabric8:kubernetes-model-node*</include>
                   <include>io.fabric8:kubernetes-model-metrics*</include>
