@@ -46,6 +46,7 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 * Fix #4287: added WorkloadGroup for Istio v1alpha3 extension generator
 * Fix #4318: implemented LeaderElection releaseOnCancel
+* Fix #4359: Remove manual model classes with fields name `class`
 
 #### Dependency Upgrade
 * Fix #3967: Update chaos-mesh extension to v2.1.3. Add PodHttpChaos, GCPChaos, BlockChaos and PhysicalMachineChaos.
