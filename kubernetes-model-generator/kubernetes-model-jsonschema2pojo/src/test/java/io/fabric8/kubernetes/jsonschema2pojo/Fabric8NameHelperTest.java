@@ -15,12 +15,29 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static io.fabric8.kubernetes.jsonschema2pojo.Fabric8NameHelper.correctCamelCaseWithPrefix;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class Fabric8NameHelperTest {
+
+  private static ObjectMapper M;
+
+  @BeforeAll
+  static void beforeAll() {
+    M = new ObjectMapper();
+  }
 
   @Test
   void correctCamelCaseWithPrefixWithSingleLetterDash() {
@@ -50,5 +67,24 @@ class Fabric8NameHelperTest {
   void correctCamelCaseWithPrefixWithCapitalFirstLetter() {
     assertEquals("getIpfix", correctCamelCaseWithPrefix("Ipfix", "getIpfix"));
     assertEquals("setIpfix", correctCamelCaseWithPrefix("Ipfix", "setIpfix"));
+  }
+
+  @DisplayName("getFieldName, should use javaName and never reserved words")
+  @ParameterizedTest(name = "{index}: getFieldName: property ''{0}'' node: ''{1}'', expects: ''{2}''")
+  @MethodSource("getFieldNameInput")
+  void getFieldName(String propertyName, ObjectNode node, String expectedName) {
+    // When
+    final String result = new Fabric8NameHelper(null).getFieldName(propertyName, node);
+    // Then
+    assertEquals(expectedName, result);
+  }
+
+  static Stream<Arguments> getFieldNameInput() {
+    return Stream.of(
+        arguments("field", M.createObjectNode(), "field"),
+        arguments("class", M.createObjectNode(), "className"),
+        arguments("class", M.createObjectNode().put("javaName", "theClass"), "theClass"),
+        arguments("field", M.createObjectNode().put("javaName", "aField"), "aField"),
+        arguments("field", M.createObjectNode().put("javaName", "class"), "className"));
   }
 }
