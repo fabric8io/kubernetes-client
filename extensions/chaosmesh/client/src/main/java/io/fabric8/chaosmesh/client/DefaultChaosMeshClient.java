@@ -15,14 +15,14 @@
  */
 package io.fabric8.chaosmesh.client;
 
-import io.fabric8.chaosmesh.v1alpha1.AwsChaos;
-import io.fabric8.chaosmesh.v1alpha1.AwsChaosList;
+import io.fabric8.chaosmesh.v1alpha1.AWSChaos;
+import io.fabric8.chaosmesh.v1alpha1.AWSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaos;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaos;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaosList;
-import io.fabric8.chaosmesh.v1alpha1.IoChaos;
-import io.fabric8.chaosmesh.v1alpha1.IoChaosList;
+import io.fabric8.chaosmesh.v1alpha1.IOChaos;
+import io.fabric8.chaosmesh.v1alpha1.IOChaosList;
 import io.fabric8.chaosmesh.v1alpha1.JVMChaos;
 import io.fabric8.chaosmesh.v1alpha1.JVMChaosList;
 import io.fabric8.chaosmesh.v1alpha1.KernelChaos;
@@ -31,8 +31,8 @@ import io.fabric8.chaosmesh.v1alpha1.NetworkChaos;
 import io.fabric8.chaosmesh.v1alpha1.NetworkChaosList;
 import io.fabric8.chaosmesh.v1alpha1.PodChaos;
 import io.fabric8.chaosmesh.v1alpha1.PodChaosList;
-import io.fabric8.chaosmesh.v1alpha1.PodIoChaos;
-import io.fabric8.chaosmesh.v1alpha1.PodIoChaosList;
+import io.fabric8.chaosmesh.v1alpha1.PodIOChaos;
+import io.fabric8.chaosmesh.v1alpha1.PodIOChaosList;
 import io.fabric8.chaosmesh.v1alpha1.PodNetworkChaos;
 import io.fabric8.chaosmesh.v1alpha1.PodNetworkChaosList;
 import io.fabric8.chaosmesh.v1alpha1.StressChaos;
@@ -75,8 +75,8 @@ public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultCh
   }
 
   @Override
-  public MixedOperation<IoChaos, IoChaosList, Resource<IoChaos>> ioChaos() {
-    return resources(IoChaos.class, IoChaosList.class);
+  public MixedOperation<IOChaos, IOChaosList, Resource<IOChaos>> ioChaos() {
+    return resources(IOChaos.class, IOChaosList.class);
   }
 
   @Override
@@ -95,8 +95,8 @@ public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultCh
   }
 
   @Override
-  public MixedOperation<PodIoChaos, PodIoChaosList, Resource<PodIoChaos>> podIoChaos() {
-    return resources(PodIoChaos.class, PodIoChaosList.class);
+  public MixedOperation<PodIOChaos, PodIOChaosList, Resource<PodIOChaos>> podIOChaos() {
+    return resources(PodIOChaos.class, PodIOChaosList.class);
   }
 
   @Override
@@ -130,8 +130,8 @@ public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultCh
   }
 
   @Override
-  public MixedOperation<AwsChaos, AwsChaosList, Resource<AwsChaos>> awsChaos() {
-    return resources(AwsChaos.class, AwsChaosList.class);
+  public MixedOperation<AWSChaos, AWSChaosList, Resource<AWSChaos>> awsChaos() {
+    return resources(AWSChaos.class, AWSChaosList.class);
   }
 
   @Override

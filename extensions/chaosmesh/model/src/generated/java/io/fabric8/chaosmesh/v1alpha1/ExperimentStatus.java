@@ -39,12 +39,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "duration",
-    "endTime",
-    "phase",
-    "podRecords",
-    "reason",
-    "startTime"
+    "containerRecords",
+    "desiredPhase"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,19 +67,11 @@ import lombok.experimental.Accessors;
 public class ExperimentStatus implements KubernetesResource
 {
 
-    @JsonProperty("duration")
-    private String duration;
-    @JsonProperty("endTime")
-    private String endTime;
-    @JsonProperty("phase")
-    private String phase;
-    @JsonProperty("podRecords")
+    @JsonProperty("containerRecords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodStatus> podRecords = new ArrayList<PodStatus>();
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("startTime")
-    private String startTime;
+    private List<Record> containerRecords = new ArrayList<Record>();
+    @JsonProperty("desiredPhase")
+    private String desiredPhase;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -96,81 +84,33 @@ public class ExperimentStatus implements KubernetesResource
 
     /**
      * 
-     * @param duration
-     * @param phase
-     * @param reason
-     * @param startTime
-     * @param endTime
-     * @param podRecords
+     * @param desiredPhase
+     * @param containerRecords
      */
-    public ExperimentStatus(String duration, String endTime, String phase, List<PodStatus> podRecords, String reason, String startTime) {
+    public ExperimentStatus(List<Record> containerRecords, String desiredPhase) {
         super();
-        this.duration = duration;
-        this.endTime = endTime;
-        this.phase = phase;
-        this.podRecords = podRecords;
-        this.reason = reason;
-        this.startTime = startTime;
+        this.containerRecords = containerRecords;
+        this.desiredPhase = desiredPhase;
     }
 
-    @JsonProperty("duration")
-    public String getDuration() {
-        return duration;
+    @JsonProperty("containerRecords")
+    public List<Record> getContainerRecords() {
+        return containerRecords;
     }
 
-    @JsonProperty("duration")
-    public void setDuration(String duration) {
-        this.duration = duration;
+    @JsonProperty("containerRecords")
+    public void setContainerRecords(List<Record> containerRecords) {
+        this.containerRecords = containerRecords;
     }
 
-    @JsonProperty("endTime")
-    public String getEndTime() {
-        return endTime;
+    @JsonProperty("desiredPhase")
+    public String getDesiredPhase() {
+        return desiredPhase;
     }
 
-    @JsonProperty("endTime")
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    @JsonProperty("phase")
-    public String getPhase() {
-        return phase;
-    }
-
-    @JsonProperty("phase")
-    public void setPhase(String phase) {
-        this.phase = phase;
-    }
-
-    @JsonProperty("podRecords")
-    public List<PodStatus> getPodRecords() {
-        return podRecords;
-    }
-
-    @JsonProperty("podRecords")
-    public void setPodRecords(List<PodStatus> podRecords) {
-        this.podRecords = podRecords;
-    }
-
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    @JsonProperty("startTime")
-    public String getStartTime() {
-        return startTime;
-    }
-
-    @JsonProperty("startTime")
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    @JsonProperty("desiredPhase")
+    public void setDesiredPhase(String desiredPhase) {
+        this.desiredPhase = desiredPhase;
     }
 
     @JsonAnyGetter

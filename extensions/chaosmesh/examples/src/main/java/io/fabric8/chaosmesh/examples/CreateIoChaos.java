@@ -16,7 +16,7 @@
 package io.fabric8.chaosmesh.examples;
 
 import io.fabric8.chaosmesh.client.ChaosMeshClient;
-import io.fabric8.chaosmesh.v1alpha1.IoChaosBuilder;
+import io.fabric8.chaosmesh.v1alpha1.IOChaosBuilder;
 
 import java.util.Collections;
 
@@ -24,7 +24,7 @@ import java.util.Collections;
 public class CreateIoChaos {
 
   //apiVersion: chaos-mesh.org/v1alpha1
-  //kind: IoChaos
+  //kind: IOChaos
   //metadata:
   //  name: io-delay-example
   //spec:
@@ -43,21 +43,20 @@ public class CreateIoChaos {
   public static void main(String[] args) {
     try (ChaosMeshClient client = ClientFactory.newClient(args)) {
       System.out.println("Creating a ioChaos");
-      client.ioChaos().inNamespace("default").create(new IoChaosBuilder()
-        .withNewMetadata()
-        .withName("io-delay-example")
-        .endMetadata()
-        .withNewSpec()
-        .withAction("latency")
-        .withMode("one")
-        .withNewSelector().withLabelSelectors(Collections.singletonMap("app", "etcd")).endSelector()
-        .withVolumePath("/var/run/etcd")
-        .withPath("/var/run/etc/**/*")
-        .withPercent(50)
-        .withDuration("400s")
-        .withNewScheduler().withCron("@every 10m").endScheduler()
-        .endSpec()
-        .build());
+      client.ioChaos().inNamespace("default").create(new IOChaosBuilder()
+          .withNewMetadata()
+          .withName("io-delay-example")
+          .endMetadata()
+          .withNewSpec()
+          .withAction("latency")
+          .withMode("one")
+          .withNewSelector().withLabelSelectors(Collections.singletonMap("app", "etcd")).endSelector()
+          .withVolumePath("/var/run/etcd")
+          .withPath("/var/run/etc/**/*")
+          .withPercent(50)
+          .withDuration("400s")
+          .endSpec()
+          .build());
     }
   }
 }

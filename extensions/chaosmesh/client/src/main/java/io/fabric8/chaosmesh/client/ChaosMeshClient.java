@@ -15,14 +15,14 @@
  */
 package io.fabric8.chaosmesh.client;
 
-import io.fabric8.chaosmesh.v1alpha1.AwsChaos;
-import io.fabric8.chaosmesh.v1alpha1.AwsChaosList;
+import io.fabric8.chaosmesh.v1alpha1.AWSChaos;
+import io.fabric8.chaosmesh.v1alpha1.AWSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaos;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaos;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaosList;
-import io.fabric8.chaosmesh.v1alpha1.IoChaos;
-import io.fabric8.chaosmesh.v1alpha1.IoChaosList;
+import io.fabric8.chaosmesh.v1alpha1.IOChaos;
+import io.fabric8.chaosmesh.v1alpha1.IOChaosList;
 import io.fabric8.chaosmesh.v1alpha1.JVMChaos;
 import io.fabric8.chaosmesh.v1alpha1.JVMChaosList;
 import io.fabric8.chaosmesh.v1alpha1.KernelChaos;
@@ -31,8 +31,8 @@ import io.fabric8.chaosmesh.v1alpha1.NetworkChaos;
 import io.fabric8.chaosmesh.v1alpha1.NetworkChaosList;
 import io.fabric8.chaosmesh.v1alpha1.PodChaos;
 import io.fabric8.chaosmesh.v1alpha1.PodChaosList;
-import io.fabric8.chaosmesh.v1alpha1.PodIoChaos;
-import io.fabric8.chaosmesh.v1alpha1.PodIoChaosList;
+import io.fabric8.chaosmesh.v1alpha1.PodIOChaos;
+import io.fabric8.chaosmesh.v1alpha1.PodIOChaosList;
 import io.fabric8.chaosmesh.v1alpha1.PodNetworkChaos;
 import io.fabric8.chaosmesh.v1alpha1.PodNetworkChaosList;
 import io.fabric8.chaosmesh.v1alpha1.StressChaos;
@@ -50,11 +50,11 @@ public interface ChaosMeshClient extends Client {
 
   // Serving
   /**
-   * API entrypoint for IoChaos(chaos-mesh.org/v1alpha1)
+   * API entrypoint for IOChaos(chaos-mesh.org/v1alpha1)
    *
-   * @return MixedOperation for IoChaos class
+   * @return MixedOperation for IOChaos class
    */
-  MixedOperation<IoChaos, IoChaosList, Resource<IoChaos>> ioChaos();
+  MixedOperation<IOChaos, IOChaosList, Resource<IOChaos>> ioChaos();
 
   /**
    * API entrypoint for KernelChaos(chaos-mesh.org/v1alpha1)
@@ -78,11 +78,11 @@ public interface ChaosMeshClient extends Client {
   MixedOperation<PodChaos, PodChaosList, Resource<PodChaos>> podChaos();
 
   /**
-   * API entrypoint for PodIoChaos(chaos-mesh.org/v1alpha1)
+   * API entrypoint for PodIOChaos(chaos-mesh.org/v1alpha1)
    *
-   * @return MixedOperation for PodIoChaos class
+   * @return MixedOperation for PodIOChaos class
    */
-  MixedOperation<PodIoChaos, PodIoChaosList, Resource<PodIoChaos>> podIoChaos();
+  MixedOperation<PodIOChaos, PodIOChaosList, Resource<PodIOChaos>> podIOChaos();
 
   /**
    * API entrypoint for PodNetworkChaos(chaos-mesh.org/v1alpha1)
@@ -99,9 +99,9 @@ public interface ChaosMeshClient extends Client {
   MixedOperation<StressChaos, StressChaosList, Resource<StressChaos>> stressChaos();
 
   /**
-   * API entrypoint for IoChaos(chaos-mesh.org/v1alpha1)
+   * API entrypoint for IOChaos(chaos-mesh.org/v1alpha1)
    *
-   * @return MixedOperation for IoChaos class
+   * @return MixedOperation for IOChaos class
    */
   MixedOperation<TimeChaos, TimeChaosList, Resource<TimeChaos>> timeChaos();
 
@@ -127,9 +127,9 @@ public interface ChaosMeshClient extends Client {
   MixedOperation<DNSChaos, DNSChaosList, Resource<DNSChaos>> dnsChaos();
 
   /**
-   * API entrypoint for AwsChaos(chaos-mesh.org/v1alpha1)
+   * API entrypoint for AWSChaos(chaos-mesh.org/v1alpha1)
    *
-   * @return MixedOperation for AwsChaos class
+   * @return MixedOperation for AWSChaos class
    */
-  MixedOperation<AwsChaos, AwsChaosList, Resource<AwsChaos>> awsChaos();
+  MixedOperation<AWSChaos, AWSChaosList, Resource<AWSChaos>> awsChaos();
 }

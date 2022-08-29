@@ -16,9 +16,9 @@
 package io.fabric8.chaosmesh.test.crud;
 
 import io.fabric8.chaosmesh.client.ChaosMeshClient;
-import io.fabric8.chaosmesh.v1alpha1.IoChaos;
-import io.fabric8.chaosmesh.v1alpha1.IoChaosBuilder;
-import io.fabric8.chaosmesh.v1alpha1.IoChaosList;
+import io.fabric8.chaosmesh.v1alpha1.IOChaos;
+import io.fabric8.chaosmesh.v1alpha1.IOChaosBuilder;
+import io.fabric8.chaosmesh.v1alpha1.IOChaosList;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
@@ -28,23 +28,22 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
-class IoChaosTest {
+class IOChaosTest {
 
   ChaosMeshClient client;
 
   @Test
   void testCrud() {
 
-    IoChaos ioc1 = new IoChaosBuilder()
+    IOChaos ioc1 = new IOChaosBuilder()
         .withNewMetadata()
         .withName("partition")
         .addToLabels("key1", "value1")
         .endMetadata()
         .withNewSpec()
         .withAction("partition")
-        .withNewScheduler().withCron("@every 10m").endScheduler()
         .endSpec().build();
-    IoChaos ioc2 = new IoChaosBuilder()
+    IOChaos ioc2 = new IOChaosBuilder()
         .withNewMetadata()
         .withName("latency")
         .addToLabels("key1", "value1")
@@ -53,7 +52,6 @@ class IoChaosTest {
         .withAction("latency")
         .withDelay("100ms")
         .withDuration("100s")
-        .withNewScheduler().withCron("@every 10m").endScheduler()
         .endSpec().build();
 
     //Create
@@ -61,15 +59,15 @@ class IoChaosTest {
     client.ioChaos().create(ioc2);
 
     //Read
-    IoChaosList vsList = client.ioChaos().list();
+    IOChaosList vsList = client.ioChaos().list();
     assertNotNull(vsList);
     assertEquals(2, vsList.getItems().size());
 
-    IoChaos s1 = client.ioChaos().withName("partition").get();
+    IOChaos s1 = client.ioChaos().withName("partition").get();
     assertNotNull(s1);
 
     //Update
-    IoChaos u1 = client.ioChaos().withName("latency").edit(io -> new IoChaosBuilder(io)
+    IOChaos u1 = client.ioChaos().withName("latency").edit(io -> new IOChaosBuilder(io)
         .editMetadata()
         .addToLabels("updated", "true")
         .endMetadata()

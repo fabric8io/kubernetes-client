@@ -37,6 +37,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "memoryStartTime",
+    "memoryUid",
     "startTime",
     "uid"
 })
@@ -65,6 +67,10 @@ import lombok.experimental.Accessors;
 public class StressInstance implements KubernetesResource
 {
 
+    @JsonProperty("memoryStartTime")
+    private String memoryStartTime;
+    @JsonProperty("memoryUid")
+    private String memoryUid;
     @JsonProperty("startTime")
     private String startTime;
     @JsonProperty("uid")
@@ -82,12 +88,36 @@ public class StressInstance implements KubernetesResource
     /**
      * 
      * @param uid
+     * @param memoryUid
      * @param startTime
+     * @param memoryStartTime
      */
-    public StressInstance(String startTime, String uid) {
+    public StressInstance(String memoryStartTime, String memoryUid, String startTime, String uid) {
         super();
+        this.memoryStartTime = memoryStartTime;
+        this.memoryUid = memoryUid;
         this.startTime = startTime;
         this.uid = uid;
+    }
+
+    @JsonProperty("memoryStartTime")
+    public String getMemoryStartTime() {
+        return memoryStartTime;
+    }
+
+    @JsonProperty("memoryStartTime")
+    public void setMemoryStartTime(String memoryStartTime) {
+        this.memoryStartTime = memoryStartTime;
+    }
+
+    @JsonProperty("memoryUid")
+    public String getMemoryUid() {
+        return memoryUid;
+    }
+
+    @JsonProperty("memoryUid")
+    public void setMemoryUid(String memoryUid) {
+        this.memoryUid = memoryUid;
     }
 
     @JsonProperty("startTime")

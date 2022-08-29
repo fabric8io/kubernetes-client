@@ -43,7 +43,6 @@ import lombok.experimental.Accessors;
     "containerNames",
     "duration",
     "mode",
-    "scheduler",
     "selector",
     "timeOffset",
     "value"
@@ -74,19 +73,15 @@ public class TimeChaosSpec implements KubernetesResource
 {
 
     @JsonProperty("clockIds")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> clockIds = new ArrayList<java.lang.String>();
     @JsonProperty("containerNames")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
     private java.lang.String mode;
-    @JsonProperty("scheduler")
-    private SchedulerSpec scheduler;
     @JsonProperty("selector")
-    private SelectorSpec selector;
+    private PodSelectorSpec selector;
     @JsonProperty("timeOffset")
     private java.lang.String timeOffset;
     @JsonProperty("value")
@@ -105,20 +100,18 @@ public class TimeChaosSpec implements KubernetesResource
      * 
      * @param duration
      * @param mode
-     * @param scheduler
      * @param selector
      * @param timeOffset
      * @param value
      * @param clockIds
      * @param containerNames
      */
-    public TimeChaosSpec(List<java.lang.String> clockIds, List<java.lang.String> containerNames, String duration, java.lang.String mode, SchedulerSpec scheduler, SelectorSpec selector, java.lang.String timeOffset, java.lang.String value) {
+    public TimeChaosSpec(List<java.lang.String> clockIds, List<java.lang.String> containerNames, String duration, java.lang.String mode, PodSelectorSpec selector, java.lang.String timeOffset, java.lang.String value) {
         super();
         this.clockIds = clockIds;
         this.containerNames = containerNames;
         this.duration = duration;
         this.mode = mode;
-        this.scheduler = scheduler;
         this.selector = selector;
         this.timeOffset = timeOffset;
         this.value = value;
@@ -164,23 +157,13 @@ public class TimeChaosSpec implements KubernetesResource
         this.mode = mode;
     }
 
-    @JsonProperty("scheduler")
-    public SchedulerSpec getScheduler() {
-        return scheduler;
-    }
-
-    @JsonProperty("scheduler")
-    public void setScheduler(SchedulerSpec scheduler) {
-        this.scheduler = scheduler;
-    }
-
     @JsonProperty("selector")
-    public SelectorSpec getSelector() {
+    public PodSelectorSpec getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(SelectorSpec selector) {
+    public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 

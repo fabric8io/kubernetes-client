@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "device",
     "direction",
     "ipsets",
     "name",
@@ -69,6 +70,8 @@ import lombok.experimental.Accessors;
 public class RawIptables implements KubernetesResource
 {
 
+    @JsonProperty("device")
+    private String device;
     @JsonProperty("direction")
     private String direction;
     @JsonProperty("ipsets")
@@ -92,14 +95,26 @@ public class RawIptables implements KubernetesResource
      * @param ipsets
      * @param name
      * @param source
+     * @param device
      * @param direction
      */
-    public RawIptables(String direction, List<String> ipsets, String name, String source) {
+    public RawIptables(String device, String direction, List<String> ipsets, String name, String source) {
         super();
+        this.device = device;
         this.direction = direction;
         this.ipsets = ipsets;
         this.name = name;
         this.source = source;
+    }
+
+    @JsonProperty("device")
+    public String getDevice() {
+        return device;
+    }
+
+    @JsonProperty("device")
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     @JsonProperty("direction")
