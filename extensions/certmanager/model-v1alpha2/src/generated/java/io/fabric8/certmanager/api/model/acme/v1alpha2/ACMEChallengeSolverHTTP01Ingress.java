@@ -1,5 +1,5 @@
 
-package io.fabric8.certmanager.api.model.v1beta1;
+package io.fabric8.certmanager.api.model.acme.v1alpha2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,12 +37,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastTransitionTime",
-    "message",
-    "observedGeneration",
-    "reason",
-    "status",
-    "type"
+    "class",
+    "ingressTemplate",
+    "name",
+    "podTemplate",
+    "serviceType"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,117 +65,103 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class CertificateCondition implements KubernetesResource
+public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
 {
 
-    @JsonProperty("lastTransitionTime")
-    private String lastTransitionTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("class")
+    private String className;
+    @JsonProperty("ingressTemplate")
+    private ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate;
+    @JsonProperty("name")
+    private java.lang.String name;
+    @JsonProperty("podTemplate")
+    private ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate;
+    @JsonProperty("serviceType")
+    private java.lang.String serviceType;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public CertificateCondition() {
+    public ACMEChallengeSolverHTTP01Ingress() {
     }
 
     /**
      * 
-     * @param reason
-     * @param lastTransitionTime
-     * @param message
-     * @param type
-     * @param observedGeneration
-     * @param status
+     * @param serviceType
+     * @param ingressTemplate
+     * @param name
+     * @param podTemplate
+     * @param className
      */
-    public CertificateCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
+    public ACMEChallengeSolverHTTP01Ingress(String className, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, java.lang.String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, java.lang.String serviceType) {
         super();
-        this.lastTransitionTime = lastTransitionTime;
-        this.message = message;
-        this.observedGeneration = observedGeneration;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.className = className;
+        this.ingressTemplate = ingressTemplate;
+        this.name = name;
+        this.podTemplate = podTemplate;
+        this.serviceType = serviceType;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public String getLastTransitionTime() {
-        return lastTransitionTime;
+    @JsonProperty("class")
+    public String getClassName() {
+        return className;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public void setLastTransitionTime(String lastTransitionTime) {
-        this.lastTransitionTime = lastTransitionTime;
+    @JsonProperty("class")
+    public void setClassName(String className) {
+        this.className = className;
     }
 
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
+    @JsonProperty("ingressTemplate")
+    public ACMEChallengeSolverHTTP01IngressTemplate getIngressTemplate() {
+        return ingressTemplate;
     }
 
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
+    @JsonProperty("ingressTemplate")
+    public void setIngressTemplate(ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate) {
+        this.ingressTemplate = ingressTemplate;
     }
 
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
+    @JsonProperty("name")
+    public java.lang.String getName() {
+        return name;
     }
 
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
+    @JsonProperty("name")
+    public void setName(java.lang.String name) {
+        this.name = name;
     }
 
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
+    @JsonProperty("podTemplate")
+    public ACMEChallengeSolverHTTP01IngressPodTemplate getPodTemplate() {
+        return podTemplate;
     }
 
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
+    @JsonProperty("podTemplate")
+    public void setPodTemplate(ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate) {
+        this.podTemplate = podTemplate;
     }
 
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
+    @JsonProperty("serviceType")
+    public java.lang.String getServiceType() {
+        return serviceType;
     }
 
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("serviceType")
+    public void setServiceType(java.lang.String serviceType) {
+        this.serviceType = serviceType;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -94,9 +94,6 @@
               <target>
                 <echo>removing the duplicate generated class</echo>
                 <delete
-                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1beta1/ACMEChallengeSolverHTTP01Ingress.java"
-                  verbose="true" />
-                <delete
                   file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/v1beta1/CertificateRequestSpec.java"
                   verbose="true" />
               </target>

@@ -2,14 +2,14 @@
   "id": "http://fabric8.io/jetstack/CertManagerSchema#",
   "$schema": "http://json-schema.org/draft-05/schema#",
   "definitions": {
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEAuthorization": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization": {
       "type": "object",
       "properties": {
         "challenges": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallenge",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallenge",
             "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallenge"
           }
         },
@@ -32,7 +32,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallenge": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallenge": {
       "type": "object",
       "properties": {
         "token": {
@@ -50,19 +50,19 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver": {
       "type": "object",
       "properties": {
         "dns01": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverDNS01"
         },
         "http01": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01"
         },
         "selector": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.CertificateDNSNameSelector"
         }
       },
@@ -71,46 +71,46 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01": {
       "type": "object",
       "properties": {
         "acmeDNS": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderAcmeDNS"
         },
         "akamai": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderAkamai"
         },
         "azureDNS": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderAzureDNS"
         },
         "cloudDNS": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderCloudDNS"
         },
         "cloudflare": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderCloudflare"
         },
         "cnameStrategy": {
           "type": "string"
         },
         "digitalocean": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderDigitalOcean"
         },
         "rfc2136": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderRFC2136"
         },
         "route53": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderRoute53"
         },
         "webhook": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderWebhook"
         }
       },
@@ -119,11 +119,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01": {
       "type": "object",
       "properties": {
+        "gatewayHTTPRoute": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01GatewayHTTPRoute",
+          "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01GatewayHTTPRoute"
+        },
         "ingress": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01Ingress"
         }
       },
@@ -132,7 +136,30 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01GatewayHTTPRoute": {
+      "type": "object",
+      "properties": {
+        "labels": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "parentRefs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+          }
+        },
+        "serviceType": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01GatewayHTTPRoute",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress": {
       "type": "object",
       "properties": {
         "class": {
@@ -140,14 +167,14 @@
           "existingJavaType": "String"
         },
         "ingressTemplate": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressTemplate"
         },
         "name": {
           "type": "string"
         },
         "podTemplate": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressPodTemplate"
         },
         "serviceType": {
@@ -159,7 +186,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta": {
       "type": "object",
       "properties": {
         "annotations": {
@@ -176,7 +203,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta": {
       "type": "object",
       "properties": {
         "annotations": {
@@ -193,7 +220,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec": {
       "type": "object",
       "properties": {
         "affinity": {
@@ -222,15 +249,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate": {
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressPodObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressPodSpec"
         }
       },
@@ -239,11 +266,11 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate": {
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressObjectMeta"
         }
       },
@@ -252,7 +279,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding": {
       "type": "object",
       "properties": {
         "keyAlgorithm": {
@@ -262,7 +289,7 @@
           "type": "string"
         },
         "keySecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -271,7 +298,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuer": {
       "type": "object",
       "properties": {
         "disableAccountKeyGeneration": {
@@ -284,14 +311,14 @@
           "type": "boolean"
         },
         "externalAccountBinding": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEExternalAccountBinding"
         },
         "preferredChain": {
           "type": "string"
         },
         "privateKeySecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "server": {
@@ -304,7 +331,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver",
             "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolver"
           }
         }
@@ -314,11 +341,11 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS": {
       "type": "object",
       "properties": {
         "accountSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "host": {
@@ -330,19 +357,19 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai": {
       "type": "object",
       "properties": {
         "accessTokenSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "clientSecretSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "clientTokenSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "serviceConsumerDomain": {
@@ -354,14 +381,14 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS": {
       "type": "object",
       "properties": {
         "clientID": {
           "type": "string"
         },
         "clientSecretSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "environment": {
@@ -369,6 +396,10 @@
         },
         "hostedZoneName": {
           "type": "string"
+        },
+        "managedIdentity": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_AzureManagedIdentity",
+          "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.AzureManagedIdentity"
         },
         "resourceGroupName": {
           "type": "string"
@@ -385,7 +416,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS": {
       "type": "object",
       "properties": {
         "hostedZoneName": {
@@ -395,7 +426,7 @@
           "type": "string"
         },
         "serviceAccountSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -404,15 +435,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare": {
       "type": "object",
       "properties": {
         "apiKeySecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "apiTokenSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "email": {
@@ -424,11 +455,11 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean": {
       "type": "object",
       "properties": {
         "tokenSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -437,7 +468,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136": {
       "type": "object",
       "properties": {
         "nameserver": {
@@ -450,7 +481,7 @@
           "type": "string"
         },
         "tsigSecretSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -459,11 +490,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53": {
       "type": "object",
       "properties": {
         "accessKeyID": {
           "type": "string"
+        },
+        "accessKeyIDSecretRef": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "hostedZoneID": {
           "type": "string"
@@ -475,7 +510,7 @@
           "type": "string"
         },
         "secretAccessKeySecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -484,7 +519,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook": {
       "type": "object",
       "properties": {
         "config": {
@@ -502,7 +537,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus": {
       "type": "object",
       "properties": {
         "lastRegisteredEmail": {
@@ -517,7 +552,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_AzureManagedIdentity": {
+      "type": "object",
+      "properties": {
+        "clientID": {
+          "type": "string"
+        },
+        "resourceID": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.acme.v1.AzureManagedIdentity",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector": {
       "type": "object",
       "properties": {
         "dnsNames": {
@@ -544,7 +594,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_Challenge": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Challenge": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -561,11 +611,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ChallengeSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ChallengeStatus"
         }
       },
@@ -575,7 +625,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeList": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -586,7 +636,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_Challenge",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Challenge",
             "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.Challenge"
           }
         },
@@ -605,7 +655,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.certmanager.api.model.acme.v1.Challenge\u003e"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeSpec": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeSpec": {
       "type": "object",
       "properties": {
         "authorizationURL": {
@@ -615,14 +665,14 @@
           "type": "string"
         },
         "issuerRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.ObjectReference"
         },
         "key": {
           "type": "string"
         },
         "solver": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolver"
         },
         "token": {
@@ -643,7 +693,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeStatus": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeStatus": {
       "type": "object",
       "properties": {
         "presented": {
@@ -664,7 +714,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_Order": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Order": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -681,11 +731,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.OrderSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.OrderStatus"
         }
       },
@@ -695,7 +745,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderList": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -706,7 +756,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_Order",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Order",
             "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.Order"
           }
         },
@@ -725,7 +775,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.certmanager.api.model.acme.v1.Order\u003e"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderSpec": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderSpec": {
       "type": "object",
       "properties": {
         "commonName": {
@@ -749,7 +799,7 @@
           }
         },
         "issuerRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.ObjectReference"
         },
         "request": {
@@ -761,14 +811,14 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderStatus": {
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderStatus": {
       "type": "object",
       "properties": {
         "authorizations": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEAuthorization",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization",
             "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEAuthorization"
           }
         },
@@ -797,10 +847,17 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CAIssuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CAIssuer": {
       "type": "object",
       "properties": {
         "crlDistributionPoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "ocspServers": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
@@ -816,7 +873,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Certificate": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Certificate": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -833,11 +890,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateStatus"
         }
       },
@@ -847,7 +904,19 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateCondition": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateAdditionalOutputFormat": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.v1.CertificateAdditionalOutputFormat",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateCondition": {
       "type": "object",
       "properties": {
         "lastTransitionTime": {
@@ -855,6 +924,10 @@
         },
         "message": {
           "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "reason": {
           "type": "string"
@@ -871,15 +944,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores": {
       "type": "object",
       "properties": {
         "jks": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_JKSKeystore",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_JKSKeystore",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.JKSKeystore"
         },
         "pkcs12": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.PKCS12Keystore"
         }
       },
@@ -888,7 +961,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateList": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -899,7 +972,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Certificate",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Certificate",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.Certificate"
           }
         },
@@ -918,7 +991,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.certmanager.api.model.v1.Certificate\u003e"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey": {
       "type": "object",
       "properties": {
         "algorithm": {
@@ -939,7 +1012,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequest": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequest": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -956,11 +1029,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestStatus"
         }
       },
@@ -970,7 +1043,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition": {
       "type": "object",
       "properties": {
         "lastTransitionTime": {
@@ -994,7 +1067,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestList": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1005,7 +1078,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequest",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequest",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequest"
           }
         },
@@ -1024,20 +1097,34 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.certmanager.api.model.v1.CertificateRequest\u003e"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec": {
       "type": "object",
       "properties": {
         "duration": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
+        "extra": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,java.util.List\u003cString\u003e\u003e"
+        },
+        "groups": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "isCA": {
           "type": "boolean"
         },
         "issuerRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.ObjectReference"
         },
         "request": {
+          "type": "string"
+        },
+        "uid": {
           "type": "string"
         },
         "usages": {
@@ -1046,6 +1133,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "username": {
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestSpec",
@@ -1053,7 +1143,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus": {
       "type": "object",
       "properties": {
         "ca": {
@@ -1068,7 +1158,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestCondition"
           }
         },
@@ -1081,9 +1171,34 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateSpec": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSecretTemplate": {
       "type": "object",
       "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "labels": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.v1.CertificateSecretTemplate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSpec": {
+      "type": "object",
+      "properties": {
+        "additionalOutputFormats": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateAdditionalOutputFormat",
+            "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateAdditionalOutputFormat"
+          }
+        },
         "commonName": {
           "type": "string"
         },
@@ -1119,25 +1234,36 @@
           "type": "boolean"
         },
         "issuerRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.ObjectReference"
         },
         "keystores": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateKeystores"
         },
+        "literalSubject": {
+          "type": "string"
+        },
         "privateKey": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificatePrivateKey"
         },
         "renewBefore": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
+        "revisionHistoryLimit": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
         "secretName": {
           "type": "string"
         },
+        "secretTemplate": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSecretTemplate",
+          "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateSecretTemplate"
+        },
         "subject": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_X509Subject",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_X509Subject",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.X509Subject"
         },
         "uris": {
@@ -1160,16 +1286,20 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateStatus": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateStatus": {
       "type": "object",
       "properties": {
         "conditions": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateCondition",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateCondition",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateCondition"
           }
+        },
+        "failedIssuanceAttempts": {
+          "type": "integer",
+          "existingJavaType": "Integer"
         },
         "lastFailureTime": {
           "existingJavaType": "java.lang.String"
@@ -1197,7 +1327,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1214,11 +1344,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerStatus"
         }
       },
@@ -1227,7 +1357,7 @@
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuerList": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuerList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1238,7 +1368,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.ClusterIssuer"
           }
         },
@@ -1257,7 +1387,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.certmanager.api.model.v1.ClusterIssuer\u003e"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Issuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Issuer": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1274,11 +1404,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerSpec",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerSpec",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerStatus"
         }
       },
@@ -1288,7 +1418,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerCondition": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerCondition": {
       "type": "object",
       "properties": {
         "lastTransitionTime": {
@@ -1296,6 +1426,10 @@
         },
         "message": {
           "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "reason": {
           "type": "string"
@@ -1312,7 +1446,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerList": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1323,7 +1457,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Issuer",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Issuer",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.Issuer"
           }
         },
@@ -1342,27 +1476,27 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.certmanager.api.model.v1.Issuer\u003e"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerSpec": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerSpec": {
       "type": "object",
       "properties": {
         "acme": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuer",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuer",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuer"
         },
         "ca": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CAIssuer",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CAIssuer",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CAIssuer"
         },
         "selfSigned": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.SelfSignedIssuer"
         },
         "vault": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultIssuer",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultIssuer",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultIssuer"
         },
         "venafi": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VenafiIssuer"
         }
       },
@@ -1371,18 +1505,18 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerStatus": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerStatus": {
       "type": "object",
       "properties": {
         "acme": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus",
           "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerStatus"
         },
         "conditions": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerCondition",
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerCondition",
             "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerCondition"
           }
         }
@@ -1392,14 +1526,14 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_JKSKeystore": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_JKSKeystore": {
       "type": "object",
       "properties": {
         "create": {
           "type": "boolean"
         },
         "passwordSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -1408,14 +1542,14 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore": {
       "type": "object",
       "properties": {
         "create": {
           "type": "boolean"
         },
         "passwordSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -1424,7 +1558,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer": {
       "type": "object",
       "properties": {
         "crlDistributionPoints": {
@@ -1440,7 +1574,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAppRole": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAppRole": {
       "type": "object",
       "properties": {
         "path": {
@@ -1450,7 +1584,7 @@
           "type": "string"
         },
         "secretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -1459,19 +1593,19 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAuth": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAuth": {
       "type": "object",
       "properties": {
         "appRole": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAppRole",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAppRole",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultAppRole"
         },
         "kubernetes": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultKubernetesAuth"
         },
         "tokenSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -1480,11 +1614,11 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultIssuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultIssuer": {
       "type": "object",
       "properties": {
         "auth": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAuth",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAuth",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultAuth"
         },
         "caBundle": {
@@ -1506,7 +1640,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth": {
       "type": "object",
       "properties": {
         "mountPath": {
@@ -1516,7 +1650,7 @@
           "type": "string"
         },
         "secretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         }
       },
@@ -1525,11 +1659,11 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiCloud": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiCloud": {
       "type": "object",
       "properties": {
         "apiTokenSecretRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "url": {
@@ -1541,15 +1675,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer": {
       "type": "object",
       "properties": {
         "cloud": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiCloud",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiCloud",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VenafiCloud"
         },
         "tpp": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiTPP",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiTPP",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.VenafiTPP"
         },
         "zone": {
@@ -1561,7 +1695,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiTPP": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiTPP": {
       "type": "object",
       "properties": {
         "caBundle": {
@@ -1569,7 +1703,7 @@
           "javaOmitEmpty": true
         },
         "credentialsRef": {
-          "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_LocalObjectReference",
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_LocalObjectReference",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.LocalObjectReference"
         },
         "url": {
@@ -1581,7 +1715,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_X509Subject": {
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_X509Subject": {
       "type": "object",
       "properties": {
         "countries": {
@@ -1642,7 +1776,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_meta_v1_LocalObjectReference": {
+    "github_com_cert-manager_cert-manager_pkg_apis_meta_v1_LocalObjectReference": {
       "type": "object",
       "properties": {
         "name": {
@@ -1654,7 +1788,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference": {
+    "github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference": {
       "type": "object",
       "properties": {
         "group": {
@@ -1672,7 +1806,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector": {
+    "github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector": {
       "type": "object",
       "properties": {
         "key": {
@@ -1690,268 +1824,284 @@
   },
   "type": "object",
   "properties": {
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEAuthorization": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEAuthorization",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEAuthorization"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallenge": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallenge",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallenge": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallenge",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallenge"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolver",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolver"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverDNS01",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverDNS01"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01GatewayHTTPRoute": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01GatewayHTTPRoute",
+      "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01GatewayHTTPRoute"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01Ingress",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01Ingress"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressObjectMeta",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressObjectMeta"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodObjectMeta",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressPodObjectMeta"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodSpec",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressPodSpec"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressPodTemplate",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressPodTemplate"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEChallengeSolverHTTP01IngressTemplate",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEChallengeSolverHTTP01IngressTemplate"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEExternalAccountBinding",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEExternalAccountBinding"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAcmeDNS",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderAcmeDNS"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAkamai",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderAkamai"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderAzureDNS",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderAzureDNS"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudDNS",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderCloudDNS"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderCloudflare",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderCloudflare"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderDigitalOcean",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderDigitalOcean"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRFC2136",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderRFC2136"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderRoute53",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderRoute53"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerDNS01ProviderWebhook",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerDNS01ProviderWebhook"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ACMEIssuerStatus"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_AzureManagedIdentity": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_AzureManagedIdentity",
+      "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.AzureManagedIdentity"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_CertificateDNSNameSelector",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.CertificateDNSNameSelector"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_Challenge": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_Challenge",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Challenge": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Challenge",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.Challenge"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeList": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeList",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeList": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeList",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ChallengeList"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeSpec": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeSpec",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeSpec": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeSpec",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ChallengeSpec"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeStatus": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_ChallengeStatus",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeStatus": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ChallengeStatus",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.ChallengeStatus"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_Order": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_Order",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Order": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_Order",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.Order"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderList": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderList",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderList": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderList",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.OrderList"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderSpec": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderSpec",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderSpec": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderSpec",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.OrderSpec"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderStatus": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_acme_v1_OrderStatus",
+    "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderStatus": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_acme_v1_OrderStatus",
       "existingJavaType": "io.fabric8.certmanager.api.model.acme.v1.OrderStatus"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CAIssuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CAIssuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CAIssuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CAIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CAIssuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Certificate": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Certificate",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Certificate": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Certificate",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.Certificate"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateCondition": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateCondition",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateAdditionalOutputFormat": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateAdditionalOutputFormat",
+      "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateAdditionalOutputFormat"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateCondition": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateCondition",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateCondition"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateKeystores",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateKeystores"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateList": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateList",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateList": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateList",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateList"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificatePrivateKey"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequest": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequest",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequest": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequest",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequest"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestCondition",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestCondition"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestList": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestList",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestList": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestList",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestList"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestSpec",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestSpec"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateRequestStatus",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateRequestStatus"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateSpec": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateSpec",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSecretTemplate": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSecretTemplate",
+      "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateSecretTemplate"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSpec": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateSpec",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateSpec"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateStatus": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_CertificateStatus",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateStatus": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificateStatus",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificateStatus"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.ClusterIssuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuerList": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_ClusterIssuerList",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuerList": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ClusterIssuerList",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.ClusterIssuerList"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Issuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_Issuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Issuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_Issuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.Issuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerCondition": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerCondition",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerCondition": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerCondition",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerCondition"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerList": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerList",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerList": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerList",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerList"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerSpec": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerSpec",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerSpec": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerSpec",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerSpec"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerStatus": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_IssuerStatus",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerStatus": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_IssuerStatus",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.IssuerStatus"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_JKSKeystore": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_JKSKeystore",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_JKSKeystore": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_JKSKeystore",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.JKSKeystore"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.PKCS12Keystore"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.SelfSignedIssuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAppRole": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAppRole",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAppRole": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAppRole",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultAppRole"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAuth": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultAuth",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAuth": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAuth",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultAuth"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultIssuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultIssuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultIssuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultIssuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultKubernetesAuth",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VaultKubernetesAuth"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiCloud": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiCloud",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiCloud": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiCloud",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VenafiCloud"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VenafiIssuer"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiTPP": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_VenafiTPP",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiTPP": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VenafiTPP",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.VenafiTPP"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_X509Subject": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_certmanager_v1_X509Subject",
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_X509Subject": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_X509Subject",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.X509Subject"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_meta_v1_LocalObjectReference": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_LocalObjectReference",
+    "github_com_cert-manager_cert-manager_pkg_apis_meta_v1_LocalObjectReference": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_LocalObjectReference",
       "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.LocalObjectReference"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_ObjectReference",
+    "github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_ObjectReference",
       "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.ObjectReference"
     },
-    "github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector": {
-      "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+    "github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
       "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
     }
   },

@@ -27,6 +27,7 @@
 * Bump Knative model to v0.34.0
 * Bump Apache Camel-K to v1.9.2
 * Update chaos-mesh extension to v2.1.3. Add PodHttpChaos, GCPChaos, BlockChaos and PhysicalMachineChaos.
+* Bump Cert-Manager to `v1.9.0-beta.1.0.20220829113803-8465f1223efb`
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire
@@ -38,6 +39,7 @@
   - `io.fabric8.chaosmesh.v1alpha1.AwsChaos` => `io.fabric8.chaosmesh.v1alpha1.AWSChaos`
   - `io.fabric8.chaosmesh.v1alpha1.IoChaos` => `io.fabric8.chaosmesh.v1alpha1.IOChaos`
   - `io.fabric8.chaosmesh.v1alpha1.PodIoChaos` => `io.fabric8.chaosmesh.v1alpha1.PodIOChaos`
+
 ### 5.12.3 (2022-07-27)
 
 #### Bugs

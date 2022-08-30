@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "accessKeyID",
+    "accessKeyIDSecretRef",
     "hostedZoneID",
     "region",
     "role",
@@ -71,6 +72,8 @@ public class ACMEIssuerDNS01ProviderRoute53 implements KubernetesResource
 
     @JsonProperty("accessKeyID")
     private String accessKeyID;
+    @JsonProperty("accessKeyIDSecretRef")
+    private SecretKeySelector accessKeyIDSecretRef;
     @JsonProperty("hostedZoneID")
     private String hostedZoneID;
     @JsonProperty("region")
@@ -94,12 +97,14 @@ public class ACMEIssuerDNS01ProviderRoute53 implements KubernetesResource
      * @param accessKeyID
      * @param hostedZoneID
      * @param role
+     * @param accessKeyIDSecretRef
      * @param secretAccessKeySecretRef
      * @param region
      */
-    public ACMEIssuerDNS01ProviderRoute53(String accessKeyID, String hostedZoneID, String region, String role, SecretKeySelector secretAccessKeySecretRef) {
+    public ACMEIssuerDNS01ProviderRoute53(String accessKeyID, SecretKeySelector accessKeyIDSecretRef, String hostedZoneID, String region, String role, SecretKeySelector secretAccessKeySecretRef) {
         super();
         this.accessKeyID = accessKeyID;
+        this.accessKeyIDSecretRef = accessKeyIDSecretRef;
         this.hostedZoneID = hostedZoneID;
         this.region = region;
         this.role = role;
@@ -114,6 +119,16 @@ public class ACMEIssuerDNS01ProviderRoute53 implements KubernetesResource
     @JsonProperty("accessKeyID")
     public void setAccessKeyID(String accessKeyID) {
         this.accessKeyID = accessKeyID;
+    }
+
+    @JsonProperty("accessKeyIDSecretRef")
+    public SecretKeySelector getAccessKeyIDSecretRef() {
+        return accessKeyIDSecretRef;
+    }
+
+    @JsonProperty("accessKeyIDSecretRef")
+    public void setAccessKeyIDSecretRef(SecretKeySelector accessKeyIDSecretRef) {
+        this.accessKeyIDSecretRef = accessKeyIDSecretRef;
     }
 
     @JsonProperty("hostedZoneID")

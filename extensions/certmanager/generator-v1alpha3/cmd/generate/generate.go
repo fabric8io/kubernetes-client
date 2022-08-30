@@ -20,7 +20,7 @@ import (
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
 	certmanageracme "github.com/jetstack/cert-manager/pkg/apis/acme/v1alpha3"
 	certmanager "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1alpha3"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"reflect"
 )

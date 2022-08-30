@@ -86,58 +86,6 @@
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <configuration>
-              <target>
-                <echo>removing the duplicate generated class</echo>
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha3/ACMEChallengeSolverHTTP01Ingress.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableVolume.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableObjectMeta.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableContainer.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableContainerPort.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableVolumeMount.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableLabelSelector.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/EditableEnvVar.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha3/ACMEChallengeSolverHTTP01IngressFluentImpl.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha3/ACMEChallengeSolverHTTP01IngressFluent.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha3/ACMEChallengeSolverHTTP01IngressBuilder.java"
-                  verbose="true" />
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/certmanager/api/model/acme/v1alpha3/EditableACMEChallengeSolverHTTP01Ingress.java"
-                  verbose="true" />
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>

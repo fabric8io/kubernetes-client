@@ -17,10 +17,10 @@ package main
 
 import (
 	"fmt"
+	certmanageracme "github.com/cert-manager/cert-manager/pkg/apis/acme/v1"
+	certmanager "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
-	certmanageracme "github.com/jetstack/cert-manager/pkg/apis/acme/v1"
-	certmanager "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"reflect"
 )
@@ -47,18 +47,21 @@ func main() {
 	// go packages that are provided and where no generation is required and their corresponding java package
 	providedPackages := map[string]string{
 		// external
-		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
-		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
-		"k8s.io/apimachinery/pkg/api/resource": "io.fabric8.kubernetes.api.model",
-		"k8s.io/apimachinery/pkg/runtime":      "io.fabric8.kubernetes.api.model.runtime",
+		"k8s.io/api/core/v1":                    "io.fabric8.kubernetes.api.model",
+		"k8s.io/apimachinery/pkg/apis/meta/v1":  "io.fabric8.kubernetes.api.model",
+		"k8s.io/apimachinery/pkg/api/resource":  "io.fabric8.kubernetes.api.model",
+		"k8s.io/apimachinery/pkg/runtime":       "io.fabric8.kubernetes.api.model.runtime",
+		"sigs.k8s.io/gateway-api/apis/v1alpha2": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2",
 	}
 
 	// mapping of go packages of this module to the resulting java package
 	// optional ApiGroup and ApiVersion for the go package (which is added to the generated java class)
 	packageMapping := map[string]schemagen.PackageInformation{
-		"github.com/jetstack/cert-manager/pkg/apis/certmanager/v1": {JavaPackage: "io.fabric8.certmanager.api.model.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
-		"github.com/jetstack/cert-manager/pkg/apis/acme/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.acme.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
-		"github.com/jetstack/cert-manager/pkg/apis/meta/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.meta.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
+		"github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1": {JavaPackage: "io.fabric8.certmanager.api.model.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
+		"github.com/cert-manager/cert-manager/pkg/apis/acme/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.acme.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
+		"github.com/cert-manager/cert-manager/pkg/apis/meta/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.meta.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
+		"github.com/cert-manager/cert-manager/internal/apis/acme":      {JavaPackage: "io.fabric8.certmanager.api.model.acme.internal", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
+		"github.com/cert-manager/cert-manager/internal/apis/meta":      {JavaPackage: "io.fabric8.certmanager.api.model.meta.internal", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
 	}
 
 	// converts all packages starting with <key> to a java package using an automated scheme:
