@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "clientSecretSecretRef",
     "environment",
     "hostedZoneName",
+    "managedIdentity",
     "resourceGroupName",
     "subscriptionID",
     "tenantID"
@@ -79,6 +80,8 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
     private String environment;
     @JsonProperty("hostedZoneName")
     private String hostedZoneName;
+    @JsonProperty("managedIdentity")
+    private AzureManagedIdentity managedIdentity;
     @JsonProperty("resourceGroupName")
     private String resourceGroupName;
     @JsonProperty("subscriptionID")
@@ -97,6 +100,7 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
 
     /**
      * 
+     * @param managedIdentity
      * @param environment
      * @param clientID
      * @param resourceGroupName
@@ -105,12 +109,13 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
      * @param subscriptionID
      * @param hostedZoneName
      */
-    public ACMEIssuerDNS01ProviderAzureDNS(String clientID, SecretKeySelector clientSecretSecretRef, String environment, String hostedZoneName, String resourceGroupName, String subscriptionID, String tenantID) {
+    public ACMEIssuerDNS01ProviderAzureDNS(String clientID, SecretKeySelector clientSecretSecretRef, String environment, String hostedZoneName, AzureManagedIdentity managedIdentity, String resourceGroupName, String subscriptionID, String tenantID) {
         super();
         this.clientID = clientID;
         this.clientSecretSecretRef = clientSecretSecretRef;
         this.environment = environment;
         this.hostedZoneName = hostedZoneName;
+        this.managedIdentity = managedIdentity;
         this.resourceGroupName = resourceGroupName;
         this.subscriptionID = subscriptionID;
         this.tenantID = tenantID;
@@ -154,6 +159,16 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
     @JsonProperty("hostedZoneName")
     public void setHostedZoneName(String hostedZoneName) {
         this.hostedZoneName = hostedZoneName;
+    }
+
+    @JsonProperty("managedIdentity")
+    public AzureManagedIdentity getManagedIdentity() {
+        return managedIdentity;
+    }
+
+    @JsonProperty("managedIdentity")
+    public void setManagedIdentity(AzureManagedIdentity managedIdentity) {
+        this.managedIdentity = managedIdentity;
     }
 
     @JsonProperty("resourceGroupName")

@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "conditions",
+    "failedIssuanceAttempts",
     "lastFailureTime",
     "nextPrivateKeySecretName",
     "notAfter",
@@ -75,6 +76,8 @@ public class CertificateStatus implements KubernetesResource
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CertificateCondition> conditions = new ArrayList<CertificateCondition>();
+    @JsonProperty("failedIssuanceAttempts")
+    private Integer failedIssuanceAttempts;
     @JsonProperty("lastFailureTime")
     private java.lang.String lastFailureTime;
     @JsonProperty("nextPrivateKeySecretName")
@@ -104,12 +107,14 @@ public class CertificateStatus implements KubernetesResource
      * @param nextPrivateKeySecretName
      * @param lastFailureTime
      * @param conditions
+     * @param failedIssuanceAttempts
      * @param notBefore
      * @param revision
      */
-    public CertificateStatus(List<CertificateCondition> conditions, java.lang.String lastFailureTime, String nextPrivateKeySecretName, java.lang.String notAfter, java.lang.String notBefore, java.lang.String renewalTime, Integer revision) {
+    public CertificateStatus(List<CertificateCondition> conditions, Integer failedIssuanceAttempts, java.lang.String lastFailureTime, String nextPrivateKeySecretName, java.lang.String notAfter, java.lang.String notBefore, java.lang.String renewalTime, Integer revision) {
         super();
         this.conditions = conditions;
+        this.failedIssuanceAttempts = failedIssuanceAttempts;
         this.lastFailureTime = lastFailureTime;
         this.nextPrivateKeySecretName = nextPrivateKeySecretName;
         this.notAfter = notAfter;
@@ -126,6 +131,16 @@ public class CertificateStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<CertificateCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("failedIssuanceAttempts")
+    public Integer getFailedIssuanceAttempts() {
+        return failedIssuanceAttempts;
+    }
+
+    @JsonProperty("failedIssuanceAttempts")
+    public void setFailedIssuanceAttempts(Integer failedIssuanceAttempts) {
+        this.failedIssuanceAttempts = failedIssuanceAttempts;
     }
 
     @JsonProperty("lastFailureTime")

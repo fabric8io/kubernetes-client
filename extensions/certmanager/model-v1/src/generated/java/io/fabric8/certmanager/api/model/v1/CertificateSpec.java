@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalOutputFormats",
     "commonName",
     "dnsNames",
     "duration",
@@ -48,9 +49,12 @@ import lombok.experimental.Accessors;
     "isCA",
     "issuerRef",
     "keystores",
+    "literalSubject",
     "privateKey",
     "renewBefore",
+    "revisionHistoryLimit",
     "secretName",
+    "secretTemplate",
     "subject",
     "uris",
     "usages"
@@ -80,6 +84,9 @@ import lombok.experimental.Accessors;
 public class CertificateSpec implements KubernetesResource
 {
 
+    @JsonProperty("additionalOutputFormats")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CertificateAdditionalOutputFormat> additionalOutputFormats = new ArrayList<CertificateAdditionalOutputFormat>();
     @JsonProperty("commonName")
     private String commonName;
     @JsonProperty("dnsNames")
@@ -101,12 +108,18 @@ public class CertificateSpec implements KubernetesResource
     private io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef;
     @JsonProperty("keystores")
     private CertificateKeystores keystores;
+    @JsonProperty("literalSubject")
+    private String literalSubject;
     @JsonProperty("privateKey")
     private CertificatePrivateKey privateKey;
     @JsonProperty("renewBefore")
     private Duration renewBefore;
+    @JsonProperty("revisionHistoryLimit")
+    private Integer revisionHistoryLimit;
     @JsonProperty("secretName")
     private String secretName;
+    @JsonProperty("secretTemplate")
+    private CertificateSecretTemplate secretTemplate;
     @JsonProperty("subject")
     private X509Subject subject;
     @JsonProperty("uris")
@@ -129,22 +142,27 @@ public class CertificateSpec implements KubernetesResource
      * 
      * @param commonName
      * @param secretName
+     * @param secretTemplate
      * @param dnsNames
      * @param keystores
      * @param subject
      * @param issuerRef
      * @param encodeUsagesInRequest
+     * @param additionalOutputFormats
      * @param duration
+     * @param literalSubject
      * @param privateKey
      * @param uris
      * @param emailAddresses
      * @param renewBefore
      * @param isCA
      * @param ipAddresses
+     * @param revisionHistoryLimit
      * @param usages
      */
-    public CertificateSpec(String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, CertificatePrivateKey privateKey, Duration renewBefore, String secretName, X509Subject subject, List<String> uris, List<String> usages) {
+    public CertificateSpec(List<CertificateAdditionalOutputFormat> additionalOutputFormats, String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, String literalSubject, CertificatePrivateKey privateKey, Duration renewBefore, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uris, List<String> usages) {
         super();
+        this.additionalOutputFormats = additionalOutputFormats;
         this.commonName = commonName;
         this.dnsNames = dnsNames;
         this.duration = duration;
@@ -154,12 +172,25 @@ public class CertificateSpec implements KubernetesResource
         this.isCA = isCA;
         this.issuerRef = issuerRef;
         this.keystores = keystores;
+        this.literalSubject = literalSubject;
         this.privateKey = privateKey;
         this.renewBefore = renewBefore;
+        this.revisionHistoryLimit = revisionHistoryLimit;
         this.secretName = secretName;
+        this.secretTemplate = secretTemplate;
         this.subject = subject;
         this.uris = uris;
         this.usages = usages;
+    }
+
+    @JsonProperty("additionalOutputFormats")
+    public List<CertificateAdditionalOutputFormat> getAdditionalOutputFormats() {
+        return additionalOutputFormats;
+    }
+
+    @JsonProperty("additionalOutputFormats")
+    public void setAdditionalOutputFormats(List<CertificateAdditionalOutputFormat> additionalOutputFormats) {
+        this.additionalOutputFormats = additionalOutputFormats;
     }
 
     @JsonProperty("commonName")
@@ -252,6 +283,16 @@ public class CertificateSpec implements KubernetesResource
         this.keystores = keystores;
     }
 
+    @JsonProperty("literalSubject")
+    public String getLiteralSubject() {
+        return literalSubject;
+    }
+
+    @JsonProperty("literalSubject")
+    public void setLiteralSubject(String literalSubject) {
+        this.literalSubject = literalSubject;
+    }
+
     @JsonProperty("privateKey")
     public CertificatePrivateKey getPrivateKey() {
         return privateKey;
@@ -272,6 +313,16 @@ public class CertificateSpec implements KubernetesResource
         this.renewBefore = renewBefore;
     }
 
+    @JsonProperty("revisionHistoryLimit")
+    public Integer getRevisionHistoryLimit() {
+        return revisionHistoryLimit;
+    }
+
+    @JsonProperty("revisionHistoryLimit")
+    public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
+        this.revisionHistoryLimit = revisionHistoryLimit;
+    }
+
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
@@ -280,6 +331,16 @@ public class CertificateSpec implements KubernetesResource
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
+    }
+
+    @JsonProperty("secretTemplate")
+    public CertificateSecretTemplate getSecretTemplate() {
+        return secretTemplate;
+    }
+
+    @JsonProperty("secretTemplate")
+    public void setSecretTemplate(CertificateSecretTemplate secretTemplate) {
+        this.secretTemplate = secretTemplate;
     }
 
     @JsonProperty("subject")

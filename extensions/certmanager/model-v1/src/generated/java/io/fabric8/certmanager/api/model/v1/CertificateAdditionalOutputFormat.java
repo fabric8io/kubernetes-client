@@ -1,5 +1,5 @@
 
-package io.fabric8.certmanager.api.model.v1beta1;
+package io.fabric8.certmanager.api.model.v1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +37,6 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastTransitionTime",
-    "message",
-    "observedGeneration",
-    "reason",
-    "status",
     "type"
 })
 @ToString
@@ -66,19 +61,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class CertificateCondition implements KubernetesResource
+public class CertificateAdditionalOutputFormat implements KubernetesResource
 {
 
-    @JsonProperty("lastTransitionTime")
-    private String lastTransitionTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -88,76 +73,16 @@ public class CertificateCondition implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public CertificateCondition() {
+    public CertificateAdditionalOutputFormat() {
     }
 
     /**
      * 
-     * @param reason
-     * @param lastTransitionTime
-     * @param message
      * @param type
-     * @param observedGeneration
-     * @param status
      */
-    public CertificateCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
+    public CertificateAdditionalOutputFormat(String type) {
         super();
-        this.lastTransitionTime = lastTransitionTime;
-        this.message = message;
-        this.observedGeneration = observedGeneration;
-        this.reason = reason;
-        this.status = status;
         this.type = type;
-    }
-
-    @JsonProperty("lastTransitionTime")
-    public String getLastTransitionTime() {
-        return lastTransitionTime;
-    }
-
-    @JsonProperty("lastTransitionTime")
-    public void setLastTransitionTime(String lastTransitionTime) {
-        this.lastTransitionTime = lastTransitionTime;
-    }
-
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
-    }
-
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
-    }
-
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     @JsonProperty("type")

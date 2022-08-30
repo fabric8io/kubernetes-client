@@ -50,7 +50,9 @@ import lombok.experimental.Accessors;
     "keystores",
     "privateKey",
     "renewBefore",
+    "revisionHistoryLimit",
     "secretName",
+    "secretTemplate",
     "subject",
     "uriSANs",
     "usages"
@@ -105,8 +107,12 @@ public class CertificateSpec implements KubernetesResource
     private CertificatePrivateKey privateKey;
     @JsonProperty("renewBefore")
     private Duration renewBefore;
+    @JsonProperty("revisionHistoryLimit")
+    private Integer revisionHistoryLimit;
     @JsonProperty("secretName")
     private String secretName;
+    @JsonProperty("secretTemplate")
+    private CertificateSecretTemplate secretTemplate;
     @JsonProperty("subject")
     private X509Subject subject;
     @JsonProperty("uriSANs")
@@ -129,6 +135,7 @@ public class CertificateSpec implements KubernetesResource
      * 
      * @param commonName
      * @param secretName
+     * @param secretTemplate
      * @param dnsNames
      * @param keystores
      * @param subject
@@ -141,9 +148,10 @@ public class CertificateSpec implements KubernetesResource
      * @param renewBefore
      * @param isCA
      * @param ipAddresses
+     * @param revisionHistoryLimit
      * @param usages
      */
-    public CertificateSpec(String commonName, List<String> dnsNames, Duration duration, List<String> emailSANs, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, CertificatePrivateKey privateKey, Duration renewBefore, String secretName, X509Subject subject, List<String> uriSANs, List<String> usages) {
+    public CertificateSpec(String commonName, List<String> dnsNames, Duration duration, List<String> emailSANs, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, CertificatePrivateKey privateKey, Duration renewBefore, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uriSANs, List<String> usages) {
         super();
         this.commonName = commonName;
         this.dnsNames = dnsNames;
@@ -156,7 +164,9 @@ public class CertificateSpec implements KubernetesResource
         this.keystores = keystores;
         this.privateKey = privateKey;
         this.renewBefore = renewBefore;
+        this.revisionHistoryLimit = revisionHistoryLimit;
         this.secretName = secretName;
+        this.secretTemplate = secretTemplate;
         this.subject = subject;
         this.uriSANs = uriSANs;
         this.usages = usages;
@@ -272,6 +282,16 @@ public class CertificateSpec implements KubernetesResource
         this.renewBefore = renewBefore;
     }
 
+    @JsonProperty("revisionHistoryLimit")
+    public Integer getRevisionHistoryLimit() {
+        return revisionHistoryLimit;
+    }
+
+    @JsonProperty("revisionHistoryLimit")
+    public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
+        this.revisionHistoryLimit = revisionHistoryLimit;
+    }
+
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
@@ -280,6 +300,16 @@ public class CertificateSpec implements KubernetesResource
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
+    }
+
+    @JsonProperty("secretTemplate")
+    public CertificateSecretTemplate getSecretTemplate() {
+        return secretTemplate;
+    }
+
+    @JsonProperty("secretTemplate")
+    public void setSecretTemplate(CertificateSecretTemplate secretTemplate) {
+        this.secretTemplate = secretTemplate;
     }
 
     @JsonProperty("subject")

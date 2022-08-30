@@ -2,6 +2,7 @@
 package io.fabric8.certmanager.api.model.v1beta1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,12 +38,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastTransitionTime",
-    "message",
-    "observedGeneration",
-    "reason",
-    "status",
-    "type"
+    "annotations",
+    "labels"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,117 +63,63 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class CertificateCondition implements KubernetesResource
+public class CertificateSecretTemplate implements KubernetesResource
 {
 
-    @JsonProperty("lastTransitionTime")
-    private String lastTransitionTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public CertificateCondition() {
+    public CertificateSecretTemplate() {
     }
 
     /**
      * 
-     * @param reason
-     * @param lastTransitionTime
-     * @param message
-     * @param type
-     * @param observedGeneration
-     * @param status
+     * @param annotations
+     * @param labels
      */
-    public CertificateCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
+    public CertificateSecretTemplate(Map<String, String> annotations, Map<String, String> labels) {
         super();
-        this.lastTransitionTime = lastTransitionTime;
-        this.message = message;
-        this.observedGeneration = observedGeneration;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.annotations = annotations;
+        this.labels = labels;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public String getLastTransitionTime() {
-        return lastTransitionTime;
+    @JsonProperty("annotations")
+    public Map<String, String> getAnnotations() {
+        return annotations;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public void setLastTransitionTime(String lastTransitionTime) {
-        this.lastTransitionTime = lastTransitionTime;
+    @JsonProperty("annotations")
+    public void setAnnotations(Map<String, String> annotations) {
+        this.annotations = annotations;
     }
 
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
+    @JsonProperty("labels")
+    public Map<String, String> getLabels() {
+        return labels;
     }
 
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
-    }
-
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("labels")
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
