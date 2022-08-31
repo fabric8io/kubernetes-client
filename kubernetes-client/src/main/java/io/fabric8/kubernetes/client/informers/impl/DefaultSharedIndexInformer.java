@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.informers.impl;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.informers.InformerExceptionHandler;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
@@ -72,6 +73,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private Stream<T> initialState;
 
+  private InformerExceptionHandler exceptionHandler;
+
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
       Executor informerExecutor) {
     if (resyncPeriod < 0) {
@@ -87,7 +90,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.processor = new SharedProcessor<>(informerExecutor, description);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
-    this.reflector = new Reflector<>(listerWatcher, processorStore);
+    this.reflector = new Reflector<>(listerWatcher, processorStore, this::getExceptionHandler);
+  }
+
+  public InformerExceptionHandler getExceptionHandler() {
+    return exceptionHandler;
   }
 
   /**
@@ -289,4 +296,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return this.description;
   }
 
+  @Override
+  public void setExceptionHandler(InformerExceptionHandler handler) {
+    this.exceptionHandler = handler;
+  }
 }

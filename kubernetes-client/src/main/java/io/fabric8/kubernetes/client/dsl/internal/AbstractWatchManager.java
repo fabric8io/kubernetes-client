@@ -303,11 +303,14 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
         logger.error("Unknown message received: {}", message);
       }
     } catch (ClassCastException e) {
-      logger.error("Received wrong type of object for watch", e);
+      final String msg = "Received wrong type of object for watch";
+      close(new WatcherException(msg, e));
     } catch (IllegalArgumentException e) {
-      logger.error("Invalid event type", e);
+      final String msg = "Invalid event type";
+      close(new WatcherException(msg, e));
     } catch (Exception e) {
-      logger.error("Unhandled exception encountered in watcher event handler", e);
+      final String msg = "Unhandled exception encountered in watcher event handler";
+      close(new WatcherException(msg, e));
     }
   }
 

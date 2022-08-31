@@ -82,7 +82,8 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * @param handle the event handler
    * @param resyncPeriod the specific resync period
    */
-  SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handle, long resyncPeriod);
+  SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handle,
+    long resyncPeriod);
 
   /**
    * Starts the shared informer, which will be stopped when {@link #stop()} is called.
@@ -165,4 +166,6 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    */
   CompletableFuture<Void> start();
 
+  default void setExceptionHandler(InformerExceptionHandler handler) {
+  }
 }
