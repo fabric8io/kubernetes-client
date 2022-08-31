@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-extensions</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.1-SNAPSHOT</version>
+    <version>6.1.0</version>
   </parent>
 
   <artifactId>volcano-extension-pom</artifactId>

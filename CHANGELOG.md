@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.1-SNAPSHOT
+### 6.1.0 (2022-08-31)
 
 #### Bugs
 * Fix #4109: Templates with parameters can be retrieved from OpenShift
