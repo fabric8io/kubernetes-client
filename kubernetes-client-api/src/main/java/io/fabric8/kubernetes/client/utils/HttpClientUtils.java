@@ -52,7 +52,7 @@ public class HttpClientUtils {
   private static final String BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT = "true";
   private static final Pattern IPV4_PATTERN = Pattern.compile(
       "(http://|https://)?(?<ipAddressOrSubnet>(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?)");
-  private static final Pattern INVALID_HOST_PATTERN = Pattern.compile("[^\\da-zA-Z.-/:]+");
+  private static final Pattern INVALID_HOST_PATTERN = Pattern.compile("[^\\da-zA-Z.\\-/:]+");
   private static final AtomicBoolean MULTIPLE_HTTP_CLIENT_WARNING_LOGGED = new AtomicBoolean();
 
   private HttpClientUtils() {
