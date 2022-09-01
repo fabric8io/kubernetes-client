@@ -1,9 +1,8 @@
 ## CHANGELOG
 
-### 6.1.1 (2022-09-01)
+### 6.2-SNAPSHOT
 
 #### Bugs
-fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-build-agent")
 
 #### Improvements
 
@@ -12,6 +11,11 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+
+### 6.1.1 (2022-09-01)
+
+#### Bugs
+fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-build-agent")
 
 ### 6.1.0 (2022-08-31)
 
