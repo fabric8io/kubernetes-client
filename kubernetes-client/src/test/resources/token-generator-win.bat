@@ -15,7 +15,12 @@
 @REM
 
 @echo off
-SET token=%PART1% %1
+IF [%1]==[] (
+    SET token=%PART1%
+) ELSE (
+    SET token=%PART1% %1
+)
+
 CALL :upper token
 
 echo {
@@ -26,7 +31,7 @@ echo   "status": {
 echo     "token": "%token%"
 echo   }
 echo }
+GOTO :EOF
 
 :upper
 FOR %%a IN (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) DO CALL SET "%1=%%%1:%%a=%%a%%%"
-GOTO :EOF
