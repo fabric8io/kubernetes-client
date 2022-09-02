@@ -48,14 +48,14 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private volatile boolean running;
   private volatile boolean watching;
   private volatile CompletableFuture<Watch> watchFuture;
-  private volatile Future<?> reconnectFuture;
+  private volatile CompletableFuture<?> reconnectFuture;
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this(listerWatcher, store, null);
   }
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store,
-    Supplier<InformerExceptionHandler> exceptionHandlerSupplier) {
+      Supplier<InformerExceptionHandler> exceptionHandlerSupplier) {
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher(exceptionHandlerSupplier);
@@ -126,9 +126,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private CompletableFuture<L> processList(Set<String> nextKeys, String continueVal) {
     CompletableFuture<L> futureResult = listerWatcher
-      .submitList(
-        new ListOptionsBuilder().withLimit(listerWatcher.getLimit()).withContinue(continueVal)
-          .build());
+        .submitList(
+            new ListOptionsBuilder().withLimit(listerWatcher.getLimit()).withContinue(continueVal)
+                .build());
 
     return futureResult.thenCompose(result -> {
       result.getItems().forEach(i -> {
@@ -157,9 +157,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     log.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
     // there's no need to stop the old watch, that will happen automatically when this call completes
     watchFuture = listerWatcher.submitWatch(
-      new ListOptionsBuilder().withResourceVersion(latestResourceVersion)
-        .withTimeoutSeconds(null)
-        .build(), watcher);
+        new ListOptionsBuilder().withResourceVersion(latestResourceVersion)
+            .withTimeoutSeconds(null)
+            .build(),
+        watcher);
     return watchFuture;
   }
 
@@ -187,7 +188,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       this.exceptionHandlerSupplier = exceptionHandlerSupplier;
     }
 
-
     @Override
     public void eventReceived(Action action, T resource) {
       if (action == null) {
@@ -198,8 +198,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       }
       if (log.isDebugEnabled()) {
         log.debug("Event received {} {} resourceVersion v{} for {}", action.name(),
-          resource.getKind(),
-          resource.getMetadata().getResourceVersion(), Reflector.this);
+            resource.getKind(),
+            resource.getMetadata().getResourceVersion(), Reflector.this);
       }
       switch (action) {
         case ERROR:
@@ -221,36 +221,41 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     public void onClose(WatcherException exception) {
       // this close was triggered by an exception,
       // not the user, it is expected that the watch retry will handle this
-      boolean restarted = false;
-      try {
-        if (exception.isHttpGone()) {
-          if (log.isDebugEnabled()) {
-            log.debug("Watch restarting due to http gone for {}", Reflector.this);
-          }
-          listSyncAndWatch().whenComplete((v, t) -> {
-            if (t != null) {
-              watchStopped();
-              // start a whole new list/watch cycle, can be run in the scheduler thread because
-              // any further operations will happen on the io thread
-              reconnectFuture = Utils.schedule(Runnable::run, Reflector.this::listSyncAndWatch,
-                listerWatcher.getWatchReconnectInterval(), TimeUnit.MILLISECONDS);
-            }
-          });
-          restarted = true;
-        } else {
-          running = false; // shouldn't happen, but it means the watch won't restart
-          InformerExceptionHandler handler = exceptionHandlerSupplier.get();
-          if (handler != null) {
-            handler.onWatchNonrecoverable(exception);
-          } else {
-            log.warn("Watch closing with exception for {}", Reflector.this, exception);
-          }
+      watchStopped();
+      InformerExceptionHandler handler = exceptionHandlerSupplier.get();
+      boolean reconnect = false;
+      if (exception.isHttpGone()) {
+        if (log.isDebugEnabled()) {
+          log.debug("Watch restarting due to http gone for {}", Reflector.this);
         }
-      } finally {
-        if (!restarted) {
-          watchStopped(); // report the watch as stopped after a problem
+        reconnect = true;
+      } else if (handler != null) {
+        reconnect = handler.retry(exception.getCause());
+      }
+      if (reconnect) {
+        // start a whole new list/watch cycle
+        reconnect();
+      } else {
+        running = false; // shouldn't happen, but it means the watch won't restart
+        if (handler == null) {
+          log.warn("Watch closing with exception for {}", Reflector.this, exception);
         }
       }
+    }
+
+    private void reconnect() {
+      // this can be run in the scheduler thread because
+      // any further operations will happen on the io thread
+      reconnectFuture = Utils.schedule(Runnable::run, Reflector.this::listSyncAndWatch,
+          listerWatcher.getWatchReconnectInterval(), TimeUnit.MILLISECONDS);
+      reconnectFuture.whenComplete((v, t) -> {
+        if (t != null) {
+          InformerExceptionHandler handler = exceptionHandlerSupplier.get();
+          if (handler == null || handler.retry(t)) {
+            reconnect();
+          }
+        }
+      });
     }
 
     @Override
