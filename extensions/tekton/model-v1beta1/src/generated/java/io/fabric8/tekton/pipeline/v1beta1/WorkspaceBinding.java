@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.CSIVolumeSource;
 import io.fabric8.kubernetes.api.model.ConfigMapVolumeSource;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -23,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ProjectedVolumeSource;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretVolumeSource;
 import io.fabric8.kubernetes.api.model.Volume;
@@ -41,9 +43,11 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "configMap",
+    "csi",
     "emptyDir",
     "name",
     "persistentVolumeClaim",
+    "projected",
     "secret",
     "subPath",
     "volumeClaimTemplate"
@@ -75,12 +79,16 @@ public class WorkspaceBinding implements KubernetesResource
 
     @JsonProperty("configMap")
     private ConfigMapVolumeSource configMap;
+    @JsonProperty("csi")
+    private CSIVolumeSource csi;
     @JsonProperty("emptyDir")
     private EmptyDirVolumeSource emptyDir;
     @JsonProperty("name")
     private String name;
     @JsonProperty("persistentVolumeClaim")
     private PersistentVolumeClaimVolumeSource persistentVolumeClaim;
+    @JsonProperty("projected")
+    private ProjectedVolumeSource projected;
     @JsonProperty("secret")
     private SecretVolumeSource secret;
     @JsonProperty("subPath")
@@ -99,20 +107,24 @@ public class WorkspaceBinding implements KubernetesResource
 
     /**
      * 
+     * @param projected
      * @param configMap
      * @param emptyDir
+     * @param csi
      * @param name
      * @param volumeClaimTemplate
      * @param persistentVolumeClaim
      * @param secret
      * @param subPath
      */
-    public WorkspaceBinding(ConfigMapVolumeSource configMap, EmptyDirVolumeSource emptyDir, String name, PersistentVolumeClaimVolumeSource persistentVolumeClaim, SecretVolumeSource secret, String subPath, io.fabric8.kubernetes.api.model.PersistentVolumeClaim volumeClaimTemplate) {
+    public WorkspaceBinding(ConfigMapVolumeSource configMap, CSIVolumeSource csi, EmptyDirVolumeSource emptyDir, String name, PersistentVolumeClaimVolumeSource persistentVolumeClaim, ProjectedVolumeSource projected, SecretVolumeSource secret, String subPath, io.fabric8.kubernetes.api.model.PersistentVolumeClaim volumeClaimTemplate) {
         super();
         this.configMap = configMap;
+        this.csi = csi;
         this.emptyDir = emptyDir;
         this.name = name;
         this.persistentVolumeClaim = persistentVolumeClaim;
+        this.projected = projected;
         this.secret = secret;
         this.subPath = subPath;
         this.volumeClaimTemplate = volumeClaimTemplate;
@@ -126,6 +138,16 @@ public class WorkspaceBinding implements KubernetesResource
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapVolumeSource configMap) {
         this.configMap = configMap;
+    }
+
+    @JsonProperty("csi")
+    public CSIVolumeSource getCsi() {
+        return csi;
+    }
+
+    @JsonProperty("csi")
+    public void setCsi(CSIVolumeSource csi) {
+        this.csi = csi;
     }
 
     @JsonProperty("emptyDir")
@@ -156,6 +178,16 @@ public class WorkspaceBinding implements KubernetesResource
     @JsonProperty("persistentVolumeClaim")
     public void setPersistentVolumeClaim(PersistentVolumeClaimVolumeSource persistentVolumeClaim) {
         this.persistentVolumeClaim = persistentVolumeClaim;
+    }
+
+    @JsonProperty("projected")
+    public ProjectedVolumeSource getProjected() {
+        return projected;
+    }
+
+    @JsonProperty("projected")
+    public void setProjected(ProjectedVolumeSource projected) {
+        this.projected = projected;
     }
 
     @JsonProperty("secret")

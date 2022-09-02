@@ -47,7 +47,6 @@ import lombok.experimental.Accessors;
     "podTemplate",
     "resources",
     "serviceAccountName",
-    "serviceAccountNames",
     "status",
     "taskRunSpecs",
     "timeout",
@@ -93,9 +92,6 @@ public class PipelineRunSpec implements KubernetesResource
     private List<PipelineResourceBinding> resources = new ArrayList<PipelineResourceBinding>();
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
-    @JsonProperty("serviceAccountNames")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineRunSpecServiceAccountName> serviceAccountNames = new ArrayList<PipelineRunSpecServiceAccountName>();
     @JsonProperty("status")
     private String status;
     @JsonProperty("taskRunSpecs")
@@ -130,10 +126,9 @@ public class PipelineRunSpec implements KubernetesResource
      * @param params
      * @param pipelineRef
      * @param timeout
-     * @param serviceAccountNames
      * @param status
      */
-    public PipelineRunSpec(List<Param> params, PipelineRef pipelineRef, PipelineSpec pipelineSpec, Template podTemplate, List<PipelineResourceBinding> resources, String serviceAccountName, List<PipelineRunSpecServiceAccountName> serviceAccountNames, String status, List<PipelineTaskRunSpec> taskRunSpecs, Duration timeout, TimeoutFields timeouts, List<WorkspaceBinding> workspaces) {
+    public PipelineRunSpec(List<Param> params, PipelineRef pipelineRef, PipelineSpec pipelineSpec, Template podTemplate, List<PipelineResourceBinding> resources, String serviceAccountName, String status, List<PipelineTaskRunSpec> taskRunSpecs, Duration timeout, TimeoutFields timeouts, List<WorkspaceBinding> workspaces) {
         super();
         this.params = params;
         this.pipelineRef = pipelineRef;
@@ -141,7 +136,6 @@ public class PipelineRunSpec implements KubernetesResource
         this.podTemplate = podTemplate;
         this.resources = resources;
         this.serviceAccountName = serviceAccountName;
-        this.serviceAccountNames = serviceAccountNames;
         this.status = status;
         this.taskRunSpecs = taskRunSpecs;
         this.timeout = timeout;
@@ -207,16 +201,6 @@ public class PipelineRunSpec implements KubernetesResource
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
-    }
-
-    @JsonProperty("serviceAccountNames")
-    public List<PipelineRunSpecServiceAccountName> getServiceAccountNames() {
-        return serviceAccountNames;
-    }
-
-    @JsonProperty("serviceAccountNames")
-    public void setServiceAccountNames(List<PipelineRunSpecServiceAccountName> serviceAccountNames) {
-        this.serviceAccountNames = serviceAccountNames;
     }
 
     @JsonProperty("status")

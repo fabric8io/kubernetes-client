@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
@@ -97,7 +98,7 @@ public class EmbeddedTask implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> spec = new LinkedHashMap<String, Object>();
     @JsonProperty("stepTemplate")
-    private io.fabric8.kubernetes.api.model.Container stepTemplate;
+    private StepTemplate stepTemplate;
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Step> steps = new ArrayList<Step>();
@@ -133,7 +134,7 @@ public class EmbeddedTask implements KubernetesResource
      * @param workspaces
      * @param results
      */
-    public EmbeddedTask(java.lang.String apiVersion, java.lang.String description, java.lang.String kind, PipelineTaskMetadata metadata, List<ParamSpec> params, TaskResources resources, List<TaskResult> results, List<Sidecar> sidecars, Map<String, Object> spec, io.fabric8.kubernetes.api.model.Container stepTemplate, List<Step> steps, List<io.fabric8.kubernetes.api.model.Volume> volumes, List<WorkspaceDeclaration> workspaces) {
+    public EmbeddedTask(java.lang.String apiVersion, java.lang.String description, java.lang.String kind, PipelineTaskMetadata metadata, List<ParamSpec> params, TaskResources resources, List<TaskResult> results, List<Sidecar> sidecars, Map<String, Object> spec, StepTemplate stepTemplate, List<Step> steps, List<io.fabric8.kubernetes.api.model.Volume> volumes, List<WorkspaceDeclaration> workspaces) {
         super();
         this.apiVersion = apiVersion;
         this.description = description;
@@ -241,12 +242,12 @@ public class EmbeddedTask implements KubernetesResource
     }
 
     @JsonProperty("stepTemplate")
-    public io.fabric8.kubernetes.api.model.Container getStepTemplate() {
+    public StepTemplate getStepTemplate() {
         return stepTemplate;
     }
 
     @JsonProperty("stepTemplate")
-    public void setStepTemplate(io.fabric8.kubernetes.api.model.Container stepTemplate) {
+    public void setStepTemplate(StepTemplate stepTemplate) {
         this.stepTemplate = stepTemplate;
     }
 

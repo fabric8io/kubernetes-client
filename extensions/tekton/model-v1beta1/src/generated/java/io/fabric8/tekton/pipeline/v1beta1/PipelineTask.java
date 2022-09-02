@@ -40,7 +40,6 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "conditions",
     "matrix",
     "name",
     "params",
@@ -78,9 +77,6 @@ import lombok.experimental.Accessors;
 public class PipelineTask implements KubernetesResource
 {
 
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineTaskCondition> conditions = new ArrayList<PipelineTaskCondition>();
     @JsonProperty("matrix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Param> matrix = new ArrayList<Param>();
@@ -126,16 +122,14 @@ public class PipelineTask implements KubernetesResource
      * @param resources
      * @param runAfter
      * @param workspaces
-     * @param conditions
      * @param matrix
      * @param params
      * @param taskSpec
      * @param when
      * @param timeout
      */
-    public PipelineTask(List<PipelineTaskCondition> conditions, List<Param> matrix, String name, List<Param> params, PipelineTaskResources resources, Integer retries, List<String> runAfter, TaskRef taskRef, EmbeddedTask taskSpec, Duration timeout, List<WhenExpression> when, List<WorkspacePipelineTaskBinding> workspaces) {
+    public PipelineTask(List<Param> matrix, String name, List<Param> params, PipelineTaskResources resources, Integer retries, List<String> runAfter, TaskRef taskRef, EmbeddedTask taskSpec, Duration timeout, List<WhenExpression> when, List<WorkspacePipelineTaskBinding> workspaces) {
         super();
-        this.conditions = conditions;
         this.matrix = matrix;
         this.name = name;
         this.params = params;
@@ -147,16 +141,6 @@ public class PipelineTask implements KubernetesResource
         this.timeout = timeout;
         this.when = when;
         this.workspaces = workspaces;
-    }
-
-    @JsonProperty("conditions")
-    public List<PipelineTaskCondition> getConditions() {
-        return conditions;
-    }
-
-    @JsonProperty("conditions")
-    public void setConditions(List<PipelineTaskCondition> conditions) {
-        this.conditions = conditions;
     }
 
     @JsonProperty("matrix")

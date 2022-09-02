@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template;
@@ -40,6 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "computeResources",
     "pipelineTaskName",
     "sidecarOverrides",
     "stepOverrides",
@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
@@ -71,6 +71,10 @@ import lombok.experimental.Accessors;
 public class PipelineTaskRunSpec implements KubernetesResource
 {
 
+    @JsonProperty("computeResources")
+    private io.fabric8.kubernetes.api.model.ResourceRequirements computeResources;
+    @JsonProperty("metadata")
+    private PipelineTaskMetadata metadata;
     @JsonProperty("pipelineTaskName")
     private String pipelineTaskName;
     @JsonProperty("sidecarOverrides")
@@ -95,19 +99,43 @@ public class PipelineTaskRunSpec implements KubernetesResource
 
     /**
      * 
+     * @param metadata
      * @param taskPodTemplate
+     * @param computeResources
      * @param taskServiceAccountName
      * @param sidecarOverrides
      * @param pipelineTaskName
      * @param stepOverrides
      */
-    public PipelineTaskRunSpec(String pipelineTaskName, List<TaskRunSidecarOverride> sidecarOverrides, List<TaskRunStepOverride> stepOverrides, Template taskPodTemplate, String taskServiceAccountName) {
+    public PipelineTaskRunSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, PipelineTaskMetadata metadata, String pipelineTaskName, List<TaskRunSidecarOverride> sidecarOverrides, List<TaskRunStepOverride> stepOverrides, Template taskPodTemplate, String taskServiceAccountName) {
         super();
+        this.computeResources = computeResources;
+        this.metadata = metadata;
         this.pipelineTaskName = pipelineTaskName;
         this.sidecarOverrides = sidecarOverrides;
         this.stepOverrides = stepOverrides;
         this.taskPodTemplate = taskPodTemplate;
         this.taskServiceAccountName = taskServiceAccountName;
+    }
+
+    @JsonProperty("computeResources")
+    public io.fabric8.kubernetes.api.model.ResourceRequirements getComputeResources() {
+        return computeResources;
+    }
+
+    @JsonProperty("computeResources")
+    public void setComputeResources(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources) {
+        this.computeResources = computeResources;
+    }
+
+    @JsonProperty("metadata")
+    public PipelineTaskMetadata getMetadata() {
+        return metadata;
+    }
+
+    @JsonProperty("metadata")
+    public void setMetadata(PipelineTaskMetadata metadata) {
+        this.metadata = metadata;
     }
 
     @JsonProperty("pipelineTaskName")
