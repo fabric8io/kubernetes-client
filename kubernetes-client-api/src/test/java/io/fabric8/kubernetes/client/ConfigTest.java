@@ -57,6 +57,11 @@ public class ConfigTest {
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
 
+  private static final String TEST_KUBECONFIG_EXEC_FILE_NULL_ARGS = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-null-args"));
+  private static final String TEST_KUBECONFIG_EXEC_FILE_WIN_NULL_ARGS = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-null-args"));
+
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
 
@@ -444,6 +449,24 @@ public class ConfigTest {
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
     assertEquals("HELLO WORLD", config.getOauthToken());
+  }
+
+  @Test
+  void should_accept_client_authentication_commands_with_null_args() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_WIN_NULL_ARGS);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_NULL_ARGS);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertEquals("HELLO", config.getOauthToken());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
   }
 
   @Test
