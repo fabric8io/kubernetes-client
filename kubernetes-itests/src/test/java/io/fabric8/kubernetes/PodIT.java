@@ -18,20 +18,15 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetBuilder;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
@@ -57,7 +52,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -104,65 +98,6 @@ class PodIT {
   @Test
   void delete() {
     assertTrue(client.pods().withName("pod-delete").delete().size() == 1);
-  }
-
-  @Test
-  void evict() {
-    Pod pod1 = client.pods().withName("pod-standard").get();
-    String pdbScope = pod1.getMetadata().getLabels().get("pdb-scope");
-    assertNotNull("pdb-scope label is null. is pod1 misconfigured?", pdbScope);
-
-    PodDisruptionBudget pdb = new PodDisruptionBudgetBuilder()
-        .withNewMetadata()
-        .withName("test-pdb")
-        .endMetadata()
-        .withSpec(
-            new PodDisruptionBudgetSpecBuilder()
-                .withMinAvailable(new IntOrString(1))
-                .withNewSelector()
-                .addToMatchLabels("pdb-scope", pdbScope)
-                .endSelector()
-                .build())
-        .build();
-
-    Pod pod2 = new PodBuilder()
-        .withNewMetadata()
-        .withName("pod2")
-        .addToLabels("pdb-scope", pdbScope)
-        .endMetadata()
-        .withSpec(pod1.getSpec())
-        .build();
-
-    Pod pod3 = new PodBuilder()
-        .withNewMetadata()
-        .withName("pod3")
-        .addToLabels("pdb-scope", pdbScope)
-        .endMetadata()
-        .withSpec(pod1.getSpec())
-        .build();
-
-    client.pods().resource(pod1).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-
-    client.pods().resource(pod2).createOrReplace();
-    client.pods().resource(pod2).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-
-    client.resource(pdb).createOrReplace();
-
-    // the server needs to process the pdb before the eviction can proceed, so we'll need to wait here
-    await().atMost(5, TimeUnit.MINUTES)
-        .until(() -> client.pods().withName(pod2.getMetadata().getName()).evict());
-
-    // cant evict because only one left
-    assertFalse(client.pods().resource(pod1).evict());
-    // ensure it really is still up
-    assertTrue(Readiness.getInstance().isReady(client.pods().resource(pod1).fromServer().get()));
-
-    // create another pod to satisfy PDB
-    client.pods().resource(pod3).createOrReplace();
-    client.pods().resource(pod3).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-
-    // can now evict
-    assertTrue(client.pods().resource(pod3).evict());
   }
 
   @Test

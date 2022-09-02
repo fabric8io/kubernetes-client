@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LoadKubernetesManifests("/podsecuritypolicy-it.yml")
+@RequireK8sSupport(PodSecurityPolicy.class)
 class PodSecurityPolicyIT {
 
   KubernetesClient client;
