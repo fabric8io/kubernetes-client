@@ -101,10 +101,8 @@ The generated code depends on a few dependencies to succesfully compile:
   <artifactId>kubernetes-client</artifactId>
 </dependency>
 <dependency>
-  <groupId>javax.validation</groupId>
-  <artifactId>validation-api</artifactId>
-  <version>2.0.1.Final</version>
-  <scope>provided</scope>
+  <groupId>io.fabric8</groupId>
+  <artifactId>generator-annotations</artifactId>
 </dependency>
 ```
 

@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       Config config,
       String description,
       final boolean isNullable, JsonNode defaultValue) {
-    super(config, description, isNullable, defaultValue);
+    super(config, description, isNullable, defaultValue, null);
     this.required = new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
     this.fields = new HashMap<>();
     this.preserveUnknownFields = preserveUnknownFields;
@@ -197,7 +196,25 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                 new StringLiteralExpr(originalFieldName)));
 
         if (isRequired) {
-          objField.addAnnotation("javax.validation.constraints.NotNull");
+          objField.addAnnotation("io.fabric8.generator.annotation.Required");
+        }
+        if (prop.getMaximum() != null) {
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("io.fabric8.generator.annotation.Max"),
+                  new DoubleLiteralExpr(prop.getMaximum())));
+        }
+        if (prop.getMinimum() != null) {
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("io.fabric8.generator.annotation.Min"),
+                  new DoubleLiteralExpr(prop.getMinimum())));
+        }
+        if (prop.getPattern() != null) {
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("io.fabric8.generator.annotation.Pattern"),
+                  new StringLiteralExpr(StringEscapeUtils.escapeJava(prop.getPattern()))));
         }
 
         objField.createGetter();
@@ -229,6 +246,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
               new SingleMemberAnnotationExpr(
                   new Name("com.fasterxml.jackson.annotation.JsonSetter"),
                   new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SET")));
+          objField.addAnnotation("io.fabric8.generator.annotation.Nullable");
         }
 
         if (prop.getDefaultValue() != null) {

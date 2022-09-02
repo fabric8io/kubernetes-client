@@ -53,7 +53,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
       boolean storage,
       boolean served,
       Config config) {
-    super(config, null, false, null);
+    super(config, null, false, null, null);
 
     this.pkg = (pkg == null) ? "" : pkg.trim();
     this.type = (this.pkg.isEmpty()) ? type : pkg + "." + type;

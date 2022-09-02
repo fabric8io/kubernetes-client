@@ -28,7 +28,7 @@ public class JArray extends AbstractJSONSchema2Pojo {
 
   public JArray(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable,
       JsonNode defaultValue) {
-    super(config, description, isNullable, defaultValue);
+    super(config, description, isNullable, defaultValue, null);
     this.type = new ClassOrInterfaceType()
         .setName(JAVA_UTIL_LIST)
         .setTypeArguments(new ClassOrInterfaceType().setName(nested.getType()))

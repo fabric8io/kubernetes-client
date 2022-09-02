@@ -16,16 +16,12 @@
 package io.fabric8.java.generator.nodes;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ReturnStmt;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
-import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_KEYWORDS;
@@ -48,6 +44,22 @@ public abstract class AbstractJSONSchema2Pojo {
   protected final boolean isNullable;
   protected final JsonNode defaultValue;
 
+  protected Double maximum;
+  protected Double minimum;
+  protected String pattern;
+
+  public Double getMaximum() {
+    return maximum;
+  }
+
+  public Double getMinimum() {
+    return minimum;
+  }
+
+  public String getPattern() {
+    return pattern;
+  }
+
   public abstract String getType();
 
   public abstract GeneratorResult generateJava();
@@ -69,11 +81,17 @@ public abstract class AbstractJSONSchema2Pojo {
     return getType();
   }
 
-  protected AbstractJSONSchema2Pojo(Config config, String description, final boolean isNullable, JsonNode defaultValue) {
+  protected AbstractJSONSchema2Pojo(Config config, String description, final boolean isNullable, JsonNode defaultValue,
+      final ValidationProperties validationProperties) {
     this.config = config;
     this.description = description;
     this.isNullable = isNullable;
     this.defaultValue = defaultValue;
+    if (validationProperties != null) {
+      this.maximum = validationProperties.getMaximum();
+      this.minimum = validationProperties.getMinimum();
+      this.pattern = validationProperties.getPattern();
+    }
   }
 
   /** Takes a random string and manipulate it to be a valid Java identifier */
@@ -185,7 +203,17 @@ public abstract class AbstractJSONSchema2Pojo {
     final boolean isNullable = Boolean.TRUE.equals(prop.getNullable());
     switch (nt.getType()) {
       case PRIMITIVE:
-        return new JPrimitive(nt.getName(), config, prop.getDescription(), isNullable, prop.getDefault());
+        return new JPrimitive(
+            nt.getName(),
+            config,
+            prop.getDescription(),
+            isNullable,
+            prop.getDefault(),
+            ValidationProperties.Builder.getInstance()
+                .withMaximum(prop.getMaximum())
+                .withMinimum(prop.getMinimum())
+                .withPattern(prop.getPattern())
+                .build());
       case ARRAY:
         return new JArray(
             fromJsonSchema(
@@ -227,7 +255,13 @@ public abstract class AbstractJSONSchema2Pojo {
             isNullable,
             prop.getDefault());
       case ENUM:
-        return new JEnum(key, prop.getEnum(), config, prop.getDescription(), isNullable, prop.getDefault());
+        return new JEnum(
+            key,
+            prop.getEnum(),
+            config,
+            prop.getDescription(),
+            isNullable,
+            prop.getDefault());
       default:
         throw new JavaGeneratorException("Unreachable " + nt.getType());
     }
