@@ -490,7 +490,12 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>tekton-model-triggers</artifactId>
+        <artifactId>tekton-model-triggers-v1alpha1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>tekton-model-triggers-v1beta1</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

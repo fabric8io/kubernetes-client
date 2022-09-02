@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "name",
+    "reason",
     "whenExpressions"
 })
 @ToString
@@ -69,6 +70,8 @@ public class SkippedTask implements KubernetesResource
 
     @JsonProperty("name")
     private String name;
+    @JsonProperty("reason")
+    private String reason;
     @JsonProperty("whenExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WhenExpression> whenExpressions = new ArrayList<WhenExpression>();
@@ -84,12 +87,14 @@ public class SkippedTask implements KubernetesResource
 
     /**
      * 
+     * @param reason
      * @param name
      * @param whenExpressions
      */
-    public SkippedTask(String name, List<WhenExpression> whenExpressions) {
+    public SkippedTask(String name, String reason, List<WhenExpression> whenExpressions) {
         super();
         this.name = name;
+        this.reason = reason;
         this.whenExpressions = whenExpressions;
     }
 
@@ -101,6 +106,16 @@ public class SkippedTask implements KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
+    }
+
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @JsonProperty("whenExpressions")

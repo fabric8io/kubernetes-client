@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "description",
     "name",
+    "type",
     "value"
 })
 @ToString
@@ -70,8 +71,10 @@ public class PipelineResult implements KubernetesResource
     private String description;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("type")
+    private String type;
     @JsonProperty("value")
-    private String value;
+    private ArrayOrString value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -86,12 +89,14 @@ public class PipelineResult implements KubernetesResource
      * 
      * @param name
      * @param description
+     * @param type
      * @param value
      */
-    public PipelineResult(String description, String name, String value) {
+    public PipelineResult(String description, String name, String type, ArrayOrString value) {
         super();
         this.description = description;
         this.name = name;
+        this.type = type;
         this.value = value;
     }
 
@@ -115,13 +120,23 @@ public class PipelineResult implements KubernetesResource
         this.name = name;
     }
 
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @JsonProperty("value")
-    public String getValue() {
+    public ArrayOrString getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(String value) {
+    public void setValue(ArrayOrString value) {
         this.value = value;
     }
 
