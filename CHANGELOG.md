@@ -8,6 +8,7 @@
 * Fix #4348: Introduce specific annotations for the generators
 
 #### Dependency Upgrade
+* Fix #4383: bump snakeyaml from 1.30 to 1.31
 
 #### New Features
 
