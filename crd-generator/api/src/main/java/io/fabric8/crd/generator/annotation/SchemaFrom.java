@@ -17,7 +17,10 @@ package io.fabric8.crd.generator.annotation;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD})
+/*
+ * Used to tweak the behavior of the crd-generator
+ */
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SchemaFrom {
   Class<?> type() default void.class;

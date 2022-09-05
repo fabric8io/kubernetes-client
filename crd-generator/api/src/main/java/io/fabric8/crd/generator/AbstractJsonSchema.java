@@ -17,7 +17,6 @@ package io.fabric8.crd.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -60,6 +59,8 @@ public abstract class AbstractJsonSchema<T, B> {
   protected static final TypeDef DATE = TypeDef.forName(Date.class.getName());
   protected static final TypeRef DATE_REF = DATE.toReference();
 
+  private static final String VALUE = "value";
+
   private static final String INT_OR_STRING_MARKER = "int_or_string";
   private static final String STRING_MARKER = "string";
   private static final String INTEGER_MARKER = "integer";
@@ -78,6 +79,11 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
   public static final String ANNOTATION_JSON_ANY_GETTER = "com.fasterxml.jackson.annotation.JsonAnyGetter";
   public static final String ANNOTATION_JSON_ANY_SETTER = "com.fasterxml.jackson.annotation.JsonAnySetter";
+  public static final String ANNOTATION_MIN = "io.fabric8.generator.annotation.Min";
+  public static final String ANNOTATION_MAX = "io.fabric8.generator.annotation.Max";
+  public static final String ANNOTATION_PATTERN = "io.fabric8.generator.annotation.Pattern";
+  public static final String ANNOTATION_NULLABLE = "io.fabric8.generator.annotation.Nullable";
+  public static final String ANNOTATION_REQUIRED = "io.fabric8.generator.annotation.Required";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
   public static final String ANNOTATION_SCHEMA_FROM = "io.fabric8.crd.generator.annotation.SchemaFrom";
   public static final String ANNOTATION_SCHEMA_SWAP = "io.fabric8.crd.generator.annotation.SchemaSwap";
@@ -108,6 +114,51 @@ public abstract class AbstractJsonSchema<T, B> {
       type = def.isEnum() ? STRING_MARKER : "object";
     }
     return type;
+  }
+
+  protected static class SchemaPropsOptions {
+    final Optional<Double> min;
+    final Optional<Double> max;
+    final Optional<String> pattern;
+    final boolean nullable;
+    final boolean required;
+
+    SchemaPropsOptions() {
+      min = Optional.empty();
+      max = Optional.empty();
+      pattern = Optional.empty();
+      nullable = false;
+      required = false;
+    }
+
+    public SchemaPropsOptions(Optional<Double> min, Optional<Double> max, Optional<String> pattern,
+        boolean nullable, boolean required) {
+      this.min = min;
+      this.max = max;
+      this.pattern = pattern;
+      this.nullable = nullable;
+      this.required = required;
+    }
+
+    public Optional<Double> getMin() {
+      return min;
+    }
+
+    public Optional<Double> getMax() {
+      return max;
+    }
+
+    public Optional<String> getPattern() {
+      return pattern;
+    }
+
+    public boolean isNullable() {
+      return nullable;
+    }
+
+    public boolean getRequired() {
+      return nullable;
+    }
   }
 
   /**
@@ -264,7 +315,15 @@ public abstract class AbstractJsonSchema<T, B> {
       } else {
         possiblyUpdatedSchema = addDescription(schema, description);
       }
-      addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema);
+
+      SchemaPropsOptions options = new SchemaPropsOptions(
+          facade.min,
+          facade.max,
+          facade.pattern,
+          facade.nullable,
+          facade.required);
+
+      addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema, options);
     }
 
     validateRemainingSchemaSwaps("unmatched field", currentSchemaSwaps.stream().collect(Collectors.toList()));
@@ -286,6 +345,10 @@ public abstract class AbstractJsonSchema<T, B> {
     private final String propertyName;
     private final String type;
     private String renamedTo;
+    private Optional<Double> min;
+    private Optional<Double> max;
+    private Optional<String> pattern;
+    private boolean nullable;
     private boolean required;
     private boolean ignored;
     private boolean preserveUnknownFields;
@@ -297,6 +360,10 @@ public abstract class AbstractJsonSchema<T, B> {
       this.name = name;
       this.propertyName = propertyName;
       type = isMethod ? "accessor" : "field";
+
+      min = Optional.empty();
+      max = Optional.empty();
+      pattern = Optional.empty();
     }
 
     static PropertyOrAccessor fromProperty(Property property) {
@@ -310,17 +377,34 @@ public abstract class AbstractJsonSchema<T, B> {
     public void process() {
       annotations.forEach(a -> {
         switch (a.getClassRef().getFullyQualifiedName()) {
+          case ANNOTATION_NULLABLE:
+            nullable = true;
+            break;
+          case ANNOTATION_MAX:
+            max = Optional.of((Double) a.getParameters().get(VALUE));
+            break;
+          case ANNOTATION_MIN:
+            min = Optional.of((Double) a.getParameters().get(VALUE));
+            break;
+          case ANNOTATION_PATTERN:
+            pattern = Optional.of((String) a.getParameters().get(VALUE));
+            break;
           case ANNOTATION_NOT_NULL:
+            LOGGER.warn("Annotation: {} on property: {} is deprecated. Please use: {} instead", ANNOTATION_NOT_NULL, name,
+                ANNOTATION_REQUIRED);
+            required = true;
+            break;
+          case ANNOTATION_REQUIRED:
             required = true;
             break;
           case ANNOTATION_JSON_PROPERTY:
-            final String nameFromAnnotation = (String) a.getParameters().get("value");
+            final String nameFromAnnotation = (String) a.getParameters().get(VALUE);
             if (!Strings.isNullOrEmpty(nameFromAnnotation) && !propertyName.equals(nameFromAnnotation)) {
               renamedTo = nameFromAnnotation;
             }
             break;
           case ANNOTATION_JSON_PROPERTY_DESCRIPTION:
-            final String descriptionFromAnnotation = (String) a.getParameters().get("value");
+            final String descriptionFromAnnotation = (String) a.getParameters().get(VALUE);
             if (!Strings.isNullOrEmpty(descriptionFromAnnotation)) {
               description = descriptionFromAnnotation;
             }
@@ -341,6 +425,22 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public String getRenamedTo() {
       return renamedTo;
+    }
+
+    public boolean isNullable() {
+      return nullable;
+    }
+
+    public Optional<Double> getMax() {
+      return max;
+    }
+
+    public Optional<Double> getMin() {
+      return min;
+    }
+
+    public Optional<String> getPattern() {
+      return pattern;
     }
 
     public boolean isRequired() {
@@ -387,6 +487,10 @@ public abstract class AbstractJsonSchema<T, B> {
     private final Set<InternalSchemaSwap> matchedSchemaSwaps;
     private String renamedTo;
     private String description;
+    private Optional<Double> min;
+    private Optional<Double> max;
+    private Optional<String> pattern;
+    private boolean nullable;
     private boolean required;
     private boolean ignored;
     private boolean preserveUnknownFields;
@@ -414,6 +518,9 @@ public abstract class AbstractJsonSchema<T, B> {
       if (method != null) {
         propertyOrAccessors.add(PropertyOrAccessor.fromMethod(method, name));
       }
+      min = Optional.empty();
+      max = Optional.empty();
+      pattern = Optional.empty();
     }
 
     public Property process() {
@@ -448,6 +555,22 @@ public abstract class AbstractJsonSchema<T, B> {
           } else {
             LOGGER.debug("Description for property {} has already been contributed by: {}", name, descriptionContributedBy);
           }
+        }
+
+        if (p.getMin().isPresent()) {
+          min = p.getMin();
+        }
+
+        if (p.getMax().isPresent()) {
+          max = p.getMax();
+        }
+
+        if (p.getPattern().isPresent()) {
+          pattern = p.getPattern();
+        }
+
+        if (p.isNullable()) {
+          nullable = true;
         }
 
         if (p.isRequired()) {
@@ -502,7 +625,7 @@ public abstract class AbstractJsonSchema<T, B> {
           .findAny()
           // if we found an annotated accessor, override the property's name if needed
           .map(a -> {
-            final String fromAnnotation = (String) a.getParameters().get("value");
+            final String fromAnnotation = (String) a.getParameters().get(VALUE);
             if (!Strings.isNullOrEmpty(fromAnnotation) && !name.equals(fromAnnotation)) {
               return fromAnnotation;
             } else {
@@ -527,7 +650,7 @@ public abstract class AbstractJsonSchema<T, B> {
    * @param builder the builder representing the schema being built
    * @param schema the built schema for the property being added
    */
-  public abstract void addProperty(Property property, B builder, T schema);
+  public abstract void addProperty(Property property, B builder, T schema, SchemaPropsOptions options);
 
   /**
    * Finishes up the process by actually building the final JSON schema based on the provided

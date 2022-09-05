@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator.annotation;
+package io.fabric8.generator.annotation;
 
 import java.lang.annotation.*;
 
 /*
- * Used to tweak the behavior of the crd-generator
+ * Java representation of the `minimum` field of JSONSchemaProps
+ * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#jsonschemaprops-v1-apiextensions-k8s-io
  */
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE_USE, ElementType.TYPE })
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SchemaSwap {
-  Class<?> originalType();
-
-  String fieldName();
-
-  Class<?> targetType() default void.class;
+public @interface Min {
+  double value();
 }
