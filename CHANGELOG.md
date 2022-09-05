@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4348: Introduce specific annotations for the generators
 
 #### Dependency Upgrade
 
