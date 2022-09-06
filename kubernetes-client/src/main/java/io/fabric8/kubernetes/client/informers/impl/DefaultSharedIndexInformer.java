@@ -73,8 +73,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private Stream<T> initialState;
 
-  private InformerExceptionHandler exceptionHandler;
-
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
       Executor informerExecutor) {
     if (resyncPeriod < 0) {
@@ -90,11 +88,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.processor = new SharedProcessor<>(informerExecutor, description);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
-    this.reflector = new Reflector<>(listerWatcher, processorStore, this::getExceptionHandler);
-  }
-
-  public InformerExceptionHandler getExceptionHandler() {
-    return exceptionHandler;
+    this.reflector = new Reflector<>(listerWatcher, processorStore);
   }
 
   /**
@@ -298,6 +292,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public void setExceptionHandler(InformerExceptionHandler handler) {
-    this.exceptionHandler = handler;
+    this.reflector.setExceptionHandler(handler);
+    this.processor.setExceptionHandler(handler);
   }
 }

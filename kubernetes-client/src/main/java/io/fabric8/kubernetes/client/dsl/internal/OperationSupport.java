@@ -60,7 +60,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class OperationSupport {
 
@@ -83,7 +82,6 @@ public class OperationSupport {
   protected String apiGroupName;
   protected String apiGroupVersion;
   protected boolean dryRun;
-  private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   private final int requestRetryBackoffLimit;
 
   public OperationSupport(Client client) {
@@ -107,16 +105,11 @@ public class OperationSupport {
       this.apiGroupVersion = "v1";
     }
 
-    final int requestRetryBackoffInterval;
     if (ctx.getConfig() != null) {
-      requestRetryBackoffInterval = ctx.getConfig().getRequestRetryBackoffInterval();
       this.requestRetryBackoffLimit = ctx.getConfig().getRequestRetryBackoffLimit();
     } else {
-      requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
       this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
     }
-    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval,
-        MAX_RETRY_INTERVAL_EXPONENT);
   }
 
   public String getAPIGroupName() {
@@ -574,7 +567,7 @@ public class OperationSupport {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
     CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
-    retryWithExponentialBackoff(futureResponse, new AtomicInteger(), Utils.getNonNullOrElse(client, httpClient), request);
+    retryWithExponentialBackoff(futureResponse, new ExponentialBackoffIntervalCalculator(requestRetryBackoffLimit, MAX_RETRY_INTERVAL_EXPONENT), Utils.getNonNullOrElse(client, httpClient), request);
 
     return futureResponse.thenApply(response -> {
       try {
@@ -593,13 +586,13 @@ public class OperationSupport {
   }
 
   protected void retryWithExponentialBackoff(CompletableFuture<HttpResponse<byte[]>> result,
-      AtomicInteger numRetries,
+      ExponentialBackoffIntervalCalculator retryIntervalCalculator,
       HttpClient client, HttpRequest request) {
     client.sendAsync(request, byte[].class)
         .whenComplete((response, throwable) -> {
-          int retries = numRetries.getAndIncrement();
+          int retries = retryIntervalCalculator.getCurrentReconnectAttempt();
           if (retries < requestRetryBackoffLimit) {
-            long retryInterval = retryIntervalCalculator.getInterval(retries);
+            long retryInterval = retryIntervalCalculator.nextReconnectInterval();
             boolean retry = false;
             if (response != null && response.code() >= 500) {
               LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
@@ -612,7 +605,7 @@ public class OperationSupport {
             }
             if (retry) {
               Utils.schedule(context.getExecutor(),
-                  () -> retryWithExponentialBackoff(result, numRetries, client, request), retryInterval, TimeUnit.MILLISECONDS);
+                  () -> retryWithExponentialBackoff(result, retryIntervalCalculator, client, request), retryInterval, TimeUnit.MILLISECONDS);
               return;
             }
           }

@@ -16,17 +16,44 @@
 
 package io.fabric8.kubernetes.client.informers;
 
-import io.fabric8.kubernetes.client.WatcherException;
-
 public interface InformerExceptionHandler {
 
+  public enum EventType {
+    /**
+     * an exception that occurs trying to perform the list or watch operation. The default handling is to log the exception.
+     */
+    LIST_OR_WATCH,
+    /**
+     * an exception that occurs invoking a {@link ResourceEventHandler} method. The default handling is to log the exception.
+     */
+    HANDLER
+  }
+
   /**
-   * Provides a callback when the informer could terminated with a non-recoverable exception.
+   * Determine if the informer should stop given from a non-http gone WatchException cause.
+   * <p>
+   * The default behavior is to terminate as we cannot guarantee if the state is still correct
    *
-   * @param t the {@link Throwable}, which may occur as either the cause of a non-http gone {@link WatcherException} or an
-   *        exception from calling list or watch
-   * @return true if the informer should retry, false if it should stop
+   * @param t the non-http gone WatchException cause
+   * @return true if the informer should stop, false if it should attempt to keep running
    */
-  boolean retry(Throwable t);
+  default boolean shouldStop(Throwable t) {
+    return true;
+  }
+
+  /**
+   * Override the default handling of exceptions seen while the informer is running.
+   * <p>
+   * If you want to stop the informer as a side-effect of this call, then construct your implementation
+   * of this class with a reference to the informer then call the stop method.
+   */
+  void onException(EventType eventType, Throwable t);
+
+  /**
+   * Called after each time the list, sync and watch operations have been successful.
+   */
+  default void onWatching() {
+
+  }
 
 }

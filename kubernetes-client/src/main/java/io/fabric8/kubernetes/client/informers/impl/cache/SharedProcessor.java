@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.informers.impl.cache;
 
+import io.fabric8.kubernetes.client.informers.InformerExceptionHandler;
+import io.fabric8.kubernetes.client.informers.InformerExceptionHandler.EventType;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
@@ -50,6 +52,8 @@ public class SharedProcessor<T> {
   private final List<ProcessorListener<T>> syncingListeners = new ArrayList<>();
   private final SerialExecutor executor;
   private final String informerDescription;
+
+  private volatile InformerExceptionHandler handler;
 
   public SharedProcessor() {
     this(Runnable::run, "informer");
@@ -109,8 +113,13 @@ public class SharedProcessor<T> {
           try {
             operation.accept(listener);
           } catch (Exception ex) {
-            log.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
-                ex);
+            InformerExceptionHandler theHandler = handler;
+            if (theHandler != null) {
+              theHandler.onException(EventType.HANDLER, ex);
+            } else {
+              log.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
+                  ex);
+            }
           }
         }
       });
@@ -170,4 +179,9 @@ public class SharedProcessor<T> {
       lock.writeLock().unlock();
     }
   }
+
+  public void setExceptionHandler(InformerExceptionHandler handler) {
+    this.handler = handler;
+  }
+
 }

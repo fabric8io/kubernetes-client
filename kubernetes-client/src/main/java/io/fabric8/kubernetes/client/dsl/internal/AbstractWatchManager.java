@@ -44,7 +44,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -60,7 +59,6 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   final AtomicBoolean forceClosed;
   private final int reconnectLimit;
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
-  final AtomicInteger currentReconnectAttempt;
   private Future<?> reconnectAttempt;
 
   protected final HttpClient client;
@@ -77,7 +75,6 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
-    this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
     this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
     // opt into bookmarks by default
@@ -164,18 +161,15 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
 
   final boolean cannotReconnect() {
-    return !watcher.reconnecting() && currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
+    return !watcher.reconnecting() && retryIntervalCalculator.getCurrentReconnectAttempt() >= reconnectLimit && reconnectLimit >= 0;
   }
 
   final long nextReconnectInterval() {
-    int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
-    long ret = retryIntervalCalculator.getInterval(exponentOfTwo);
-    logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
-    return ret;
+    return retryIntervalCalculator.nextReconnectInterval();
   }
 
   void resetReconnectAttempts() {
-    currentReconnectAttempt.set(0);
+    retryIntervalCalculator.resetReconnectAttempts();
   }
 
   boolean isForceClosed() {

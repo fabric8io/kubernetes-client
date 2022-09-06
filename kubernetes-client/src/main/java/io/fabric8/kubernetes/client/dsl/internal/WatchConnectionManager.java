@@ -45,6 +45,8 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>>
     extends AbstractWatchManager<T> {
 
+  public static final int BACKOFF_MAX_EXPONENT = 5;
+
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
 
   protected WatcherWebSocketListener<T> listener;
@@ -78,7 +80,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
       long websocketTimeout) throws MalformedURLException {
     // Default max 32x slowdown from base interval
-    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5);
+    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, BACKOFF_MAX_EXPONENT);
   }
 
   @Override
