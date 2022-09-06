@@ -38,7 +38,7 @@ public class ExponentialBackoffIntervalCalculator {
     if (exponentOfTwo > maxRetryIntervalExponent) {
       exponentOfTwo = maxRetryIntervalExponent;
     }
-    return (long)initialInterval * (1 << exponentOfTwo);
+    return (long) initialInterval * (1 << exponentOfTwo);
   }
 
   public void resetReconnectAttempts() {

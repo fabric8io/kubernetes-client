@@ -80,7 +80,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
       long websocketTimeout) throws MalformedURLException {
     // Default max 32x slowdown from base interval
-    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, BACKOFF_MAX_EXPONENT);
+    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout,
+        BACKOFF_MAX_EXPONENT);
   }
 
   @Override

@@ -161,7 +161,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
 
   final boolean cannotReconnect() {
-    return !watcher.reconnecting() && retryIntervalCalculator.getCurrentReconnectAttempt() >= reconnectLimit && reconnectLimit >= 0;
+    return !watcher.reconnecting() && retryIntervalCalculator.getCurrentReconnectAttempt() >= reconnectLimit
+        && reconnectLimit >= 0;
   }
 
   final long nextReconnectInterval() {

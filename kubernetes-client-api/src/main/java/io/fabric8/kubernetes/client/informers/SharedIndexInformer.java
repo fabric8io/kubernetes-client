@@ -166,6 +166,9 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    */
   CompletableFuture<Void> start();
 
-  default void setExceptionHandler(InformerExceptionHandler handler) {
-  }
+  /**
+   * Return a future that will allow notification of informer stopping.
+   *
+   */
+  CompletableFuture<Void> stopped();
 }

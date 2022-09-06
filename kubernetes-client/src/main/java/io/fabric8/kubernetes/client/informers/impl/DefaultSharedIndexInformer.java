@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.informers.impl;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.informers.InformerExceptionHandler;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
@@ -291,8 +290,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
-  public void setExceptionHandler(InformerExceptionHandler handler) {
-    this.reflector.setExceptionHandler(handler);
-    this.processor.setExceptionHandler(handler);
+  public CompletableFuture<Void> stopped() {
+    return this.reflector.getStopFuture();
   }
+
 }

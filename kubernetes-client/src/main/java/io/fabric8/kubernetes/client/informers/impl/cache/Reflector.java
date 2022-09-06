@@ -23,8 +23,6 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
-import io.fabric8.kubernetes.client.informers.InformerExceptionHandler;
-import io.fabric8.kubernetes.client.informers.InformerExceptionHandler.EventType;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
@@ -51,14 +49,15 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private volatile boolean watching;
   private volatile CompletableFuture<Watch> watchFuture;
   private volatile CompletableFuture<?> reconnectFuture;
-  private volatile InformerExceptionHandler handler;
+  private volatile CompletableFuture<Void> stopFuture = new CompletableFuture<Void>();
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher();
-    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(listerWatcher.getWatchReconnectInterval(), WatchConnectionManager.BACKOFF_MAX_EXPONENT);
+    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(listerWatcher.getWatchReconnectInterval(),
+        WatchConnectionManager.BACKOFF_MAX_EXPONENT);
   }
 
   public CompletableFuture<Void> start() {
@@ -68,6 +67,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     running = false;
+    stopFuture.complete(null);
     Future<?> future = reconnectFuture;
     if (future != null) {
       future.cancel(true);
@@ -118,10 +118,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
                 log.debug("Watch started for {}", Reflector.this);
               }
               watching = true;
-              InformerExceptionHandler theHandler = handler;
-              if (theHandler != null) {
-                theHandler.onWatching();
-              }
             } else {
               stopWatch(w);
             }
@@ -223,23 +219,16 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       // this close was triggered by an exception,
       // not the user, it is expected that the watch retry will handle this
       watchStopped();
-      InformerExceptionHandler theHandler = handler;
-      boolean reconnect = false;
       if (exception.isHttpGone()) {
         if (log.isDebugEnabled()) {
           log.debug("Watch restarting due to http gone for {}", Reflector.this);
         }
-        reconnect = true;
-      } else if (theHandler != null) {
-        reconnect = !theHandler.shouldStop(exception.getCause());
-      } else {
-        log.warn("Watch closing with exception for {}", Reflector.this, exception);
-      }
-      if (reconnect) {
         // start a whole new list/watch cycle
         reconnect();
       } else {
         running = false; // shouldn't happen, but it means the watch won't restart
+        stopFuture.completeExceptionally(exception.getCause());
+        log.warn("Watch closing with exception for {}", Reflector.this, exception);
       }
     }
 
@@ -253,12 +242,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           retryIntervalCalculator.nextReconnectInterval(), TimeUnit.MILLISECONDS);
       reconnectFuture.whenComplete((v, t) -> {
         if (t != null) {
-          InformerExceptionHandler theHandler = handler;
-          if (theHandler != null) {
-            theHandler.onException(EventType.LIST_OR_WATCH, t);
-          } else {
-            log.warn("listSyncAndWatch failed for {}, will retry", Reflector.this, t);
-          }
+          log.warn("listSyncAndWatch failed for {}, will retry", Reflector.this, t);
           reconnect();
         } else {
           retryIntervalCalculator.resetReconnectAttempts();
@@ -287,7 +271,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     return listerWatcher.getApiEndpointPath();
   }
 
-  public void setExceptionHandler(InformerExceptionHandler handler) {
-    this.handler = handler;
+  public CompletableFuture<Void> getStopFuture() {
+    return stopFuture;
   }
+
 }

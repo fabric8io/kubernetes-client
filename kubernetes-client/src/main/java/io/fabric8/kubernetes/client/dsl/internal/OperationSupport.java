@@ -567,7 +567,9 @@ public class OperationSupport {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
     CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
-    retryWithExponentialBackoff(futureResponse, new ExponentialBackoffIntervalCalculator(requestRetryBackoffLimit, MAX_RETRY_INTERVAL_EXPONENT), Utils.getNonNullOrElse(client, httpClient), request);
+    retryWithExponentialBackoff(futureResponse,
+        new ExponentialBackoffIntervalCalculator(requestRetryBackoffLimit, MAX_RETRY_INTERVAL_EXPONENT),
+        Utils.getNonNullOrElse(client, httpClient), request);
 
     return futureResponse.thenApply(response -> {
       try {
@@ -605,7 +607,8 @@ public class OperationSupport {
             }
             if (retry) {
               Utils.schedule(context.getExecutor(),
-                  () -> retryWithExponentialBackoff(result, retryIntervalCalculator, client, request), retryInterval, TimeUnit.MILLISECONDS);
+                  () -> retryWithExponentialBackoff(result, retryIntervalCalculator, client, request), retryInterval,
+                  TimeUnit.MILLISECONDS);
               return;
             }
           }
