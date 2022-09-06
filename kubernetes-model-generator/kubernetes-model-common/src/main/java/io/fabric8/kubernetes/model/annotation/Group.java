@@ -30,6 +30,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE})
 @Retention(RUNTIME)
 public @interface Group {
-
+  String NAME = Group.class.getSimpleName();
   String value();
 }

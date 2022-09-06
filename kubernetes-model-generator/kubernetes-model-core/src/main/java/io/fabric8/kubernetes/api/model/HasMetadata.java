@@ -84,8 +84,7 @@ public interface HasMetadata extends KubernetesResource {
     }
     if (group != null || version != null) {
       throw new IllegalArgumentException(
-        "You need to specify both @" + Group.class.getSimpleName() + " and @"
-          + Version.class.getSimpleName() + " annotations if you specify either");
+        "You need to specify both @" + Group.NAME + " and @" + Version.NAME + " annotations if you specify either");
     }
     return null;
   }
@@ -158,7 +157,13 @@ public interface HasMetadata extends KubernetesResource {
   }
 
   static String getFullResourceName(Class<?> clazz) {
-    return getFullResourceName(getPlural(clazz), getGroup(clazz));
+    final String plural = getPlural(clazz);
+    final String group = getGroup(clazz);
+    if (plural == null || group == null) {
+      throw new IllegalArgumentException(
+        "Should provide non-null plural and/or group. Is " + clazz.getName() + " properly annotated with @" + Group.NAME + " and/or @" + Version.NAME + "?");
+    }
+    return getFullResourceName(plural, group);
   }
 
   static String getFullResourceName(String plural, String group) {
@@ -168,6 +173,7 @@ public interface HasMetadata extends KubernetesResource {
   }
 
   @JsonIgnore
+  @SuppressWarnings("unused")
   default String getFullResourceName() {
     return getFullResourceName(getClass());
   }
