@@ -111,7 +111,7 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
     <lombok.version>1.18.24</lombok.version>
-    <snakeyaml.version>1.30</snakeyaml.version>
+    <snakeyaml.version>1.31</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.21</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -490,7 +490,12 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>tekton-model-triggers</artifactId>
+        <artifactId>tekton-model-triggers-v1alpha1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>tekton-model-triggers-v1beta1</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

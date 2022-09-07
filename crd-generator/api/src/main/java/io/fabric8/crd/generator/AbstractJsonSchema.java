@@ -159,7 +159,7 @@ public abstract class AbstractJsonSchema<T, B> {
     }
 
     public boolean getRequired() {
-      return nullable;
+      return required;
     }
   }
 

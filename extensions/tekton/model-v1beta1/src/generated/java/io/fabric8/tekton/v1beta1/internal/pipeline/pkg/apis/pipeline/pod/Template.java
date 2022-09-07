@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Toleration;
+import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     "schedulerName",
     "securityContext",
     "tolerations",
+    "topologySpreadConstraints",
     "volumes"
 })
 @ToString
@@ -116,6 +118,9 @@ public class Template implements KubernetesResource
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
+    @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
@@ -137,6 +142,7 @@ public class Template implements KubernetesResource
      * @param hostNetwork
      * @param imagePullSecrets
      * @param priorityClassName
+     * @param topologySpreadConstraints
      * @param volumes
      * @param hostAliases
      * @param securityContext
@@ -147,7 +153,7 @@ public class Template implements KubernetesResource
      * @param schedulerName
      * @param affinity
      */
-    public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<HostAlias> hostAliases, java.lang.Boolean hostNetwork, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, List<Toleration> tolerations, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<HostAlias> hostAliases, java.lang.Boolean hostNetwork, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.affinity = affinity;
         this.automountServiceAccountToken = automountServiceAccountToken;
@@ -163,6 +169,7 @@ public class Template implements KubernetesResource
         this.schedulerName = schedulerName;
         this.securityContext = securityContext;
         this.tolerations = tolerations;
+        this.topologySpreadConstraints = topologySpreadConstraints;
         this.volumes = volumes;
     }
 
@@ -304,6 +311,16 @@ public class Template implements KubernetesResource
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
+    }
+
+    @JsonProperty("topologySpreadConstraints")
+    public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
+        return topologySpreadConstraints;
+    }
+
+    @JsonProperty("topologySpreadConstraints")
+    public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
+        this.topologySpreadConstraints = topologySpreadConstraints;
     }
 
     @JsonProperty("volumes")

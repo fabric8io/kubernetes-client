@@ -9,11 +9,15 @@
 * Fix #4348: Introduce specific annotations for the generators
 
 #### Dependency Upgrade
+* Fix #4243: Update Tekton pipeline model to v0.39.0
+* Fix #4243: Update Tekton triggers model to v0.20.2
+* Fix #4383: bump snakeyaml from 1.30 to 1.31
 
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
 * Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
+* Module `io.fabric8:tekton-model-triggers` which contained Tekton triggers v1alpha1 model has been removed. We have introduced separate modules `io.fabric8:tekton-model-v1alpha1` and `io.fabric8:tekton-model-v1beta1` for Tekton triggers v1alpha1 and v1beta1 apigroups respectively. Users who are using `io.fabric8:tekton-client` dependency directly should be unaffected by this change.
 
 ### 6.1.1 (2022-09-01)
 
