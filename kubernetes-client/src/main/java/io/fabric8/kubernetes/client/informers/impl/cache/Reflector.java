@@ -29,10 +29,9 @@ import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCal
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -76,18 +75,15 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private synchronized void stopWatcher() {
-    if (watchFuture != null) {
-      watchFuture.cancel(true);
-      try {
-        Watch w = watchFuture.getNow(null);
+    Optional.ofNullable(watchFuture).ifPresent(theFuture -> {
+      watchFuture = null;
+      theFuture.cancel(true);
+      theFuture.whenComplete((w, t) -> {
         if (w != null) {
           stopWatch(w);
         }
-      } catch (CompletionException | CancellationException e) {
-        // do nothing
-      }
-      watchFuture = null;
-    }
+      });
+    });
   }
 
   /**
