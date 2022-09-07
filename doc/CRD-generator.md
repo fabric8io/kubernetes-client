@@ -359,6 +359,28 @@ Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in 
             x-kubernetes-preserve-unknown-fields: true
 ```
 
+You can also annotation a field with @PreserveUnknownFields:
+
+```java
+interface ExampleInterface {}
+
+public class ExampleSpec {
+    @PreserveUnknownFields
+    ExampleInterface someValue;
+}
+```
+
+will be generated as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+            type: object
+```
+
 ## Features cheatsheet
 
 | Annotation | Description |

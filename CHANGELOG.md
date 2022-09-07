@@ -18,6 +18,7 @@
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
 
 #### New Features
+* Feat: add annotation @PreserveUnknownFields for generation field
 
 #### _**Note**_: Breaking changes in the API
 * Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
