@@ -49,7 +49,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private volatile boolean watching;
   private volatile CompletableFuture<Watch> watchFuture;
   private volatile CompletableFuture<?> reconnectFuture;
-  private volatile CompletableFuture<Void> stopFuture = new CompletableFuture<Void>();
+  private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {

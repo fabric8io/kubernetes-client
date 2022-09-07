@@ -16,15 +16,23 @@
 package io.fabric8.kubernetes.client;
 
 import java.net.HttpURLConnection;
+import java.util.Optional;
 
 public class WatcherException extends Exception {
+  private final String rawWatchMessage;
 
   public WatcherException(String message, Throwable cause) {
-    super(message, cause);
+    this(message, cause, null);
   }
 
   public WatcherException(String message) {
     super(message);
+    rawWatchMessage = null;
+  }
+
+  public WatcherException(String message, Throwable cause, String rawWatchMessage) {
+    super(message, cause);
+    this.rawWatchMessage = rawWatchMessage;
   }
 
   public KubernetesClientException asClientException() {
@@ -39,4 +47,8 @@ public class WatcherException extends Exception {
       || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE);
   }
 
+  @SuppressWarnings("unused")
+  public Optional<String> getRawWatchMessage() {
+    return Optional.ofNullable(rawWatchMessage);
+  }
 }
