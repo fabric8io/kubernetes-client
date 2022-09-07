@@ -37,14 +37,14 @@ public class WatcherException extends Exception {
 
   public KubernetesClientException asClientException() {
     final Throwable cause = getCause();
-    return cause instanceof KubernetesClientException ?
-      (KubernetesClientException) cause : new KubernetesClientException(getMessage(), cause);
+    return cause instanceof KubernetesClientException ? (KubernetesClientException) cause
+        : new KubernetesClientException(getMessage(), cause);
   }
 
   public boolean isHttpGone() {
     final KubernetesClientException cause = asClientException();
-    return cause.getCode() == HttpURLConnection.HTTP_GONE
-      || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE);
+    return cause != null && (cause.getCode() == HttpURLConnection.HTTP_GONE
+        || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE));
   }
 
   @SuppressWarnings("unused")

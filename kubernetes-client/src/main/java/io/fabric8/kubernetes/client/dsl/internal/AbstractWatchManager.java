@@ -226,7 +226,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
 
   private WatchEvent contextAwareWatchEventDeserializer(String messageSource)
-    throws JsonProcessingException {
+      throws JsonProcessingException {
     try {
       return Serialization.unmarshal(messageSource, WatchEvent.class);
     } catch (Exception ex1) {
@@ -272,18 +272,23 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     try {
       WatchEvent event = readWatchEvent(message);
       Object object = event.getObject();
-      if (object instanceof Status) {
-        Status status = (Status) object;
+      Action action = Action.valueOf(event.getType());
+      if (action == Action.ERROR) {
+        if (object instanceof Status) {
+          Status status = (Status) object;
 
-        onStatus(status);
+          onStatus(status);
+        } else {
+          logger.error("Error received, but object is not a status - will retry");
+          closeRequest();
+        }
       } else if (object instanceof HasMetadata) {
         HasMetadata hasMetadata = (HasMetadata) object;
         updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
-        Action action = Action.valueOf(event.getType());
 
-        if(object instanceof KubernetesResourceList) {
+        if (object instanceof KubernetesResourceList) {
           // Dirty cast - should always be valid though
-          @SuppressWarnings({"rawtypes"})
+          @SuppressWarnings({ "rawtypes" })
           KubernetesResourceList list = (KubernetesResourceList) hasMetadata;
           @SuppressWarnings("unchecked")
           List<HasMetadata> items = list.getItems();
@@ -296,17 +301,18 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
           eventReceived(action, hasMetadata);
         }
       } else {
-        logger.error("Unknown message received: {}", message);
+        final String msg = String.format("Invalid object received: %s", message);
+        close(new WatcherException(msg, null, message));
       }
     } catch (ClassCastException e) {
       final String msg = "Received wrong type of object for watch";
-      close(new WatcherException(msg, e));
+      close(new WatcherException(msg, e, message));
     } catch (JsonProcessingException e) {
       final String msg = "Couldn't deserialize watch event: " + message;
       close(new WatcherException(msg, e, message));
     } catch (Exception e) {
       final String msg = "Unhandled exception encountered in watcher event handler";
-      close(new WatcherException(msg, e));
+      close(new WatcherException(msg, e, message));
     }
   }
 
@@ -317,8 +323,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       return true;
     }
 
-    eventReceived(Action.ERROR, null);
-    logger.error("Error received: {}", status);
+    logger.error("Error received: {}, will retry", status);
+    closeRequest();
     return false;
   }
 

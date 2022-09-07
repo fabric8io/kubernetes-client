@@ -62,7 +62,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public CompletableFuture<Void> start() {
     this.running = true;
-    return listSyncAndWatch();
+    return listSyncAndWatch(false);
   }
 
   public void stop() {
@@ -98,33 +98,50 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    *
    * @return a future that completes when the list and watch are established
    */
-  public CompletableFuture<Void> listSyncAndWatch() {
+  public CompletableFuture<Void> listSyncAndWatch(boolean reconnect) {
     if (!running) {
       return CompletableFuture.completedFuture(null);
     }
     Set<String> nextKeys = new ConcurrentSkipListSet<>();
-    return processList(nextKeys, null).thenAccept(result -> {
+    CompletableFuture<Void> theFuture = processList(nextKeys, null).thenCompose(result -> {
       store.retainAll(nextKeys);
       final String latestResourceVersion = result.getMetadata().getResourceVersion();
       lastSyncResourceVersion = latestResourceVersion;
       log.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
-      CompletableFuture<Watch> started = startWatcher(latestResourceVersion);
-      if (started != null) {
-        // outside of the lock
-        started.whenComplete((w, t) -> {
-          if (w != null) {
-            if (running) {
-              if (log.isDebugEnabled()) {
-                log.debug("Watch started for {}", Reflector.this);
-              }
-              watching = true;
-            } else {
-              stopWatch(w);
-            }
+      return startWatcher(latestResourceVersion);
+    }).thenAccept(w -> {
+      if (w != null) {
+        if (running) {
+          if (log.isDebugEnabled()) {
+            log.debug("Watch started for {}", Reflector.this);
           }
-        });
+          watching = true;
+        } else {
+          stopWatch(w);
+        }
       }
     });
+    if (reconnect) {
+      theFuture.whenComplete((v, t) -> {
+        if (t != null) {
+          log.warn("listSyncAndWatch failed for {}, will retry", Reflector.this, t);
+          reconnect();
+        } else {
+          retryIntervalCalculator.resetReconnectAttempts();
+        }
+      });
+    }
+    return theFuture;
+  }
+
+  private void reconnect() {
+    if (!running) {
+      return;
+    }
+    // this can be run in the scheduler thread because
+    // any further operations will happen on the io thread
+    reconnectFuture = Utils.schedule(Runnable::run, () -> listSyncAndWatch(true),
+        retryIntervalCalculator.nextReconnectInterval(), TimeUnit.MILLISECONDS);
   }
 
   private CompletableFuture<L> processList(Set<String> nextKeys, String continueVal) {
@@ -155,7 +172,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private synchronized CompletableFuture<Watch> startWatcher(final String latestResourceVersion) {
     if (!running) {
-      return null;
+      return CompletableFuture.completedFuture(null);
     }
     log.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
     // there's no need to stop the old watch, that will happen automatically when this call completes
@@ -227,27 +244,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         reconnect();
       } else {
         running = false; // shouldn't happen, but it means the watch won't restart
-        stopFuture.completeExceptionally(exception.getCause());
+        stopFuture.completeExceptionally(exception);
         log.warn("Watch closing with exception for {}", Reflector.this, exception);
       }
-    }
-
-    private void reconnect() {
-      if (!running) {
-        return;
-      }
-      // this can be run in the scheduler thread because
-      // any further operations will happen on the io thread
-      reconnectFuture = Utils.schedule(Runnable::run, Reflector.this::listSyncAndWatch,
-          retryIntervalCalculator.nextReconnectInterval(), TimeUnit.MILLISECONDS);
-      reconnectFuture.whenComplete((v, t) -> {
-        if (t != null) {
-          log.warn("listSyncAndWatch failed for {}, will retry", Reflector.this, t);
-          reconnect();
-        } else {
-          retryIntervalCalculator.resetReconnectAttempts();
-        }
-      });
     }
 
     @Override

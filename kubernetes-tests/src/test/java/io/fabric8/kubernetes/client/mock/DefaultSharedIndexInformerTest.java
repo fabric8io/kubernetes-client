@@ -36,6 +36,7 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -83,7 +84,8 @@ class DefaultSharedIndexInformerTest {
       .withMessage(
           "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
       .build();
-  static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
+  static final WatchEvent outdatedEvent = new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
+      .withStatusObject(outdatedStatus).build();
   static final Long WATCH_EVENT_EMIT_TIME = 1L;
   static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
   static final long RESYNC_PERIOD = 5L;
@@ -843,6 +845,11 @@ class DefaultSharedIndexInformerTest {
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
         .andEmit(outdatedEvent)
         .done().always();
+
+    // re-list errors
+    server.expect().withPath("/api/v1/pods")
+        .andReturn(HttpURLConnection.HTTP_FORBIDDEN, new Status())
+        .times(2);
 
     // re-list
     server.expect().withPath("/api/v1/pods")

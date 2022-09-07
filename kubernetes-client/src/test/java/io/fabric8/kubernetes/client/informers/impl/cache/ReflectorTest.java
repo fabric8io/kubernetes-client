@@ -59,15 +59,17 @@ class ReflectorTest {
     assertFalse(reflector.isWatching());
     assertTrue(reflector.isRunning());
 
-    reflector.listSyncAndWatch().join();
+    reflector.listSyncAndWatch(false).join();
 
     assertTrue(reflector.isWatching());
     assertTrue(reflector.isRunning());
+    assertFalse(reflector.getStopFuture().isDone());
 
     reflector.stop();
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
+    assertTrue(reflector.getStopFuture().isDone());
   }
 
   @Test
