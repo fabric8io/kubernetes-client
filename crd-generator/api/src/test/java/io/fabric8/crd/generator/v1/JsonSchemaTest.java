@@ -190,6 +190,7 @@ class JsonSchemaTest {
     JSONSchemaProps bar = spec.get("bar");
     Map<String, JSONSchemaProps> barProps = bar.getProperties();
     assertNotNull(barProps);
+    assertTrue(bar.getXKubernetesPreserveUnknownFields());
 
     // you can change everything
     assertEquals("integer", barProps.get("BAZ").getType());

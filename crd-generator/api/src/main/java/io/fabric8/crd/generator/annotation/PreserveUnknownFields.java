@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Red Hat, Inc.
+ * Copyright (C) 2022 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.extraction;
+package io.fabric8.crd.generator.annotation;
 
-import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
-import io.fabric8.crd.generator.annotation.SchemaFrom;
+import java.lang.annotation.*;
 
-public class ExtractionSpec {
-
-  @SchemaFrom(type = FooExtractor.class)
-  private Foo foo;
-
-  @PreserveUnknownFields
-  private Foo bar;
-
+/*
+ * Used to tweak the behavior of the crd-generator
+ */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PreserveUnknownFields {
 }

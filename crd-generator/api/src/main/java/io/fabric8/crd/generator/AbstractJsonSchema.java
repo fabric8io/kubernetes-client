@@ -87,6 +87,7 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_REQUIRED = "io.fabric8.generator.annotation.Required";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
   public static final String ANNOTATION_SCHEMA_FROM = "io.fabric8.crd.generator.annotation.SchemaFrom";
+  public static final String ANNOTATION_PERSERVE_UNKNOWN_FIELDS = "io.fabric8.crd.generator.annotation.PreserveUnknownFields";
   public static final String ANNOTATION_SCHEMA_SWAP = "io.fabric8.crd.generator.annotation.SchemaSwap";
   public static final String ANNOTATION_SCHEMA_SWAPS = "io.fabric8.crd.generator.annotation.SchemaSwaps";
 
@@ -125,21 +126,25 @@ public abstract class AbstractJsonSchema<T, B> {
     final boolean nullable;
     final boolean required;
 
+    final boolean preserveUnknownFields;
+
     SchemaPropsOptions() {
       min = Optional.empty();
       max = Optional.empty();
       pattern = Optional.empty();
       nullable = false;
       required = false;
+      preserveUnknownFields = false;
     }
 
     public SchemaPropsOptions(Optional<Double> min, Optional<Double> max, Optional<String> pattern,
-        boolean nullable, boolean required) {
+        boolean nullable, boolean required, boolean preserveUnknownFields) {
       this.min = min;
       this.max = max;
       this.pattern = pattern;
       this.nullable = nullable;
       this.required = required;
+      this.preserveUnknownFields = preserveUnknownFields;
     }
 
     public Optional<Double> getMin() {
@@ -160,6 +165,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public boolean getRequired() {
       return required;
+    }
+
+    public boolean isPreserveUnknownFields() {
+      return preserveUnknownFields;
     }
   }
 
@@ -280,7 +289,8 @@ public abstract class AbstractJsonSchema<T, B> {
           facade.max,
           facade.pattern,
           facade.nullable,
-          facade.required);
+          facade.required,
+          facade.preserveSelfUnknownFields);
 
       addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema, options);
     }
@@ -310,6 +320,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private boolean required;
     private boolean ignored;
     private boolean preserveUnknownFields;
+    private boolean preserveSelfUnknownFields;
     private String description;
     private TypeRef schemaFrom;
 
@@ -374,6 +385,9 @@ public abstract class AbstractJsonSchema<T, B> {
           case ANNOTATION_JSON_ANY_SETTER:
             preserveUnknownFields = true;
             break;
+          case ANNOTATION_PERSERVE_UNKNOWN_FIELDS:
+            preserveSelfUnknownFields = true;
+            break;
           case ANNOTATION_SCHEMA_FROM:
             schemaFrom = extractClassRef(a.getParameters().get("type"));
             break;
@@ -413,6 +427,10 @@ public abstract class AbstractJsonSchema<T, B> {
       return preserveUnknownFields;
     }
 
+    public boolean isPreserveSelfUnknownFields() {
+      return preserveSelfUnknownFields;
+    }
+
     public String getDescription() {
       return description;
     }
@@ -450,6 +468,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private boolean required;
     private boolean ignored;
     private boolean preserveUnknownFields;
+    private boolean preserveSelfUnknownFields;
     private final Property original;
     private String nameContributedBy;
     private String descriptionContributedBy;
@@ -526,6 +545,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
         if (p.isPreserveUnknownFields()) {
           preserveUnknownFields = true;
+        }
+
+        if (p.isPreserveSelfUnknownFields()) {
+          preserveSelfUnknownFields = true;
         }
 
         if (p.contributeSchemaFrom()) {
