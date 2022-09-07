@@ -85,7 +85,8 @@ public interface HasMetadata extends KubernetesResource {
     }
     if (group != null || version != null) {
       throw new IllegalArgumentException(
-          "You need to specify both @" + Group.NAME + " and @" + Version.NAME + " annotations if you specify either");
+          "You need to specify both @" + Group.NAME + " and @" + Version.NAME
+              + " annotations if you specify either");
     }
     return null;
   }
@@ -160,10 +161,10 @@ public interface HasMetadata extends KubernetesResource {
   static String getFullResourceName(Class<?> clazz) {
     final String plural = getPlural(clazz);
     final String group = getGroup(clazz);
-    if (plural == null || group == null) {
+    if (group == null) {
       throw new IllegalArgumentException(
-          "Should provide non-null plural and/or group. Is " + clazz.getName() + " properly annotated with @" + Group.NAME
-              + " and/or @" + Version.NAME + "?");
+          "Should provide non-null group. Is " + clazz.getName() + " properly annotated with @"
+              + Group.NAME + " and/or @" + Version.NAME + "?");
     }
     return getFullResourceName(plural, group);
   }
@@ -369,7 +370,7 @@ public interface HasMetadata extends KubernetesResource {
   /**
    * Adds the specified, supposed valid (for example because validated by calling {@link #sanitizeAndValidate(OwnerReference)}
    * beforehand), {@link OwnerReference} to this {@code HasMetadata}
-   * 
+   *
    * @param ownerReference the {@link OwnerReference} to add to this {@code HasMetadata}'s owner references
    * @return the newly added {@link OwnerReference}
    */
@@ -401,7 +402,7 @@ public interface HasMetadata extends KubernetesResource {
 
   /**
    * Sanitizes and validates the specified {@link OwnerReference}, presumably to add it
-   * 
+   *
    * @param ownerReference the {@link OwnerReference} to sanitize and validate
    * @return the sanitized and validated {@link OwnerReference} which should be used instead of the original one
    */
@@ -448,7 +449,7 @@ public interface HasMetadata extends KubernetesResource {
   /**
    * Removes the {@link OwnerReference} identified by the specified UID if it's part of this {@code HasMetadata}'s owner
    * references
-   * 
+   *
    * @param ownerUid the UID of the {@link OwnerReference} to remove
    */
   default void removeOwnerReference(String ownerUid) {
