@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "lastTransitionTime",
     "message",
+    "observedGeneration",
     "reason",
     "status",
     "type"
@@ -72,6 +73,8 @@ public class CertificateCondition implements KubernetesResource
     private String lastTransitionTime;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("status")
@@ -94,12 +97,14 @@ public class CertificateCondition implements KubernetesResource
      * @param lastTransitionTime
      * @param message
      * @param type
+     * @param observedGeneration
      * @param status
      */
-    public CertificateCondition(String lastTransitionTime, String message, String reason, String status, String type) {
+    public CertificateCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
         super();
         this.lastTransitionTime = lastTransitionTime;
         this.message = message;
+        this.observedGeneration = observedGeneration;
         this.reason = reason;
         this.status = status;
         this.type = type;
@@ -123,6 +128,16 @@ public class CertificateCondition implements KubernetesResource
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     @JsonProperty("reason")

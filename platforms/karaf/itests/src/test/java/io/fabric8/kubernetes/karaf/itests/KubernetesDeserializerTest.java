@@ -18,7 +18,9 @@ package io.fabric8.kubernetes.karaf.itests;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
@@ -26,8 +28,9 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-import javax.inject.Inject;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
@@ -35,6 +38,9 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class KubernetesDeserializerTest extends TestBase {
+
+  @Rule
+  public ErrorCollector errorCollector = new ErrorCollector();
 
   @Inject
   KubernetesClient kubernetesClient;
@@ -46,26 +52,37 @@ public class KubernetesDeserializerTest extends TestBase {
   public void canDeserializeModelsFromDifferentKubernetesModules() {
     // When
     final List<HasMetadata> result = kubernetesClient.load(
-      KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_test.yaml")
-    ).get();
+        KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_test.yaml")).get();
     // Then
     assertEquals(22, result.size());
+    assertResourceTypes(result);
   }
 
   @Test
   public void canDeserializeModelsFromDifferentOpenShiftModules() {
     // When
     final List<HasMetadata> result = openShiftClient.load(
-      KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_openshift_test.yaml")
-    ).get();
+        KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_openshift_test.yaml")).get();
     // Then
     assertEquals(8, result.size());
+    assertResourceTypes(result);
+  }
+
+  /**
+   * Makes sure that the Resource is of the specific type and not a GenericKubernetesResource
+   */
+  private void assertResourceTypes(List<HasMetadata> metadatas) {
+    for (HasMetadata hm : metadatas) {
+      if (!hm.getClass().getSimpleName().equals(hm.getKind())) {
+        errorCollector.addError(new AssertionError("Resource type is wrong for " + hm.getKind() +
+            ", expected " + hm.getClass()));
+      }
+    }
   }
 
   @Configuration
   public Option[] config() {
     return baseConfiguration(
-      features(getFeaturesFile().toURI().toString(), "scr", "openshift-client")
-    );
+        features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"));
   }
 }

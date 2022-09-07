@@ -35,6 +35,7 @@ declare -a modules=(
     "kubernetes-model-events"
     "kubernetes-model-extensions"
     "kubernetes-model-flowcontrol"
+    "kubernetes-model-gatewayapi"
     "kubernetes-model-networking"
     "kubernetes-model-metrics"
     "kubernetes-model-node"

@@ -18,10 +18,10 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction2;
 import io.fabric8.crd.example.json.ContainingJson;
-import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -44,16 +44,16 @@ class JsonSchemaTest {
     Map<String, JSONSchemaProps> properties = schema.getProperties();
     assertEquals(7, properties.size());
     final List<String> personTypes = properties.get("type").getEnum().stream().map(JsonNode::asText)
-      .collect(Collectors.toList());
+        .collect(Collectors.toList());
     assertEquals(2, personTypes.size());
     assertTrue(personTypes.contains("crazy"));
     assertTrue(personTypes.contains("crazier"));
     final Map<String, JSONSchemaProps> addressProperties = properties.get("addresses").getItems()
-      .getSchema().getProperties();
+        .getSchema().getProperties();
     assertEquals(5, addressProperties.size());
     final List<String> addressTypes = addressProperties.get("type").getEnum().stream()
-      .map(JsonNode::asText)
-      .collect(Collectors.toList());
+        .map(JsonNode::asText)
+        .collect(Collectors.toList());
     assertEquals(2, addressTypes.size());
     assertTrue(addressTypes.contains("home"));
     assertTrue(addressTypes.contains("work"));
@@ -80,7 +80,7 @@ class JsonSchemaTest {
     assertEquals(2, properties.size());
     final JSONSchemaProps specSchema = properties.get("spec");
     Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(6, spec.size());
+    assertEquals(11, spec.size());
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
@@ -97,10 +97,35 @@ class JsonSchemaTest {
     assertNull(spec.get("emptySetter").getDescription());
     assertTrue(spec.containsKey("anEnum"));
 
+    final JSONSchemaProps min = spec.get("min");
+    assertEquals(-5.0, min.getMinimum());
+    assertNull(min.getMaximum());
+    assertNull(min.getPattern());
+    assertNull(min.getNullable());
+
+    final JSONSchemaProps max = spec.get("max");
+    assertEquals(5.0, max.getMaximum());
+    assertNull(max.getMinimum());
+    assertNull(max.getPattern());
+    assertNull(max.getNullable());
+
+    final JSONSchemaProps pattern = spec.get("singleDigit");
+    assertEquals("\\b[1-9]\\b", pattern.getPattern());
+    assertNull(pattern.getMinimum());
+    assertNull(pattern.getMaximum());
+    assertNull(pattern.getNullable());
+
+    final JSONSchemaProps nullable = spec.get("nullable");
+    assertTrue(nullable.getNullable());
+    assertNull(nullable.getMinimum());
+    assertNull(nullable.getMaximum());
+    assertNull(nullable.getPattern());
+
     // check required list, should register properties with their modified name if needed
     final List<String> required = specSchema.getRequired();
-    assertEquals(2, required.size());
+    assertEquals(3, required.size());
     assertTrue(required.contains("emptySetter"));
+    assertTrue(required.contains("emptySetter2"));
     assertTrue(required.contains("from-getter"));
 
     // check the enum values

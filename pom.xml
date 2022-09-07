@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>6.1-SNAPSHOT</version>
+  <version>6.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -111,7 +111,7 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
     <lombok.version>1.18.24</lombok.version>
-    <snakeyaml.version>1.30</snakeyaml.version>
+    <snakeyaml.version>1.31</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.21</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -173,7 +173,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2022-07-13T07:17:34Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2022-09-01T16:50:35Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
 
     <jsonschema2pojo.targetPackage>io.fabric8.kubernetes.api.model</jsonschema2pojo.targetPackage>
@@ -192,6 +192,7 @@
     <module>platforms</module>
     <module>kubernetes-tests</module>
     <module>uberjar</module>
+    <module>generator-annotations</module>
     <module>crd-generator</module>
     <module>java-generator</module>
     <module>httpclient-okhttp</module>
@@ -200,6 +201,11 @@
   <dependencyManagement>
     <dependencies>
       <!-- Internal -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>generator-annotations</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>java-generator-core</artifactId>
@@ -283,6 +289,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-flowcontrol</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-gatewayapi</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -822,13 +833,29 @@
         <scope>test</scope>
       </dependency>
 
-      <!-- JUnit dependencies, imported as a BOM -->
       <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
         <version>${junit.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-migrationsupport</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -1198,6 +1225,7 @@
                   <include>io.fabric8:kubernetes-model-discovery*</include>
                   <include>io.fabric8:kubernetes-model-events*</include>
                   <include>io.fabric8:kubernetes-model-extensions*</include>
+                  <include>io.fabric8:kubernetes-model-gatewayapi*</include>
                   <include>io.fabric8:kubernetes-model-networking*</include>
                   <include>io.fabric8:kubernetes-model-node*</include>
                   <include>io.fabric8:kubernetes-model-metrics*</include>

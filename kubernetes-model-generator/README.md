@@ -22,6 +22,8 @@
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-events/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-events)
 * kubernetes-model-extensions: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-extensions.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-extensions)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-extensions/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-extensions)
+* kubernetes-model-gatewayapi: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-gatewayapi.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-gatewayapi)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-gatewayapi/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-gatewayapi)
 * kubernetes-model-metrics: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-metrics.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-metrics)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-metrics/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-metrics)
 * kubernetes-model-networking: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-networking.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-networking)

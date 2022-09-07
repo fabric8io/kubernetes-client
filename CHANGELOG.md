@@ -1,6 +1,27 @@
 ## CHANGELOG
 
-### 6.1-SNAPSHOT
+### 6.2-SNAPSHOT
+
+#### Bugs
+* Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
+
+#### Improvements
+* Fix #4348: Introduce specific annotations for the generators
+* Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
+
+#### Dependency Upgrade
+* Fix #4383: bump snakeyaml from 1.30 to 1.31
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
+### 6.1.1 (2022-09-01)
+
+#### Bugs
+fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-build-agent")
+
+### 6.1.0 (2022-08-31)
 
 #### Bugs
 * Fix #4109: Templates with parameters can be retrieved from OpenShift
@@ -9,10 +30,11 @@
 * Fix #4256: crd-generator-apt pom.xml includes transitive dependencies
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
 * Fix #4320: corrected leader transitions field on leader election leases
-* Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
+* Fix #4360: JUnit dependencies aren't leaked in child modules
 
 #### Improvements
 * Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
+* Fix #3960: adding a KubernetesMockServer.expectCustomResource helper method and additional mock crd support
 * Fix #4041: adding Quantity.getNumericalAmount with an explanation about bytes and cores.
 * Fix #4241: added more context to informer logs with the endpoint path
 * Fix #4250: allowing for deserialization of polymorphic unwrapped fields
@@ -20,13 +42,12 @@
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 * Fix #4287: added WorkloadGroup for Istio v1alpha3 extension generator
 * Fix #4318: implemented LeaderElection releaseOnCancel
-* Fix #3960: adding a KubernetesMockServer.expectCustomResource helper method and additional mock crd support
-* Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
 
 #### Dependency Upgrade
-* Bump Knative model to v0.34.0
-* Bump Apache Camel-K to v1.9.2
-* Update chaos-mesh extension to v2.1.3. Add PodHttpChaos, GCPChaos, BlockChaos and PhysicalMachineChaos.
+* Fix #3967: Update chaos-mesh extension to v2.1.3. Add PodHttpChaos, GCPChaos, BlockChaos and PhysicalMachineChaos.
+* Fix #4352: Update Knative model to v0.34.0
+* Fix #4356: Update Apache CamelK to v1.9.2
+* Fix #4361: Bump Cert-Manager to v1.9.0-beta.1.0.20220829113803-8465f1223efb
 
 #### New Features
 * Fix #2271: Support periodic refresh of access tokens before they expire
@@ -38,6 +59,7 @@
   - `io.fabric8.chaosmesh.v1alpha1.AwsChaos` => `io.fabric8.chaosmesh.v1alpha1.AWSChaos`
   - `io.fabric8.chaosmesh.v1alpha1.IoChaos` => `io.fabric8.chaosmesh.v1alpha1.IOChaos`
   - `io.fabric8.chaosmesh.v1alpha1.PodIoChaos` => `io.fabric8.chaosmesh.v1alpha1.PodIOChaos`
+
 ### 5.12.3 (2022-07-27)
 
 #### Bugs
