@@ -67,6 +67,10 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
         schema.setNullable(true);
       }
 
+      if (options.isPreserveUnknownFields()) {
+        schema.setXKubernetesPreserveUnknownFields(true);
+      }
+
       builder.addToProperties(property.getName(), schema);
     }
   }
