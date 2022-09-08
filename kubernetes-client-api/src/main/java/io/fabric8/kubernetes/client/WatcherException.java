@@ -16,27 +16,39 @@
 package io.fabric8.kubernetes.client;
 
 import java.net.HttpURLConnection;
+import java.util.Optional;
 
 public class WatcherException extends Exception {
+  private final String rawWatchMessage;
 
   public WatcherException(String message, Throwable cause) {
-    super(message, cause);
+    this(message, cause, null);
   }
 
   public WatcherException(String message) {
     super(message);
+    rawWatchMessage = null;
+  }
+
+  public WatcherException(String message, Throwable cause, String rawWatchMessage) {
+    super(message, cause);
+    this.rawWatchMessage = rawWatchMessage;
   }
 
   public KubernetesClientException asClientException() {
     final Throwable cause = getCause();
-    return cause instanceof KubernetesClientException ?
-      (KubernetesClientException) cause : new KubernetesClientException(getMessage(), cause);
+    return cause instanceof KubernetesClientException ? (KubernetesClientException) cause
+        : new KubernetesClientException(getMessage(), cause);
   }
 
   public boolean isHttpGone() {
     final KubernetesClientException cause = asClientException();
-    return cause.getCode() == HttpURLConnection.HTTP_GONE
-      || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE);
+    return cause != null && (cause.getCode() == HttpURLConnection.HTTP_GONE
+        || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE));
   }
 
+  @SuppressWarnings("unused")
+  public Optional<String> getRawWatchMessage() {
+    return Optional.ofNullable(rawWatchMessage);
+  }
 }

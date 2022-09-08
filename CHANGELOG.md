@@ -3,10 +3,12 @@
 ### 6.2-SNAPSHOT
 
 #### Bugs
+* Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
 * Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
+* Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0

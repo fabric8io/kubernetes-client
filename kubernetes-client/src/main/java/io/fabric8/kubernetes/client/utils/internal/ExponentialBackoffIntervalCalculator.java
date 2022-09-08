@@ -15,10 +15,18 @@
  */
 package io.fabric8.kubernetes.client.utils.internal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class ExponentialBackoffIntervalCalculator {
+
+  private static final Logger logger = LoggerFactory.getLogger(ExponentialBackoffIntervalCalculator.class);
 
   private final int initialInterval;
   private final int maxRetryIntervalExponent;
+  final AtomicInteger currentReconnectAttempt = new AtomicInteger();
 
   public ExponentialBackoffIntervalCalculator(int initialInterval, int maxRetryIntervalExponent) {
     this.initialInterval = initialInterval;
@@ -30,7 +38,22 @@ public class ExponentialBackoffIntervalCalculator {
     if (exponentOfTwo > maxRetryIntervalExponent) {
       exponentOfTwo = maxRetryIntervalExponent;
     }
-    return (long)initialInterval * (1 << exponentOfTwo);
+    return (long) initialInterval * (1 << exponentOfTwo);
+  }
+
+  public void resetReconnectAttempts() {
+    currentReconnectAttempt.set(0);
+  }
+
+  public final long nextReconnectInterval() {
+    int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
+    long ret = getInterval(exponentOfTwo);
+    logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
+    return ret;
+  }
+
+  public int getCurrentReconnectAttempt() {
+    return currentReconnectAttempt.get();
   }
 
 }

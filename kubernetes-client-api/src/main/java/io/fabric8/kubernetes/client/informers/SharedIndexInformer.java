@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ItemStore;
@@ -82,7 +83,8 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * @param handle the event handler
    * @param resyncPeriod the specific resync period
    */
-  SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handle, long resyncPeriod);
+  SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handle,
+      long resyncPeriod);
 
   /**
    * Starts the shared informer, which will be stopped when {@link #stop()} is called.
@@ -165,4 +167,13 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    */
   CompletableFuture<Void> start();
 
+  /**
+   * Return a future that will allow notification of informer stopping.
+   * <p>
+   * If {@link #stop()} is called, the future will be completed with a null value.
+   * <p>
+   * If an exception occurs that terminates the informer, then it will be exceptionally completed with that exception
+   * - typically a {@link WatcherException}
+   */
+  CompletableFuture<Void> stopped();
 }

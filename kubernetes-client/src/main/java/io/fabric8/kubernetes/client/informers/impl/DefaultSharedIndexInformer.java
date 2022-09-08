@@ -164,7 +164,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return reflector.start().whenComplete((v, t) -> {
       // stop called while run is called could be ineffective, check for it afterwards
       synchronized (this) {
-        if (stopped) {
+        if (stopped && reflector.isRunning()) {
           stop();
         }
       }
@@ -287,6 +287,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   @Override
   public String toString() {
     return this.description;
+  }
+
+  @Override
+  public CompletableFuture<Void> stopped() {
+    return this.reflector.getStopFuture();
   }
 
 }
