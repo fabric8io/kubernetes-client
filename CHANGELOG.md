@@ -9,6 +9,7 @@
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
 * Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
+* Fix #4396: Provide more error context when @Group/@Version annotations are missing
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0
@@ -36,7 +37,6 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
 * Fix #4320: corrected leader transitions field on leader election leases
 * Fix #4360: JUnit dependencies aren't leaked in child modules
-
 
 #### Improvements
 * Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.

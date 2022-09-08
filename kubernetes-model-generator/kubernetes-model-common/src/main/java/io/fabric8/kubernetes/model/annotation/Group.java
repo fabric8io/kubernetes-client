@@ -27,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * determine the `apiVersion` field associated with the annotated resource.
  * See https://kubernetes.io/docs/reference/using-api/#api-groups for more details.
  */
-@Target({TYPE})
+@Target({ TYPE })
 @Retention(RUNTIME)
 public @interface Group {
 
