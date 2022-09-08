@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class BaseKubernetesList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.HasMetadata>
+public class BaseKubernetesList implements KubernetesResource, KubernetesResourceList<Object>
 {
 
     /**
@@ -45,7 +45,8 @@ public class BaseKubernetesList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("items")
-    private List<io.fabric8.kubernetes.api.model.HasMetadata> items = new ArrayList<io.fabric8.kubernetes.api.model.HasMetadata>();
+    @JsonDeserialize(contentUsing = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private List<Object> items = new ArrayList<Object>();
     /**
      * 
      * (Required)
@@ -56,7 +57,7 @@ public class BaseKubernetesList implements KubernetesResource, KubernetesResourc
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, java.lang.Object> additionalProperties = new HashMap<String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,7 +73,7 @@ public class BaseKubernetesList implements KubernetesResource, KubernetesResourc
      * @param kind
      * @param items
      */
-    public BaseKubernetesList(String apiVersion, List<io.fabric8.kubernetes.api.model.HasMetadata> items, String kind, ListMeta metadata) {
+    public BaseKubernetesList(String apiVersion, List<Object> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.items = items;
@@ -101,12 +102,12 @@ public class BaseKubernetesList implements KubernetesResource, KubernetesResourc
     }
 
     @JsonProperty("items")
-    public List<io.fabric8.kubernetes.api.model.HasMetadata> getItems() {
+    public List<Object> getItems() {
         return items;
     }
 
     @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.HasMetadata> items) {
+    public void setItems(List<Object> items) {
         this.items = items;
     }
 
@@ -141,12 +142,12 @@ public class BaseKubernetesList implements KubernetesResource, KubernetesResourc
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, java.lang.Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(String name, java.lang.Object value) {
         this.additionalProperties.put(name, value);
     }
 

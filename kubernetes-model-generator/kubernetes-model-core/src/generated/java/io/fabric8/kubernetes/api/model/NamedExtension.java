@@ -37,11 +37,12 @@ public class NamedExtension implements KubernetesResource
 {
 
     @JsonProperty("extension")
-    private HasMetadata extension;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object extension;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, java.lang.Object> additionalProperties = new HashMap<String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -55,19 +56,19 @@ public class NamedExtension implements KubernetesResource
      * @param extension
      * @param name
      */
-    public NamedExtension(HasMetadata extension, String name) {
+    public NamedExtension(Object extension, String name) {
         super();
         this.extension = extension;
         this.name = name;
     }
 
     @JsonProperty("extension")
-    public HasMetadata getExtension() {
+    public Object getExtension() {
         return extension;
     }
 
     @JsonProperty("extension")
-    public void setExtension(HasMetadata extension) {
+    public void setExtension(Object extension) {
         this.extension = extension;
     }
 
@@ -82,12 +83,12 @@ public class NamedExtension implements KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, java.lang.Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(String name, java.lang.Object value) {
         this.additionalProperties.put(name, value);
     }
 
