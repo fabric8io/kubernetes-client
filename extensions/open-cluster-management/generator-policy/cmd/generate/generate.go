@@ -65,7 +65,6 @@ func main() {
 	// overwriting some types
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(metav1.Time{}):          "java.lang.String",
-		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 	}
 
 	// types for interfaces

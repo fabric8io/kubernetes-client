@@ -89,7 +89,6 @@ func main() {
     reflect.TypeOf(ipnet.IPNet{}): reflect.TypeOf(""),
   }
   manualTypeMap := map[reflect.Type]string {
-    reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
   }
   schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap,"installer")
   if err != nil {

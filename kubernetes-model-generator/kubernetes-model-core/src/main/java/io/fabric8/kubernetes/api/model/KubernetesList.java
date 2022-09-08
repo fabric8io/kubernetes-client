@@ -23,8 +23,6 @@ import io.sundr.builder.annotations.Buildable;
 
 import io.fabric8.kubernetes.model.annotation.Generated;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -52,7 +50,7 @@ public class KubernetesList extends BaseKubernetesList implements KubernetesReso
     }
 
     public KubernetesList(String apiVersion,
-                          List<HasMetadata> items,
+                          List<Object> items,
                           String kind,
                           ListMeta metadata) {
         super(apiVersion, items, kind, metadata);
@@ -70,7 +68,8 @@ public class KubernetesList extends BaseKubernetesList implements KubernetesReso
     }
 
     @Override
-    public List<HasMetadata> getItems() {
+    public List<Object> getItems() {
       return super.getItems();
     }
+
 }

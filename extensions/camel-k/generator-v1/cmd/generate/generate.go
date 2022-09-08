@@ -79,7 +79,6 @@ func main() {
 		reflect.TypeOf(machinery.Time{}):       "java.lang.String",
 		reflect.TypeOf(apis.URL{}):             "java.lang.String",
 		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
-		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/camel-k/v1/CamelKSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")

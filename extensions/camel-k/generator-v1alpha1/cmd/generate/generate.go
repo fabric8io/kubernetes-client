@@ -78,7 +78,6 @@ func main() {
 		reflect.TypeOf(machinery.Time{}):       "java.lang.String",
 		reflect.TypeOf(apis.URL{}):             "java.lang.String",
 		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
-		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 		reflect.TypeOf(v1alpha1.Template{}):    "java.util.Map<String, Object>",
 		reflect.TypeOf(v1alpha1.JSON{}):        "com.fasterxml.jackson.databind.JsonNode",
 		reflect.TypeOf(v1alpha1.EndpointProperties{}): "java.util.Map<String, Object>",

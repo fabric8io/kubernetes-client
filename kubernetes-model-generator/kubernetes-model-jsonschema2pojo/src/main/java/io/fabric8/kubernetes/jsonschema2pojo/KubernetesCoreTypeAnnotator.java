@@ -180,6 +180,19 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       field.annotate(JsonInclude.class).param(ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
     }
 
+    boolean array = false;
+    
+    // TODO: this is fragile - this would need to be done for every collection type, deeply nested etc.
+    JsonNode typedNode = propertyNode;
+    if (propertyNode.has("type") && propertyNode.get("type").asText().equals("array") && propertyNode.has("items")) {
+      typedNode = propertyNode.get("items");
+      array = true;
+    }
+
+    if ((typedNode.has("existingJavaType") && "Object".equals(typedNode.get("existingJavaType").asText()))) {
+      field.annotate(JsonDeserialize.class).param(array ? "contentUsing" : "using", literalExpression("io.fabric8.kubernetes.internal.KubernetesDeserializer.class"));
+    }
+
     // Annotate JsonUnwrapped for interfaces as they cannot be created when no implementations
     if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
       field.annotate(JsonUnwrapped.class);

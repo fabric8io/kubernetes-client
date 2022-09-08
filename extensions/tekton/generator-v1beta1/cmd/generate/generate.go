@@ -72,7 +72,6 @@ func main() {
 
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
-		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 		reflect.TypeOf(machinery.Time{}): "java.lang.String",
 	}
 

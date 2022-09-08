@@ -92,7 +92,6 @@ func main() {
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
   manualTypeMap := map[reflect.Type]string {
-    reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
     reflect.TypeOf(operatorv1.GenerationStatus{}): "io.fabric8.openshift.api.model.operator.v1.GenerationStatus",
     reflect.TypeOf(operatorv1.OperatorCondition{}): "io.fabric8.openshift.api.model.operator.v1.OperatorCondition",
   }

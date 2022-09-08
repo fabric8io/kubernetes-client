@@ -136,7 +136,6 @@ func main() {
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(apis.URL{}):             "java.lang.String",
 		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
-		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/knative/KnativeSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")
