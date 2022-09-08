@@ -3,6 +3,7 @@
 ### 6.2-SNAPSHOT
 
 #### Bugs
+* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
@@ -15,6 +16,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
 * Module `io.fabric8:tekton-model-triggers` which contained Tekton triggers v1alpha1 model has been removed. We have introduced separate modules `io.fabric8:tekton-model-v1alpha1` and `io.fabric8:tekton-model-v1beta1` for Tekton triggers v1alpha1 and v1beta1 apigroups respectively. Users who are using `io.fabric8:tekton-client` dependency directly should be unaffected by this change.
 
 ### 6.1.1 (2022-09-01)
@@ -32,6 +34,7 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 * Fix #4294: crd-generator respects JsonIgnore annotations on enum properties
 * Fix #4320: corrected leader transitions field on leader election leases
 * Fix #4360: JUnit dependencies aren't leaked in child modules
+
 
 #### Improvements
 * Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
