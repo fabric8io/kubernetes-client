@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +51,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
 
   protected WatcherWebSocketListener<T> listener;
-  private CompletableFuture<WebSocket> websocketFuture;
+  private volatile CompletableFuture<WebSocket> websocketFuture;
   private WebSocket websocket;
 
   private volatile boolean ready;
@@ -87,14 +88,14 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   @Override
   protected synchronized void closeRequest() {
     closeWebSocket(websocket);
-    if (this.websocketFuture != null) {
-      this.websocketFuture.whenComplete((w, t) -> {
+    Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> {
+      this.websocketFuture = null;
+      theFuture.whenComplete((w, t) -> {
         if (w != null) {
           closeWebSocket(w);
         }
       });
-      websocketFuture = null;
-    }
+    });
   }
 
   synchronized WatcherWebSocketListener<T> getListener() {
@@ -103,6 +104,14 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   public CompletableFuture<WebSocket> getWebsocketFuture() {
     return websocketFuture;
+  }
+
+  @Override
+  protected void onMessage(String message) {
+    // for consistency we only want to process the message when we're open
+    if (this.websocketFuture != null) {
+      super.onMessage(message);
+    }
   }
 
   @Override

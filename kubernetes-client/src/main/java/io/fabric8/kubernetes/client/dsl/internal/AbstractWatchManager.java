@@ -189,7 +189,13 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
     @SuppressWarnings("unchecked")
     final T t = (T) resource;
-    watcher.eventReceived(action, t);
+    try {
+      watcher.eventReceived(action, t);
+    } catch (Exception e) {
+      // for compatibility, this will just log the exception as was done in previous versions
+      // a case could be made for this to terminate the watch instead
+      logger.error("Unhandled exception encountered in watcher event handler", e);
+    }
   }
 
   void updateResourceVersion(final String newResourceVersion) {
@@ -311,7 +317,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       final String msg = "Couldn't deserialize watch event: " + message;
       close(new WatcherException(msg, e, message));
     } catch (Exception e) {
-      final String msg = "Unhandled exception encountered in watcher event handler";
+      final String msg = "Unexpected exception processing watch event";
       close(new WatcherException(msg, e, message));
     }
   }
