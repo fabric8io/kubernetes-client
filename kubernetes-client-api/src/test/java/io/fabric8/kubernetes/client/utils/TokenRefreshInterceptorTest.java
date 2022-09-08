@@ -46,14 +46,14 @@ class TokenRefreshInterceptorTest {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
       boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null, Instant.now())
-        .afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
+          .afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
     } finally {
@@ -68,19 +68,19 @@ class TokenRefreshInterceptorTest {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
       TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(Config.autoConfigure(null),
-        null,
-        Instant.now().minus(61, ChronoUnit.SECONDS));
+          null,
+          Instant.now().minus(61, ChronoUnit.SECONDS));
 
       // Replace kubeconfig file
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig.new")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       tokenRefreshInterceptor.before(builder, null);
       Mockito.verify(builder).setHeader("Authorization", "Bearer new token");
     } finally {
@@ -124,7 +124,7 @@ class TokenRefreshInterceptorTest {
       // Prepare kubeconfig for autoconfiguration
       File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig-oidc")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       // Prepare HTTP call that will fail with 401 Unauthorized to trigger OIDC token renewal.
@@ -140,9 +140,10 @@ class TokenRefreshInterceptorTest {
       //   had different value, we can be used the new value to assert/observe that
       //   401 Unauthorized triggers renewal when OIDC auth provider is used.
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig-oidc")),
-        Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 
-      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class), Instant.now());
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class),
+          Instant.now());
       boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
