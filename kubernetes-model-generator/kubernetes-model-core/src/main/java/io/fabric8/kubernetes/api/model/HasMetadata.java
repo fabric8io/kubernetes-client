@@ -85,7 +85,7 @@ public interface HasMetadata extends KubernetesResource {
     }
     if (group != null || version != null) {
       throw new IllegalArgumentException(
-          "You need to specify both @" + Group.NAME + " and @" + Version.NAME
+          "You need to specify both @" + Group.class.getSimpleName() + " and @" + Version.class.getSimpleName()
               + " annotations if you specify either");
     }
     return null;
@@ -164,7 +164,7 @@ public interface HasMetadata extends KubernetesResource {
     if (group == null) {
       throw new IllegalArgumentException(
           "Should provide non-null group. Is " + clazz.getName() + " properly annotated with @"
-              + Group.NAME + " and/or @" + Version.NAME + "?");
+              + Group.class.getSimpleName() + " and/or @" + Version.class.getSimpleName() + "?");
     }
     return getFullResourceName(plural, group);
   }

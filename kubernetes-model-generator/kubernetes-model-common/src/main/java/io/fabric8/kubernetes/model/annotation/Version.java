@@ -29,7 +29,6 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Version {
-  String NAME = Version.class.getSimpleName();
 
   /**
    * The name of this version.
