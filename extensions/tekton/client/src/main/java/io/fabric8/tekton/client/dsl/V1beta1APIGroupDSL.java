@@ -29,6 +29,16 @@ import io.fabric8.tekton.pipeline.v1beta1.Task;
 import io.fabric8.tekton.pipeline.v1beta1.TaskList;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
+import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding;
+import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBindingList;
+import io.fabric8.tekton.triggers.v1beta1.EventListener;
+import io.fabric8.tekton.triggers.v1beta1.EventListenerList;
+import io.fabric8.tekton.triggers.v1beta1.Trigger;
+import io.fabric8.tekton.triggers.v1beta1.TriggerBinding;
+import io.fabric8.tekton.triggers.v1beta1.TriggerBindingList;
+import io.fabric8.tekton.triggers.v1beta1.TriggerList;
+import io.fabric8.tekton.triggers.v1beta1.TriggerTemplate;
+import io.fabric8.tekton.triggers.v1beta1.TriggerTemplateList;
 
 public interface V1beta1APIGroupDSL extends Client {
   /**
@@ -66,4 +76,38 @@ public interface V1beta1APIGroupDSL extends Client {
    */
   NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks();
 
+  /**
+   * API entrypoint for Trigger(triggers.tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for Trigger class
+   */
+  MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers();
+
+  /**
+   * API entrypoint for TriggerTemplate(triggers.tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for TriggerTemplate class
+   */
+  MixedOperation<TriggerTemplate, TriggerTemplateList, Resource<TriggerTemplate>> triggerTemplates();
+
+  /**
+   * API entrypoint for TriggerBinding(triggers.tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for TriggerBinding class
+   */
+  MixedOperation<TriggerBinding, TriggerBindingList, Resource<TriggerBinding>> triggerBindings();
+
+  /**
+   * API entrypoint for EventListener(triggers.tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for EventListener class
+   */
+  MixedOperation<EventListener, EventListenerList, Resource<EventListener>> eventListeners();
+
+  /**
+   * API entrypoint for ClusterTriggerBinding(triggers.tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for ClusterTriggerBinding class
+   */
+  NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings();
 }

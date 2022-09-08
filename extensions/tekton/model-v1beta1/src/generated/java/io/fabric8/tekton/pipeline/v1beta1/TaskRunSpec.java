@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template;
@@ -41,6 +40,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "computeResources",
     "debug",
     "params",
     "podTemplate",
@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "serviceAccountName",
     "sidecarOverrides",
     "status",
+    "statusMessage",
     "stepOverrides",
     "taskRef",
     "taskSpec",
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
@@ -79,6 +80,8 @@ import lombok.experimental.Accessors;
 public class TaskRunSpec implements KubernetesResource
 {
 
+    @JsonProperty("computeResources")
+    private io.fabric8.kubernetes.api.model.ResourceRequirements computeResources;
     @JsonProperty("debug")
     private TaskRunDebug debug;
     @JsonProperty("params")
@@ -95,6 +98,8 @@ public class TaskRunSpec implements KubernetesResource
     private List<TaskRunSidecarOverride> sidecarOverrides = new ArrayList<TaskRunSidecarOverride>();
     @JsonProperty("status")
     private String status;
+    @JsonProperty("statusMessage")
+    private String statusMessage;
     @JsonProperty("stepOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TaskRunStepOverride> stepOverrides = new ArrayList<TaskRunStepOverride>();
@@ -119,21 +124,24 @@ public class TaskRunSpec implements KubernetesResource
 
     /**
      * 
-     * @param taskRef
      * @param debug
      * @param serviceAccountName
      * @param podTemplate
      * @param resources
-     * @param workspaces
      * @param params
      * @param sidecarOverrides
      * @param taskSpec
+     * @param statusMessage
      * @param stepOverrides
      * @param timeout
+     * @param taskRef
+     * @param computeResources
+     * @param workspaces
      * @param status
      */
-    public TaskRunSpec(TaskRunDebug debug, List<Param> params, Template podTemplate, TaskRunResources resources, String serviceAccountName, List<TaskRunSidecarOverride> sidecarOverrides, String status, List<TaskRunStepOverride> stepOverrides, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
+    public TaskRunSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, TaskRunDebug debug, List<Param> params, Template podTemplate, TaskRunResources resources, String serviceAccountName, List<TaskRunSidecarOverride> sidecarOverrides, String status, String statusMessage, List<TaskRunStepOverride> stepOverrides, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
         super();
+        this.computeResources = computeResources;
         this.debug = debug;
         this.params = params;
         this.podTemplate = podTemplate;
@@ -141,11 +149,22 @@ public class TaskRunSpec implements KubernetesResource
         this.serviceAccountName = serviceAccountName;
         this.sidecarOverrides = sidecarOverrides;
         this.status = status;
+        this.statusMessage = statusMessage;
         this.stepOverrides = stepOverrides;
         this.taskRef = taskRef;
         this.taskSpec = taskSpec;
         this.timeout = timeout;
         this.workspaces = workspaces;
+    }
+
+    @JsonProperty("computeResources")
+    public io.fabric8.kubernetes.api.model.ResourceRequirements getComputeResources() {
+        return computeResources;
+    }
+
+    @JsonProperty("computeResources")
+    public void setComputeResources(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources) {
+        this.computeResources = computeResources;
     }
 
     @JsonProperty("debug")
@@ -216,6 +235,16 @@ public class TaskRunSpec implements KubernetesResource
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @JsonProperty("statusMessage")
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    @JsonProperty("statusMessage")
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
     @JsonProperty("stepOverrides")

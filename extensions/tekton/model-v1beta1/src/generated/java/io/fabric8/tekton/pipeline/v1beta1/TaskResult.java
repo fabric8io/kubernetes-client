@@ -2,6 +2,7 @@
 package io.fabric8.tekton.pipeline.v1beta1;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -38,7 +39,9 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "description",
-    "name"
+    "name",
+    "properties",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,11 +69,16 @@ public class TaskResult implements KubernetesResource
 {
 
     @JsonProperty("description")
-    private String description;
+    private java.lang.String description;
     @JsonProperty("name")
-    private String name;
+    private java.lang.String name;
+    @JsonProperty("properties")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, PropertySpec> properties = new LinkedHashMap<String, PropertySpec>();
+    @JsonProperty("type")
+    private java.lang.String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,40 +91,64 @@ public class TaskResult implements KubernetesResource
      * 
      * @param name
      * @param description
+     * @param type
+     * @param properties
      */
-    public TaskResult(String description, String name) {
+    public TaskResult(java.lang.String description, java.lang.String name, Map<String, PropertySpec> properties, java.lang.String type) {
         super();
         this.description = description;
         this.name = name;
+        this.properties = properties;
+        this.type = type;
     }
 
     @JsonProperty("description")
-    public String getDescription() {
+    public java.lang.String getDescription() {
         return description;
     }
 
     @JsonProperty("description")
-    public void setDescription(String description) {
+    public void setDescription(java.lang.String description) {
         this.description = description;
     }
 
     @JsonProperty("name")
-    public String getName() {
+    public java.lang.String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(String name) {
+    public void setName(java.lang.String name) {
         this.name = name;
     }
 
+    @JsonProperty("properties")
+    public Map<String, PropertySpec> getProperties() {
+        return properties;
+    }
+
+    @JsonProperty("properties")
+    public void setProperties(Map<String, PropertySpec> properties) {
+        this.properties = properties;
+    }
+
+    @JsonProperty("type")
+    public java.lang.String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(java.lang.String type) {
+        this.type = type;
+    }
+
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

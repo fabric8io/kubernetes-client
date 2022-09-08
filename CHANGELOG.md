@@ -4,17 +4,22 @@
 
 #### Bugs
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
+* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
 * Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
 
 #### Dependency Upgrade
+* Fix #4243: Update Tekton pipeline model to v0.39.0
+* Fix #4243: Update Tekton triggers model to v0.20.2
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
 
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
+* Module `io.fabric8:tekton-model-triggers` which contained Tekton triggers v1alpha1 model has been removed. We have introduced separate modules `io.fabric8:tekton-model-v1alpha1` and `io.fabric8:tekton-model-v1beta1` for Tekton triggers v1alpha1 and v1beta1 apigroups respectively. Users who are using `io.fabric8:tekton-client` dependency directly should be unaffected by this change.
 
 ### 6.1.1 (2022-09-01)
 
@@ -32,6 +37,7 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 * Fix #4320: corrected leader transitions field on leader election leases
 * Fix #4360: JUnit dependencies aren't leaked in child modules
 
+
 #### Improvements
 * Fix #887: added KubernetesClient.visitResources to search and perform other operations across all resources.
 * Fix #3960: adding a KubernetesMockServer.expectCustomResource helper method and additional mock crd support
@@ -42,6 +48,7 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
 * Fix #4259: Java Generator's CR should have Lombok's `@EqualsAndHashCode` with `callSuper = true`
 * Fix #4287: added WorkloadGroup for Istio v1alpha3 extension generator
 * Fix #4318: implemented LeaderElection releaseOnCancel
+* Fix #4359: Remove manual model classes with fields name `class`
 
 #### Dependency Upgrade
 * Fix #3967: Update chaos-mesh extension to v2.1.3. Add PodHttpChaos, GCPChaos, BlockChaos and PhysicalMachineChaos.

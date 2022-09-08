@@ -30,6 +30,16 @@ import io.fabric8.tekton.pipeline.v1beta1.Task;
 import io.fabric8.tekton.pipeline.v1beta1.TaskList;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
+import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding;
+import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBindingList;
+import io.fabric8.tekton.triggers.v1beta1.EventListener;
+import io.fabric8.tekton.triggers.v1beta1.EventListenerList;
+import io.fabric8.tekton.triggers.v1beta1.Trigger;
+import io.fabric8.tekton.triggers.v1beta1.TriggerBinding;
+import io.fabric8.tekton.triggers.v1beta1.TriggerBindingList;
+import io.fabric8.tekton.triggers.v1beta1.TriggerList;
+import io.fabric8.tekton.triggers.v1beta1.TriggerTemplate;
+import io.fabric8.tekton.triggers.v1beta1.TriggerTemplateList;
 
 public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> implements V1beta1APIGroupDSL {
 
@@ -61,5 +71,30 @@ public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> 
   @Override
   public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
     return resources(ClusterTask.class, ClusterTaskList.class);
+  }
+
+  @Override
+  public MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers() {
+    return resources(Trigger.class, TriggerList.class);
+  }
+
+  @Override
+  public MixedOperation<TriggerTemplate, TriggerTemplateList, Resource<TriggerTemplate>> triggerTemplates() {
+    return resources(TriggerTemplate.class, TriggerTemplateList.class);
+  }
+
+  @Override
+  public MixedOperation<TriggerBinding, TriggerBindingList, Resource<TriggerBinding>> triggerBindings() {
+    return resources(TriggerBinding.class, TriggerBindingList.class);
+  }
+
+  @Override
+  public MixedOperation<EventListener, EventListenerList, Resource<EventListener>> eventListeners() {
+    return resources(EventListener.class, EventListenerList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings() {
+    return resources(ClusterTriggerBinding.class, ClusterTriggerBindingList.class);
   }
 }

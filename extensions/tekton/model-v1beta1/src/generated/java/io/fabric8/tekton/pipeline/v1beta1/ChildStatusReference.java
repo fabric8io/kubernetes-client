@@ -39,7 +39,6 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "conditionChecks",
     "name",
     "pipelineTaskName",
     "whenExpressions"
@@ -71,9 +70,6 @@ public class ChildStatusReference implements KubernetesResource
 
     @JsonProperty("apiVersion")
     private String apiVersion;
-    @JsonProperty("conditionChecks")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineRunChildConditionCheckStatus> conditionChecks = new ArrayList<PipelineRunChildConditionCheckStatus>();
     @JsonProperty("kind")
     private String kind;
     @JsonProperty("name")
@@ -100,12 +96,10 @@ public class ChildStatusReference implements KubernetesResource
      * @param name
      * @param pipelineTaskName
      * @param whenExpressions
-     * @param conditionChecks
      */
-    public ChildStatusReference(String apiVersion, List<PipelineRunChildConditionCheckStatus> conditionChecks, String kind, String name, String pipelineTaskName, List<WhenExpression> whenExpressions) {
+    public ChildStatusReference(String apiVersion, String kind, String name, String pipelineTaskName, List<WhenExpression> whenExpressions) {
         super();
         this.apiVersion = apiVersion;
-        this.conditionChecks = conditionChecks;
         this.kind = kind;
         this.name = name;
         this.pipelineTaskName = pipelineTaskName;
@@ -120,16 +114,6 @@ public class ChildStatusReference implements KubernetesResource
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
-    }
-
-    @JsonProperty("conditionChecks")
-    public List<PipelineRunChildConditionCheckStatus> getConditionChecks() {
-        return conditionChecks;
-    }
-
-    @JsonProperty("conditionChecks")
-    public void setConditionChecks(List<PipelineRunChildConditionCheckStatus> conditionChecks) {
-        this.conditionChecks = conditionChecks;
     }
 
     @JsonProperty("kind")
