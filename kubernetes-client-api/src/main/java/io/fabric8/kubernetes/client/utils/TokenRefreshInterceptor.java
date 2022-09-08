@@ -37,19 +37,25 @@ public class TokenRefreshInterceptor implements Interceptor {
   private final Config config;
   private HttpClient.Factory factory;
 
-  private Instant lastRefresh;
+  private static final int REFRESH_INTERVAL_MINUTE = 1;
 
-  public TokenRefreshInterceptor(Config config, HttpClient.Factory factory) {
+  private Instant latestRefreshTimestamp;
+
+  public TokenRefreshInterceptor(Config config, HttpClient.Factory factory, Instant latestRefreshTimestamp) {
     this.config = config;
-    this.lastRefresh = Instant.now();
+    this.latestRefreshTimestamp = latestRefreshTimestamp;
     this.factory = factory;
   }
 
   @Override
   public void before(BasicBuilder headerBuilder, HttpHeaders headers) {
-    if (timeToRefresh()) {
+    if (isTimeToRefresh()) {
       refreshToken(headerBuilder);
     }
+  }
+
+  private boolean isTimeToRefresh() {
+    return latestRefreshTimestamp.plus(REFRESH_INTERVAL_MINUTE, ChronoUnit.MINUTES).isBefore(Instant.now());
   }
 
   @Override
@@ -61,36 +67,36 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   private CompletableFuture<Boolean> refreshToken(BasicBuilder headerBuilder) {
-    String currentContextName = null;
-    if (config.getCurrentContext() != null) {
-      currentContextName = config.getCurrentContext().getName();
-    }
-    CompletableFuture<String> newAccessToken;
-    Config newestConfig = Config.autoConfigure(currentContextName);
+    final String currentContextName = config.getCurrentContext() != null ? config.getCurrentContext().getName() : null;
+    final Config newestConfig = Config.autoConfigure(currentContextName);
+    final CompletableFuture<String> newAccessToken = extractNewAccessTokenFrom(newestConfig);
+
+    return newAccessToken.thenApply(token -> overrideNewAccessTokenToConfig(token, headerBuilder, config));
+  }
+
+  private CompletableFuture<String> extractNewAccessTokenFrom(Config newestConfig) {
     if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
-      newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(),
-          factory.newBuilder());
-    } else {
-      newAccessToken = CompletableFuture.completedFuture(newestConfig.getOauthToken());
+      return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(), factory.newBuilder());
     }
-    return newAccessToken.thenApply(s -> {
-      if (s != null) {
-        // Delete old Authorization header and append new one
-        headerBuilder.setHeader("Authorization", "Bearer " + s);
-        config.setOauthToken(s);
-        lastRefresh = Instant.now();
-        return true;
-      }
-      return false;
-    });
+
+    return CompletableFuture.completedFuture(newestConfig.getOauthToken());
   }
 
-  private boolean timeToRefresh() {
-    return lastRefresh.plus(1, ChronoUnit.MINUTES).isBefore(Instant.now());
+  private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder, Config existConfig) {
+    if (newAccessToken != null) {
+      headerBuilder.setHeader("Authorization", "Bearer " + newAccessToken);
+      existConfig.setOauthToken(newAccessToken);
+
+      updateLatestRefreshTimestamp();
+
+      return true;
+    }
+
+    return false;
   }
 
-  // For testing only
-  void setLastRefresh(Instant lastRefresh) {
-    this.lastRefresh = lastRefresh;
+  private void updateLatestRefreshTimestamp() {
+    latestRefreshTimestamp = Instant.now();
   }
+
 }
