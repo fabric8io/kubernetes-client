@@ -725,6 +725,12 @@
         <type>pom</type>
       </dependency>
 
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
+      </dependency>
+
       <!-- Dependencies -->
       <dependency>
         <groupId>io.sundr</groupId>
