@@ -6,6 +6,7 @@
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
+* Refactor #4441: refactoring `TokenRefreshInterceptor`
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0
