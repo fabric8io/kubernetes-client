@@ -128,7 +128,7 @@ func (g *schemaGenerator) generateReference(t reflect.Type) string {
 func (g *schemaGenerator) javaTypeArrayList(t reflect.Type) string {
 	typeName := g.javaTypeWrapPrimitive(t)
 	switch typeName {
-	case "Byte", "Integer":
+	case "Byte":
 		return "String"
 	default:
 		return "java.util.ArrayList<" + typeName + ">"
@@ -193,9 +193,11 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	switch t.Kind() {
 	case reflect.Bool:
 		return "bool"
+	case reflect.Uint8:
+	  return "Byte"
 	case reflect.Int, reflect.Int8, reflect.Int16,
 		reflect.Int32, reflect.Uint,
-		reflect.Uint8, reflect.Uint16, reflect.Uint32:
+		reflect.Uint16, reflect.Uint32:
 		return "int"
 	case reflect.Int64, reflect.Uint64:
 		return "Long"
