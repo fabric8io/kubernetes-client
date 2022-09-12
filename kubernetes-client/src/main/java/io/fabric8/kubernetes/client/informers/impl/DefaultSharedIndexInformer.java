@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.informers.InformerExceptionHandler;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
@@ -67,6 +68,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private ScheduledFuture<?> resyncFuture;
 
+  private InformerExceptionHandler exceptionHandler = InformerExceptionHandler.NOOP;
+
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, Executor informerExecutor) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
@@ -82,7 +85,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.indexer.setIsRunning(this::isRunning);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
-    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore);
+    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore, exceptionHandler);
   }
 
   /**
@@ -226,4 +229,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return apiTypeClass;
   }
 
+  @Override
+  public void setExceptionHandler(InformerExceptionHandler handler) {
+    this.exceptionHandler = handler != null ? handler : InformerExceptionHandler.NOOP;
+  }
 }
