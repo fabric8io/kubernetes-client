@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.informers.InformerExceptionHandler;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
 
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
+  private final InformerExceptionHandler handler;
 
   private volatile String lastSyncResourceVersion;
   private final Class<T> apiTypeClass;
@@ -45,11 +47,17 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final AtomicReference<Watch> watch;
 
   public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
+    this(apiTypeClass, listerWatcher, store, null);
+  }
+
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store,
+    InformerExceptionHandler handler) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher();
     this.watch = new AtomicReference<>(null);
+    this.handler = handler != null ? handler : InformerExceptionHandler.NOOP;
   }
 
   public void stop() {
@@ -73,7 +81,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    */
   public void listSyncAndWatch() {
     running = true;
-    KubernetesResourceList<T> result = null;
+    KubernetesResourceList<T> result;
     String continueVal = null;
     Set<String> nextKeys = new LinkedHashSet<>();
     do {
@@ -166,6 +174,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           restarted = true;
         } else {
           log.warn("Watch closing with exception", exception);
+          handler.onWatchNonrecoverable(exception);
           running = false; // shouldn't happen, but it means the watch won't restart
         }
       } finally {

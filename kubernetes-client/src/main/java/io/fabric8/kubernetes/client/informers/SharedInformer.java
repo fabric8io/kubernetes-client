@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
 
 /**
  * SharedInformer defines basic methods of an informer.
- *
- * This has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go
+ * <p>
+ * This has been ported from <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go">official go client</a>
  */
 public interface SharedInformer<T> extends AutoCloseable {
 
@@ -97,4 +97,7 @@ public interface SharedInformer<T> extends AutoCloseable {
    * @return the store
    */
   Store<T> getStore();
+
+  @SuppressWarnings("unused")
+  default void setExceptionHandler(InformerExceptionHandler handler) {}
 }
