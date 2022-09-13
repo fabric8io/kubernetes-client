@@ -275,7 +275,7 @@ class CRDGeneratorTest {
       final Map<String, JSONSchemaProps> specProps = version.getSchema().getOpenAPIV3Schema()
         .getProperties().get("spec").getProperties();
 
-      assertEquals(2, specProps.size());
+      assertEquals(3, specProps.size());
 
       checkMapProp(specProps, "test", "array");
       String arrayType = specProps.get("test").getAdditionalProperties().getSchema().getItems().getSchema().getType();
@@ -285,6 +285,12 @@ class CRDGeneratorTest {
       JSONSchemaProps valueSchema = specProps.get("test2").getAdditionalProperties().getSchema().getAdditionalProperties().getSchema();
       String valueType = valueSchema.getType();
       assertEquals("array", valueType);
+
+      // this check is currently failing, because multimaps are incorrectly processed as if they were normal maps
+      // (class MultiMap<K,V> implements Map<K,List<V>> is treated like just Map<K,V>)
+      // checkMapProp(specProps, "test3", "object");
+      final JSONSchemaProps props = specProps.get("test3");
+      assertEquals("object", props.getType());
 
       assertEquals("boolean", valueSchema.getItems().getSchema().getType());
     });

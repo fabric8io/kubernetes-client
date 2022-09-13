@@ -25,6 +25,10 @@ import io.sundr.builder.TypedVisitor;
 import io.sundr.model.*;
 import io.sundr.model.functions.GetDefinition;
 import io.sundr.model.repo.DefinitionRepository;
+import io.sundr.model.visitors.ApplyTypeParamMappingToMethod;
+import io.sundr.model.visitors.ApplyTypeParamMappingToProperty;
+import io.sundr.model.visitors.ApplyTypeParamMappingToTypeArguments;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,6 +84,10 @@ public class Types {
     }
 
     List<TypeParamDef> parameters = definition.getParameters();
+    if (parameters.size() != arguments.size()) {
+      throw new IllegalStateException("Incompatible reference " + ref + " to " + definition);
+    }
+
     Map<String, TypeRef> mappings = new HashMap<>();
     for (int i = 0; i < arguments.size(); i++) {
       String name = parameters.get(i).getName();
@@ -88,60 +96,10 @@ public class Types {
     }
 
     return new TypeDefBuilder(definition)
-      .accept(mapClassRefArguments(mappings), mapGenericProperties(mappings))
+      .accept(new ApplyTypeParamMappingToTypeArguments(mappings)) // existing type arguments must be handled before methods and properties
+      .accept(new ApplyTypeParamMappingToProperty(mappings),
+        new ApplyTypeParamMappingToMethod(mappings))
       .build();
-  }
-
-  /**
-   * Map generic properties to known {@link TypeRef} based on the specified mappings.
-   * Example: Given a property {@code T size} and a map containing {@code T -> Integer} the final
-   * property will be: {@code Integer type}.
-   * @param mappings A map that maps class arguments names to types.
-   * @return a visitors that performs the actual mapping.
-   */
-  private static TypedVisitor<PropertyBuilder> mapGenericProperties(Map<String, TypeRef> mappings) {
-    return new TypedVisitor<PropertyBuilder>() {
-      @Override
-      public void visit(PropertyBuilder property) {
-        TypeRef typeRef = property.buildTypeRef();
-        if (typeRef instanceof TypeParamRef) {
-          TypeParamRef typeParamRef = (TypeParamRef) typeRef;
-          String key = typeParamRef.getName();
-          TypeRef paramRef = mappings.get(key);
-          if (paramRef != null) {
-            property.withTypeRef(paramRef);
-          }
-        }
-      }
-    };
-  }
-
-  /**
-   * Map arguments, of {@link ClassRef} instances to known {@link TypeRef} based on the specified mappings.
-   * Example: Given a class reference to {@code Shape<T>} and a map containing {@code T -> Integer}
-   * the final reference will be: {@code Shape<Integer> type}.
-   * @param mappings A map that maps class arguments names to types.
-   * @return a visitors that performs the actual mapping.
-   */
-  private static TypedVisitor<ClassRefBuilder> mapClassRefArguments(Map<String, TypeRef> mappings) {
-    return new TypedVisitor<ClassRefBuilder>() {
-      @Override
-      public void visit(ClassRefBuilder c) {
-        List<TypeRef> arguments = new ArrayList<>();
-        for (TypeRef arg : c.buildArguments()) {
-          TypeRef mappedRef = arg;
-          if (arg instanceof TypeParamRef) {
-            TypeParamRef typeParamRef = (TypeParamRef) arg;
-            TypeRef mapping = mappings.get(typeParamRef.getName());
-            if (mapping != null) {
-              mappedRef = mapping;
-            }
-          }
-          arguments.add(mappedRef);
-        }
-        c.withArguments(arguments);
-      }
-    };
   }
 
   private static Set<ClassRef> projectSuperClasses(TypeDef definition) {

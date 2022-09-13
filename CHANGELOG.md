@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
 * Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
+* Fix #4413: Stack overflow on multi maps (and other non-trivial generic classes)
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
@@ -15,6 +16,7 @@
 * Fix #4243: Update Tekton pipeline model to v0.39.0
 * Fix #4243: Update Tekton triggers model to v0.20.2
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
+* Fix #4413: update sundrio to 0.94
 
 #### New Features
 

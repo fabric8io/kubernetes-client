@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.example.map;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,4 +33,7 @@ public class ContainingMapsSpec {
     return test2;
   }
 
+  private MyMultiMap<String, String> test3;
+
+  class MyMultiMap<K, V> extends HashMap<K, List<V>> {}
 }
