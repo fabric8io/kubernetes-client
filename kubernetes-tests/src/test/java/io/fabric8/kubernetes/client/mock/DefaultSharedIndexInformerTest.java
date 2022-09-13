@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.Status;
@@ -38,6 +39,9 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -66,6 +70,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -82,10 +87,11 @@ class DefaultSharedIndexInformerTest {
   KubernetesMockServer server;
 
   static final Status outdatedStatus = new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
-    .withMessage(
-      "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
-    .build();
-  static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
+      .withMessage(
+          "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
+      .build();
+  static final WatchEvent outdatedEvent = new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
+      .withStatusObject(outdatedStatus).build();
   static final Long WATCH_EVENT_EMIT_TIME = 1L;
   static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
   static final long RESYNC_PERIOD = 5L;
@@ -824,7 +830,6 @@ class DefaultSharedIndexInformerTest {
     assertEquals(0, v1beta1CronTabFound.getCount());
   }
 
-
   @Test
   void testReconnectAfterOnCloseException() throws InterruptedException {
     // Given
@@ -832,44 +837,60 @@ class DefaultSharedIndexInformerTest {
 
     // initial list
     server.expect().withPath("/api/v1/pods")
-      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
+        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
+            .withItems(Collections.emptyList()).build())
+        .once();
 
     // initial watch - terminates with an exception
+    Pod mid = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(midResourceVersion)
+        .endMetadata().build();
     server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(WATCH_EVENT_EMIT_TIME)
-      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(midResourceVersion).endMetadata().build(), "ADDED"))
-      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-      .andEmit(outdatedEvent)
-      .done().always();
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_EMIT_TIME)
+        .andEmit(new WatchEvent(mid, "ADDED"))
+        .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+        .andEmit(outdatedEvent)
+        .done().always();
+
+    // re-list errors
+    server.expect().withPath("/api/v1/pods")
+        .andReturn(HttpURLConnection.HTTP_FORBIDDEN, new Status())
+        .times(2);
+
+    // re-list
+    server.expect().withPath("/api/v1/pods")
+        .andReturn(200,
+            new PodListBuilder().withNewMetadata().withResourceVersion(midResourceVersion).endMetadata().withItems(mid).build())
+        .once();
 
     // should pick this up after the termination
     server.expect().withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(WATCH_EVENT_EMIT_TIME)
-      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(mid2ResourceVersion).endMetadata().build(), "MODIFIED"))
-      .done().always();
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_EMIT_TIME)
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+            .withResourceVersion(mid2ResourceVersion).endMetadata().build(), "MODIFIED"))
+        .done().always();
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
     CountDownLatch updates = new CountDownLatch(1);
     podInformer.addEventHandler(
-      new ResourceEventHandler<Pod>() {
-        @Override
-        public void onAdd(Pod obj) {
-        }
+        new ResourceEventHandler<Pod>() {
+          @Override
+          public void onAdd(Pod obj) {
+          }
 
-        @Override
-        public void onUpdate(Pod oldObj, Pod newObj) {
+          @Override
+          public void onUpdate(Pod oldObj, Pod newObj) {
             updates.countDown();
-        }
+          }
 
-        @Override
-        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) {
-        }
-      });
+          @Override
+          public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) {
+          }
+        });
     factory.startAllRegisteredInformers();
     updates.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
@@ -881,6 +902,51 @@ class DefaultSharedIndexInformerTest {
     podInformer.stop();
 
     assertFalse(podInformer.isRunning());
+  }
+
+  @Test
+  void testTerminalException() throws InterruptedException, TimeoutException {
+    // should be an initial 404
+    SharedIndexInformer<Pod> informer = client.pods().runnableInformer(0);
+    try {
+      informer.run();
+    } catch (Exception e) {
+    }
+    try {
+      informer.stopped().get(10, TimeUnit.SECONDS);
+    } catch (ExecutionException e) {
+      assertTrue(e.getCause() instanceof KubernetesClientException);
+    }
+
+    String startResourceVersion = "1000";
+
+    // initial list
+    server.expect().withPath("/api/v1/pods")
+        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
+            .withItems(Collections.emptyList()).build())
+        .once();
+
+    // initial watch - terminates with an exception
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_EMIT_TIME)
+        .andEmit(new WatchEvent(new Service(), "ADDED")) // not a pod
+        .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+        .andEmit(outdatedEvent)
+        .done().always();
+
+    // When
+    informer = client.pods().inAnyNamespace().runnableInformer(0);
+    try {
+      informer.run();
+    } catch (Exception e) {
+    }
+    try {
+      informer.stopped().get(10, TimeUnit.SECONDS);
+    } catch (ExecutionException e) {
+      assertTrue(e.getCause() instanceof WatcherException);
+    }
   }
 
   @Test

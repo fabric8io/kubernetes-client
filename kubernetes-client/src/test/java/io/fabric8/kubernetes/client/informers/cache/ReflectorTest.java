@@ -38,14 +38,13 @@ class ReflectorTest {
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.list(Mockito.any())).thenReturn(list);
 
-    Reflector<Pod, PodList> reflector =
-        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
+    Reflector<Pod, PodList> reflector = new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
 
     // throw an exception, then watch normally
-    Mockito.when(mock.watch(Mockito.any(),Mockito.any()))
+    Mockito.when(mock.watch(Mockito.any(), Mockito.any()))
         .thenThrow(new KubernetesClientException("error"))
         .thenReturn(Mockito.mock(Watch.class));
 
@@ -59,21 +58,22 @@ class ReflectorTest {
 
     assertTrue(reflector.isWatching());
     assertTrue(reflector.isRunning());
+    assertFalse(reflector.getStopFuture().isDone());
 
     reflector.stop();
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
+    assertTrue(reflector.getStopFuture().isDone());
   }
-  
+
   @Test
   void testNonHttpGone() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.list(Mockito.any())).thenReturn(list);
 
-    Reflector<Pod, PodList> reflector =
-        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
+    Reflector<Pod, PodList> reflector = new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
 
     reflector.listSyncAndWatch();
 
