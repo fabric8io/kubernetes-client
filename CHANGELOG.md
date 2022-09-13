@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #4365: backport of stopped future for informers to obtain the termination exception
 
 ### 5.12.3 (2022-07-27)
 
