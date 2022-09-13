@@ -1,6 +1,12 @@
 ## CHANGELOG
 
+### 5.12-SNAPSHOT
+
+#### Bugs
+
 ### 5.12.3 (2022-07-27)
+
+#### Bugs
 * Fix #3969: relist will not trigger sync events
 * Fix #4049: properly populate exception metadata with resource information if available
 * Fix #4222: backport of #4082 - to not process events until the cache is complete
@@ -9,6 +15,8 @@
 
 
 ### 5.12.2 (2022-04-06)
+
+#### Bugs
 * Fix #3582: SSL truststore can be loaded in FIPS enabled environments
 * Fix #3797: Implement SchemaSwap; generate CRD from model not owned
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
