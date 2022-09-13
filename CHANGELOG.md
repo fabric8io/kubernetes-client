@@ -15,6 +15,7 @@
 * Fix #4473: Fix regression in backoff interval introduced in #4365
 * Fix #4478: Removing the resourceVersion bump with null status
 * Fix #4482: Fixing blocking behavior of okhttp log watch
+* Fix #4487: Schema for multimaps is now generated correctly
 
 #### Improvements
 * Fix #4471: Adding KubernetesClientBuilder.withHttpClientBuilderConsumer to further customize the HttpClient for any implementation.
@@ -30,6 +31,7 @@
 * Fix #4243: Update Tekton triggers model to v0.20.2
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
 * Fix #4347: Update Kubernetes Model to v1.25.0
+* Fix #4413: Update sundrio to 0.93.1
 
 #### New Features
 * Fix #4398: add annotation @PreserveUnknownFields for marking generated field have `x-kubernetes-preserve-unknown-fields: true` defined

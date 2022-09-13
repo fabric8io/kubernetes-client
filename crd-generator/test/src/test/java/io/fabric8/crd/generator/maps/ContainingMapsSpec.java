@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.map;
+package io.fabric8.crd.generator.maps;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ContainingMapsSpec {
-
-  private Map<String, List<String>> test = null;
-
-  public Map<String, List<String>> getTest() {
-    return test;
-  }
-
-  private Map<String, Map<String, List<Boolean>>> test2 = null;
-
-  public Map<String, Map<String, List<Boolean>>> getTest2() {
-    return test2;
-  }
-
   private MultiHashMap<String, Integer> stringToIntMultiMap1;
   private MultiMap<String, Integer> stringToIntMultiMap2;
   private SwappedParametersMap<List<Integer>, String> stringToIntMultiMap3;
