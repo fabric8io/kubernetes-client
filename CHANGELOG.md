@@ -11,7 +11,7 @@
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
 
 #### New Features
-* Feat: add annotation @PreserveUnknownFields for generation field
+* Feat: add annotation @PreserveUnknownFields for marking generated field have `x-kubernetes-preserve-unknown-fields: true` defined
 
 #### _**Note**_: Breaking changes in the API
 

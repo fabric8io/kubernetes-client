@@ -18,7 +18,7 @@ package io.fabric8.crd.generator.annotation;
 import java.lang.annotation.*;
 
 /*
- * Used to tweak the behavior of the crd-generator
+ * Used to emit 'x-kubernetes-preserve-unknown-fields'
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
