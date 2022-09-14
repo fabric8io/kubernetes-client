@@ -41,7 +41,12 @@ class ReflectorTest {
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector = new Reflector<>(mock, Mockito.mock(SyncableStore.class));
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, Mockito.mock(SyncableStore.class)) {
+      @Override
+      protected void reconnect() {
+        // do nothing
+      }
+    };
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
@@ -51,7 +56,7 @@ class ReflectorTest {
         .thenThrow(new KubernetesClientException("error"))
         .thenReturn(CompletableFuture.completedFuture(Mockito.mock(Watch.class)));
 
-    CompletableFuture<Void> future = reflector.start();
+    CompletableFuture<Void> future = reflector.start(true);
 
     assertThrows(CompletionException.class, future::join);
 

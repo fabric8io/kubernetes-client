@@ -60,8 +60,20 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public CompletableFuture<Void> start() {
+    return start(false); // start without reconnecting
+  }
+
+  public CompletableFuture<Void> start(boolean reconnect) {
     this.running = true;
-    return listSyncAndWatch(false);
+    CompletableFuture<Void> result = listSyncAndWatch(reconnect);
+    if (!reconnect) {
+      result.whenComplete((v, t) -> {
+        if (t != null) {
+          stopFuture.completeExceptionally(t);
+        }
+      });
+    }
+    return result;
   }
 
   public void stop() {
@@ -130,7 +142,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     return theFuture;
   }
 
-  private void reconnect() {
+  protected void reconnect() {
     if (!running) {
       return;
     }
