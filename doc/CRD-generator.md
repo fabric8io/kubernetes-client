@@ -359,7 +359,7 @@ Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in 
             x-kubernetes-preserve-unknown-fields: true
 ```
 
-You can also annotation a field with @PreserveUnknownFields:
+You can also annotate a field with `io.fabric8.crd.generator.annotation.PreserveUnknownFields`:
 
 ```java
 interface ExampleInterface {}
