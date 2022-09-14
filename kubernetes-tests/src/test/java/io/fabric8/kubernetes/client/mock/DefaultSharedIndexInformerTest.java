@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
@@ -36,7 +37,9 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -65,6 +68,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -895,6 +899,51 @@ class DefaultSharedIndexInformerTest {
     podInformer.stop();
 
     assertFalse(podInformer.isRunning());
+  }
+
+  @Test
+  void testTerminalException() throws InterruptedException, TimeoutException {
+    // should be an initial 404
+    SharedIndexInformer<Pod> informer = client.pods().runnableInformer(0);
+    try {
+      informer.run();
+    } catch (Exception e) {
+    }
+    try {
+      informer.stopped().get(10, TimeUnit.SECONDS);
+    } catch (ExecutionException e) {
+      assertTrue(e.getCause() instanceof KubernetesClientException);
+    }
+
+    String startResourceVersion = "1000";
+
+    // initial list
+    server.expect().withPath("/api/v1/pods")
+        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
+            .withItems(Collections.emptyList()).build())
+        .once();
+
+    // initial watch - terminates with an exception
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_EMIT_TIME)
+        .andEmit(new WatchEvent(new Service(), "ADDED")) // not a pod
+        .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+        .andEmit(outdatedEvent)
+        .done().always();
+
+    // When
+    informer = client.pods().inAnyNamespace().runnableInformer(0);
+    try {
+      informer.run();
+    } catch (Exception e) {
+    }
+    try {
+      informer.stopped().get(10, TimeUnit.SECONDS);
+    } catch (ExecutionException e) {
+      assertTrue(e.getCause() instanceof WatcherException);
+    }
   }
 
   @Test
