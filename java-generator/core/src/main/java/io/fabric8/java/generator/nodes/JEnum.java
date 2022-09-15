@@ -40,7 +40,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
 
   public JEnum(String type, List<JsonNode> values, Config config, String description, final boolean isNullable,
       JsonNode defaultValue) {
-    super(config, description, isNullable, defaultValue);
+    super(config, description, isNullable, defaultValue, null);
     this.type = AbstractJSONSchema2Pojo.sanitizeString(
         type.substring(0, 1).toUpperCase() + type.substring(1));
     this.values = values.stream().map(JsonNode::asText).collect(Collectors.toList());

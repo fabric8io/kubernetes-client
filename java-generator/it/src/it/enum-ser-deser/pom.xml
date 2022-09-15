@@ -50,14 +50,13 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>@validation-api.version@</version>
-      <scope>provided</scope>
+      <groupId>io.fabric8</groupId>
+      <artifactId>java-generator-integration-tests</artifactId>
+      <version>@project.version@</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>java-generator-integration-tests</artifactId>
+      <artifactId>generator-annotations</artifactId>
       <version>@project.version@</version>
     </dependency>
     <dependency>
