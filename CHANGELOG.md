@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #4365: backport of stopped future for informers to obtain the termination exception
+* Fix #4383: bump snakeyaml from 1.28 to 1.33
 
 ### 5.12.3 (2022-07-27)
 
