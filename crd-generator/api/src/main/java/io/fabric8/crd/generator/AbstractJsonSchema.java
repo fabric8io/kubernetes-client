@@ -120,24 +120,24 @@ public abstract class AbstractJsonSchema<T, B> {
   }
 
   protected static class SchemaPropsOptions {
-    final Optional<Double> min;
-    final Optional<Double> max;
-    final Optional<String> pattern;
+    final Double min;
+    final Double max;
+    final String pattern;
     final boolean nullable;
     final boolean required;
 
     final boolean preserveUnknownFields;
 
     SchemaPropsOptions() {
-      min = Optional.empty();
-      max = Optional.empty();
-      pattern = Optional.empty();
+      min = null;
+      max = null;
+      pattern = null;
       nullable = false;
       required = false;
       preserveUnknownFields = false;
     }
 
-    public SchemaPropsOptions(Optional<Double> min, Optional<Double> max, Optional<String> pattern,
+    public SchemaPropsOptions(Double min, Double max, String pattern,
         boolean nullable, boolean required, boolean preserveUnknownFields) {
       this.min = min;
       this.max = max;
@@ -148,15 +148,15 @@ public abstract class AbstractJsonSchema<T, B> {
     }
 
     public Optional<Double> getMin() {
-      return min;
+      return Optional.ofNullable(min);
     }
 
     public Optional<Double> getMax() {
-      return max;
+      return Optional.ofNullable(max);
     }
 
     public Optional<String> getPattern() {
-      return pattern;
+      return Optional.ofNullable(pattern);
     }
 
     public boolean isNullable() {
@@ -290,7 +290,7 @@ public abstract class AbstractJsonSchema<T, B> {
           facade.pattern,
           facade.nullable,
           facade.required,
-          facade.preserveSelfUnknownFields);
+          facade.preserveUnknownFields);
 
       addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema, options);
     }
@@ -313,14 +313,13 @@ public abstract class AbstractJsonSchema<T, B> {
     private final String propertyName;
     private final String type;
     private String renamedTo;
-    private Optional<Double> min;
-    private Optional<Double> max;
-    private Optional<String> pattern;
+    private Double min;
+    private Double max;
+    private String pattern;
     private boolean nullable;
     private boolean required;
     private boolean ignored;
     private boolean preserveUnknownFields;
-    private boolean preserveSelfUnknownFields;
     private String description;
     private TypeRef schemaFrom;
 
@@ -329,10 +328,6 @@ public abstract class AbstractJsonSchema<T, B> {
       this.name = name;
       this.propertyName = propertyName;
       type = isMethod ? "accessor" : "field";
-
-      min = Optional.empty();
-      max = Optional.empty();
-      pattern = Optional.empty();
     }
 
     static PropertyOrAccessor fromProperty(Property property) {
@@ -350,13 +345,13 @@ public abstract class AbstractJsonSchema<T, B> {
             nullable = true;
             break;
           case ANNOTATION_MAX:
-            max = Optional.of((Double) a.getParameters().get(VALUE));
+            max = (Double) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_MIN:
-            min = Optional.of((Double) a.getParameters().get(VALUE));
+            min = (Double) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_PATTERN:
-            pattern = Optional.of((String) a.getParameters().get(VALUE));
+            pattern = (String) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_NOT_NULL:
             LOGGER.warn("Annotation: {} on property: {} is deprecated. Please use: {} instead", ANNOTATION_NOT_NULL, name,
@@ -383,10 +378,8 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_JSON_ANY_GETTER:
           case ANNOTATION_JSON_ANY_SETTER:
-            preserveUnknownFields = true;
-            break;
           case ANNOTATION_PERSERVE_UNKNOWN_FIELDS:
-            preserveSelfUnknownFields = true;
+            preserveUnknownFields = true;
             break;
           case ANNOTATION_SCHEMA_FROM:
             schemaFrom = extractClassRef(a.getParameters().get("type"));
@@ -404,15 +397,15 @@ public abstract class AbstractJsonSchema<T, B> {
     }
 
     public Optional<Double> getMax() {
-      return max;
+      return Optional.ofNullable(max);
     }
 
     public Optional<Double> getMin() {
-      return min;
+      return Optional.ofNullable(min);
     }
 
     public Optional<String> getPattern() {
-      return pattern;
+      return Optional.ofNullable(pattern);
     }
 
     public boolean isRequired() {
@@ -425,10 +418,6 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public boolean isPreserveUnknownFields() {
       return preserveUnknownFields;
-    }
-
-    public boolean isPreserveSelfUnknownFields() {
-      return preserveSelfUnknownFields;
     }
 
     public String getDescription() {
@@ -461,14 +450,13 @@ public abstract class AbstractJsonSchema<T, B> {
     private final List<PropertyOrAccessor> propertyOrAccessors = new ArrayList<>(4);
     private String renamedTo;
     private String description;
-    private Optional<Double> min;
-    private Optional<Double> max;
-    private Optional<String> pattern;
+    private Double min;
+    private Double max;
+    private String pattern;
     private boolean nullable;
     private boolean required;
     private boolean ignored;
     private boolean preserveUnknownFields;
-    private boolean preserveSelfUnknownFields;
     private final Property original;
     private String nameContributedBy;
     private String descriptionContributedBy;
@@ -492,9 +480,9 @@ public abstract class AbstractJsonSchema<T, B> {
         propertyOrAccessors.add(PropertyOrAccessor.fromMethod(method, name));
       }
       schemaFrom = schemaSwap;
-      min = Optional.empty();
-      max = Optional.empty();
-      pattern = Optional.empty();
+      min = null;
+      max = null;
+      pattern = null;
     }
 
     public Property process() {
@@ -520,18 +508,9 @@ public abstract class AbstractJsonSchema<T, B> {
             LOGGER.debug("Description for property {} has already been contributed by: {}", name, descriptionContributedBy);
           }
         }
-
-        if (p.getMin().isPresent()) {
-          min = p.getMin();
-        }
-
-        if (p.getMax().isPresent()) {
-          max = p.getMax();
-        }
-
-        if (p.getPattern().isPresent()) {
-          pattern = p.getPattern();
-        }
+        min = p.getMin().orElse(min);
+        max = p.getMax().orElse(max);
+        pattern = p.getPattern().orElse(pattern);
 
         if (p.isNullable()) {
           nullable = true;
@@ -543,13 +522,7 @@ public abstract class AbstractJsonSchema<T, B> {
           ignored = true;
         }
 
-        if (p.isPreserveUnknownFields()) {
-          preserveUnknownFields = true;
-        }
-
-        if (p.isPreserveSelfUnknownFields()) {
-          preserveSelfUnknownFields = true;
-        }
+        preserveUnknownFields = p.isPreserveUnknownFields() || preserveUnknownFields;
 
         if (p.contributeSchemaFrom()) {
           schemaFrom = p.getSchemaFrom();
