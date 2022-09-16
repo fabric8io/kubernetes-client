@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #4383: bump snakeyaml from 1.28 to 1.33
 
 ### 5.12.3 (2022-07-27)
 
