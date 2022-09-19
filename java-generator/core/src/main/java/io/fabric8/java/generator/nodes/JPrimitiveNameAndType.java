@@ -23,6 +23,7 @@ public class JPrimitiveNameAndType extends JavaNameAndType {
   static final JPrimitiveNameAndType FLOAT = new JPrimitiveNameAndType("Float");
   static final JPrimitiveNameAndType DOUBLE = new JPrimitiveNameAndType("Double");
   static final JPrimitiveNameAndType STRING = new JPrimitiveNameAndType("String");
+  static final JPrimitiveNameAndType JSON_NODE = new JPrimitiveNameAndType("com.fasterxml.jackson.databind.JsonNode");
 
   public JPrimitiveNameAndType(String name) {
     super(name, JavaType.PRIMITIVE);
