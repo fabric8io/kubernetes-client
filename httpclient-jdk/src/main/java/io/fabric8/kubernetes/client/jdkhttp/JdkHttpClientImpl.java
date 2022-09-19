@@ -23,17 +23,11 @@ import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.net.http.HttpResponse.BodySubscriber;
-import java.net.http.HttpResponse.BodySubscribers;
 import java.net.http.WebSocketHandshakeException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -251,35 +245,6 @@ public class JdkHttpClientImpl implements HttpClient {
       BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
       return new HandlerAndAsyncBody<>(handler, subscriber);
     }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
-  }
-
-  @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    return sendAsync(request, () -> new HandlerAndAsyncBody<T>(toBodyHandler(type), null))
-        .thenApply(ar -> new JdkHttpResponseImpl<>(ar.response));
-  }
-
-  private <T> BodyHandler<T> toBodyHandler(Class<T> type) {
-    BodyHandler<T> bodyHandler;
-    if (type == null) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.discarding();
-    } else if (type == InputStream.class) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.ofInputStream();
-    } else if (type == String.class) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.ofString();
-    } else if (type == byte[].class) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.ofByteArray();
-    } else {
-      bodyHandler = responseInfo -> {
-        BodySubscriber<InputStream> upstream = BodyHandlers.ofInputStream().apply(responseInfo);
-
-        BodySubscriber<Reader> downstream = BodySubscribers.mapping(
-            upstream,
-            (InputStream is) -> new InputStreamReader(is, StandardCharsets.UTF_8));
-        return (BodySubscriber<T>) downstream;
-      };
-    }
-    return bodyHandler;
   }
 
   public <T> CompletableFuture<AsyncResponse<T>> sendAsync(HttpRequest request,

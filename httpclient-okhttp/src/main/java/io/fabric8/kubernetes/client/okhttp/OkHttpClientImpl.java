@@ -258,30 +258,6 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
-    Call call = httpClient.newCall(((OkHttpRequestImpl) request).getRequest());
-    call.enqueue(new Callback() {
-
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
-        future.complete(new OkHttpResponseImpl<>(response, type));
-      }
-
-      @Override
-      public void onFailure(Call call, IOException e) {
-        future.completeExceptionally(e);
-      }
-    });
-    future.whenComplete((r, t) -> {
-      if (future.isCancelled()) {
-        call.cancel();
-      }
-    });
-    return future;
-  }
-
-  @Override
   public io.fabric8.kubernetes.client.http.WebSocket.Builder newWebSocketBuilder() {
     return new OkHttpWebSocketImpl.BuilderImpl(this.httpClient);
   }

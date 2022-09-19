@@ -31,6 +31,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -176,6 +178,41 @@ class OkHttpClientTest {
     });
 
     assertTrue(consumed.get(5, TimeUnit.SECONDS));
+  }
+
+  @Test
+  void testConsumeLines() throws Exception {
+    server.expect().withPath("/async").andReturn(200, "hello\nworld\nlines\n").always();
+
+    ArrayList<String> strings = new ArrayList<>();
+    CompletableFuture<Void> consumed = new CompletableFuture<>();
+
+    CompletableFuture<HttpResponse<AsyncBody>> responseFuture = client.getHttpClient().consumeLines(
+        client.getHttpClient().newHttpRequestBuilder().uri(URI.create(client.getConfiguration().getMasterUrl() + "async"))
+            .build(),
+        (value, asyncBody) -> {
+          strings.add(value);
+          asyncBody.consume();
+        });
+
+    responseFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        consumed.completeExceptionally(t);
+      }
+      if (r != null) {
+        r.body().consume();
+        r.body().done().whenComplete((v, ex) -> {
+          if (ex != null) {
+            consumed.completeExceptionally(ex);
+          } else {
+            consumed.complete(null);
+          }
+        });
+      }
+    });
+
+    consumed.get(5, TimeUnit.SECONDS);
+    assertEquals(Arrays.asList("hello", "world", "lines"), strings);
   }
 
   @DisplayName("Supported response body types")

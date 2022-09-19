@@ -24,4 +24,9 @@ public class JettyHttpClientTest extends OkHttpClientTest {
     return new JettyHttpClientFactory();
   }
 
+  @Override
+  void testConsumeLines() throws Exception {
+    // line parsing not yet supported
+  }
+
 }

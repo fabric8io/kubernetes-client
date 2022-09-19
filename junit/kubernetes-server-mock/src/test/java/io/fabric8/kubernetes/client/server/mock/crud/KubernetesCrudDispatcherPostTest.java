@@ -178,7 +178,8 @@ class KubernetesCrudDispatcherPostTest {
     final HttpResponse<String> result = httpClient.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
     // Then
     assertThat(result)
-        .hasFieldOrPropertyWithValue("response.code", 400)
+        .extracting(HttpResponse::code).isEqualTo(400);
+    assertThat(result)
         .extracting(HttpResponse::body).asString()
         .contains("the namespace of the object (different) does not match the namespace on the URL (test)");
   }

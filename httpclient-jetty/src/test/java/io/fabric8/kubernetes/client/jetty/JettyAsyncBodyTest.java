@@ -24,4 +24,14 @@ public class JettyAsyncBodyTest extends AbstractAsyncBodyTest {
   protected HttpClient.Factory getHttpClientFactory() {
     return new JettyHttpClientFactory();
   }
+
+  @Override
+  public void consumeLinesNotProcessedIfCancelled() throws Exception {
+    // consume lines not supported
+  }
+
+  @Override
+  public void consumeLinesProcessedAfterConsume() throws Exception {
+    // consume lines not supported
+  }
 }

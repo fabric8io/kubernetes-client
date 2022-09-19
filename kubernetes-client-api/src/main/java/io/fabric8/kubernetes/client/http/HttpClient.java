@@ -183,7 +183,9 @@ public interface HttpClient extends AutoCloseable {
    * @param type one of InputStream, Reader, String, byte[]
    * @return a CompletableFuture that returns the resulting HttpResponse when complete
    */
-  <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
+  default <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
+    return SendAsyncUtils.sendAsync(request, type, this);
+  }
 
   /**
    * Send a request and consume the lines of the response body using the same logic as {@link BufferedReader} to

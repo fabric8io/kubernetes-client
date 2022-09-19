@@ -24,8 +24,6 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
-import org.eclipse.jetty.client.api.Result;
-import org.eclipse.jetty.client.util.BufferingResponseListener;
 import org.eclipse.jetty.client.util.InputStreamRequestContent;
 import org.eclipse.jetty.client.util.StringRequestContent;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
@@ -40,7 +38,6 @@ import java.util.function.Function;
 
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.APPLICATION_OCTET_STREAM;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.TEXT_PLAIN;
-import static org.eclipse.jetty.util.BufferUtil.toArray;
 
 public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpClient {
 
@@ -75,38 +72,9 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   }
 
   @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest originalRequest, Class<T> type) {
-    final var supportedResponse = JettyHttpResponse.SupportedResponse.from(type);
-    final var request = toStandardHttpRequest(originalRequest);
-    final CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
-    newRequest(request).send(new BufferingResponseListener() {
-
-      // TODO: Long Term Refactor - This Listener blocks until the full response is read and keeps it in memory.
-      //       Find a way to stream the response body without completing the future
-      //       We need two signals, one when the response is received, and one when the body is completely
-      //       read.
-      //       Should this method be completely replaced by consumeXxx()?
-      @Override
-      public void onComplete(Result result) {
-        future.complete(new JettyHttpResponse<>(
-            request, result.getResponse(), supportedResponse.process(result.getResponse(), getContent(), type)));
-      }
-    });
-    return interceptResponse(request.toBuilder(), future, r -> sendAsync(r, type));
-  }
-
-  @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(
       HttpRequest originalRequest, BodyConsumer<String> consumer) {
-    final var request = toStandardHttpRequest(originalRequest);
-    final var future = new JettyAsyncResponseListener<>(request, consumer) {
-
-      @Override
-      protected String process(Response response, ByteBuffer content) {
-        return JettyHttpResponse.SupportedResponse.TEXT.process(response, toArray(content), String.class);
-      }
-    }.listen(newRequest(request));
-    return interceptResponse(request.toBuilder(), future, r -> consumeLines(r, consumer));
+    throw new UnsupportedOperationException("Not supported by the Jetty client");
   }
 
   @Override

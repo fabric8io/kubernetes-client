@@ -16,6 +16,7 @@
 * Fix #4396: Provide more error context when @Group/@Version annotations are missing
 * Fix #4384: The Java generator now supports the generation of specific annotations (min, max, pattern, etc.), as defined by #4348
 * Fix #3864: Change ManagedOpenShiftClient OSGi ConfigurationPolicy to REQUIRE
+* Fix #4201: Removed sendAsync from the individual http client implementations
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0

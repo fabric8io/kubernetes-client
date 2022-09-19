@@ -24,4 +24,9 @@ public class JettyInterceptorTest extends AbstractInterceptorTest {
   protected HttpClient.Factory getHttpClientFactory() {
     return new JettyHttpClientFactory();
   }
+
+  @Override
+  public void afterHttpFailureReplacesResponseInConsumeLines() throws Exception {
+    // consume lines not supported
+  }
 }

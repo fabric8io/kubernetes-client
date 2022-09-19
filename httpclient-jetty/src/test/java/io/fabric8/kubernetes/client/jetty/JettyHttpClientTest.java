@@ -102,19 +102,6 @@ class JettyHttpClientTest {
   }
 
   @Test
-  @DisplayName("sendAsync with unsupported type throws Exception")
-  void sendAsyncUnsupportedType() {
-    try (var jettyHttpClient = new JettyHttpClient(
-        null, httpClient, webSocketClient, Collections.emptyList(), null)) {
-      // When
-      final var result = assertThrows(IllegalArgumentException.class,
-          () -> jettyHttpClient.sendAsync(null, Integer.class));
-      // Then
-      assertThat(result).hasMessage("Unsupported response type: java.lang.Integer");
-    }
-  }
-
-  @Test
   @DisplayName("sendAsync with unsupported HttpRequest throws Exception")
   void sendAsyncUnsupportedHttpRequest() {
     try (var jettyHttpClient = new JettyHttpClient(
