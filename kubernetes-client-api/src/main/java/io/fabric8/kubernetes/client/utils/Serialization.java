@@ -233,7 +233,8 @@ public class Serialization {
 
       final T result;
       if (intch != '{') {
-        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
+        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(),
+            new CustomYamlTagResolverWithLimit());
         final Map<String, Object> obj = yaml.load(bis);
         result = mapper.convertValue(obj, type);
       } else {
@@ -426,16 +427,16 @@ public class Serialization {
     }
   }
 
-  private static class CustomYamlTagResolver extends Resolver {
+  private static class CustomYamlTagResolverWithLimit extends Resolver {
     @Override
-    public void addImplicitResolver(Tag tag, Pattern regexp, String first) {
+    public void addImplicitResolver(Tag tag, Pattern regexp, String first, int limit) {
       if (tag == Tag.TIMESTAMP)
         return;
       if (tag.equals(Tag.BOOL)) {
         regexp = Pattern.compile("^(?:true|True|TRUE|false|False|FALSE)$");
         first = "tTfF";
       }
-      super.addImplicitResolver(tag, regexp, first);
+      super.addImplicitResolver(tag, regexp, first, limit);
     }
   }
 }

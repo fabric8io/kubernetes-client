@@ -187,7 +187,6 @@
             </manifest>
             <manifestEntries>
               <Implementation-URL>${project.url}</Implementation-URL>
-              <Java-Version>${java.version}</Java-Version>
               <Scm-Url>${project.scm.url}</Scm-Url>
               <Scm-Connection>${project.scm.connection}</Scm-Connection>
               <Scm-Revision>${buildNumber}</Scm-Revision>

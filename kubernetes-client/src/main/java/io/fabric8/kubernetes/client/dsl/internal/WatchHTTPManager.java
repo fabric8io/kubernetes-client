@@ -29,12 +29,14 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
   private CompletableFuture<HttpResponse<AsyncBody>> call;
+  private volatile AsyncBody body;
 
   public WatchHTTPManager(final HttpClient client,
       final BaseOperation<T, L, ?> baseOperation,
@@ -74,7 +76,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         scheduleReconnect();
       }
       if (response != null) {
-        AsyncBody body = response.body();
+        body = response.body();
         if (!response.isSuccessful()) {
           body.cancel();
           if (onStatus(OperationSupport.createStatus(response.code(), response.message()))) {
@@ -101,9 +103,9 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
   @Override
   protected synchronized void closeRequest() {
-    if (call != null) {
-      call.cancel(true);
-      call = null;
-    }
+    Optional.ofNullable(call).ifPresent(theFuture -> {
+      theFuture.cancel(true);
+    });
+    Optional.ofNullable(body).ifPresent(AsyncBody::cancel);
   }
 }

@@ -15,15 +15,21 @@
  */
 package io.fabric8.crd.example.extraction;
 
-import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
-import io.fabric8.crd.generator.annotation.SchemaFrom;
+public class SchemaSwapSpec {
+  private SomeObject first;
+  private SomeObject second;
+  private AnotherObject third;
+  private YetAnotherObject fourth;
 
-public class ExtractionSpec {
+  static class SomeObject {
+    private int shouldBeString;
+  }
 
-  @SchemaFrom(type = FooExtractor.class)
-  private Foo foo;
+  static class AnotherObject {
+    private String shouldBeInt;
+  }
 
-  @PreserveUnknownFields
-  private Foo bar;
-
+  static class YetAnotherObject {
+    private String shouldBeSkipped;
+  }
 }

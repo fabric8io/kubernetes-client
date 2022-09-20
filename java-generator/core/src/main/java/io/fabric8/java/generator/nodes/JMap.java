@@ -31,7 +31,7 @@ public class JMap extends AbstractJSONSchema2Pojo {
 
   public JMap(AbstractJSONSchema2Pojo nested, Config config, String description, final boolean isNullable,
       JsonNode defaultValue) {
-    super(config, description, isNullable, defaultValue);
+    super(config, description, isNullable, defaultValue, null);
     this.type = new ClassOrInterfaceType()
         .setName(JAVA_UTIL_MAP)
         .setTypeArguments(

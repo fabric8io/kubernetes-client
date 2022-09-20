@@ -444,7 +444,7 @@ class ResourceTest {
   }
 
   @Test
-  void tesErrorEventDuringWaitReturnFromAPIIfMatch() throws InterruptedException {
+  void testErrorEventDuringWaitReturnFromAPIIfMatch() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
@@ -470,6 +470,15 @@ class ResourceTest {
         .open()
         .waitFor(500)
         .andEmit(new WatchEvent(status, "ERROR"))
+        .done()
+        .once();
+
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
         .waitFor(500)
         .andEmit(new WatchEvent(ready, "MODIFIED"))
         .done()

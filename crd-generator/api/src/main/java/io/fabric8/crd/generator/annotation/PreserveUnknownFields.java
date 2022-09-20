@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.extraction;
+package io.fabric8.crd.generator.annotation;
 
-import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
-import io.fabric8.crd.generator.annotation.SchemaFrom;
+import java.lang.annotation.*;
 
-public class ExtractionSpec {
-
-  @SchemaFrom(type = FooExtractor.class)
-  private Foo foo;
-
-  @PreserveUnknownFields
-  private Foo bar;
-
+/*
+ * Used to emit 'x-kubernetes-preserve-unknown-fields'
+ */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PreserveUnknownFields {
 }

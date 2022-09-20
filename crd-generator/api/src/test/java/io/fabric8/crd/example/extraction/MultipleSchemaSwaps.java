@@ -15,15 +15,12 @@
  */
 package io.fabric8.crd.example.extraction;
 
-import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
-import io.fabric8.crd.generator.annotation.SchemaFrom;
+import io.fabric8.crd.generator.annotation.SchemaSwap;
+import io.fabric8.kubernetes.client.CustomResource;
 
-public class ExtractionSpec {
-
-  @SchemaFrom(type = FooExtractor.class)
-  private Foo foo;
-
-  @PreserveUnknownFields
-  private Foo bar;
+@SchemaSwap(originalType = SchemaSwapSpec.SomeObject.class, fieldName = "shouldBeString", targetType = String.class)
+@SchemaSwap(originalType = SchemaSwapSpec.AnotherObject.class, fieldName = "shouldBeInt", targetType = Integer.class)
+@SchemaSwap(originalType = SchemaSwapSpec.YetAnotherObject.class, fieldName = "shouldBeSkipped")
+public class MultipleSchemaSwaps extends CustomResource<SchemaSwapSpec, Void> {
 
 }

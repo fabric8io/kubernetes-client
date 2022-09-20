@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.extraction;
+package io.fabric8.crd.generator.annotation;
 
-import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
-import io.fabric8.crd.generator.annotation.SchemaFrom;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class ExtractionSpec {
-
-  @SchemaFrom(type = FooExtractor.class)
-  private Foo foo;
-
-  @PreserveUnknownFields
-  private Foo bar;
-
+/**
+ * A container for multiple {@link SchemaSwap}s
+ */
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE_USE, ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SchemaSwaps {
+  SchemaSwap[] value();
 }

@@ -44,7 +44,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -60,13 +59,12 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   final AtomicBoolean forceClosed;
   private final int reconnectLimit;
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
-  final AtomicInteger currentReconnectAttempt;
   private Future<?> reconnectAttempt;
 
   protected final HttpClient client;
   protected BaseOperation<T, ?, ?> baseOperation;
-  private ListOptions listOptions;
-  private URL requestUrl;
+  private final ListOptions listOptions;
+  private final URL requestUrl;
 
   private final boolean receiveBookmarks;
 
@@ -77,7 +75,6 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
-    this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
     this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
     // opt into bookmarks by default
@@ -164,18 +161,16 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
 
   final boolean cannotReconnect() {
-    return !watcher.reconnecting() && currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
+    return !watcher.reconnecting() && retryIntervalCalculator.getCurrentReconnectAttempt() >= reconnectLimit
+        && reconnectLimit >= 0;
   }
 
   final long nextReconnectInterval() {
-    int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
-    long ret = retryIntervalCalculator.getInterval(exponentOfTwo);
-    logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
-    return ret;
+    return retryIntervalCalculator.nextReconnectInterval();
   }
 
   void resetReconnectAttempts() {
-    currentReconnectAttempt.set(0);
+    retryIntervalCalculator.resetReconnectAttempts();
   }
 
   boolean isForceClosed() {
@@ -192,7 +187,15 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     if (resource != null && !baseOperation.getType().isAssignableFrom(resource.getClass())) {
       resource = Serialization.jsonMapper().convertValue(resource, baseOperation.getType());
     }
-    watcher.eventReceived(action, (T) resource);
+    @SuppressWarnings("unchecked")
+    final T t = (T) resource;
+    try {
+      watcher.eventReceived(action, t);
+    } catch (Exception e) {
+      // for compatibility, this will just log the exception as was done in previous versions
+      // a case could be made for this to terminate the watch instead
+      logger.error("Unhandled exception encountered in watcher event handler", e);
+    }
   }
 
   void updateResourceVersion(final String newResourceVersion) {
@@ -228,29 +231,26 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     cancelReconnect();
   }
 
-  private WatchEvent contextAwareWatchEventDeserializer(String messageSource) {
+  private WatchEvent contextAwareWatchEventDeserializer(String messageSource)
+      throws JsonProcessingException {
     try {
       return Serialization.unmarshal(messageSource, WatchEvent.class);
     } catch (Exception ex1) {
-      try {
-        JsonNode json = Serialization.jsonMapper().readTree(messageSource);
-        JsonNode objectJson = null;
-        if (json instanceof ObjectNode && json.has("object")) {
-          objectJson = ((ObjectNode) json).remove("object");
-        }
-
-        WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
-        KubernetesResource object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
-
-        watchEvent.setObject(object);
-        return watchEvent;
-      } catch (JsonProcessingException ex2) {
-        throw new IllegalArgumentException("Failed to deserialize WatchEvent", ex2);
+      JsonNode json = Serialization.jsonMapper().readTree(messageSource);
+      JsonNode objectJson = null;
+      if (json instanceof ObjectNode && json.has("object")) {
+        objectJson = ((ObjectNode) json).remove("object");
       }
+
+      WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
+      KubernetesResource object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+
+      watchEvent.setObject(object);
+      return watchEvent;
     }
   }
 
-  protected WatchEvent readWatchEvent(String messageSource) {
+  protected WatchEvent readWatchEvent(String messageSource) throws JsonProcessingException {
     WatchEvent event = contextAwareWatchEventDeserializer(messageSource);
     KubernetesResource object = null;
     if (event != null) {
@@ -278,36 +278,47 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     try {
       WatchEvent event = readWatchEvent(message);
       Object object = event.getObject();
-      if (object instanceof Status) {
-        Status status = (Status) object;
+      Action action = Action.valueOf(event.getType());
+      if (action == Action.ERROR) {
+        if (object instanceof Status) {
+          Status status = (Status) object;
 
-        onStatus(status);
-      } else if (object instanceof KubernetesResourceList) {
-        // Dirty cast - should always be valid though
-        KubernetesResourceList list = (KubernetesResourceList) object;
-        updateResourceVersion(list.getMetadata().getResourceVersion());
-        Action action = Action.valueOf(event.getType());
-        List<HasMetadata> items = list.getItems();
-        if (items != null) {
-          for (HasMetadata item : items) {
-            eventReceived(action, item);
-          }
+          onStatus(status);
+        } else {
+          logger.error("Error received, but object is not a status - will retry");
+          closeRequest();
         }
       } else if (object instanceof HasMetadata) {
-        @SuppressWarnings("unchecked")
-        T obj = (T) object;
-        updateResourceVersion(obj.getMetadata().getResourceVersion());
-        Action action = Action.valueOf(event.getType());
-        eventReceived(action, obj);
+        HasMetadata hasMetadata = (HasMetadata) object;
+        updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
+
+        if (object instanceof KubernetesResourceList) {
+          // Dirty cast - should always be valid though
+          @SuppressWarnings({ "rawtypes" })
+          KubernetesResourceList list = (KubernetesResourceList) hasMetadata;
+          @SuppressWarnings("unchecked")
+          List<HasMetadata> items = list.getItems();
+          if (items != null) {
+            for (HasMetadata item : items) {
+              eventReceived(action, item);
+            }
+          }
+        } else {
+          eventReceived(action, hasMetadata);
+        }
       } else {
-        logger.error("Unknown message received: {}", message);
+        final String msg = String.format("Invalid object received: %s", message);
+        close(new WatcherException(msg, null, message));
       }
     } catch (ClassCastException e) {
-      logger.error("Received wrong type of object for watch", e);
-    } catch (IllegalArgumentException e) {
-      logger.error("Invalid event type", e);
+      final String msg = "Received wrong type of object for watch";
+      close(new WatcherException(msg, e, message));
+    } catch (JsonProcessingException e) {
+      final String msg = "Couldn't deserialize watch event: " + message;
+      close(new WatcherException(msg, e, message));
     } catch (Exception e) {
-      logger.error("Unhandled exception encountered in watcher event handler", e);
+      final String msg = "Unexpected exception processing watch event";
+      close(new WatcherException(msg, e, message));
     }
   }
 
@@ -318,8 +329,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       return true;
     }
 
-    eventReceived(Action.ERROR, null);
-    logger.error("Error received: {}", status);
+    logger.error("Error received: {}, will retry", status);
+    closeRequest();
     return false;
   }
 

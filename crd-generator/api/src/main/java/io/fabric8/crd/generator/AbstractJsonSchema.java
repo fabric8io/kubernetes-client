@@ -17,6 +17,7 @@ package io.fabric8.crd.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -28,13 +29,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static io.sundr.model.utils.Types.BOOLEAN_REF;
 import static io.sundr.model.utils.Types.DOUBLE_REF;
 import static io.sundr.model.utils.Types.INT_REF;
 import static io.sundr.model.utils.Types.LONG_REF;
 import static io.sundr.model.utils.Types.STRING_REF;
+import static io.sundr.model.utils.Types.VOID;
 
 /**
  * Encapsulates the common logic supporting OpenAPI schema generation for CRD generation.
@@ -86,7 +87,9 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_REQUIRED = "io.fabric8.generator.annotation.Required";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
   public static final String ANNOTATION_SCHEMA_FROM = "io.fabric8.crd.generator.annotation.SchemaFrom";
+  public static final String ANNOTATION_PERSERVE_UNKNOWN_FIELDS = "io.fabric8.crd.generator.annotation.PreserveUnknownFields";
   public static final String ANNOTATION_SCHEMA_SWAP = "io.fabric8.crd.generator.annotation.SchemaSwap";
+  public static final String ANNOTATION_SCHEMA_SWAPS = "io.fabric8.crd.generator.annotation.SchemaSwaps";
 
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
 
@@ -117,39 +120,43 @@ public abstract class AbstractJsonSchema<T, B> {
   }
 
   protected static class SchemaPropsOptions {
-    final Optional<Double> min;
-    final Optional<Double> max;
-    final Optional<String> pattern;
+    final Double min;
+    final Double max;
+    final String pattern;
     final boolean nullable;
     final boolean required;
 
+    final boolean preserveUnknownFields;
+
     SchemaPropsOptions() {
-      min = Optional.empty();
-      max = Optional.empty();
-      pattern = Optional.empty();
+      min = null;
+      max = null;
+      pattern = null;
       nullable = false;
       required = false;
+      preserveUnknownFields = false;
     }
 
-    public SchemaPropsOptions(Optional<Double> min, Optional<Double> max, Optional<String> pattern,
-        boolean nullable, boolean required) {
+    public SchemaPropsOptions(Double min, Double max, String pattern,
+        boolean nullable, boolean required, boolean preserveUnknownFields) {
       this.min = min;
       this.max = max;
       this.pattern = pattern;
       this.nullable = nullable;
       this.required = required;
+      this.preserveUnknownFields = preserveUnknownFields;
     }
 
     public Optional<Double> getMin() {
-      return min;
+      return Optional.ofNullable(min);
     }
 
     public Optional<Double> getMax() {
-      return max;
+      return Optional.ofNullable(max);
     }
 
     public Optional<String> getPattern() {
-      return pattern;
+      return Optional.ofNullable(pattern);
     }
 
     public boolean isNullable() {
@@ -158,6 +165,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public boolean getRequired() {
       return required;
+    }
+
+    public boolean isPreserveUnknownFields() {
+      return preserveUnknownFields;
     }
   }
 
@@ -170,58 +181,10 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return The schema.
    */
   protected T internalFrom(TypeDef definition, String... ignore) {
-    List<InternalSchemaSwap> schemaSwaps = new ArrayList<>();
+    InternalSchemaSwaps schemaSwaps = new InternalSchemaSwaps();
     T ret = internalFromImpl(definition, new HashSet<>(), schemaSwaps, ignore);
-    validateRemainingSchemaSwaps("unmatched class", schemaSwaps);
+    schemaSwaps.throwIfUnmatchedSwaps();
     return ret;
-  }
-
-  private static class InternalSchemaSwap {
-    final ClassRef targetType;
-    final ClassRef originalType;
-    final String fieldName;
-
-    public InternalSchemaSwap(ClassRef originalType, String fieldName, ClassRef targetType) {
-      this.originalType = originalType;
-      this.fieldName = fieldName;
-      this.targetType = targetType;
-    }
-
-    public ClassRef getTargetType() {
-      return targetType;
-    }
-
-    public ClassRef getOriginalType() {
-      return originalType;
-    }
-
-    public String getFieldName() {
-      return fieldName;
-    }
-
-    @Override
-    public String toString() {
-      return "{" +
-          "targetType=" + targetType +
-          ", originalType=" + originalType +
-          ", fieldName='" + fieldName + '\'' +
-          '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o)
-        return true;
-      if (o == null || getClass() != o.getClass())
-        return false;
-      InternalSchemaSwap that = (InternalSchemaSwap) o;
-      return targetType.equals(that.targetType) && originalType.equals(that.originalType) && fieldName.equals(that.fieldName);
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(targetType, originalType, fieldName);
-    }
   }
 
   private static ClassRef extractClassRef(Object type) {
@@ -238,25 +201,44 @@ public abstract class AbstractJsonSchema<T, B> {
     }
   }
 
-  private InternalSchemaSwap extractSchemaSwap(AnnotationRef annotation) {
-    Map<String, Object> params = annotation.getParameters();
-    return new InternalSchemaSwap(
-        extractClassRef(params.get("originalType")),
-        (String) params.get("fieldName"),
-        extractClassRef(params.get("targetType")));
-  }
-
-  private void validateRemainingSchemaSwaps(String error, List<InternalSchemaSwap> schemaSwaps) {
-    if (!schemaSwaps.isEmpty()) {
-      String umatchedSchemaSwaps = schemaSwaps
-          .stream()
-          .map(InternalSchemaSwap::toString)
-          .collect(Collectors.joining(",", "[", "]"));
-      throw new IllegalArgumentException("SchemaSwap annotation error " + error + ": " + umatchedSchemaSwaps);
+  private void extractSchemaSwaps(ClassRef definitionType, AnnotationRef annotation, InternalSchemaSwaps schemaSwaps) {
+    String fullyQualifiedName = annotation.getClassRef().getFullyQualifiedName();
+    switch (fullyQualifiedName) {
+      case ANNOTATION_SCHEMA_SWAP:
+        extractSchemaSwap(definitionType, annotation, schemaSwaps);
+        break;
+      case ANNOTATION_SCHEMA_SWAPS:
+        Map<String, Object> params = annotation.getParameters();
+        Object[] values = (Object[]) params.get("value");
+        for (Object value : values) {
+          extractSchemaSwap(definitionType, value, schemaSwaps);
+        }
+        break;
     }
   }
 
-  private T internalFromImpl(TypeDef definition, Set<String> visited, List<InternalSchemaSwap> schemaSwaps, String... ignore) {
+  private void extractSchemaSwap(ClassRef definitionType, Object annotation, InternalSchemaSwaps schemaSwaps) {
+    if (annotation instanceof SchemaSwap) {
+      SchemaSwap schemaSwap = (SchemaSwap) annotation;
+      schemaSwaps.registerSwap(definitionType,
+          extractClassRef(schemaSwap.originalType()),
+          schemaSwap.fieldName(),
+          extractClassRef(schemaSwap.targetType()));
+
+    } else if (annotation instanceof AnnotationRef
+        && ((AnnotationRef) annotation).getClassRef().getFullyQualifiedName().equals(ANNOTATION_SCHEMA_SWAP)) {
+      Map<String, Object> params = ((AnnotationRef) annotation).getParameters();
+      schemaSwaps.registerSwap(definitionType,
+          extractClassRef(params.get("originalType")),
+          (String) params.get("fieldName"),
+          extractClassRef(params.getOrDefault("targetType", void.class)));
+
+    } else {
+      throw new IllegalArgumentException("Unmanaged annotation type passed to the SchemaSwaps: " + annotation);
+    }
+  }
+
+  private T internalFromImpl(TypeDef definition, Set<String> visited, InternalSchemaSwaps schemaSwaps, String... ignore) {
     final B builder = newBuilder();
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore))
         : Collections
@@ -266,19 +248,7 @@ public abstract class AbstractJsonSchema<T, B> {
     boolean preserveUnknownFields = (definition.getFullyQualifiedName() != null &&
         definition.getFullyQualifiedName().equals(JSON_NODE_TYPE));
 
-    List<InternalSchemaSwap> newSchemaSwaps = definition
-        .getAnnotations()
-        .stream()
-        .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_SCHEMA_SWAP))
-        .map(this::extractSchemaSwap)
-        .collect(Collectors.toList());
-
-    schemaSwaps.addAll(newSchemaSwaps);
-
-    final Set<InternalSchemaSwap> currentSchemaSwaps = schemaSwaps
-        .stream()
-        .filter(iss -> iss.getOriginalType().getFullyQualifiedName().equals(definition.getFullyQualifiedName()))
-        .collect(Collectors.toSet());
+    definition.getAnnotations().forEach(annotation -> extractSchemaSwaps(definition.toReference(), annotation, schemaSwaps));
 
     // index potential accessors by name for faster lookup
     final Map<String, Method> accessors = indexPotentialAccessors(definition);
@@ -290,11 +260,9 @@ public abstract class AbstractJsonSchema<T, B> {
         continue;
       }
 
-      final PropertyFacade facade = new PropertyFacade(property, accessors, currentSchemaSwaps);
+      ClassRef potentialSchemaSwap = schemaSwaps.lookupAndMark(definition.toReference(), name).orElse(null);
+      final PropertyFacade facade = new PropertyFacade(property, accessors, potentialSchemaSwap);
       final Property possiblyRenamedProperty = facade.process();
-      final Set<InternalSchemaSwap> matchedSchemaSwaps = facade.getMatchedSchemaSwaps();
-      currentSchemaSwaps.removeAll(matchedSchemaSwaps);
-      schemaSwaps.removeAll(matchedSchemaSwaps);
       name = possiblyRenamedProperty.getName();
 
       if (facade.required) {
@@ -321,12 +289,12 @@ public abstract class AbstractJsonSchema<T, B> {
           facade.max,
           facade.pattern,
           facade.nullable,
-          facade.required);
+          facade.required,
+          facade.preserveUnknownFields);
 
       addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema, options);
     }
 
-    validateRemainingSchemaSwaps("unmatched field", currentSchemaSwaps.stream().collect(Collectors.toList()));
     return build(builder, required, preserveUnknownFields);
   }
 
@@ -345,9 +313,9 @@ public abstract class AbstractJsonSchema<T, B> {
     private final String propertyName;
     private final String type;
     private String renamedTo;
-    private Optional<Double> min;
-    private Optional<Double> max;
-    private Optional<String> pattern;
+    private Double min;
+    private Double max;
+    private String pattern;
     private boolean nullable;
     private boolean required;
     private boolean ignored;
@@ -360,10 +328,6 @@ public abstract class AbstractJsonSchema<T, B> {
       this.name = name;
       this.propertyName = propertyName;
       type = isMethod ? "accessor" : "field";
-
-      min = Optional.empty();
-      max = Optional.empty();
-      pattern = Optional.empty();
     }
 
     static PropertyOrAccessor fromProperty(Property property) {
@@ -381,13 +345,13 @@ public abstract class AbstractJsonSchema<T, B> {
             nullable = true;
             break;
           case ANNOTATION_MAX:
-            max = Optional.of((Double) a.getParameters().get(VALUE));
+            max = (Double) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_MIN:
-            min = Optional.of((Double) a.getParameters().get(VALUE));
+            min = (Double) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_PATTERN:
-            pattern = Optional.of((String) a.getParameters().get(VALUE));
+            pattern = (String) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_NOT_NULL:
             LOGGER.warn("Annotation: {} on property: {} is deprecated. Please use: {} instead", ANNOTATION_NOT_NULL, name,
@@ -414,6 +378,7 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_JSON_ANY_GETTER:
           case ANNOTATION_JSON_ANY_SETTER:
+          case ANNOTATION_PERSERVE_UNKNOWN_FIELDS:
             preserveUnknownFields = true;
             break;
           case ANNOTATION_SCHEMA_FROM:
@@ -432,15 +397,15 @@ public abstract class AbstractJsonSchema<T, B> {
     }
 
     public Optional<Double> getMax() {
-      return max;
+      return Optional.ofNullable(max);
     }
 
     public Optional<Double> getMin() {
-      return min;
+      return Optional.ofNullable(min);
     }
 
     public Optional<String> getPattern() {
-      return pattern;
+      return Optional.ofNullable(pattern);
     }
 
     public boolean isRequired() {
@@ -483,13 +448,11 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static class PropertyFacade {
     private final List<PropertyOrAccessor> propertyOrAccessors = new ArrayList<>(4);
-    private final Set<InternalSchemaSwap> schemaSwaps;
-    private final Set<InternalSchemaSwap> matchedSchemaSwaps;
     private String renamedTo;
     private String description;
-    private Optional<Double> min;
-    private Optional<Double> max;
-    private Optional<String> pattern;
+    private Double min;
+    private Double max;
+    private String pattern;
     private boolean nullable;
     private boolean required;
     private boolean ignored;
@@ -499,10 +462,8 @@ public abstract class AbstractJsonSchema<T, B> {
     private String descriptionContributedBy;
     private TypeRef schemaFrom;
 
-    public PropertyFacade(Property property, Map<String, Method> potentialAccessors, Set<InternalSchemaSwap> schemaSwaps) {
+    public PropertyFacade(Property property, Map<String, Method> potentialAccessors, ClassRef schemaSwap) {
       original = property;
-      this.schemaSwaps = schemaSwaps;
-      this.matchedSchemaSwaps = new HashSet<>();
       final String capitalized = property.getNameCapitalized();
       final String name = property.getName();
       propertyOrAccessors.add(PropertyOrAccessor.fromProperty(property));
@@ -518,23 +479,14 @@ public abstract class AbstractJsonSchema<T, B> {
       if (method != null) {
         propertyOrAccessors.add(PropertyOrAccessor.fromMethod(method, name));
       }
-      min = Optional.empty();
-      max = Optional.empty();
-      pattern = Optional.empty();
+      schemaFrom = schemaSwap;
+      min = null;
+      max = null;
+      pattern = null;
     }
 
     public Property process() {
       final String name = original.getName();
-
-      Optional<InternalSchemaSwap> currentSchemaSwap = schemaSwaps
-          .stream()
-          .filter(iss -> iss.getFieldName().equals(name))
-          .findFirst();
-
-      currentSchemaSwap.ifPresent(iss -> {
-        schemaFrom = iss.targetType;
-        matchedSchemaSwaps.add(iss);
-      });
 
       propertyOrAccessors.forEach(p -> {
         p.process();
@@ -556,18 +508,9 @@ public abstract class AbstractJsonSchema<T, B> {
             LOGGER.debug("Description for property {} has already been contributed by: {}", name, descriptionContributedBy);
           }
         }
-
-        if (p.getMin().isPresent()) {
-          min = p.getMin();
-        }
-
-        if (p.getMax().isPresent()) {
-          max = p.getMax();
-        }
-
-        if (p.getPattern().isPresent()) {
-          pattern = p.getPattern();
-        }
+        min = p.getMin().orElse(min);
+        max = p.getMax().orElse(max);
+        pattern = p.getPattern().orElse(pattern);
 
         if (p.isNullable()) {
           nullable = true;
@@ -579,9 +522,7 @@ public abstract class AbstractJsonSchema<T, B> {
           ignored = true;
         }
 
-        if (p.isPreserveUnknownFields()) {
-          preserveUnknownFields = true;
-        }
+        preserveUnknownFields = p.isPreserveUnknownFields() || preserveUnknownFields;
 
         if (p.contributeSchemaFrom()) {
           schemaFrom = p.getSchemaFrom();
@@ -593,10 +534,6 @@ public abstract class AbstractJsonSchema<T, B> {
 
       return new Property(original.getAnnotations(), typeRef, finalName,
           original.getComments(), original.getModifiers(), original.getAttributes());
-    }
-
-    public Set<InternalSchemaSwap> getMatchedSchemaSwaps() {
-      return this.matchedSchemaSwaps;
     }
   }
 
@@ -670,10 +607,10 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return the structural schema associated with the specified property
    */
   public T internalFrom(String name, TypeRef typeRef) {
-    return internalFromImpl(name, typeRef, new HashSet<>(), new ArrayList<>());
+    return internalFromImpl(name, typeRef, new HashSet<>(), new InternalSchemaSwaps());
   }
 
-  private T internalFromImpl(String name, TypeRef typeRef, Set<String> visited, List<InternalSchemaSwap> schemaSwaps) {
+  private T internalFromImpl(String name, TypeRef typeRef, Set<String> visited, InternalSchemaSwaps schemaSwaps) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
     if (typeRef.getDimensions() > 0 || io.sundr.model.utils.Collections.isCollection(typeRef)) { // Handle Collections & Arrays
@@ -721,7 +658,7 @@ public abstract class AbstractJsonSchema<T, B> {
                 .map(JsonNodeFactory.instance::textNode)
                 .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
-          } else {
+          } else if (!classRef.getFullyQualifiedName().equals(VOID.getName())) {
             return resolveNestedClass(name, def, visited, schemaSwaps);
           }
 
@@ -734,7 +671,7 @@ public abstract class AbstractJsonSchema<T, B> {
   // Flag to detect cycles
   private boolean resolving = false;
 
-  private T resolveNestedClass(String name, TypeDef def, Set<String> visited, List<InternalSchemaSwap> schemaSwaps) {
+  private T resolveNestedClass(String name, TypeDef def, Set<String> visited, InternalSchemaSwaps schemaSwaps) {
     if (!resolving) {
       visited.clear();
       resolving = true;

@@ -16,6 +16,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * Akka Management (Cluster Bootstrap) HTTP port in the range 1024 - 65535. Can be disabled with "off". This port is exposed as HTTP_MGMT_PORT environment variable if it is enabled.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("akkaManagementPort")
+    @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Akka Management (Cluster Bootstrap) HTTP port in the range 1024 - 65535. Can be disabled with \"off\". This port is exposed as HTTP_MGMT_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String akkaManagementPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"8558\"", String.class);
@@ -180,6 +181,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * gRPC port in the range 1024 - 65535. Can be disabled with "off". This port is exposed as GRPC_PORT environment variable if it is enabled.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("grpcPort")
+    @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("gRPC port in the range 1024 - 65535. Can be disabled with \"off\". This port is exposed as GRPC_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String grpcPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"8101\"", String.class);
@@ -212,6 +214,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * HTTP port in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PORT environment variable if it is enabled.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("httpPort")
+    @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("HTTP port in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String httpPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"off\"", String.class);
@@ -228,7 +231,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images
      */
     @com.fasterxml.jackson.annotation.JsonProperty("image")
-    @javax.validation.constraints.NotNull()
+    @io.fabric8.generator.annotation.Required()
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String image;
@@ -245,6 +248,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * Image pull policy. One of Always, Never, IfNotPresent. No setting falls back to the container default. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
      */
     @com.fasterxml.jackson.annotation.JsonProperty("imagePullPolicy")
+    @io.fabric8.generator.annotation.Pattern("^Always$|^Never$|^IfNotPresent$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Image pull policy. One of Always, Never, IfNotPresent. No setting falls back to the container default. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String imagePullPolicy;
@@ -389,6 +393,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * HTTP port to expose metrics for Prometheus to scrape. Must be  in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PROMETHEUS_PORT environment variable if it is enabled.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("prometheusPort")
+    @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("HTTP port to expose metrics for Prometheus to scrape. Must be  in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PROMETHEUS_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String prometheusPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"off\"", String.class);
@@ -421,6 +426,8 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
      * Number of desired pods.
      */
     @com.fasterxml.jackson.annotation.JsonProperty("replicas")
+    @io.fabric8.generator.annotation.Max(1000.0)
+    @io.fabric8.generator.annotation.Min(0.0)
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Number of desired pods.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private Long replicas = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("1", Long.class);
