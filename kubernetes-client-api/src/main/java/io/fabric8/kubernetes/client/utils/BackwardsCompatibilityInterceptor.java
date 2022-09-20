@@ -125,7 +125,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     notFoundTransformations.put(new ResourceKey("ClusterRole", "clusterroles", "rbac.authorization.k8s.io", "v1"),
         new ResourceKey("ClusterRole", "clusterroles", "rbac.authorization.k8s.io", "v1beta1"));
     notFoundTransformations.put(new ResourceKey("CronJob", "cronjobs", "batch", "v1"),
-      new ResourceKey("CronJob", "cronjobs", "batch", "v1beta1"));
+        new ResourceKey("CronJob", "cronjobs", "batch", "v1beta1"));
     notFoundTransformations.put(new ResourceKey("CronJob", "cronjobs", "batch", "v1beta1"),
         new ResourceKey("CronJob", "cronjobs", "batch", "v2alpha1"));
     notFoundTransformations.put(new ResourceKey("Template", "template", "", "v1"),
