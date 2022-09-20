@@ -49,8 +49,13 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
 
   @Override
   public JSONSchemaPropsBuilder newBuilder() {
+    return newBuilder("object");
+  }
+
+  @Override
+  public JSONSchemaPropsBuilder newBuilder(String type) {
     final JSONSchemaPropsBuilder builder = new JSONSchemaPropsBuilder();
-    builder.withType("object");
+    builder.withType(type);
     return builder;
   }
 
