@@ -64,6 +64,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -902,28 +903,27 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  void testTerminalException() throws InterruptedException, TimeoutException {
-    // should be an initial 404
-    SharedIndexInformer<Pod> informer = client.pods().runnableInformer(0);
-    try {
-      informer.run();
-    } catch (Exception e) {
+  void terminalExceptionWhenNoResourcesFoundIsPropagatedToStopped() {
+    try (SharedIndexInformer<Pod> informer = client.pods().runnableInformer(0)) {
+      final KubernetesClientException runException = assertThrows(KubernetesClientException.class, informer::run);
+      final CompletableFuture<Void> stopped = informer.stopped();
+      final ExecutionException result = assertThrows(ExecutionException.class,
+          () -> stopped.get(10, TimeUnit.SECONDS));
+      assertThat(result)
+          .cause()
+          .isInstanceOf(KubernetesClientException.class)
+          .hasFieldOrPropertyWithValue("code", 404)
+          .isSameAs(runException);
     }
-    try {
-      informer.stopped().get(10, TimeUnit.SECONDS);
-    } catch (ExecutionException e) {
-      assertTrue(e.getCause() instanceof KubernetesClientException);
-    }
+  }
 
+  @Test
+  void terminalExceptionWhenWatchFailsIsPropagatedToStopped() {
     String startResourceVersion = "1000";
-
-    // initial list
     server.expect().withPath("/api/v1/pods")
         .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
             .withItems(Collections.emptyList()).build())
         .once();
-
-    // initial watch - terminates with an exception
     server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
@@ -932,30 +932,29 @@ class DefaultSharedIndexInformerTest {
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
         .andEmit(outdatedEvent)
         .done().always();
-
-    // When
-    informer = client.pods().inAnyNamespace().runnableInformer(0);
-    try {
+    try (SharedIndexInformer<Pod> informer = client.pods().inAnyNamespace().runnableInformer(0)) {
       informer.run();
-    } catch (Exception e) {
-    }
-    try {
-      informer.stopped().get(10, TimeUnit.SECONDS);
-    } catch (ExecutionException e) {
-      assertTrue(e.getCause() instanceof WatcherException);
+      final CompletableFuture<Void> stopped = informer.stopped();
+      final ExecutionException result = assertThrows(ExecutionException.class,
+          () -> stopped.get(10, TimeUnit.SECONDS));
+      assertThat(result)
+          .cause()
+          .isInstanceOf(WatcherException.class)
+          .hasMessage("Unexpected exception processing watch event");
     }
   }
 
   @Test
-  void testRunAfterStop() {
-    // Given
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
-    podInformer.stop();
-    // When
-    final IllegalStateException result = assertThrows(IllegalStateException.class, podInformer::run);
-    // Then
-    assertThat(result)
-        .hasMessage("Cannot restart a stopped informer");
+  void runAfterStoppedShouldThrowException() {
+    try (SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0)) {
+      // Given
+      podInformer.stop();
+      // When
+      final IllegalStateException result = assertThrows(IllegalStateException.class, podInformer::run);
+      // Then
+      assertThat(result)
+          .hasMessage("Cannot restart a stopped informer");
+    }
   }
 
   @Test
