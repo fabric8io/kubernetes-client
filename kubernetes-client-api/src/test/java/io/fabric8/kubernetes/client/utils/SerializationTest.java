@@ -41,8 +41,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -242,10 +242,10 @@ class SerializationTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with invalid YAML resource, should throw exception")
-  void unmarshalWithInvalidResourceShouldThrowException() {
+  void unmarshalRawResource() {
     InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml");
-    assertThrows(KubernetesClientException.class, () -> Serialization.unmarshal(is));
+    RawExtension raw = Serialization.unmarshal(is);
+    raw.getAdditionalProperties().get("not-a").equals("resource");
   }
 
   @Test

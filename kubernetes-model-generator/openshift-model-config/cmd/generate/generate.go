@@ -110,6 +110,13 @@ func main() {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return
   }
+  
+  // leaving this as kubernetesresource cause sundrio generation issues, so using raw instead
+  schema.Resources["clusteroperatorstatus"].Properties["extension"] = schemagen.JSONPropertyDescriptor{
+    ExistingJavaTypeDescriptor: &schemagen.ExistingJavaTypeDescriptor{
+      ExistingJavaType: "io.fabric8.kubernetes.api.model.runtime.RawExtension",
+    },
+  }
 
   args := os.Args[1:]
   if len(args) < 1 || args[0] != "validation" {

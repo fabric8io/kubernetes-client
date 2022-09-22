@@ -283,7 +283,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -300,7 +300,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
       ]
     },
     "kubernetes_apimachinery_ListMeta": {
@@ -765,18 +765,10 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_pkg_runtime_ImageRawExtension": {
-      "type": "object",
-      "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.runtime.RawExtension",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1268,7 +1260,7 @@
       "properties": {
         "extension": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "name": {
           "type": "string"
@@ -4317,7 +4309,7 @@
       "properties": {
         "content": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "isNonResourceURL": {
           "type": "boolean"
@@ -4529,7 +4521,7 @@
         },
         "content": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "isNonResourceURL": {
           "type": "boolean"
@@ -4578,7 +4570,7 @@
         },
         "content": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "groups": {
           "type": "array",
@@ -4644,7 +4636,7 @@
         },
         "attributeRestrictions": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "nonResourceURLs": {
           "type": "array",
@@ -4689,7 +4681,7 @@
         },
         "content": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "isNonResourceURL": {
           "type": "boolean"
@@ -5086,7 +5078,7 @@
         },
         "content": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "groups": {
           "type": "array",
@@ -7399,8 +7391,7 @@
           "type": "string"
         },
         "dockerImageMetadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_ImageRawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.runtime.RawExtension"
+          "existingJavaType": "io.fabric8.openshift.api.model.runtime.RawExtension"
         },
         "dockerImageMetadataVersion": {
           "type": "string"
@@ -10415,11 +10406,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "objects": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
-          }
+          "existingJavaType": "java.util.List\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
         },
         "parameters": {
           "type": "array",

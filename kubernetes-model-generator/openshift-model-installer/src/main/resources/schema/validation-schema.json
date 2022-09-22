@@ -2369,22 +2369,24 @@
     },
     "machinepool": {
       "properties": {
-        "architecture": {
+        "imageID": {
           "type": "string"
         },
-        "hyperthreading": {
+        "instanceType": {
           "type": "string"
         },
-        "name": {
+        "systemDiskCategory": {
           "type": "string"
         },
-        "platform": {
-          "$ref": "#/definitions/os_installer_v1_MachinePoolPlatform",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.MachinePoolPlatform"
+        "systemDiskSize": {
+          "type": "integer"
         },
-        "replicas": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -2606,16 +2608,8 @@
     },
     "osdisk": {
       "properties": {
-        "DiskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "DiskType": {
-          "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_installer_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.EncryptionKeyReference"
+        "diskSizeGB": {
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -2648,27 +2642,33 @@
     },
     "platform": {
       "properties": {
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_ibmcloud_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool"
-        },
-        "region": {
-          "type": "string"
-        },
-        "resourceGroupName": {
-          "type": "string"
-        },
-        "subnets": {
+        "affinityGroups": {
           "type": "array",
-          "javaOmitEmpty": true,
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/os_installer_ovirt_v1_AffinityGroup",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.AffinityGroup"
           }
         },
-        "vpc": {
+        "api_vip": {
           "type": "string"
         },
-        "vpcResourceGroupName": {
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
+        },
+        "ingress_vip": {
+          "type": "string"
+        },
+        "ovirt_cluster_id": {
+          "type": "string"
+        },
+        "ovirt_network_name": {
+          "type": "string"
+        },
+        "ovirt_storage_domain_id": {
+          "type": "string"
+        },
+        "vnicProfileID": {
           "type": "string"
         }
       },

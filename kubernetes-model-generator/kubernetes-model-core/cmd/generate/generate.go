@@ -19,16 +19,18 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	kapi "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	apimachineryversion "k8s.io/apimachinery/pkg/version"
-	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
-	aggregator "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 	"log"
 	"reflect"
 	"strings"
 	"time"
+
+	kapi "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	apimachineryversion "k8s.io/apimachinery/pkg/version"
+	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
+	aggregator "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 
 	"os"
 
@@ -123,15 +125,30 @@ func main() {
 		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
 		reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
 	}
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{}, "core")
+
+	//	default the core raw to HasMetadata, rather than KubernetesResource
+	manualTypeMap := map[reflect.Type]string{
+		reflect.TypeOf(runtime.RawExtension{}): "io.fabric8.kubernetes.api.model.HasMetadata",
+	}
+
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap, "core")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
 		return
 	}
 
+	// since we default to HasMetadata we need specific overrides for watchevent and namedextension
+	resourceProp := schemagen.JSONPropertyDescriptor{
+		ExistingJavaTypeDescriptor: &schemagen.ExistingJavaTypeDescriptor{
+			ExistingJavaType: "io.fabric8.kubernetes.api.model.KubernetesResource",
+		},
+	}
+	schema.Resources["watchevent"].Properties["object"] = resourceProp
+	schema.Resources["namedextension"].Properties["extension"] = resourceProp
+
 	serdes := map[string]*schemagen.JavaSerDeDescriptor{
 		"kubernetes_apimachinery_pkg_apis_MicroTime": &schemagen.JavaSerDeDescriptor{
-			Serializer: "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class",
+			Serializer:   "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class",
 			Deserializer: "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Deserializer.class",
 		},
 	}
@@ -141,7 +158,6 @@ func main() {
 		val.JavaSerDeDescriptor = descriptor
 		schema.Definitions[definitionKey] = val
 	}
-
 
 	args := os.Args[1:]
 	if len(args) < 1 || args[0] != "validation" {

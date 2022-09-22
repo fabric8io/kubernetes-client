@@ -218,7 +218,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -235,7 +235,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
       ]
     },
     "kubernetes_apimachinery_ListMeta": {
@@ -700,18 +700,10 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_pkg_runtime_ImageRawExtension": {
-      "type": "object",
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.runtime.RawExtension",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1442,8 +1434,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_ForZone",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.ForZone"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_ForZone",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.ForZone"
           }
         }
       },
@@ -1570,9 +1562,6 @@
       },
       "additionalProperties": true
     },
-    "imagerawextension": {
-      "additionalProperties": true
-    },
     "info": {
       "properties": {
         "buildDate": {
@@ -1616,7 +1605,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {

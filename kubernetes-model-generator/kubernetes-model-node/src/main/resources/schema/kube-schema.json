@@ -6,7 +6,7 @@
     "k8s_io_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
       "additionalProperties": true,
-      "existingJavaType": "RawExtension",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -31,7 +31,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "RawExtension"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -48,7 +48,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cRawExtension\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
       ]
     },
     "kubernetes_apimachinery_ListMeta": {
