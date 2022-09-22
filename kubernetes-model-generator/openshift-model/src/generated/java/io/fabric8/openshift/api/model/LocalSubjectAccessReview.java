@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -83,7 +82,7 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("content")
-    private HasMetadata content;
+    private KubernetesResource content;
     @JsonProperty("groups")
     private List<String> groups = new ArrayList<String>();
     @JsonProperty("isNonResourceURL")
@@ -140,7 +139,7 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
      * @param scopes
      * @param user
      */
-    public LocalSubjectAccessReview(String apiVersion, HasMetadata content, List<String> groups, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
+    public LocalSubjectAccessReview(String apiVersion, KubernetesResource content, List<String> groups, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
         super();
         this.apiVersion = apiVersion;
         this.content = content;
@@ -179,12 +178,12 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     }
 
     @JsonProperty("content")
-    public HasMetadata getContent() {
+    public KubernetesResource getContent() {
         return content;
     }
 
     @JsonProperty("content")
-    public void setContent(HasMetadata content) {
+    public void setContent(KubernetesResource content) {
         this.content = content;
     }
 

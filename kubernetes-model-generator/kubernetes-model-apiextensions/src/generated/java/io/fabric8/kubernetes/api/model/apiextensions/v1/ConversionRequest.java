@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -64,7 +63,7 @@ public class ConversionRequest implements KubernetesResource
     @JsonProperty("desiredAPIVersion")
     private String desiredAPIVersion;
     @JsonProperty("objects")
-    private List<HasMetadata> objects = new ArrayList<HasMetadata>();
+    private List<KubernetesResource> objects = new ArrayList<KubernetesResource>();
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
@@ -83,7 +82,7 @@ public class ConversionRequest implements KubernetesResource
      * @param objects
      * @param desiredAPIVersion
      */
-    public ConversionRequest(String desiredAPIVersion, List<HasMetadata> objects, String uid) {
+    public ConversionRequest(String desiredAPIVersion, List<KubernetesResource> objects, String uid) {
         super();
         this.desiredAPIVersion = desiredAPIVersion;
         this.objects = objects;
@@ -101,12 +100,12 @@ public class ConversionRequest implements KubernetesResource
     }
 
     @JsonProperty("objects")
-    public List<HasMetadata> getObjects() {
+    public List<KubernetesResource> getObjects() {
         return objects;
     }
 
     @JsonProperty("objects")
-    public void setObjects(List<HasMetadata> objects) {
+    public void setObjects(List<KubernetesResource> objects) {
         this.objects = objects;
     }
 

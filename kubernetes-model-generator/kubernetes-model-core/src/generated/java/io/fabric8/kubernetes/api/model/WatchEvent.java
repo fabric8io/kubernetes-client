@@ -22,8 +22,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "extension",
-    "name"
+    "object",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -33,13 +33,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class NamedExtension implements io.fabric8.kubernetes.api.model.KubernetesResource
+public class WatchEvent implements io.fabric8.kubernetes.api.model.KubernetesResource
 {
 
-    @JsonProperty("extension")
-    private io.fabric8.kubernetes.api.model.KubernetesResource extension;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("object")
+    private io.fabric8.kubernetes.api.model.KubernetesResource object;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -47,38 +47,38 @@ public class NamedExtension implements io.fabric8.kubernetes.api.model.Kubernete
      * No args constructor for use in serialization
      * 
      */
-    public NamedExtension() {
+    public WatchEvent() {
     }
 
     /**
      * 
-     * @param extension
-     * @param name
+     * @param type
+     * @param object
      */
-    public NamedExtension(io.fabric8.kubernetes.api.model.KubernetesResource extension, String name) {
+    public WatchEvent(io.fabric8.kubernetes.api.model.KubernetesResource object, String type) {
         super();
-        this.extension = extension;
-        this.name = name;
+        this.object = object;
+        this.type = type;
     }
 
-    @JsonProperty("extension")
-    public io.fabric8.kubernetes.api.model.KubernetesResource getExtension() {
-        return extension;
+    @JsonProperty("object")
+    public io.fabric8.kubernetes.api.model.KubernetesResource getObject() {
+        return object;
     }
 
-    @JsonProperty("extension")
-    public void setExtension(io.fabric8.kubernetes.api.model.KubernetesResource extension) {
-        this.extension = extension;
+    @JsonProperty("object")
+    public void setObject(io.fabric8.kubernetes.api.model.KubernetesResource object) {
+        this.object = object;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonAnyGetter
