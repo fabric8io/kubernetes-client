@@ -37,7 +37,7 @@ class ApprovalTest {
     return Stream.of(
         Arguments.of("testCrontabCrd", "crontab-crd.yml", "CronTab", "CrontabJavaCr", new Config()),
         Arguments.of("testCrontabExtraAnnotationsCrd", "crontab-crd.yml", "CronTab", "CrontabJavaExtraAnnotationsCr",
-            new Config(null, null, null, null, Boolean.TRUE, null)),
+            new Config(null, null, null, null, Boolean.TRUE, null, true)),
         Arguments.of("testKeycloakCrd", "keycloak-crd.yml", "Keycloak", "KeycloakJavaCr", new Config()),
         Arguments.of("testJokeCrd", "jokerequests-crd.yml", "JokeRequest", "JokeRequestJavaCr", new Config()),
         Arguments.of("testAkkaMicroservicesCrd", "akka-microservices-crd.yml", "AkkaMicroservice", "AkkaMicroserviceJavaCr",

@@ -39,6 +39,7 @@ public class Config {
   private static final boolean DEFAULT_ALWAYS_PRESERVE_FIELDS = false;
   private static final boolean DEFAULT_ADD_EXTRA_ANNOTATIONS = false;
   private static final CodeStructure DEFAULT_CODE_STRUCTURE = CodeStructure.PACKAGE_NESTED;
+  private static final boolean DEFAULT_ADD_GENERATED_ANNOTATIONS = true;
 
   private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;
   private Prefix prefixStrategy = DEFAULT_PREFIX_STRATEGY;
@@ -46,6 +47,7 @@ public class Config {
   private Boolean alwaysPreserveUnknownFields = DEFAULT_ALWAYS_PRESERVE_FIELDS;
   private Boolean objectExtraAnnotations = DEFAULT_ADD_EXTRA_ANNOTATIONS;
   private CodeStructure structure = DEFAULT_CODE_STRUCTURE;
+  private Boolean generatedAnnotations = DEFAULT_ADD_GENERATED_ANNOTATIONS;
 
   public Config() {
   }
@@ -56,7 +58,8 @@ public class Config {
       Suffix suffixStrategy,
       Boolean alwaysPreserveUnknownFields,
       Boolean objectExtraAnnotations,
-      CodeStructure structure) {
+      CodeStructure structure,
+      Boolean generatedAnnotations) {
     if (uppercaseEnums != null) {
       this.uppercaseEnums = uppercaseEnums;
     }
@@ -74,6 +77,9 @@ public class Config {
     }
     if (structure != null) {
       this.structure = structure;
+    }
+    if (generatedAnnotations != null) {
+      this.generatedAnnotations = generatedAnnotations;
     }
   }
 
@@ -103,5 +109,11 @@ public class Config {
 
   public CodeStructure getCodeStructure() {
     return (structure == null) ? DEFAULT_CODE_STRUCTURE : structure;
+  }
+
+  public boolean isGeneratedAnnotations() {
+    return (generatedAnnotations == null)
+        ? DEFAULT_ADD_GENERATED_ANNOTATIONS
+        : generatedAnnotations;
   }
 }

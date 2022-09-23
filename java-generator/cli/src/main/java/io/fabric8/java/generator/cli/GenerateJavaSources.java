@@ -55,6 +55,10 @@ public class GenerateJavaSources implements Runnable {
       "--code-structure" }, description = "Generate classes using a specific layout", required = false, hidden = true)
   String codeStructure = null;
 
+  @Option(names = { "-skip-generated-annotations",
+      "--skip-generated-annotations" }, description = "Add extra lombok and sundrio annotation to the generated classes", required = false, hidden = true)
+  Boolean skipGeneratedAnnotations = null;
+
   @Override
   public void run() {
     final Config.Prefix pSt = (prefixStrategy != null) ? Config.Prefix.valueOf(prefixStrategy) : null;
@@ -66,7 +70,8 @@ public class GenerateJavaSources implements Runnable {
         sSt,
         alwaysPreserveUnkownFields,
         addExtraAnnotations,
-        structure);
+        structure,
+        !skipGeneratedAnnotations);
     final CRGeneratorRunner runner = new CRGeneratorRunner(config);
     runner.run(source, target);
   }

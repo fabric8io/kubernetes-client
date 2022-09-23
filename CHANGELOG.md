@@ -21,6 +21,7 @@
 
 #### New Features
 * Fix #4398: add annotation @PreserveUnknownFields for marking generated field have `x-kubernetes-preserve-unknown-fields: true` defined
+* Fix #4351: add `javax.annotation.processing.Generated` to classes generated with the `java-generator`
 
 #### _**Note**_: Breaking changes in the API
 * Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.

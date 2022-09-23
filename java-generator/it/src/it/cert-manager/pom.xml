@@ -80,6 +80,7 @@
           <extraAnnotations>true</extraAnnotations>
           <alwaysPreserveUnknown>true</alwaysPreserveUnknown>
           <suffixStrategy>TOP_LEVEL</suffixStrategy>
+          <generatedAnnotations>false</generatedAnnotations>
         </configuration>
       </plugin>
     </plugins>

@@ -2,6 +2,7 @@ JokeRequestJavaCr[0] = package org.test.v1alpha1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1alpha1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("samples.javaoperatorsdk.io")
+@javax.annotation.processing.Generated("io.fabric8.java-generator")
 public class JokeRequest extends io.fabric8.kubernetes.client.CustomResource<org.test.v1alpha1.JokeRequestSpec, org.test.v1alpha1.JokeRequestStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }
 
@@ -10,6 +11,7 @@ JokeRequestJavaCr[1] = package org.test.v1alpha1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"category","excluded","safe"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java-generator")
 public class JokeRequestSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     public enum Category {
@@ -100,6 +102,7 @@ JokeRequestJavaCr[2] = package org.test.v1alpha1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"error","message","state"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java-generator")
 public class JokeRequestStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("error")

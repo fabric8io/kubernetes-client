@@ -2,6 +2,7 @@ AkkaMicroserviceJavaCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("akka.lightbend.com")
+@javax.annotation.processing.Generated("io.fabric8.java-generator")
 public class AkkaMicroservice extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.AkkaMicroserviceSpec, org.test.v1.AkkaMicroserviceStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }
 
@@ -10,6 +11,7 @@ AkkaMicroserviceJavaCr[1] = package org.test.v1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"akkaManagementPort","appVersion","cassandraDataStaxAstra","configSecret","deploymentStrategy","env","envFrom","envSecret","extraVolumeMounts","grpcIngress","grpcPort","httpIngress","httpPort","image","imagePullPolicy","imagePullSecrets","javaOptions","jdbc","kafka","kafkaConfluentCloud","livenessProbe","logbackSecret","podTemplateSpec","prometheusPort","readinessProbe","replicas","resources","roles","secretVolumes","serviceAccount","splitBrainResolver"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java-generator")
 public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     /**
@@ -522,6 +524,7 @@ AkkaMicroserviceJavaCr[2] = package org.test.v1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"akkaClusterStatus","availableReplicas","message","oldestPodStartTime","phase","podStatus"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java-generator")
 public class AkkaMicroserviceStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     /**
