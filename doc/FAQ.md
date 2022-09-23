@@ -49,3 +49,37 @@ Finally the fabric8 client will use 1 thread per PortForward and an additional t
 Like many java application the Fabric8 Client utilizes [slf4j](https://www.slf4j.org/).  You may configure support for whatever underlying logging framework suits your needs.  The logging contexts for the Fabric8 Client follow the standard convention of the package structure - everything from within the client will be rooted at the io.fabric8 context.  Third-party dependencies, including the chosen HTTP client implementation, will have different root contexts.
 
 If you are using pod exec, which can occur indirectly via pod operations like copying files, and not seeing the expected behavior - please enable debug logging for the io.fabric8.kubernetes.client.dsl.internal context.  That will provide the stdErr and stdOut as debug logs to further diagnose what is occurring.
+
+### How to use KubernetesClient in OSGi?
+
+Fabric8 Kubernetes Client provides ManagedKubernetesClient and ManagedOpenShiftClient as [OSGi Declarative Service](https://docs.osgi.org/specification/osgi.cmpn/7.0.0/service.component.html). In order to use it, you must have [Service Component Runtime (SCR)](https://docs.osgi.org/specification/osgi.cmpn/7.0.0/service.component.html#service.component-service.component.runtime) feature enabled in your OSGi runtime. In [Apache Karaf](https://karaf.apache.org/), you can add this to Karaf Maven Plugin configuration:
+```xml
+<plugin>
+  <groupId>org.apache.karaf.tooling</groupId>
+  <artifactId>karaf-maven-plugin</artifactId>
+  <version>${karaf.version}</version>
+  <configuration>
+    <startupFeatures>
+      <feature>scr</feature>
+    </startupFeatures>
+  </configuration>
+</plugin>
+```
+
+You would need to provide component configuration files for the client you're using. For example, in case of [Apache Karaf](https://karaf.apache.org/), place configuration files in this directory:
+```
+src/
+└── main
+    └── resources
+        ├── assembly
+        │ └── etc
+        │     ├── io.fabric8.kubernetes.client.cfg
+        │     ├── io.fabric8.openshift.client.cfg
+```
+
+Once added KubernetesClient declarative services would be exposed automatically on startup. Then you can inject it in your project. Here is an example using Apache camel's `@BeanInject` annotation:
+
+```java
+  @BeanInject
+  private KubernetesClient kubernetesClient
+```

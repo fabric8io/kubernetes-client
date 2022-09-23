@@ -13,6 +13,7 @@
 * Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
 * Fix #4396: Provide more error context when @Group/@Version annotations are missing
 * Fix #4384: The Java generator now supports the generation of specific annotations (min, max, pattern, etc.), as defined by #4348
+* Fix #3864: Change ManagedOpenShiftClient OSGi ConfigurationPolicy to REQUIRE
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0
@@ -27,6 +28,7 @@
 * Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
 * Module `io.fabric8:tekton-model-triggers` which contained Tekton triggers v1alpha1 model has been removed. We have introduced separate modules `io.fabric8:tekton-model-v1alpha1` and `io.fabric8:tekton-model-v1beta1` for Tekton triggers v1alpha1 and v1beta1 apigroups respectively. Users who are using `io.fabric8:tekton-client` dependency directly should be unaffected by this change.
 * Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
+* Fix #3864: Now it's compulsory to provide `etc/io.fabric8.openshift.client.cfg` file in order to load ManagedOpenShiftClient in OSGi environment.
 
 ### 6.1.1 (2022-09-01)
 
