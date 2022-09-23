@@ -276,7 +276,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public ExtensibleResource<T> fromServer() {
+  public BaseOperation<T, L, R> fromServer() {
     return newInstance(context.withReloadingFromServer(true));
   }
 
@@ -522,17 +522,19 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T patchStatus() {
-    return patchStatus(getNonNullItem());
+    // fromServer shouldn't be necessary here as we're using a merge patch, but
+    // just in case that changes we want consistency with the other patch methods
+    return this.fromServer().patchStatus(getNonNullItem());
   }
 
   @Override
   public T patch() {
-    return patch(getNonNullItem());
+    return this.fromServer().patch(getNonNullItem());
   }
 
   @Override
   public T patch(PatchContext patchContext) {
-    return patch(patchContext, getNonNullItem());
+    return this.fromServer().patch(patchContext, getNonNullItem());
   }
 
   protected T getNonNullItem() {
