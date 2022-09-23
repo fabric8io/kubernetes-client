@@ -56,6 +56,8 @@ public class TestBase {
           editConfigurationFileExtend(
               "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),
           editConfigurationFileExtend(
+              "etc/io.fabric8.openshift.client.cfg", "junit", "ignored"),
+          editConfigurationFileExtend(
               "etc/org.ops4j.pax.url.mvn.cfg",
               "org.ops4j.pax.url.mvn.repositories",
               "https://repo1.maven.org/maven2/"),
@@ -94,6 +96,8 @@ public class TestBase {
           features,
           editConfigurationFileExtend(
               "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),
+          editConfigurationFileExtend(
+              "etc/io.fabric8.openshift.client.cfg", "junit", "ignored"),
           editConfigurationFileExtend(
               "etc/org.ops4j.pax.url.mvn.cfg",
               "org.ops4j.pax.url.mvn.repositories",
