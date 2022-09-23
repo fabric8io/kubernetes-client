@@ -63,20 +63,19 @@ public interface EditReplacePatchable<T>
   T accept(Consumer<T> function);
 
   /**
-   * Update field(s) of a resource using a JSON patch.
+   * Update field(s) of a resource using a JSON patch. The patch is computed against the context item.
    * <p>
    * It is the same as calling {@link #patch(PatchContext, Object)} with {@link PatchType#JSON} specified.
    * <p>
-   * WARNING: This may overwrite concurrent changes (between when you obtained your item and the current state) in an unexpected
-   * way.
+   * WARNING: If no context item is available the latest version of that resource will be used as the base
+   * to compute the diff. If you did not intend for the latest version to be your base, this may overwrite
+   * concurrent changes (between when you obtained your item and the current state) in an unexpected way.
    * <p>
    * Consider using edit, which allows for a known base, and a builder instead.
    *
    * @param item to be patched with patched values
    * @return returns deserialized version of api server response
-   * @deprecated use resource(item).patch() or edit instead
    */
-  @Deprecated
   default T patch(T item) {
     return patch(PatchContext.of(PatchType.JSON), item);
   }
@@ -85,7 +84,7 @@ public interface EditReplacePatchable<T>
    * Update field(s) of a resource using type specified in {@link PatchContext}(defaults to strategic merge if not specified).
    *
    * <ul>
-   * <li>{@link PatchType#JSON} - will create a JSON patch against the latest server state
+   * <li>{@link PatchType#JSON} - will create a JSON patch against the current item
    * <li>{@link PatchType#JSON_MERGE} - will send the serialization of the item as a JSON MERGE patch.
    * Set the resourceVersion to null to prevent optimistic locking.
    * <li>{@link PatchType#STRATEGIC_MERGE} - will send the serialization of the item as a STRATEGIC MERGE patch.
@@ -130,7 +129,7 @@ public interface EditReplacePatchable<T>
   /**
    * Does a PATCH request to the /status subresource ignoring changes to anything except the status stanza.
    * <p>
-   * This method has the same patching behavior as {@link #patch(PatchContext, Object)}, with
+   * This method has the same patching behavior as {@link #patch(PatchContext)}, with
    * {@link PatchType#JSON_MERGE} but against the status subresource.
    * <p>
    * Set the resourceVersion to null to prevent optimistic locking.
@@ -140,12 +139,13 @@ public interface EditReplacePatchable<T>
   T patchStatus();
 
   /**
-   * Update field(s) of a resource using a JSON patch.
+   * Update field(s) of a resource using a JSON patch which will be computed using the latest
+   * server state as the base.
    * <p>
-   * It is the same as calling {@link #patch(PatchContext, Object)} with {@link PatchType#JSON} specified.
+   * It is the same as calling {@link #patch(PatchContext)} with {@link PatchType#JSON} specified.
    * <p>
-   * WARNING: This may overwrite concurrent changes (between when you obtained your item and the current state) in an unexpected
-   * way.
+   * WARNING: If you did not intend for the latest version to be your base, this may overwrite
+   * concurrent changes (between when you obtained your item and the current state) in an unexpected way.
    * <p>
    * Consider using edit instead.
    *
@@ -160,7 +160,7 @@ public interface EditReplacePatchable<T>
    * resource(item).patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY))
    *
    * <ul>
-   * <li>{@link PatchType#JSON} - will create a JSON patch against the latest server state
+   * <li>{@link PatchType#JSON} - will create a JSON patch using the latest server state as the base
    * <li>{@link PatchType#JSON_MERGE} - will send the serialization of the item as a JSON MERGE patch.
    * Set the resourceVersion to null to prevent optimistic locking.
    * <li>{@link PatchType#STRATEGIC_MERGE} - will send the serialization of the item as a STRATEGIC MERGE patch.

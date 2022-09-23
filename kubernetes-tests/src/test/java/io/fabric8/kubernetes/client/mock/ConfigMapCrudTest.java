@@ -135,8 +135,16 @@ class ConfigMapCrudTest {
     client.configMaps().inNamespace("ns1").resource(configmap2).create();
     client.configMaps().inNamespace("ns1").resource(configmap2a).replace();
 
-    // should still diff to latest
+    // No-op - base and item are the same
     ConfigMap result = client.configMaps().inNamespace("ns1").resource(configmap2).patch(configmap2);
+    assertEquals(Collections.singletonMap("three", "3"), result.getData());
+
+    // this will patch the server value, so the base becomes 2a
+    result = client.configMaps().inNamespace("ns1").resource(configmap2).patch();
+    assertEquals(Collections.singletonMap("two", "2"), result.getData());
+
+    // this will patch the server value, so the base becomes 2
+    result = client.configMaps().inNamespace("ns1").resource(configmap2a).patch(PatchContext.of(PatchType.JSON));
     assertEquals(Collections.singletonMap("three", "3"), result.getData());
   }
 
