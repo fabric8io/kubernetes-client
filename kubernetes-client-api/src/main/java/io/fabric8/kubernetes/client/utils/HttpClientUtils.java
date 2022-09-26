@@ -29,6 +29,7 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -105,7 +106,7 @@ public class HttpClientUtils {
     // Impersonator Interceptor
     interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor
-    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
+    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory, Instant.now()));
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils
         .getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE,

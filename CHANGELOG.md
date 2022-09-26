@@ -9,6 +9,7 @@
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators
+* Refactor #4441: refactoring `TokenRefreshInterceptor`
 * Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
 * Fix #4396: Provide more error context when @Group/@Version annotations are missing
 * Fix #4384: The Java generator now supports the generation of specific annotations (min, max, pattern, etc.), as defined by #4348

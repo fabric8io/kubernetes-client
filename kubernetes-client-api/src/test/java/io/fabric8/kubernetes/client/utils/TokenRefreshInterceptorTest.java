@@ -52,7 +52,7 @@ class TokenRefreshInterceptorTest {
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
-      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null)
+      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null, Instant.now())
           .afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
@@ -74,11 +74,13 @@ class TokenRefreshInterceptorTest {
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
-      TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null);
+      TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(Config.autoConfigure(null),
+          null,
+          Instant.now().minus(61, ChronoUnit.SECONDS));
+
       // Replace kubeconfig file
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig.new")),
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
-      tokenRefreshInterceptor.setLastRefresh(Instant.now().minus(61, ChronoUnit.SECONDS));
       tokenRefreshInterceptor.before(builder, null);
       Mockito.verify(builder).setHeader("Authorization", "Bearer new token");
     } finally {
@@ -100,7 +102,7 @@ class TokenRefreshInterceptorTest {
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // The expired token will be read at auto configure.
-      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null);
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null, Instant.now());
 
       // Write new value to token file to simulate renewal.
       Files.write(tokenFile.toPath(), "renewed".getBytes());
@@ -140,7 +142,8 @@ class TokenRefreshInterceptorTest {
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig-oidc")),
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 
-      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class));
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class),
+          Instant.now());
       boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
