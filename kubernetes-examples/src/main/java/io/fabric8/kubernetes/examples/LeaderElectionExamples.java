@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.ConfigMapLock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaseLock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
-import org.slf4j.impl.SimpleLogger;
+import org.slf4j.simple.SimpleLogger;
 
 import java.time.Duration;
 import java.util.Map;
