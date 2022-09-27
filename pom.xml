@@ -98,7 +98,7 @@
     <junit.version>5.9.1</junit.version>
     <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>18.2.2</approvaltests.version>
+    <approvaltests.version>18.3.0</approvaltests.version>
     <mockito.version>4.8.0</mockito.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
