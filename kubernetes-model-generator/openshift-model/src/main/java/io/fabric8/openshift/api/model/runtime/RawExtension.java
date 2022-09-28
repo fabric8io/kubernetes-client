@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.api.model.runtime;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -63,5 +64,13 @@ import lombok.experimental.Accessors;
  */
 @Deprecated
 public class RawExtension extends io.fabric8.kubernetes.api.model.runtime.RawExtension {
+
+  public RawExtension() {
+  }
+
+  @JsonCreator
+  public RawExtension(Object value) {
+    super(value);
+  }
 
 }

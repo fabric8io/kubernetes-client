@@ -23,7 +23,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.DumperOptions;
@@ -416,35 +415,6 @@ public class Serialization {
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
     }
-  }
-
-  /**
-   * Convert any object to a KubernetesResource, if it is not already.
-   *
-   * @param resource
-   * @return a {@link KubernetesResource}, which may be a {@link RawExtension}
-   */
-  public static KubernetesResource asKubernetesResource(Object resource) {
-    if (resource instanceof KubernetesResource || resource == null) {
-      return (KubernetesResource) resource;
-    }
-    return new RawExtension(asMap(resource));
-  }
-
-  /**
-   * Convert any object to a Map.
-   *
-   * @param resource
-   */
-  public static Map<String, Object> asMap(Object resource) {
-    Map<String, Object> value = null;
-    if (resource instanceof Map && ((Map) resource).keySet().stream().allMatch(String.class::isInstance)) {
-      value = (Map<String, Object>) resource;
-    } else {
-      value = JSON_MAPPER.convertValue(resource, new TypeReference<Map<String, Object>>() {
-      });
-    }
-    return value;
   }
 
   private static class CustomYamlTagResolverWithLimit extends Resolver {
