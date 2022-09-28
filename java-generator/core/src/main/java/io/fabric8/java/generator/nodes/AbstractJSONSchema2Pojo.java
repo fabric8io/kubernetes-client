@@ -45,7 +45,7 @@ public abstract class AbstractJSONSchema2Pojo {
 
   public static final AnnotationExpr GENERATED_ANNOTATION = new SingleMemberAnnotationExpr(
       new Name("javax.annotation.processing.Generated"),
-      new StringLiteralExpr("io.fabric8.java-generator"));
+      new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
 
   protected final String description;
   protected final Config config;
