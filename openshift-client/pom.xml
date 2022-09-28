@@ -33,6 +33,11 @@
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"
     </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.client.extension.ExtensionAdapter,
+      io.fabric8.kubernetes.client.ServiceToURLProvider
+    </osgi.provide-capability>
     <osgi.import>
       !org.junit*,
       *
