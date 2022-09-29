@@ -8,6 +8,7 @@
 * * Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
 * Fix #4365: backport of stopped future for informers to obtain the termination exception
 * Fix #4383: bump snakeyaml from 1.28 to 1.33
+* Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
 
 #### _**Note**_: Behavior changes
 * Fix #4206: The Serialization utility class will throw an Exception, instead of returning null, if an untyped unmarshall method is used on something that lacks type information
