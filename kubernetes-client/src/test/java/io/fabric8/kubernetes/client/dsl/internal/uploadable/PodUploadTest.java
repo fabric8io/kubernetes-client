@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -23,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper.Writable;

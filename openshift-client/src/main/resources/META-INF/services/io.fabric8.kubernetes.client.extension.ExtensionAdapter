@@ -14,5 +14,5 @@
 # limitations under the License.
 #
 
-io.fabric8.openshift.client.OpenShiftExtensionAdapter
-io.fabric8.openshift.client.NamespacedOpenShiftExtensionAdapter
+io.fabric8.openshift.client.impl.OpenShiftExtensionAdapter
+io.fabric8.openshift.client.impl.NamespacedOpenShiftExtensionAdapter

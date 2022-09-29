@@ -18,7 +18,8 @@ package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
-import io.fabric8.kubernetes.client.internal.PatchUtils.Format;
+import io.fabric8.kubernetes.client.dsl.internal.PatchUtils;
+import io.fabric8.kubernetes.client.dsl.internal.PatchUtils.Format;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -48,7 +48,7 @@ public class KubernetesClientBuilder {
   public KubernetesClientBuilder() {
     // basically the same logic as in KubernetesResourceUtil for finding list types
     // we're not guarding against a null context class loader
-    String className = "io.fabric8.kubernetes.client.DefaultKubernetesClient";
+    String className = "io.fabric8.kubernetes.client.impl.KubernetesClientImpl";
     try {
       clazz = (Class<KubernetesClient>) Thread.currentThread().getContextClassLoader().loadClass(className);
     } catch (ClassNotFoundException | ClassCastException e) {
@@ -102,7 +102,7 @@ public class KubernetesClientBuilder {
    * calls and writing to streams.
    * <p>
    * Only override if you need more control over the number of task threads used by the kubernetes client.
-   * 
+   *
    * @return this builder
    */
   public KubernetesClientBuilder withTaskExecutor(Executor executor) {
@@ -117,7 +117,7 @@ public class KubernetesClientBuilder {
    * There will be a call to {@link ExecutorSupplier#onClose(Executor)} when a client is closed.
    * <p>
    * Only override if you need more control over the number of task threads used by the kubernetes client.
-   * 
+   *
    * @return this builder
    */
   public KubernetesClientBuilder withTaskExecutorSupplier(ExecutorSupplier executorSupplier) {
