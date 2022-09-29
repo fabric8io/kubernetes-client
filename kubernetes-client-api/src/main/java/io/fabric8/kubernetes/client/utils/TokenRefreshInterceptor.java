@@ -84,7 +84,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder, Config existConfig) {
-    if (newAccessToken != null) {
+    if (Utils.isNotNullOrEmpty(newAccessToken)) {
       headerBuilder.setHeader("Authorization", "Bearer " + newAccessToken);
       existConfig.setOauthToken(newAccessToken);
 
