@@ -74,7 +74,7 @@ public class TokenRefreshInterceptor implements Interceptor {
       newAccessToken = newestConfig.getOauthToken();
     }
 
-    if (newAccessToken != null) {
+    if (Utils.isNotNullOrEmpty(newAccessToken)) {
       // Delete old Authorization header and append new one
       headerBuilder
         .setHeader("Authorization", "Bearer " + newAccessToken);
