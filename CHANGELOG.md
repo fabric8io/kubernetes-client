@@ -33,6 +33,19 @@
 * Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
 * Fix #3864: Now it's compulsory to provide `etc/io.fabric8.openshift.client.cfg` file in order to load ManagedOpenShiftClient in OSGi environment.
 
+### 5.12.4 (2022-09-30)
+
+#### Bugs
+* Fix #2271: Support periodic refresh of access tokens before they expire
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
+* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
+* Fix #4365: backport of stopped future for informers to obtain the termination exception
+* Fix #4383: bump snakeyaml from 1.28 to 1.33
+* Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
+
+#### _**Note**_: Behavior changes
+* Fix #4206: The Serialization utility class will throw an Exception, instead of returning null, if an untyped unmarshall method is used on something that lacks type information
+
 ### 6.1.1 (2022-09-01)
 
 #### Bugs
