@@ -1,11 +1,15 @@
 ## CHANGELOG
 
+### 5.12-SNAPSHOT
+
+#### Bugs
+
 ### 5.12.4 (2022-09-30)
 
 #### Bugs
 * Fix #2271: Support periodic refresh of access tokens before they expire
 * Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
-* * Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
+* Fix #4206: KubernetesDeserializer can now handle any valid object. If the object lacks type information, it will be deserialized as a GenericKubernetesResource.
 * Fix #4365: backport of stopped future for informers to obtain the termination exception
 * Fix #4383: bump snakeyaml from 1.28 to 1.33
 * Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
