@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import junit.framework.AssertionFailedError;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -81,7 +82,7 @@ class PodCrudTest {
 
     // test update
     pod2 = client.pods().inNamespace("ns1").withName("pod2").edit(p -> new PodBuilder(p)
-                 .editMetadata().addToLabels("key1", "value1").endMetadata().build());
+        .editMetadata().addToLabels("key1", "value1").endMetadata().build());
     assertNotNull(pod2);
     assertEquals("value1", pod2.getMetadata().getLabels().get("key1"));
 
@@ -98,7 +99,7 @@ class PodCrudTest {
       @Override
       public void visit(Object builder) {
         if (builder instanceof PodBuilder) {
-          ((PodBuilder)builder).editMetadata().addToLabels("another", "one").endMetadata();
+          ((PodBuilder) builder).editMetadata().addToLabels("another", "one").endMetadata();
         }
       }
 
@@ -117,7 +118,7 @@ class PodCrudTest {
     Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw);
 
     pod1 = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
-      .edit(p->new PodBuilder(p).editMetadata().withLabels(Collections.singletonMap("x", "y")).endMetadata().build());
+        .edit(p -> new PodBuilder(p).editMetadata().withLabels(Collections.singletonMap("x", "y")).endMetadata().build());
 
     pod1.setSpec(new PodSpecBuilder().addNewContainer().withImage("nginx").withName("nginx").endContainer().build());
 
@@ -125,7 +126,8 @@ class PodCrudTest {
 
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
 
-    client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
+    client.pods().inNamespace("ns1")
+        .create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
     assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
@@ -148,13 +150,15 @@ class PodCrudTest {
     Watch watch = client.pods().inNamespace("ns1").watch(lw);
 
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
-      .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
+        .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
 
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
 
+    Awaitility.waitAtMost(1, TimeUnit.MINUTES).until(() -> lw.addLatch.getCount() == 1);
+
     client.pods().inNamespace("ns1").create(new PodBuilder()
-      .withNewMetadata().withName("pod-new").addToLabels("testKey", "testValue").endMetadata()
-      .build());
+        .withNewMetadata().withName("pod-new").addToLabels("testKey", "testValue").endMetadata()
+        .build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
 
@@ -177,8 +181,8 @@ class PodCrudTest {
     // create 1
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1")
-      .withLabels(Collections.singletonMap("test", "watch"))
-      .watch(lw);
+        .withLabels(Collections.singletonMap("test", "watch"))
+        .watch(lw);
 
     // edit 1
     client.pods()
@@ -191,16 +195,16 @@ class PodCrudTest {
 
     // create 2
     client.pods().inNamespace("ns1").create(new PodBuilder()
-      .withNewMetadata().withName("pod-new").addToLabels("test", "watch").endMetadata()
-      .build());
+        .withNewMetadata().withName("pod-new").addToLabels("test", "watch").endMetadata()
+        .build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
     assertTrue(lw.editLatch.await(1, TimeUnit.MINUTES));
 
     // not seen by watch
     Pod pod2 = client.pods().inNamespace("ns1").create(new PodBuilder()
-      .withNewMetadata().withName("pod2").addToLabels("foo", "bar").endMetadata()
-      .build());
+        .withNewMetadata().withName("pod2").addToLabels("foo", "bar").endMetadata()
+        .build());
 
     assertEquals(2, client.pods().inNamespace("ns1").list().getItems().size());
     assertEquals(1, client.pods().inNamespace("ns1").withLabel("test", "watch").list().getItems().size());
@@ -237,14 +241,14 @@ class PodCrudTest {
     client.pods().inNamespace("ns1").create(pod1);
 
     try (
-      Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw)
-    ) {
+        Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw)) {
       client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
-        .edit(p -> new PodBuilder(p).editMetadata().withLabels(Collections.emptyMap()).endMetadata().build());
+          .edit(p -> new PodBuilder(p).editMetadata().withLabels(Collections.emptyMap()).endMetadata().build());
 
       client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
 
-      client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
+      client.pods().inNamespace("ns1").create(
+          new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
 
       assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
       assertTrue(lw.addLatch.await(1, TimeUnit.SECONDS));
@@ -254,50 +258,51 @@ class PodCrudTest {
     assertTrue(lw.closeLatch.await(3, TimeUnit.SECONDS));
   }
 
-    private static final class LatchedWatcher implements Watcher<Pod> {
-      final CountDownLatch addLatch;
-      final CountDownLatch editLatch;
-      final CountDownLatch deleteLatch;
-      final CountDownLatch closeErrorLatch;
-      final CountDownLatch closeLatch;
+  private static final class LatchedWatcher implements Watcher<Pod> {
+    final CountDownLatch addLatch;
+    final CountDownLatch editLatch;
+    final CountDownLatch deleteLatch;
+    final CountDownLatch closeErrorLatch;
+    final CountDownLatch closeLatch;
 
-      public LatchedWatcher() {
-        this(1, 1, 1, 1, 1);
-      }
-      public LatchedWatcher(int addLatch, int editLatch, int deleteLatch, int closeErrorLatch, int closeLatch) {
-        this.addLatch = new CountDownLatch(addLatch);
-        this.editLatch = new CountDownLatch(editLatch);
-        this.deleteLatch = new CountDownLatch(deleteLatch);
-        this.closeErrorLatch = new CountDownLatch(closeErrorLatch);
-        this.closeLatch = new CountDownLatch(closeLatch);
-      }
+    public LatchedWatcher() {
+      this(1, 1, 1, 1, 1);
+    }
 
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        switch (action) {
-          case DELETED:
-            deleteLatch.countDown();
-            break;
-          case MODIFIED:
-            editLatch.countDown();
-            break;
-          case ADDED:
-            addLatch.countDown();
-            break;
-          default:
-            throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
-        }
-      }
+    public LatchedWatcher(int addLatch, int editLatch, int deleteLatch, int closeErrorLatch, int closeLatch) {
+      this.addLatch = new CountDownLatch(addLatch);
+      this.editLatch = new CountDownLatch(editLatch);
+      this.deleteLatch = new CountDownLatch(deleteLatch);
+      this.closeErrorLatch = new CountDownLatch(closeErrorLatch);
+      this.closeLatch = new CountDownLatch(closeLatch);
+    }
 
-      @Override
-      public void onClose(WatcherException e) {
-        closeErrorLatch.countDown();
-      }
-
-      @Override
-      public void onClose() {
-        closeLatch.countDown();
+    @Override
+    public void eventReceived(Action action, Pod resource) {
+      switch (action) {
+        case DELETED:
+          deleteLatch.countDown();
+          break;
+        case MODIFIED:
+          editLatch.countDown();
+          break;
+        case ADDED:
+          addLatch.countDown();
+          break;
+        default:
+          throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
       }
     }
+
+    @Override
+    public void onClose(WatcherException e) {
+      closeErrorLatch.countDown();
+    }
+
+    @Override
+    public void onClose() {
+      closeLatch.countDown();
+    }
+  }
 
 }
