@@ -70,7 +70,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private ScheduledFuture<?> resyncFuture;
 
-  private CloseDecisionMaker closeDecisionMaker;
+  private CloseDecisionMaker closeDecisionMaker = CloseDecisionMaker.DEFAULT;
 
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
       Executor informerExecutor) {
@@ -88,7 +88,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.indexer.setIsRunning(this::isRunning);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
-    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore);
+    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore, closeDecisionMaker);
   }
 
   /**
