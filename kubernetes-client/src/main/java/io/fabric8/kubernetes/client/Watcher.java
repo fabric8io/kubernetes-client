@@ -43,6 +43,16 @@ public interface Watcher<T> {
    */
   void onClose(WatcherException cause);
 
+  default boolean shouldCloseOn(WatcherException exception) {
+    return true;
+  }
+
+  interface CloseDecisionMaker {
+    CloseDecisionMaker DEFAULT = exception -> true;
+
+    boolean shouldCloseOn(WatcherException exception);
+  }
+
   enum Action {
     ADDED, MODIFIED, DELETED, ERROR, BOOKMARK
   }

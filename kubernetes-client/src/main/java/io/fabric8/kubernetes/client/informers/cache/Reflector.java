@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.Watcher.CloseDecisionMaker;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -35,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
 
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
+  private final CloseDecisionMaker closeDecisionMaker;
 
   private volatile String lastSyncResourceVersion;
   private final Class<T> apiTypeClass;
@@ -44,19 +46,22 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private volatile boolean running;
   private volatile boolean watching;
   private final AtomicReference<Watch> watch;
-  private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
 
   public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
+    this(apiTypeClass, listerWatcher, store, CloseDecisionMaker.DEFAULT);
+  }
+
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store, CloseDecisionMaker closeDecisionMaker) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher();
     this.watch = new AtomicReference<>(null);
+    this.closeDecisionMaker = closeDecisionMaker;
   }
 
   public void stop() {
     running = false;
-    stopFuture.complete(null);
     stopWatcher();
   }
 
@@ -75,7 +80,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       listSyncAndWatch();
     } catch (Exception e) {
       running = false;
-      stopFuture.completeExceptionally(e);
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -183,7 +187,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         } else {
           log.warn("Watch closing with exception", exception);
           running = false; // shouldn't happen, but it means the watch won't restart
-          stopFuture.completeExceptionally(exception);
         }
       } finally {
         if (!restarted) {
@@ -203,14 +206,13 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return true;
     }
 
+    @Override
+    public boolean shouldCloseOn(WatcherException exception) {
+      return closeDecisionMaker.shouldCloseOn(exception);
+    }
   }
 
   public ReflectorWatcher getWatcher() {
     return watcher;
   }
-
-  public CompletableFuture<Void> getStopFuture() {
-    return stopFuture;
-  }
-
 }

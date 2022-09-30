@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.Watcher.CloseDecisionMaker;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
@@ -68,6 +69,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private volatile boolean stopped = false;
 
   private ScheduledFuture<?> resyncFuture;
+
+  private CloseDecisionMaker closeDecisionMaker;
 
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
       Executor informerExecutor) {
@@ -234,8 +237,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
-  public CompletableFuture<Void> stopped() {
-    return this.reflector.getStopFuture();
+  public void setCloseDecisionMaker(CloseDecisionMaker decisionMaker) {
+    this.closeDecisionMaker = decisionMaker;
   }
-
 }

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.client.Watcher.CloseDecisionMaker;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import jdk.jshell.spi.ExecutionControl.StoppedException;
 
 /**
  * SharedInxedInformer extends SharedInformer and provides indexer operability additionally.
@@ -42,13 +44,5 @@ public interface SharedIndexInformer<T> extends SharedInformer<T> {
    */
   Indexer<T> getIndexer();
 
-  /**
-   * Return a future that will allow notification of informer stopping.
-   * <p>
-   * If {@link #stop()} is called, the future will be completed with a null value.
-   * <p>
-   * If an exception occurs that terminates the informer, then it will be exceptionally completed with that exception
-   * - typically a {@link WatcherException}
-   */
-  CompletableFuture<Void> stopped();
+  void setCloseDecisionMaker(CloseDecisionMaker decisionMaker);
 }

@@ -100,26 +100,28 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   protected abstract void closeRequest();
 
   final void close(WatcherException cause) {
-    // proactively close the request (it will be called again in close)
-    // for reconnecting watchers, we may not complete onClose for a while
-    closeRequest();
-    if (forceClosed.get()) {
-      logger.debug("Ignoring duplicate firing of onClose event");
-    } else {
-      boolean success = false;
-      try {
-        watcher.onClose(cause);
-        success = true;
-      } catch (Exception e) {
-        logger.warn("Could not successfully call onClose with casue {}", cause, e);
-        return; // allow the reconnect to happen rather than forcing close
-      } finally {
-        if (success || !watcher.reconnecting()) {
-          forceClosed.set(true);
+    if (watcher.shouldCloseOn(cause)) {
+      // proactively close the request (it will be called again in close)
+      // for reconnecting watchers, we may not complete onClose for a while
+      closeRequest();
+      if (forceClosed.get()) {
+        logger.debug("Ignoring duplicate firing of onClose event");
+      } else {
+        boolean success = false;
+        try {
+          watcher.onClose(cause);
+          success = true;
+        } catch (Exception e) {
+          logger.warn("Could not successfully call onClose with casue {}", cause, e);
+          return; // allow the reconnect to happen rather than forcing close
+        } finally {
+          if (success || !watcher.reconnecting()) {
+            forceClosed.set(true);
+          }
         }
       }
+      close();
     }
-    close();
   }
 
   final void closeEvent() {
