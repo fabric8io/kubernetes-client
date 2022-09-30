@@ -16,18 +16,16 @@
 
 name: Release to Maven Central
 
-env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
-  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
-  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
-  SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
-
 on:
   workflow_dispatch:
     inputs:
       tag:
         description: Tag to release
         required: true
+      additional_args:
+        description: Additional Maven Args
+        required: false
+        default: ''
       java_distribution:
         description: Java Distribution to use for release
         required: true
@@ -36,6 +34,12 @@ on:
         description: Java Version to use for release
         required: true
         default: '8'
+
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
+  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
+  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
+  SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
 
 jobs:
   release:
