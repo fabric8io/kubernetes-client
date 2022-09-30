@@ -37,7 +37,7 @@ public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
   public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
     String serviceName = service.getMetadata().getName();
     ServicePort port = URLFromServiceUtil.getServicePortByName(service, portName);
-    if(port != null && port.getName() != null && client.isAdaptable(OpenShiftClient.class)) {
+    if (port != null && port.getName() != null && client.isAdaptable(OpenShiftClient.class)) {
       try {
         String serviceProtocol = port.getProtocol();
         OpenShiftClient openShiftClient = client.adapt(OpenShiftClient.class);
@@ -46,8 +46,8 @@ public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
           return (serviceProtocol + "://" + route.getSpec().getHost()).toLowerCase(Locale.ROOT);
         }
       } catch (KubernetesClientException e) {
-        if(e.getCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-          logger.warn("Could not lookup route:{} in namespace:{}, due to:{} ",serviceName,namespace,e.getMessage());
+        if (e.getCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+          logger.warn("Could not lookup route:{} in namespace:{}, due to:{} ", serviceName, namespace, e.getMessage());
         }
       }
     }

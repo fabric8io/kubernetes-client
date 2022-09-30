@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,8 +34,8 @@ class OpenShiftConfigTest {
   @BeforeEach
   void setup() {
     this.kubernetesConfig = new ConfigBuilder()
-      .withMasterUrl("https://2.2.2.2")
-      .build();
+        .withMasterUrl("https://2.2.2.2")
+        .build();
 
     this.version = "v1";
     System.setProperty(OpenShiftConfig.KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, this.version);
@@ -47,7 +46,6 @@ class OpenShiftConfigTest {
     System.clearProperty(OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY);
     System.clearProperty(OpenShiftConfig.KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY);
   }
-
 
   @Test
   void testOpenshiftURLAsRoot() {

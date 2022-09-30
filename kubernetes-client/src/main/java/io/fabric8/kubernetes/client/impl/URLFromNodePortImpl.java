@@ -35,13 +35,13 @@ public class URLFromNodePortImpl implements ServiceToURLProvider {
     String serviceProto = port.getProtocol();
     NodePortUrlComponents urlComponents = null;
     Integer nodePort = port.getNodePort();
-    if(nodePort != null) {
+    if (nodePort != null) {
       try {
         NodeList nodeList = client.nodes().list();
-        if(nodeList != null && nodeList.getItems() != null) {
-          for(Node item : nodeList.getItems()) {
+        if (nodeList != null && nodeList.getItems() != null) {
+          for (Node item : nodeList.getItems()) {
             urlComponents = getUrlComponentsFromNodeList(item.getStatus(), nodePort);
-            if(urlComponents != null) {
+            if (urlComponents != null) {
               break;
             }
           }
@@ -51,11 +51,13 @@ public class URLFromNodePortImpl implements ServiceToURLProvider {
       }
     }
 
-    return urlComponents != null ? (serviceProto + "://" + urlComponents.getClusterIP() + ":" + urlComponents.getPortNumber()).toLowerCase(Locale.ROOT) : null;
+    return urlComponents != null
+        ? (serviceProto + "://" + urlComponents.getClusterIP() + ":" + urlComponents.getPortNumber()).toLowerCase(Locale.ROOT)
+        : null;
   }
 
   private NodePortUrlComponents getUrlComponentsFromNodeList(NodeStatus nodeStatus, Integer nodePort) {
-    if(nodeStatus != null) {
+    if (nodeStatus != null) {
       List<NodeAddress> addresses = nodeStatus.getAddresses();
       for (NodeAddress address : addresses) {
         String ip = address.getAddress();

@@ -18,7 +18,6 @@ package io.fabric8.openshift.client.impl;
 
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 

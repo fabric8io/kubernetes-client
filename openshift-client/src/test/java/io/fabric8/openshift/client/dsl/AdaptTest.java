@@ -38,7 +38,7 @@ class AdaptTest {
   void testAdaptDSLs() {
     // Given
     OpenShiftClient client = new OpenShiftClientImpl(
-      new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+        new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
 
     assertNotNull(client.v1());
     assertNotNull(client.apps());

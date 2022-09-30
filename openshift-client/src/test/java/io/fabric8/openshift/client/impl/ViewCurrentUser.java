@@ -18,7 +18,6 @@ package io.fabric8.openshift.client.impl;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,18 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  */
 class ViewCurrentUser {
-    @Test
-    void testShowCurrentUser() throws Exception {
-        OpenShiftClient client = new OpenShiftClientImpl();
-        User user = client.currentUser();
+  @Test
+  void testShowCurrentUser() throws Exception {
+    OpenShiftClient client = new OpenShiftClientImpl();
+    User user = client.currentUser();
 
-        System.out.println("Current user is: " + user);
-        assertNotNull(user);
-        ObjectMeta metadata = user.getMetadata();
-        assertNotNull(metadata);
-        String name = metadata.getName();
-        System.out.println("User name is: " + name);
-        assertNotNull(name);
-    }
+    System.out.println("Current user is: " + user);
+    assertNotNull(user);
+    ObjectMeta metadata = user.getMetadata();
+    assertNotNull(metadata);
+    String name = metadata.getName();
+    System.out.println("User name is: " + name);
+    assertNotNull(name);
+  }
 
 }

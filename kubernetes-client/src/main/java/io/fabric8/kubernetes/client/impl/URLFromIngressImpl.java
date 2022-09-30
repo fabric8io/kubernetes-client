@@ -29,12 +29,12 @@ public class URLFromIngressImpl implements ServiceToURLProvider {
   public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
     ServicePort port = URLFromServiceUtil.getServicePortByName(service, portName);
     String serviceName = service.getMetadata().getName();
-    if(port == null) {
+    if (port == null) {
       throw new RuntimeException("Couldn't find port: " + portName + " for service " + service.getMetadata().getName());
     }
 
     IngressList ingresses = client.extensions().ingresses().inNamespace(namespace).list();
-    if(ingresses != null && !ingresses.getItems().isEmpty()) {
+    if (ingresses != null && !ingresses.getItems().isEmpty()) {
       return URLFromServiceUtil.getURLFromIngressList(ingresses.getItems(), namespace, serviceName, port);
     }
     return null;

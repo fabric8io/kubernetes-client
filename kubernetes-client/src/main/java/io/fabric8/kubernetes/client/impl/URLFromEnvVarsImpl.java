@@ -30,15 +30,16 @@ public class URLFromEnvVarsImpl implements ServiceToURLProvider {
 
   @Override
   public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
-    String serviceHost     = URLFromServiceUtil.resolveHostFromEnvVarOrSystemProperty(service.getMetadata().getName());
-    String servicePort     = URLFromServiceUtil.resolvePortFromEnvVarOrSystemProperty(service.getMetadata().getName(), "");
-    String serviceProtocol = URLFromServiceUtil.resolveProtocolFromEnvVarOrSystemProperty(service.getSpec().getPorts().iterator().next().getProtocol(), "");
+    String serviceHost = URLFromServiceUtil.resolveHostFromEnvVarOrSystemProperty(service.getMetadata().getName());
+    String servicePort = URLFromServiceUtil.resolvePortFromEnvVarOrSystemProperty(service.getMetadata().getName(), "");
+    String serviceProtocol = URLFromServiceUtil
+        .resolveProtocolFromEnvVarOrSystemProperty(service.getSpec().getPorts().iterator().next().getProtocol(), "");
 
-    if(!serviceHost.isEmpty() && !servicePort.isEmpty() && !serviceProtocol.isEmpty()) {
+    if (!serviceHost.isEmpty() && !servicePort.isEmpty() && !serviceProtocol.isEmpty()) {
       return serviceProtocol + "://" + serviceHost + ":" + servicePort;
     } else {
       String answer = URLFromServiceUtil.getOrCreateAnnotations(service).get(ANNOTATION_EXPOSE_URL);
-      if(answer != null && !answer.isEmpty()) {
+      if (answer != null && !answer.isEmpty()) {
         return answer;
       }
     }
