@@ -16,6 +16,10 @@
 package io.fabric8.java.generator.nodes;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -38,6 +42,10 @@ public abstract class AbstractJSONSchema2Pojo {
   static final String STRING_CRD_TYPE = "string";
   static final String OBJECT_CRD_TYPE = "object";
   static final String ARRAY_CRD_TYPE = "array";
+
+  public static final AnnotationExpr GENERATED_ANNOTATION = new SingleMemberAnnotationExpr(
+      new Name("javax.annotation.processing.Generated"),
+      new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
 
   protected final String description;
   protected final Config config;

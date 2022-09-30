@@ -256,7 +256,7 @@ class GeneratorTest {
   @Test
   void testEmptyObjectWithSuffix() {
     // Arrange
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null);
+    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, true);
     JObject obj = new JObject(
         "v1alpha1",
         "t",
@@ -369,6 +369,47 @@ class GeneratorTest {
   }
 
   @Test
+  void testObjectWithAndWithoutGeneratedAnnotation() {
+    // Arrange
+    JObject obj1 = new JObject(
+        "v1alpha1",
+        "t",
+        new HashMap<>(),
+        new ArrayList<>(),
+        false,
+        "",
+        "",
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, false);
+    JObject obj2 = new JObject(
+        "v1alpha1",
+        "t",
+        new HashMap<>(),
+        new ArrayList<>(),
+        false,
+        "",
+        "",
+        config,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res1 = obj1.generateJava();
+    GeneratorResult res2 = obj2.generateJava();
+
+    // Assert
+    Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    assertTrue(clz1.get().getAnnotationByName(AbstractJSONSchema2Pojo.GENERATED_ANNOTATION.getNameAsString()).isPresent());
+
+    Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    assertFalse(clz2.get().getAnnotationByName(AbstractJSONSchema2Pojo.GENERATED_ANNOTATION.getNameAsString()).isPresent());
+  }
+
+  @Test
   void testDefaultEnum() {
     // Arrange
     Map<String, JSONSchemaProps> props = new HashMap<>();
@@ -418,7 +459,7 @@ class GeneratorTest {
     JEnum enu = new JEnum(
         "t",
         enumValues,
-        new Config(false, null, null, null, null, null),
+        new Config(false, null, null, null, null, null, true),
         null,
         Boolean.FALSE,
         null);
@@ -538,7 +579,7 @@ class GeneratorTest {
   @Test
   void testObjectOfObjectsWithTopLevelPrefix() {
     // Arrange
-    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null);
+    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null, true);
     Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");
@@ -568,7 +609,7 @@ class GeneratorTest {
   @Test
   void testObjectOfObjectsWithAlwaysPrefix() {
     // Arrange
-    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null);
+    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null, true);
     Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");

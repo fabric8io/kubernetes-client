@@ -101,6 +101,7 @@
         <configuration>
           <source>src/test/resources/camel-k.crds.1.8.1.yaml</source>
           <extraAnnotations>true</extraAnnotations>
+          <generatedAnnotations>false</generatedAnnotations>
         </configuration>
       </plugin>
       <plugin>

@@ -2,6 +2,7 @@ CrontabJavaExtraAnnotationsCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("stable.example.com")
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode(callSuper = true)
 @lombok.Setter()
@@ -27,6 +28,7 @@ CrontabJavaExtraAnnotationsCr[1] = package org.test.v1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"cronSpec","image","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode()
 @lombok.Setter()
@@ -88,6 +90,7 @@ CrontabJavaExtraAnnotationsCr[2] = package org.test.v1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"labelSelector","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode()
 @lombok.Setter()

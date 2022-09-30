@@ -41,7 +41,8 @@ class CompilationTest {
 
   private static TemporaryFolder tmpFolder = TemporaryFolder.builder().build();
 
-  CRGeneratorRunner defaultRunner = new CRGeneratorRunner(new Config());
+  CRGeneratorRunner defaultRunner = new CRGeneratorRunner(
+      new Config(null, null, null, null, null, Config.CodeStructure.PACKAGE_NESTED, false));
 
   List<JavaFileObject> getSources(File basePath) throws IOException {
     List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
@@ -87,7 +88,7 @@ class CompilationTest {
     File crd = getCRD("crontab-crd.yml");
     File dest = tmpFolder.newFolder("crontab-flat");
     CRGeneratorRunner runner = new CRGeneratorRunner(
-        new Config(null, null, null, null, null, Config.CodeStructure.FLAT));
+        new Config(null, null, null, null, null, Config.CodeStructure.FLAT, false));
 
     // Act
     runner.run(crd, dest);
@@ -104,7 +105,7 @@ class CompilationTest {
     // Arrange
     File crd = getCRD("crontab-crd.yml");
     File dest = tmpFolder.newFolder("crontab-extra-annot");
-    CRGeneratorRunner runner = new CRGeneratorRunner(new Config(null, null, null, true, true, null));
+    CRGeneratorRunner runner = new CRGeneratorRunner(new Config(null, null, null, true, true, null, false));
 
     // Act
     runner.run(crd, dest);

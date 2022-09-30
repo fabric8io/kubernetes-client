@@ -2,6 +2,7 @@ CrontabJavaCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("stable.example.com")
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class CronTab extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.CronTabSpec, org.test.v1.CronTabStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }
 
@@ -10,6 +11,7 @@ CrontabJavaCr[1] = package org.test.v1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"cronSpec","image","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("cronSpec")
@@ -54,6 +56,7 @@ CrontabJavaCr[2] = package org.test.v1;
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"labelSelector","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class CronTabStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("labelSelector")

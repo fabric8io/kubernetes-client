@@ -113,6 +113,9 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     clz.addExtendedType(crType);
     clz.addImplementedType("io.fabric8.kubernetes.api.model.Namespaced");
 
+    if (config.isGeneratedAnnotations()) {
+      clz.addAnnotation(GENERATED_ANNOTATION);
+    }
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);
     }

@@ -55,6 +55,9 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.code-structure", required = false, readonly = true)
   protected Config.CodeStructure codeStructure = null;
 
+  @Parameter(property = "fabric8.java-generator.generated-annotations", required = false, readonly = true)
+  Boolean generatedAnnotations = null;
+
   @Override
   public void execute() {
     final Config config = new Config(
@@ -63,7 +66,8 @@ public class JavaGeneratorMojo extends AbstractMojo {
         suffixStrategy,
         alwaysPreserveUnknown,
         extraAnnotations,
-        codeStructure);
+        codeStructure,
+        generatedAnnotations);
     final CRGeneratorRunner runner = new CRGeneratorRunner(config);
     runner.run(source, target);
     project.addCompileSourceRoot(target.getAbsolutePath());
