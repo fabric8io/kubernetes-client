@@ -296,6 +296,7 @@ class BaseOperationTest {
   void testHttpRetryWithMoreFailuresThanRetries() {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
+    long start = System.currentTimeMillis();
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
         .withClient(mockClient(mockClient,
             new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
@@ -309,7 +310,10 @@ class BaseOperationTest {
       Pod result = baseOp.get();
     });
 
+    long stop = System.currentTimeMillis();
+
     // Then
+    assertTrue(stop - start >= 700); //100+200+400
     assertTrue(exception.getMessage().contains("Internal Server Error"),
         "As the last failure, the 3rd one, is not an IOException the message expected to contain: 'Internal Server Error'!");
     assertEquals(4, httpExecutionCounter.get(), "Expected 4 calls: one normal try and 3 backoff retries!");
