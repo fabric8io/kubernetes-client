@@ -60,7 +60,7 @@ public class KubernetesClientException extends RuntimeException {
     super(message, t);
     this.code = code;
     this.status = status;
-    this.requestMetadata = requestMetadata;
+    this.requestMetadata = requestMetadata == null ? RequestMetadata.EMPTY : requestMetadata;
   }
 
   /**
@@ -229,5 +229,13 @@ public class KubernetesClientException extends RuntimeException {
           return EMPTY;
       }
     }
+  }
+
+  /**
+   * Create a new {@link KubernetesClientException} with this exception as the cause
+   */
+  public KubernetesClientException copyAsCause() {
+    return new KubernetesClientException(this.getMessage(), this, this.getCode(), this.getStatus(),
+        this.requestMetadata);
   }
 }
