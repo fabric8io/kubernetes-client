@@ -15,6 +15,24 @@
  */
 package io.fabric8.crd.generator.decorator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class ResourceProvidingDecorator<T> extends Decorator<T> {
+
+  protected Map<String, String> toMap(String[] arr) {
+    Map<String, String> res = new HashMap<>();
+    if (arr != null) {
+      for (String e : arr) {
+        String[] splitted = e.split("\\=");
+        if (splitted.length == 2) {
+          res.put(splitted[0], splitted[1]);
+        } else {
+          throw new IllegalArgumentException("Invalid value: " + e + " cannot be parsed as a Map");
+        }
+      }
+    }
+    return res;
+  }
 
 }

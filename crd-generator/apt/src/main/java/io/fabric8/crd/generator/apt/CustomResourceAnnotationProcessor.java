@@ -21,6 +21,8 @@ import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.CustomResourceInfo;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
+import io.fabric8.generator.annotation.Annotations;
+import io.fabric8.generator.annotation.Labels;
 import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.*;
@@ -122,6 +124,16 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
         .map(ShortNames::value)
         .orElse(new String[] {});
 
+    final String[] annotations = Optional
+        .ofNullable(customResource.getAnnotation(Annotations.class))
+        .map(Annotations::value)
+        .orElse(new String[] {});
+
+    final String[] labels = Optional
+        .ofNullable(customResource.getAnnotation(Labels.class))
+        .map(Labels::value)
+        .orElse(new String[] {});
+
     final boolean storage = customResource.getAnnotation(Version.class).storage();
     final boolean served = customResource.getAnnotation(Version.class).served();
 
@@ -129,7 +141,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
     return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served, scope, definition,
         crClassName.toString(),
-        specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName());
+        specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName(), annotations, labels);
   }
 
   private static class FileObjectOutputStream extends OutputStream {

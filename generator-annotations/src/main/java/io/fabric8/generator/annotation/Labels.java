@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.generator.annotation;
 
-package io.fabric8.crd.generator.zookeeper.v1;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import io.fabric8.generator.annotation.Annotations;
-import io.fabric8.generator.annotation.Labels;
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
+@Target({ ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Labels {
 
-@Version("v1")
-@Group("io.zookeeper")
-@Annotations({ "one=1", "two=2" })
-@Labels({ "three=3", "four=4" })
-public class Zookeeper extends CustomResource<ZookeeperSpec, ZookeeperStatus> implements Namespaced {
+  String[] value();
 
 }

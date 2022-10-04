@@ -34,6 +34,7 @@ import io.fabric8.crd.generator.v1.decorator.SetServedVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetStorageVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SortPrinterColumnsDecorator;
 import io.sundr.model.TypeDef;
+
 import java.util.Optional;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
@@ -46,24 +47,26 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
 
   @Override
   protected Decorator getPrinterColumnDecorator(String name,
-    String version, String path,
-    String type, String column, String description, String format) {
+      String version, String path,
+      String type, String column, String description, String format) {
     return new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format,
-      description);
+        description);
   }
 
   @Override
-  protected void addDecorators(CustomResourceInfo config, TypeDef def, Optional<String> specReplicasPath, Optional<String> statusReplicasPath, Optional<String> labelSelectorPath) {
+  protected void addDecorators(CustomResourceInfo config, TypeDef def, Optional<String> specReplicasPath,
+      Optional<String> statusReplicasPath, Optional<String> labelSelectorPath) {
     final String name = config.crdName();
     final String version = config.version();
     resources.decorate(
-      new AddCustomResourceDefinitionResourceDecorator(name, config.group(), config.kind(),
-        config.scope().value(), config.shortNames(), config.plural(), config.singular()));
+        new AddCustomResourceDefinitionResourceDecorator(name, config.group(), config.kind(),
+            config.scope().value(), config.shortNames(), config.plural(), config.singular(), config.annotations(),
+            config.labels()));
 
     resources.decorate(new AddCustomResourceDefinitionVersionDecorator(name, version));
 
     resources.decorate(new AddSchemaToCustomResourceDefinitionVersionDecorator(name, version,
-      JsonSchema.from(def, "kind", "apiVersion", "metadata")));
+        JsonSchema.from(def, "kind", "apiVersion", "metadata")));
 
     specReplicasPath.ifPresent(path -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));

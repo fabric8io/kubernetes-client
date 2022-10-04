@@ -15,13 +15,13 @@
  */
 package io.fabric8.crd.generator.v1beta1.decorator;
 
-import java.util.Arrays;
-
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.decorator.ResourceProvidingDecorator;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
+
+import java.util.Arrays;
 
 public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvidingDecorator<KubernetesListBuilder> {
 
@@ -33,9 +33,11 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
   private String[] shortNames;
   private String plural;
   private String singular;
+  private String[] annotations;
+  private String[] labels;
 
   public AddCustomResourceDefinitionResourceDecorator(String name, String apiGroup, String kind,
-    String scope, String[] shortNames, String plural, String singular) {
+      String scope, String[] shortNames, String plural, String singular, String[] annotations, String[] labels) {
     this.name = name;
     this.apiGroup = apiGroup;
     this.kind = kind;
@@ -43,44 +45,46 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
     this.shortNames = shortNames;
     this.plural = plural;
     this.singular = singular;
+    this.annotations = annotations;
+    this.labels = labels;
   }
 
   @Override
   public void visit(KubernetesListBuilder list) {
-    boolean exists = list.getItems().stream().anyMatch(i ->
-      i.getKind().equals("CustomResourceDefinition")
+    boolean exists = list.getItems().stream().anyMatch(i -> i.getKind().equals("CustomResourceDefinition")
         && i.getMetadata().getName().equals(name)
-        && ApiVersionUtil.trimVersion(i.getApiVersion()).equals("v1beta1")
-    );
+        && ApiVersionUtil.trimVersion(i.getApiVersion()).equals("v1beta1"));
 
     if (!exists) {
       list.addToItems(new CustomResourceDefinitionBuilder()
-        .withNewMetadata()
-        .withName(name)
-        .endMetadata()
-        .withNewSpec()
-        .withScope(scope)
-        .withGroup(apiGroup)
-        .withNewNames()
-        .withKind(kind)
-        .withShortNames(shortNames)
-        .withPlural(plural)
-        .withSingular(singular)
-        .endNames()
-        .endSpec()
-        .build());
+          .withNewMetadata()
+          .withName(name)
+          .withAnnotations(toMap(annotations))
+          .withLabels(toMap(labels))
+          .endMetadata()
+          .withNewSpec()
+          .withScope(scope)
+          .withGroup(apiGroup)
+          .withNewNames()
+          .withKind(kind)
+          .withShortNames(shortNames)
+          .withPlural(plural)
+          .withSingular(singular)
+          .endNames()
+          .endSpec()
+          .build());
     }
   }
 
   @Override
   public Class<? extends Decorator>[] before() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class,
-      CustomResourceDefinitionDecorator.class};
+    return new Class[] { AddCustomResourceDefinitionVersionDecorator.class,
+        CustomResourceDefinitionDecorator.class };
   }
 
-
-	@Override
-	public String toString() {
-		return getClass().getName() + " [apiGroup=" + apiGroup + ", kind=" + kind + ", name=" + name + ", plural=" + plural + ", scope=" + scope + "]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [apiGroup=" + apiGroup + ", kind=" + kind + ", name=" + name + ", plural=" + plural
+        + ", scope=" + scope + "]";
+  }
 }
