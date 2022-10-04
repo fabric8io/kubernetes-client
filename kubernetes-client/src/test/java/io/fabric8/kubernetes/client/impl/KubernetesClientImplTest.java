@@ -51,10 +51,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author wangyushuai2@jd.com
  */
-class DefaultKubernetesClientTest {
+class KubernetesClientImplTest {
 
   private static final String TEST_CONFIG_YML_FILE = Utils
-      .filePath(DefaultKubernetesClientTest.class.getResource("/test-config.yml"));
+      .filePath(KubernetesClientImplTest.class.getResource("/test-config.yml"));
 
   private KubernetesClientImpl defaultKubernetesClient;
 
@@ -98,7 +98,7 @@ class DefaultKubernetesClientTest {
   void loadWithWindowsLineSeparatorsString() throws Exception {
     // Given
     final List<String> fileLines = Files.readAllLines(
-        new File(DefaultKubernetesClientTest.class.getResource("/test-list.yml").getFile()).toPath(), StandardCharsets.UTF_8);
+        new File(KubernetesClientImplTest.class.getResource("/test-list.yml").getFile()).toPath(), StandardCharsets.UTF_8);
     final String crlfFile = String.join(" \r\n", fileLines);
     // When
     final List<HasMetadata> result = new KubernetesClientImpl()
