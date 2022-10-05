@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import java.net.URI;
 import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.net.http.HttpResponse.BodySubscriber;
+import java.net.http.HttpResponse.ResponseInfo;
 import java.net.http.WebSocketHandshakeException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -33,10 +35,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
@@ -47,14 +49,56 @@ import java.util.function.Supplier;
  */
 public class JdkHttpClientImpl implements HttpClient {
 
+  /**
+   * Adapts the BodyHandler to immediately complete the body
+   */
+  private static final class BodyHandlerAdapter implements BodyHandler<AsyncBody> {
+    private final AsyncBodySubscriber<?> subscriber;
+    private final BodyHandler<Void> handler;
+
+    private BodyHandlerAdapter(AsyncBodySubscriber<?> subscriber, BodyHandler<Void> handler) {
+      this.subscriber = subscriber;
+      this.handler = handler;
+    }
+
+    @Override
+    public BodySubscriber<AsyncBody> apply(ResponseInfo responseInfo) {
+      BodySubscriber<Void> bodySubscriber = handler.apply(responseInfo);
+      return new BodySubscriber<AsyncBody>() {
+        CompletableFuture<AsyncBody> cf = CompletableFuture.completedFuture(subscriber);
+
+        @Override
+        public void onSubscribe(Subscription subscription) {
+          bodySubscriber.onSubscribe(subscription);
+        }
+
+        @Override
+        public void onNext(List<ByteBuffer> item) {
+          bodySubscriber.onNext(item);
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+          bodySubscriber.onError(throwable);
+        }
+
+        @Override
+        public void onComplete() {
+          bodySubscriber.onComplete();
+        }
+
+        @Override
+        public CompletionStage<AsyncBody> getBody() {
+          return cf;
+        }
+      };
+    }
+  }
+
   private final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
     private final BodyConsumer<T> consumer;
     private CompletableFuture<Void> done = new CompletableFuture<Void>();
-    private final AtomicBoolean subscribed = new AtomicBoolean();
-    private volatile Flow.Subscription subscription;
-    private T initialItem;
-    private boolean first = true;
-    private boolean isComplete;
+    private CompletableFuture<Flow.Subscription> subscription = new CompletableFuture<>();
 
     private AsyncBodySubscriber(BodyConsumer<T> consumer) {
       this.consumer = consumer;
@@ -62,25 +106,15 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-      if (!subscribed.compareAndSet(false, true)) {
+      if (this.subscription.isDone()) {
         subscription.cancel();
         return;
       }
-      this.subscription = subscription;
-      // the sendAsync future won't complete unless we do the initial request here
-      // so in onNext we'll trap the item until we're ready
-      subscription.request(1);
+      this.subscription.complete(subscription);
     }
 
     @Override
     public void onNext(T item) {
-      synchronized (this) {
-        if (first) {
-          this.initialItem = item;
-          first = false;
-          return;
-        }
-      }
       try {
         if (item == null) {
           done.complete(null);
@@ -88,7 +122,7 @@ public class JdkHttpClientImpl implements HttpClient {
           consumer.consume(item, this);
         }
       } catch (Exception e) {
-        subscription.cancel();
+        subscription.thenAccept(Subscription::cancel);
         done.completeExceptionally(e);
       }
     }
@@ -100,10 +134,6 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public synchronized void onComplete() {
-      if (initialItem != null) {
-        this.isComplete = true;
-        return;
-      }
       done.complete(null);
     }
 
@@ -112,19 +142,7 @@ public class JdkHttpClientImpl implements HttpClient {
       if (done.isDone()) {
         return;
       }
-      try {
-        first = false;
-        if (initialItem != null) {
-          T item = initialItem;
-          initialItem = null;
-          onNext(item);
-        }
-      } finally {
-        if (isComplete) {
-          done.complete(null);
-        }
-        this.subscription.request(1);
-      }
+      this.subscription.thenAccept(s -> s.request(1));
     }
 
     @Override
@@ -134,7 +152,7 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public void cancel() {
-      subscription.cancel();
+      subscription.thenAccept(Subscription::cancel);
       done.cancel(false);
     }
 
@@ -234,7 +252,8 @@ public class JdkHttpClientImpl implements HttpClient {
     return sendAsync(request, () -> {
       AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
       BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
-      return new HandlerAndAsyncBody<>(handler, subscriber);
+      BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
+      return new HandlerAndAsyncBody<>(handlerAdapter, subscriber);
     }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
   }
 
@@ -243,7 +262,8 @@ public class JdkHttpClientImpl implements HttpClient {
     return sendAsync(request, () -> {
       AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
       BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
-      return new HandlerAndAsyncBody<>(handler, subscriber);
+      BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
+      return new HandlerAndAsyncBody<>(handlerAdapter, subscriber);
     }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
   }
 

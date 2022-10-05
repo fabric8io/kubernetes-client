@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class ByteArrayBodyHandler implements BodyConsumer<List<ByteBuffer>> {
 
   private final LinkedList<ByteBuffer> buffers = new LinkedList<>();
-  private final CompletableFuture<byte[]> result = new CompletableFuture<byte[]>();
+  private final CompletableFuture<byte[]> result = new CompletableFuture<>();
 
   @Override
   public synchronized void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {

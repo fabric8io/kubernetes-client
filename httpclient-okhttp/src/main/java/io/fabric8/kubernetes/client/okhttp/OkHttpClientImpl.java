@@ -72,16 +72,21 @@ public class OkHttpClientImpl implements HttpClient {
       // consume should not block from a callers perspective
       try {
         httpClient.dispatcher().executorService().execute(() -> {
-          try {
-            if (!source.exhausted() && !done.isDone()) {
-              T value = process(source);
-              consumer.consume(value, this);
-            } else {
-              done.complete(null);
+          // we must serialize multiple consumes as source is not thread-safe
+          // it would be better to use SerialExecutor, but that would need to move modules, as to
+          // potentially not hold multiple executor threads
+          synchronized (source) {
+            try {
+              if (!source.exhausted() && !done.isDone()) {
+                T value = process(source);
+                consumer.consume(value, this);
+              } else {
+                done.complete(null);
+              }
+            } catch (Exception e) {
+              Utils.closeQuietly(source);
+              done.completeExceptionally(e);
             }
-          } catch (Exception e) {
-            Utils.closeQuietly(source);
-            done.completeExceptionally(e);
           }
         });
       } catch (Exception e) {

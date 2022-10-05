@@ -33,6 +33,10 @@ import java.util.concurrent.CompletableFuture;
  */
 class SendAsyncUtils {
 
+  private SendAsyncUtils() {
+    // just utils
+  }
+
   /**
    * Allows for changing the body type - there is further redesign that could be done here
    */
@@ -113,12 +117,11 @@ class SendAsyncUtils {
   }
 
   static CompletableFuture<HttpResponse<String>> string(HttpRequest request, HttpClient client) {
-    return bytes(request, client).thenApply(res -> {
-      return new HttpResponseAdapter<>(res,
-          new String(res.body(), StandardCharsets.UTF_8));
-    });
+    return bytes(request, client)
+        .thenApply(res -> new HttpResponseAdapter<>(res, new String(res.body(), StandardCharsets.UTF_8)));
   }
 
+  @SuppressWarnings("rawtypes")
   static <T> CompletableFuture sendAsync(HttpRequest request, Class<T> type, HttpClient httpClient) {
     if (type == String.class) {
       return string(request, httpClient);

@@ -15,16 +15,17 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.client.api.Result;
+import org.eclipse.jetty.util.Callback;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.LongConsumer;
 
 public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Adapter implements HttpClient.AsyncBody {
 
@@ -32,20 +33,29 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
   private final HttpClient.BodyConsumer<T> bodyConsumer;
   private final CompletableFuture<HttpResponse<HttpClient.AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private boolean consume;
+  private CompletableFuture<LongConsumer> demand = new CompletableFuture<>();
+  private boolean initialConsumeCalled;
+  private Runnable initialConsume;
 
   JettyAsyncResponseListener(HttpRequest httpRequest, HttpClient.BodyConsumer<T> bodyConsumer) {
     this.httpRequest = httpRequest;
     this.bodyConsumer = bodyConsumer;
     asyncResponse = new CompletableFuture<>();
     asyncBodyDone = new CompletableFuture<>();
-    consume = false;
   }
 
   @Override
-  public synchronized void consume() {
-    consume = true;
-    this.notifyAll();
+  public void consume() {
+    synchronized (this) {
+      if (!this.initialConsumeCalled) {
+        this.initialConsumeCalled = true;
+        if (this.initialConsume != null) {
+          this.initialConsume.run();
+          this.initialConsume = null;
+        }
+      }
+    }
+    demand.thenAccept(l -> l.accept(1));
   }
 
   @Override
@@ -74,21 +84,20 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
   }
 
   @Override
-  public void onContent(Response response, ByteBuffer content) {
+  public void onContent(Response response, LongConsumer demand, ByteBuffer content, Callback callback) {
+    synchronized (this) {
+      if (!initialConsumeCalled) {
+        // defer until consume is called
+        this.initialConsume = () -> onContent(response, demand, content, callback);
+        return;
+      }
+      this.demand.complete(demand);
+    }
     try {
-      synchronized (this) {
-        while (!consume && !asyncBodyDone.isCancelled()) {
-          this.wait();
-        }
-      }
-      if (!asyncBodyDone.isCancelled()) {
-        bodyConsumer.consume(process(response, content), this);
-      }
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e);
+      bodyConsumer.consume(process(response, content), this);
+      callback.succeeded();
     } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
+      callback.failed(e);
     }
   }
 

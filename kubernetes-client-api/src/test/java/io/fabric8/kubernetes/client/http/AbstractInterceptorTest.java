@@ -71,7 +71,7 @@ public abstract class AbstractInterceptorTest {
   @DisplayName("afterFailure (HTTP), replaces the HttpResponse produced by HttpClient.sendAsync")
   public void afterHttpFailureReplacesResponseInSendAsync() throws Exception {
     // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works").always();
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("test", new Interceptor() {
           @Override
@@ -96,7 +96,7 @@ public abstract class AbstractInterceptorTest {
   @DisplayName("afterFailure (HTTP), replaces the HttpResponse produced by HttpClient.consumeLines")
   public void afterHttpFailureReplacesResponseInConsumeLines() throws Exception {
     // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works").always();
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works\n").once();
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("test", new Interceptor() {
           @Override
@@ -115,9 +115,15 @@ public abstract class AbstractInterceptorTest {
           })
           .get(10L, TimeUnit.SECONDS);
       asyncR.body().consume();
-      asyncR.body().done().get(10L, TimeUnit.SECONDS);
+      asyncR.body().done().whenComplete((v, t) -> {
+        if (t != null) {
+          result.completeExceptionally(t);
+        } else {
+          result.complete(null);
+        }
+      });
       // Then
-      assertThat(result.get()).isEqualTo("This works");
+      assertThat(result.get(10L, TimeUnit.SECONDS)).isEqualTo("This works");
     }
   }
 
@@ -125,7 +131,7 @@ public abstract class AbstractInterceptorTest {
   @DisplayName("afterFailure (HTTP), replaces the HttpResponse produced by HttpClient.consumeBytes")
   public void afterHttpFailureReplacesResponseInConsumeBytes() throws Exception {
     // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works").always();
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("test", new Interceptor() {
           @Override
