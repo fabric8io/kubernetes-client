@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -66,7 +65,6 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_TIMEOUT_S
 @Service({ KubernetesClient.class, NamespacedKubernetesClient.class })
 @References({
     @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
-    @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
     @Reference(referenceInterface = OAuthTokenProvider.class, cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind = "unbindOAuthTokenProvider")
 })
 public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<DefaultKubernetesClient> {
@@ -189,14 +187,6 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<D
   @Deprecated
   public void unbindResourceHandler(ResourceHandler resourceHandler) {
     // not used
-  }
-
-  public void bindExtensionAdapter(ExtensionAdapter adapter) {
-    getClient().getAdapters().register(adapter);
-  }
-
-  public void unbindExtensionAdapter(ExtensionAdapter adapter) {
-    getClient().getAdapters().unregister(adapter);
   }
 
   public void bindOAuthTokenProvider(OAuthTokenProvider provider) {
