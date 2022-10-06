@@ -3,17 +3,18 @@
 ### 6.2-SNAPSHOT
 
 #### Bugs
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 * Fix #4312: fix timestamp can't be deserialized for IstioCondition
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
-* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
-* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
-* Fix #4460: removing split packages.  Converting Default clients into adapters rather than real instances.
+* Fix #4426: [java-generator] Encode an `AnyType` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
 * Fix #4441: corrected patch base handling for the patch methods available from a Resource - resource(item).patch() will be evaluated as resource(latest).patch(item).  Also undeprecated patch(item), which is consistent with leaving patch(context, item) undeprecated as well.  For consistency with the other operations (such as edit), patch(item) will use the context item as the base when available, or the server side item when not.  This means that patch(item) is only the same as resource(item).patch() when the patch(item) is called when the context item is missing or is the same as the latest.
 * Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
+* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 * Fix #4459: Fixed OSGi startup exceptions while using KubernetesClient/OpenShiftClient
-* Fix #4482: Fixing blocking behavior of okhttp log watch
+* Fix #4460: removing split packages.  Converting Default clients into adapters rather than real instances.
 * Fix #4473: Fix regression in backoff interval introduced in #4365
-* Fix #4426: [java-generator] Encode an `AnyType` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
+* Fix #4478: Removing the resourceVersion bump with null status
+* Fix #4482: Fixing blocking behavior of okhttp log watch
 
 #### Improvements
 * Fix #4471: Adding KubernetesClientBuilder.withHttpClientBuilderConsumer to further customize the HttpClient for any implementation.
