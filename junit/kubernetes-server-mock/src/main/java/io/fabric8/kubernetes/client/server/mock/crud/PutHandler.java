@@ -48,12 +48,12 @@ public class PutHandler implements KubernetesCrudDispatcherHandler {
     final JsonNode updatedResource;
     if (isStatusPath(path)) {
       updatedResource = currentResource.deepCopy();
-      setStatus(updatedResource, persistence.asNode(requestBody).path(STATUS));
+      setStatus(updatedResource, persistence.asNode(requestBody).get(STATUS));
     } else {
       updatedResource = persistence.asNode(requestBody);
       // preserve original status (PUT requests to the custom resource ignore changes to the status stanza)
       if (persistence.isStatusSubresourceEnabledForResource(path)) {
-        setStatus(updatedResource, currentResource.path(STATUS));
+        setStatus(updatedResource, currentResource.get(STATUS));
       }
     }
     validatePath(attributes, updatedResource);

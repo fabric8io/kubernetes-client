@@ -195,6 +195,30 @@ class CustomResourceCrudTest {
     assertNotNull(result.getStatus());
   }
 
+  @Test
+  void testNullStatus() {
+    CronTab cronTab = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
+
+    NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
+        .resources(CronTab.class).inNamespace("test-ns");
+
+    CronTab result = cronTabClient.resource(cronTab).create();
+
+    // should be null after create
+    assertNull(result.getStatus());
+    String resourceVersion = result.getMetadata().getResourceVersion();
+
+    // should be a no-op
+    result = cronTabClient.resource(result).patchStatus();
+    assertNull(result.getStatus());
+    assertEquals(resourceVersion, result.getMetadata().getResourceVersion());
+
+    // should be a no-op
+    result = cronTabClient.resource(result).replace();
+    assertNull(result.getStatus());
+    assertEquals(resourceVersion, result.getMetadata().getResourceVersion());
+  }
+
   void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {
     assertEquals(name, cronTab.getMetadata().getName());
     assertEquals(cronTabSpec, cronTab.getSpec().getCronSpec());

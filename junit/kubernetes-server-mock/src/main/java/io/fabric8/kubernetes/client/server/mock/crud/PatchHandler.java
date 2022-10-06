@@ -67,7 +67,7 @@ public class PatchHandler implements KubernetesCrudDispatcherHandler {
     final JsonNode updatedResource;
     if (isStatusPath(path)) {
       updatedResource = currentResource.deepCopy();
-      setStatus(updatedResource, fullPatch.path(STATUS));
+      setStatus(updatedResource, fullPatch.get(STATUS));
     } else {
       updatedResource = fullPatch;
       // preserve original status (PATCH requests to the custom resource ignore changes to the status stanza)
