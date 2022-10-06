@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -22,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -65,7 +65,7 @@ public class ClusterOperatorStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterOperatorStatusCondition> conditions = new ArrayList<ClusterOperatorStatusCondition>();
     @JsonProperty("extension")
-    private HasMetadata extension;
+    private RawExtension extension;
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<io.fabric8.openshift.api.model.config.v1.ObjectReference>();
@@ -89,7 +89,7 @@ public class ClusterOperatorStatus implements KubernetesResource
      * @param conditions
      * @param relatedObjects
      */
-    public ClusterOperatorStatus(List<ClusterOperatorStatusCondition> conditions, HasMetadata extension, List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects, List<OperandVersion> versions) {
+    public ClusterOperatorStatus(List<ClusterOperatorStatusCondition> conditions, RawExtension extension, List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects, List<OperandVersion> versions) {
         super();
         this.conditions = conditions;
         this.extension = extension;
@@ -108,12 +108,12 @@ public class ClusterOperatorStatus implements KubernetesResource
     }
 
     @JsonProperty("extension")
-    public HasMetadata getExtension() {
+    public RawExtension getExtension() {
         return extension;
     }
 
     @JsonProperty("extension")
-    public void setExtension(HasMetadata extension) {
+    public void setExtension(RawExtension extension) {
         this.extension = extension;
     }
 

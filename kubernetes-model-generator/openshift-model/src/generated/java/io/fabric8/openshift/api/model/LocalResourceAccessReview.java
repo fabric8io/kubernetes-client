@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -78,7 +77,7 @@ public class LocalResourceAccessReview implements KubernetesResource, Namespaced
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("content")
-    private HasMetadata content;
+    private KubernetesResource content;
     @JsonProperty("isNonResourceURL")
     private Boolean isNonResourceURL;
     /**
@@ -126,7 +125,7 @@ public class LocalResourceAccessReview implements KubernetesResource, Namespaced
      * @param resourceName
      * @param content
      */
-    public LocalResourceAccessReview(String apiVersion, HasMetadata content, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, String verb) {
+    public LocalResourceAccessReview(String apiVersion, KubernetesResource content, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, String verb) {
         super();
         this.apiVersion = apiVersion;
         this.content = content;
@@ -162,12 +161,12 @@ public class LocalResourceAccessReview implements KubernetesResource, Namespaced
     }
 
     @JsonProperty("content")
-    public HasMetadata getContent() {
+    public KubernetesResource getContent() {
         return content;
     }
 
     @JsonProperty("content")
-    public void setContent(HasMetadata content) {
+    public void setContent(KubernetesResource content) {
         this.content = content;
     }
 

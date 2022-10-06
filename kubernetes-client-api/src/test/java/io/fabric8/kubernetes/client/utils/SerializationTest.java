@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
@@ -41,8 +42,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -57,6 +58,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -242,10 +244,10 @@ class SerializationTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with invalid YAML resource, should throw exception")
-  void unmarshalWithInvalidResourceShouldThrowException() {
+  void unmarshalRawResource() {
     InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml");
-    assertThrows(KubernetesClientException.class, () -> Serialization.unmarshal(is));
+    RawExtension raw = Serialization.unmarshal(is);
+    ((Map) raw.getValue()).get("not-a").equals("resource");
   }
 
   @Test
@@ -442,6 +444,32 @@ class SerializationTest {
         .asInstanceOf(InstanceOfAssertFactories.MAP)
         .containsEntry("bool", "NO")
         .containsEntry("date", "2022-07-22");
+  }
+
+  @Test
+  void testAnyTypeSerialization() {
+    // Given
+    AnyType value = new AnyType("x");
+
+    // When
+    String yaml = Serialization.asYaml(value);
+
+    // Then
+    assertThat(yaml).isEqualTo("--- \"x\"\n");
+  }
+
+  @Test
+  void testAnyTypeDeserialization() {
+    // Given
+    String yaml = "x: 1";
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("x", 1);
+
+    // When
+    AnyType type = Serialization.unmarshal(yaml, AnyType.class);
+
+    // Then
+    assertThat(type.getValue()).isEqualTo(map);
   }
 
 }

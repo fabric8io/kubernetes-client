@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
@@ -239,15 +238,6 @@ public class Serialization {
         result = mapper.convertValue(obj, type);
       } else {
         result = mapper.readerFor(type).readValue(bis);
-      }
-      // because the deserializer will always return a generic, we need to check the validity
-      if (result instanceof GenericKubernetesResource
-          && type.getType().getTypeName().equals(KubernetesResource.class.getName())) {
-        GenericKubernetesResource gkr = (GenericKubernetesResource) result;
-        if (Utils.isNullOrEmpty(gkr.getKind()) || Utils.isNullOrEmpty(gkr.getApiVersion())) {
-          throw new KubernetesClientException(
-              "Could not parse the input as a KubernetesResource as it lacks kind or apiVersion fields.");
-        }
       }
       return result;
     } catch (IOException e) {

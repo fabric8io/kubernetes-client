@@ -34,18 +34,18 @@
         },
         "object": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "oldObject": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "operation": {
           "type": "string"
         },
         "options": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "requestKind": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionKind",
@@ -165,18 +165,18 @@
         },
         "object": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "oldObject": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "operation": {
           "type": "string"
         },
         "options": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "requestKind": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionKind",
@@ -1268,7 +1268,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -1285,7 +1285,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
       ]
     },
     "kubernetes_apimachinery_ListMeta": {
@@ -1750,18 +1750,10 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_pkg_runtime_ImageRawExtension": {
-      "type": "object",
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.runtime.RawExtension",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2854,18 +2846,18 @@
         },
         "object": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "oldObject": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "operation": {
           "type": "string"
         },
         "options": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
         },
         "requestKind": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionKind",
@@ -3136,9 +3128,6 @@
       },
       "additionalProperties": true
     },
-    "imagerawextension": {
-      "additionalProperties": true
-    },
     "info": {
       "properties": {
         "buildDate": {
@@ -3220,7 +3209,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -3405,7 +3394,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "admissionregistration.k8s.io/v1beta1",
+          "default": "admissionregistration.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3421,8 +3410,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhook",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhook",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhook"
           }
         }
       },

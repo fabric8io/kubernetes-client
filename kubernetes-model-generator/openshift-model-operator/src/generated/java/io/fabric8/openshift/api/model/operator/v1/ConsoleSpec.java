@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -74,7 +73,7 @@ public class ConsoleSpec implements KubernetesResource
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("observedConfig")
-    private HasMetadata observedConfig;
+    private KubernetesResource observedConfig;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
     @JsonProperty("plugins")
@@ -85,7 +84,7 @@ public class ConsoleSpec implements KubernetesResource
     @JsonProperty("route")
     private ConsoleConfigRoute route;
     @JsonProperty("unsupportedConfigOverrides")
-    private HasMetadata unsupportedConfigOverrides;
+    private KubernetesResource unsupportedConfigOverrides;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -108,7 +107,7 @@ public class ConsoleSpec implements KubernetesResource
      * @param providers
      * @param managementState
      */
-    public ConsoleSpec(ConsoleCustomization customization, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, List<String> plugins, ConsoleProviders providers, ConsoleConfigRoute route, HasMetadata unsupportedConfigOverrides) {
+    public ConsoleSpec(ConsoleCustomization customization, String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, List<String> plugins, ConsoleProviders providers, ConsoleConfigRoute route, KubernetesResource unsupportedConfigOverrides) {
         super();
         this.customization = customization;
         this.logLevel = logLevel;
@@ -152,12 +151,12 @@ public class ConsoleSpec implements KubernetesResource
     }
 
     @JsonProperty("observedConfig")
-    public HasMetadata getObservedConfig() {
+    public KubernetesResource getObservedConfig() {
         return observedConfig;
     }
 
     @JsonProperty("observedConfig")
-    public void setObservedConfig(HasMetadata observedConfig) {
+    public void setObservedConfig(KubernetesResource observedConfig) {
         this.observedConfig = observedConfig;
     }
 
@@ -202,12 +201,12 @@ public class ConsoleSpec implements KubernetesResource
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public HasMetadata getUnsupportedConfigOverrides() {
+    public KubernetesResource getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public void setUnsupportedConfigOverrides(HasMetadata unsupportedConfigOverrides) {
+    public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 

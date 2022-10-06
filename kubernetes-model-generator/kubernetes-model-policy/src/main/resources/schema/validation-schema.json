@@ -296,7 +296,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -313,7 +313,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
       ]
     },
     "kubernetes_apimachinery_ListMeta": {
@@ -778,18 +778,10 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_pkg_runtime_ImageRawExtension": {
-      "type": "object",
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.runtime.RawExtension",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1905,7 +1897,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1",
+          "default": "policy/v1beta1",
           "required": true
         },
         "deleteOptions": {
@@ -1994,9 +1986,6 @@
           "existingJavaType": "Long"
         }
       },
-      "additionalProperties": true
-    },
-    "imagerawextension": {
       "additionalProperties": true
     },
     "info": {
@@ -2095,7 +2084,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesResource"
           }
         },
         "kind": {
@@ -2365,7 +2354,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1",
+          "default": "policy/v1beta1",
           "required": true
         },
         "kind": {
@@ -2378,12 +2367,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetSpec"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetStatus"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetStatus"
         }
       },
       "additionalProperties": true

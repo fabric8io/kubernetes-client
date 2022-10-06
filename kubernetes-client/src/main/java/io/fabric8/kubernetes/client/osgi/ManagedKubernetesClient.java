@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
-import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
 import io.fabric8.kubernetes.client.impl.ResourceHandler;
 import org.apache.felix.scr.annotations.Activate;
@@ -66,8 +65,7 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_TIMEOUT_S
 @Component(configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.REQUIRE)
 @Service({ KubernetesClient.class, NamespacedKubernetesClient.class })
 @References({
-    @Reference(referenceInterface = io.fabric8.kubernetes.client.impl.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
-    @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
+    @Reference(referenceInterface = ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
     @Reference(referenceInterface = OAuthTokenProvider.class, cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind = "unbindOAuthTokenProvider")
 })
 public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<KubernetesClientImpl> {
@@ -190,14 +188,6 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<K
   @Deprecated
   public void unbindResourceHandler(ResourceHandler resourceHandler) {
     // not used
-  }
-
-  public void bindExtensionAdapter(ExtensionAdapter adapter) {
-    getClient().getAdapters().register(adapter);
-  }
-
-  public void unbindExtensionAdapter(ExtensionAdapter adapter) {
-    getClient().getAdapters().unregister(adapter);
   }
 
   public void bindOAuthTokenProvider(OAuthTokenProvider provider) {

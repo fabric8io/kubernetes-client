@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -106,7 +105,7 @@ public class IngressControllerSpec implements KubernetesResource
     @JsonProperty("tuningOptions")
     private IngressControllerTuningOptions tuningOptions;
     @JsonProperty("unsupportedConfigOverrides")
-    private HasMetadata unsupportedConfigOverrides;
+    private KubernetesResource unsupportedConfigOverrides;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -137,7 +136,7 @@ public class IngressControllerSpec implements KubernetesResource
      * @param logging
      * @param tuningOptions
      */
-    public IngressControllerSpec(ClientTLS clientTLS, io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, HasMetadata unsupportedConfigOverrides) {
+    public IngressControllerSpec(ClientTLS clientTLS, io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, KubernetesResource unsupportedConfigOverrides) {
         super();
         this.clientTLS = clientTLS;
         this.defaultCertificate = defaultCertificate;
@@ -319,12 +318,12 @@ public class IngressControllerSpec implements KubernetesResource
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public HasMetadata getUnsupportedConfigOverrides() {
+    public KubernetesResource getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public void setUnsupportedConfigOverrides(HasMetadata unsupportedConfigOverrides) {
+    public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
