@@ -211,6 +211,9 @@ public class OkHttpClientImpl implements HttpClient {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<String>(consumer, s) {
       @Override
       protected String process(BufferedSource source) throws IOException {
+        // this should probably be strict instead
+        // when non-strict if no newline is present, this will create a truncated string from
+        // what is available.  However as strict it will be blocking.
         return source.readUtf8Line();
       }
     };
@@ -223,7 +226,9 @@ public class OkHttpClientImpl implements HttpClient {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
       @Override
       protected List<ByteBuffer> process(BufferedSource source) throws IOException {
-        return Collections.singletonList(ByteBuffer.wrap(source.readByteArray()));
+        // read only what is available otherwise okhttp will block trying to read
+        // a whole fetch size 8k worth
+        return Collections.singletonList(ByteBuffer.wrap(source.readByteArray(source.buffer().size())));
       }
     };
     return sendAsync(request, handler);

@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import org.awaitility.Awaitility;
@@ -232,6 +233,12 @@ class PodIT {
     assertTrue(latch.await(5, TimeUnit.SECONDS));
     assertTrue(closed.get());
     assertFalse(failed.get());
+
+    // make sure we can get log output before the pod terminates
+    ByteArrayOutputStream result = new ByteArrayOutputStream();
+    LogWatch log = client.pods().withName("pod-interactive").tailingLines(10).watchLog(result);
+    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> result.size() > 0);
+    log.close();
   }
 
   @Test
