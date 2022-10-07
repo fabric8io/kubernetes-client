@@ -9,6 +9,7 @@
 * Fix #4441: corrected patch base handling for the patch methods available from a Resource - resource(item).patch() will be evaluated as resource(latest).patch(item).  Also undeprecated patch(item), which is consistent with leaving patch(context, item) undeprecated as well.  For consistency with the other operations (such as edit), patch(item) will use the context item as the base when available, or the server side item when not.  This means that patch(item) is only the same as resource(item).patch() when the patch(item) is called when the context item is missing or is the same as the latest.
 * Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
 * Fix #4459: Fixed OSGi startup exceptions while using KubernetesClient/OpenShiftClient
+* Fix #4482: Fixing blocking behavior of okhttp log watch
 * Fix #4473: Fix regression in backoff interval introduced in #4365
 
 #### Improvements
