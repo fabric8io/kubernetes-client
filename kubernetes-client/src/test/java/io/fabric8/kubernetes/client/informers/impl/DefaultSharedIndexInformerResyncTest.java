@@ -17,11 +17,15 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.client.Watch;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +47,15 @@ class DefaultSharedIndexInformerResyncTest {
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
     defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, Runnable::run);
     return defaultSharedIndexInformer;
+  }
+
+  @BeforeEach
+  void beforeEach() {
+    Mockito.when(listerWatcher.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(Watch.class)));
+    PodList result = new PodListBuilder().withNewMetadata().endMetadata().build();
+    Mockito.when(listerWatcher.submitList(Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(result));
   }
 
   @AfterEach

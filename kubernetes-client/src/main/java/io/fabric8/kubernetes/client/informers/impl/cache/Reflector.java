@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
+import io.fabric8.kubernetes.client.informers.ExceptionHandler;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
@@ -44,12 +45,14 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ListerWatcher<T, L> listerWatcher;
   private final SyncableStore<T> store;
   private final ReflectorWatcher watcher;
-  private volatile boolean running;
   private volatile boolean watching;
   private volatile CompletableFuture<Watch> watchFuture;
   private volatile CompletableFuture<?> reconnectFuture;
+  private final CompletableFuture<Void> startFuture = new CompletableFuture<>();
   private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
+  //default behavior - retry if started and it's not a watcherexception
+  private volatile ExceptionHandler handler = (b, t) -> b && !(t instanceof WatcherException);
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.listerWatcher = listerWatcher;
@@ -60,25 +63,17 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public CompletableFuture<Void> start() {
-    return start(false); // start without reconnecting
+    listSyncAndWatch();
+    return startFuture;
   }
 
-  public CompletableFuture<Void> start(boolean reconnect) {
-    this.running = true;
-    CompletableFuture<Void> result = listSyncAndWatch(reconnect);
-    if (!reconnect) {
-      result.whenComplete((v, t) -> {
-        if (t != null) {
-          stopFuture.completeExceptionally(t);
-        }
-      });
-    }
-    return result;
+  public CompletableFuture<Void> getStartFuture() {
+    return startFuture;
   }
 
   public void stop() {
-    running = false;
     stopFuture.complete(null);
+    startFuture.completeExceptionally(new KubernetesClientException("informer manually stopped before starting"));
     Future<?> future = reconnectFuture;
     if (future != null) {
       future.cancel(true);
@@ -106,8 +101,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    *
    * @return a future that completes when the list and watch are established
    */
-  public CompletableFuture<Void> listSyncAndWatch(boolean reconnect) {
-    if (!running) {
+  public CompletableFuture<Void> listSyncAndWatch() {
+    if (isStopped()) {
       return CompletableFuture.completedFuture(null);
     }
     Set<String> nextKeys = new ConcurrentSkipListSet<>();
@@ -119,7 +114,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return startWatcher(latestResourceVersion);
     }).thenAccept(w -> {
       if (w != null) {
-        if (running) {
+        if (!isStopped()) {
           if (log.isDebugEnabled()) {
             log.debug("Watch started for {}", Reflector.this);
           }
@@ -129,26 +124,34 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         }
       }
     });
-    if (reconnect) {
-      theFuture.whenComplete((v, t) -> {
-        if (t != null) {
-          log.warn("listSyncAndWatch failed for {}, will retry", Reflector.this, t);
-          reconnect();
-        } else {
-          retryIntervalCalculator.resetReconnectAttempts();
-        }
-      });
-    }
+    theFuture.whenComplete((v, t) -> {
+      if (t != null) {
+        onException("listSyncAndWatch", t);
+      } else {
+        startFuture.complete(null);
+        retryIntervalCalculator.resetReconnectAttempts();
+      }
+    });
     return theFuture;
   }
 
+  private void onException(String operation, Throwable t) {
+    if (handler.retryAfterException(startFuture.isDone() && !startFuture.isCompletedExceptionally(), t)) {
+      log.warn("{} failed for {}, will retry", operation, Reflector.this, t);
+      reconnect();
+    } else {
+      startFuture.completeExceptionally(t);
+      stopFuture.completeExceptionally(t);
+    }
+  }
+
   protected void reconnect() {
-    if (!running) {
+    if (isStopped()) {
       return;
     }
     // this can be run in the scheduler thread because
     // any further operations will happen on the io thread
-    reconnectFuture = Utils.schedule(Runnable::run, () -> listSyncAndWatch(true),
+    reconnectFuture = Utils.schedule(Runnable::run, this::listSyncAndWatch,
         retryIntervalCalculator.nextReconnectInterval(), TimeUnit.MILLISECONDS);
   }
 
@@ -179,7 +182,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private synchronized CompletableFuture<Watch> startWatcher(final String latestResourceVersion) {
-    if (!running) {
+    if (isStopped()) {
       return CompletableFuture.completedFuture(null);
     }
     log.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
@@ -200,8 +203,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     return lastSyncResourceVersion;
   }
 
-  public boolean isRunning() {
-    return running;
+  public boolean isStopped() {
+    return stopFuture.isDone();
   }
 
   public boolean isWatching() {
@@ -251,9 +254,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         // start a whole new list/watch cycle
         reconnect();
       } else {
-        running = false; // shouldn't happen, but it means the watch won't restart
-        stopFuture.completeExceptionally(exception);
-        log.warn("Watch closing with exception for {}", Reflector.this, exception);
+        onException("watch", exception);
       }
     }
 
@@ -280,6 +281,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public CompletableFuture<Void> getStopFuture() {
     return stopFuture;
+  }
+
+  public void setExceptionHandler(ExceptionHandler handler) {
+    this.handler = handler;
   }
 
 }

@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -125,6 +125,8 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
 
   /**
    * Return true if the informer is running
+   * <p>
+   * See also {@link #stopped()}
    */
   boolean isRunning();
 
@@ -161,19 +163,33 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   SharedIndexInformer<T> itemStore(ItemStore<T> itemStore);
 
   /**
-   * A non-blocking alternative to run. Starts the shared informer, which will be stopped when {@link #stop()} is called.
+   * A non-blocking alternative to run. Starts the shared informer, which will normally be stopped when {@link #stop()} is
+   * called.
    * <br>
-   * Only one start attempt is made - subsequent calls will not re-start the informer.
+   * The stage will be completed normally once the Informer starts watching successfully for the first time.
+   * <p>
+   * By default the informer will attempt only a single start attempt. Use {@link #exceptionHandler(ExceptionHandler)} to
+   * modify this behavior.
    */
-  CompletableFuture<Void> start();
+  CompletionStage<Void> start();
 
   /**
-   * Return a future that will allow notification of informer stopping.
+   * Sets the {@link ExceptionHandler} for this informer. For example, exceptionHandler((b, t) -&gt; true)), will
+   * keep retying no matter what the exception is.
    * <p>
-   * If {@link #stop()} is called, the future will be completed with a null value.
+   * May only be called prior to the informer starting
+   *
+   * @param handler
+   */
+  SharedIndexInformer<T> exceptionHandler(ExceptionHandler handler);
+
+  /**
+   * Return a {@link CompletionStage} that will allow notification of the informer stopping.
+   * <p>
+   * If {@link #stop()} is called, the CompletionStage will complete normally.
    * <p>
    * If an exception occurs that terminates the informer, then it will be exceptionally completed with that exception
    * - typically a {@link WatcherException}
    */
-  CompletableFuture<Void> stopped();
+  CompletionStage<Void> stopped();
 }

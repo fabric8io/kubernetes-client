@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
@@ -106,11 +107,11 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
 
   @Override
   public synchronized Future<Void> startAllRegisteredInformers() {
-    List<CompletableFuture<Void>> startInformerTasks = new ArrayList<>();
+    List<CompletionStage<Void>> startInformerTasks = new ArrayList<>();
 
     if (!informers.isEmpty()) {
       for (SharedIndexInformer<?> informer : informers) {
-        CompletableFuture<Void> future = informer.start();
+        CompletionStage<Void> future = informer.start();
         startInformerTasks.add(future);
         future.whenComplete((v, t) -> {
           if (t != null) {
