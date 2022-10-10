@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.informers.impl;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.informers.ExceptionHandler;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
@@ -96,7 +97,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
    * @param handler event handler
    */
   @Override
-  public SharedIndexInformer<T> addEventHandler(ResourceEventHandler<? super T> handler) {
+  public DefaultSharedIndexInformer<T, L> addEventHandler(ResourceEventHandler<? super T> handler) {
     addEventHandlerWithResyncPeriod(handler, defaultEventHandlerResyncPeriod);
     return this;
   }
@@ -149,7 +150,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     }
     synchronized (this) {
       if (!started.compareAndSet(false, true)) {
-        return CompletableFuture.completedFuture(null);
+        return reflector.getStartFuture();
       }
 
       if (initialState != null) {
@@ -161,14 +162,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     scheduleResync(processor::shouldResync);
 
-    return reflector.start().whenComplete((v, t) -> {
-      // stop called while run is called could be ineffective, check for it afterwards
-      synchronized (this) {
-        if (stopped && reflector.isRunning()) {
-          stop();
-        }
-      }
-    });
+    return reflector.start();
   }
 
   @Override
@@ -221,7 +215,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public boolean isRunning() {
-    return !stopped && started.get() && reflector.isRunning();
+    return !stopped && started.get() && !reflector.isStopped();
   }
 
   @Override
@@ -292,6 +286,15 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   @Override
   public CompletableFuture<Void> stopped() {
     return this.reflector.getStopFuture();
+  }
+
+  @Override
+  public synchronized DefaultSharedIndexInformer<T, L> exceptionHandler(ExceptionHandler handler) {
+    if (started.get()) {
+      throw new KubernetesClientException("Informer cannot be running when handler is set");
+    }
+    this.reflector.setExceptionHandler(handler);
+    return this;
   }
 
 }
