@@ -6,7 +6,8 @@
 * Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 * Fix #4312: fix timestamp can't be deserialized for IstioCondition
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
-* Fix #4426: [java-generator] Encode an `AnyType` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
+* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 * Fix #4441: corrected patch base handling for the patch methods available from a Resource - resource(item).patch() will be evaluated as resource(latest).patch(item).  Also undeprecated patch(item), which is consistent with leaving patch(context, item) undeprecated as well.  For consistency with the other operations (such as edit), patch(item) will use the context item as the base when available, or the server side item when not.  This means that patch(item) is only the same as resource(item).patch() when the patch(item) is called when the context item is missing or is the same as the latest.
 * Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
 * Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
@@ -45,6 +46,7 @@
 * Fix #3924: Extension Mock modules have been removed
 * Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
 * Fix #3906: removed BaseKubernetesList, use KubernetesList instead
+* Fix #4408: deprecated SharedInformerFactory.addSharedInformerEventListener, instead use the SharedIndexInformer.stopped method.  Also the signature of SharedIndexInformer.start was changed to a CompletionStage rather than a CompletableFuture.
 
 ### 5.12.4 (2022-09-30)
 

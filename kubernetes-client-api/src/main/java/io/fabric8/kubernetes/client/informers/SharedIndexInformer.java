@@ -175,7 +175,7 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
 
   /**
    * Sets the {@link ExceptionHandler} for this informer. For example, exceptionHandler((b, t) -&gt; true)), will
-   * keep retying no matter what the exception is.
+   * keep retrying no matter what the exception is.
    * <p>
    * May only be called prior to the informer starting
    *
