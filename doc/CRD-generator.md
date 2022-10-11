@@ -381,6 +381,48 @@ will be generated as:
             type: object
 ```
 
+### io.fabric8.crd.generator.annotation.Annotations
+
+If a custom resource class is annotated with `io.fabric8.crd.generator.annotation.Annotations`
+
+```java
+@Annotations({ "one=1", "two=2" })
+public class Example extends CustomResource<ExampleSpec, ExampleStatus> implements Namespaced {}
+```
+
+The CRD generator will add the additional `annotations`:
+
+```yaml
+          metadata:
+            name: examples.org.example
+            annotations:
+              one: "1"
+              two: "2"
+          spec:
+            ...
+```
+
+### io.fabric8.crd.generator.annotation.Labels
+
+If a custom resource class is annotated with `io.fabric8.crd.generator.annotation.Labels`
+
+```java
+@Labels({ "three=3", "four=4" })
+public class Example extends CustomResource<ExampleSpec, ExampleStatus> implements Namespaced {}
+```
+
+The CRD generator will add the additional `labels`:
+
+```yaml
+          metadata:
+            name: examples.org.example
+            labels:
+              four: "4"
+              three: "3"
+          spec:
+            ...
+```
+
 ## Features cheatsheet
 
 | Annotation                                                   | Description                                                                           |
@@ -398,5 +440,7 @@ will be generated as:
 | `io.fabric8.generator.annotation.Required`                   | The field is marked as `required`                                                     |
 | `io.fabric8.crd.generator.annotation.SchemaFrom`             | The field type for the generation is the one coming from the annotation               |
 | `io.fabric8.crd.generator.annotation.SchemaSwap`             | Same as SchemaFrom, but can be applied at any point in the class hierarchy            |
+| `io.fabric8.crd.generator.annotation.Annotations`            | Additional `annotations` in `metadata`                                                |
+| `io.fabric8.crd.generator.annotation.Labels`                 | Additional `labels` in `metadata`                                                     |
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
