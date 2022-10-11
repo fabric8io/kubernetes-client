@@ -11,7 +11,7 @@
 * Fix #4459: Fixed OSGi startup exceptions while using KubernetesClient/OpenShiftClient
 * Fix #4482: Fixing blocking behavior of okhttp log watch
 * Fix #4473: Fix regression in backoff interval introduced in #4365
-* Fix #4426: [java-generator] Encode a `JsonNode` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
+* Fix #4426: [java-generator] Encode an `AnyType` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators

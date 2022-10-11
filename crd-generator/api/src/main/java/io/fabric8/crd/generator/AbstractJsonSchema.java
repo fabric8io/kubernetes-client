@@ -92,6 +92,7 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_SCHEMA_SWAPS = "io.fabric8.crd.generator.annotation.SchemaSwaps";
 
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
+  public static final String ANY_TYPE = "io.fabric8.kubernetes.api.model.AnyType";
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -245,7 +246,8 @@ public abstract class AbstractJsonSchema<T, B> {
     List<String> required = new ArrayList<>();
 
     final boolean isJsonNode = (definition.getFullyQualifiedName() != null &&
-        definition.getFullyQualifiedName().equals(JSON_NODE_TYPE));
+        (definition.getFullyQualifiedName().equals(JSON_NODE_TYPE)
+            || definition.getFullyQualifiedName().equals(ANY_TYPE)));
 
     final B builder = (isJsonNode) ? newBuilder(null) : newBuilder();
 
