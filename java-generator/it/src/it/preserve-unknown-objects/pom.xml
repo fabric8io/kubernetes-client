@@ -70,6 +70,7 @@
         </executions>
         <configuration>
           <source>src/test/resources/dapr-components-crd.yaml</source>
+          <generatedAnnotations>false</generatedAnnotations>
         </configuration>
       </plugin>
       <plugin>
