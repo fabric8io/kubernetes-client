@@ -56,8 +56,11 @@ public class CustomResourceInformerExample {
             }
           });
 
-      sharedInformerFactory
-          .addSharedInformerEventListener(ex -> logger.error("Exception occurred, but caught: {}", ex.getMessage()));
+      podInformer.stopped().whenComplete((v, t) -> {
+        if (t != null) {
+          logger.error("Exception occurred, caught: {}", t.getMessage());
+        }
+      });
 
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
