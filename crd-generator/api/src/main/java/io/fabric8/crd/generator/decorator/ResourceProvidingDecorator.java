@@ -28,7 +28,8 @@ public abstract class ResourceProvidingDecorator<T> extends Decorator<T> {
         if (splitted.length == 2) {
           res.put(splitted[0], splitted[1]);
         } else {
-          throw new IllegalArgumentException("Invalid value: " + e + " cannot be parsed as a key-value pair. Expected format is 'key=value'.");
+          throw new IllegalArgumentException(
+              "Invalid value: " + e + " cannot be parsed as a key-value pair. Expected format is 'key=value'.");
         }
       }
     }

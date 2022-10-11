@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.generator.annotation;
+package io.fabric8.crd.generator.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
