@@ -689,11 +689,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public Client newClient(RequestConfig requestConfig) {
     Config copyConfig = configCopy();
     Config.setRequestConfig(copyConfig, requestConfig);
-    HttpClient client = this.httpClient.getFactory().createHttpClient(copyConfig);
-    DefaultKubernetesClient result = newInstance(copyConfig);
-    result.httpClient = client;
-    result.setDerivedFields();
-    return result;
+    return newInstance(copyConfig);
   }
 
   @Override

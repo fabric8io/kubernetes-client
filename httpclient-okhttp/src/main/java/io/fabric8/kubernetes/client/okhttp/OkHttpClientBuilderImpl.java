@@ -16,8 +16,10 @@
 
 package io.fabric8.kubernetes.client.okhttp;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
+import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
@@ -61,13 +63,16 @@ class OkHttpClientBuilderImpl implements Builder {
     @Override
     public Response intercept(Chain chain) throws IOException {
       Request.Builder requestBuilder = chain.request().newBuilder();
+      Config config = chain.request().tag(Config.class);
       OkHttpRequestImpl.BuilderImpl builderImpl = new OkHttpRequestImpl.BuilderImpl(requestBuilder);
-      interceptor.before(new OkHttpRequestImpl.BuilderImpl(requestBuilder), new OkHttpRequestImpl(chain.request()));
+      io.fabric8.kubernetes.client.http.Interceptor.useConfig(interceptor, config)
+          .before(new OkHttpRequestImpl.BuilderImpl(requestBuilder), new OkHttpRequestImpl(chain.request()));
       Response response = chain.proceed(requestBuilder.build());
       if (!response.isSuccessful()) {
         // for okhttp this token refresh will be blocking
         try {
-          boolean call = interceptor.afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class)).get();
+          boolean call = io.fabric8.kubernetes.client.http.Interceptor.useConfig(interceptor, config)
+              .afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class)).get();
           if (call) {
             response.close();
             return chain.proceed(requestBuilder.build());
@@ -87,10 +92,12 @@ class OkHttpClientBuilderImpl implements Builder {
   private boolean streaming;
   private OkHttpClient.Builder builder;
   private OkHttpClientFactory factory;
+  private Config config;
 
-  public OkHttpClientBuilderImpl(okhttp3.OkHttpClient.Builder newBuilder, OkHttpClientFactory factory) {
+  public OkHttpClientBuilderImpl(okhttp3.OkHttpClient.Builder newBuilder, OkHttpClientFactory factory, Config config) {
     this.builder = newBuilder;
     this.factory = factory;
+    this.config = config;
   }
 
   @Override
@@ -108,7 +115,7 @@ class OkHttpClientBuilderImpl implements Builder {
       }
     }
 
-    return new OkHttpClientImpl(client, factory);
+    return new OkHttpClientImpl(client, factory, config);
   }
 
   @Override
@@ -214,6 +221,12 @@ class OkHttpClientBuilderImpl implements Builder {
   @Override
   public Builder preferHttp11() {
     builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
+    return this;
+  }
+
+  @Override
+  public DerivedClientBuilder requestConfig(Config config) {
+    this.config = config;
     return this;
   }
 

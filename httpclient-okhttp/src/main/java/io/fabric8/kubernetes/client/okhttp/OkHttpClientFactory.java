@@ -46,7 +46,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   /**
    * Subclasses may use this to apply additional configuration after the Config has been applied
    * This method is only called for clients constructed using the Config.
-   * 
+   *
    * @param builder
    */
   protected void additionalConfig(OkHttpClient.Builder builder) {
@@ -55,12 +55,12 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
   @Override
   public Builder newBuilder() {
-    return new OkHttpClientBuilderImpl(newOkHttpClientBuilder(), this);
+    return new OkHttpClientBuilderImpl(newOkHttpClientBuilder(), this, null);
   }
 
   /**
    * Creates an HTTP client configured to access the Kubernetes API.
-   * 
+   *
    * @param config Kubernetes API client config
    * @return returns an HTTP client
    */
@@ -91,7 +91,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         httpClientBuilder.dispatcher(dispatcher);
       }
 
-      OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder, this);
+      OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder, this, null);
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
 

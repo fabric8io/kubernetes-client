@@ -47,6 +47,36 @@ import javax.net.ssl.TrustManager;
 
 public class HttpClientUtils {
 
+  private static final class HeaderInterceptor implements Interceptor {
+    private final Config config;
+
+    private HeaderInterceptor(Config config) {
+      this.config = config;
+    }
+
+    @Override
+    public Interceptor withConfig(Config config) {
+      return new HeaderInterceptor(config);
+    }
+
+    @Override
+    public void before(BasicBuilder builder, HttpHeaders headers) {
+      if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+        builder.header("Authorization", basicCredentials(config.getUsername(), config.getPassword()));
+      } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+        builder.header("Authorization", "Bearer " + config.getOauthToken());
+      }
+      if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
+        for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
+          builder.header(entry.getKey(), entry.getValue());
+        }
+      }
+      if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
+        builder.setHeader("User-Agent", config.getUserAgent());
+      }
+    }
+  }
+
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
   private static final String HEADER_INTERCEPTOR = "HEADER";
   private static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
@@ -84,25 +114,7 @@ public class HttpClientUtils {
     Map<String, io.fabric8.kubernetes.client.http.Interceptor> interceptors = new LinkedHashMap<>();
 
     // Header Interceptor
-    interceptors.put(HEADER_INTERCEPTOR, new Interceptor() {
-
-      @Override
-      public void before(BasicBuilder builder, HttpHeaders headers) {
-        if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-          builder.header("Authorization", basicCredentials(config.getUsername(), config.getPassword()));
-        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-          builder.header("Authorization", "Bearer " + config.getOauthToken());
-        }
-        if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
-          for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
-            builder.header(entry.getKey(), entry.getValue());
-          }
-        }
-        if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
-          builder.setHeader("User-Agent", config.getUserAgent());
-        }
-      }
-    });
+    interceptors.put(HEADER_INTERCEPTOR, new HeaderInterceptor(config));
     // Impersonator Interceptor
     interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor

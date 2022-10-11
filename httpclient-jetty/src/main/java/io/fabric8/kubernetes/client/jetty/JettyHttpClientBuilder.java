@@ -15,9 +15,8 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.http.HttpClient.Builder;
+import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
-import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpProxy;
@@ -32,38 +31,25 @@ import org.eclipse.jetty.io.ClientConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
-import java.net.InetSocketAddress;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
+public class JettyHttpClientBuilder
+    extends StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
 
-public class JettyHttpClientBuilder extends DerivedJettyHttpClientBuilder<JettyHttpClientBuilder>
-    implements Builder {
-
-  private Duration connectTimeout;
-  private SSLContext sslContext;
-  private boolean followAllRedirects;
-  private Origin.Address proxyAddress;
-  private String proxyAuthorization;
-  private TlsVersion[] tlsVersions;
-  // TODO: HTTP2 disabled, MockWebServer support is limited and requires changes
-  // Enable (preferHttp11->false) the feature after fixing MockWebServer
-  private boolean preferHttp11 = true;
-  private HttpClient sharedHttpClient;
-  private WebSocketClient sharedWebSocketClient;
-
-  public JettyHttpClientBuilder(JettyHttpClientFactory factory) {
-    super(factory);
+  public JettyHttpClientBuilder(JettyHttpClientFactory clientFactory) {
+    super(clientFactory);
+    // TODO: HTTP2 disabled, MockWebServer support is limited and requires changes
+    // Enable (preferHttp11->false) the feature after fixing MockWebServer
+    this.preferHttp11 = true;
   }
 
   @Override
   public JettyHttpClient build() {
-    if (sharedHttpClient != null) {
-      return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient, interceptors.values(), factory);
+    if (client != null) {
+      return new JettyHttpClient(this, client.getJetty(), client.getJettyWs(), interceptors.values(), clientFactory,
+          this.requestConfig);
     }
     final var sslContextFactory = new SslContextFactory.Client();
     if (sslContext != null) {
@@ -72,16 +58,17 @@ public class JettyHttpClientBuilder extends DerivedJettyHttpClientBuilder<JettyH
     if (tlsVersions != null && tlsVersions.length > 0) {
       sslContextFactory.setIncludeProtocols(Stream.of(tlsVersions).map(TlsVersion::javaName).toArray(String[]::new));
     }
-    sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
-    sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
+    HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
+    WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
     sharedWebSocketClient.setIdleTimeout(Duration.ZERO);
     if (connectTimeout != null) {
       sharedHttpClient.setConnectTimeout(connectTimeout.toMillis());
       sharedWebSocketClient.setConnectTimeout(connectTimeout.toMillis());
     }
-    sharedHttpClient.setFollowRedirects(followAllRedirects);
+    sharedHttpClient.setFollowRedirects(followRedirects);
     if (proxyAddress != null) {
-      sharedHttpClient.getProxyConfiguration().getProxies().add(new HttpProxy(proxyAddress, false));
+      sharedHttpClient.getProxyConfiguration().getProxies()
+          .add(new HttpProxy(new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort()), false));
     }
     if (proxyAddress != null && proxyAuthorization != null) {
       sharedHttpClient.getRequestListeners().add(new Request.Listener.Adapter() {
@@ -91,70 +78,8 @@ public class JettyHttpClientBuilder extends DerivedJettyHttpClientBuilder<JettyH
         }
       });
     }
-    return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient, interceptors.values(), factory);
-  }
-
-  @Override
-  public JettyHttpClientBuilder connectTimeout(long connectTimeout, TimeUnit unit) {
-    this.connectTimeout = Duration.ofNanos(unit.toNanos(connectTimeout));
-    return this;
-  }
-
-  @Override
-  public JettyHttpClientBuilder sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
-    this.sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
-    return this;
-  }
-
-  @Override
-  public JettyHttpClientBuilder followAllRedirects() {
-    followAllRedirects = true;
-    return this;
-  }
-
-  @Override
-  public JettyHttpClientBuilder proxyAddress(InetSocketAddress proxyAddress) {
-    if (proxyAddress == null) {
-      this.proxyAddress = null;
-    } else {
-      this.proxyAddress = new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort());
-    }
-    return this;
-  }
-
-  @Override
-  public JettyHttpClientBuilder proxyAuthorization(String credentials) {
-    proxyAuthorization = credentials;
-    return this;
-  }
-
-  @Override
-  public JettyHttpClientBuilder tlsVersions(TlsVersion... tlsVersions) {
-    this.tlsVersions = tlsVersions;
-    return this;
-  }
-
-  @Override
-  public JettyHttpClientBuilder preferHttp11() {
-    preferHttp11 = true;
-    return this;
-  }
-
-  public Builder copy() {
-    final var ret = new JettyHttpClientBuilder(factory);
-    ret.sharedHttpClient = sharedHttpClient;
-    ret.sharedWebSocketClient = sharedWebSocketClient;
-    ret.readTimeout = readTimeout;
-    ret.writeTimeout = writeTimeout;
-    ret.interceptors.putAll(interceptors);
-    ret.connectTimeout = connectTimeout;
-    ret.sslContext = sslContext;
-    ret.followAllRedirects = followAllRedirects;
-    ret.proxyAddress = proxyAddress;
-    ret.proxyAuthorization = proxyAuthorization;
-    ret.tlsVersions = tlsVersions;
-    ret.preferHttp11 = preferHttp11;
-    return ret;
+    return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient, interceptors.values(), clientFactory,
+        requestConfig);
   }
 
   private static HttpClientTransport newTransport(SslContextFactory.Client sslContextFactory, boolean preferHttp11) {
@@ -168,5 +93,25 @@ public class JettyHttpClientBuilder extends DerivedJettyHttpClientBuilder<JettyH
       transport = new HttpClientTransportDynamic(clientConnector, http2, HttpClientConnectionFactory.HTTP11);
     }
     return transport;
+  }
+
+  @Override
+  protected JettyHttpClientBuilder newInstance(JettyHttpClientFactory clientFactory) {
+    return new JettyHttpClientBuilder(clientFactory);
+  }
+
+  @Override
+  public Duration getReadTimeout() {
+    return Optional.ofNullable(readTimeout).orElse(Duration.ZERO);
+  }
+
+  @Override
+  public Duration getWriteTimeout() {
+    return Optional.ofNullable(writeTimeout).orElse(Duration.ZERO);
+  }
+
+  @Override
+  public Duration getConnectTimeout() {
+    return Optional.ofNullable(connectTimeout).orElse(Duration.ZERO);
   }
 }

@@ -28,14 +28,20 @@ import java.util.Map;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 public class ImpersonatorInterceptor implements Interceptor {
-  
+
   public static final String NAME = "IMPERSONATOR";
-  
+
   private final Config config;
+
   public ImpersonatorInterceptor(Config config) {
     this.config = config;
   }
-  
+
+  @Override
+  public Interceptor withConfig(Config config) {
+    return new ImpersonatorInterceptor(config);
+  }
+
   @Override
   public void before(BasicBuilder builder, HttpHeaders headers) {
     RequestConfig requestConfig = config.getRequestConfig();
@@ -55,7 +61,7 @@ public class ImpersonatorInterceptor implements Interceptor {
         Collection<?> keys = impersonateExtras.keySet();
         for (Object key : keys) {
           List<String> values = impersonateExtras.get(key);
-          if(values != null) {
+          if (values != null) {
             for (String value : values) {
               builder.header("Impersonate-Extra-" + key, value);
             }

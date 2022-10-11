@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.RequestConfig;
 
 import java.io.BufferedReader;
 import java.net.InetSocketAddress;
@@ -74,6 +75,14 @@ public interface HttpClient extends AutoCloseable {
      * @return this Builder instance.
      */
     DerivedClientBuilder authenticatorNone();
+
+    /**
+     * Supply an {@link RequestConfig} via a {@link Config} to {@link Interceptor#withConfig(Config)}
+     *
+     * @param config
+     * @return this Builder instance.
+     */
+    DerivedClientBuilder requestConfig(Config config);
   }
 
   interface Builder extends DerivedClientBuilder {
@@ -207,7 +216,5 @@ public interface HttpClient extends AutoCloseable {
   WebSocket.Builder newWebSocketBuilder();
 
   HttpRequest.Builder newHttpRequestBuilder();
-
-  HttpClient.Factory getFactory();
 
 }
