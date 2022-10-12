@@ -35,7 +35,6 @@
   <modules>
     <module>model-v1</module>
     <module>client</module>
-    <module>mock</module>
     <module>examples</module>
     <module>tests</module>
   </modules>

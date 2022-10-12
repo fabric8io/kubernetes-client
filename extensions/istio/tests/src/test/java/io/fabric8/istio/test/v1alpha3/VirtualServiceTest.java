@@ -25,12 +25,12 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class VirtualServiceTest {
+class VirtualServiceTest {
 
   @Test
-  public void roundtripBasicVirtualServiceShouldWork() throws Exception {
+  void roundtripBasicVirtualServiceShouldWork() throws Exception {
     final String apiVersion = "networking.istio.io/v1alpha3";
     final VirtualService virtualService = new VirtualServiceBuilder().withApiVersion(apiVersion)
         .withNewMetadata().withName("vs_name").withNamespace("ns").endMetadata()
@@ -55,7 +55,7 @@ public class VirtualServiceTest {
   }
 
   @Test
-  public void loadingFromYAMLIssue103ShouldWork() throws Exception {
+  void loadingFromYAMLIssue103ShouldWork() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1alpha3/virtual-service-issue103.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 
@@ -76,7 +76,7 @@ public class VirtualServiceTest {
   }
 
   @Test
-  public void loadingVirtualServiceWithValidationMessages() throws Exception {
+  void loadingVirtualServiceWithValidationMessages() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1alpha3/virtual-service-issue4315.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
     assertEquals(3, virtualService.getStatus().getValidationMessages().size());

@@ -38,6 +38,8 @@ import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
+import io.fabric8.servicecatalog.client.DefaultServiceCatalogClient;
+import io.fabric8.servicecatalog.client.NamespacedServiceCatalogClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -184,6 +186,11 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
         .withNamespace("test")
         .withHttp2Disable(true)
         .build();
+  }
+
+  public NamespacedServiceCatalogClient createServiceCatalog() {
+    Config config = this.getMockConfiguration();
+    return new DefaultServiceCatalogClient(config);
   }
 
   @Override

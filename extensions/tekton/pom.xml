@@ -38,7 +38,6 @@
     <module>model-triggers-v1alpha1</module>
     <module>model-triggers-v1beta1</module>
     <module>client</module>
-    <module>mock</module>
     <module>examples</module>
     <module>tests</module>
   </modules>

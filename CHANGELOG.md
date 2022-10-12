@@ -11,6 +11,7 @@
 * Fix #4459: Fixed OSGi startup exceptions while using KubernetesClient/OpenShiftClient
 * Fix #4482: Fixing blocking behavior of okhttp log watch
 * Fix #4473: Fix regression in backoff interval introduced in #4365
+* Fix #3924: Remove extensions mock modules
 
 #### Improvements
 * Fix #4348: Introduce specific annotations for the generators

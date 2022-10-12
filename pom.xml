@@ -475,11 +475,6 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>knative-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
         <artifactId>tekton-model-v1alpha1</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -503,11 +498,6 @@
         <artifactId>tekton-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>tekton-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -526,11 +516,6 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>camel-k-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
         <artifactId>istio-model-v1alpha3</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -544,11 +529,6 @@
         <artifactId>istio-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>istio-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -558,11 +538,6 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>volcano-client</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>volcano-server-mock</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -615,11 +590,6 @@
         <artifactId>open-cluster-management-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>open-cluster-management-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -646,11 +616,6 @@
         <artifactId>certmanager-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>certmanager-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -660,11 +625,6 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>chaosmesh-client</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>chaosmesh-server-mock</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -678,11 +638,6 @@
         <artifactId>servicecatalog-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>servicecatalog-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -694,11 +649,6 @@
         <artifactId>verticalpodautoscaler-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>verticalpodautoscaler-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -708,11 +658,6 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>volumesnapshot-client</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>volumesnapshot-server-mock</artifactId>
         <version>${project.version}</version>
       </dependency>
 

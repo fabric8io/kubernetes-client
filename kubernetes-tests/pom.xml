@@ -78,11 +78,6 @@
       <groupId>io.fabric8</groupId>
       <artifactId>servicecatalog-client</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>servicecatalog-server-mock</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
