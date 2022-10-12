@@ -59,13 +59,13 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   }
 
   /**
-   * Creates an HTTP client configured to access the Kubernetes API.
+   * Creates an HTTP client builder configured to access the Kubernetes API.
    *
    * @param config Kubernetes API client config
-   * @return returns an HTTP client
+   * @return returns an HTTP client builder
    */
   @Override
-  public OkHttpClientImpl createHttpClient(Config config) {
+  public OkHttpClientBuilderImpl newBuilder(Config config) {
     try {
       OkHttpClient.Builder httpClientBuilder = newOkHttpClientBuilder();
 
@@ -101,7 +101,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
       additionalConfig(httpClientBuilder);
 
-      return builderWrapper.build();
+      return builderWrapper;
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }

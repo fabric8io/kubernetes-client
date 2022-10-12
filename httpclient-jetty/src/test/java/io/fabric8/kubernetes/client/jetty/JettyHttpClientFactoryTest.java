@@ -27,7 +27,7 @@ class JettyHttpClientFactoryTest {
   @DisplayName("createHttpClient instantiates a JettyHttpClient")
   void createHttpClientInstantiatesJettyHttpClient() {
     // When
-    try (var result = new JettyHttpClientFactory().createHttpClient(Config.empty())) {
+    try (var result = new JettyHttpClientFactory().newBuilder(Config.empty()).build()) {
       // Then
       assertThat(result).isNotNull().isInstanceOf(JettyHttpClient.class);
     }

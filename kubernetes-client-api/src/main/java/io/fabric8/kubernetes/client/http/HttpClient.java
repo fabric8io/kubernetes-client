@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 
 import java.io.BufferedReader;
 import java.net.InetSocketAddress;
@@ -33,7 +34,18 @@ public interface HttpClient extends AutoCloseable {
 
   interface Factory {
 
-    HttpClient createHttpClient(Config config);
+    /**
+     * Create a builder that is customized by the {@link Config}. By default it
+     * will apply the common configuration {@link HttpClientUtils#applyCommonConfiguration(Config, Builder, Factory)}
+     *
+     * @param config the configuration to apply
+     * @return the configured {@link Builder}
+     */
+    default HttpClient.Builder newBuilder(Config config) {
+      Builder builder = newBuilder();
+      HttpClientUtils.applyCommonConfiguration(config, builder, this);
+      return builder;
+    }
 
     HttpClient.Builder newBuilder();
 

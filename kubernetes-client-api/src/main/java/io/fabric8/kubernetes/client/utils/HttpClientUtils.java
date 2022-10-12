@@ -159,7 +159,7 @@ public class HttpClientUtils {
       throw new KubernetesClientException(
           "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
     }
-    return factory.createHttpClient(config);
+    return factory.newBuilder(config).build();
   }
 
   public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {

@@ -13,6 +13,7 @@
 * Fix #4473: Fix regression in backoff interval introduced in #4365
 
 #### Improvements
+* Fix #4471: Adding KubernetesClientBuilder.withHttpClientBuilderConsumer to further customize the HttpClient for any implementation.
 * Fix #4348: Introduce specific annotations for the generators
 * Refactor #4441: refactoring `TokenRefreshInterceptor`
 * Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
