@@ -85,7 +85,7 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.13.4</jackson.version>
+    <jackson.version>2.13.4.20221012</jackson.version>
     <jetty.version>11.0.12</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.6</maven-core.version>
