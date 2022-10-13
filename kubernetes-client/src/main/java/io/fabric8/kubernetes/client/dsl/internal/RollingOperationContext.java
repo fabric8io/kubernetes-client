@@ -17,20 +17,27 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.util.concurrent.TimeUnit;
 
-public class RollingOperationContext extends PodControllerOperationContext {
+public class RollingOperationContext {
 
+  private final PodOperationContext podOperationContext;
   private boolean rolling;
   private long rollingTimeout;
   private TimeUnit rollingTimeUnit;
 
   public RollingOperationContext() {
+    this.podOperationContext = new PodOperationContext();
   }
 
-  public RollingOperationContext(String containerId, boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit, Integer logWaitTimeout) {
-    super(containerId, logWaitTimeout);
+  public RollingOperationContext(PodOperationContext podOperationContext, boolean rolling, long rollingTimeout,
+      TimeUnit rollingTimeUnit) {
+    this.podOperationContext = podOperationContext;
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;
     this.rollingTimeUnit = rollingTimeUnit != null ? rollingTimeUnit : TimeUnit.MILLISECONDS;
+  }
+
+  public PodOperationContext getPodOperationContext() {
+    return podOperationContext;
   }
 
   public Boolean getRolling() {
@@ -44,27 +51,62 @@ public class RollingOperationContext extends PodControllerOperationContext {
   public TimeUnit getRollingTimeUnit() {
     return rollingTimeUnit;
   }
-  
+
   public RollingOperationContext withRolling(boolean rolling) {
-    return new RollingOperationContext(containerId, rolling, rollingTimeout, rollingTimeUnit, logWaitTimeout);
+    return new RollingOperationContext(podOperationContext, rolling, rollingTimeout, rollingTimeUnit);
   }
 
   public RollingOperationContext withRollingTimeout(long rollingTimeout) {
-    return new RollingOperationContext(containerId, rolling, rollingTimeout, rollingTimeUnit, logWaitTimeout);
+    return new RollingOperationContext(podOperationContext, rolling, rollingTimeout, rollingTimeUnit);
   }
 
   public RollingOperationContext withRollingTimeUnit(TimeUnit rollingTimeUnit) {
-    return new RollingOperationContext(containerId, rolling, rollingTimeout, rollingTimeUnit, logWaitTimeout);
+    return new RollingOperationContext(podOperationContext, rolling, rollingTimeout, rollingTimeUnit);
   }
 
-  @Override
   public RollingOperationContext withContainerId(String containerId) {
-    return new RollingOperationContext(containerId, rolling, rollingTimeout, rollingTimeUnit, logWaitTimeout);
+    return new RollingOperationContext(podOperationContext.withContainerId(containerId), rolling, rollingTimeout,
+        rollingTimeUnit);
   }
-  
-  @Override
-  public RollingOperationContext withLogWaitTimout(Integer logWaitTimeout) {
-    return new RollingOperationContext(containerId, rolling, rollingTimeout, rollingTimeUnit, logWaitTimeout);
+
+  public RollingOperationContext withLogWaitTimeout(Integer logWaitTimeout) {
+    return new RollingOperationContext(podOperationContext.withLogWaitTimeout(logWaitTimeout), rolling, rollingTimeout,
+        rollingTimeUnit);
   }
-  
+
+  public RollingOperationContext withLimitBytes(Integer limitBytes) {
+    return new RollingOperationContext(podOperationContext.withLimitBytes(limitBytes), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
+  public RollingOperationContext withTerminatedStatus(boolean terminatedStatus) {
+    return new RollingOperationContext(podOperationContext.withTerminatedStatus(terminatedStatus), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
+  public RollingOperationContext withPrettyOutput(boolean prettyOutput) {
+    return new RollingOperationContext(podOperationContext.withPrettyOutput(prettyOutput), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
+  public RollingOperationContext withTailingLines(Integer tailingLines) {
+    return new RollingOperationContext(podOperationContext.withTailingLines(tailingLines), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
+  public RollingOperationContext withSinceTimestamp(String sinceTimestamp) {
+    return new RollingOperationContext(podOperationContext.withSinceTimestamp(sinceTimestamp), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
+  public RollingOperationContext withSinceSeconds(Integer sinceSeconds) {
+    return new RollingOperationContext(podOperationContext.withSinceSeconds(sinceSeconds), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
+  public RollingOperationContext withTimestamps(boolean timestamps) {
+    return new RollingOperationContext(podOperationContext.withTimestamps(timestamps), rolling, rollingTimeout,
+        rollingTimeUnit);
+  }
+
 }

@@ -175,7 +175,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return newInstance(rollingOperationContext.withLogWaitTimout(logWaitTimeout));
+    return newInstance(rollingOperationContext.withLogWaitTimeout(logWaitTimeout));
   }
 
   @Override
@@ -200,7 +200,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
   @Override
   public String getLog() {
-    return getLog(false);
+    return getLog(rollingOperationContext.getPodOperationContext().isPrettyOutput());
   }
 
   @Override

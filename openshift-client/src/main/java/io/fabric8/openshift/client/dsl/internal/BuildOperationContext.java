@@ -15,30 +15,24 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+
 public class BuildOperationContext {
 
-  private boolean terminatedStatus;
-  private boolean timestamps;
-  private String sinceTimestamp;
-  private Integer sinceSeconds;
-  private Integer tailingLines;
-  private boolean prettyOutput;
-  private Integer limitBytes;
+  private final PodOperationContext podOperationContext;
   private String version;
 
   public BuildOperationContext() {
+    this.podOperationContext = new PodOperationContext();
   }
 
-  public BuildOperationContext(Boolean terminatedStatus, Boolean timestamps, String sinceTimestamp, Integer sinceSeconds,
-      Integer tailingLines, Boolean prettyOutput, Integer limitBytes, String version) {
-    this.terminatedStatus = terminatedStatus;
-    this.timestamps = timestamps;
-    this.sinceTimestamp = sinceTimestamp;
-    this.sinceSeconds = sinceSeconds;
-    this.tailingLines = tailingLines;
-    this.prettyOutput = prettyOutput;
-    this.limitBytes = limitBytes;
+  public BuildOperationContext(PodOperationContext podOperationContext, String version) {
+    this.podOperationContext = podOperationContext;
     this.version = version;
+  }
+
+  public PodOperationContext getPodOperationContext() {
+    return podOperationContext;
   }
 
   public String getVersion() {
@@ -46,66 +40,59 @@ public class BuildOperationContext {
   }
 
   public boolean isTerminatedStatus() {
-    return terminatedStatus;
+    return this.podOperationContext.isTerminatedStatus();
   }
 
   public boolean isTimestamps() {
-    return timestamps;
+    return this.podOperationContext.isTimestamps();
   }
 
   public String getSinceTimestamp() {
-    return sinceTimestamp;
+    return this.podOperationContext.getSinceTimestamp();
   }
 
   public Integer getSinceSeconds() {
-    return sinceSeconds;
+    return this.podOperationContext.getSinceSeconds();
   }
 
   public Integer getTailingLines() {
-    return tailingLines;
+    return this.podOperationContext.getTailingLines();
   }
 
   public boolean isPrettyOutput() {
-    return prettyOutput;
+    return this.podOperationContext.isPrettyOutput();
   }
 
   public Integer getLimitBytes() {
-    return limitBytes;
+    return this.podOperationContext.getLimitBytes();
   }
 
   public BuildOperationContext withTerminatedStatus(boolean terminatedStatus) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withTerminatedStatus(terminatedStatus), version);
   }
 
   public BuildOperationContext withTimestamps(boolean timestamps) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withTimestamps(timestamps), version);
   }
 
   public BuildOperationContext withSinceTimestamp(String sinceTimestamp) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withSinceTimestamp(sinceTimestamp), version);
   }
 
   public BuildOperationContext withSinceSeconds(Integer sinceSeconds) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withSinceSeconds(sinceSeconds), version);
   }
 
   public BuildOperationContext withTailingLines(Integer tailingLines) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withTailingLines(tailingLines), version);
   }
 
   public BuildOperationContext withPrettyOutput(boolean prettyOutput) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withPrettyOutput(prettyOutput), version);
   }
 
   public BuildOperationContext withLimitBytes(Integer limitBytes) {
-    return new BuildOperationContext(terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput,
-        limitBytes, version);
+    return new BuildOperationContext(podOperationContext.withLimitBytes(limitBytes), version);
   }
 
 }
