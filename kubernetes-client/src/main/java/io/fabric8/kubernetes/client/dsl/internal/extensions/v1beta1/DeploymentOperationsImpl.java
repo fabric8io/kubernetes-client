@@ -25,9 +25,13 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -211,8 +215,7 @@ public class DeploymentOperationsImpl
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
-        new RollingOperationContext(rollingOperationContext.getContainerId(), false, 0, null,
-            rollingOperationContext.getLogWaitTimeout()),
+        new RollingOperationContext(rollingOperationContext.getPodOperationContext(), false, 0, null),
         context.withName(null));
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
@@ -281,4 +284,38 @@ public class DeploymentOperationsImpl
     return value.getSpec().getTemplate().getSpec().getContainers();
   }
 
+  @Override
+  public TimeTailPrettyLoggable limitBytes(int limitBytes) {
+    return new DeploymentOperationsImpl(rollingOperationContext.withLimitBytes(limitBytes), context);
+  }
+
+  @Override
+  public TimeTailPrettyLoggable terminated() {
+    return new DeploymentOperationsImpl(rollingOperationContext.withTerminatedStatus(true), context);
+  }
+
+  @Override
+  public Loggable withPrettyOutput() {
+    return new DeploymentOperationsImpl(rollingOperationContext.withPrettyOutput(true), context);
+  }
+
+  @Override
+  public PrettyLoggable tailingLines(int lines) {
+    return new DeploymentOperationsImpl(rollingOperationContext.withTailingLines(lines), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceTime(String timestamp) {
+    return new DeploymentOperationsImpl(rollingOperationContext.withSinceTimestamp(timestamp), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceSeconds(int seconds) {
+    return new DeploymentOperationsImpl(rollingOperationContext.withSinceSeconds(seconds), context);
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
+    return new DeploymentOperationsImpl(rollingOperationContext.withTimestamps(true), context);
+  }
 }

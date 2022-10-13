@@ -215,8 +215,9 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {
-    List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
-        getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout, null);
+    List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
+        buildOperationContext.getPodOperationContext(), build.getMetadata().getUid(),
+        getBuildPodLabels(build));
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }

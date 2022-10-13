@@ -22,9 +22,14 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -117,14 +122,15 @@ public class ReplicaSetOperationsImpl
 
   @Override
   public String getLog(boolean isPretty) {
-    return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
+    return PodOperationUtil
+        .getLog(new ReplicaSetOperationsImpl(rollingOperationContext.withPrettyOutput(isPretty), context).doGetLog(), isPretty);
   }
 
-  private List<PodResource> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog() {
     ReplicaSet replicaSet = requireFromServer();
-    return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
-        getReplicaSetSelectorLabels(replicaSet), isPretty, rollingOperationContext.getLogWaitTimeout(),
-        rollingOperationContext.getContainerId());
+    return PodOperationUtil.getPodOperationsForController(context,
+        rollingOperationContext.getPodOperationContext(), replicaSet.getMetadata().getUid(),
+        getReplicaSetSelectorLabels(replicaSet));
   }
 
   /**
@@ -134,7 +140,7 @@ public class ReplicaSetOperationsImpl
    */
   @Override
   public Reader getLogReader() {
-    return PodOperationUtil.getLogReader(doGetLog(false));
+    return PodOperationUtil.getLogReader(doGetLog());
   }
 
   /**
@@ -144,12 +150,12 @@ public class ReplicaSetOperationsImpl
    */
   @Override
   public InputStream getLogInputStream() {
-    return PodOperationUtil.getLogInputStream(doGetLog(false));
+    return PodOperationUtil.getLogInputStream(doGetLog());
   }
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    return PodOperationUtil.watchLog(doGetLog(false), out);
+    return PodOperationUtil.watchLog(doGetLog(), out);
   }
 
   static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {
@@ -164,5 +170,40 @@ public class ReplicaSetOperationsImpl
   @Override
   protected List<Container> getContainers(ReplicaSet value) {
     return value.getSpec().getTemplate().getSpec().getContainers();
+  }
+
+  @Override
+  public TimeTailPrettyLoggable limitBytes(int limitBytes) {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withLimitBytes(limitBytes), context);
+  }
+
+  @Override
+  public TimeTailPrettyLoggable terminated() {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withTerminatedStatus(true), context);
+  }
+
+  @Override
+  public Loggable withPrettyOutput() {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withPrettyOutput(true), context);
+  }
+
+  @Override
+  public PrettyLoggable tailingLines(int lines) {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withTailingLines(lines), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceTime(String timestamp) {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withSinceTimestamp(timestamp), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceSeconds(int seconds) {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withSinceSeconds(seconds), context);
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
+    return new ReplicaSetOperationsImpl(rollingOperationContext.withTimestamps(true), context);
   }
 }

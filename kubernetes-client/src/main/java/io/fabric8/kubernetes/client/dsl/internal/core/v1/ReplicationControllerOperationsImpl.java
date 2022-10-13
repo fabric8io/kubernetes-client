@@ -22,9 +22,14 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -99,15 +104,17 @@ public class ReplicationControllerOperationsImpl extends
 
   @Override
   public String getLog(boolean isPretty) {
-    return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
+    return PodOperationUtil.getLog(
+        new ReplicationControllerOperationsImpl(rollingOperationContext.withPrettyOutput(isPretty), context).doGetLog(),
+        isPretty);
   }
 
-  private List<PodResource> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog() {
     ReplicationController rc = requireFromServer();
 
-    return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),
-        getReplicationControllerPodLabels(rc), isPretty, rollingOperationContext.getLogWaitTimeout(),
-        rollingOperationContext.getContainerId());
+    return PodOperationUtil.getPodOperationsForController(context,
+        rollingOperationContext.getPodOperationContext(), rc.getMetadata().getUid(),
+        getReplicationControllerPodLabels(rc));
   }
 
   /**
@@ -117,7 +124,7 @@ public class ReplicationControllerOperationsImpl extends
    */
   @Override
   public Reader getLogReader() {
-    return PodOperationUtil.getLogReader(doGetLog(false));
+    return PodOperationUtil.getLogReader(doGetLog());
   }
 
   /**
@@ -127,12 +134,12 @@ public class ReplicationControllerOperationsImpl extends
    */
   @Override
   public InputStream getLogInputStream() {
-    return PodOperationUtil.getLogInputStream(doGetLog(false));
+    return PodOperationUtil.getLogInputStream(doGetLog());
   }
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    return PodOperationUtil.watchLog(doGetLog(false), out);
+    return PodOperationUtil.watchLog(doGetLog(), out);
   }
 
   @Override
@@ -169,4 +176,38 @@ public class ReplicationControllerOperationsImpl extends
     return value.getSpec().getTemplate().getSpec().getContainers();
   }
 
+  @Override
+  public TimeTailPrettyLoggable limitBytes(int limitBytes) {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withLimitBytes(limitBytes), context);
+  }
+
+  @Override
+  public TimeTailPrettyLoggable terminated() {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withTerminatedStatus(true), context);
+  }
+
+  @Override
+  public Loggable withPrettyOutput() {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withPrettyOutput(true), context);
+  }
+
+  @Override
+  public PrettyLoggable tailingLines(int lines) {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withTailingLines(lines), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceTime(String timestamp) {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withSinceTimestamp(timestamp), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceSeconds(int seconds) {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withSinceSeconds(seconds), context);
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
+    return new ReplicationControllerOperationsImpl(rollingOperationContext.withTimestamps(true), context);
+  }
 }
