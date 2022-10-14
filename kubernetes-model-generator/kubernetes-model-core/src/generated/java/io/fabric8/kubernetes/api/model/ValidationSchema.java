@@ -29,7 +29,6 @@ import lombok.experimental.Accessors;
     "APIResourceList",
     "APIService",
     "APIServiceList",
-    "BaseKubernetesList",
     "Binding",
     "ComponentStatus",
     "ComponentStatusList",
@@ -53,6 +52,7 @@ import lombok.experimental.Accessors;
     "GroupVersionKind",
     "GroupVersionResource",
     "Info",
+    "KubernetesList",
     "LimitRangeList",
     "ListOptions",
     "MicroTime",
@@ -110,8 +110,6 @@ public class ValidationSchema {
     private APIService aPIService;
     @JsonProperty("APIServiceList")
     private APIServiceList aPIServiceList;
-    @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
     @JsonProperty("Binding")
     private Binding binding;
     @JsonProperty("ComponentStatus")
@@ -158,6 +156,8 @@ public class ValidationSchema {
     private GroupVersionResource groupVersionResource;
     @JsonProperty("Info")
     private Info info;
+    @JsonProperty("KubernetesList")
+    private KubernetesList kubernetesList;
     @JsonProperty("LimitRangeList")
     private LimitRangeList limitRangeList;
     @JsonProperty("ListOptions")
@@ -268,7 +268,6 @@ public class ValidationSchema {
      * @param status
      * @param replicationControllerList
      * @param eventSource
-     * @param baseKubernetesList
      * @param updateOptions
      * @param componentStatus
      * @param podList
@@ -288,6 +287,7 @@ public class ValidationSchema {
      * @param podExecOptions
      * @param serviceAccount
      * @param aPIResource
+     * @param kubernetesList
      * @param resourceQuotaList
      * @param topologySelectorTerm
      * @param createOptions
@@ -303,7 +303,7 @@ public class ValidationSchema {
      * @param endpointPort
      * @param config
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIResource aPIResource, APIResourceList aPIResourceList, APIService aPIService, APIServiceList aPIServiceList, BaseKubernetesList baseKubernetesList, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupKind groupKind, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIResource aPIResource, APIResourceList aPIResourceList, APIService aPIService, APIServiceList aPIServiceList, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupKind groupKind, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, KubernetesList kubernetesList, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -311,7 +311,6 @@ public class ValidationSchema {
         this.aPIResourceList = aPIResourceList;
         this.aPIService = aPIService;
         this.aPIServiceList = aPIServiceList;
-        this.baseKubernetesList = baseKubernetesList;
         this.binding = binding;
         this.componentStatus = componentStatus;
         this.componentStatusList = componentStatusList;
@@ -335,6 +334,7 @@ public class ValidationSchema {
         this.groupVersionKind = groupVersionKind;
         this.groupVersionResource = groupVersionResource;
         this.info = info;
+        this.kubernetesList = kubernetesList;
         this.limitRangeList = limitRangeList;
         this.listOptions = listOptions;
         this.microTime = microTime;
@@ -429,16 +429,6 @@ public class ValidationSchema {
     @JsonProperty("APIServiceList")
     public void setAPIServiceList(APIServiceList aPIServiceList) {
         this.aPIServiceList = aPIServiceList;
-    }
-
-    @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
-        return baseKubernetesList;
-    }
-
-    @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
-        this.baseKubernetesList = baseKubernetesList;
     }
 
     @JsonProperty("Binding")
@@ -669,6 +659,16 @@ public class ValidationSchema {
     @JsonProperty("Info")
     public void setInfo(Info info) {
         this.info = info;
+    }
+
+    @JsonProperty("KubernetesList")
+    public KubernetesList getKubernetesList() {
+        return kubernetesList;
+    }
+
+    @JsonProperty("KubernetesList")
+    public void setKubernetesList(KubernetesList kubernetesList) {
+        this.kubernetesList = kubernetesList;
     }
 
     @JsonProperty("LimitRangeList")
