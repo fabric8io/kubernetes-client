@@ -85,7 +85,7 @@ public class ValidationSchema {
     @JsonProperty("BaremetalMachinePool")
     private io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetalMachinePool;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("GcpMachinePool")
     private io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcpMachinePool;
     @JsonProperty("IBMCloudMachinePool")
@@ -142,7 +142,7 @@ public class ValidationSchema {
      * @param azureMachinePool
      * @param status
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabaCloudMachinePool, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool awsMachinePool, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azureMachinePool, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetalMachinePool, BaseKubernetesList baseKubernetesList, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcpMachinePool, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool iBMCloudMachinePool, InstallConfig installConfig, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirtMachinePool, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openStackMachinePool, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirtMachinePool, Patch patch, Status status, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vSphereMachinePool) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabaCloudMachinePool, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool awsMachinePool, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azureMachinePool, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetalMachinePool, KubernetesList baseKubernetesList, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcpMachinePool, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool iBMCloudMachinePool, InstallConfig installConfig, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirtMachinePool, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openStackMachinePool, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirtMachinePool, Patch patch, Status status, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vSphereMachinePool) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -226,12 +226,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

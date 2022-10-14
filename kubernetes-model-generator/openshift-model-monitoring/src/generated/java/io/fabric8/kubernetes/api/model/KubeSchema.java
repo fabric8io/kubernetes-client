@@ -107,7 +107,7 @@ public class KubeSchema {
     @JsonProperty("AlertmanagerList")
     private AlertmanagerList alertmanagerList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("ObjectMeta")
@@ -182,7 +182,7 @@ public class KubeSchema {
      * @param time
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Alertmanager alertmanager, AlertmanagerConfig alertmanagerConfig, AlertmanagerConfigList alertmanagerConfigList, AlertmanagerList alertmanagerList, BaseKubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PodMonitor podMonitor, PodMonitorList podMonitorList, Probe probe, ProbeList probeList, Prometheus prometheus, PrometheusList prometheusList, PrometheusRule prometheusRule, PrometheusRuleList prometheusRuleList, ServiceMonitor serviceMonitor, ServiceMonitorList serviceMonitorList, Status status, ThanosRuler thanosRuler, ThanosRulerList thanosRulerList, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Alertmanager alertmanager, AlertmanagerConfig alertmanagerConfig, AlertmanagerConfigList alertmanagerConfigList, AlertmanagerList alertmanagerList, KubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PodMonitor podMonitor, PodMonitorList podMonitorList, Probe probe, ProbeList probeList, Prometheus prometheus, PrometheusList prometheusList, PrometheusRule prometheusRule, PrometheusRuleList prometheusRuleList, ServiceMonitor serviceMonitor, ServiceMonitorList serviceMonitorList, Status status, ThanosRuler thanosRuler, ThanosRulerList thanosRulerList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -272,12 +272,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

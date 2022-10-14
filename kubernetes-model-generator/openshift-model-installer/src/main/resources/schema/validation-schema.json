@@ -130,7 +130,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cjava.util.Map\u003cString, Object\u003e\u003e"
@@ -1915,7 +1915,7 @@
     },
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_List",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList"
     },
     "GcpMachinePool": {
       "$ref": "#/definitions/os_installer_gcp_v1_MachinePool",
@@ -2610,6 +2610,9 @@
       "properties": {
         "diskSizeGB": {
           "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2642,33 +2645,47 @@
     },
     "platform": {
       "properties": {
-        "affinityGroups": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_installer_ovirt_v1_AffinityGroup",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.AffinityGroup"
-          }
+        "apiVIP": {
+          "type": "string"
         },
-        "api_vip": {
+        "cluster": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "datacenter": {
+          "type": "string"
+        },
+        "defaultDatastore": {
           "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
         },
-        "ingress_vip": {
+        "diskType": {
           "type": "string"
         },
-        "ovirt_cluster_id": {
+        "folder": {
           "type": "string"
         },
-        "ovirt_network_name": {
+        "ingressVIP": {
           "type": "string"
         },
-        "ovirt_storage_domain_id": {
+        "network": {
           "type": "string"
         },
-        "vnicProfileID": {
+        "password": {
+          "type": "string"
+        },
+        "resourcePool": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "vCenter": {
           "type": "string"
         }
       },
