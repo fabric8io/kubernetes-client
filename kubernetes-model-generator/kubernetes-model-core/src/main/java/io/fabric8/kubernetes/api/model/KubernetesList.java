@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.model.annotation.Generated;
 import io.sundr.builder.annotations.Buildable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +47,7 @@ import java.util.Map;
 public class KubernetesList extends DefaultKubernetesResourceList<HasMetadata> implements KubernetesResource {
 
   @JsonIgnore
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new LinkedHashMap<>();
 
   /**
    * No args constructor for use in serialization

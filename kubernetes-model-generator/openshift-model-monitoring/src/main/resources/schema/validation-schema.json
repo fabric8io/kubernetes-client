@@ -183,7 +183,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
@@ -6512,7 +6512,7 @@
     },
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_List",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList"
     },
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",
@@ -9150,23 +9150,40 @@
     },
     "probe": {
       "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "monitoring.coreos.com/v1",
-          "required": true
+        "exec": {
+          "$ref": "#/definitions/kubernetes_core_ExecAction",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ExecAction"
         },
-        "kind": {
-          "type": "string",
-          "default": "Probe",
-          "required": true
+        "failureThreshold": {
+          "type": "integer"
         },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        "grpc": {
+          "$ref": "#/definitions/kubernetes_core_GRPCAction",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GRPCAction"
         },
-        "spec": {
-          "$ref": "#/definitions/os_monitoring_v1_ProbeSpec",
-          "existingJavaType": "io.fabric8.openshift.api.model.monitoring.v1.ProbeSpec"
+        "httpGet": {
+          "$ref": "#/definitions/kubernetes_core_HTTPGetAction",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HTTPGetAction"
+        },
+        "initialDelaySeconds": {
+          "type": "integer"
+        },
+        "periodSeconds": {
+          "type": "integer"
+        },
+        "successThreshold": {
+          "type": "integer"
+        },
+        "tcpSocket": {
+          "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "timeoutSeconds": {
+          "type": "integer"
         }
       },
       "additionalProperties": true

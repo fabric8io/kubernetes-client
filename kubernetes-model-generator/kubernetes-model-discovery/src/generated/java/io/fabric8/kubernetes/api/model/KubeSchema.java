@@ -81,7 +81,7 @@ public class KubeSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
     @JsonProperty("DeleteOptions")
@@ -158,7 +158,7 @@ public class KubeSchema {
      * @param info
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort discoveryEndpointPort, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice endpointSlice, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList endpointSliceList, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice v1EndpointSlice, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList v1EndpointSliceList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort discoveryEndpointPort, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice endpointSlice, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList endpointSliceList, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice v1EndpointSlice, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList v1EndpointSliceList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -206,12 +206,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

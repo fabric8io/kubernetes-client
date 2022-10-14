@@ -81,7 +81,7 @@ public class KubeSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
     @JsonProperty("DeleteOptions")
@@ -161,7 +161,7 @@ public class KubeSchema {
      * @param status
      * @param v1Event
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.events.v1beta1.Event v1Beta1Event, io.fabric8.kubernetes.api.model.events.v1beta1.EventList v1Beta1EventList, io.fabric8.kubernetes.api.model.events.v1beta1.EventSeries v1Beta1EventSeries, io.fabric8.kubernetes.api.model.events.v1.Event v1Event, io.fabric8.kubernetes.api.model.events.v1.EventList v1EventList, io.fabric8.kubernetes.api.model.events.v1.EventSeries v1EventSeries) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.events.v1beta1.Event v1Beta1Event, io.fabric8.kubernetes.api.model.events.v1beta1.EventList v1Beta1EventList, io.fabric8.kubernetes.api.model.events.v1beta1.EventSeries v1Beta1EventSeries, io.fabric8.kubernetes.api.model.events.v1.Event v1Event, io.fabric8.kubernetes.api.model.events.v1.EventList v1EventList, io.fabric8.kubernetes.api.model.events.v1.EventSeries v1EventSeries) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -210,12 +210,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

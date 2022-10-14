@@ -140,7 +140,7 @@ public class KubeSchema {
     @JsonProperty("AzureOSDisk")
     private io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("Checkpoint")
     private Checkpoint checkpoint;
     @JsonProperty("CheckpointList")
@@ -287,7 +287,7 @@ public class KubeSchema {
      * @param dNSZoneList
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk, BaseKubernetesList baseKubernetesList, Checkpoint checkpoint, CheckpointList checkpointList, ClusterClaim clusterClaim, ClusterClaimList clusterClaimList, ClusterDeployment clusterDeployment, ClusterDeploymentList clusterDeploymentList, ClusterDeprovision clusterDeprovision, ClusterDeprovisionList clusterDeprovisionList, ClusterImageSet clusterImageSet, ClusterImageSetList clusterImageSetList, ClusterOperatorStatusCondition clusterOperatorStatusCondition, ClusterPool clusterPool, ClusterPoolList clusterPoolList, ClusterProvision clusterProvision, ClusterProvisionList clusterProvisionList, ClusterRelocate clusterRelocate, ClusterRelocateList clusterRelocateList, ClusterState clusterState, ClusterStateList clusterStateList, DNSZone dNSZone, DNSZoneList dNSZoneList, io.fabric8.openshift.api.model.hive.gcp.v1.OSDisk gcpOSDisk, HiveConfig hiveConfig, HiveConfigList hiveConfigList, io.fabric8.kubernetes.api.model.LocalObjectReference localObjectReference, MachinePool machinePool, MachinePoolList machinePoolList, MachinePoolNameLease machinePoolNameLease, MachinePoolNameLeaseList machinePoolNameLeaseList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, SelectorSyncIdentityProvider selectorSyncIdentityProvider, SelectorSyncIdentityProviderList selectorSyncIdentityProviderList, SelectorSyncSet selectorSyncSet, SelectorSyncSetList selectorSyncSetList, Status status, SyncIdentityProvider syncIdentityProvider, SyncIdentityProviderList syncIdentityProviderList, SyncSet syncSet, SyncSetList syncSetList, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk, KubernetesList baseKubernetesList, Checkpoint checkpoint, CheckpointList checkpointList, ClusterClaim clusterClaim, ClusterClaimList clusterClaimList, ClusterDeployment clusterDeployment, ClusterDeploymentList clusterDeploymentList, ClusterDeprovision clusterDeprovision, ClusterDeprovisionList clusterDeprovisionList, ClusterImageSet clusterImageSet, ClusterImageSetList clusterImageSetList, ClusterOperatorStatusCondition clusterOperatorStatusCondition, ClusterPool clusterPool, ClusterPoolList clusterPoolList, ClusterProvision clusterProvision, ClusterProvisionList clusterProvisionList, ClusterRelocate clusterRelocate, ClusterRelocateList clusterRelocateList, ClusterState clusterState, ClusterStateList clusterStateList, DNSZone dNSZone, DNSZoneList dNSZoneList, io.fabric8.openshift.api.model.hive.gcp.v1.OSDisk gcpOSDisk, HiveConfig hiveConfig, HiveConfigList hiveConfigList, io.fabric8.kubernetes.api.model.LocalObjectReference localObjectReference, MachinePool machinePool, MachinePoolList machinePoolList, MachinePoolNameLease machinePoolNameLease, MachinePoolNameLeaseList machinePoolNameLeaseList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, SelectorSyncIdentityProvider selectorSyncIdentityProvider, SelectorSyncIdentityProviderList selectorSyncIdentityProviderList, SelectorSyncSet selectorSyncSet, SelectorSyncSetList selectorSyncSetList, Status status, SyncIdentityProvider syncIdentityProvider, SyncIdentityProviderList syncIdentityProviderList, SyncSet syncSet, SyncSetList syncSetList, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -369,12 +369,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 
