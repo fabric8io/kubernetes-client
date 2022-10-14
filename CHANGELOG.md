@@ -43,6 +43,7 @@
 * Fix #3864: Now it's compulsory to provide `etc/io.fabric8.openshift.client.cfg` file in order to load ManagedOpenShiftClient in OSGi environment.
 * Fix #3924: Extension Mock modules have been removed
 * Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
+* Fix #3906: removed BaseKubernetesList, use KubernetesList instead
 
 ### 5.12.4 (2022-09-30)
 

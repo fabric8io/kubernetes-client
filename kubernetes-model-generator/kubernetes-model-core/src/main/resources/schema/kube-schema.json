@@ -591,7 +591,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
+      "javaType": "io.fabric8.kubernetes.api.model.KubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
@@ -7607,10 +7607,6 @@
       "$ref": "#/definitions/kubernetes_aggregator_APIServiceList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.APIServiceList"
     },
-    "BaseKubernetesList": {
-      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_List",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
-    },
     "Binding": {
       "$ref": "#/definitions/kubernetes_core_Binding",
       "existingJavaType": "io.fabric8.kubernetes.api.model.Binding"
@@ -7702,6 +7698,10 @@
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",
       "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info"
+    },
+    "KubernetesList": {
+      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_List",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList"
     },
     "LimitRangeList": {
       "$ref": "#/definitions/kubernetes_core_LimitRangeList",
