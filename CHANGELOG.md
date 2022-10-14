@@ -3,6 +3,7 @@
 ### 6.3-SNAPSHOT
 
 #### Bugs
+* Fix #4491: added a more explicit shutdown exception for okhttp
 * Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
 * Fix #4535: The shell command string will now have single quotes sanitized
 * Fix #4547: preventing timing issues with leader election cancel
