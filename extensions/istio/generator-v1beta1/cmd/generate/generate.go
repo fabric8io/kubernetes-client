@@ -91,7 +91,7 @@ func main() {
 		reflect.TypeOf(types.BoolValue{}):   "java.lang.Boolean",
 		reflect.TypeOf(types.DoubleValue{}): "java.lang.Double",
 		reflect.TypeOf(types.Duration{}):    "java.lang.String",
-		reflect.TypeOf(types.Timestamp{}):   "java.lang.Long",
+		reflect.TypeOf(types.Timestamp{}):   "java.lang.String",
 		reflect.TypeOf(types.Int32Value{}):  "java.lang.Integer",
 		reflect.TypeOf(types.UInt32Value{}): "java.lang.Integer",
 	}
