@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
@@ -72,7 +73,7 @@ public class KubernetesClientBuilder {
     }
     try {
       if (factory == null) {
-        return clazz.getConstructor(Config.class).newInstance(config);
+        this.factory = HttpClientUtils.getHttpClientFactory();
       }
       HttpClient client = getHttpClient();
       return clazz.getConstructor(HttpClient.class, Config.class, ExecutorSupplier.class).newInstance(client, config,

@@ -142,6 +142,11 @@ public class HttpClientUtils {
    */
   @Deprecated
   public static HttpClient createHttpClient(Config config) {
+    HttpClient.Factory factory = getHttpClientFactory();
+    return factory.newBuilder(config).build();
+  }
+
+  public static HttpClient.Factory getHttpClientFactory() {
     ServiceLoader<HttpClient.Factory> loader = ServiceLoader.load(HttpClient.Factory.class);
     HttpClient.Factory factory = null;
     for (Iterator<HttpClient.Factory> iter = loader.iterator(); iter.hasNext();) {
@@ -159,7 +164,7 @@ public class HttpClientUtils {
       throw new KubernetesClientException(
           "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
     }
-    return factory.newBuilder(config).build();
+    return factory;
   }
 
   public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
