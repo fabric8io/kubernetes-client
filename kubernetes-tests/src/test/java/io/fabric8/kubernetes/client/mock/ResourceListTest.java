@@ -221,7 +221,7 @@ public class ResourceListTest {
 
     KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
     List<HasMetadata> results = client.resourceList(list).inNamespace("ns1")
-        .waitUntilCondition(isReady, 5, SECONDS);
+        .waitUntilCondition(isReady, 10, SECONDS);
     assertThat(results)
         .containsExactlyInAnyOrder(ready1, ready2);
   }
@@ -273,7 +273,7 @@ public class ResourceListTest {
     KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
     final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
     KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class,
-        () -> ops.waitUntilCondition(isReady, 5, SECONDS));
+        () -> ops.waitUntilCondition(isReady, 10, SECONDS));
     assertThat(ex.getResourcesNotReady())
         .containsExactly(pod1);
   }
@@ -323,7 +323,7 @@ public class ResourceListTest {
     KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
     final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
     KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class,
-        () -> ops.waitUntilCondition(isReady, 5, SECONDS));
+        () -> ops.waitUntilCondition(isReady, 10, SECONDS));
     assertThat(ex.getResourcesNotReady())
         .containsExactlyInAnyOrder(pod1, pod2);
   }

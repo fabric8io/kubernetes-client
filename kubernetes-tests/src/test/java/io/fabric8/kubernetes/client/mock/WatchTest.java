@@ -175,7 +175,7 @@ class WatchTest {
     });
 
     // Then
-    assertTrue(eventReceivedLatch.await(3, TimeUnit.SECONDS));
+    assertTrue(eventReceivedLatch.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -423,6 +423,6 @@ class WatchTest {
     });
 
     // ensure that the exception does not inhibit further message processing
-    assertTrue(latch.await(5, TimeUnit.SECONDS));
+    assertTrue(latch.await(10, TimeUnit.SECONDS));
   }
 }

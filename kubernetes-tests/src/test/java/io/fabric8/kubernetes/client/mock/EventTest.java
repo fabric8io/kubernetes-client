@@ -49,17 +49,17 @@ class EventTest {
   void watch() throws InterruptedException {
     // Given
     Event testEvent = new EventBuilder()
-      .withNewMetadata()
-      .withName("nginx-deployment-54f57cf6bf-84ssh.161e26b7b76b629e")
-      .withNamespace("ns1")
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withName("nginx-deployment-54f57cf6bf-84ssh.161e26b7b76b629e")
+        .withNamespace("ns1")
+        .endMetadata()
+        .build();
 
     server.expect()
-      .withPath("/api/v1/namespaces/ns1/events?allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket().open().waitFor(50)
-      .andEmit(new WatchEvent(testEvent, "ADDED"))
-      .done().once();
+        .withPath("/api/v1/namespaces/ns1/events?allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket().open().waitFor(50)
+        .andEmit(new WatchEvent(testEvent, "ADDED"))
+        .done().once();
     final CountDownLatch eventReceivedLatch = new CountDownLatch(1);
 
     // When
@@ -76,7 +76,7 @@ class EventTest {
     });
 
     // Then
-    assertTrue(eventReceivedLatch.await(1, TimeUnit.SECONDS));
+    assertTrue(eventReceivedLatch.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -84,22 +84,25 @@ class EventTest {
   void testInvolvedObjectFieldQuery() {
     // Given
     server.expect().get().withPath("/api/v1/namespaces/ns1/events?fieldSelector="
-      + Utils.toUrlEncoded("involvedObject.name=foo," +
-      "involvedObject.namespace=ns1," +
-      "involvedObject.kind=Deployment," +
-      "involvedObject.uid=6d71451a-f8df-11ea-a8ac-0e13a02d8ebd"))
-      .andReturn(HttpURLConnection.HTTP_OK, new EventListBuilder().withItems(new EventBuilder()
-        .withNewMetadata().withName("foo-event").endMetadata()
-        .build())
-        .build()).once();
+        + Utils.toUrlEncoded("involvedObject.name=foo," +
+            "involvedObject.namespace=ns1," +
+            "involvedObject.kind=Deployment," +
+            "involvedObject.uid=6d71451a-f8df-11ea-a8ac-0e13a02d8ebd"))
+        .andReturn(HttpURLConnection.HTTP_OK, new EventListBuilder().withItems(new EventBuilder()
+            .withNewMetadata().withName("foo-event").endMetadata()
+            .build())
+            .build())
+        .once();
 
     // When
-    EventList eventList = client.v1().events().inNamespace("ns1").withInvolvedObject(new io.fabric8.kubernetes.api.model.ObjectReferenceBuilder()
-      .withName("foo")
-      .withNamespace("ns1")
-      .withKind("Deployment")
-      .withUid("6d71451a-f8df-11ea-a8ac-0e13a02d8ebd")
-      .build()).list();
+    EventList eventList = client.v1().events().inNamespace("ns1")
+        .withInvolvedObject(new io.fabric8.kubernetes.api.model.ObjectReferenceBuilder()
+            .withName("foo")
+            .withNamespace("ns1")
+            .withKind("Deployment")
+            .withUid("6d71451a-f8df-11ea-a8ac-0e13a02d8ebd")
+            .build())
+        .list();
 
     // Then
     assertNotNull(eventList);
