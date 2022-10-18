@@ -17,6 +17,7 @@
 * Fix #4478: Removing the resourceVersion bump with null status
 * Fix #4482: Fixing blocking behavior of okhttp log watch
 * Fix #4487: Schema for multimaps is now generated correctly
+* Fix #4496: Removing watch handling of lists
 
 #### Improvements
 * Fix #4471: Adding KubernetesClientBuilder.withHttpClientBuilderConsumer to further customize the HttpClient for any implementation.

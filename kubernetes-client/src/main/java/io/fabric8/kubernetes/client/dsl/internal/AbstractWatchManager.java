@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
@@ -39,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -250,33 +248,9 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
-  protected WatchEvent readWatchEvent(String messageSource) throws JsonProcessingException {
-    WatchEvent event = contextAwareWatchEventDeserializer(messageSource);
-    KubernetesResource object = null;
-    if (event != null) {
-      object = event.getObject();
-    }
-    // when watching API Groups we don't get a WatchEvent resource
-    // so the object will be null
-    // so lets try parse the message as a KubernetesResource
-    // as it will probably be a list of resources like a BuildList
-    if (object == null) {
-      object = Serialization.unmarshal(messageSource, KubernetesResource.class);
-      if (event == null) {
-        event = new WatchEvent(object, "MODIFIED");
-      } else {
-        event.setObject(object);
-      }
-    }
-    if (event.getType() == null) {
-      event.setType("MODIFIED");
-    }
-    return event;
-  }
-
   protected void onMessage(String message) {
     try {
-      WatchEvent event = readWatchEvent(message);
+      WatchEvent event = contextAwareWatchEventDeserializer(message);
       Object object = event.getObject();
       Action action = Action.valueOf(event.getType());
       if (action == Action.ERROR) {
@@ -291,21 +265,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       } else if (object instanceof HasMetadata) {
         HasMetadata hasMetadata = (HasMetadata) object;
         updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
-
-        if (object instanceof KubernetesResourceList) {
-          // Dirty cast - should always be valid though
-          @SuppressWarnings({ "rawtypes" })
-          KubernetesResourceList list = (KubernetesResourceList) hasMetadata;
-          @SuppressWarnings("unchecked")
-          List<HasMetadata> items = list.getItems();
-          if (items != null) {
-            for (HasMetadata item : items) {
-              eventReceived(action, item);
-            }
-          }
-        } else {
-          eventReceived(action, hasMetadata);
-        }
+        eventReceived(action, hasMetadata);
       } else {
         final String msg = String.format("Invalid object received: %s", message);
         close(new WatcherException(msg, null, message));
