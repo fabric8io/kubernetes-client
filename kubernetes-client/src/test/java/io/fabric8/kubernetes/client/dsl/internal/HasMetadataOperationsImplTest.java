@@ -20,11 +20,11 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -43,7 +43,7 @@ class HasMetadataOperationsImplTest {
 
   @Test
   void shouldBeAbleToReturnOperationsWithoutSpecificList() {
-    final MixedOperation<Bar, BarList, Resource<Bar>> operation = new DefaultKubernetesClient().resources(Bar.class,
+    final MixedOperation<Bar, BarList, Resource<Bar>> operation = new KubernetesClientImpl().resources(Bar.class,
         BarList.class);
     assertNotNull(operation);
   }
