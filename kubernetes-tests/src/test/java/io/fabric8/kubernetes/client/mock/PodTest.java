@@ -570,7 +570,7 @@ class PodTest {
         .done()
         .always();
 
-    Pod result = client.pods().withName("pod1").waitUntilReady(5, TimeUnit.SECONDS);
+    Pod result = client.pods().withName("pod1").waitUntilReady(10, TimeUnit.SECONDS);
     Assert.assertEquals("2", result.getMetadata().getResourceVersion());
   }
 

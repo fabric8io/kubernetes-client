@@ -251,11 +251,11 @@ class PodCrudTest {
           new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
 
       assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-      assertTrue(lw.addLatch.await(1, TimeUnit.SECONDS));
-      assertTrue(lw.editLatch.await(1, TimeUnit.SECONDS));
-      assertTrue(lw.deleteLatch.await(1, TimeUnit.SECONDS));
+      assertTrue(lw.addLatch.await(10, TimeUnit.SECONDS));
+      assertTrue(lw.editLatch.await(10, TimeUnit.SECONDS));
+      assertTrue(lw.deleteLatch.await(10, TimeUnit.SECONDS));
     }
-    assertTrue(lw.closeLatch.await(3, TimeUnit.SECONDS));
+    assertTrue(lw.closeLatch.await(10, TimeUnit.SECONDS));
   }
 
   private static final class LatchedWatcher implements Watcher<Pod> {

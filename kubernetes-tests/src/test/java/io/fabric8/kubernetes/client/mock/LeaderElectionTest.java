@@ -132,12 +132,12 @@ public class LeaderElectionTest {
                 .build())
             .build().run()));
     // Then
-    assertTrue(leaderLatch.await(5, TimeUnit.SECONDS));
+    assertTrue(leaderLatch.await(10, TimeUnit.SECONDS));
     assertEquals(id, newLeaderRecord.get());
     assertEquals(0, leaderLatch.getCount());
     leaderElectorTask.cancel(true);
     executorService.shutdownNow();
-    executorService.awaitTermination(5, TimeUnit.SECONDS);
-    assertTrue(stoppedLeading.await(5, TimeUnit.SECONDS));
+    executorService.awaitTermination(10, TimeUnit.SECONDS);
+    assertTrue(stoppedLeading.await(10, TimeUnit.SECONDS));
   }
 }
