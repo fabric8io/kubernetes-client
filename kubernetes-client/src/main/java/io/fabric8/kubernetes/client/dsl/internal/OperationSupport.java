@@ -35,8 +35,6 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.internal.PatchUtils;
-import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;

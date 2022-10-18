@@ -36,7 +36,6 @@
     <module>model-v1beta1</module>
     <module>client</module>
     <module>examples</module>
-    <module>mock</module>
     <module>tests</module>
   </modules>
 

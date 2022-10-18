@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
 class IOChaosTest {
@@ -77,7 +76,7 @@ class IOChaosTest {
     assertEquals("true", client.ioChaos().withName("latency").get().getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.ioChaos().withName("latency").delete().size() == 1);
+    assertEquals(1, client.ioChaos().withName("latency").delete().size());
     assertNull(client.ioChaos().withName("latency").get());
   }
 }

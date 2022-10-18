@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
 class ServiceBindingTest {
@@ -109,7 +108,7 @@ class ServiceBindingTest {
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
     //Delete
-    assertTrue(client.serviceBindings().inNamespace("testns").withName("binding1").delete().size() == 1);
+    assertEquals(1, client.serviceBindings().inNamespace("testns").withName("binding1").delete().size());
     assertNull(client.serviceBindings().inNamespace("testns").withName("binding1").get());
   }
 }

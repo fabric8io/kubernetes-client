@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.APIResourceBuilder;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -31,6 +30,7 @@ import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
@@ -38,6 +38,8 @@ import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
+import io.fabric8.servicecatalog.client.DefaultServiceCatalogClient;
+import io.fabric8.servicecatalog.client.NamespacedServiceCatalogClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -184,6 +186,11 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
         .withNamespace("test")
         .withHttp2Disable(true)
         .build();
+  }
+
+  public NamespacedServiceCatalogClient createServiceCatalog() {
+    Config config = this.getMockConfiguration();
+    return new DefaultServiceCatalogClient(config);
   }
 
   @Override

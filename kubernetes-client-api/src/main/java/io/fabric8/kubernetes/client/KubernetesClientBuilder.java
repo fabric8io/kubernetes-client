@@ -51,7 +51,7 @@ public class KubernetesClientBuilder {
   public KubernetesClientBuilder() {
     // basically the same logic as in KubernetesResourceUtil for finding list types
     // we're not guarding against a null context class loader
-    String className = "io.fabric8.kubernetes.client.DefaultKubernetesClient";
+    String className = "io.fabric8.kubernetes.client.impl.KubernetesClientImpl";
     try {
       clazz = (Class<KubernetesClient>) Thread.currentThread().getContextClassLoader().loadClass(className);
     } catch (ClassNotFoundException | ClassCastException e) {
