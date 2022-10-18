@@ -18,11 +18,13 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -44,6 +46,7 @@ public class KubernetesClientBuilder {
   private HttpClient.Factory factory;
   private Class<KubernetesClient> clazz;
   private ExecutorSupplier executorSupplier;
+  private Consumer<HttpClient.Builder> builderConsumer;
 
   public KubernetesClientBuilder() {
     // basically the same logic as in KubernetesResourceUtil for finding list types
@@ -60,21 +63,33 @@ public class KubernetesClientBuilder {
     }
   }
 
+  KubernetesClientBuilder(Class<KubernetesClient> clazz) {
+    this.clazz = clazz;
+  }
+
   public KubernetesClient build() {
     if (config == null) {
       config = new ConfigBuilder().build();
     }
     try {
       if (factory == null) {
-        return clazz.getConstructor(Config.class).newInstance(config);
+        this.factory = HttpClientUtils.getHttpClientFactory();
       }
-      HttpClient client = factory.createHttpClient(config);
+      HttpClient client = getHttpClient();
       return clazz.getConstructor(HttpClient.class, Config.class, ExecutorSupplier.class).newInstance(client, config,
           executorSupplier);
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
         | NoSuchMethodException | SecurityException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  HttpClient getHttpClient() {
+    HttpClient.Builder builder = factory.newBuilder(config);
+    if (this.builderConsumer != null) {
+      this.builderConsumer.accept(builder);
+    }
+    return builder.build();
   }
 
   public KubernetesClientBuilder withConfig(Config config) {
@@ -122,6 +137,17 @@ public class KubernetesClientBuilder {
    */
   public KubernetesClientBuilder withTaskExecutorSupplier(ExecutorSupplier executorSupplier) {
     this.executorSupplier = executorSupplier;
+    return this;
+  }
+
+  /**
+   * Provide additional configuration for the {@link HttpClient} that is created for this {@link KubernetesClient}.
+   *
+   * @param consumer to modify the {@link HttpClient.Builder}
+   * @return this builder
+   */
+  public KubernetesClientBuilder withHttpClientBuilderConsumer(Consumer<HttpClient.Builder> consumer) {
+    this.builderConsumer = consumer;
     return this;
   }
 

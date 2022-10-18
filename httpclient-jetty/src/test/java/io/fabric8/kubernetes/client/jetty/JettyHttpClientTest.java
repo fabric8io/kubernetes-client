@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
+import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TestHttpRequest;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import org.eclipse.jetty.client.HttpClient;
@@ -53,7 +55,7 @@ class JettyHttpClientTest {
   @DisplayName("close, should close all underlying clients")
   void closeShouldCloseClients() {
     try (var jettyHttpClient = new JettyHttpClient(
-        null, httpClient, webSocketClient, Collections.emptyList(), null)) {
+        null, httpClient, webSocketClient, Collections.emptyList(), null, null)) {
       // When
       jettyHttpClient.close();
       // Then
@@ -73,27 +75,25 @@ class JettyHttpClientTest {
         .tlsVersions(TlsVersion.SSL_3_0)
         .followAllRedirects();
     try (var firstClient = new JettyHttpClient(
-        originalBuilder, httpClient, webSocketClient, Collections.emptyList(), null)) {
+        originalBuilder, httpClient, webSocketClient, Collections.emptyList(), null, null)) {
       // When
       final var result = firstClient.newBuilder()
           .readTimeout(313373, TimeUnit.SECONDS);
       // Then
       assertThat(result)
           .isNotNull()
-          .isInstanceOf(DerivedJettyHttpClientBuilder.class)
+          .isInstanceOf(DerivedClientBuilder.class)
           .isNotSameAs(originalBuilder);
       final var expected = Map.of(
-          "tlsVersions", new TlsVersion[] { TlsVersion.SSL_3_0 },
-          "followAllRedirects", true);
+          "getTlsVersions", new TlsVersion[] { TlsVersion.SSL_3_0 },
+          "isFollowRedirects", true);
       for (var entry : expected.entrySet()) {
-        final var field = JettyHttpClientBuilder.class.getDeclaredField(entry.getKey());
-        field.setAccessible(true);
-        assertThat(field.get(result))
-            .isEqualTo(field.get(originalBuilder))
+        final var method = StandardHttpClientBuilder.class.getMethod(entry.getKey());
+        assertThat(method.invoke(result))
+            .isEqualTo(method.invoke(originalBuilder))
             .isEqualTo(entry.getValue());
-        field.setAccessible(false);
       }
-      var readTimeout = DerivedJettyHttpClientBuilder.class.getDeclaredField("readTimeout");
+      var readTimeout = StandardHttpClientBuilder.class.getDeclaredField("readTimeout");
       readTimeout.setAccessible(true);
       assertThat(readTimeout.get(result)).isEqualTo(Duration.ofSeconds(313373));
       assertThat(readTimeout.get(originalBuilder)).isEqualTo(Duration.ofSeconds(1337));
@@ -105,7 +105,7 @@ class JettyHttpClientTest {
   @DisplayName("sendAsync with unsupported HttpRequest throws Exception")
   void sendAsyncUnsupportedHttpRequest() {
     try (var jettyHttpClient = new JettyHttpClient(
-        new JettyHttpClientBuilder(null), httpClient, webSocketClient, Collections.emptyList(), null)) {
+        new JettyHttpClientBuilder(null), httpClient, webSocketClient, Collections.emptyList(), null, null)) {
       // When
       final var request = new TestHttpRequest();
       final var result = assertThrows(IllegalArgumentException.class,
@@ -119,7 +119,7 @@ class JettyHttpClientTest {
   @DisplayName("newWebSocketBuilder instantiates a JettyWebSocketBuilder")
   void newWebSocketBuilderInstantiatesJettyWebSocketBuilder() {
     try (var jettyHttpClient = new JettyHttpClient(
-        new JettyHttpClientBuilder(null), httpClient, webSocketClient, Collections.emptyList(), null)) {
+        new JettyHttpClientBuilder(null), httpClient, webSocketClient, Collections.emptyList(), null, null)) {
       // When
       final var result = jettyHttpClient.newWebSocketBuilder();
       // Then
@@ -133,7 +133,7 @@ class JettyHttpClientTest {
     // Given
     final var factory = new JettyHttpClientFactory();
     try (var jettyHttpClient = new JettyHttpClient(
-        null, httpClient, webSocketClient, Collections.emptyList(), factory)) {
+        null, httpClient, webSocketClient, Collections.emptyList(), factory, null)) {
       // When
       final var f1 = jettyHttpClient.getFactory();
       final var f2 = jettyHttpClient.getFactory();

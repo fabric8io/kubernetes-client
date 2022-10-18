@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.okhttp;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -26,6 +27,7 @@ import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.BufferedSource;
@@ -180,10 +182,12 @@ public class OkHttpClientImpl implements HttpClient {
 
   private final okhttp3.OkHttpClient httpClient;
   private final OkHttpClientFactory factory;
+  private final Config config;
 
-  public OkHttpClientImpl(OkHttpClient httpClient, OkHttpClientFactory factory) {
+  public OkHttpClientImpl(OkHttpClient httpClient, OkHttpClientFactory factory, Config config) {
     this.httpClient = httpClient;
     this.factory = factory;
+    this.config = config;
   }
 
   @Override
@@ -206,8 +210,8 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public Builder newBuilder() {
-    return new OkHttpClientBuilderImpl(httpClient.newBuilder(), this.factory);
+  public DerivedClientBuilder newBuilder() {
+    return new OkHttpClientBuilderImpl(httpClient.newBuilder(), this.factory, this.config);
   }
 
   @Override
@@ -269,7 +273,7 @@ public class OkHttpClientImpl implements HttpClient {
 
   @Override
   public io.fabric8.kubernetes.client.http.WebSocket.Builder newWebSocketBuilder() {
-    return new OkHttpWebSocketImpl.BuilderImpl(this.httpClient);
+    return new OkHttpWebSocketImpl.BuilderImpl(this.httpClient, newRequestBuilder());
   }
 
   public okhttp3.OkHttpClient getOkHttpClient() {
@@ -278,12 +282,11 @@ public class OkHttpClientImpl implements HttpClient {
 
   @Override
   public HttpRequest.Builder newHttpRequestBuilder() {
-    return new OkHttpRequestImpl.BuilderImpl();
+    return new OkHttpRequestImpl.BuilderImpl(newRequestBuilder());
   }
 
-  @Override
-  public Factory getFactory() {
-    return this.factory;
+  private okhttp3.Request.Builder newRequestBuilder() {
+    return new Request.Builder().tag(Config.class, config);
   }
 
 }

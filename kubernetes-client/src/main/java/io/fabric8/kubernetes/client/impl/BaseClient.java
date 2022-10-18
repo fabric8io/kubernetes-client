@@ -86,7 +86,7 @@ public abstract class BaseClient implements Client {
 
   BaseClient(Config config, BaseClient baseClient) {
     this.config = config;
-    this.httpClient = baseClient.httpClient;
+    this.httpClient = baseClient.httpClient.newBuilder().requestConfig(config).build();
     this.adapters = baseClient.adapters;
     this.handlers = baseClient.handlers;
     this.matchingGroupPredicate = baseClient.matchingGroupPredicate;

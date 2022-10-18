@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.concurrent.Executor;
@@ -44,15 +43,6 @@ public class JdkHttpClientFactory implements HttpClient.Factory {
       es.shutdownNow();
     }
 
-  }
-
-  @Override
-  public HttpClient createHttpClient(Config config) {
-    JdkHttpClientBuilderImpl builderWrapper = newBuilder();
-
-    HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
-
-    return builderWrapper.build();
   }
 
   @Override

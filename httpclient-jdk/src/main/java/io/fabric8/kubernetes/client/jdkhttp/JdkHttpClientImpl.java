@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.jdkhttp;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -226,10 +227,12 @@ public class JdkHttpClientImpl implements HttpClient {
 
   private JdkHttpClientBuilderImpl builder;
   private java.net.http.HttpClient httpClient;
+  private Config config;
 
-  public JdkHttpClientImpl(JdkHttpClientBuilderImpl builderImpl, java.net.http.HttpClient httpClient) {
+  public JdkHttpClientImpl(JdkHttpClientBuilderImpl builderImpl, java.net.http.HttpClient httpClient, Config config) {
     this.builder = builderImpl;
     this.httpClient = httpClient;
+    this.config = config;
   }
 
   @Override
@@ -237,14 +240,14 @@ public class JdkHttpClientImpl implements HttpClient {
     if (this.httpClient == null) {
       return;
     }
-    builder.clientFactory.closeHttpClient(this);
+    builder.getClientFactory().closeHttpClient(this);
     // help with default cleanup, which is based upon garbarge collection
     this.httpClient = null;
   }
 
   @Override
   public DerivedClientBuilder newBuilder() {
-    return this.builder.copy(getHttpClient());
+    return this.builder.copy(this);
   }
 
   @Override
@@ -271,8 +274,8 @@ public class JdkHttpClientImpl implements HttpClient {
       Supplier<HandlerAndAsyncBody<T>> handlerAndAsyncBodySupplier) {
     JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl) request;
     JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
-    for (Interceptor interceptor : builder.interceptors.values()) {
-      interceptor.before(builderImpl, jdkRequest);
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
+      Interceptor.useConfig(interceptor, config).before(builderImpl, jdkRequest);
       jdkRequest = builderImpl.build();
     }
 
@@ -281,19 +284,20 @@ public class JdkHttpClientImpl implements HttpClient {
     CompletableFuture<AsyncResponse<T>> cf = this.getHttpClient().sendAsync(builderImpl.build().request,
         handlerAndAsyncBody.handler).thenApply(r -> new AsyncResponse<>(r, handlerAndAsyncBody.asyncBody));
 
-    for (Interceptor interceptor : builder.interceptors.values()) {
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(ar -> {
         java.net.http.HttpResponse<T> response = ar.response;
         if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
-          return interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response)).thenCompose(b -> {
-            if (b) {
-              HandlerAndAsyncBody<T> interceptedHandlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
+          return Interceptor.useConfig(interceptor, config).afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))
+              .thenCompose(b -> {
+                if (b) {
+                  HandlerAndAsyncBody<T> interceptedHandlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
 
-              return this.getHttpClient().sendAsync(builderImpl.build().request, interceptedHandlerAndAsyncBody.handler)
-                  .thenApply(r -> new AsyncResponse<>(r, interceptedHandlerAndAsyncBody.asyncBody));
-            }
-            return CompletableFuture.completedFuture(ar);
-          });
+                  return this.getHttpClient().sendAsync(builderImpl.build().request, interceptedHandlerAndAsyncBody.handler)
+                      .thenApply(r -> new AsyncResponse<>(r, interceptedHandlerAndAsyncBody.asyncBody));
+                }
+                return CompletableFuture.completedFuture(ar);
+              });
         }
         return CompletableFuture.completedFuture(ar);
       });
@@ -309,7 +313,7 @@ public class JdkHttpClientImpl implements HttpClient {
 
   @Override
   public io.fabric8.kubernetes.client.http.HttpRequest.Builder newHttpRequestBuilder() {
-    return new JdkHttpRequestImpl.BuilderImpl().timeout(this.builder.readTimeout);
+    return new JdkHttpRequestImpl.BuilderImpl().timeout(this.builder.getReadTimeout());
   }
 
   /*
@@ -329,23 +333,24 @@ public class JdkHttpClientImpl implements HttpClient {
   public CompletableFuture<WebSocket> buildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder, Listener listener) {
     JdkWebSocketImpl.BuilderImpl copy = webSocketBuilder.copy();
 
-    for (Interceptor interceptor : builder.interceptors.values()) {
-      interceptor.before(copy, new JdkHttpRequestImpl(null, copy.asRequest()));
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
+      Interceptor.useConfig(interceptor, config).before(copy, new JdkHttpRequestImpl(null, copy.asRequest()));
     }
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
     CompletableFuture<WebSocketResponse> cf = internalBuildAsync(copy, listener);
 
-    for (Interceptor interceptor : builder.interceptors.values()) {
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null) {
-          return interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse())).thenCompose(b -> {
-            if (b) {
-              return this.internalBuildAsync(copy, listener);
-            }
-            return CompletableFuture.completedFuture(response);
-          });
+          return Interceptor.useConfig(interceptor, config)
+              .afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse())).thenCompose(b -> {
+                if (b) {
+                  return this.internalBuildAsync(copy, listener);
+                }
+                return CompletableFuture.completedFuture(response);
+              });
         }
         return CompletableFuture.completedFuture(response);
       });
@@ -384,8 +389,8 @@ public class JdkHttpClientImpl implements HttpClient {
     }
     // the Watch logic sets a websocketTimeout as the readTimeout
     // TODO: this should probably be made clearer in the docs
-    if (this.builder.readTimeout != null) {
-      newBuilder.connectTimeout(this.builder.readTimeout);
+    if (this.builder.getReadTimeout() != null) {
+      newBuilder.connectTimeout(this.builder.getReadTimeout());
     }
 
     AtomicLong queueSize = new AtomicLong();
@@ -419,11 +424,6 @@ public class JdkHttpClientImpl implements HttpClient {
       throw new IllegalStateException("Client already closed");
     }
     return httpClient;
-  }
-
-  @Override
-  public Factory getFactory() {
-    return builder.clientFactory;
   }
 
 }

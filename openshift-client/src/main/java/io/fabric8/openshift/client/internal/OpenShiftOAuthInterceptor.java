@@ -19,6 +19,7 @@ package io.fabric8.openshift.client.internal;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -72,12 +73,17 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       HasMetadata.getPlural(SelfSubjectAccessReview.class))));
 
   private final HttpClient client;
-  private final OpenShiftConfig config;
+  private final Config config;
   private final AtomicReference<String> oauthToken = new AtomicReference<>();
 
-  public OpenShiftOAuthInterceptor(HttpClient client, OpenShiftConfig config) {
+  public OpenShiftOAuthInterceptor(HttpClient client, Config config) {
     this.client = client;
     this.config = config;
+  }
+
+  @Override
+  public Interceptor withConfig(Config config) {
+    return new OpenShiftOAuthInterceptor(client, config);
   }
 
   @Override
