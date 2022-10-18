@@ -148,7 +148,7 @@ public abstract class AbstractJSONSchema2Pojo {
       return fromJsonSchema.apply(JPrimitiveNameAndType.INT_OR_STRING);
     } else if (type == null
         && Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields())) {
-      return fromJsonSchema.apply(new JObjectNameAndType(key));
+      return fromJsonSchema.apply(JPrimitiveNameAndType.ANY_TYPE);
     } else if (prop.getEnum() != null && prop.getEnum().size() > 0) {
       return fromJsonSchema.apply(new JEnumNameAndType(key));
     } else {

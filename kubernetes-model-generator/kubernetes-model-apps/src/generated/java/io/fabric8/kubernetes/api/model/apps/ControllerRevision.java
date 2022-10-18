@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
@@ -74,7 +75,7 @@ public class ControllerRevision implements HasMetadata, Namespaced
     @JsonProperty("apiVersion")
     private String apiVersion = "apps/v1";
     @JsonProperty("data")
-    private HasMetadata data;
+    private KubernetesResource data;
     /**
      * 
      * (Required)
@@ -104,7 +105,7 @@ public class ControllerRevision implements HasMetadata, Namespaced
      * @param kind
      * @param revision
      */
-    public ControllerRevision(String apiVersion, HasMetadata data, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Long revision) {
+    public ControllerRevision(String apiVersion, KubernetesResource data, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Long revision) {
         super();
         this.apiVersion = apiVersion;
         this.data = data;
@@ -134,12 +135,12 @@ public class ControllerRevision implements HasMetadata, Namespaced
     }
 
     @JsonProperty("data")
-    public HasMetadata getData() {
+    public KubernetesResource getData() {
         return data;
     }
 
     @JsonProperty("data")
-    public void setData(HasMetadata data) {
+    public void setData(KubernetesResource data) {
         this.data = data;
     }
 

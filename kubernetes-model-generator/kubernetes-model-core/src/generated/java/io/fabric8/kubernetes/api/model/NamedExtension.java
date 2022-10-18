@@ -33,11 +33,11 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class NamedExtension implements KubernetesResource
+public class NamedExtension implements io.fabric8.kubernetes.api.model.KubernetesResource
 {
 
     @JsonProperty("extension")
-    private HasMetadata extension;
+    private io.fabric8.kubernetes.api.model.KubernetesResource extension;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -55,19 +55,19 @@ public class NamedExtension implements KubernetesResource
      * @param extension
      * @param name
      */
-    public NamedExtension(HasMetadata extension, String name) {
+    public NamedExtension(io.fabric8.kubernetes.api.model.KubernetesResource extension, String name) {
         super();
         this.extension = extension;
         this.name = name;
     }
 
     @JsonProperty("extension")
-    public HasMetadata getExtension() {
+    public io.fabric8.kubernetes.api.model.KubernetesResource getExtension() {
         return extension;
     }
 
     @JsonProperty("extension")
-    public void setExtension(HasMetadata extension) {
+    public void setExtension(io.fabric8.kubernetes.api.model.KubernetesResource extension) {
         this.extension = extension;
     }
 

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -73,13 +72,13 @@ public class KubeAPIServerSpec implements KubernetesResource
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("observedConfig")
-    private HasMetadata observedConfig;
+    private KubernetesResource observedConfig;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
     @JsonProperty("succeededRevisionLimit")
     private Integer succeededRevisionLimit;
     @JsonProperty("unsupportedConfigOverrides")
-    private HasMetadata unsupportedConfigOverrides;
+    private KubernetesResource unsupportedConfigOverrides;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -101,7 +100,7 @@ public class KubeAPIServerSpec implements KubernetesResource
      * @param managementState
      * @param succeededRevisionLimit
      */
-    public KubeAPIServerSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, HasMetadata unsupportedConfigOverrides) {
+    public KubeAPIServerSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, KubernetesResource unsupportedConfigOverrides) {
         super();
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
@@ -154,12 +153,12 @@ public class KubeAPIServerSpec implements KubernetesResource
     }
 
     @JsonProperty("observedConfig")
-    public HasMetadata getObservedConfig() {
+    public KubernetesResource getObservedConfig() {
         return observedConfig;
     }
 
     @JsonProperty("observedConfig")
-    public void setObservedConfig(HasMetadata observedConfig) {
+    public void setObservedConfig(KubernetesResource observedConfig) {
         this.observedConfig = observedConfig;
     }
 
@@ -184,12 +183,12 @@ public class KubeAPIServerSpec implements KubernetesResource
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public HasMetadata getUnsupportedConfigOverrides() {
+    public KubernetesResource getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public void setUnsupportedConfigOverrides(HasMetadata unsupportedConfigOverrides) {
+    public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 

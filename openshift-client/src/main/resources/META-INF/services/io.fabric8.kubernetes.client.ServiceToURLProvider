@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-io.fabric8.openshift.client.URLFromOpenshiftRouteImpl
+io.fabric8.openshift.client.impl.URLFromOpenshiftRouteImpl

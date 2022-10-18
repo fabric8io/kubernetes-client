@@ -92,6 +92,7 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_SCHEMA_SWAPS = "io.fabric8.crd.generator.annotation.SchemaSwaps";
 
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
+  public static final String ANY_TYPE = "io.fabric8.kubernetes.api.model.AnyType";
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -239,14 +240,18 @@ public abstract class AbstractJsonSchema<T, B> {
   }
 
   private T internalFromImpl(TypeDef definition, Set<String> visited, InternalSchemaSwaps schemaSwaps, String... ignore) {
-    final B builder = newBuilder();
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore))
         : Collections
             .emptySet();
     List<String> required = new ArrayList<>();
 
-    boolean preserveUnknownFields = (definition.getFullyQualifiedName() != null &&
-        definition.getFullyQualifiedName().equals(JSON_NODE_TYPE));
+    final boolean isJsonNode = (definition.getFullyQualifiedName() != null &&
+        (definition.getFullyQualifiedName().equals(JSON_NODE_TYPE)
+            || definition.getFullyQualifiedName().equals(ANY_TYPE)));
+
+    final B builder = (isJsonNode) ? newBuilder(null) : newBuilder();
+
+    boolean preserveUnknownFields = isJsonNode;
 
     definition.getAnnotations().forEach(annotation -> extractSchemaSwaps(definition.toReference(), annotation, schemaSwaps));
 
@@ -578,6 +583,14 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return a new builder object specific to the CRD generation version
    */
   public abstract B newBuilder();
+
+  /**
+   * Creates a new specific builder object.
+   *
+   * @param type the type to be used
+   * @return a new builder object specific to the CRD generation version
+   */
+  public abstract B newBuilder(String type);
 
   /**
    * Adds the specified property to the specified builder, calling {@link #internalFrom(String, TypeRef)}

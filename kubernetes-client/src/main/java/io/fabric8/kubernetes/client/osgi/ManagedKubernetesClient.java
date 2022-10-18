@@ -16,12 +16,12 @@
 package io.fabric8.kubernetes.client.osgi;
 
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
-import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
+import io.fabric8.kubernetes.client.impl.ResourceHandler;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -65,14 +65,13 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_TIMEOUT_S
 @Component(configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.REQUIRE)
 @Service({ KubernetesClient.class, NamespacedKubernetesClient.class })
 @References({
-    @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
-    @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
+    @Reference(referenceInterface = ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
     @Reference(referenceInterface = OAuthTokenProvider.class, cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind = "unbindOAuthTokenProvider")
 })
-public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<DefaultKubernetesClient> {
+public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<KubernetesClientImpl> {
 
   public ManagedKubernetesClient() {
-    super(DefaultKubernetesClient.class);
+    super(KubernetesClientImpl.class);
   }
 
   private OAuthTokenProvider provider;
@@ -167,7 +166,7 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<D
       builder.withOauthTokenProvider(provider);
     }
 
-    this.init(new DefaultKubernetesClient(builder.build()));
+    this.init(new KubernetesClientImpl(builder.build()));
   }
 
   @Deactivate
@@ -189,14 +188,6 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<D
   @Deprecated
   public void unbindResourceHandler(ResourceHandler resourceHandler) {
     // not used
-  }
-
-  public void bindExtensionAdapter(ExtensionAdapter adapter) {
-    getClient().getAdapters().register(adapter);
-  }
-
-  public void unbindExtensionAdapter(ExtensionAdapter adapter) {
-    getClient().getAdapters().unregister(adapter);
   }
 
   public void bindOAuthTokenProvider(OAuthTokenProvider provider) {

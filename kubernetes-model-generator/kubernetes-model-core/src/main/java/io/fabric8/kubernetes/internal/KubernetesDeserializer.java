@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.util.Helper;
@@ -100,9 +101,10 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
       JsonNode jsonNode = iterator.next();
       if (jsonNode.isObject()) {
         KubernetesResource resource = fromObjectNode(jp, jsonNode);
-        if (resource instanceof HasMetadata) {
-          list.add((HasMetadata) resource);
+        if (!(resource instanceof HasMetadata)) {
+          throw new JsonMappingException(jp, "Cannot parse a nested array containing a non-HasMetadata resource");
         }
+        list.add((HasMetadata) resource);
       }
     }
     return new KubernetesListBuilder().withItems(list).build();
@@ -112,6 +114,12 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     TypeKey key = getKey(node);
     Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
     if (resourceType == null) {
+      if (key == null || (key.version == null && key.apiGroup == null)) {
+        // just a wrapper around a map
+        // if this raw mapping typed as HasMetadata, a failure will result
+        return jp.getCodec().treeToValue(node, RawExtension.class);
+      }
+      // this is not quite correct as not all resources have metadata - see LocalResourceAccessReview
       return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
     } else if (KubernetesResource.class.isAssignableFrom(resourceType)) {
       return jp.getCodec().treeToValue(node, resourceType);

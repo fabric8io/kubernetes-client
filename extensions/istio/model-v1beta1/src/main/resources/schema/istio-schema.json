@@ -65,10 +65,10 @@
       "type": "object",
       "properties": {
         "lastProbeTime": {
-          "existingJavaType": "java.lang.Long"
+          "existingJavaType": "java.lang.String"
         },
         "lastTransitionTime": {
-          "existingJavaType": "java.lang.Long"
+          "existingJavaType": "java.lang.String"
         },
         "message": {
           "type": "string"

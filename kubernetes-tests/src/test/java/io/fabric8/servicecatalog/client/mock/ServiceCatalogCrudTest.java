@@ -16,6 +16,7 @@
 package io.fabric8.servicecatalog.client.mock;
 
 import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
@@ -23,9 +24,10 @@ import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerBuilder;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.ServiceCatalogMockServer;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,6 @@ import java.util.Queue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Class testing crud operations on ServiceCatalog
@@ -42,13 +43,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ServiceCatalogCrudTest {
 
-  public ServiceCatalogMockServer server = null;
+  KubernetesMockServer server = null;
   public ServiceCatalogClient client = null;
 
   @BeforeEach
   void setUp() {
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
-    server = new ServiceCatalogMockServer(
+    server = new KubernetesMockServer(
         new Context(),
         new MockWebServer(),
         responses,
@@ -153,7 +154,7 @@ class ServiceCatalogCrudTest {
 
     client.clusterServiceBrokers().create(broker);
 
-    assertTrue(client.clusterServiceBrokers().withName("broker").delete().size() == 1);
+    assertEquals(1, client.clusterServiceBrokers().withName("broker").delete().size());
     assertNull(client.clusterServiceBrokers().withName("broker").get());
   }
 

@@ -35,7 +35,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -166,7 +165,7 @@ spec:
      */
   // @formatter:on
   @Test
-  public void checkBasicVirtualService() throws Exception {
+  void checkBasicVirtualService() throws Exception {
     final VirtualService virtualService = new VirtualServiceBuilder()
         .withNewMetadata()
         .withName("details")
@@ -189,32 +188,32 @@ spec:
     Yaml parser = new Yaml();
     final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
-    Assert.assertEquals("VirtualService", reloaded.get("kind"));
+    assertEquals("VirtualService", reloaded.get("kind"));
 
     final Map<String, Object> metadata = (Map<String, Object>) reloaded.get("metadata");
-    Assert.assertNotNull(metadata);
-    Assert.assertEquals("details", metadata.get("name"));
+    assertNotNull(metadata);
+    assertEquals("details", metadata.get("name"));
 
     final Map<String, Object> spec = (Map<String, Object>) reloaded.get("spec");
-    Assert.assertNotNull(spec);
+    assertNotNull(spec);
 
     final List<Map> https = (List) spec.get("http");
-    Assert.assertNotNull(https);
+    assertNotNull(https);
 
     final Map<String, Map> http = https.get(0);
-    Assert.assertNotNull(http);
+    assertNotNull(http);
 
     final List<Map> routes = (List) http.get("route");
-    Assert.assertNotNull(routes);
+    assertNotNull(routes);
 
     final Map<String, Map> route = routes.get(0);
-    Assert.assertNotNull(route);
+    assertNotNull(route);
 
     final Map<String, Object> destination = route.get("destination");
-    Assert.assertNotNull(destination);
+    assertNotNull(destination);
 
-    Assert.assertEquals("details", destination.get("host"));
-    Assert.assertEquals("v1", destination.get("subset"));
+    assertEquals("details", destination.get("host"));
+    assertEquals("v1", destination.get("subset"));
   }
 
   // @formatter:off
@@ -245,7 +244,7 @@ spec:
      */
   // @formatter:on
   @Test
-  public void checkVirtualServiceWithMatch() throws IOException {
+  void checkVirtualServiceWithMatch() throws IOException {
     final String reviewsHost = "reviews.prod.svc.cluster.local";
     final VirtualService resource = new VirtualServiceBuilder()
         .withNewMetadata().withName("reviews-route").endMetadata()
@@ -271,39 +270,39 @@ spec:
     Yaml parser = new Yaml();
     final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
-    Assert.assertEquals("VirtualService", reloaded.get("kind"));
+    assertEquals("VirtualService", reloaded.get("kind"));
 
     final Map<String, Object> metadata = (Map<String, Object>) reloaded.get("metadata");
-    Assert.assertNotNull(metadata);
-    Assert.assertEquals("reviews-route", metadata.get("name"));
+    assertNotNull(metadata);
+    assertEquals("reviews-route", metadata.get("name"));
 
     final Map<String, Object> spec = (Map<String, Object>) reloaded.get("spec");
-    Assert.assertNotNull(spec);
+    assertNotNull(spec);
 
-    Assert.assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
+    assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
 
     final List<Map> https = (List) spec.get("http");
-    Assert.assertNotNull(https);
+    assertNotNull(https);
 
     Map<String, Map> http = https.get(0);
-    Assert.assertNotNull(http);
+    assertNotNull(http);
 
     final List<Map> matches = (List) http.get("match");
-    Assert.assertNotNull(matches);
-    Assert.assertEquals(2, matches.size());
-    Assert.assertEquals("/wpcatalog", ((Map) matches.get(0).get("uri")).get("prefix"));
-    Assert.assertEquals("/consumercatalog", ((Map) matches.get(1).get("uri")).get("prefix"));
+    assertNotNull(matches);
+    assertEquals(2, matches.size());
+    assertEquals("/wpcatalog", ((Map) matches.get(0).get("uri")).get("prefix"));
+    assertEquals("/consumercatalog", ((Map) matches.get(1).get("uri")).get("prefix"));
 
-    Assert.assertEquals("/newcatalog", http.get("rewrite").get("uri"));
+    assertEquals("/newcatalog", http.get("rewrite").get("uri"));
 
     Map destination = (Map) ((List<Map>) http.get("route")).get(0).get("destination");
-    Assert.assertEquals(reviewsHost, destination.get("host"));
-    Assert.assertEquals("v2", destination.get("subset"));
+    assertEquals(reviewsHost, destination.get("host"));
+    assertEquals("v2", destination.get("subset"));
 
     http = https.get(1);
     destination = (Map) ((List<Map>) http.get("route")).get(0).get("destination");
-    Assert.assertEquals(reviewsHost, destination.get("host"));
-    Assert.assertEquals("v1", destination.get("subset"));
+    assertEquals(reviewsHost, destination.get("host"));
+    assertEquals("v1", destination.get("subset"));
   }
 
   // @formatter:off
@@ -331,7 +330,7 @@ spec:
     */
   // @formatter:on
   @Test
-  public void checkVirtualServiceWithPortSelector() throws IOException {
+  void checkVirtualServiceWithPortSelector() throws IOException {
     final String reviewsHost = "reviews.prod.svc.cluster.local";
     final VirtualService resource = new VirtualServiceBuilder()
         .withNewMetadata().withName("reviews-route").endMetadata()
@@ -356,43 +355,43 @@ spec:
     Yaml parser = new Yaml();
     final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
-    Assert.assertEquals("VirtualService", reloaded.get("kind"));
+    assertEquals("VirtualService", reloaded.get("kind"));
 
     final Map<String, Object> metadata = (Map<String, Object>) reloaded.get("metadata");
-    Assert.assertNotNull(metadata);
-    Assert.assertEquals("reviews-route", metadata.get("name"));
+    assertNotNull(metadata);
+    assertEquals("reviews-route", metadata.get("name"));
 
     final Map<String, Object> spec = (Map<String, Object>) reloaded.get("spec");
-    Assert.assertNotNull(spec);
+    assertNotNull(spec);
 
-    Assert.assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
+    assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
 
     final List<Map> https = (List) spec.get("http");
-    Assert.assertNotNull(https);
+    assertNotNull(https);
 
     Map<String, Map> http = https.get(0);
-    Assert.assertNotNull(http);
+    assertNotNull(http);
 
     Map destination = (Map) ((List<Map>) http.get("route")).get(0).get("destination");
-    Assert.assertEquals(reviewsHost, destination.get("host"));
-    Assert.assertEquals("v2", destination.get("subset"));
+    assertEquals(reviewsHost, destination.get("host"));
+    assertEquals("v2", destination.get("subset"));
 
     final Map<String, Integer> portSelector1 = (Map<String, Integer>) (destination.get("port"));
-    Assert.assertNotNull(portSelector1);
-    Assert.assertEquals(9090, portSelector1.get("number").intValue());
+    assertNotNull(portSelector1);
+    assertEquals(9090, portSelector1.get("number").intValue());
 
     http = https.get(1);
     destination = (Map) ((List<Map>) http.get("route")).get(0).get("destination");
-    Assert.assertEquals(reviewsHost, destination.get("host"));
-    Assert.assertEquals("v1", destination.get("subset"));
+    assertEquals(reviewsHost, destination.get("host"));
+    assertEquals("v1", destination.get("subset"));
 
     final Map<String, Integer> portSelector2 = (Map<String, Integer>) (destination.get("port"));
-    Assert.assertNotNull(portSelector2);
-    Assert.assertEquals(9090, portSelector2.get("number").intValue());
+    assertNotNull(portSelector2);
+    assertEquals(9090, portSelector2.get("number").intValue());
   }
 
   @Test
-  public void loadingFromYAMLShouldWork() throws Exception {
+  void loadingFromYAMLShouldWork() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service.yaml");
 
     // @formatter:off
@@ -417,23 +416,23 @@ spec:
     // @formatter:on
 
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
-    Assert.assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
+    assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
     final List<HTTPRoute> http = virtualService.getSpec().getHttp();
-    Assert.assertEquals(1, http.size());
+    assertEquals(1, http.size());
     final HTTPRoute route = http.get(0);
     final List<HTTPRouteDestination> destinations = route.getRoute();
-    Assert.assertEquals(1, destinations.size());
+    assertEquals(1, destinations.size());
     final Destination destination = destinations.get(0).getDestination();
-    Assert.assertEquals("ratings.prod.svc.cluster.local", destination.getHost());
-    Assert.assertEquals("v1", destination.getSubset());
+    assertEquals("ratings.prod.svc.cluster.local", destination.getHost());
+    assertEquals("v1", destination.getSubset());
     assertNull(route.getFault().getDelay());
     final HTTPFaultInjectionAbort abort = route.getFault().getAbort();
-    Assert.assertEquals(10, abort.getPercentage().getValue().intValue());
-    Assert.assertEquals(400, ((HTTPFaultInjectionAbortHttpStatus) abort.getErrorType()).getHttpStatus().intValue());
+    assertEquals(10, abort.getPercentage().getValue().intValue());
+    assertEquals(400, ((HTTPFaultInjectionAbortHttpStatus) abort.getErrorType()).getHttpStatus().intValue());
   }
 
   @Test
-  public void loadingFromYAMLIssue48() throws Exception {
+  void loadingFromYAMLIssue48() throws Exception {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service-issue48.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 
@@ -455,13 +454,13 @@ spec:
 
     final Map<String, StringMatch> headers = virtualService.getSpec().getHttp().get(0).getMatch().get(0).getHeaders();
     final StringMatch stringMatch = headers.get("baggage-user-agent");
-    Assert.assertEquals(StringMatchRegex.class, stringMatch.getMatchType().getClass());
+    assertEquals(StringMatchRegex.class, stringMatch.getMatchType().getClass());
     StringMatchRegex regex = (StringMatchRegex) stringMatch.getMatchType();
-    Assert.assertEquals(".*DarkLaunch.*", regex.getRegex());
+    assertEquals(".*DarkLaunch.*", regex.getRegex());
   }
 
   @Test
-  public void allowCredentialsShouldWork() throws IOException {
+  void allowCredentialsShouldWork() throws IOException {
     final InputStream inputStream = VirtualServiceTest.class.getResourceAsStream("/v1beta1/virtual-service-issue119.yaml");
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 

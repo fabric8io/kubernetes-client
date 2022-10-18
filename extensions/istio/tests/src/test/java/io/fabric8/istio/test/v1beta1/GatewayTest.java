@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -127,7 +126,7 @@ class GatewayTest {
   }
 
   @Test
-  public void checkBasicGateway() throws Exception {
+  void checkBasicGateway() throws Exception {
     final Gateway gateway = new GatewayBuilder()
         .withNewMetadata()
         .withName("httpbin-gateway")
@@ -146,45 +145,45 @@ class GatewayTest {
     Yaml parser = new Yaml();
     final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
-    Assert.assertEquals("Gateway", reloaded.get("kind"));
+    assertEquals("Gateway", reloaded.get("kind"));
 
     final Map metadata = (Map) reloaded.get("metadata");
-    Assert.assertNotNull(metadata);
-    Assert.assertEquals("httpbin-gateway", metadata.get("name"));
+    assertNotNull(metadata);
+    assertEquals("httpbin-gateway", metadata.get("name"));
 
     final Map<String, Map> spec = (Map<String, Map>) reloaded.get("spec");
-    Assert.assertNotNull(spec);
+    assertNotNull(spec);
 
     final Map<String, Object> selector = spec.get("selector");
-    Assert.assertNotNull(selector);
-    Assert.assertEquals("ingressgateway", selector.get("istio"));
+    assertNotNull(selector);
+    assertEquals("ingressgateway", selector.get("istio"));
 
     final List<Map> servers = (List) spec.get("servers");
-    Assert.assertNotNull(servers);
-    Assert.assertEquals(2, servers.size());
+    assertNotNull(servers);
+    assertEquals(2, servers.size());
 
     Map<String, Map> server = servers.get(0);
-    Assert.assertNotNull(server);
+    assertNotNull(server);
 
     Map<String, Object> port = server.get("port");
-    Assert.assertNotNull(port);
-    Assert.assertEquals(80, port.get("number"));
-    Assert.assertEquals("http", port.get("name"));
-    Assert.assertEquals("HTTP", port.get("protocol"));
+    assertNotNull(port);
+    assertEquals(80, port.get("number"));
+    assertEquals("http", port.get("name"));
+    assertEquals("HTTP", port.get("protocol"));
 
     final List<String> hosts = (List<String>) server.get("hosts");
-    Assert.assertNotNull(hosts);
-    Assert.assertEquals("httpbin.example.com", hosts.get(0));
+    assertNotNull(hosts);
+    assertEquals("httpbin.example.com", hosts.get(0));
 
     server = servers.get(1);
-    Assert.assertNotNull(server);
+    assertNotNull(server);
     port = server.get("port");
-    Assert.assertNotNull(port);
-    Assert.assertEquals(443, port.get("number"));
-    Assert.assertEquals("tls-0", port.get("name"));
-    Assert.assertEquals("TLS", port.get("protocol"));
+    assertNotNull(port);
+    assertEquals(443, port.get("number"));
+    assertEquals("tls-0", port.get("name"));
+    assertEquals("TLS", port.get("protocol"));
 
     final Map<String, String> tls = server.get("tls");
-    Assert.assertEquals("TLSV1_2", tls.get("minProtocolVersion"));
+    assertEquals("TLSV1_2", tls.get("minProtocolVersion"));
   }
 }

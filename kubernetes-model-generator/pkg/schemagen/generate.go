@@ -178,7 +178,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "Time":
 			return "String"
 		case "RawExtension":
-			return BasePackage + ".HasMetadata"
+			return "io.fabric8.kubernetes.api.model.KubernetesResource"			
 		case "List":
 			return pkgDesc.JavaPackage + ".BaseKubernetesList"
 		default:
@@ -211,7 +211,10 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	case reflect.Map:
 		return "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">"
 	default:
-		if t.Name() == "Time" {
+	    if t.Name() == "RawExtension" {
+	        return "io.fabric8.kubernetes.api.model.KubernetesResource"
+	    }
+	    if t.Name() == "Time" {
 			return "String"
 		}
 		if len(t.Name()) == 0 && t.NumField() == 0 {
@@ -298,45 +301,7 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 					ExistingJavaType: javaType,
 				}
 			}
-			/* Added a specific class for DockerImageMetadata because its kind of RawExtension
-			and is set to HasMetadata Java Type. Because of this thing its not getting marshalled
-			and throwing error. We need to change it to RawExtension but to change it to Raw Extension
-			we need to create a special class for DockerMetadata Only.Reason is all the RawExtension Object
-			are set to HasMetadata Java Type and if we change all the objects to RawExtension then
-			classes like KubernetesList etc. are throwing error If we change the class of DockerMetadata
-			only then also it will get generated of kind HasMetadata because RawExtension Object is also set
-			to HasMetadata Jaya Type If we further change RawExtension Object to RawExtension Java Type then
-			again all KubernetesList like object throw error so created a special Class ImageRawExtension
-			for DockerImageData which will be of Raw Extension Java Type and the problem of marshalling
-			get Resolved. This will be applied to DockerMetadata only and all the other will refer to
-			original RawExtension which is of HasMetadata Java Type.*/
-
-			if name == "kubernetes_apimachinery_pkg_runtime_RawExtension" {
-				dockermetadata_name := "kubernetes_apimachinery_pkg_runtime_ImageRawExtension"
-				dockermetadata_resource := "imagerawextension"
-				dockermetadata_value := JSONPropertyDescriptor{
-					JSONDescriptor: &JSONDescriptor{
-						Type: "object",
-					},
-					JSONObjectDescriptor: v,
-					JavaTypeDescriptor: &JavaTypeDescriptor{
-						JavaType: g.javaType(k),
-					},
-					JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
-						JavaInterfaces: g.javaInterfaces(k),
-					},
-				}
-				javaTypeStr := "io.fabric8."
-				if moduleName == "openshift" {
-					javaTypeStr = javaTypeStr + "openshift"
-				} else {
-					javaTypeStr = javaTypeStr + "kubernetes"
-				}
-				javaTypeStr = javaTypeStr + ".api.model.runtime.RawExtension"
-				dockermetadata_value.JavaType = javaTypeStr
-				s.Definitions[dockermetadata_name] = dockermetadata_value
-				s.Resources[dockermetadata_resource] = v
-			}
+			
 			s.Definitions[name] = value
 			s.Resources[resource] = v
 		}
@@ -460,23 +425,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		if name == "-" {
 			continue
 		}
-		/* Specifying dockerImageMetadata field separately Because by default it is taking
-		HasMetadata as type and we have declared a special class ImageRawExtension
-		for this to remove marshalling error.*/
 		path := pkgPath(t)
-		if t.Name() == "Image" && name == "dockerImageMetadata" {
-			prop := JSONPropertyDescriptor{
-				JSONReferenceDescriptor: &JSONReferenceDescriptor{
-					Reference: "#/definitions/kubernetes_apimachinery_pkg_runtime_ImageRawExtension",
-				},
-				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: BasePackage + ".runtime.RawExtension",
-				},
-			}
-			props[name] = prop
-			continue
-		}
-
 		desc := getFieldDescription(field)
 		omitEmpty := isOmitEmpty(field)
 		prop := g.getPropertyDescriptor(field.Type, desc, omitEmpty)

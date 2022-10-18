@@ -35,8 +35,6 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.internal.PatchUtils;
-import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -83,6 +81,7 @@ public class OperationSupport {
   protected String apiGroupVersion;
   protected boolean dryRun;
   private final int requestRetryBackoffLimit;
+  private final int requestRetryBackoffInterval;
 
   public OperationSupport(Client client) {
     this(new OperationContext().withClient(client));
@@ -106,8 +105,10 @@ public class OperationSupport {
     }
 
     if (ctx.getConfig() != null) {
+      requestRetryBackoffInterval = ctx.getConfig().getRequestRetryBackoffInterval();
       this.requestRetryBackoffLimit = ctx.getConfig().getRequestRetryBackoffLimit();
     } else {
+      requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
       this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
     }
   }
@@ -508,15 +509,14 @@ public class OperationSupport {
       if (e.getCause() != null) {
         t = e.getCause();
       }
+      // throw a new exception to preserve the calling stack trace
       if (t instanceof IOException) {
-        throw (IOException) t;
+        throw new IOException(t.getMessage(), t);
       }
-      if (t instanceof RuntimeException) {
-        throw (RuntimeException) t;
+      if (t instanceof KubernetesClientException) {
+        throw ((KubernetesClientException) t).copyAsCause();
       }
-      InterruptedIOException ie = new InterruptedIOException();
-      ie.initCause(e);
-      throw ie;
+      throw new KubernetesClientException(t.getMessage(), t);
     }
   }
 
@@ -568,7 +568,7 @@ public class OperationSupport {
     HttpRequest request = requestBuilder.build();
     CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
     retryWithExponentialBackoff(futureResponse,
-        new ExponentialBackoffIntervalCalculator(requestRetryBackoffLimit, MAX_RETRY_INTERVAL_EXPONENT),
+        new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, MAX_RETRY_INTERVAL_EXPONENT),
         Utils.getNonNullOrElse(client, httpClient), request);
 
     return futureResponse.thenApply(response -> {

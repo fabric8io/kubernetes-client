@@ -33,6 +33,10 @@
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"
     </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.client.extension.ExtensionAdapter
+    </osgi.provide-capability>
     <osgi.import>
       io.fabric8.kubernetes.api.builder,
       !io.fabric8.tekton.client.*,

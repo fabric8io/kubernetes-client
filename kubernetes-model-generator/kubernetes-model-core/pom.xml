@@ -178,7 +178,7 @@
                       file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/Quantity.java"
                       verbose="true" />
                     <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/WatchEvent.java"
+                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/KubernetesResource.java"
                       verbose="true" />
                     <delete verbose="true">
                       <fileset dir="${generate.targetDirectory}">

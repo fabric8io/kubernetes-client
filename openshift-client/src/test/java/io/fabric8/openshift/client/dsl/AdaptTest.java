@@ -15,9 +15,9 @@
  */
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,7 +28,7 @@ class AdaptTest {
   @Test
   void testAdaptDisabledCheck() {
     // Given
-    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    OpenShiftClient client = new OpenShiftClientImpl(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
 
     // When + Then
     assertTrue(client.isAdaptable(OpenShiftClient.class));
@@ -37,8 +37,8 @@ class AdaptTest {
   @Test
   void testAdaptDSLs() {
     // Given
-    OpenShiftClient client = new DefaultOpenShiftClient(
-      new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    OpenShiftClient client = new OpenShiftClientImpl(
+        new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
 
     assertNotNull(client.v1());
     assertNotNull(client.apps());
