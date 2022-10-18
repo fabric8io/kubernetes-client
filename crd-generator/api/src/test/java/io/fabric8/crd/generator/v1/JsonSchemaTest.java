@@ -152,16 +152,19 @@ class JsonSchemaTest {
     assertTrue(spec.containsKey("free"));
     JSONSchemaProps freeField = spec.get("free");
 
+    assertNull(freeField.getType());
     assertTrue(freeField.getXKubernetesPreserveUnknownFields());
 
     assertTrue(spec.containsKey("field"));
     JSONSchemaProps field = spec.get("field");
 
+    assertEquals("integer", field.getType());
     assertNull(field.getXKubernetesPreserveUnknownFields());
 
     assertTrue(spec.containsKey("foo"));
     JSONSchemaProps fooField = spec.get("foo");
 
+    assertEquals("object", fooField.getType());
     assertTrue(fooField.getXKubernetesPreserveUnknownFields());
   }
 

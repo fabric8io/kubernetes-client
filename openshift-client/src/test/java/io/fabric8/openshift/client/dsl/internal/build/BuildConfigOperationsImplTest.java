@@ -15,12 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.jupiter.api.BeforeEach;

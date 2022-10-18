@@ -18,11 +18,11 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.impl.BaseClient;
+import io.fabric8.kubernetes.client.impl.ResourceHandler;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 
