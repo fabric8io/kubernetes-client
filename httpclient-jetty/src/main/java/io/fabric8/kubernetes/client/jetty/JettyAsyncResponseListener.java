@@ -94,7 +94,8 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
       this.demand.complete(demand);
     }
     try {
-      bodyConsumer.consume(process(response, content), this);
+      // we must clone as the buffer can be reused after the call to succeeded
+      bodyConsumer.consume(process(response, clone(content)), this);
       callback.succeeded();
     } catch (Exception e) {
       callback.failed(e);
@@ -102,4 +103,11 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
   }
 
   protected abstract T process(Response response, ByteBuffer content);
+
+  public static ByteBuffer clone(ByteBuffer original) {
+    ByteBuffer clone = ByteBuffer.allocate(original.remaining());
+    clone.put(original);
+    clone.flip();
+    return clone;
+  }
 }

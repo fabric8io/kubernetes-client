@@ -199,6 +199,8 @@ public interface HttpClient extends AutoCloseable {
 
   /**
    * Send a request and consume the bytes of the resulting response body
+   * <p>
+   * HtttpClient implementations will provide ByteBuffers that may be held directly.
    *
    * @param request the HttpRequest to send
    * @param consumer the response body consumer
