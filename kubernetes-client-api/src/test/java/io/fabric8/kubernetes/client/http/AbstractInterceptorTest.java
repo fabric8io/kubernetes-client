@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,6 +31,28 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractInterceptorTest {
+
+  private static final class ConfigAwareInterceptor implements Interceptor {
+
+    private Config config;
+
+    @Override
+    public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+      String endpoint = "intercepted-url";
+      if (config != null && config.getImpersonateUsername() != null) {
+        endpoint = config.getImpersonateUsername();
+      }
+      builder.uri(URI.create(server.url("/" + endpoint)));
+      return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    public Interceptor withConfig(Config config) {
+      ConfigAwareInterceptor result = new ConfigAwareInterceptor();
+      result.config = config;
+      return result;
+    }
+  }
 
   private static DefaultMockServer server;
 
@@ -176,5 +199,29 @@ public abstract class AbstractInterceptorTest {
     // Then
     assertThat(server.getLastRequest().getHeaders().toMultimap())
         .containsEntry("test-header", Collections.singletonList("Test-Value-Override"));
+  }
+
+  @Test
+  @DisplayName("afterFailure sees the overriden RequestConfig")
+  public void afterHttpFailureSuppliedConfig() throws Exception {
+    // Given
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
+    server.expect().withPath("/other-url").andReturn(200, "Overriden").once();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new ConfigAwareInterceptor());
+    // When
+    try (HttpClient client = builder.build()) {
+      Config config = Config.empty();
+      config.setImpersonateUsername("other-url");
+      HttpClient derivedClient = client.newBuilder().requestConfig(config).build();
+
+      final HttpResponse<String> result = derivedClient
+          .sendAsync(derivedClient.newHttpRequestBuilder().uri(server.url("/not-found")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(result)
+          .returns("Overriden", HttpResponse::body)
+          .returns(200, HttpResponse::code);
+    }
   }
 }

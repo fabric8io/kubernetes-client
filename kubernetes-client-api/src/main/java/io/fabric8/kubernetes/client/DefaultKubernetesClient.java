@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder.ExecutorSupplier;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.HttpClient.Factory;
+import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
@@ -64,18 +65,34 @@ public class DefaultKubernetesClient extends NamespacedKubernetesClientAdapter<N
     KubernetesClientBuilder builder = new KubernetesClientBuilder().withConfig(config)
         .withTaskExecutorSupplier(executorSupplier);
     if (httpClient != null) {
+      // this reads a little oddly, but it supplies the given HttpClient via the factory.
+      // no further configuration is performed
+      // an alternative would be to add back a factory method that returns the client, or to allow the HttpClient to be set directly on the KubernetesClientBuilder
       builder.withHttpClientFactory(new Factory() {
 
         @Override
         public Builder newBuilder() {
-          // should not be called
           throw new UnsupportedOperationException();
         }
 
         @Override
-        public HttpClient createHttpClient(Config config) {
-          return httpClient;
+        public Builder newBuilder(Config config) {
+          return new StandardHttpClientBuilder<HttpClient, HttpClient.Factory, StandardHttpClientBuilder<HttpClient, HttpClient.Factory, ?>>(
+              null) {
+
+            @Override
+            public HttpClient build() {
+              return httpClient;
+            }
+
+            @Override
+            protected StandardHttpClientBuilder<HttpClient, HttpClient.Factory, StandardHttpClientBuilder<HttpClient, HttpClient.Factory, ?>> newInstance(
+                Factory clientFactory) {
+              return null;
+            }
+          };
         }
+
       });
     }
     this.init(builder.build());

@@ -48,6 +48,11 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   @Override
+  public Interceptor withConfig(Config config) {
+    return new TokenRefreshInterceptor(config, factory, latestRefreshTimestamp);
+  }
+
+  @Override
   public void before(BasicBuilder headerBuilder, HttpHeaders headers) {
     if (isTimeToRefresh()) {
       refreshToken(headerBuilder);

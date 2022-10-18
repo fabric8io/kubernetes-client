@@ -16,13 +16,34 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.RequestConfig;
+
 import java.util.concurrent.CompletableFuture;
 
 public interface Interceptor {
 
   /**
+   * {@link Interceptor}s that rely upon the {@link Config}, in particular the {@link RequestConfig}, must implement
+   * this method to receive the modified configuration
+   *
+   * @param config
+   * @return
+   */
+  default Interceptor withConfig(Config config) {
+    return this;
+  }
+
+  static Interceptor useConfig(Interceptor interceptor, Config config) {
+    if (config == null) {
+      return interceptor;
+    }
+    return interceptor.withConfig(config);
+  }
+
+  /**
    * Called before a request to allow for the manipulation of the request
-   * 
+   *
    * @param builder used to modify the request
    * @param headers the current headers
    */
@@ -31,7 +52,7 @@ public interface Interceptor {
 
   /**
    * Called after a websocket failure or by default from a normal request
-   * 
+   *
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
@@ -42,7 +63,7 @@ public interface Interceptor {
 
   /**
    * Called after a non-websocket failure
-   * 
+   *
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request

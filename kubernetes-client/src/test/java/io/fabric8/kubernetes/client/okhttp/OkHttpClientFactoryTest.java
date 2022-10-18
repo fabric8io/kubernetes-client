@@ -37,7 +37,7 @@ class OkHttpClientFactoryTest {
 
   @Test
   void shouldRespectMaxRequests() {
-    OkHttpClientImpl client = new OkHttpClientFactory().createHttpClient(new ConfigBuilder().build());
+    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(new ConfigBuilder().build()).build();
 
     assertEquals(64, client.getOkHttpClient().dispatcher().getMaxRequests());
 
@@ -45,13 +45,13 @@ class OkHttpClientFactoryTest {
         .withMaxConcurrentRequests(120)
         .build();
 
-    client = new OkHttpClientFactory().createHttpClient(config);
+    client = new OkHttpClientFactory().newBuilder(config).build();
     assertEquals(120, client.getOkHttpClient().dispatcher().getMaxRequests());
   }
 
   @Test
   void shouldRespectMaxRequestsPerHost() {
-    OkHttpClientImpl client = new OkHttpClientFactory().createHttpClient(new ConfigBuilder().build());
+    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(new ConfigBuilder().build()).build();
 
     assertEquals(5, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
 
@@ -59,7 +59,7 @@ class OkHttpClientFactoryTest {
         .withMaxConcurrentRequestsPerHost(20)
         .build();
 
-    client = new OkHttpClientFactory().createHttpClient(config);
+    client = new OkHttpClientFactory().newBuilder(config).build();
 
     assertEquals(20, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
   }

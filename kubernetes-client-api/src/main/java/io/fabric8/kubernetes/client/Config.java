@@ -357,7 +357,7 @@ public class Config {
 
     this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval,
         connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout,
-        websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, oauthTokenProvider,
+        websocketPingInterval, oauthTokenProvider,
         requestRetryBackoffLimit, requestRetryBackoffInterval, uploadConnectionTimeout, uploadRequestTimeout);
     this.requestConfig.setImpersonateUsername(impersonateUsername);
     this.requestConfig.setImpersonateGroups(impersonateGroups);
@@ -383,6 +383,8 @@ public class Config {
     //We set the masterUrl because it's needed by ensureHttps
     this.masterUrl = masterUrl;
     this.masterUrl = ensureEndsWithSlash(ensureHttps(masterUrl, this));
+    this.maxConcurrentRequests = maxConcurrentRequests;
+    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -1268,19 +1270,19 @@ public class Config {
   }
 
   public int getMaxConcurrentRequests() {
-    return getRequestConfig().getMaxConcurrentRequests();
+    return maxConcurrentRequests;
   }
 
   public void setMaxConcurrentRequests(int maxConcurrentRequests) {
-    this.requestConfig.setMaxConcurrentRequests(maxConcurrentRequests);
+    this.maxConcurrentRequests = maxConcurrentRequests;
   }
 
   public int getMaxConcurrentRequestsPerHost() {
-    return getRequestConfig().getMaxConcurrentRequestsPerHost();
+    return maxConcurrentRequestsPerHost;
   }
 
   public void setMaxConcurrentRequestsPerHost(int maxConcurrentRequestsPerHost) {
-    this.requestConfig.setMaxConcurrentRequestsPerHost(maxConcurrentRequestsPerHost);
+    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
   }
 
   @JsonProperty("proxyUsername")
@@ -1347,11 +1349,11 @@ public class Config {
 
   @JsonIgnore
   public OAuthTokenProvider getOauthTokenProvider() {
-    return oauthTokenProvider;
+    return this.getRequestConfig().getOauthTokenProvider();
   }
 
   public void setOauthTokenProvider(OAuthTokenProvider oauthTokenProvider) {
-    this.oauthTokenProvider = oauthTokenProvider;
+    this.requestConfig.setOauthTokenProvider(oauthTokenProvider);
   }
 
   @JsonProperty("customHeaders")

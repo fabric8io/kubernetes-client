@@ -16,6 +16,7 @@
 * Fix #4426: [java-generator] Encode an `AnyType` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
 
 #### Improvements
+* Fix #4471: Adding KubernetesClientBuilder.withHttpClientBuilderConsumer to further customize the HttpClient for any implementation.
 * Fix #4348: Introduce specific annotations for the generators
 * Refactor #4441: refactoring `TokenRefreshInterceptor`
 * Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.

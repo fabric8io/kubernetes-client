@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
-import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS;
-import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_ROLLING_TIMEOUT;
@@ -59,8 +57,6 @@ public class RequestConfig {
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
-  private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
-  private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
 
   RequestConfig() {
   }
@@ -90,7 +86,7 @@ public class RequestConfig {
       int maxConcurrentRequests, int maxConcurrentRequestsPerHost) {
     this(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout,
         requestTimeout, scaleTimeout, loggingInterval,
-        websocketTimeout, websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, null,
+        websocketTimeout, websocketPingInterval, null,
         DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
         DEFAULT_UPLOAD_CONNECTION_TIMEOUT, DEFAULT_UPLOAD_REQUEST_TIMEOUT);
   }
@@ -100,7 +96,7 @@ public class RequestConfig {
       int watchReconnectLimit, int watchReconnectInterval,
       int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
       long websocketTimeout, long websocketPingInterval,
-      int maxConcurrentRequests, int maxConcurrentRequestsPerHost, OAuthTokenProvider oauthTokenProvider,
+      OAuthTokenProvider oauthTokenProvider,
       int requestRetryBackoffLimit, int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout) {
     this.username = username;
     this.oauthToken = oauthToken;
@@ -114,8 +110,6 @@ public class RequestConfig {
     this.websocketTimeout = websocketTimeout;
     this.loggingInterval = loggingInterval;
     this.websocketPingInterval = websocketPingInterval;
-    this.maxConcurrentRequests = maxConcurrentRequests;
-    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
     this.oauthTokenProvider = oauthTokenProvider;
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
@@ -260,22 +254,6 @@ public class RequestConfig {
 
   public void setWebsocketPingInterval(long websocketPingInterval) {
     this.websocketPingInterval = websocketPingInterval;
-  }
-
-  public int getMaxConcurrentRequests() {
-    return maxConcurrentRequests;
-  }
-
-  public void setMaxConcurrentRequests(int maxConcurrentRequests) {
-    this.maxConcurrentRequests = maxConcurrentRequests;
-  }
-
-  public int getMaxConcurrentRequestsPerHost() {
-    return maxConcurrentRequestsPerHost;
-  }
-
-  public void setMaxConcurrentRequestsPerHost(int maxConcurrentRequestsPerHost) {
-    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
   }
 
   public void setImpersonateUsername(String impersonateUsername) {

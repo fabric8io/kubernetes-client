@@ -15,19 +15,9 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.applyCommonConfiguration;
-
 public class JettyHttpClientFactory implements HttpClient.Factory {
-
-  @Override
-  public HttpClient createHttpClient(Config config) {
-    final var builder = newBuilder();
-    applyCommonConfiguration(config, builder, this);
-    return builder.build();
-  }
 
   @Override
   public JettyHttpClientBuilder newBuilder() {

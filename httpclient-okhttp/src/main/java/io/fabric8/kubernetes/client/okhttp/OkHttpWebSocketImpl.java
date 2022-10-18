@@ -40,8 +40,9 @@ class OkHttpWebSocketImpl implements WebSocket {
     private Request.Builder builder = new Request.Builder();
     private OkHttpClient httpClient;
 
-    public BuilderImpl(OkHttpClient httpClient) {
+    public BuilderImpl(OkHttpClient httpClient, okhttp3.Request.Builder builder) {
       this.httpClient = httpClient;
+      this.builder = builder;
     }
 
     @Override

@@ -40,10 +40,6 @@ class OkHttpRequestImpl implements HttpRequest {
 
     private final Request.Builder builder;
 
-    public BuilderImpl() {
-      this(new Request.Builder());
-    }
-
     public BuilderImpl(Request.Builder builder) {
       this.builder = builder;
     }

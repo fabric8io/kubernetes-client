@@ -708,11 +708,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
   public Client newClient(RequestConfig requestConfig) {
     Config copyConfig = configCopy();
     Config.setRequestConfig(copyConfig, requestConfig);
-    HttpClient client = this.httpClient.getFactory().createHttpClient(copyConfig);
-    KubernetesClientImpl result = newInstance(copyConfig);
-    result.httpClient = client;
-    result.setDerivedFields();
-    return result;
+    return newInstance(copyConfig);
   }
 
   @Override

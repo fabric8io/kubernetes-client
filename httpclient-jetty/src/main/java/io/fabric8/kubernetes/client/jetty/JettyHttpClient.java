@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -49,14 +50,16 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   private final Collection<Interceptor> interceptors;
   private final JettyHttpClientBuilder builder;
   private final JettyHttpClientFactory factory;
+  private Config config;
 
   public JettyHttpClient(JettyHttpClientBuilder builder, HttpClient httpClient, WebSocketClient webSocketClient,
-      Collection<Interceptor> interceptors, JettyHttpClientFactory jettyHttpClientFactory) {
+      Collection<Interceptor> interceptors, JettyHttpClientFactory jettyHttpClientFactory, Config config) {
     this.builder = builder;
     this.jetty = httpClient;
     this.jettyWs = webSocketClient;
     this.interceptors = interceptors;
     this.factory = jettyHttpClientFactory;
+    this.config = config;
   }
 
   @Override
@@ -71,7 +74,7 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
 
   @Override
   public DerivedClientBuilder newBuilder() {
-    return builder.copy();
+    return builder.copy(this);
   }
 
   @Override
@@ -125,7 +128,7 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
 
   @Override
   public WebSocket.Builder newWebSocketBuilder() {
-    return new JettyWebSocketBuilder(jettyWs, builder.readTimeout);
+    return new JettyWebSocketBuilder(jettyWs, builder.getReadTimeout());
   }
 
   @Override
@@ -133,7 +136,6 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
     return new StandardHttpRequest.Builder();
   }
 
-  @Override
   public Factory getFactory() {
     return factory;
   }
@@ -145,11 +147,11 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
       throw KubernetesClientException.launderThrowable(e);
     }
     final var requestBuilder = originalRequest.toBuilder();
-    interceptors.forEach(i -> i.before(requestBuilder, originalRequest));
+    interceptors.forEach(i -> Interceptor.useConfig(i, config).before(requestBuilder, originalRequest));
     final var request = requestBuilder.build();
 
     var jettyRequest = jetty.newRequest(request.uri()).method(request.method());
-    jettyRequest.timeout(builder.readTimeout.toMillis() + builder.writeTimeout.toMillis(), TimeUnit.MILLISECONDS);
+    jettyRequest.timeout(builder.getReadTimeout().toMillis() + builder.getWriteTimeout().toMillis(), TimeUnit.MILLISECONDS);
     jettyRequest.headers(m -> request.headers().forEach((k, l) -> l.forEach(v -> m.add(k, v))));
 
     final var contentType = request.headers("Content-Type").stream().findAny();
@@ -167,7 +169,7 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
     for (var interceptor : interceptors) {
       originalResponse = originalResponse.thenCompose(r -> {
         if (!r.isSuccessful()) {
-          return interceptor.afterFailure(builder, r)
+          return Interceptor.useConfig(interceptor, config).afterFailure(builder, r)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
                   return function.apply(builder.build());
@@ -195,4 +197,5 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   WebSocketClient getJettyWs() {
     return jettyWs;
   }
+
 }
