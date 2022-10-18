@@ -7,7 +7,6 @@
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
 * Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 * Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
-* Fix #3924: Remove extensions mock modules
 * Fix #4460: removing split packages.  Converting Default clients into adapters rather than real instances.
 * Fix #4441: corrected patch base handling for the patch methods available from a Resource - resource(item).patch() will be evaluated as resource(latest).patch(item).  Also undeprecated patch(item), which is consistent with leaving patch(context, item) undeprecated as well.  For consistency with the other operations (such as edit), patch(item) will use the context item as the base when available, or the server side item when not.  This means that patch(item) is only the same as resource(item).patch() when the patch(item) is called when the context item is missing or is the same as the latest.
 * Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
@@ -37,8 +36,9 @@
 #### _**Note**_: Breaking changes in the API
 * Fix #4350: SchemaSwap's fieldName parameter now expects a field name only, not a method or a constructor.
 * Module `io.fabric8:tekton-model-triggers` which contained Tekton triggers v1alpha1 model has been removed. We have introduced separate modules `io.fabric8:tekton-model-v1alpha1` and `io.fabric8:tekton-model-v1beta1` for Tekton triggers v1alpha1 and v1beta1 apigroups respectively. Users who are using `io.fabric8:tekton-client` dependency directly should be unaffected by this change.
-* Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
 * Fix #3864: Now it's compulsory to provide `etc/io.fabric8.openshift.client.cfg` file in order to load ManagedOpenShiftClient in OSGi environment.
+* Fix #3924: Extension Mock modules have been removed
+* Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
 
 ### 5.12.4 (2022-09-30)
 
