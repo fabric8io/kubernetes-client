@@ -44,7 +44,6 @@
     <module>model-policy</module>
     <module>model-search</module>
     <module>client</module>
-    <module>mock</module>
     <module>tests</module>
     <module>examples</module>
   </modules>

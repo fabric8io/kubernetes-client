@@ -25,15 +25,15 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class EnvoyFilterTest {
+class EnvoyFilterTest {
 
   @Test
-  public void loadingFromYAMLIssue99ShouldWork() throws Exception {
+  void loadingFromYAMLIssue99ShouldWork() throws Exception {
     final InputStream inputStream = EnvoyFilterTest.class.getResourceAsStream("/v1alpha3/envoy-filter-issue99.yaml");
     final EnvoyFilter filter = Serialization.yamlMapper().readValue(inputStream, EnvoyFilter.class);
 

@@ -31,10 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class DestinationRuleTest {
+class DestinationRuleTest {
 
   @Test
-  public void loadingFromYAMLIssue82ShouldWork() throws Exception {
+  void loadingFromYAMLIssue82ShouldWork() throws Exception {
     final InputStream inputStream = DestinationRuleTest.class.getResourceAsStream("/v1alpha3/destination-rule-issue82.yaml");
     final DestinationRule destinationRule = Serialization.yamlMapper().readValue(inputStream, DestinationRule.class);
 

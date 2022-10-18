@@ -22,15 +22,15 @@ import io.fabric8.istio.api.networking.v1beta1.StringMatchPrefix;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class CorsPolicyTest {
+class CorsPolicyTest {
   @Test
-  public void roundtripShouldWork() throws Exception {
+  void roundtripShouldWork() throws Exception {
     final String prefix = "example.com";
     final String allowOrigin = "bar.com";
     final CorsPolicy policy = new CorsPolicyBuilder()

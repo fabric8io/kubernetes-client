@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ArrayOrStringTest {
 
   @Test
-  public void testArrayOrStringJson() throws IOException {
+  void testArrayOrStringJson() throws IOException {
     ArrayOrString is = new ArrayOrString("string-value");
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(is);

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TaskTest {
 
   @Test
-  public void testTaskFromJSON() throws IOException {
+  void testTaskFromJSON() throws IOException {
     InputStream is = TaskTest.class.getResourceAsStream("/task.json");
     ObjectMapper mapper = new ObjectMapper();
     Task task = mapper.readValue(is, Task.class);
