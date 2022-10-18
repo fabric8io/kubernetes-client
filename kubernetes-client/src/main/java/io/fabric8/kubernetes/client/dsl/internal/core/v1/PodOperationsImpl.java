@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -59,6 +60,8 @@ import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.Base64;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -78,6 +81,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -90,6 +94,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
+  public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
+
+  static final transient Logger LOG = LoggerFactory.getLogger(PodOperationsImpl.class);
 
   private final PodOperationContext podOperationContext;
 
@@ -272,7 +279,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public ExecWatch exec(String... command) {
     String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
     try {
-      URL url = getExecURLWithCommandParams(actualCommands);
+      URL url = getURL("exec", actualCommands);
       return setupConnectionToPod(url.toURI());
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("exec"), e);
@@ -282,28 +289,55 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public ExecWatch attach() {
     try {
-      URL url = getAttachURL();
+      URL url = getURL("attach", null);
       return setupConnectionToPod(url.toURI());
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("attach"), e);
     }
   }
 
-  private URL getExecURLWithCommandParams(String[] commands) throws MalformedURLException {
-    String url = URLUtils.join(getResourceUrl().toString(), "exec");
+  private URL getURL(String operation, String[] commands) throws MalformedURLException {
+    String url = URLUtils.join(getResourceUrl().toString(), operation);
     URLBuilder httpUrlBuilder = new URLBuilder(url);
-    for (String cmd : commands) {
-      httpUrlBuilder.addQueryParameter("command", cmd);
+    if (commands != null) {
+      for (String cmd : commands) {
+        httpUrlBuilder.addQueryParameter("command", cmd);
+      }
     }
-    getContext().addQueryParameters(httpUrlBuilder);
+    PodOperationContext contextToUse = getContext();
+    contextToUse = contextToUse.withContainerId(validateOrDefaultContainerId(contextToUse.getContainerId()));
+    contextToUse.addQueryParameters(httpUrlBuilder);
     return httpUrlBuilder.build();
   }
 
-  private URL getAttachURL() throws MalformedURLException {
-    String url = URLUtils.join(getResourceUrl().toString(), "attach");
-    URLBuilder httpUrlBuilder = new URLBuilder(url);
-    getContext().addQueryParameters(httpUrlBuilder);
-    return httpUrlBuilder.build();
+  /**
+   * If not specified, choose an appropriate default container id
+   */
+  String validateOrDefaultContainerId(String name) {
+    Pod pod = this.require();
+    List<Container> containers = pod.getSpec().getContainers();
+    if (containers.isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
+    if (name == null) {
+      name = pod.getMetadata().getAnnotations().get(DEFAULT_CONTAINER_ANNOTATION_NAME);
+      if (name != null && !hasContainer(containers, name)) {
+        LOG.warn("Default container {} from annotation not found in pod {}", name, pod.getMetadata().getName());
+        name = null;
+      }
+      if (name == null) {
+        name = containers.get(0).getName();
+        LOG.debug("using first container {} in pod {}", name, pod.getMetadata().getName());
+      }
+    } else if (!hasContainer(containers, name)) {
+      throw new KubernetesClientException(
+          String.format("container %s not found in pod %s", name, pod.getMetadata().getName()));
+    }
+    return name;
+  }
+
+  private boolean hasContainer(List<Container> containers, String toFind) {
+    return containers.stream().map(Container::getName).anyMatch(s -> s.equals(toFind));
   }
 
   private ExecWebSocketListener setupConnectionToPod(URI uri) {

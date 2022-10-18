@@ -9,6 +9,7 @@
 * Fix #4547: preventing timing issues with leader election cancel
 
 #### Improvements
+* Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
 
 #### Dependency Upgrade
 
