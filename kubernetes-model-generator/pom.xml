@@ -77,6 +77,14 @@
 
     <skipTests>false</skipTests>
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+    <osgi.require-capability>
+      osgi.extender;
+      filter:="(osgi.extender=osgi.serviceloader.registrar)"
+    </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.api.model.KubernetesResource
+    </osgi.provide-capability>
   </properties>
 
   <dependencies>
