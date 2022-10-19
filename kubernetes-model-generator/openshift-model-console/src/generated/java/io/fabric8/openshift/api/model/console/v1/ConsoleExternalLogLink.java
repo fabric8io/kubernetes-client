@@ -56,11 +56,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1")
-@Group("console.openshift.io")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "console.properties", gather = true)
 })
+@Version("v1")
+@Group("console.openshift.io")
 public class ConsoleExternalLogLink implements HasMetadata
 {
 

@@ -2369,17 +2369,29 @@
     },
     "machinepool": {
       "properties": {
-        "imageID": {
+        "additionalNetworkIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "additionalSecurityGroupIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "rootVolume": {
+          "$ref": "#/definitions/os_installer_openstack_v1_RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.RootVolume"
+        },
+        "serverGroupPolicy": {
           "type": "string"
         },
-        "instanceType": {
+        "type": {
           "type": "string"
-        },
-        "systemDiskCategory": {
-          "type": "string"
-        },
-        "systemDiskSize": {
-          "type": "integer"
         },
         "zones": {
           "type": "array",
@@ -2608,11 +2620,16 @@
     },
     "osdisk": {
       "properties": {
-        "diskSizeGB": {
-          "type": "integer"
+        "DiskSizeGB": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
-        "diskType": {
+        "DiskType": {
           "type": "string"
+        },
+        "encryptionKey": {
+          "$ref": "#/definitions/os_installer_gcp_v1_EncryptionKeyReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.EncryptionKeyReference"
         }
       },
       "additionalProperties": true
@@ -2645,47 +2662,33 @@
     },
     "platform": {
       "properties": {
-        "apiVIP": {
-          "type": "string"
+        "affinityGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_ovirt_v1_AffinityGroup",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.AffinityGroup"
+          }
         },
-        "cluster": {
-          "type": "string"
-        },
-        "clusterOSImage": {
-          "type": "string"
-        },
-        "datacenter": {
-          "type": "string"
-        },
-        "defaultDatastore": {
+        "api_vip": {
           "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
         },
-        "diskType": {
+        "ingress_vip": {
           "type": "string"
         },
-        "folder": {
+        "ovirt_cluster_id": {
           "type": "string"
         },
-        "ingressVIP": {
+        "ovirt_network_name": {
           "type": "string"
         },
-        "network": {
+        "ovirt_storage_domain_id": {
           "type": "string"
         },
-        "password": {
-          "type": "string"
-        },
-        "resourcePool": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "vCenter": {
+        "vnicProfileID": {
           "type": "string"
         }
       },

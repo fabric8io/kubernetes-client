@@ -66,11 +66,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-@Version("v1alpha1")
-@Group("chaos-mesh.org")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "model.properties", gather = true)
 })
+@Version("v1alpha1")
+@Group("chaos-mesh.org")
 public class PodChaos implements HasMetadata, Namespaced
 {
 

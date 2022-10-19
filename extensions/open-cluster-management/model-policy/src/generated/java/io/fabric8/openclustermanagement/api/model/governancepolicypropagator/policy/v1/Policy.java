@@ -66,11 +66,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-@Version("v1")
-@Group("policy.open-cluster-management.io")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "model.properties", gather = true)
 })
+@Version("v1")
+@Group("policy.open-cluster-management.io")
 public class Policy implements HasMetadata, Namespaced
 {
 

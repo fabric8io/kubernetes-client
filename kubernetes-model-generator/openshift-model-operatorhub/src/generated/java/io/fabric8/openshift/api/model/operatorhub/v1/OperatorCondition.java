@@ -58,11 +58,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1")
-@Group("operators.coreos.com")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "operatorhub.properties", gather = true)
 })
+@Version("v1")
+@Group("operators.coreos.com")
 public class OperatorCondition implements HasMetadata, Namespaced
 {
 

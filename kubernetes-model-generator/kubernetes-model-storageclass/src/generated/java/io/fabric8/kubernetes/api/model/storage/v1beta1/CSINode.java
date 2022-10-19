@@ -56,11 +56,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1beta1")
-@Group("storage.k8s.io")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "storage.properties", gather = true)
 })
+@Version("v1beta1")
+@Group("storage.k8s.io")
 public class CSINode implements HasMetadata
 {
 
