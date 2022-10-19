@@ -58,11 +58,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1")
-@Group("batch")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "batch.properties", gather = true)
 })
+@Version("v1")
+@Group("batch")
 public class CronJob implements HasMetadata, Namespaced
 {
 

@@ -66,11 +66,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-@Version("v1beta1")
-@Group("servicecatalog.k8s.io")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "model.properties", gather = true)
 })
+@Version("v1beta1")
+@Group("servicecatalog.k8s.io")
 public class ServiceBinding implements HasMetadata, Namespaced
 {
 

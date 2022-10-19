@@ -40,11 +40,12 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-@Version("v1")
-@Group("")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "core.properties", gather = true)
 })
+@Version("v1")
+@Group("")
 public class Secret implements HasMetadata, Namespaced
 {
 

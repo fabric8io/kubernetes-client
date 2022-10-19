@@ -57,11 +57,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1")
-@Group("monitoring.coreos.com")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "monitoring.properties", gather = true)
 })
+@Version("v1")
+@Group("monitoring.coreos.com")
 public class ServiceMonitor implements HasMetadata, Namespaced
 {
 

@@ -58,11 +58,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@Version("v1alpha2")
-@Group("gateway.networking.k8s.io")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "gatewayapi.properties", gather = true)
 })
+@Version("v1alpha2")
+@Group("gateway.networking.k8s.io")
 public class HTTPRoute implements HasMetadata, Namespaced
 {
 

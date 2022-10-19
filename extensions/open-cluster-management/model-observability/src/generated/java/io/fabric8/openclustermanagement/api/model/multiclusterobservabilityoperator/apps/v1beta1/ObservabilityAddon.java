@@ -67,11 +67,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-@Version("v1beta1")
-@Group("observability.open-cluster-management.io")
 @TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
     @TemplateTransformation(value = "/manifest.vm", outputPath = "model.properties", gather = true)
 })
+@Version("v1beta1")
+@Group("observability.open-cluster-management.io")
 public class ObservabilityAddon implements HasMetadata, Namespaced
 {
 
