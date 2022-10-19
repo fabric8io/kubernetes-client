@@ -48,7 +48,7 @@ import java.util.Map;
     "items",
 })
 @TemplateTransformations({
-  @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true),
 })
 @Version("v1")
 @Group("")
