@@ -16,6 +16,8 @@
 
 package io.fabric8.crd.generator.zookeeper.v1alpha1;
 
+import io.fabric8.crd.generator.annotation.Annotations;
+import io.fabric8.crd.generator.annotation.Labels;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -23,6 +25,8 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Version(value = "v1alpha1", storage = false)
 @Group("io.zookeeper")
+@Annotations({ "one=1", "two=2" })
+@Labels({ "three=3", "four=4=4", "five=====>" })
 public class Zookeeper extends CustomResource<ZookeeperSpec, ZookeeperStatus> implements Namespaced {
   private ZookeeperSpec spec;
   private ZookeeperStatus status;

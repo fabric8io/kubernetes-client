@@ -29,6 +29,7 @@
 * Fix #4408: Allowing informers started via the start() method to have configurable exception / retry handling.
 * Fix #3864: Change ManagedOpenShiftClient OSGi ConfigurationPolicy to REQUIRE
 * Fix #4470: Added timestamps support for deployment logs and other resources.
+* Fix #4476: [crd-generator] Support custom `Annotations` and `Labels` to be emitted in the CRD
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0
