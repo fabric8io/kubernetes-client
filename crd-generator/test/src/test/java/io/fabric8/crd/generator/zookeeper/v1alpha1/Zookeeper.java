@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @Version(value = "v1alpha1", storage = false)
 @Group("io.zookeeper")
 @Annotations({ "one=1", "two=2" })
-@Labels({ "three=3", "four=4" })
+@Labels({ "three=3", "four=4=4", "five=====>"  })
 public class Zookeeper extends CustomResource<ZookeeperSpec, ZookeeperStatus> implements Namespaced {
   private ZookeeperSpec spec;
   private ZookeeperStatus status;

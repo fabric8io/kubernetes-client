@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.decorator;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +26,8 @@ public abstract class ResourceProvidingDecorator<T> extends Decorator<T> {
     if (arr != null) {
       for (String e : arr) {
         String[] splitted = e.split("\\=");
-        if (splitted.length == 2) {
-          res.put(splitted[0], splitted[1]);
+        if (splitted.length >= 2) {
+          res.put(splitted[0], e.substring(splitted[0].length() + 1));
         } else {
           throw new IllegalArgumentException(
               "Invalid value: " + e + " cannot be parsed as a key-value pair. Expected format is 'key=value'.");

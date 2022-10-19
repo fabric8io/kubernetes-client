@@ -43,7 +43,8 @@ class ZookeeperCustomResourceTest {
     assertEquals("1", d.getMetadata().getAnnotations().get("one"));
     assertEquals("2", d.getMetadata().getAnnotations().get("two"));
     assertEquals("3", d.getMetadata().getLabels().get("three"));
-    assertEquals("4", d.getMetadata().getLabels().get("four"));
+    assertEquals("4=4", d.getMetadata().getLabels().get("four"));
+    assertEquals("====>", d.getMetadata().getLabels().get("five"));
 
     assertNotNull(d.getSpec().getSubresources());
 
@@ -87,6 +88,7 @@ class ZookeeperCustomResourceTest {
     assertEquals("1", d.getMetadata().getAnnotations().get("one"));
     assertEquals("2", d.getMetadata().getAnnotations().get("two"));
     assertEquals("3", d.getMetadata().getLabels().get("three"));
-    assertEquals("4", d.getMetadata().getLabels().get("four"));
+    assertEquals("4=4", d.getMetadata().getLabels().get("four"));
+    assertEquals("====>", d.getMetadata().getLabels().get("five"));
   }
 }
