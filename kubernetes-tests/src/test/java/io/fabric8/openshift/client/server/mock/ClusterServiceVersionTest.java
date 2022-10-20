@@ -28,12 +28,13 @@ class ClusterServiceVersionTest {
 
   @Test
   void testLoad() {
-    ClusterServiceVersion clusterServiceVersion = client.operatorHub().clusterServiceVersions().load(getClass().getResourceAsStream("/test-clusterserviceversion.yml"))
-      .get();
+    ClusterServiceVersion clusterServiceVersion = client.operatorHub().clusterServiceVersions()
+        .load(getClass().getResourceAsStream("/test-clusterserviceversion.yml"))
+        .get();
 
     assertThat(clusterServiceVersion)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "memcached-operator.v0.0.1")
-      .hasFieldOrPropertyWithValue("spec.version", "0.0.1");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "memcached-operator.v0.0.1")
+        .hasFieldOrPropertyWithValue("spec.version", "0.0.1");
   }
 }

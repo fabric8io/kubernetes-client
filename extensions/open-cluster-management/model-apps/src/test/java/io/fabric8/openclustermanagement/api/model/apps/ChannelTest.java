@@ -33,8 +33,8 @@ class ChannelTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-channel.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final Channel channel = mapper.readValue(originalJson, Channel.class);
@@ -56,18 +56,18 @@ class ChannelTest {
   void builderShouldCreateObject() {
     // Given
     ChannelBuilder channelBuilder = new ChannelBuilder()
-      .withNewMetadata()
-      .addToLabels("vendor", "OpenShift")
-      .withName("sample-channel")
-      .endMetadata()
-      .withNewSpec()
-      .withType("HelmRepo")
-      .withPathname("https://charts.helm.sh/stable")
-      .withNewConfigMapRef()
-      .withKind("ConfigMap")
-      .withName("test-configmap")
-      .endConfigMapRef()
-      .endSpec();
+        .withNewMetadata()
+        .addToLabels("vendor", "OpenShift")
+        .withName("sample-channel")
+        .endMetadata()
+        .withNewSpec()
+        .withType("HelmRepo")
+        .withPathname("https://charts.helm.sh/stable")
+        .withNewConfigMapRef()
+        .withKind("ConfigMap")
+        .withName("test-configmap")
+        .endConfigMapRef()
+        .endSpec();
 
     // When
     Channel channel = channelBuilder.build();

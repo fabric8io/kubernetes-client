@@ -118,7 +118,7 @@ class DefaultSharedIndexInformerIT {
 
     @Override
     public void onAdd(T resource) {
-        addEventRecievedLatch.countDown();
+      addEventRecievedLatch.countDown();
     }
 
     @Override
@@ -128,7 +128,8 @@ class DefaultSharedIndexInformerIT {
     }
 
     @Override
-    public void onDelete(T obj, boolean deletedFinalStateUnknown) { }
+    public void onDelete(T obj, boolean deletedFinalStateUnknown) {
+    }
 
     public int getUpdateEventsCount() {
       return updateCount.get();

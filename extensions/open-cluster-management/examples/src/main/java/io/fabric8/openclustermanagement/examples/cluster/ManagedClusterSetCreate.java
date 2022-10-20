@@ -28,10 +28,10 @@ public class ManagedClusterSetCreate {
   public static void main(String[] args) {
     try (OpenClusterManagementClient ocmClient = new DefaultOpenClusterManagementClient()) {
       ManagedClusterSet managedClusterSet = new ManagedClusterSetBuilder()
-        .withNewMetadata().withName("managedclusterset1").endMetadata()
-        .withNewSpec()
-        .endSpec()
-        .build();
+          .withNewMetadata().withName("managedclusterset1").endMetadata()
+          .withNewSpec()
+          .endSpec()
+          .build();
       logger.info("Creating ManagedClusterSet {}", managedClusterSet.getMetadata().getName());
 
       ocmClient.clusters().managedClusterSets().create(managedClusterSet);

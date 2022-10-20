@@ -26,10 +26,9 @@ public class ListVolumeSnapshotContents {
       System.out.println("Listing Volume Snapshot Classes:");
       VolumeSnapshotContentList list = client.volumeSnapshotContents().list();
       list.getItems().forEach(b -> System.out.println(
-        b.getSpec().getVolumeSnapshotRef().getNamespace() + "/" + b.getSpec().getVolumeSnapshotRef().getName()
-          + "\t\t\t\t" + b.getSpec().getVolumeSnapshotClassName()
-          + "\t\t\t\t" + b.getMetadata().getName())
-      );
+          b.getSpec().getVolumeSnapshotRef().getNamespace() + "/" + b.getSpec().getVolumeSnapshotRef().getName()
+              + "\t\t\t\t" + b.getSpec().getVolumeSnapshotClassName()
+              + "\t\t\t\t" + b.getMetadata().getName()));
       System.out.println("Done");
     }
   }

@@ -41,18 +41,18 @@ public class DestinationRuleExample {
     System.out.println("Creating a destination rule");
     // Example from: https://istio.io/latest/docs/reference/config/networking/destination-rule/
     client.v1beta1().destinationRules().inNamespace(NAMESPACE).create(new DestinationRuleBuilder()
-      .withNewMetadata()
-      .withName("reviews-route")
-      .endMetadata()
-      .withNewSpec()
-      .withHost("ratings.prod.svc.cluster.local")
-      .withNewTrafficPolicy()
-      .withLoadBalancer(
-        new LoadBalancerSettingsBuilder().withLbPolicy(new LoadBalancerSettingsSimple(LoadBalancerSettingsSimpleLB.RANDOM))
-          .build())
-      .endTrafficPolicy()
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("reviews-route")
+        .endMetadata()
+        .withNewSpec()
+        .withHost("ratings.prod.svc.cluster.local")
+        .withNewTrafficPolicy()
+        .withLoadBalancer(
+            new LoadBalancerSettingsBuilder().withLbPolicy(new LoadBalancerSettingsSimple(LoadBalancerSettingsSimpleLB.RANDOM))
+                .build())
+        .endTrafficPolicy()
+        .endSpec()
+        .build());
 
     System.out.println("Listing destination rules instances:");
     DestinationRuleList list = client.v1beta1().destinationRules().inNamespace(NAMESPACE).list();

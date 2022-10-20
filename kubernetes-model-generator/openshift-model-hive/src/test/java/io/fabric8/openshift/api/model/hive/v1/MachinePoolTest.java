@@ -15,11 +15,11 @@
  */
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.Scanner;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -30,8 +30,8 @@ class MachinePoolTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-machinepool.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final MachinePool machinePool = mapper.readValue(originalJson, MachinePool.class);
@@ -41,57 +41,57 @@ class MachinePoolTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(machinePool)
-      .isNotNull()
-      .isEqualTo(machinePoolFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "foo-worker")
-      .hasFieldOrPropertyWithValue("spec.clusterDeploymentRef.name", "foo")
-      .hasFieldOrPropertyWithValue("spec.name", "worker")
-      .hasFieldOrPropertyWithValue("spec.replicas", 3L)
-      .hasFieldOrPropertyWithValue("spec.platform.aws.type", "m4.large")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.iops", 100)
-      .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.size", 22)
-      .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.type", "gp2");
+        .isNotNull()
+        .isEqualTo(machinePoolFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "foo-worker")
+        .hasFieldOrPropertyWithValue("spec.clusterDeploymentRef.name", "foo")
+        .hasFieldOrPropertyWithValue("spec.name", "worker")
+        .hasFieldOrPropertyWithValue("spec.replicas", 3L)
+        .hasFieldOrPropertyWithValue("spec.platform.aws.type", "m4.large")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.iops", 100)
+        .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.size", 22)
+        .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.type", "gp2");
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     MachinePoolBuilder machinePoolBuilder = new MachinePoolBuilder()
-      .withNewMetadata()
-      .withName("foo-worker")
-      .endMetadata()
-      .withNewSpec()
-      .withNewClusterDeploymentRef()
-      .withName("foo")
-      .endClusterDeploymentRef()
-      .withName("worker")
-      .withReplicas(3L)
-      .withNewPlatform()
-      .withNewAws()
-      .withType("m4.large")
-      .withNewRootVolume()
-      .withIops(100)
-      .withSize(22)
-      .withType("gp2")
-      .endRootVolume()
-      .endAws()
-      .endPlatform()
-      .endSpec();
+        .withNewMetadata()
+        .withName("foo-worker")
+        .endMetadata()
+        .withNewSpec()
+        .withNewClusterDeploymentRef()
+        .withName("foo")
+        .endClusterDeploymentRef()
+        .withName("worker")
+        .withReplicas(3L)
+        .withNewPlatform()
+        .withNewAws()
+        .withType("m4.large")
+        .withNewRootVolume()
+        .withIops(100)
+        .withSize(22)
+        .withType("gp2")
+        .endRootVolume()
+        .endAws()
+        .endPlatform()
+        .endSpec();
 
     // When
     MachinePool machinePool = machinePoolBuilder.build();
 
     // Then
     assertThat(machinePool)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "foo-worker")
-      .hasFieldOrPropertyWithValue("spec.clusterDeploymentRef.name", "foo")
-      .hasFieldOrPropertyWithValue("spec.name", "worker")
-      .hasFieldOrPropertyWithValue("spec.replicas", 3L)
-      .hasFieldOrPropertyWithValue("spec.platform.aws.type", "m4.large")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.iops", 100)
-      .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.size", 22)
-      .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.type", "gp2");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "foo-worker")
+        .hasFieldOrPropertyWithValue("spec.clusterDeploymentRef.name", "foo")
+        .hasFieldOrPropertyWithValue("spec.name", "worker")
+        .hasFieldOrPropertyWithValue("spec.replicas", 3L)
+        .hasFieldOrPropertyWithValue("spec.platform.aws.type", "m4.large")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.iops", 100)
+        .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.size", 22)
+        .hasFieldOrPropertyWithValue("spec.platform.aws.rootVolume.type", "gp2");
   }
 
 }

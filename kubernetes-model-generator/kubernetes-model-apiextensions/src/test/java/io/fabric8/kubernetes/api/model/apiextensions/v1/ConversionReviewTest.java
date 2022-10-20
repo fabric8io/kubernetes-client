@@ -39,6 +39,6 @@ class ConversionReviewTest {
 
     // then
     assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(originalJson);
+        .isEqualTo(originalJson);
   }
 };

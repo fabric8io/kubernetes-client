@@ -27,9 +27,14 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1alpha2APIGroupDSL extends Client {
   MixedOperation<Certificate, CertificateList, Resource<Certificate>> certificates();
+
   MixedOperation<CertificateRequest, CertificateRequestList, Resource<CertificateRequest>> certificateRequests();
+
   MixedOperation<Issuer, IssuerList, Resource<Issuer>> issuers();
+
   NonNamespaceOperation<ClusterIssuer, ClusterIssuerList, Resource<ClusterIssuer>> clusterIssuers();
+
   MixedOperation<Challenge, ChallengeList, Resource<Challenge>> challenges();
+
   MixedOperation<Order, OrderList, Resource<Order>> orders();
 }

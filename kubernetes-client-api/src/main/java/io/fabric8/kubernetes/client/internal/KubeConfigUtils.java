@@ -35,7 +35,8 @@ import java.util.List;
  * like <code>osc login</code> and <code>osc project myproject</code>
  */
 public class KubeConfigUtils {
-  private KubeConfigUtils() {}
+  private KubeConfigUtils() {
+  }
 
   public static Config parseConfig(File file) throws IOException {
     ObjectMapper mapper = Serialization.yamlMapper();
@@ -98,10 +99,10 @@ public class KubeConfigUtils {
         List<NamedAuthInfo> users = config.getUsers();
         if (users != null) {
           authInfo = users.stream()
-            .filter(u -> u.getName().equals(user))
-            .findAny()
-            .map(NamedAuthInfo::getUser)
-            .orElse(null);
+              .filter(u -> u.getName().equals(user))
+              .findAny()
+              .map(NamedAuthInfo::getUser)
+              .orElse(null);
         }
       }
     }
@@ -111,8 +112,8 @@ public class KubeConfigUtils {
   /**
    * Returns the current {@link Cluster} for the current context
    *
-   * @param config     {@link Config} config object
-   * @param context    {@link Context} context object
+   * @param config {@link Config} config object
+   * @param context {@link Context} context object
    * @return current {@link Cluster} for current context
    */
   public static Cluster getCluster(Config config, Context context) {
@@ -123,10 +124,10 @@ public class KubeConfigUtils {
         List<NamedCluster> clusters = config.getClusters();
         if (clusters != null) {
           cluster = clusters.stream()
-            .filter(c -> c.getName().equals(clusterName))
-            .findAny()
-            .map(NamedCluster::getCluster)
-            .orElse(null);
+              .filter(c -> c.getName().equals(clusterName))
+              .findAny()
+              .map(NamedCluster::getCluster)
+              .orElse(null);
         }
       }
     }

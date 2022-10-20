@@ -33,8 +33,8 @@ class PlacementTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-placement.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final Placement placement = mapper.readValue(originalJson, Placement.class);
@@ -52,19 +52,19 @@ class PlacementTest {
   void builderShouldCreateObject() {
     // Given
     PlacementBuilder placementBuilder = new PlacementBuilder()
-      .withNewMetadata()
-      .withName("placement1")
-      .withNamespace("ns1")
-      .endMetadata()
-      .withNewSpec()
-      .addNewPredicate()
-      .withNewRequiredClusterSelector()
-      .withNewLabelSelector()
-      .addToMatchLabels("vendor", "OpenShift")
-      .endLabelSelector()
-      .endRequiredClusterSelector()
-      .endPredicate()
-      .endSpec();
+        .withNewMetadata()
+        .withName("placement1")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withNewSpec()
+        .addNewPredicate()
+        .withNewRequiredClusterSelector()
+        .withNewLabelSelector()
+        .addToMatchLabels("vendor", "OpenShift")
+        .endLabelSelector()
+        .endRequiredClusterSelector()
+        .endPredicate()
+        .endSpec();
 
     // When
     Placement placement = placementBuilder.build();
@@ -74,9 +74,9 @@ class PlacementTest {
     assertEquals("placement1", placement.getMetadata().getName());
     assertEquals(1, placement.getSpec().getPredicates().size());
     assertEquals("OpenShift", placement.getSpec().getPredicates().get(0)
-      .getRequiredClusterSelector()
-      .getLabelSelector()
-      .getMatchLabels()
-      .get("vendor"));
+        .getRequiredClusterSelector()
+        .getLabelSelector()
+        .getMatchLabels()
+        .get("vendor"));
   }
 }

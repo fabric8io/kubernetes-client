@@ -40,40 +40,35 @@ public class ListExamples {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
 
       System.out.println(
-        client.namespaces().list()
-      );
+          client.namespaces().list());
 
       System.out.println(
-        client.namespaces().withLabel("this", "works").list()
-      );
+          client.namespaces().withLabel("this", "works").list());
 
       System.out.println(
-        client.pods().withLabel("this", "works").list()
-      );
+          client.pods().withLabel("this", "works").list());
 
       System.out.println(
-        client.pods().inNamespace("test").withLabel("this", "works").list()
-      );
+          client.pods().inNamespace("test").withLabel("this", "works").list());
 
       System.out.println(
-        client.pods().inNamespace("test").withName("testing").get()
-      );
+          client.pods().inNamespace("test").withName("testing").get());
 
       /*
-       * 	The continue option should be set when retrieving more results from the server.
-       * 	Since this value is server defined, clients may only use the continue value from
-       * 	a previous query result with identical query parameters (except for the value of
-       * 	continue) and the server may reject a continue value it does not recognize.
+       * The continue option should be set when retrieving more results from the server.
+       * Since this value is server defined, clients may only use the continue value from
+       * a previous query result with identical query parameters (except for the value of
+       * continue) and the server may reject a continue value it does not recognize.
        */
       PodList podList = client.pods().inNamespace(namespace).list(new ListOptionsBuilder().withLimit(5L).build());
       podList.getItems().forEach(obj -> System.out.println(obj.getMetadata().getName()));
 
       podList = client.pods().inNamespace(namespace)
-        .list(new ListOptionsBuilder().withLimit(5L).withContinue(podList.getMetadata().getContinue()).build());
+          .list(new ListOptionsBuilder().withLimit(5L).withContinue(podList.getMetadata().getContinue()).build());
       podList.getItems().forEach(obj -> System.out.println(obj.getMetadata().getName()));
 
       Integer services = client.services().inNamespace(namespace)
-        .list(new ListOptionsBuilder().withLimit(1L).build()).getItems().size();
+          .list(new ListOptionsBuilder().withLimit(1L).build()).getItems().size();
 
       client.services().inNamespace(namespace).list(new ListOptionsBuilder().withLimit(1L).withContinue(null).build());
       System.out.println(services);

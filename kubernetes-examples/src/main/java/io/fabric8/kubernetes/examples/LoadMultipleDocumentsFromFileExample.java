@@ -38,7 +38,8 @@ public class LoadMultipleDocumentsFromFileExample {
       configBuilder.withMasterUrl(args[0]);
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
-      List<HasMetadata> list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
+      List<HasMetadata> list = client
+          .load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
       logger.info("Found in file: {} items.", list.size());
       for (HasMetadata meta : list) {
         logger.info(display(meta));
@@ -46,12 +47,12 @@ public class LoadMultipleDocumentsFromFileExample {
 
       //noinspection Convert2Lambda
       list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml"))
-        .accept(new Visitor<ObjectMetaBuilder>() {
-          @Override
-          public void visit(ObjectMetaBuilder item) {
-            item.addToLabels("visitorkey", "visitorvalue");
-          }
-        }).get();
+          .accept(new Visitor<ObjectMetaBuilder>() {
+            @Override
+            public void visit(ObjectMetaBuilder item) {
+              item.addToLabels("visitorkey", "visitorvalue");
+            }
+          }).get();
 
       logger.info("Visited: {} items.", list.size());
       for (HasMetadata meta : list) {

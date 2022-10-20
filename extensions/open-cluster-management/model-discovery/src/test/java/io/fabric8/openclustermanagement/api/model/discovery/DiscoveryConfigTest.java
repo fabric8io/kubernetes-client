@@ -33,8 +33,8 @@ class DiscoveryConfigTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-discoveryconfig.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final DiscoveryConfig discoveryConfig = mapper.readValue(originalJson, DiscoveryConfig.class);
@@ -54,15 +54,15 @@ class DiscoveryConfigTest {
   void builderShouldCreateObject() {
     // Given
     DiscoveryConfigBuilder subscriptionBuilder = new DiscoveryConfigBuilder()
-      .withNewMetadata()
-      .withName("sample_discovery")
-      .endMetadata()
-      .withNewSpec()
-      .withCredential("ocm-api-token")
-      .withNewFilters()
-      .withLastActive(7)
-      .endFilters()
-      .endSpec();
+        .withNewMetadata()
+        .withName("sample_discovery")
+        .endMetadata()
+        .withNewSpec()
+        .withCredential("ocm-api-token")
+        .withNewFilters()
+        .withLastActive(7)
+        .endFilters()
+        .endSpec();
 
     // When
     DiscoveryConfig subscription = subscriptionBuilder.build();

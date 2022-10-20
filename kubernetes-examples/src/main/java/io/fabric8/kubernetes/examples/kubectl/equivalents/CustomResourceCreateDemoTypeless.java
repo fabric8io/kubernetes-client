@@ -32,18 +32,17 @@ public class CustomResourceCreateDemoTypeless {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       // Create Custom Resource Context
-      ResourceDefinitionContext context = new ResourceDefinitionContext
-        .Builder()
-        .withGroup("demo.fabric8.io")
-        .withKind("Dummy")
-        .withPlural("dummies")
-        .withNamespaced(true)
-        .withVersion("v1")
-        .build();
+      ResourceDefinitionContext context = new ResourceDefinitionContext.Builder()
+          .withGroup("demo.fabric8.io")
+          .withKind("Dummy")
+          .withPlural("dummies")
+          .withNamespaced(true)
+          .withVersion("v1")
+          .build();
 
       // Load from Yaml
       Resource<GenericKubernetesResource> dummyObject = k8s.genericKubernetesResources(context)
-        .load(CustomResourceCreateDemoTypeless.class.getResourceAsStream("/test-customresource.yaml"));
+          .load(CustomResourceCreateDemoTypeless.class.getResourceAsStream("/test-customresource.yaml"));
       // Create Custom Resource
       dummyObject.create();
     }

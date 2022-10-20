@@ -17,6 +17,7 @@ package io.fabric8.knative.api.model;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,16 +43,26 @@ public class KnativeResourceMappingProvider implements KubernetesResourceMapping
     mappings.put("sources.knative.dev/v1#ContainerSource", io.fabric8.knative.sources.v1.ContainerSource.class);
     mappings.put("sources.knative.dev/v1#ApiServerSource", io.fabric8.knative.sources.v1.ApiServerSource.class);
     mappings.put("sources.knative.dev/v1#SinkBinding", io.fabric8.knative.sources.v1.SinkBinding.class);
-    mappings.put("sources.knative.dev/v1alpha1#AwsSqsSource", io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource.class);
-    mappings.put("sources.knative.dev/v1alpha1#CouchDbSource", io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource.class);
-    mappings.put("sources.knative.dev/v1alpha1#GitHubSource", io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource.class);
-    mappings.put("bindings.knative.dev/v1alpha1#GitHubBinding", io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding.class);
-    mappings.put("sources.knative.dev/v1alpha1#GitLabSource", io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource.class);
-    mappings.put("bindings.knative.dev/v1alpha1#GitLabBinding", io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding.class);
-    mappings.put("sources.knative.dev/v1alpha1#PrometheusSource", io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource.class);
-    mappings.put("sources.knative.dev/v1beta1#KafkaSource", io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource.class);
-    mappings.put("messaging.knative.dev/v1beta1#KafkaChannel", io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel.class);
-    mappings.put("bindings.knative.dev/v1beta11#KafkaBinding", io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding.class);
+    mappings.put("sources.knative.dev/v1alpha1#AwsSqsSource",
+        io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource.class);
+    mappings.put("sources.knative.dev/v1alpha1#CouchDbSource",
+        io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource.class);
+    mappings.put("sources.knative.dev/v1alpha1#GitHubSource",
+        io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource.class);
+    mappings.put("bindings.knative.dev/v1alpha1#GitHubBinding",
+        io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding.class);
+    mappings.put("sources.knative.dev/v1alpha1#GitLabSource",
+        io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource.class);
+    mappings.put("bindings.knative.dev/v1alpha1#GitLabBinding",
+        io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding.class);
+    mappings.put("sources.knative.dev/v1alpha1#PrometheusSource",
+        io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource.class);
+    mappings.put("sources.knative.dev/v1beta1#KafkaSource",
+        io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource.class);
+    mappings.put("messaging.knative.dev/v1beta1#KafkaChannel",
+        io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel.class);
+    mappings.put("bindings.knative.dev/v1beta11#KafkaBinding",
+        io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding.class);
   }
 
   public Map<String, Class<? extends KubernetesResource>> getMappings() {

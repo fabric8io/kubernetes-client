@@ -29,33 +29,34 @@ import static io.fabric8.kubernetes.client.utils.KubernetesVersionFactory.Versio
  */
 public class KubernetesVersionPriority {
 
-    private KubernetesVersionPriority() {}
+  private KubernetesVersionPriority() {
+  }
 
-    /**
-     * Returns the version with the highest priority for the given list of versions.
-     *
-     * @param versions the versions to pick the version with the highest priority from
-     * @return the version with the highest priority
-     *
-     * @see CustomResourceDefinitionVersion#getName()
-     * @see CustomResourceDefinitionSpec#getVersions()
-     */
-    public static String highestPriority(List<String> versions) {
-        List<Version> byPriority = getByPriority(versions);
-        if (byPriority.isEmpty()) {
-            return null;
-        }
-        return byPriority.get(0).getFull();
+  /**
+   * Returns the version with the highest priority for the given list of versions.
+   *
+   * @param versions the versions to pick the version with the highest priority from
+   * @return the version with the highest priority
+   *
+   * @see CustomResourceDefinitionVersion#getName()
+   * @see CustomResourceDefinitionSpec#getVersions()
+   */
+  public static String highestPriority(List<String> versions) {
+    List<Version> byPriority = getByPriority(versions);
+    if (byPriority.isEmpty()) {
+      return null;
     }
+    return byPriority.get(0).getFull();
+  }
 
-    private static List<Version> getByPriority(List<String> versions) {
-        if (versions == null
-                || versions.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return versions.stream()
-                .map(KubernetesVersionFactory::create)
-                .sorted(Collections.reverseOrder())
-                .collect(Collectors.toList());
+  private static List<Version> getByPriority(List<String> versions) {
+    if (versions == null
+        || versions.isEmpty()) {
+      return Collections.emptyList();
     }
+    return versions.stream()
+        .map(KubernetesVersionFactory::create)
+        .sorted(Collections.reverseOrder())
+        .collect(Collectors.toList());
+  }
 }

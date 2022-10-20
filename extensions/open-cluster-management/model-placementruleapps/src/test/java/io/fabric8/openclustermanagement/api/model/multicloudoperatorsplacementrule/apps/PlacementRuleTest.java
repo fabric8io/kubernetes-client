@@ -33,8 +33,8 @@ class PlacementRuleTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-placementrule.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final PlacementRule placementRule = mapper.readValue(originalJson, PlacementRule.class);
@@ -57,19 +57,19 @@ class PlacementRuleTest {
   void builderShouldCreateObject() {
     // Given
     PlacementRuleBuilder placementRuleBuilder = new PlacementRuleBuilder()
-      .withNewMetadata()
-      .withName("all-ready-clusters")
-      .endMetadata()
-      .withNewSpec()
-      .withClusterReplicas(1)
-      .addNewClusterCondition()
-      .withStatus("True")
-      .withType("ManagedClusterConditionAvailable")
-      .endClusterCondition()
-      .addNewCluster().withName("cluster1").endCluster()
-      .addNewCluster().withName("cluster2").endCluster()
-      .addNewCluster().withName("cluster3").endCluster()
-      .endSpec();
+        .withNewMetadata()
+        .withName("all-ready-clusters")
+        .endMetadata()
+        .withNewSpec()
+        .withClusterReplicas(1)
+        .addNewClusterCondition()
+        .withStatus("True")
+        .withType("ManagedClusterConditionAvailable")
+        .endClusterCondition()
+        .addNewCluster().withName("cluster1").endCluster()
+        .addNewCluster().withName("cluster2").endCluster()
+        .addNewCluster().withName("cluster3").endCluster()
+        .endSpec();
 
     // When
     PlacementRule placementRule = placementRuleBuilder.build();

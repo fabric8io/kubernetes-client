@@ -31,8 +31,8 @@ class HiveConfigTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-hiveconfig.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final HiveConfig hiveConfig = mapper.readValue(originalJson, HiveConfig.class);
@@ -42,43 +42,44 @@ class HiveConfigTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(hiveConfig)
-      .isNotNull()
-      .isEqualTo(hiveConfigFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "hive")
-      .extracting("spec.managedDomains").asList()
-      .hasSize(1)
-      .first()
-      .hasFieldOrPropertyWithValue("gcp.credentialsSecretRef.name", "gcp-creds")
-      .hasFieldOrPropertyWithValue("domains", Collections.singletonList("hive.example.com"));
+        .isNotNull()
+        .isEqualTo(hiveConfigFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "hive")
+        .extracting("spec.managedDomains").asList()
+        .hasSize(1)
+        .first()
+        .hasFieldOrPropertyWithValue("gcp.credentialsSecretRef.name", "gcp-creds")
+        .hasFieldOrPropertyWithValue("domains", Collections.singletonList("hive.example.com"));
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     HiveConfigBuilder hiveConfigBuilder = new HiveConfigBuilder()
-      .withNewMetadata()
-      .withName("hive")
-      .endMetadata()
-      .withNewSpec()
-      .addNewManagedDomain()
-      .withNewGcp()
-      .withNewCredentialsSecretRef("gcp-creds")
-      .endGcp()
-      .addToDomains("hive.example.com")
-      .endManagedDomain()
-      .endSpec();
+        .withNewMetadata()
+        .withName("hive")
+        .endMetadata()
+        .withNewSpec()
+        .addNewManagedDomain()
+        .withNewGcp()
+        .withNewCredentialsSecretRef("gcp-creds")
+        .endGcp()
+        .addToDomains("hive.example.com")
+        .endManagedDomain()
+        .endSpec();
 
     // When
     HiveConfig hiveConfig = hiveConfigBuilder.build();
 
     // Then
     assertThat(hiveConfig)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "hive")
-      .extracting("spec.managedDomains").asList()
-      .hasSize(1)
-      .first()
-      .hasFieldOrPropertyWithValue("gcp.credentialsSecretRef.name", "gcp-creds")
-      .hasFieldOrPropertyWithValue("domains", Collections.singletonList("hive.example.com"));;
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "hive")
+        .extracting("spec.managedDomains").asList()
+        .hasSize(1)
+        .first()
+        .hasFieldOrPropertyWithValue("gcp.credentialsSecretRef.name", "gcp-creds")
+        .hasFieldOrPropertyWithValue("domains", Collections.singletonList("hive.example.com"));
+    ;
   }
 }

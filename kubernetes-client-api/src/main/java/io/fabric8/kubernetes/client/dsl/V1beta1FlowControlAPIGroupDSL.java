@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema;
+import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList;
 import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration;
 import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema;
-import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList;
 
 public interface V1beta1FlowControlAPIGroupDSL extends Client {
   /**

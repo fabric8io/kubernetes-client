@@ -23,17 +23,17 @@ import java.util.Map;
 
 public class CamelKV1ResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-    public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
+  public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
-    public CamelKV1ResourceMappingProvider() {
-      mappings.put("camel.apahce.org/v1#Build", io.fabric8.camelk.v1.Build.class);
-      mappings.put("camel.apahce.org/v1#CamelCatalog", io.fabric8.camelk.v1.CamelCatalog.class);
-      mappings.put("camel.apahce.org/v1#Integration", io.fabric8.camelk.v1.Integration.class);
-      mappings.put("camel.apahce.org/v1#IntegrationKit", io.fabric8.camelk.v1.IntegrationKit.class);
-      mappings.put("camel.apahce.org/v1#IntegrationPlatform", io.fabric8.camelk.v1.IntegrationPlatform.class);
-    }
+  public CamelKV1ResourceMappingProvider() {
+    mappings.put("camel.apahce.org/v1#Build", io.fabric8.camelk.v1.Build.class);
+    mappings.put("camel.apahce.org/v1#CamelCatalog", io.fabric8.camelk.v1.CamelCatalog.class);
+    mappings.put("camel.apahce.org/v1#Integration", io.fabric8.camelk.v1.Integration.class);
+    mappings.put("camel.apahce.org/v1#IntegrationKit", io.fabric8.camelk.v1.IntegrationKit.class);
+    mappings.put("camel.apahce.org/v1#IntegrationPlatform", io.fabric8.camelk.v1.IntegrationPlatform.class);
+  }
 
-    public Map<String, Class<? extends KubernetesResource>> getMappings() {
-        return mappings;
-    }
+  public Map<String, Class<? extends KubernetesResource>> getMappings() {
+    return mappings;
+  }
 }

@@ -20,7 +20,7 @@ import io.fabric8.tekton.client.*;
 public class PipelineList {
 
   public static void main(String[] args) {
-    try ( TektonClient client = ClientFactory.newClient(args)) {
+    try (TektonClient client = ClientFactory.newClient(args)) {
       System.out.println("Pipelines:");
       client.v1beta1().pipelines().list().getItems().forEach(System.out::println);
       System.out.println("done.");

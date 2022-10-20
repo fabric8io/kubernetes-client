@@ -33,8 +33,8 @@ class DiscoveredClusterTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-discoveredcluster.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final DiscoveredCluster discoveredCluster = mapper.readValue(originalJson, DiscoveredCluster.class);
@@ -53,15 +53,15 @@ class DiscoveredClusterTest {
   void builderShouldCreateObject() {
     // Given
     DiscoveredClusterBuilder subscriptionBuilder = new DiscoveredClusterBuilder()
-      .withNewMetadata()
-      .withName("sample_discoveredcluster")
-      .endMetadata()
-      .withNewSpec()
-      .withName("crc-cluster")
-      .withApiUrl("https://api.crc.testing:6443")
-      .withCloudProvider("RedHat")
-      .withDisplayName("Crc")
-      .endSpec();
+        .withNewMetadata()
+        .withName("sample_discoveredcluster")
+        .endMetadata()
+        .withNewSpec()
+        .withName("crc-cluster")
+        .withApiUrl("https://api.crc.testing:6443")
+        .withCloudProvider("RedHat")
+        .withDisplayName("Crc")
+        .endSpec();
 
     // When
     DiscoveredCluster subscription = subscriptionBuilder.build();

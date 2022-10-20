@@ -15,7 +15,6 @@
  */
 package io.fabric8.tekton.pipeline.v1beta1;
 
-
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -36,9 +35,9 @@ import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-  "arrayVal",
-  "stringVal",
-  "type"
+    "arrayVal",
+    "stringVal",
+    "type"
 })
 @JsonDeserialize(using = ArrayOrString.Deserializer.class)
 @JsonSerialize(using = ArrayOrString.Serializer.class)
@@ -132,7 +131,8 @@ public class ArrayOrString implements KubernetesResource {
   public static class Serializer extends JsonSerializer<ArrayOrString> {
 
     @Override
-    public void serialize(ArrayOrString value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(ArrayOrString value, JsonGenerator jgen, SerializerProvider provider)
+        throws IOException, JsonProcessingException {
       if (value != null) {
         if (value.getType() == null) {
           String stringVal = value.getStringVal();

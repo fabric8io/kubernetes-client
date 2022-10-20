@@ -22,7 +22,8 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhoo
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
-public interface V1AdmissionRegistrationAPIGroupDSL extends Client  {
+public interface V1AdmissionRegistrationAPIGroupDSL extends Client {
   NonNamespaceOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations();
+
   NonNamespaceOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations();
 }

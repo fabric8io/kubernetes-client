@@ -20,15 +20,16 @@ import io.fabric8.servicecatalog.api.model.*;
 
 public interface ClusterServiceClassResource extends Resource<ClusterServiceClass> {
 
-    ClusterServicePlanList listPlans();
+  ClusterServicePlanList listPlans();
 
-    /**
-     * Switch to the {@link ClusterServicePlanResource} with the specified external name.
-     * @param externalName
-     * @return the resource.
-     * @throws IllegalArgumentException if no unique resource with externalName is found.
-     */
-    ClusterServicePlanResource usePlan(String externalName);
+  /**
+   * Switch to the {@link ClusterServicePlanResource} with the specified external name.
+   * 
+   * @param externalName
+   * @return the resource.
+   * @throws IllegalArgumentException if no unique resource with externalName is found.
+   */
+  ClusterServicePlanResource usePlan(String externalName);
 
-    ServiceInstance instantiate(String instanceName, String plan);
+  ServiceInstance instantiate(String instanceName, String plan);
 }

@@ -29,77 +29,76 @@ import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
 public class ImageStreamImportTest {
-    private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
-    @Test
-    public void imageStreamImportTest() throws Exception {
-        // given
-        final String originalJson = Helper.loadJson("/valid-imagestreamimport.json");
+  @Test
+  public void imageStreamImportTest() throws Exception {
+    // given
+    final String originalJson = Helper.loadJson("/valid-imagestreamimport.json");
 
-        // when
-        final ImageStreamImport imageStreamImport = mapper.readValue(originalJson, ImageStreamImport.class);
-        final String serializedJson = mapper.writeValueAsString(imageStreamImport);
+    // when
+    final ImageStreamImport imageStreamImport = mapper.readValue(originalJson, ImageStreamImport.class);
+    final String serializedJson = mapper.writeValueAsString(imageStreamImport);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
-    }
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
+  }
 
-    @Test
-    public void imageStreamImportBuilderTest() throws Exception {
+  @Test
+  public void imageStreamImportBuilderTest() throws Exception {
 
-        // given
-        final String originalJson = Helper.loadJson("/valid-imagestreamimport.json");
+    // given
+    final String originalJson = Helper.loadJson("/valid-imagestreamimport.json");
 
-        // when
-        ImageStreamImport imageStreamImport = new ImageStreamImportBuilder()
-                .withNewMetadata()
-                    .withName("test-isi")
-                    .withNamespace("myproject")
-                    .withLabels(Collections.singletonMap("key","value"))
-                .endMetadata()
-                .withNewSpec()
-                    .addToImages(0, new ImageImportSpecBuilder()
-                            .withNewFrom()
-                                .withKind("DockerImage")
-                                .withName("dockerImageName")
-                            .endFrom()
-                            .withNewTo()
-                                .withName("default")
-                            .endTo()
-                            .withIncludeManifest(true)
-                            .withNewReferencePolicy()
-                                .withType("Source")
-                            .endReferencePolicy()
-                            .withNewImportPolicy()
-                                .withInsecure(true)
-                                .withScheduled(true)
-                            .endImportPolicy()
-                            .build()
-                    )
-                    .withImport(true)
-                    .withNewRepository()
-                        .withNewFrom()
-                            .withKind("DockerImage")
-                            .withName("docker.io/openshift/jenkins-slave-maven-centos7:latest")
-                        .endFrom()
-                        .withIncludeManifest(true)
-                        .withNewReferencePolicy()
-                            .withType("Source")
-                        .endReferencePolicy()
-                        .withNewImportPolicy()
-                            .withInsecure(true)
-                            .withScheduled(true)
-                        .endImportPolicy()
-                    .endRepository()
-                .endSpec()
-                .build();
+    // when
+    ImageStreamImport imageStreamImport = new ImageStreamImportBuilder()
+        .withNewMetadata()
+        .withName("test-isi")
+        .withNamespace("myproject")
+        .withLabels(Collections.singletonMap("key", "value"))
+        .endMetadata()
+        .withNewSpec()
+        .addToImages(0, new ImageImportSpecBuilder()
+            .withNewFrom()
+            .withKind("DockerImage")
+            .withName("dockerImageName")
+            .endFrom()
+            .withNewTo()
+            .withName("default")
+            .endTo()
+            .withIncludeManifest(true)
+            .withNewReferencePolicy()
+            .withType("Source")
+            .endReferencePolicy()
+            .withNewImportPolicy()
+            .withInsecure(true)
+            .withScheduled(true)
+            .endImportPolicy()
+            .build())
+        .withImport(true)
+        .withNewRepository()
+        .withNewFrom()
+        .withKind("DockerImage")
+        .withName("docker.io/openshift/jenkins-slave-maven-centos7:latest")
+        .endFrom()
+        .withIncludeManifest(true)
+        .withNewReferencePolicy()
+        .withType("Source")
+        .endReferencePolicy()
+        .withNewImportPolicy()
+        .withInsecure(true)
+        .withScheduled(true)
+        .endImportPolicy()
+        .endRepository()
+        .endSpec()
+        .build();
 
-        final String serializedJson = mapper.writeValueAsString(imageStreamImport);
+    final String serializedJson = mapper.writeValueAsString(imageStreamImport);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
 
-    }
+  }
 }

@@ -36,7 +36,8 @@ public class DeploymentExamples {
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       // Create a namespace for all our stuff
-      Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build();
+      Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata()
+          .build();
       logger.info("Created namespace: {}", client.namespaces().createOrReplace(ns));
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
@@ -44,30 +45,30 @@ public class DeploymentExamples {
       client.serviceAccounts().inNamespace(NAMESPACE).createOrReplace(fabric8);
       try {
         Deployment deployment = new DeploymentBuilder()
-          .withNewMetadata()
-          .withName("nginx")
-          .endMetadata()
-          .withNewSpec()
-          .withReplicas(1)
-          .withNewTemplate()
-          .withNewMetadata()
-          .addToLabels("app", "nginx")
-          .endMetadata()
-          .withNewSpec()
-          .addNewContainer()
-          .withName("nginx")
-          .withImage("nginx")
-          .addNewPort()
-          .withContainerPort(80)
-          .endPort()
-          .endContainer()
-          .endSpec()
-          .endTemplate()
-          .withNewSelector()
-          .addToMatchLabels("app", "nginx")
-          .endSelector()
-          .endSpec()
-          .build();
+            .withNewMetadata()
+            .withName("nginx")
+            .endMetadata()
+            .withNewSpec()
+            .withReplicas(1)
+            .withNewTemplate()
+            .withNewMetadata()
+            .addToLabels("app", "nginx")
+            .endMetadata()
+            .withNewSpec()
+            .addNewContainer()
+            .withName("nginx")
+            .withImage("nginx")
+            .addNewPort()
+            .withContainerPort(80)
+            .endPort()
+            .endContainer()
+            .endSpec()
+            .endTemplate()
+            .withNewSelector()
+            .addToMatchLabels("app", "nginx")
+            .endSelector()
+            .endSpec()
+            .build();
 
         deployment = client.apps().deployments().inNamespace(NAMESPACE).create(deployment);
         logger.info("Created deployment: {}", deployment);

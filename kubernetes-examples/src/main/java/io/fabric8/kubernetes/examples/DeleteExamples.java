@@ -29,10 +29,10 @@ public class DeleteExamples {
   private static final String NAMESPACE = "this-is-a-test";
 
   public static void main(String[] args) {
-    try(KubernetesClient client = new KubernetesClientBuilder().build()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       try {
         logger.info("Create namespace: {}", client.namespaces().create(
-          new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()));
+            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()));
         logger.info("Deleted namespace: {}", client.namespaces().withName(NAMESPACE).delete());
         logger.info("Deleted testPod: {}", client.pods().inNamespace(NAMESPACE).withName("test-pod").delete());
         logger.info("Deleted pod by label: {}", client.pods().withLabel("this", "works").delete());

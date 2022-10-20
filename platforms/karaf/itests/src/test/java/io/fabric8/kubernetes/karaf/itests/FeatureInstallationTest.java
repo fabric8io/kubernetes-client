@@ -25,44 +25,42 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.stream.Stream;
 
+import javax.inject.Inject;
+
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class FeatureInstallationTest extends TestBase {
 
-    @Inject
-    FeaturesService featuresService;
+  @Inject
+  FeaturesService featuresService;
 
-    @Test
-    public void testKubernetesClientFeature() throws Exception {
-        featuresService.addRepository(getFeaturesFile().toURI());
-        featuresService.installFeature("kubernetes-client");
-        assertTrue(Stream.of(featuresService.listInstalledFeatures())
-          .map(Feature::getName).anyMatch(name -> name.equals("kubernetes-client")));
-    }
+  @Test
+  public void testKubernetesClientFeature() throws Exception {
+    featuresService.addRepository(getFeaturesFile().toURI());
+    featuresService.installFeature("kubernetes-client");
+    assertTrue(Stream.of(featuresService.listInstalledFeatures())
+        .map(Feature::getName).anyMatch(name -> name.equals("kubernetes-client")));
+  }
 
-    @Test
-    public void testOpenshiftClient() throws Exception {
-        featuresService.addRepository(getFeaturesFile().toURI());
-        featuresService.installFeature("openshift-client");
-        assertTrue(Stream.of(featuresService.listInstalledFeatures())
-          .map(Feature::getName).anyMatch(name -> name.equals("openshift-client")));
-    }
+  @Test
+  public void testOpenshiftClient() throws Exception {
+    featuresService.addRepository(getFeaturesFile().toURI());
+    featuresService.installFeature("openshift-client");
+    assertTrue(Stream.of(featuresService.listInstalledFeatures())
+        .map(Feature::getName).anyMatch(name -> name.equals("openshift-client")));
+  }
 
-    @Configuration
-    public Option[] config() {
-      return baseConfiguration(
+  @Configuration
+  public Option[] config() {
+    return baseConfiguration(
         null,
         Collections.singletonList(
-          editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml"))
-        )
-      );
-    }
+            editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml"))));
+  }
 }

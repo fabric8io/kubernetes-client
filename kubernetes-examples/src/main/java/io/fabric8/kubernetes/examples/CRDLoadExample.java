@@ -35,12 +35,13 @@ public class CRDLoadExample {
 
       // Creating a custom resource from yaml
       CustomResourceDefinition aCustomResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions()
-        .load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).get();
+          .load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).get();
       logger.info("Creating CRD...");
       client.apiextensions().v1beta1().customResourceDefinitions().create(aCustomResourceDefinition);
 
       logger.info("Updated Custom Resource Definitions: ");
-      client.apiextensions().v1beta1().customResourceDefinitions().list().getItems().forEach(crd -> logger.info(crd.getMetadata().getName()));
+      client.apiextensions().v1beta1().customResourceDefinitions().list().getItems()
+          .forEach(crd -> logger.info(crd.getMetadata().getName()));
 
     }
   }

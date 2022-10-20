@@ -15,7 +15,6 @@
  */
 package io.fabric8.certmanager.api.model.v1;
 
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,11 +45,11 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-  "duration",
-  "isCA",
-  "issuerRef",
-  "request",
-  "usages"
+    "duration",
+    "isCA",
+    "issuerRef",
+    "request",
+    "usages"
 })
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @ToString
@@ -61,17 +60,16 @@ import java.util.Map;
     ""
 })
 @Buildable(editableEnabled = true, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-  @BuildableReference(ObjectMeta.class),
-  @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-  @BuildableReference(LabelSelector.class),
-  @BuildableReference(Container.class),
-  @BuildableReference(EnvVar.class),
-  @BuildableReference(ContainerPort.class),
-  @BuildableReference(Volume.class),
-  @BuildableReference(VolumeMount.class)
+    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
+    @BuildableReference(EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
 })
-public class CertificateRequestSpec implements KubernetesResource
-{
+public class CertificateRequestSpec implements KubernetesResource {
 
   @JsonProperty("duration")
   private Duration duration;
@@ -102,7 +100,8 @@ public class CertificateRequestSpec implements KubernetesResource
    * @param issuerRef
    * @param usages
    */
-  public CertificateRequestSpec(Duration duration, Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String request, List<String> usages) {
+  public CertificateRequestSpec(Duration duration, Boolean isCA,
+      io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String request, List<String> usages) {
     super();
     this.duration = duration;
     this.isCA = isCA;
@@ -172,4 +171,3 @@ public class CertificateRequestSpec implements KubernetesResource
   }
 
 }
-

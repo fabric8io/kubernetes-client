@@ -36,7 +36,8 @@ class ClusterRoleTest {
 
   @Test
   void testLoadFromFile() {
-    ClusterRole kubernetesClusterRole = client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).get();
+    ClusterRole kubernetesClusterRole = client.rbac().clusterRoles()
+        .load(getClass().getResourceAsStream("/test-clusterrole.yml")).get();
 
     assertNotNull(kubernetesClusterRole);
   }
@@ -44,7 +45,8 @@ class ClusterRoleTest {
   @Test
   void testHandlersLoadFromFile() {
 
-    ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = client.load(getClass().getResourceAsStream("/test-clusterrole.yml"));
+    ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = client
+        .load(getClass().getResourceAsStream("/test-clusterrole.yml"));
 
     assertNotNull(load);
 

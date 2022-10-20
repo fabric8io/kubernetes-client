@@ -40,7 +40,7 @@ public class WatchBuildConfigs {
         @Override
         public void eventReceived(Action action, BuildConfig resource) {
           logger.info(">> Action: {} on BuildConfig {} with version: {}",
-            action.name(), resource.getMetadata().getName(), resource.getApiVersion());
+              action.name(), resource.getMetadata().getName(), resource.getApiVersion());
         }
 
         @Override

@@ -30,13 +30,13 @@ public class NewProjectExamples {
       configBuilder.withMasterUrl(args[0]);
     }
     try (OpenShiftClient client = new KubernetesClientBuilder()
-      .withConfig(configBuilder.build()).build().adapt(OpenShiftClient.class)) {
+        .withConfig(configBuilder.build()).build().adapt(OpenShiftClient.class)) {
       ProjectRequest request = null;
       try {
-          request = client.projectrequests().create(
+        request = client.projectrequests().create(
             new ProjectRequestBuilder()
-              .withNewMetadata().withName("thisisatest").endMetadata().withDescription("Jimmi").withDisplayName("Jimmi").build()
-          );
+                .withNewMetadata().withName("thisisatest").endMetadata().withDescription("Jimmi").withDisplayName("Jimmi")
+                .build());
       } finally {
         if (request != null) {
           client.projects().withName(request.getMetadata().getName()).delete();

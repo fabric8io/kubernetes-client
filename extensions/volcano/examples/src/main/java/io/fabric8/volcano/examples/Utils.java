@@ -32,11 +32,11 @@ public class Utils {
 
   public static Map<String, Quantity> buildDefaultResourceMap() {
     Quantity cpu = new QuantityBuilder(false)
-      .withAmount("1")
-      .build();
+        .withAmount("1")
+        .build();
     Quantity memory = new QuantityBuilder(false)
-      .withAmount("1024")
-      .build();
+        .withAmount("1024")
+        .build();
     Map<String, Quantity> resourceMap = new HashMap<>();
     resourceMap.put("cpu", cpu);
     resourceMap.put("memory", memory);
@@ -46,26 +46,26 @@ public class Utils {
   public static PodGroup buildDefaultPodGroups(String namespace, String groupName) {
     // Build PodGroup with metadata and spec
     return new PodGroupBuilder()
-      .editOrNewMetadata()
-      .withName(groupName)
-      .withNamespace(namespace)
-      .endMetadata()
-      .editOrNewSpec()
-      .withMinResources(buildDefaultResourceMap())
-      .endSpec()
-      .build();
+        .editOrNewMetadata()
+        .withName(groupName)
+        .withNamespace(namespace)
+        .endMetadata()
+        .editOrNewSpec()
+        .withMinResources(buildDefaultResourceMap())
+        .endSpec()
+        .build();
   }
 
   public static Queue buildDefaultQueues(String queueName) {
     // Build Queue with metadata and spec
     return new QueueBuilder()
-      .editOrNewMetadata()
-      .withName(queueName)
-      .endMetadata()
-      .editOrNewSpec()
-      .withCapability(buildDefaultResourceMap())
-      .withWeight(1)
-      .endSpec()
-      .build();
+        .editOrNewMetadata()
+        .withName(queueName)
+        .endMetadata()
+        .editOrNewSpec()
+        .withCapability(buildDefaultResourceMap())
+        .withWeight(1)
+        .endSpec()
+        .build();
   }
 }

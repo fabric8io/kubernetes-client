@@ -29,14 +29,14 @@ public class TopEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(TopEquivalent.class);
 
   public static void main(String[] args) {
-      try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-        NodeMetricsList nodeMetricsList = k8s.top().nodes().metrics();
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
+      NodeMetricsList nodeMetricsList = k8s.top().nodes().metrics();
 
-        for (NodeMetrics nodeMetrics : nodeMetricsList.getItems()) {
-          logger.info("{} {} {}", nodeMetrics.getMetadata().getName(),
+      for (NodeMetrics nodeMetrics : nodeMetricsList.getItems()) {
+        logger.info("{} {} {}", nodeMetrics.getMetadata().getName(),
             nodeMetrics.getUsage().get("cpu"),
             nodeMetrics.getUsage().get("memory"));
-        }
       }
+    }
   }
 }

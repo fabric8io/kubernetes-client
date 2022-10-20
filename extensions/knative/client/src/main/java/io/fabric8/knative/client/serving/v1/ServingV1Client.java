@@ -15,18 +15,20 @@
  */
 package io.fabric8.knative.client.serving.v1;
 
-
+import io.fabric8.knative.serving.v1.*;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.knative.serving.v1.*;
 
 public interface ServingV1Client extends Client {
 
   // Serving
   MixedOperation<Service, ServiceList, Resource<Service>> services();
+
   MixedOperation<Route, RouteList, Resource<Route>> routes();
+
   MixedOperation<Revision, RevisionList, Resource<Revision>> revisions();
+
   MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations();
 
 }

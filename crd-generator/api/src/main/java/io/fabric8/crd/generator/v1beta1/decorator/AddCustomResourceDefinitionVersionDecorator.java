@@ -19,10 +19,11 @@ import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+
 import java.util.function.Predicate;
 
 public class AddCustomResourceDefinitionVersionDecorator extends
-  CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
+    CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
   private String version;
 
@@ -34,20 +35,20 @@ public class AddCustomResourceDefinitionVersionDecorator extends
   public String getName() {
     return this.name;
   }
- 
+
   public String getVersion() {
     return this.version;
   }
- 
+
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
     Predicate<CustomResourceDefinitionVersionBuilder> predicate = candidate -> candidate.getName()
-      .equals(version);
+        .equals(version);
 
     spec.removeMatchingFromVersions(predicate);
     spec.addNewVersion()
-      .withName(version)
-      .endVersion();
+        .withName(version)
+        .endVersion();
   }
 
   @Override
@@ -55,8 +56,8 @@ public class AddCustomResourceDefinitionVersionDecorator extends
     return new Class[] { AddCustomResourceDefinitionResourceDecorator.class };
   }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ version +"]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + version + "]";
+  }
 }

@@ -43,26 +43,26 @@ class TokenReviewTest {
   void testCreate() {
     // Given
     TokenReview tokenReview = new TokenReviewBuilder()
-      .withNewSpec()
-      .withToken("eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJhdWQiOlsidmF1bHQiXSwiZXhwIjoxNTUyNjc1")
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withToken("eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJhdWQiOlsidmF1bHQiXSwiZXhwIjoxNTUyNjc1")
+        .endSpec()
+        .build();
     server.expect().post().withPath("/apis/authentication.k8s.io/v1/tokenreviews")
-      .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
-        TokenReview tokenReviewReq = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), TokenReview.class);
-        tokenReviewReq.setStatus(new TokenReviewStatusBuilder()
-          .withAuthenticated(true)
-          .withNewUser()
-          .withUsername("system:serviceaccount:dev:http-svc-test")
-          .withUid("4afdf4d0-46d2-11e9-8716-005056bf4b40")
-          .withGroups("system:serviceaccounts", "system:serviceaccounts:dev", "system:authenticated")
-          .endUser()
-          .addToAudiences("factors")
-          .build());
+        .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
+          TokenReview tokenReviewReq = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()),
+              TokenReview.class);
+          tokenReviewReq.setStatus(new TokenReviewStatusBuilder()
+              .withAuthenticated(true)
+              .withNewUser()
+              .withUsername("system:serviceaccount:dev:http-svc-test")
+              .withUid("4afdf4d0-46d2-11e9-8716-005056bf4b40")
+              .withGroups("system:serviceaccounts", "system:serviceaccounts:dev", "system:authenticated")
+              .endUser()
+              .addToAudiences("factors")
+              .build());
 
-        return tokenReviewReq;
-      }).once();
-
+          return tokenReviewReq;
+        }).once();
 
     // When
     tokenReview = client.tokenReviews().create(tokenReview);

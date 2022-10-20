@@ -33,15 +33,15 @@ class AppsV1ControllerPodOperationTest {
   void testDeploymentSelectorLabels() {
     // Given
     Deployment deployment = new DeploymentBuilder()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToLabels("foo", "bar")
-      .addToLabels("one", "two")
-      .endMetadata()
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToLabels("foo", "bar")
+        .addToLabels("one", "two")
+        .endMetadata()
+        .endTemplate()
+        .endSpec()
+        .build();
 
     // When
     Map<String, String> labels = DeploymentOperationsImpl.getDeploymentSelectorLabels(deployment);
@@ -57,12 +57,12 @@ class AppsV1ControllerPodOperationTest {
   void testReplicaSetSelectorLabels() {
     // Given
     ReplicaSet replicaSet = new ReplicaSetBuilder()
-      .withNewSpec()
-      .withNewSelector()
-      .addToMatchLabels("foo", "bar")
-      .endSelector()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewSelector()
+        .addToMatchLabels("foo", "bar")
+        .endSelector()
+        .endSpec()
+        .build();
 
     // When
     Map<String, String> labels = ReplicaSetOperationsImpl.getReplicaSetSelectorLabels(replicaSet);
@@ -77,15 +77,15 @@ class AppsV1ControllerPodOperationTest {
   void testStatefulSetSelectorLabels() {
     // Given
     StatefulSet statefulSet = new StatefulSetBuilder()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToLabels("foo", "bar")
-      .addToLabels("one", "two")
-      .endMetadata()
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToLabels("foo", "bar")
+        .addToLabels("one", "two")
+        .endMetadata()
+        .endTemplate()
+        .endSpec()
+        .build();
 
     // When
     Map<String, String> labels = StatefulSetOperationsImpl.getStatefulSetSelectorLabels(statefulSet);

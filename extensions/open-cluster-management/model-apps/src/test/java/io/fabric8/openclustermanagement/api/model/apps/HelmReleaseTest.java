@@ -34,8 +34,8 @@ class HelmReleaseTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-helmrelease.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final HelmRelease helmRelease = mapper.readValue(originalJson, HelmRelease.class);
@@ -59,22 +59,22 @@ class HelmReleaseTest {
   void builderShouldCreateObject() {
     // Given
     HelmReleaseBuilder helmReleaseBuilder = new HelmReleaseBuilder()
-      .withNewMetadata()
-      .addToLabels("vendor", "OpenShift")
-      .withName("sample_subscription")
-      .addToAnnotations("apps.open-cluster-management.io/git-path", "apps/sample/")
-      .addToAnnotations("apps.open-cluster-management.io/git-branch", "sample_branch")
-      .endMetadata()
-      .withNewRepo()
-      .withChartName("nginx-ingress")
-      .withNewSource()
-      .withNewHelmRepo()
-      .withUrls("https://kubernetes-charts.storage.googleapis.com/nginx-ingress-1.26.0.tgz")
-      .endHelmRepo()
-      .withType("HelmRepo")
-      .endSource()
-      .withVersion("1.26.0")
-      .endRepo();
+        .withNewMetadata()
+        .addToLabels("vendor", "OpenShift")
+        .withName("sample_subscription")
+        .addToAnnotations("apps.open-cluster-management.io/git-path", "apps/sample/")
+        .addToAnnotations("apps.open-cluster-management.io/git-branch", "sample_branch")
+        .endMetadata()
+        .withNewRepo()
+        .withChartName("nginx-ingress")
+        .withNewSource()
+        .withNewHelmRepo()
+        .withUrls("https://kubernetes-charts.storage.googleapis.com/nginx-ingress-1.26.0.tgz")
+        .endHelmRepo()
+        .withType("HelmRepo")
+        .endSource()
+        .withVersion("1.26.0")
+        .endRepo();
 
     // When
     HelmRelease helmRelease = helmReleaseBuilder.build();

@@ -23,28 +23,28 @@ import java.util.Map;
 
 class AdditionalPropertiesTest {
 
-    @Test
-    void podBuilderDirectTest() throws Exception {
-        // given new method due to setter
-        PodBuilder builder = new PodBuilder().withNewMetadata().addToAdditionalProperties("x", "y").endMetadata();
+  @Test
+  void podBuilderDirectTest() throws Exception {
+    // given new method due to setter
+    PodBuilder builder = new PodBuilder().withNewMetadata().addToAdditionalProperties("x", "y").endMetadata();
 
-        // then
-        Map<String, String> expected = new HashMap<>();
-        expected.put("x", "y");
-        org.junit.jupiter.api.Assertions.assertEquals(expected, builder.build().getMetadata().getAdditionalProperties());
-    }
+    // then
+    Map<String, String> expected = new HashMap<>();
+    expected.put("x", "y");
+    org.junit.jupiter.api.Assertions.assertEquals(expected, builder.build().getMetadata().getAdditionalProperties());
+  }
 
-    @Test
-    void podBuilderIndirectTest() throws Exception {
-        // given new method due to setter
-        ObjectMeta meta = new ObjectMeta();
-        meta.setAdditionalProperty("x", "y");
-        PodBuilder builder = new PodBuilder().withMetadata(meta);
+  @Test
+  void podBuilderIndirectTest() throws Exception {
+    // given new method due to setter
+    ObjectMeta meta = new ObjectMeta();
+    meta.setAdditionalProperty("x", "y");
+    PodBuilder builder = new PodBuilder().withMetadata(meta);
 
-        // then
-        Map<String, String> expected = new HashMap<>();
-        expected.put("x", "y");
-        org.junit.jupiter.api.Assertions.assertEquals(expected, builder.build().getMetadata().getAdditionalProperties());
-    }
+    // then
+    Map<String, String> expected = new HashMap<>();
+    expected.put("x", "y");
+    org.junit.jupiter.api.Assertions.assertEquals(expected, builder.build().getMetadata().getAdditionalProperties());
+  }
 
 }

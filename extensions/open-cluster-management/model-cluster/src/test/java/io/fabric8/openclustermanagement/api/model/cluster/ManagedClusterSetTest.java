@@ -33,8 +33,8 @@ class ManagedClusterSetTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-managedclusterset.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ManagedClusterSet managedClusterSet = mapper.readValue(originalJson, ManagedClusterSet.class);
@@ -52,11 +52,11 @@ class ManagedClusterSetTest {
   void builderShouldCreateObject() {
     // Given
     ManagedClusterSetBuilder managedClusterBuilder = new ManagedClusterSetBuilder()
-      .withNewMetadata()
-      .withName("cluster1")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec();
+        .withNewMetadata()
+        .withName("cluster1")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec();
 
     // When
     ManagedClusterSet managedClusterSet = managedClusterBuilder.build();

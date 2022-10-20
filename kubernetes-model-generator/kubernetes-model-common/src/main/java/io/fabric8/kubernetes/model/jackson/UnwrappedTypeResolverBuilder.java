@@ -15,18 +15,18 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
-import java.util.Collection;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
 
+import java.util.Collection;
+
 public class UnwrappedTypeResolverBuilder extends StdTypeResolverBuilder {
   @Override
   public TypeSerializer buildTypeSerializer(SerializationConfig config, JavaType baseType,
-    Collection<NamedType> subtypes) {
+      Collection<NamedType> subtypes) {
     // To force Jackson to go through all the properties
     return null;
   }

@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl.OPENSHIFT_IO_BUILD_NAME;
 import static io.fabric8.openshift.client.dsl.internal.apps.DeploymentConfigOperationsImpl.OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME;
+import static io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl.OPENSHIFT_IO_BUILD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -35,8 +35,8 @@ class OpenShiftDeploymentConfigPodOperationTest {
   void testDeploymentConfigSelectorLabels() {
     // Given
     DeploymentConfig deploymentConfig = new DeploymentConfigBuilder()
-      .withNewMetadata().withName("dc1").endMetadata()
-      .build();
+        .withNewMetadata().withName("dc1").endMetadata()
+        .build();
 
     // When
     Map<String, String> labels = DeploymentConfigOperationsImpl.getDeploymentConfigPodLabels(deploymentConfig);

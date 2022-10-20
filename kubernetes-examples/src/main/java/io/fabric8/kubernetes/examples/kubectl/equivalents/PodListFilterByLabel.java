@@ -31,13 +31,13 @@ public class PodListFilterByLabel {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inNamespace("default")
-        .withLabel("version", "v1")
-        .list()
-        .getItems()
-        .stream()
-        .map(Pod::getMetadata)
-        .map(ObjectMeta::getName)
-        .forEach(logger::info);
+          .withLabel("version", "v1")
+          .list()
+          .getItems()
+          .stream()
+          .map(Pod::getMetadata)
+          .map(ObjectMeta::getName)
+          .forEach(logger::info);
     }
   }
 }

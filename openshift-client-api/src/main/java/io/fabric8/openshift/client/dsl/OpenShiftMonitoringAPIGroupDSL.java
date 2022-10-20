@@ -42,12 +42,14 @@ public interface OpenShiftMonitoringAPIGroupDSL extends Client {
    * @return {@link MixedOperation} object for AlertmanagerConfig
    */
   MixedOperation<AlertmanagerConfig, AlertmanagerConfigList, Resource<AlertmanagerConfig>> alertmanagerConfigs();
+
   /**
    * API entrypoint for Prometheus related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for Prometheus type
    */
   MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses();
+
   /**
    * API entrypoint for PodMonitor related operations(monitoring.coreos.com/v1)
    *
@@ -61,18 +63,21 @@ public interface OpenShiftMonitoringAPIGroupDSL extends Client {
    * @return {@link MixedOperation} for Probe
    */
   MixedOperation<Probe, ProbeList, Resource<Probe>> probes();
+
   /**
    * API entrypoint for Alertmanager related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for Alertmanager type
    */
   MixedOperation<Alertmanager, AlertmanagerList, Resource<Alertmanager>> alertmanagers();
+
   /**
    * API entrypoint for PrometheusRule related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for PrometheusRule type
    */
   MixedOperation<PrometheusRule, PrometheusRuleList, Resource<PrometheusRule>> prometheusRules();
+
   /**
    * API entrypoint for ServiceMonitor related operations(monitoring.coreos.com/v1)
    *

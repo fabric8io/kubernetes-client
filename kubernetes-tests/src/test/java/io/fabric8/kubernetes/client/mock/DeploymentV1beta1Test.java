@@ -41,38 +41,37 @@ class DeploymentV1beta1Test {
   @Test
   void testCreateOrReplace() {
     Deployment oldDeployment = new DeploymentBuilder()
-      .withApiVersion("extensions/v1beta1")
-      .withNewMetadata()
-      .withName("test-deployment")
-      .endMetadata()
-      .build();
+        .withApiVersion("extensions/v1beta1")
+        .withNewMetadata()
+        .withName("test-deployment")
+        .endMetadata()
+        .build();
 
     Deployment newDeployment = new DeploymentBuilder()
-      .withApiVersion("extensions/v1beta1")
-      .withNewMetadata()
-      .withName("test-deployment")
-      .withAnnotations(Collections.singletonMap("newAnnotation", "test"))
-      .endMetadata()
-      .build();
+        .withApiVersion("extensions/v1beta1")
+        .withNewMetadata()
+        .withName("test-deployment")
+        .withAnnotations(Collections.singletonMap("newAnnotation", "test"))
+        .endMetadata()
+        .build();
 
     server.expect()
-      .post()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/deployments")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, oldDeployment)
-      .once();
+        .post()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/deployments")
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, oldDeployment)
+        .once();
 
     server.expect()
-      .get()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/test-deployment")
-      .andReturn(HttpURLConnection.HTTP_OK, oldDeployment)
-      .times(2);
+        .get()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/test-deployment")
+        .andReturn(HttpURLConnection.HTTP_OK, oldDeployment)
+        .times(2);
 
     server.expect()
-      .put()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/test-deployment")
-      .andReturn(HttpURLConnection.HTTP_OK, newDeployment)
-      .once();
-
+        .put()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/test-deployment")
+        .andReturn(HttpURLConnection.HTTP_OK, newDeployment)
+        .once();
 
     Deployment result = client.extensions().deployments().inNamespace("test").createOrReplace(newDeployment);
     assertNotNull(result);
@@ -82,16 +81,16 @@ class DeploymentV1beta1Test {
   @Test
   void testRollback() {
     DeploymentRollback deploymentRollback = new DeploymentRollbackBuilder()
-      .withName("deployment1")
-      .withNewRollbackTo().withRevision(1L).endRollbackTo()
-      .withUpdatedAnnotations(Collections.singletonMap("foo", "bar"))
-      .build();
+        .withName("deployment1")
+        .withNewRollbackTo().withRevision(1L).endRollbackTo()
+        .withUpdatedAnnotations(Collections.singletonMap("foo", "bar"))
+        .build();
 
     Status status = new StatusBuilder().build();
     server.expect()
-      .post()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1/rollback")
-      .andReturn(201, status).once();
+        .post()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1/rollback")
+        .andReturn(201, status).once();
 
     client.extensions().deployments().inNamespace("test").withName("deployment1").rollback(deploymentRollback);
   }

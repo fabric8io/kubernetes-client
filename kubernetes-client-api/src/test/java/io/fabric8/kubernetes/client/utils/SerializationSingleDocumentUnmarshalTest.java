@@ -27,24 +27,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SerializationSingleDocumentUnmarshalTest {
   @ParameterizedTest(name = "#{index} - unmarshal {0}")
-  @ValueSource(strings = {"document-with-trailing-document-delimiter.yml", "document-with-leading-document-delimiter.yml", "document-with-leading-and-trailing-document-delimiter.yml", "document-with-no-document-delimiter.yml"})
+  @ValueSource(strings = { "document-with-trailing-document-delimiter.yml", "document-with-leading-document-delimiter.yml",
+      "document-with-leading-and-trailing-document-delimiter.yml", "document-with-no-document-delimiter.yml" })
   void unmarshalWithSingleDocumentWithDocumentDelimiterShouldReturnKubernetesResource(String arg) {
     // When
     final KubernetesResource result = Serialization.unmarshal(
-      SerializationTest.class.getResourceAsStream(String.format("/serialization/%s", arg)),
-      Collections.emptyMap()
-    );
+        SerializationTest.class.getResourceAsStream(String.format("/serialization/%s", arg)),
+        Collections.emptyMap());
     // Then
     assertThat(result)
-      .asInstanceOf(InstanceOfAssertFactories.type(Service.class))
-      .hasFieldOrPropertyWithValue("apiVersion", "v1")
-      .hasFieldOrPropertyWithValue("kind", "Service")
-      .hasFieldOrPropertyWithValue("metadata.name", "redis-master")
-      .hasFieldOrPropertyWithValue("metadata.labels.app", "redis")
-      .hasFieldOrPropertyWithValue("metadata.labels.tier", "backend")
-      .hasFieldOrPropertyWithValue("metadata.labels.role", "master")
-      .hasFieldOrPropertyWithValue("spec.selector.app", "redis")
-      .hasFieldOrPropertyWithValue("spec.selector.tier", "backend")
-      .hasFieldOrPropertyWithValue("spec.selector.role", "master");
+        .asInstanceOf(InstanceOfAssertFactories.type(Service.class))
+        .hasFieldOrPropertyWithValue("apiVersion", "v1")
+        .hasFieldOrPropertyWithValue("kind", "Service")
+        .hasFieldOrPropertyWithValue("metadata.name", "redis-master")
+        .hasFieldOrPropertyWithValue("metadata.labels.app", "redis")
+        .hasFieldOrPropertyWithValue("metadata.labels.tier", "backend")
+        .hasFieldOrPropertyWithValue("metadata.labels.role", "master")
+        .hasFieldOrPropertyWithValue("spec.selector.app", "redis")
+        .hasFieldOrPropertyWithValue("spec.selector.tier", "backend")
+        .hasFieldOrPropertyWithValue("spec.selector.role", "master");
   }
 }

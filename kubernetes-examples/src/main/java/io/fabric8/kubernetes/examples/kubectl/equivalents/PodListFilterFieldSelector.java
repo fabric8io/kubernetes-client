@@ -32,9 +32,9 @@ public class PodListFilterFieldSelector {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inNamespace("default").withField("status.phase", "Running").list().getItems()
-        .stream()
-        .map(Pod::getMetadata).map(ObjectMeta::getName)
-        .forEach(logger::info);
+          .stream()
+          .map(Pod::getMetadata).map(ObjectMeta::getName)
+          .forEach(logger::info);
     }
   }
 }

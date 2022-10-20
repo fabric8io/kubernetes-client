@@ -49,7 +49,7 @@ public class GenericKubernetesResourceExample {
 
       String namespace = "default";
       CustomResourceDefinition prometheousRuleCrd = client.apiextensions().v1beta1().customResourceDefinitions()
-        .load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
+          .load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
       client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(prometheousRuleCrd);
       logger.info("Successfully created Prometheous custom resource definition");
 
@@ -57,17 +57,17 @@ public class GenericKubernetesResourceExample {
       ResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCrd(prometheousRuleCrd);
 
       client.load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"))
-              .inNamespace(namespace)
-              .createOrReplace();
+          .inNamespace(namespace)
+          .createOrReplace();
       logger.info("Created Custom Resource successfully too");
 
       // Listing all custom resources in given namespace:
-      NonNamespaceOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> resourcesInNamespace =
-            client.genericKubernetesResources(crdContext).inNamespace(namespace);
-    GenericKubernetesResourceList list = resourcesInNamespace.list();
+      NonNamespaceOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> resourcesInNamespace = client
+          .genericKubernetesResources(crdContext).inNamespace(namespace);
+      GenericKubernetesResourceList list = resourcesInNamespace.list();
       List<GenericKubernetesResource> items = list.getItems();
       logger.info("Custom Resources :- ");
-      for(GenericKubernetesResource customResource : items) {
+      for (GenericKubernetesResource customResource : items) {
         ObjectMeta metadata = customResource.getMetadata();
         final String name = metadata.getName();
         logger.info(name);
@@ -97,7 +97,7 @@ public class GenericKubernetesResourceExample {
       logger.info("Deleting custom resources...");
       resourcesInNamespace.withName("prometheus-example-rules").delete();
       client.apiextensions().v1beta1().customResourceDefinitions()
-        .withName(prometheousRuleCrd.getMetadata().getName()).delete();
+          .withName(prometheousRuleCrd.getMetadata().getName()).delete();
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);
     }

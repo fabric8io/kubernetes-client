@@ -45,11 +45,10 @@ class CreateOrReplaceHelperTest {
       return getPod();
     };
     CreateOrReplaceHelper<Pod> podCreateOrReplaceHelper = new CreateOrReplaceHelper<>(
-      createPodTask,
-      p -> getPod(),
-      p -> getPod(),
-      p -> getPod()
-    );
+        createPodTask,
+        p -> getPod(),
+        p -> getPod(),
+        p -> getPod());
 
     Pod p = getPod();
     p.getMetadata().setResourceVersion("1");
@@ -69,18 +68,17 @@ class CreateOrReplaceHelperTest {
     AtomicBoolean wasPodReplaced = new AtomicBoolean(false);
     UnaryOperator<Pod> createPodTask = p -> {
       throw new KubernetesClientException("Already exist",
-        HttpURLConnection.HTTP_CONFLICT, new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
+          HttpURLConnection.HTTP_CONFLICT, new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
     };
     UnaryOperator<Pod> replacePodTask = p -> {
       wasPodReplaced.set(true);
       return getPod();
     };
     CreateOrReplaceHelper<Pod> podCreateOrReplaceHelper = new CreateOrReplaceHelper<>(
-      createPodTask,
-      replacePodTask,
-      p -> getPod(),
-      p -> getPod()
-    );
+        createPodTask,
+        replacePodTask,
+        p -> getPod(),
+        p -> getPod());
 
     // When
     Pod podCreated = podCreateOrReplaceHelper.createOrReplace(getPod());
@@ -98,19 +96,18 @@ class CreateOrReplaceHelperTest {
     UnaryOperator<Pod> reloadTask = Mockito.mock(UnaryOperator.class, Mockito.RETURNS_DEEP_STUBS);
     when(reloadTask.apply(any())).thenReturn(null);
     when(createPodTask.apply(any())).thenThrow(new KubernetesClientException("The POST operation could not be completed at " +
-      "this time, please try again",
-      HttpURLConnection.HTTP_INTERNAL_ERROR, new StatusBuilder().withCode(HttpURLConnection.HTTP_INTERNAL_ERROR).build()))
-      .thenReturn(getPod());
+        "this time, please try again",
+        HttpURLConnection.HTTP_INTERNAL_ERROR, new StatusBuilder().withCode(HttpURLConnection.HTTP_INTERNAL_ERROR).build()))
+        .thenReturn(getPod());
     UnaryOperator<Pod> waitTask = p -> {
       waitedForPod.set(true);
       return getPod();
     };
     CreateOrReplaceHelper<Pod> podCreateOrReplaceHelper = new CreateOrReplaceHelper<>(
-      createPodTask,
-      p -> getPod(),
-      waitTask,
-      reloadTask
-    );
+        createPodTask,
+        p -> getPod(),
+        waitTask,
+        reloadTask);
 
     // When
     Pod podCreated = podCreateOrReplaceHelper.createOrReplace(getPod());
@@ -125,21 +122,20 @@ class CreateOrReplaceHelperTest {
     // Given
     UnaryOperator<Pod> createPodTask = p -> {
       throw new KubernetesClientException("The POST operation could not be completed at " +
-        "this time, please try again",
-        HttpURLConnection.HTTP_BAD_REQUEST, new StatusBuilder().withCode(HttpURLConnection.HTTP_BAD_REQUEST).build());
+          "this time, please try again",
+          HttpURLConnection.HTTP_BAD_REQUEST, new StatusBuilder().withCode(HttpURLConnection.HTTP_BAD_REQUEST).build());
     };
     CreateOrReplaceHelper<Pod> podCreateOrReplaceHelper = new CreateOrReplaceHelper<>(createPodTask,
-      p -> getPod(), p ->getPod(), p -> getPod());
+        p -> getPod(), p -> getPod(), p -> getPod());
     Pod podToCreate = getPod();
 
     // When
     assertThrows(KubernetesClientException.class, () -> podCreateOrReplaceHelper.createOrReplace(podToCreate));
   }
 
-
   private Pod getPod() {
     return new PodBuilder()
-      .withNewMetadata().withName("p1").endMetadata()
-      .build();
+        .withNewMetadata().withName("p1").endMetadata()
+        .build();
   }
 }

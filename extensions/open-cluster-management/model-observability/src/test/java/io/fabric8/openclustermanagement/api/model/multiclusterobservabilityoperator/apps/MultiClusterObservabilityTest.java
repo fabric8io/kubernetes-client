@@ -34,8 +34,8 @@ class MultiClusterObservabilityTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-multiclusterobservability.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final MultiClusterObservability multiClusterObservability = mapper.readValue(originalJson, MultiClusterObservability.class);
@@ -52,7 +52,8 @@ class MultiClusterObservabilityTest {
     assertEquals(10, multiClusterObservability.getSpec().getObservabilityAddonSpec().getInterval());
     assertEquals(1, multiClusterObservability.getSpec().getObservabilityAddonSpec().getResources().getLimits().size());
     assertEquals(1, multiClusterObservability.getSpec().getObservabilityAddonSpec().getResources().getRequests().size());
-    assertEquals("thanos-object-storage", multiClusterObservability.getSpec().getStorageConfig().getMetricObjectStorage().getName());
+    assertEquals("thanos-object-storage",
+        multiClusterObservability.getSpec().getStorageConfig().getMetricObjectStorage().getName());
     assertEquals("thanos.yaml", multiClusterObservability.getSpec().getStorageConfig().getMetricObjectStorage().getKey());
   }
 
@@ -60,11 +61,11 @@ class MultiClusterObservabilityTest {
   void builderShouldCreateObject() {
     // Given
     MultiClusterObservabilityBuilder multiClusterObservabilityBuilder = new MultiClusterObservabilityBuilder()
-      .withNewMetadata()
-      .withName("sample_mch")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec();
+        .withNewMetadata()
+        .withName("sample_mch")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec();
 
     // When
     MultiClusterObservability mch = multiClusterObservabilityBuilder.build();

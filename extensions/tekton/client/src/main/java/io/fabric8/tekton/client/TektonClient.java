@@ -32,6 +32,7 @@ public interface TektonClient extends Client {
 
   /**
    * API entrypoint for tekton.dev/v1alpha1 API group resources
+   * 
    * @return {@link V1alpha1APIGroupDSL} for Tekton resource operations in this API group.
    */
   V1alpha1APIGroupDSL v1alpha1();

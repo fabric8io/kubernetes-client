@@ -33,14 +33,14 @@ class SerializationYamlTest {
   void unmarshalEvaluatesNonStandardClasses() {
     // Given
     final String genericResourceYaml = "kind: MyCustomResource\n" +
-      "apiVersion: my.custom.resource.example.com/v1\n" +
-      "spec:\n" +
-      "  complex: !!io.fabric8.kubernetes.client.utils.SerializationYamlTest$NonStandardJavaClass [ evil ]";
+        "apiVersion: my.custom.resource.example.com/v1\n" +
+        "spec:\n" +
+        "  complex: !!io.fabric8.kubernetes.client.utils.SerializationYamlTest$NonStandardJavaClass [ evil ]";
     // When
     final HasMetadata resource = Serialization.unmarshal(genericResourceYaml);
     // Then
     assertThat(resource)
-      .hasFieldOrPropertyWithValue("additionalProperties.spec.complex.field", "evil");
+        .hasFieldOrPropertyWithValue("additionalProperties.spec.complex.field", "evil");
   }
 
   @Test
@@ -48,21 +48,23 @@ class SerializationYamlTest {
   void unmarshalShouldNotEvaluateNonStandardClasses() {
     // Given
     final String genericResourceYaml = "kind: MyCustomResource\n" +
-      "apiVersion: my.custom.resource.example.com/v1\n" +
-      "spec:\n" +
-      "  complex: !!io.fabric8.kubernetes.client.utils.SerializationYamlTest$NonStandardJavaClass [ evil ]";
+        "apiVersion: my.custom.resource.example.com/v1\n" +
+        "spec:\n" +
+        "  complex: !!io.fabric8.kubernetes.client.utils.SerializationYamlTest$NonStandardJavaClass [ evil ]";
     // When
     final Exception result = assertThrows(ConstructorException.class, () -> Serialization.unmarshal(genericResourceYaml));
     // Then
     assertThat(result).hasMessageStartingWith("could not determine a constructor for the tag " +
-      "tag:yaml.org,2002:io.fabric8.kubernetes.client.utils.SerializationYamlTest$NonStandardJavaClass");
+        "tag:yaml.org,2002:io.fabric8.kubernetes.client.utils.SerializationYamlTest$NonStandardJavaClass");
   }
 
   static final class NonStandardJavaClass {
     public String field;
+
     NonStandardJavaClass() {
 
     }
+
     NonStandardJavaClass(String field) {
       this.field = field;
     }

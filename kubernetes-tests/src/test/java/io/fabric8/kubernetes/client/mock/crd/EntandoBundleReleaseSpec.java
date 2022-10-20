@@ -29,7 +29,7 @@ public class EntandoBundleReleaseSpec {
   @Override
   public String toString() {
     return "EntandoBundleReleaseSpec{" +
-      " type='" + databaseType + "'" +
-      "}";
+        " type='" + databaseType + "'" +
+        "}";
   }
 }

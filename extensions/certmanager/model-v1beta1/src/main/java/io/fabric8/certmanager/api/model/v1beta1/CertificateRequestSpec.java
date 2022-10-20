@@ -70,105 +70,105 @@ import java.util.Map;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class CertificateRequestSpec implements KubernetesResource
-{
+public class CertificateRequestSpec implements KubernetesResource {
 
-    @JsonProperty("duration")
-    private Duration duration;
-    @JsonProperty("isCA")
-    private Boolean isCA;
-    @JsonProperty("issuerRef")
-    private io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef;
-    @JsonProperty("request")
-    private String request;
-    @JsonProperty("usages")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> usages = new ArrayList<>();
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<>();
+  @JsonProperty("duration")
+  private Duration duration;
+  @JsonProperty("isCA")
+  private Boolean isCA;
+  @JsonProperty("issuerRef")
+  private io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef;
+  @JsonProperty("request")
+  private String request;
+  @JsonProperty("usages")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  private List<String> usages = new ArrayList<>();
+  @JsonIgnore
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public CertificateRequestSpec() {
-    }
+  /**
+   * No args constructor for use in serialization
+   *
+   */
+  public CertificateRequestSpec() {
+  }
 
-    /**
-     *
-     * @param duration
-     * @param request
-     * @param isCA
-     * @param issuerRef
-     * @param usages
-     */
-    public CertificateRequestSpec(Duration duration, Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String request, List<String> usages) {
-        super();
-        this.duration = duration;
-        this.isCA = isCA;
-        this.issuerRef = issuerRef;
-        this.request = request;
-        this.usages = usages;
-    }
+  /**
+   *
+   * @param duration
+   * @param request
+   * @param isCA
+   * @param issuerRef
+   * @param usages
+   */
+  public CertificateRequestSpec(Duration duration, Boolean isCA,
+      io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String request, List<String> usages) {
+    super();
+    this.duration = duration;
+    this.isCA = isCA;
+    this.issuerRef = issuerRef;
+    this.request = request;
+    this.usages = usages;
+  }
 
-    @JsonProperty("duration")
-    public Duration getDuration() {
-        return duration;
-    }
+  @JsonProperty("duration")
+  public Duration getDuration() {
+    return duration;
+  }
 
-    @JsonProperty("duration")
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-    }
+  @JsonProperty("duration")
+  public void setDuration(Duration duration) {
+    this.duration = duration;
+  }
 
-    @JsonProperty("isCA")
-    public Boolean getIsCA() {
-        return isCA;
-    }
+  @JsonProperty("isCA")
+  public Boolean getIsCA() {
+    return isCA;
+  }
 
-    @JsonProperty("isCA")
-    public void setIsCA(Boolean isCA) {
-        this.isCA = isCA;
-    }
+  @JsonProperty("isCA")
+  public void setIsCA(Boolean isCA) {
+    this.isCA = isCA;
+  }
 
-    @JsonProperty("issuerRef")
-    public io.fabric8.certmanager.api.model.meta.v1.ObjectReference getIssuerRef() {
-        return issuerRef;
-    }
+  @JsonProperty("issuerRef")
+  public io.fabric8.certmanager.api.model.meta.v1.ObjectReference getIssuerRef() {
+    return issuerRef;
+  }
 
-    @JsonProperty("issuerRef")
-    public void setIssuerRef(io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef) {
-        this.issuerRef = issuerRef;
-    }
+  @JsonProperty("issuerRef")
+  public void setIssuerRef(io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef) {
+    this.issuerRef = issuerRef;
+  }
 
-    @JsonProperty("request")
-    public String getRequest() {
-        return request;
-    }
+  @JsonProperty("request")
+  public String getRequest() {
+    return request;
+  }
 
-    @JsonProperty("request")
-    public void setRequest(String request) {
-        this.request = request;
-    }
+  @JsonProperty("request")
+  public void setRequest(String request) {
+    this.request = request;
+  }
 
-    @JsonProperty("usages")
-    public List<String> getUsages() {
-        return usages;
-    }
+  @JsonProperty("usages")
+  public List<String> getUsages() {
+    return usages;
+  }
 
-    @JsonProperty("usages")
-    public void setUsages(List<String> usages) {
-        this.usages = usages;
-    }
+  @JsonProperty("usages")
+  public void setUsages(List<String> usages) {
+    this.usages = usages;
+  }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
 
 }

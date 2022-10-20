@@ -27,25 +27,24 @@ import static org.mockito.Mockito.when;
 
 public class KubernetesVersionPriorityTest {
 
-    @Test
-    public void should_version_with_highest_priority() {
-        // given
-        String highest = "v10";
-        List<String> versions = Arrays.asList(
-                "foo10",
-                "v11alpha2",
-                "foo1",
-                "v3beta1",
-                "v2",
-                "v10beta3",
-                highest,
-                "v11beta2",
-                "v1",
-                "v12alpha1"
-        );
-        // when
-        String computed = KubernetesVersionPriority.highestPriority(versions);
-        // then
-        assertThat(computed).isEqualTo(highest);
-    }
+  @Test
+  public void should_version_with_highest_priority() {
+    // given
+    String highest = "v10";
+    List<String> versions = Arrays.asList(
+        "foo10",
+        "v11alpha2",
+        "foo1",
+        "v3beta1",
+        "v2",
+        "v10beta3",
+        highest,
+        "v11beta2",
+        "v1",
+        "v12alpha1");
+    // when
+    String computed = KubernetesVersionPriority.highestPriority(versions);
+    // then
+    assertThat(computed).isEqualTo(highest);
+  }
 }

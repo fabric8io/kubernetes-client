@@ -15,12 +15,13 @@
  */
 package io.fabric8.tekton.api.examples;
 
-import java.util.ArrayList;
-import java.util.List;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskRunCancel {
 
@@ -29,7 +30,7 @@ public class TaskRunCancel {
 
       String namespace = "default";
       TaskRun taskRun = tektonClient.v1beta1().taskRuns().inNamespace(namespace).list().getItems().get(0);
-      
+
       List<Condition> taskRunConditions = new ArrayList<>();
       Condition taskRunCancelCondition = new Condition();
       taskRunCancelCondition.setType("Succeeded");
@@ -37,8 +38,9 @@ public class TaskRunCancel {
       taskRunCancelCondition.setReason("TaskRunCancelled");
       taskRunCancelCondition.setMessage("The TaskRun was cancelled successfully.");
       taskRunConditions.add(taskRunCancelCondition);
-      
-      /* The implementation needs to replace old conditions with the single status condition to be added.
+
+      /*
+       * The implementation needs to replace old conditions with the single status condition to be added.
        * Without this, you will receive back a "Not all Steps in the Task have finished executing" message
        */
       taskRun.getStatus().setConditions(taskRunConditions);

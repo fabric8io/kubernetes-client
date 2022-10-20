@@ -26,18 +26,18 @@ public class TaskCreate {
     try (TektonClient tektonClient = new DefaultTektonClient()) {
       String namespace = "default";
       Task task = new TaskBuilder()
-        .withNewMetadata().withName("read-task").endMetadata()
-        .withNewSpec()
-        .withNewResources()
-        .addNewInput()
-        .withName("workspace").withType("git")
-        .endInput()
-        .endResources()
-        .addNewStep()
-        .withName("readme").withImage("ubuntu").withScript("cat workspace/README.md")
-        .endStep()
-        .endSpec()
-        .build();
+          .withNewMetadata().withName("read-task").endMetadata()
+          .withNewSpec()
+          .withNewResources()
+          .addNewInput()
+          .withName("workspace").withType("git")
+          .endInput()
+          .endResources()
+          .addNewStep()
+          .withName("readme").withImage("ubuntu").withScript("cat workspace/README.md")
+          .endStep()
+          .endSpec()
+          .build();
 
       // Create Task
       task = tektonClient.v1beta1().tasks().inNamespace(namespace).create(task);

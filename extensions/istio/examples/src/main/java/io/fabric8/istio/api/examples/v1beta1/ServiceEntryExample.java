@@ -40,15 +40,15 @@ public class ServiceEntryExample {
     System.out.println("Creating a service entry");
     // Example from: https://istio.io/latest/docs/reference/config/networking/service-entry/
     client.v1beta1().serviceEntries().inNamespace(NAMESPACE).create(new ServiceEntryBuilder()
-      .withNewMetadata()
-      .withName("external-svc-https")
-      .endMetadata()
-      .withNewSpec()
-      .withHosts("api.dropboxapi.com", "www.googleapis.com")
-      .withLocation(ServiceEntryLocation.MESH_INTERNAL)
-      .withPorts(new PortBuilder().withName("https").withProtocol("TLS").withNumber(443).build())
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("external-svc-https")
+        .endMetadata()
+        .withNewSpec()
+        .withHosts("api.dropboxapi.com", "www.googleapis.com")
+        .withLocation(ServiceEntryLocation.MESH_INTERNAL)
+        .withPorts(new PortBuilder().withName("https").withProtocol("TLS").withNumber(443).build())
+        .endSpec()
+        .build());
 
     System.out.println("Listing Virtual Service Instances:");
     ServiceEntryList list = client.v1beta1().serviceEntries().inNamespace(NAMESPACE).list();

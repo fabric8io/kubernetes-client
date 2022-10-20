@@ -43,8 +43,8 @@ public class JokeRequestSpec {
   @JsonPropertyDescription("category-description")
   private Category category = Category.Any;
   @PrinterColumn(name = "excludedTopics")
-  private ExcludedTopic[] excluded = new ExcludedTopic[]{ExcludedTopic.nsfw, ExcludedTopic.racist,
-    ExcludedTopic.sexist};
+  private ExcludedTopic[] excluded = new ExcludedTopic[] { ExcludedTopic.nsfw, ExcludedTopic.racist,
+      ExcludedTopic.sexist };
   private boolean safe;
 
   public Category getCategory() {

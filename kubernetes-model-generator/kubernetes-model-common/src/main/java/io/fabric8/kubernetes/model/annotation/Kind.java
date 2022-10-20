@@ -25,7 +25,7 @@ import static java.lang.annotation.ElementType.TYPE;
  * Allows to specify which {@code Kind} value should be used to refer to instance of the annotated class. If not provided,
  * a default value is computed based on the annotated class name. See HasMetadata#getKind for more details.
  */
-@Target({TYPE})
+@Target({ TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Kind {
   String value();

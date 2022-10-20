@@ -28,18 +28,21 @@ import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.pol
 public interface OpenClusterManagementPolicyAPIGroupDSL extends Client {
   /**
    * API entrypoint for Policy (policy.open-cluster-management.io/v1)
+   * 
    * @return {@link MixedOperation} for Policy
    */
   MixedOperation<Policy, PolicyList, Resource<Policy>> policies();
 
   /**
    * API entrypoint for PlacementBinding (policy.open-cluster-management.io/v1)
+   * 
    * @return {@link MixedOperation} for PlacementBinding
    */
   MixedOperation<PlacementBinding, PlacementBindingList, Resource<PlacementBinding>> placementBindings();
 
   /**
    * API entrypoint for PolicyAutomation (policy.open-cluster-management.io/v1beta1)
+   * 
    * @return {@link MixedOperation} for PolicyAutomation
    */
   MixedOperation<PolicyAutomation, PolicyAutomationList, Resource<PolicyAutomation>> policyAutomations();

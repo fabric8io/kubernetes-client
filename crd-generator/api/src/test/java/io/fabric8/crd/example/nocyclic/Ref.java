@@ -21,6 +21,7 @@ public class Ref {
 
   protected Inner inner;
 
-  public static class Inner { }
+  public static class Inner {
+  }
 
 }

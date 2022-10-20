@@ -39,13 +39,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-
 /**
  * Duration represents a duration
  *
- * <p> Duration stores a period of time as a valid {@link java.time.Duration}.
+ * <p>
+ * Duration stores a period of time as a valid {@link java.time.Duration}.
  *
- * @see <a href="https://github.com/kubernetes/kubernetes/blob/a38096a0696514a034de7f8d0cc5a3ec5e7da8ff/vendor/github.com/go-openapi/strfmt/duration.go#L74">github.com/go-openapi/strfmt/duration.go</a>
+ * @see <a href=
+ *      "https://github.com/kubernetes/kubernetes/blob/a38096a0696514a034de7f8d0cc5a3ec5e7da8ff/vendor/github.com/go-openapi/strfmt/duration.go#L74">github.com/go-openapi/strfmt/duration.go</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize
@@ -55,7 +56,6 @@ import java.util.stream.Stream;
 public class Duration implements KubernetesResource {
 
   private static final long serialVersionUID = -2326157920610452294L;
-
 
   private static final String DURATION_REGEX = "(\\d+)\\s*([A-Za-zµ]+)";
   private static final Pattern DURATION_PATTERN = Pattern.compile(DURATION_REGEX);
@@ -107,23 +107,51 @@ public class Duration implements KubernetesResource {
    * Parses {@link String} into Duration.
    *
    * <table>
-   *   <caption>Valid time abbreviations</caption>
-   *   <thead>
-   *     <tr><th>Abbreviation</th><th>Time Unit</th></tr>
-   *   </thead>
-   *   <tbody>
-   *   <tr><td>ns, nano, nanos</td><td>Nanosecond</td></tr>
-   *   <tr><td>us, µs, micro, micros</td><td>Microseconds</td></tr>
-   *   <tr><td>ms, milli, millis</td><td>Millisecond</td></tr>
-   *   <tr><td>s, sec, secs</td><td>Second</td></tr>
-   *   <tr><td>m, min, mins</td><td>Minute</td></tr>
-   *   <tr><td>h, hr, hour, hours</td><td>Hour</td></tr>
-   *   <tr><td>d, day, days</td><td>Day</td></tr>
-   *   <tr><td>w, wk, week, weeks</td><td>Week</td></tr>
-   *   </tbody>
+   * <caption>Valid time abbreviations</caption>
+   * <thead>
+   * <tr>
+   * <th>Abbreviation</th>
+   * <th>Time Unit</th>
+   * </tr>
+   * </thead>
+   * <tbody>
+   * <tr>
+   * <td>ns, nano, nanos</td>
+   * <td>Nanosecond</td>
+   * </tr>
+   * <tr>
+   * <td>us, µs, micro, micros</td>
+   * <td>Microseconds</td>
+   * </tr>
+   * <tr>
+   * <td>ms, milli, millis</td>
+   * <td>Millisecond</td>
+   * </tr>
+   * <tr>
+   * <td>s, sec, secs</td>
+   * <td>Second</td>
+   * </tr>
+   * <tr>
+   * <td>m, min, mins</td>
+   * <td>Minute</td>
+   * </tr>
+   * <tr>
+   * <td>h, hr, hour, hours</td>
+   * <td>Hour</td>
+   * </tr>
+   * <tr>
+   * <td>d, day, days</td>
+   * <td>Day</td>
+   * </tr>
+   * <tr>
+   * <td>w, wk, week, weeks</td>
+   * <td>Week</td>
+   * </tr>
+   * </tbody>
    * </table>
    * <br>
-   * <p>Example:
+   * <p>
+   * Example:
    *
    * <pre>{@code
    *   Duration.parse("1min1s");
@@ -138,11 +166,11 @@ public class Duration implements KubernetesResource {
     java.time.Duration accumulator = java.time.Duration.ZERO;
     boolean found = false;
     final Matcher matcher = Optional.ofNullable(duration).map(String::trim).map(DURATION_PATTERN::matcher).orElse(null);
-    while(matcher != null && matcher.find()) {
+    while (matcher != null && matcher.find()) {
       found = true;
       final java.time.Duration durationToken = Optional.ofNullable(TimeUnits.from(matcher.group(2)))
-        .map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit))
-        .orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
+          .map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit))
+          .orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
       accumulator = accumulator.plus(durationToken);
     }
     if (!found) {
@@ -180,7 +208,7 @@ public class Duration implements KubernetesResource {
 
     static TimeUnits from(String abbreviation) {
       return Stream.of(values()).filter(tu -> tu.abbreviations.contains(abbreviation.toLowerCase())).findAny()
-        .orElse(null);
+          .orElse(null);
     }
   }
 

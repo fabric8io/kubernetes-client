@@ -44,9 +44,9 @@ class PKCS1Util {
     parser.read();
 
     return new RSAPrivateCrtKeySpec(next(parser), next(parser),
-      next(parser), next(parser),
-      next(parser), next(parser),
-      next(parser), next(parser));
+        next(parser), next(parser),
+        next(parser), next(parser),
+        next(parser), next(parser));
   }
 
   // ==========================================================================================
@@ -92,7 +92,7 @@ class PKCS1Util {
       int num = i & 0x7F;
       if (i >= 0xFF || num > 4) {
         throw new IOException("Invalid DER: length field too big ("
-          + i + ")");
+            + i + ")");
       }
 
       byte[] bytes = new byte[num];

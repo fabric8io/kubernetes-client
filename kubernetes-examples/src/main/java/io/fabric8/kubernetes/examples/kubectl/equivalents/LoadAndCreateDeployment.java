@@ -28,8 +28,8 @@ public class LoadAndCreateDeployment {
     try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       // Load Deployment YAML Manifest into Java object
       Deployment deploy1 = k8s.apps().deployments()
-        .load(LoadAndCreateDeployment.class.getResourceAsStream("/test-deploy.yaml"))
-        .get();
+          .load(LoadAndCreateDeployment.class.getResourceAsStream("/test-deploy.yaml"))
+          .get();
       // Apply it to Kubernetes Cluster
       k8s.apps().deployments().inNamespace("default").create(deploy1);
     }

@@ -34,15 +34,18 @@ public enum DeletionPropagation {
   /*
    * The object exists in the key-value store until the garbage collector
    * deletes all the dependents whose ownerReference.blockOwnerDeletion=true
-   * from the key-value store.  API sever will put the "foregroundDeletion"
-   * finalizer on the object, and sets its deletionTimestamp.  This policy is
+   * from the key-value store. API sever will put the "foregroundDeletion"
+   * finalizer on the object, and sets its deletionTimestamp. This policy is
    * cascading, i.e., the dependents will be deleted with Foreground.
    */
   FOREGROUND("Foreground");
+
   private final String value;
+
   DeletionPropagation(String value) {
     this.value = value;
   }
+
   @Override
   public String toString() {
     return value;

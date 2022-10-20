@@ -22,13 +22,14 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 
 /**
- * Specifies which are the short names associated by which instances of the annotated `CustomResource` can be referred to. 
+ * Specifies which are the short names associated by which instances of the annotated `CustomResource` can be referred to.
  */
-@Target({TYPE})
+@Target({ TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ShortNames {
   /**
    * The array of possible short names
+   * 
    * @return possible short names
    */
   String[] value() default {};

@@ -39,44 +39,46 @@ class PodMetricsTest {
   void testMetrics() {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods/the-pod").andReturn(HTTP_OK,
-      new PodMetricsListBuilder().addToItems(new PodMetricsBuilder()
-          .withNewMetadata().withName("the-metric").endMetadata()
-        .build()).build()).once();
+        new PodMetricsListBuilder().addToItems(new PodMetricsBuilder()
+            .withNewMetadata().withName("the-metric").endMetadata()
+            .build()).build())
+        .once();
     // When
     final PodMetricsList result = client.top().pods().withName("the-pod").metrics();
     // Then
     assertThat(result)
-      .extracting(PodMetricsList::getItems).asList().singleElement()
-      .hasFieldOrPropertyWithValue("Kind", "PodMetrics")
-      .hasFieldOrPropertyWithValue("metadata.name", "the-metric");
+        .extracting(PodMetricsList::getItems).asList().singleElement()
+        .hasFieldOrPropertyWithValue("Kind", "PodMetrics")
+        .hasFieldOrPropertyWithValue("metadata.name", "the-metric");
   }
 
   @Test
   void testMetricsInNamespace() {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/the-namespace/pods/the-pod")
-      .andReturn(HTTP_OK, new PodMetricsListBuilder().addToItems(new PodMetricsBuilder()
-        .withNewMetadata().withName("the-metric").endMetadata()
-        .build()).build()).once();
+        .andReturn(HTTP_OK, new PodMetricsListBuilder().addToItems(new PodMetricsBuilder()
+            .withNewMetadata().withName("the-metric").endMetadata()
+            .build()).build())
+        .once();
     // When
     final PodMetricsList result = client.top().pods().inNamespace("the-namespace").withName("the-pod").metrics();
     // Then
     assertThat(result)
-      .extracting(PodMetricsList::getItems).asList().singleElement()
-      .hasFieldOrPropertyWithValue("Kind", "PodMetrics")
-      .hasFieldOrPropertyWithValue("metadata.name", "the-metric");
+        .extracting(PodMetricsList::getItems).asList().singleElement()
+        .hasFieldOrPropertyWithValue("Kind", "PodMetrics")
+        .hasFieldOrPropertyWithValue("metadata.name", "the-metric");
   }
 
   @Test
   void testInform() {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods").andReturn(HTTP_OK,
-      new PodMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
+        new PodMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods?allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .done()
-      .once();
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
     // When
     try (SharedIndexInformer<PodMetrics> result = client.resources(PodMetrics.class).inAnyNamespace().inform()) {
       // Then

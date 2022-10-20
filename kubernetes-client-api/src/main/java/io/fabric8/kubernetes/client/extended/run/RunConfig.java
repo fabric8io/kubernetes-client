@@ -44,7 +44,8 @@ public class RunConfig {
   /**
    * Arguments for the default or provided command.
    *
-   * <p> If <code>command</code> is present, these will be used as extra arguments for the command. If not,
+   * <p>
+   * If <code>command</code> is present, these will be used as extra arguments for the command. If not,
    * these will be set in the args container configuration.
    */
   private List<String> args;
@@ -79,7 +80,9 @@ public class RunConfig {
 
   @SuppressWarnings("java:S107")
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public RunConfig(String name, String image, String imagePullPolicy, String command, List<String> args, String restartPolicy, String serviceAccount, Map<String, String> labels, Map<String, String> env, Map<String, Quantity> limits, Map<String, Quantity> requests, int port) {
+  public RunConfig(String name, String image, String imagePullPolicy, String command, List<String> args, String restartPolicy,
+      String serviceAccount, Map<String, String> labels, Map<String, String> env, Map<String, Quantity> limits,
+      Map<String, Quantity> requests, int port) {
     this.name = name;
     this.image = image;
     this.imagePullPolicy = imagePullPolicy;

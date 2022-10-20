@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.Client;
 public interface V1beta1BatchAPIGroupDSL extends Client {
   /**
    * DSL entrypoint for batch/v1beta1 CronJob resource
+   * 
    * @return {@link MixedOperation} for CronJob resource
    */
   MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs();

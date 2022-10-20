@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
 import io.fabric8.kubernetes.api.model.rbac.Role;
-import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
+import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.Client;
 
-public interface RbacAPIGroupDSL extends Client{
+public interface RbacAPIGroupDSL extends Client {
 
   MixedOperation<Role, RoleList, Resource<Role>> roles();
 

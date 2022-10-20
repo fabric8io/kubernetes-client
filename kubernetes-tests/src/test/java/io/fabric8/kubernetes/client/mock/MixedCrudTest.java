@@ -53,7 +53,7 @@ class MixedCrudTest {
   void setUp() {
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
-      new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), false);
+        new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), false);
     client = server.createClient();
   }
 
@@ -77,13 +77,13 @@ class MixedCrudTest {
   void versionWithExpectationsShouldReturnVersion() {
     // Given
     server.expect().get().withPath("/version")
-      .andReturn(200, "{\"major\": \"13\", \"minor\": \"37\"}").always();
+        .andReturn(200, "{\"major\": \"13\", \"minor\": \"37\"}").always();
     // When
     final VersionInfo result = client.getKubernetesVersion();
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("major", "13")
-      .hasFieldOrPropertyWithValue("minor", "37");
+        .hasFieldOrPropertyWithValue("major", "13")
+        .hasFieldOrPropertyWithValue("minor", "37");
   }
 
   @Test
@@ -91,13 +91,13 @@ class MixedCrudTest {
   void crudGetWithNoExpectations() {
     // Given
     client.pods().inNamespace("ns")
-      .create(new PodBuilder().editOrNewMetadata().withName("my-pod").addToAnnotations("my", "pod").endMetadata().build());
+        .create(new PodBuilder().editOrNewMetadata().withName("my-pod").addToAnnotations("my", "pod").endMetadata().build());
     // When
     final Pod result = client.pods().inNamespace("ns").withName("my-pod").get();
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("metadata.annotations.my", "pod")
-      .hasFieldOrPropertyWithValue("metadata.generation", 1L);
+        .hasFieldOrPropertyWithValue("metadata.annotations.my", "pod")
+        .hasFieldOrPropertyWithValue("metadata.generation", 1L);
   }
 
   @Test
@@ -105,14 +105,14 @@ class MixedCrudTest {
   void crudGetWithExpectations() {
     // Given
     client.pods().inNamespace("ns")
-      .create(new PodBuilder().editOrNewMetadata().withName("my-pod").addToAnnotations("my", "pod").endMetadata().build());
+        .create(new PodBuilder().editOrNewMetadata().withName("my-pod").addToAnnotations("my", "pod").endMetadata().build());
     server.expect().get().withPath("/api/v1/namespaces/ns/pods/my-pod")
-      .andReturn(200, "{\"metadata\": {\"name\": \"override\"}}").always();
+        .andReturn(200, "{\"metadata\": {\"name\": \"override\"}}").always();
     // When
     final Pod result = client.pods().inNamespace("ns").withName("my-pod").get();
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("metadata.name", "override")
-      .hasFieldOrPropertyWithValue("metadata.generation", null);
+        .hasFieldOrPropertyWithValue("metadata.name", "override")
+        .hasFieldOrPropertyWithValue("metadata.generation", null);
   }
 }

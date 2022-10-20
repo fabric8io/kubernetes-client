@@ -47,7 +47,7 @@ public class ReplaceValueStream {
   }
 
   private InputStream createInputStream(InputStream is) throws IOException {
-      return new ByteArrayInputStream(
+    return new ByteArrayInputStream(
         interpolateString(IOHelpers.readFully(is), valuesMap).getBytes(StandardCharsets.UTF_8));
   }
 }

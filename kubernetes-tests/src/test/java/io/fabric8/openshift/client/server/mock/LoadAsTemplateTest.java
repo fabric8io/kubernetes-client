@@ -56,7 +56,8 @@ class LoadAsTemplateTest {
 
   @Test
   void shouldLoadPodAsTemplate() {
-    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).processLocally();
+    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml"))
+        .processLocally();
     assertNotNull(list);
     assertNotNull(list.getItems());
     assertEquals(1, list.getItems().size());
@@ -68,14 +69,15 @@ class LoadAsTemplateTest {
     map.put("USERNAME", "root");
     map.put("REQUIRED", "requiredValue");
 
-    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml")).processLocally(map);
+    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml"))
+        .processLocally(map);
     assertListIsProcessed(list);
   }
 
   @Test
   void shouldProcessLocallyWithParametersInYaml() {
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml"))
-      .processLocally(new File(getClass().getResource("/parameters.yml").getFile()));
+        .processLocally(new File(getClass().getResource("/parameters.yml").getFile()));
     assertListIsProcessed(list);
   }
 
@@ -89,14 +91,14 @@ class LoadAsTemplateTest {
     localRequiredParameters.put("REQUIRED_BOOLEAN", "true");
     // When
     final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
-      .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
-      .processLocally(localRequiredParameters);
+        .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
+        .processLocally(localRequiredParameters);
     // Then
-    final Container containerToAssert = ((Pod)result.getItems().get(0)).getSpec().getContainers().get(0);
+    final Container containerToAssert = ((Pod) result.getItems().get(0)).getSpec().getContainers().get(0);
     assertTrue(containerToAssert.getEnv().stream()
-      .anyMatch(e -> e.getName().equals("USERNAME") && e.getValue().equals("notTheOneInYaml")));
+        .anyMatch(e -> e.getName().equals("USERNAME") && e.getValue().equals("notTheOneInYaml")));
     assertTrue(containerToAssert.getEnv().stream()
-      .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("true")));
+        .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("true")));
     assertTrue(containerToAssert.getPorts().stream().allMatch(p -> p.getContainerPort() == 8080));
   }
 
@@ -106,13 +108,13 @@ class LoadAsTemplateTest {
     final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
     // When
     final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
-      .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
-      .processLocally(getClass().getResourceAsStream("/parameters.yml"));
+        .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
+        .processLocally(getClass().getResourceAsStream("/parameters.yml"));
     // Then
     assertListIsProcessed(result);
-    final Container containerToAssert = ((Pod)result.getItems().get(0)).getSpec().getContainers().get(0);
+    final Container containerToAssert = ((Pod) result.getItems().get(0)).getSpec().getContainers().get(0);
     assertTrue(containerToAssert.getEnv().stream()
-      .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("false")));
+        .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("false")));
   }
 
   private static DefaultOpenShiftClient createOpenShiftClientWithNoServer() {

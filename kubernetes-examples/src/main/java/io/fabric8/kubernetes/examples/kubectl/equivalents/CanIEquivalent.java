@@ -31,15 +31,15 @@ public class CanIEquivalent {
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
-        .withNewSpec()
-        .withNewResourceAttributes()
-        .withGroup("apps")
-        .withResource("deployments")
-        .withVerb("create")
-        .withNamespace("dev")
-        .endResourceAttributes()
-        .endSpec()
-        .build();
+          .withNewSpec()
+          .withNewResourceAttributes()
+          .withGroup("apps")
+          .withResource("deployments")
+          .withVerb("create")
+          .withNamespace("dev")
+          .endResourceAttributes()
+          .endSpec()
+          .build();
 
       ssar = client.authorization().v1().selfSubjectAccessReview().create(ssar);
 

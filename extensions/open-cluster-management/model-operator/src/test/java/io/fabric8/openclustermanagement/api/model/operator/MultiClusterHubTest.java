@@ -34,8 +34,8 @@ class MultiClusterHubTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-multiclusterhub.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final MultiClusterHub multiClusterHub = mapper.readValue(originalJson, MultiClusterHub.class);
@@ -55,13 +55,13 @@ class MultiClusterHubTest {
   void builderShouldCreateObject() {
     // Given
     MultiClusterHubBuilder multiClusterHubBuilder = new MultiClusterHubBuilder()
-      .withNewMetadata()
-      .withName("sample_mch")
-      .endMetadata()
-      .withNewSpec()
-      .withImagePullSecret("redhat-registry")
-      .withDisableHubSelfManagement(false)
-      .endSpec();
+        .withNewMetadata()
+        .withName("sample_mch")
+        .endMetadata()
+        .withNewSpec()
+        .withImagePullSecret("redhat-registry")
+        .withDisableHubSelfManagement(false)
+        .endSpec();
 
     // When
     MultiClusterHub multiClusterHub = multiClusterHubBuilder.build();

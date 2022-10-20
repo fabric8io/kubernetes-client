@@ -36,22 +36,21 @@ public class WaitUntilReadyExample {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
       final Pod pod = client.pods().inNamespace(namespace).create(
-        new PodBuilder()
-          .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
-          .withNewSpec()
-          .addNewContainer()
-          .withName("myapp-container")
-          .withImage("busybox:1.28")
-          .withCommand("sh", "-c", "echo 'The app is running!'; sleep 10")
-          .endContainer()
-          .addNewInitContainer()
-          .withName("init-myservice")
-          .withImage("busybox:1.28")
-          .withCommand("sh", "-c", "echo 'inititalizing...'; sleep 5")
-          .endInitContainer()
-          .endSpec()
-          .build()
-      );
+          new PodBuilder()
+              .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
+              .withNewSpec()
+              .addNewContainer()
+              .withName("myapp-container")
+              .withImage("busybox:1.28")
+              .withCommand("sh", "-c", "echo 'The app is running!'; sleep 10")
+              .endContainer()
+              .addNewInitContainer()
+              .withName("init-myservice")
+              .withImage("busybox:1.28")
+              .withCommand("sh", "-c", "echo 'inititalizing...'; sleep 5")
+              .endInitContainer()
+              .endSpec()
+              .build());
       logger.info("Pod created, waiting for it to get ready...");
       client.resource(pod).inNamespace(namespace).waitUntilReady(10, TimeUnit.SECONDS);
       logger.info("Pod is ready now");

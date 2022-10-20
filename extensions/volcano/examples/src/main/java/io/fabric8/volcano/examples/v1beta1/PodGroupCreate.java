@@ -37,10 +37,9 @@ public class PodGroupCreate {
 
       // Wait for status or 5s timeout
       volcanoClient.v1beta1().podGroups().inNamespace(namespace).withName(groupName).waitUntilCondition(
-        group -> Objects.nonNull(group.getStatus()) && group.getStatus().getPhase().equals("Running"),
-        5,
-        TimeUnit.SECONDS
-      );
+          group -> Objects.nonNull(group.getStatus()) && group.getStatus().getPhase().equals("Running"),
+          5,
+          TimeUnit.SECONDS);
       System.out.println("Created: " + podGroup.getMetadata().getName());
 
       // List PodGroup

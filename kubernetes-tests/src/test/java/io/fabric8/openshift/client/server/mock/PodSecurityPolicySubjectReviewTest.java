@@ -34,16 +34,16 @@ class PodSecurityPolicySubjectReviewTest {
     // Given
     PodSecurityPolicySubjectReview pspr = createPodSecurityPolicySubjectReviewBuilder().build();
     server.expect().post().withPath("/apis/security.openshift.io/v1/namespaces/ns1/podsecuritypolicysubjectreviews")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createPodSecurityPolicySubjectReviewBuilder()
-        .withNewStatus()
-        .withNewAllowedBy()
-        .withName("anyuid")
-        .withUid("xyz")
-        .withApiVersion("security.openshift.io/v1")
-        .withKind("SecurityContextConstraint")
-        .endAllowedBy()
-        .endStatus().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createPodSecurityPolicySubjectReviewBuilder()
+            .withNewStatus()
+            .withNewAllowedBy()
+            .withName("anyuid")
+            .withUid("xyz")
+            .withApiVersion("security.openshift.io/v1")
+            .withKind("SecurityContextConstraint")
+            .endAllowedBy()
+            .endStatus().build())
+        .once();
 
     // When
     PodSecurityPolicySubjectReview createdPspr = client.podSecurityPolicySubjectReviews().inNamespace("ns1").create(pspr);
@@ -52,26 +52,26 @@ class PodSecurityPolicySubjectReviewTest {
     assertThat(createdPspr).isNotNull();
     assertThat(createdPspr.getStatus().getAllowedBy()).isNotNull();
     assertThat(createdPspr.getStatus().getAllowedBy())
-      .hasFieldOrPropertyWithValue("name", "anyuid")
-      .hasFieldOrPropertyWithValue("uid", "xyz")
-      .hasFieldOrPropertyWithValue("kind", "SecurityContextConstraint")
-      .hasFieldOrPropertyWithValue("apiVersion", "security.openshift.io/v1");
+        .hasFieldOrPropertyWithValue("name", "anyuid")
+        .hasFieldOrPropertyWithValue("uid", "xyz")
+        .hasFieldOrPropertyWithValue("kind", "SecurityContextConstraint")
+        .hasFieldOrPropertyWithValue("apiVersion", "security.openshift.io/v1");
   }
 
   private PodSecurityPolicySubjectReviewBuilder createPodSecurityPolicySubjectReviewBuilder() {
     return new PodSecurityPolicySubjectReviewBuilder()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToAnnotations("foo", "bar")
-      .endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withImage("nginx:perl-stable")
-      .withName("test")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec();
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToAnnotations("foo", "bar")
+        .endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withImage("nginx:perl-stable")
+        .withName("test")
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .endSpec();
   }
 }

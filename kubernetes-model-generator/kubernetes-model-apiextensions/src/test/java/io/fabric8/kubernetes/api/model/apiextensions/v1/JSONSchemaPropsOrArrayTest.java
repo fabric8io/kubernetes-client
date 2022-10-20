@@ -35,29 +35,30 @@ class JSONSchemaPropsOrArrayTest {
     JSONSchemaProps props = new ObjectMapper().readValue(resourceAsStream, JSONSchemaProps.class);
 
     Assertions.assertEquals(props, new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withItems(new JSONSchemaPropsOrArrayBuilder()
-        .withJSONSchemas(
-          new JSONSchemaPropsBuilder().withType("object").build(),
-          new JSONSchemaPropsBuilder().withType("string").build())
-        .build())
-      .build());
+        .withType("object")
+        .withItems(new JSONSchemaPropsOrArrayBuilder()
+            .withJSONSchemas(
+                new JSONSchemaPropsBuilder().withType("object").build(),
+                new JSONSchemaPropsBuilder().withType("string").build())
+            .build())
+        .build());
   }
 
   @Test
   void itSerializesAdditionalPropertiesTrue() throws JsonProcessingException {
-    String expectedJson = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/items_array.json"), StandardCharsets.UTF_8))
-      .lines()
-      .collect(Collectors.joining("\n"));
+    String expectedJson = new BufferedReader(
+        new InputStreamReader(getClass().getResourceAsStream("/items_array.json"), StandardCharsets.UTF_8))
+            .lines()
+            .collect(Collectors.joining("\n"));
 
     String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withItems(new JSONSchemaPropsOrArrayBuilder()
-        .withJSONSchemas(
-          new JSONSchemaPropsBuilder().withType("object").build(),
-          new JSONSchemaPropsBuilder().withType("string").build())
-        .build())
-      .build());
+        .withType("object")
+        .withItems(new JSONSchemaPropsOrArrayBuilder()
+            .withJSONSchemas(
+                new JSONSchemaPropsBuilder().withType("object").build(),
+                new JSONSchemaPropsBuilder().withType("string").build())
+            .build())
+        .build());
 
     Assertions.assertEquals(expectedJson, outputJson);
   }
@@ -68,21 +69,24 @@ class JSONSchemaPropsOrArrayTest {
     JSONSchemaProps props = new ObjectMapper().readValue(resourceAsStream, JSONSchemaProps.class);
 
     Assertions.assertEquals(props, new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withItems(new JSONSchemaPropsOrArrayBuilder().withSchema(new JSONSchemaPropsBuilder().withType("object").build()).build())
-      .build());
+        .withType("object")
+        .withItems(
+            new JSONSchemaPropsOrArrayBuilder().withSchema(new JSONSchemaPropsBuilder().withType("object").build()).build())
+        .build());
   }
 
   @Test
   void itSerializesAdditionalPropertiesTyped() throws JsonProcessingException {
-    String expectedJson = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/items_typed.json"), StandardCharsets.UTF_8))
-      .lines()
-      .collect(Collectors.joining("\n"));
+    String expectedJson = new BufferedReader(
+        new InputStreamReader(getClass().getResourceAsStream("/items_typed.json"), StandardCharsets.UTF_8))
+            .lines()
+            .collect(Collectors.joining("\n"));
 
     String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withItems(new JSONSchemaPropsOrArrayBuilder().withSchema(new JSONSchemaPropsBuilder().withType("object").build()).build())
-      .build());
+        .withType("object")
+        .withItems(
+            new JSONSchemaPropsOrArrayBuilder().withSchema(new JSONSchemaPropsBuilder().withType("object").build()).build())
+        .build());
 
     Assertions.assertEquals(expectedJson, outputJson);
   }

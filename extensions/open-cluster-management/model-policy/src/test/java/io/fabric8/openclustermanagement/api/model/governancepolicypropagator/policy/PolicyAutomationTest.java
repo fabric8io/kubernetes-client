@@ -34,8 +34,8 @@ class PolicyAutomationTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-policyautomation.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final PolicyAutomation policyAutomation = mapper.readValue(originalJson, PolicyAutomation.class);
@@ -59,21 +59,21 @@ class PolicyAutomationTest {
   void builderShouldCreateObject() {
     // Given
     PolicyAutomationBuilder policyAutomationBuilder = new PolicyAutomationBuilder()
-      .withNewMetadata()
-      .withName("create-service-now-ticket")
-      .endMetadata()
-      .withNewSpec()
-      .withEventHook("noncompliant")
-      .withPolicyRef("case5-test-policy")
-      .withMode("disabled")
-      .withNewAutomationDef()
-      .withName("Demo Job Template")
-      .withSecret("toweraccess")
-      .addToExtraVars("sn_severity", 1)
-      .addToExtraVars("sn_priority", 1)
-      .addToExtraVars("target_clusters", Collections.singletonList("cluster1"))
-      .endAutomationDef()
-      .endSpec();
+        .withNewMetadata()
+        .withName("create-service-now-ticket")
+        .endMetadata()
+        .withNewSpec()
+        .withEventHook("noncompliant")
+        .withPolicyRef("case5-test-policy")
+        .withMode("disabled")
+        .withNewAutomationDef()
+        .withName("Demo Job Template")
+        .withSecret("toweraccess")
+        .addToExtraVars("sn_severity", 1)
+        .addToExtraVars("sn_priority", 1)
+        .addToExtraVars("target_clusters", Collections.singletonList("cluster1"))
+        .endAutomationDef()
+        .endSpec();
 
     // When
     PolicyAutomation policyAutomation = policyAutomationBuilder.build();

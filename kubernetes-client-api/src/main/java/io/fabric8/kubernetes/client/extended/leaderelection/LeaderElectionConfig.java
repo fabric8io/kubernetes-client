@@ -20,11 +20,7 @@ import io.sundr.builder.annotations.Buildable;
 
 import java.time.Duration;
 
-@Buildable(
-        editableEnabled = false,
-        lazyCollectionInitEnabled = false,
-        builderPackage = "io.fabric8.kubernetes.api.builder"
-)
+@Buildable(editableEnabled = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class LeaderElectionConfig {
 
   private final Lock lock;
@@ -35,7 +31,8 @@ public class LeaderElectionConfig {
   private final boolean releaseOnCancel;
   private final String name;
 
-  public LeaderElectionConfig(Lock lock, Duration leaseDuration, Duration renewDeadline, Duration retryPeriod, LeaderCallbacks leaderCallbacks, boolean releaseOnCancel, String name) {
+  public LeaderElectionConfig(Lock lock, Duration leaseDuration, Duration renewDeadline, Duration retryPeriod,
+      LeaderCallbacks leaderCallbacks, boolean releaseOnCancel, String name) {
     this.lock = lock;
     this.leaseDuration = leaseDuration;
     this.renewDeadline = renewDeadline;

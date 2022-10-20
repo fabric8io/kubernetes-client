@@ -34,8 +34,8 @@ class ObservabilityAddonTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-observabilityaddon.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ObservabilityAddon observabilityAddon = mapper.readValue(originalJson, ObservabilityAddon.class);
@@ -55,13 +55,13 @@ class ObservabilityAddonTest {
   void builderShouldCreateObject() {
     // Given
     ObservabilityAddonBuilder observabilityAddonBuilder = new ObservabilityAddonBuilder()
-      .withNewMetadata()
-      .withName("observability-addon")
-      .endMetadata()
-      .withNewSpec()
-      .withEnableMetrics(true)
-      .withInterval(10)
-      .endSpec();
+        .withNewMetadata()
+        .withName("observability-addon")
+        .endMetadata()
+        .withNewSpec()
+        .withEnableMetrics(true)
+        .withInterval(10)
+        .endSpec();
 
     // When
     ObservabilityAddon observabilityAddon = observabilityAddonBuilder.build();

@@ -15,11 +15,11 @@
  */
 package io.fabric8.verticalpodautoscaler.examples.v1;
 
-import io.fabric8.verticalpodautoscaler.client.DefaultVerticalPodAutoscalerClient;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerBuilder;
-import io.fabric8.verticalpodautoscaler.client.NamespacedVerticalPodAutoscalerClient;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList;
+import io.fabric8.verticalpodautoscaler.client.DefaultVerticalPodAutoscalerClient;
+import io.fabric8.verticalpodautoscaler.client.NamespacedVerticalPodAutoscalerClient;
 
 public class VerticalPodAutoscalerCreate {
   public static void main(String[] args) {
@@ -27,15 +27,17 @@ public class VerticalPodAutoscalerCreate {
       String namespace = "default";
 
       VerticalPodAutoscaler verticalPodAutoscaler = new VerticalPodAutoscalerBuilder()
-        .build();
+          .build();
 
       // Create VerticalPodAutoscaler
       verticalPodAutoscalerClient.v1().verticalpodautoscalers().inNamespace(namespace).create(verticalPodAutoscaler);
       System.out.println("Created: " + verticalPodAutoscaler.getMetadata().getName());
 
       // List VerticalPodAutoscaler
-      VerticalPodAutoscalerList verticalPodAutoscalerList = verticalPodAutoscalerClient.v1().verticalpodautoscalers().inNamespace(namespace).list();
-      System.out.println("There are " + verticalPodAutoscalerList.getItems().size() + " VerticalPodAutoscaler objects in " + namespace);
+      VerticalPodAutoscalerList verticalPodAutoscalerList = verticalPodAutoscalerClient.v1().verticalpodautoscalers()
+          .inNamespace(namespace).list();
+      System.out.println(
+          "There are " + verticalPodAutoscalerList.getItems().size() + " VerticalPodAutoscaler objects in " + namespace);
     }
   }
 }

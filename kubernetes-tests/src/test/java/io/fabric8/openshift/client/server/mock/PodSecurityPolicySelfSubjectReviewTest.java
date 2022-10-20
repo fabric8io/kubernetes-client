@@ -34,44 +34,45 @@ class PodSecurityPolicySelfSubjectReviewTest {
     // Given
     PodSecurityPolicySelfSubjectReview pspr = createPodSecurityPolicySelfSubjectReviewBuilder().build();
     server.expect().post().withPath("/apis/security.openshift.io/v1/namespaces/ns1/podsecuritypolicyselfsubjectreviews")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createPodSecurityPolicySelfSubjectReviewBuilder()
-        .withNewStatus()
-        .withNewAllowedBy()
-        .withName("anyuid")
-        .withUid("xyz")
-        .withApiVersion("security.openshift.io/v1")
-        .withKind("SecurityContextConstraint")
-        .endAllowedBy()
-        .endStatus().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createPodSecurityPolicySelfSubjectReviewBuilder()
+            .withNewStatus()
+            .withNewAllowedBy()
+            .withName("anyuid")
+            .withUid("xyz")
+            .withApiVersion("security.openshift.io/v1")
+            .withKind("SecurityContextConstraint")
+            .endAllowedBy()
+            .endStatus().build())
+        .once();
 
     // When
-    PodSecurityPolicySelfSubjectReview createdPspr = client.podSecurityPolicySelfSubjectReviews().inNamespace("ns1").create(pspr);
+    PodSecurityPolicySelfSubjectReview createdPspr = client.podSecurityPolicySelfSubjectReviews().inNamespace("ns1")
+        .create(pspr);
 
     // Then
     assertThat(createdPspr).isNotNull();
     assertThat(createdPspr.getStatus().getAllowedBy()).isNotNull();
     assertThat(createdPspr.getStatus().getAllowedBy())
-      .hasFieldOrPropertyWithValue("name", "anyuid")
-      .hasFieldOrPropertyWithValue("uid", "xyz")
-      .hasFieldOrPropertyWithValue("kind", "SecurityContextConstraint")
-      .hasFieldOrPropertyWithValue("apiVersion", "security.openshift.io/v1");
+        .hasFieldOrPropertyWithValue("name", "anyuid")
+        .hasFieldOrPropertyWithValue("uid", "xyz")
+        .hasFieldOrPropertyWithValue("kind", "SecurityContextConstraint")
+        .hasFieldOrPropertyWithValue("apiVersion", "security.openshift.io/v1");
   }
 
   private PodSecurityPolicySelfSubjectReviewBuilder createPodSecurityPolicySelfSubjectReviewBuilder() {
     return new PodSecurityPolicySelfSubjectReviewBuilder()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToAnnotations("foo", "bar")
-      .endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withImage("nginx:perl-stable")
-      .withName("test")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec();
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToAnnotations("foo", "bar")
+        .endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withImage("nginx:perl-stable")
+        .withName("test")
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .endSpec();
   }
 }

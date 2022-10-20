@@ -33,13 +33,14 @@ class ManagedClusterSetBindingTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-managedclustersetbinding.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ManagedClusterSetBinding managedClusterSetBinding = mapper.readValue(originalJson, ManagedClusterSetBinding.class);
     final String serializedJson = mapper.writeValueAsString(managedClusterSetBinding);
-    final ManagedClusterSetBinding managedClusterSetFromSerializedJson = mapper.readValue(serializedJson, ManagedClusterSetBinding.class);
+    final ManagedClusterSetBinding managedClusterSetFromSerializedJson = mapper.readValue(serializedJson,
+        ManagedClusterSetBinding.class);
 
     // Then
     assertNotNull(managedClusterSetBinding);
@@ -52,13 +53,13 @@ class ManagedClusterSetBindingTest {
   void builderShouldCreateObject() {
     // Given
     ManagedClusterSetBindingBuilder managedClusterBuilder = new ManagedClusterSetBindingBuilder()
-      .withNewMetadata()
-      .withName("clusterset1")
-      .withNamespace("ns1")
-      .endMetadata()
-      .withNewSpec()
-      .withClusterSet("clusterset1")
-      .endSpec();
+        .withNewMetadata()
+        .withName("clusterset1")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withNewSpec()
+        .withClusterSet("clusterset1")
+        .endSpec();
 
     // When
     ManagedClusterSetBinding managedClusterSetBinding = managedClusterBuilder.build();

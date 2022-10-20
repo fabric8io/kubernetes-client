@@ -36,27 +36,27 @@ class OpenshiftRoleTest {
 
   @Test
   void testList() {
-   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles").andReturn(200, new RoleListBuilder().build()).once();
-   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles").andReturn(200, new RoleListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).once();
-   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("autoscaling.k8s.io")
-      .endGroup()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("security.openshift.io")
-      .endGroup()
-      .build()).always();
+    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles")
+        .andReturn(200, new RoleListBuilder().build()).once();
+    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles").andReturn(200, new RoleListBuilder()
+        .addNewItem().and()
+        .addNewItem().and().build()).once();
+    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+        .addNewGroup()
+        .withApiVersion("v1")
+        .withName("autoscaling.k8s.io")
+        .endGroup()
+        .addNewGroup()
+        .withApiVersion("v1")
+        .withName("security.openshift.io")
+        .endGroup()
+        .build()).always();
 
-   server.expect().withPath("/apis/authorization.openshift.io/v1/roles").andReturn(200, new RoleListBuilder()
-      .addNewItem().and()
-      .addNewItem().and()
-      .addNewItem()
-      .and().build()).once();
-
+    server.expect().withPath("/apis/authorization.openshift.io/v1/roles").andReturn(200, new RoleListBuilder()
+        .addNewItem().and()
+        .addNewItem().and()
+        .addNewItem()
+        .and().build()).once();
 
     RoleList roleList = client.roles().list();
     assertNotNull(roleList);
@@ -73,14 +73,13 @@ class OpenshiftRoleTest {
 
   @Test
   void testGet() {
-   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles/role1").andReturn(200, new RoleBuilder()
-      .withNewMetadata().withName("role1").endMetadata()
-      .build()).once();
+    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles/role1").andReturn(200, new RoleBuilder()
+        .withNewMetadata().withName("role1").endMetadata()
+        .build()).once();
 
-   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles/role2").andReturn(200, new RoleBuilder()
-      .withNewMetadata().withName("role2").endMetadata()
-      .build()).once();
-
+    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles/role2").andReturn(200, new RoleBuilder()
+        .withNewMetadata().withName("role2").endMetadata()
+        .build()).once();
 
     Role role = client.roles().withName("role1").get();
     assertNotNull(role);

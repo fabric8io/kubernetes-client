@@ -32,8 +32,8 @@ class ClusterClaimTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException, ParseException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clusterclaim.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ClusterClaim clusterClaim = mapper.readValue(originalJson, ClusterClaim.class);
@@ -43,36 +43,37 @@ class ClusterClaimTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(clusterClaim)
-      .isNotNull()
-      .isEqualTo(clusterClaimFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "foo")
-      .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
-      .hasFieldOrPropertyWithValue("spec.clusterPoolName", "openshift-46-aws-us-east-1")
-      .hasFieldOrPropertyWithValue("spec.lifetime", Duration.parse("8h"))
-      .hasFieldOrPropertyWithValue("spec.namespace", "openshift-46-aws-us-east-1-j495p");
+        .isNotNull()
+        .isEqualTo(clusterClaimFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "foo")
+        .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
+        .hasFieldOrPropertyWithValue("spec.clusterPoolName", "openshift-46-aws-us-east-1")
+        .hasFieldOrPropertyWithValue("spec.lifetime", Duration.parse("8h"))
+        .hasFieldOrPropertyWithValue("spec.namespace", "openshift-46-aws-us-east-1-j495p");
   }
 
   @Test
   void builderShouldCreateObject() throws ParseException {
     // Given
     ClusterClaimBuilder clusterClaimBuilder = new ClusterClaimBuilder()
-      .withNewMetadata()
-      .withName("foo")
-      .endMetadata()
-      .withNewSpec()
-      .withClusterPoolName("openshift-46-aws-us-east-1")
-      .withLifetime(Duration.parse("8h"))
-      .withNamespace("openshift-46-aws-us-east-1-j495p")
-      .endSpec();
+        .withNewMetadata()
+        .withName("foo")
+        .endMetadata()
+        .withNewSpec()
+        .withClusterPoolName("openshift-46-aws-us-east-1")
+        .withLifetime(Duration.parse("8h"))
+        .withNamespace("openshift-46-aws-us-east-1-j495p")
+        .endSpec();
 
     // When
     ClusterClaim clusterClaim = clusterClaimBuilder.build();
 
     // Then
     assertThat(clusterClaim)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "foo")
-      .hasFieldOrPropertyWithValue("spec.clusterPoolName", "openshift-46-aws-us-east-1")
-      .hasFieldOrPropertyWithValue("spec.lifetime", Duration.parse("8h"))
-      .hasFieldOrPropertyWithValue("spec.namespace", "openshift-46-aws-us-east-1-j495p");
-  }}
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "foo")
+        .hasFieldOrPropertyWithValue("spec.clusterPoolName", "openshift-46-aws-us-east-1")
+        .hasFieldOrPropertyWithValue("spec.lifetime", Duration.parse("8h"))
+        .hasFieldOrPropertyWithValue("spec.namespace", "openshift-46-aws-us-east-1-j495p");
+  }
+}

@@ -66,13 +66,16 @@ class SharedProcessorTest {
     ExpectingNotificationHandler(Notification<T> notification) {
       this(new ResourceEventHandler<T>() {
         @Override
-        public void onAdd(T obj) { }
+        public void onAdd(T obj) {
+        }
 
         @Override
-        public void onUpdate(T oldObj, T newObj) { }
+        public void onUpdate(T oldObj, T newObj) {
+        }
 
         @Override
-        public void onDelete(T obj, boolean deletedFinalStateUnknown) { }
+        public void onDelete(T obj, boolean deletedFinalStateUnknown) {
+        }
       }, 0);
       this.expectingNotification = notification;
     }

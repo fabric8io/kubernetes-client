@@ -44,12 +44,13 @@ class GenericKubernetesResourceListTest {
     gkrl.setKind("SomeCustomResource");
     gkrl.setItems(Collections.emptyList());
     // When
-    final Map<String, ?> result = objectMapper.convertValue(gkrl, new TypeReference<Map<String, ?>>() {});
+    final Map<String, ?> result = objectMapper.convertValue(gkrl, new TypeReference<Map<String, ?>>() {
+    });
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
-      .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
-      .hasFieldOrPropertyWithValue("items", Collections.emptyList());
+        .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
+        .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
+        .hasFieldOrPropertyWithValue("items", Collections.emptyList());
   }
 
   @Test
@@ -57,16 +58,16 @@ class GenericKubernetesResourceListTest {
   void deserializeWithEmptyItems() throws Exception {
     // Given
     final String list = "{" +
-      "\"apiVersion\": \"v1\"," +
-      "\"items\": []," +
-      "\"kind\": \"List\"" +
-      "}";
+        "\"apiVersion\": \"v1\"," +
+        "\"items\": []," +
+        "\"kind\": \"List\"" +
+        "}";
     // When
     final GenericKubernetesResourceList result = objectMapper.readValue(list, GenericKubernetesResourceList.class);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("apiVersion", "v1")
-      .hasFieldOrPropertyWithValue("kind", "List")
-      .hasFieldOrPropertyWithValue("items", Collections.emptyList());
+        .hasFieldOrPropertyWithValue("apiVersion", "v1")
+        .hasFieldOrPropertyWithValue("kind", "List")
+        .hasFieldOrPropertyWithValue("items", Collections.emptyList());
   }
 }

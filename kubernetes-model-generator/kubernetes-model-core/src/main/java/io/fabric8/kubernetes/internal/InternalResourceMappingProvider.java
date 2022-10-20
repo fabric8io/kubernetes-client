@@ -24,15 +24,15 @@ import java.util.Map;
 
 public class InternalResourceMappingProvider implements KubernetesResourceMappingProvider {
 
-    private final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
+  private final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
-    public InternalResourceMappingProvider() {
-        mappings.put("List", KubernetesList.class);
-        mappings.put("v1#List", KubernetesList.class);
-    }
+  public InternalResourceMappingProvider() {
+    mappings.put("List", KubernetesList.class);
+    mappings.put("v1#List", KubernetesList.class);
+  }
 
-    @Override
-    public Map<String, Class<? extends KubernetesResource>> getMappings() {
-        return mappings;
-    }
+  @Override
+  public Map<String, Class<? extends KubernetesResource>> getMappings() {
+    return mappings;
+  }
 }

@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
 
 public interface GenericVerticalPodAutoscalerClient<C extends Client> extends Client, VerticalPodAutoscalerClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C>,
-  RequestConfigurable<C> {
+    Namespaceable<C>,
+    AnyNamespaceable<C>,
+    RequestConfigurable<C> {
 }

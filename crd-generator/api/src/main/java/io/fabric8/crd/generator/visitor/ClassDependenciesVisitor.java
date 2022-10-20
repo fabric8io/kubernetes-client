@@ -80,7 +80,8 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
   }
 
   private boolean ignore(String className) {
-    return (className.startsWith("java.") && !className.startsWith("java.util.")) || className.startsWith("com.fasterxml.jackson") || className.startsWith("jdk.");
+    return (className.startsWith("java.") && !className.startsWith("java.util."))
+        || className.startsWith("com.fasterxml.jackson") || className.startsWith("jdk.");
   }
 
   private void processTypeRef(TypeRef t) {
@@ -101,7 +102,7 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
   public static Set<String> getDependentClassesFromCRDName(String crdName) {
     // retrieve all dependent classes that might affect any of the CR versions
     return crdNameToCrClass.get(crdName).stream()
-      .flatMap(crClassName -> traversedClasses.get(crClassName).stream())
-      .collect(Collectors.toSet());
+        .flatMap(crClassName -> traversedClasses.get(crClassName).stream())
+        .collect(Collectors.toSet());
   }
 }

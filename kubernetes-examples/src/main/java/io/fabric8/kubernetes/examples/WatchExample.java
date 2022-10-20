@@ -37,17 +37,15 @@ public class WatchExample {
   @SuppressWarnings("java:S1604")
   public static void main(String[] args) {
     try (
-      KubernetesClient client = new KubernetesClientBuilder().build();
-      Watch ignored = newConfigMapWatch(client)
-    ) {
+        KubernetesClient client = new KubernetesClientBuilder().build();
+        Watch ignored = newConfigMapWatch(client)) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
       final String name = "watch-config-map-test-" + UUID.randomUUID();
       final ConfigMap cm = client.configMaps().inNamespace(namespace).createOrReplace(new ConfigMapBuilder()
-        .withNewMetadata().withName(name).endMetadata()
-        .build()
-      );
+          .withNewMetadata().withName(name).endMetadata()
+          .build());
       client.configMaps().inNamespace(namespace).withName(name)
-        .patch(new ConfigMapBuilder().withNewMetadata().withName(name).endMetadata().addToData("key", "value").build());
+          .patch(new ConfigMapBuilder().withNewMetadata().withName(name).endMetadata().addToData("key", "value").build());
       //noinspection Convert2Lambda
       client.configMaps().inNamespace(namespace).withName(name).edit(new Visitor<ObjectMetaBuilder>() {
         @Override

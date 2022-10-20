@@ -34,8 +34,8 @@ class PlacementDecisionTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-placementdecision.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final PlacementDecision placementDecision = mapper.readValue(originalJson, PlacementDecision.class);
@@ -45,24 +45,24 @@ class PlacementDecisionTest {
     // Then
     assertNotNull(placementDecision);
     assertNotNull(serializedJson);
-    assertNotNull( placementDecisionFromSerializedJson);
-    assertEquals(placementDecision.getMetadata().getName(),  placementDecisionFromSerializedJson.getMetadata().getName());
+    assertNotNull(placementDecisionFromSerializedJson);
+    assertEquals(placementDecision.getMetadata().getName(), placementDecisionFromSerializedJson.getMetadata().getName());
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     PlacementDecisionBuilder placementDecisionBuilder = new PlacementDecisionBuilder()
-      .withNewMetadata()
-      .addToLabels("vendor", "OpenShift")
-      .withName("placement1-decision1")
-      .endMetadata()
-      .withNewStatus()
-      .addNewDecision()
-      .withClusterName("cluster1")
-      .withReason("somereason")
-      .endDecision()
-      .endStatus();
+        .withNewMetadata()
+        .addToLabels("vendor", "OpenShift")
+        .withName("placement1-decision1")
+        .endMetadata()
+        .withNewStatus()
+        .addNewDecision()
+        .withClusterName("cluster1")
+        .withReason("somereason")
+        .endDecision()
+        .endStatus();
 
     // When
     PlacementDecision placementDecision = placementDecisionBuilder.build();

@@ -17,6 +17,6 @@
 package io.fabric8.kubernetes.client.dsl;
 
 public interface TimeoutImageEditReplacePatchable<T> extends
-  Timeoutable<ImageEditReplacePatchable<T>>,
-  ImageEditReplacePatchable<T> {
+    Timeoutable<ImageEditReplacePatchable<T>>,
+    ImageEditReplacePatchable<T> {
 }

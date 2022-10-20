@@ -43,24 +43,28 @@ public interface OpenShiftOperatorHubAPIGroupDSL extends Client {
    * @return MixedOperation object for CatalogSource type
    */
   MixedOperation<CatalogSource, CatalogSourceList, Resource<CatalogSource>> catalogSources();
+
   /**
    * API entrypoint for OperatorGroup related operations(operators.coreos.com/v1)
    *
    * @return MixedOperation object for OperatorGroup type
    */
   MixedOperation<OperatorGroup, OperatorGroupList, Resource<OperatorGroup>> operatorGroups();
+
   /**
    * API entrypoint for Subscription related operations(operators.coreos.com/v1alpha1)
    *
    * @return MixedOperation object for Subscription type
    */
   MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions();
+
   /**
    * API entrypoint for InstallPlan related operations(operators.coreos.com/v1alpha1)
    *
    * @return MixedOperation object for InstallPlan type
    */
   MixedOperation<InstallPlan, InstallPlanList, Resource<InstallPlan>> installPlans();
+
   /**
    * API entrypoint for CatalogSource related ClusterServiceVersion(operators.coreos.com/v1alpha1)
    *

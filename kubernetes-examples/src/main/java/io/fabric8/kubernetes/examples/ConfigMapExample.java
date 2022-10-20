@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+
 /**
  * This is an example of how to use the client to update or create a ConfigMap.
  */
@@ -50,12 +51,8 @@ public class ConfigMapExample {
       String name = "cheese";
       Resource<ConfigMap> configMapResource = client.configMaps().inNamespace(namespace).withName(name);
 
-
-      ConfigMap configMap = configMapResource.createOrReplace(new ConfigMapBuilder().
-          withNewMetadata().withName(name).endMetadata().
-          addToData("foo", "" + new Date()).
-          addToData("bar", "beer").
-          build());
+      ConfigMap configMap = configMapResource.createOrReplace(new ConfigMapBuilder().withNewMetadata().withName(name)
+          .endMetadata().addToData("foo", "" + new Date()).addToData("bar", "beer").build());
 
       logger.info("Upserted ConfigMap at {} data {}", configMap.getMetadata().getSelfLink(), configMap.getData());
 

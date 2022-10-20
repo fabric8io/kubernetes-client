@@ -24,26 +24,28 @@ import java.util.concurrent.TimeUnit;
  * Maintains a single thread daemon scheduler, which will terminate the thread
  * when not in use.
  * 
- * <br>It is not intended for long-running tasks, 
+ * <br>
+ * It is not intended for long-running tasks,
  * but it does not assume the task can be handed off to the common pool
  * 
- * <br>This is very similar to the CompletableFuture.Delayer, but provides a scheduler method
+ * <br>
+ * This is very similar to the CompletableFuture.Delayer, but provides a scheduler method
  */
 public class CachedSingleThreadScheduler {
-  
+
   public static final long DEFAULT_TTL_MILLIS = TimeUnit.SECONDS.toMillis(10);
-  
+
   private final long ttlMillis;
   private ScheduledThreadPoolExecutor executor;
 
   public CachedSingleThreadScheduler() {
     this(DEFAULT_TTL_MILLIS);
   }
-  
+
   public CachedSingleThreadScheduler(long ttlMillis) {
     this.ttlMillis = ttlMillis;
   }
-  
+
   public synchronized ScheduledFuture<?> scheduleWithFixedDelay(Runnable command,
       long initialDelay,
       long delay,
@@ -51,7 +53,7 @@ public class CachedSingleThreadScheduler {
     startExecutor();
     return executor.scheduleWithFixedDelay(command, initialDelay, delay, unit);
   }
-  
+
   public synchronized ScheduledFuture<?> schedule(Runnable command,
       long delay,
       TimeUnit unit) {
@@ -79,9 +81,9 @@ public class CachedSingleThreadScheduler {
       executor = null;
     }
   }
-  
+
   synchronized boolean hasExecutor() {
     return executor != null;
   }
-  
+
 }

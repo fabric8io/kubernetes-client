@@ -23,16 +23,18 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrinterColumn {
-  
+
   /**
    * The name of the column.
    * An empty column name implies the use of the property name
+   * 
    * @return the column name, or empty string if the annotated property name should be used.
    */
   String name() default "";
 
   /**
    * The printer column format.
+   * 
    * @return the format or empty string if no format is specified.
    */
   String format() default "";

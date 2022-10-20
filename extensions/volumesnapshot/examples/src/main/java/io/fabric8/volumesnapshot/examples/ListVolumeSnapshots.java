@@ -26,8 +26,8 @@ public class ListVolumeSnapshots {
       VolumeSnapshotList list = client.volumeSnapshots().list();
       System.out.println("Listing Volume Snapshots:");
       list.getItems().stream()
-        .map(b -> b.getMetadata().getName())
-        .forEach(System.out::println);
+          .map(b -> b.getMetadata().getName())
+          .forEach(System.out::println);
       System.out.println("Done");
     }
   }

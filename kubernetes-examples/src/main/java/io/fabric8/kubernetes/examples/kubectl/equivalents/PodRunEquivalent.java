@@ -26,9 +26,9 @@ public class PodRunEquivalent {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.run().inNamespace("default")
-        .withImage("nginx:mainline-alpine")
-        .withName("my-pod")
-        .done();
+          .withImage("nginx:mainline-alpine")
+          .withName("my-pod")
+          .done();
     }
   }
 }

@@ -23,20 +23,20 @@ public class StatusTest {
   @Test
   public void testBuilder() {
     Status status = new io.fabric8.kubernetes.api.model.StatusBuilder()
-      .withNewMetadata().withContinue("2343212").endMetadata()
-      .withStatus("Some status")
-      .withMessage("Some message")
-      .withCode(200)
-      .withNewDetails()
-      .withGroup("apps")
-      .withKind("Deployment")
-      .withName("nginx-deploy")
-      .addNewCause()
-      .withField("spec.replicas")
-      .withMessage("Detailed message")
-      .endCause()
-      .endDetails()
-      .build();
+        .withNewMetadata().withContinue("2343212").endMetadata()
+        .withStatus("Some status")
+        .withMessage("Some message")
+        .withCode(200)
+        .withNewDetails()
+        .withGroup("apps")
+        .withKind("Deployment")
+        .withName("nginx-deploy")
+        .addNewCause()
+        .withField("spec.replicas")
+        .withMessage("Detailed message")
+        .endCause()
+        .endDetails()
+        .build();
 
     assertEquals("2343212", status.getMetadata().getContinue());
     assertEquals("Some status", status.getStatus());

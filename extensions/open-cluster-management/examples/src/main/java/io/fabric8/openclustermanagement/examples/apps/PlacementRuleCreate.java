@@ -29,14 +29,14 @@ public class PlacementRuleCreate {
     try (OpenClusterManagementClient ocmClient = new DefaultOpenClusterManagementClient()) {
 
       PlacementRule placementRule = new PlacementRuleBuilder()
-        .withNewMetadata().withName("towhichcluster").endMetadata()
-        .withNewSpec()
-        .addNewClusterCondition()
-        .withType("ManagedClusterConditionAvailable")
-        .withStatus("True")
-        .endClusterCondition()
-        .endSpec()
-        .build();
+          .withNewMetadata().withName("towhichcluster").endMetadata()
+          .withNewSpec()
+          .addNewClusterCondition()
+          .withType("ManagedClusterConditionAvailable")
+          .withStatus("True")
+          .endClusterCondition()
+          .endSpec()
+          .build();
       logger.info("Creating PlacementRule {}", placementRule.getMetadata().getName());
       ocmClient.apps().placementRules().inNamespace("default").create(placementRule);
       logger.info("Success.");

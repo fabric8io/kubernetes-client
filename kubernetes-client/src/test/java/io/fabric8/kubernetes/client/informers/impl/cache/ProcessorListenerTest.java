@@ -33,25 +33,25 @@ class ProcessorListenerTest {
     Pod pod = new PodBuilder().withNewMetadata().withName("foo").withNamespace("default").endMetadata().build();
 
     ProcessorListener<Pod> listener = new ProcessorListener<>(
-      new ResourceEventHandler<Pod>() {
-        @Override
-        public void onAdd(Pod obj) {
-          assertEquals(pod, obj);
-          addNotificationReceived = true;
-        }
+        new ResourceEventHandler<Pod>() {
+          @Override
+          public void onAdd(Pod obj) {
+            assertEquals(pod, obj);
+            addNotificationReceived = true;
+          }
 
-        @Override
-        public void onUpdate(Pod oldObj, Pod newObj) {
-          assertEquals(pod, newObj);
-          updateNotificationReceived = true;
-        }
+          @Override
+          public void onUpdate(Pod oldObj, Pod newObj) {
+            assertEquals(pod, newObj);
+            updateNotificationReceived = true;
+          }
 
-        @Override
-        public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
-          assertEquals(pod, obj);
-          deleteNotificationReceived = true;
-        }
-      }, 0);
+          @Override
+          public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+            assertEquals(pod, obj);
+            deleteNotificationReceived = true;
+          }
+        }, 0);
 
     listener.add(new ProcessorListener.AddNotification<>(pod));
     listener.add(new ProcessorListener.UpdateNotification<>(null, pod));

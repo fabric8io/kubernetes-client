@@ -21,5 +21,5 @@ import java.util.Map;
 
 public interface KubernetesResourceMappingProvider {
 
-    Map<String, Class<? extends KubernetesResource>> getMappings();
+  Map<String, Class<? extends KubernetesResource>> getMappings();
 }

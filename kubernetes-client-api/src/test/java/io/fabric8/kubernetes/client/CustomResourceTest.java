@@ -15,26 +15,26 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 class CustomResourceTest {
   private static class MissingApiVersion extends CustomResource {
   }
-  
+
   @Test
   void missingGroupAndVersionShouldFail() {
     assertThrows(IllegalArgumentException.class, MissingApiVersion::new);
   }
-  
+
   @Test
   void valuesShouldProperlyBeComputedFromDefaultsAndAnnotations() {
     final Good good = new Good();
@@ -48,7 +48,7 @@ class CustomResourceTest {
     assertTrue(good.isServed());
     assertTrue(good.isStorage());
   }
-  
+
   @Test
   @DisplayName("fully annotated custom resource should use annotation values instead of defaults")
   void customCRShouldWork() {
@@ -63,7 +63,7 @@ class CustomResourceTest {
     assertFalse(custom.isServed());
     assertFalse(custom.isStorage());
   }
-  
+
   @Test
   void untypedCustomResourceInitShouldWork() {
     final CustomResource cr = new Untyped();
@@ -84,15 +84,16 @@ class CustomResourceTest {
     assertNull(cri.getSpec());
     assertEquals(7, cri.getStatus());
   }
-  
+
   @Group("example.com")
   @Version("v1")
-  private static class Untyped extends CustomResource{}
-  
+  private static class Untyped extends CustomResource {
+  }
+
   @Group("example.com")
   @Version("v1")
   private static class CRI extends CustomResource<String, Integer> {
-    
+
     @Override
     protected Integer initStatus() {
       return 7;
@@ -101,5 +102,6 @@ class CustomResourceTest {
 
   @Group("example.com")
   @Version("v1")
-  private static class VoidVoid extends CustomResource<Void, Void> {}
+  private static class VoidVoid extends CustomResource<Void, Void> {
+  }
 }
