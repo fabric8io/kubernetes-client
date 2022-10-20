@@ -143,7 +143,7 @@ class ResourceIT {
     resource.withGracePeriod(0L).delete();
     resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(Collection::isEmpty)
-        .get(30, TimeUnit.SECONDS);
+        .get(60, TimeUnit.SECONDS);
     resource.create();
 
     List<ReplicaSet> replicaSets = client.apps().replicaSets().withLabel("run", deploymentName)
@@ -155,7 +155,7 @@ class ResourceIT {
     assertTrue(resource.withGracePeriod(0L).delete().size() == 1);
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
-        .get(30, TimeUnit.SECONDS);
+        .get(60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -188,7 +188,7 @@ class ResourceIT {
     assertTrue(resource.withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0L).delete().size() == 1);
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
-        .get(30, TimeUnit.SECONDS);
+        .get(60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -206,7 +206,7 @@ class ResourceIT {
 
     // Check whether child resources are also deleted
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(List::isEmpty)
-        .get(30, TimeUnit.SECONDS);
+        .get(60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -224,7 +224,7 @@ class ResourceIT {
 
     // wait till deployment is deleted
     client.apps().deployments().withLabel("run", deploymentName)
-        .informOnCondition(List::isEmpty).get(30, TimeUnit.SECONDS);
+        .informOnCondition(List::isEmpty).get(60, TimeUnit.SECONDS);
 
     // Check whether child resources are not deleted, they should be alive
     client.apps().replicaSets().withLabel("run", deploymentName).informOnCondition(l -> l.size() == 1)
