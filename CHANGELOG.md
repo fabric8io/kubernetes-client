@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.2-SNAPSHOT
+### 6.2.0 (2022-10-20)
 
 #### Bugs
 * Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified

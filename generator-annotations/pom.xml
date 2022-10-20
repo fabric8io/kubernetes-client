@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>6.2-SNAPSHOT</version>
+    <version>6.2.0</version>
   </parent>
 
   <artifactId>generator-annotations</artifactId>
