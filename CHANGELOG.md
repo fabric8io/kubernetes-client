@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.3-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
 ### 6.2.0 (2022-10-20)
 
 #### Bugs
