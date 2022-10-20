@@ -1064,6 +1064,7 @@
             <importOrder>
               <file>ide-config/eclipse.importorder</file>
             </importOrder>
+            <removeUnusedImports/>
           </java>
         </configuration>
       </plugin>

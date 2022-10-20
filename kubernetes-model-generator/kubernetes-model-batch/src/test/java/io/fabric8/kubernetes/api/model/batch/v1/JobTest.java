@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.api.model.batch.v1;
 
-import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

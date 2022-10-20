@@ -25,7 +25,6 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlacementDecisionTest {
   private final ObjectMapper mapper = new ObjectMapper();

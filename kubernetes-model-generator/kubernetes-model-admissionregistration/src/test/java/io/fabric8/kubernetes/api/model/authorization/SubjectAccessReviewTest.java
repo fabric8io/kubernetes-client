@@ -20,8 +20,6 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewBuild
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class SubjectAccessReviewTest {
   @Test
   public void testBuilder() {

@@ -18,9 +18,6 @@ package io.fabric8.kubernetes.api.model.apiextensions.v1beta1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
