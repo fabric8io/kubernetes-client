@@ -738,7 +738,11 @@ final Job job = new JobBuilder()
     .endSpec()
     .build();
 
-client.batch().jobs().inNamespace("default").create(job);
+client.batch().v1().jobs().inNamespace(namespace).create(job);
+
+//If you are using version 6 or above, use the following code to create job
+//client.batch().v1().jobs().inNamespace("default").resource(job).create();
+
 ```
 - Create or Replace an existing `Job`:
 ```
