@@ -62,8 +62,8 @@ public class JobExample {
             .endSpec()
             .build();
 
-          logger.info("Creating job pi.");
-          client.batch().v1().jobs().inNamespace(namespace).createOrReplace(job);
+          logger.info("Creating job pi.");                   
+          client.batch().v1().jobs().inNamespace("default").resource(job).create();
 
           // Get All pods created by the job
           PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
