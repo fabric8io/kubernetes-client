@@ -64,7 +64,7 @@ class ServerSideApplyIT {
     service.getSpec().setSelector(Collections.singletonMap("app", "other"));
 
     // 2nd server side apply
-    service = resource.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service);
+    service = client.resource(service).serverSideApply();
     assertEquals("other", service.getSpec().getSelector().get("app"));
     assertEquals(clusterIp, service.getSpec().getClusterIP());
   }

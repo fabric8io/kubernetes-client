@@ -51,6 +51,8 @@ public class OperationContext {
   protected boolean reloadingFromServer;
   protected boolean dryRun;
   protected FieldValidateable.Validation fieldValidation;
+  protected String fieldManager;
+  protected Boolean forceConflicts;
 
   // Default to -1 to respect the value set in the resource or the Kubernetes default (30 seconds)
   protected long gracePeriodSeconds = -1L;
@@ -73,7 +75,8 @@ public class OperationContext {
     this(other.client, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy,
-        other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation);
+        other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
+        other.forceConflicts);
   }
 
   public OperationContext(Client client, String plural, String namespace, String name,
@@ -81,7 +84,8 @@ public class OperationContext {
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-      boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation) {
+      boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation,
+      String fieldManager, Boolean forceConflicts) {
     this.client = client;
     this.item = item;
     this.plural = plural;
@@ -102,6 +106,8 @@ public class OperationContext {
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
     this.fieldValidation = fieldValidation;
+    this.fieldManager = fieldManager;
+    this.forceConflicts = forceConflicts;
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
@@ -500,6 +506,24 @@ public class OperationContext {
     }
     final OperationContext context = new OperationContext(this);
     context.fieldValidation = fieldValidation;
+    return context;
+  }
+
+  public OperationContext withFieldManager(String fieldManager) {
+    if (Objects.equals(fieldManager, this.fieldManager)) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.fieldManager = fieldManager;
+    return context;
+  }
+
+  public OperationContext withForceConflicts() {
+    if (Boolean.TRUE.equals(this.forceConflicts)) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.forceConflicts = true;
     return context;
   }
 

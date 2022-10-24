@@ -19,5 +19,6 @@ public interface NonDeletingOperation<T> extends
     CreateOrReplaceable<T>,
     EditReplacePatchable<T>,
     Replaceable<T>, ItemReplacable<T>,
-    ItemWritableOperation<T> {
+    ItemWritableOperation<T>,
+    ServerSideApplicable<T> {
 }

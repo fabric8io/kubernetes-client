@@ -15,6 +15,7 @@
 
 #### New Features
 * Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
+* Fix #3896: added dsl support for server side apply
 
 #### _**Note**_: Breaking changes in the API
 
