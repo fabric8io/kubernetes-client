@@ -13,6 +13,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
 
 #### _**Note**_: Breaking changes in the API
 

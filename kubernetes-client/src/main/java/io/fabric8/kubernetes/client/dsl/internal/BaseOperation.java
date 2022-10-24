@@ -927,6 +927,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public ExtensibleResource<T> fieldValidation(Validation fieldValidation) {
+    return newInstance(context.withFieldValidation(fieldValidation));
+  }
+
+  @Override
   public ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
     result.indexers = indexers;

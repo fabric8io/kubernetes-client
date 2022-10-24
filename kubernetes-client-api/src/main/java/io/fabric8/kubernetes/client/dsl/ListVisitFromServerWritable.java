@@ -18,6 +18,6 @@ package io.fabric8.kubernetes.client.dsl;
 import java.util.List;
 
 public interface ListVisitFromServerWritable<T> extends
-    DeletableWithOptions, CreateOrReplaceable<List<T>> {
+    DeletableWithOptions, CreateOrReplaceable<List<T>>, FieldValidateable<CreateOrReplaceable<List<T>>> {
 
 }
