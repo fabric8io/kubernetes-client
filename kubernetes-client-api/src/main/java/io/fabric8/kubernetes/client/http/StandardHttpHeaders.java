@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,10 @@ public class StandardHttpHeaders implements HttpHeaders {
   public static final String EXPECT_CONTINUE = "100-Continue";
 
   private final Map<String, List<String>> headers;
+
+  public StandardHttpHeaders() {
+    this(new LinkedHashMap<>());
+  }
 
   public StandardHttpHeaders(Map<String, List<String>> headers) {
     this.headers = headers;

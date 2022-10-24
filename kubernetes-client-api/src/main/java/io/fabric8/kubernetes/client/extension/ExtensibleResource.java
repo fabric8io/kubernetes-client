@@ -75,4 +75,7 @@ public interface ExtensibleResource<T> extends Resource<T> {
    */
   T getItem();
 
+  @Override
+  ExtensibleResource<T> fieldValidation(Validation fieldValidation);
+
 }

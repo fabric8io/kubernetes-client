@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
@@ -190,8 +191,37 @@ class DryRunTest {
     assertRequest(1, "DELETE", "/api/v1/namespaces/ns1/services/svc1", "dryRun=All");
   }
 
+  @Test
+  void testCreateFieldValidation() {
+    // When
+    Pod pod = kubernetesClient.resource(withPod("pod1")).fieldValidation(Validation.WARN).create();
+    // Then
+    verify(mockClient).sendAsync(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/default/pods", "fieldValidation=Warn");
+
+    assertNotNull(pod);
+  }
+
+  @Test
+  void testCreateResourceListFieldValidation() {
+    // When
+    kubernetesClient.resourceList(withPod("pod1")).fieldValidation(Validation.IGNORE).create();
+    // Then
+    verify(mockClient).sendAsync(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/default/pods", "fieldValidation=Ignore");
+  }
+
+  @Test
+  void testPatchFieldValidation() {
+    // When
+    kubernetesClient.resource(withPod("pod1")).fieldValidation(Validation.STRICT).patch();
+    // Then
+    verify(mockClient, times(2)).sendAsync(any(), any());
+    assertRequest(1, "PATCH", "/api/v1/namespaces/default/pods/pod1", "fieldValidation=Strict");
+  }
+
   private Pod withPod(String name) {
-    return new PodBuilder().withNewMetadata().withName(name).endMetadata().build();
+    return new PodBuilder().withNewMetadata().withName(name).withNamespace("default").endMetadata().build();
   }
 
   private void assertRequest(String method, String url, String queryParam) {
