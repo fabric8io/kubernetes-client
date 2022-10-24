@@ -78,4 +78,10 @@ public interface ExtensibleResource<T> extends Resource<T> {
   @Override
   ExtensibleResource<T> fieldValidation(Validation fieldValidation);
 
+  @Override
+  ExtensibleResource<T> fieldManager(String manager);
+
+  @Override
+  ExtensibleResource<T> forceConflicts();
+
 }

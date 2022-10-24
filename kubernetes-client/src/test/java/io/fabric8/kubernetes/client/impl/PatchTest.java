@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -165,6 +166,21 @@ class PatchTest {
     assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", "fieldManager=fabric8&dryRun=All",
         OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
+  }
+
+  @Test
+  void testServerSideApplyWithPatchOptions() {
+    // Given
+
+    // When
+    kubernetesClient.pods().inNamespace("ns1")
+        .resource(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build())
+        .fieldManager("x").forceConflicts().serverSideApply();
+
+    // Then
+    verify(mockClient, times(1)).sendAsync(any(), any());
+    assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "fieldManager=x&force=true",
+        PatchType.SERVER_SIDE_APPLY.getContentType());
   }
 
   private void assertRequest(String method, String url, String queryParam) {
