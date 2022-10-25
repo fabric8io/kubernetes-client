@@ -38,11 +38,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigTest {
@@ -243,6 +245,21 @@ public class ConfigTest {
   }
 
   @Test
+  void testAutoConfig() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
+    Config config = Config.autoConfigure(null);
+    assertNotNull(config);
+    assertNull(config.getFile());
+    assertTrue(config.getAutoConfigure());
+
+    // ensure that refresh creates a new instance
+    Config refresh = config.refresh();
+    assertNotSame(config, refresh);
+    assertNull(refresh.getFile());
+    assertTrue(refresh.getAutoConfigure());
+  }
+
+  @Test
   void testMasterUrlWithServiceAccountIPv6() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
     System.setProperty(Config.KUBERNETES_SERVICE_HOST_PROPERTY, "2001:db8:1f70::999:de8:7648:6e8");
@@ -328,6 +345,10 @@ public class ConfigTest {
     final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
     final Config config = Config.fromKubeconfig(configYAML);
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
+
+    assertFalse(config.getAutoConfigure());
+    assertNull(config.getFile());
+    assertSame(config, config.refresh());
   }
 
   @Test

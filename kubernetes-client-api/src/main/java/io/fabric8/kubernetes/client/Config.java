@@ -230,7 +230,7 @@ public class Config {
    */
   private Map<String, String> customHeaders = null;
 
-  private Boolean autoConfigure = Boolean.FALSE;
+  private boolean autoConfigure;
 
   private File file;
 
@@ -242,12 +242,15 @@ public class Config {
    */
   @Deprecated
   public Config() {
-    this(!Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false));
+    this(!disableAutoConfig());
   }
 
-  private Config(Boolean autoConfigure) {
-    if (Boolean.TRUE.equals(autoConfigure)) {
-      this.autoConfigure = Boolean.TRUE;
+  private static boolean disableAutoConfig() {
+    return Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false);
+  }
+
+  private Config(boolean autoConfigure) {
+    if (autoConfigure) {
       autoConfigure(this, null);
     }
   }
@@ -287,12 +290,16 @@ public class Config {
       tryServiceAccount(config);
       tryNamespaceFromPath(config);
     }
+    postAutoConfigure(config);
+    config.autoConfigure = true;
+    return config;
+  }
+
+  private static void postAutoConfigure(Config config) {
     configFromSysPropsOrEnvVars(config);
 
     config.masterUrl = ensureHttps(config.masterUrl, config);
     config.masterUrl = ensureEndsWithSlash(config.masterUrl);
-
-    return config;
   }
 
   private static String ensureEndsWithSlash(String masterUrl) {
@@ -590,11 +597,33 @@ public class Config {
   // Note: kubeconfigPath is optional (see note on loadFromKubeConfig)
   public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
     // we allow passing context along here, since downstream accepts it
-    Config config = new Config();
-    if (kubeconfigPath != null)
+    Config config = new Config(false);
+    if (kubeconfigPath != null) {
       config.file = new File(kubeconfigPath);
-    loadFromKubeconfig(config, context, kubeconfigContents);
+    }
+    if (!loadFromKubeconfig(config, context, kubeconfigContents)) {
+      throw new KubernetesClientException("Could not create Config from kubeconfig");
+    }
+    if (!disableAutoConfig()) {
+      postAutoConfigure(config);
+    }
     return config;
+  }
+
+  public Config refresh() {
+    final String currentContextName = this.getCurrentContext() != null ? this.getCurrentContext().getName() : null;
+    if (this.autoConfigure) {
+      return Config.autoConfigure(currentContextName);
+    }
+    if (this.file != null) {
+      String kubeconfigContents = getKubeconfigContents(this.file);
+      if (kubeconfigContents == null) {
+        return this; // getKubeconfigContents will have logged an exception
+      }
+      return Config.fromKubeconfig(currentContextName, kubeconfigContents, this.file.getPath());
+    }
+    // nothing to refresh - the kubeconfig was directly supplied
+    return this;
   }
 
   private static boolean tryKubeConfig(Config config, String context) {
@@ -613,8 +642,7 @@ public class Config {
       return false;
     }
     config.file = new File(kubeConfigFile.getPath());
-    loadFromKubeconfig(config, context, kubeconfigContents);
-    return true;
+    return loadFromKubeconfig(config, context, kubeconfigContents);
   }
 
   public static String getKubeconfigFilename() {
@@ -715,7 +743,7 @@ public class Config {
         return true;
       }
     } catch (Exception e) {
-      LOGGER.error("Failed to parse the kubeconfig.", e);
+      throw KubernetesClientException.launderThrowable("Failed to parse the kubeconfig.", e);
     }
 
     return false;
@@ -1365,7 +1393,7 @@ public class Config {
     this.customHeaders = customHeaders;
   }
 
-  public Boolean getAutoConfigure() {
+  public boolean getAutoConfigure() {
     return autoConfigure;
   }
 
@@ -1430,6 +1458,14 @@ public class Config {
   @JsonAnySetter
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public void setAutoConfigure(boolean autoConfigure) {
+    this.autoConfigure = autoConfigure;
   }
 
 }

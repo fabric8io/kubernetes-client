@@ -72,8 +72,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   private CompletableFuture<Boolean> refreshToken(BasicBuilder headerBuilder) {
-    final String currentContextName = config.getCurrentContext() != null ? config.getCurrentContext().getName() : null;
-    final Config newestConfig = Config.autoConfigure(currentContextName);
+    Config newestConfig = config.refresh();
     final CompletableFuture<String> newAccessToken = extractNewAccessTokenFrom(newestConfig);
 
     return newAccessToken.thenApply(token -> overrideNewAccessTokenToConfig(token, headerBuilder, config));
