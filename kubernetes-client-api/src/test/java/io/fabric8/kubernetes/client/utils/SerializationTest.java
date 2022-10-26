@@ -45,6 +45,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -61,6 +62,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -235,15 +237,37 @@ class SerializationTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with invalid YAML content, should throw Exception")
   void unmarshalWithInvalidYamlShouldThrowException() {
     // Given
     final InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-yaml.yml");
     // When
-    final ClassCastException result = assertThrows(ClassCastException.class, () -> Serialization.unmarshal(is));
+    RawExtension result = Serialization.unmarshal(is);
     // Then
-    assertThat(result)
-        .hasMessageContainingAll("java.lang.String", "cannot be cast to", "java.util.Map");
+    assertEquals("This\nis not\nYAML", result.getValue());
+  }
+
+  @Test
+  void unmarshalArrays() {
+    // not valid as KubernetesResource - we'd have to look ahead to know if the array values
+    // were not hasmetadata
+    assertThrows(KubernetesClientException.class, () -> Serialization.unmarshal("[1, 2]"));
+    assertThrows(IllegalArgumentException.class, () -> Serialization.unmarshal("- 1\n- 2"));
+
+    assertEquals(Arrays.asList(1, 2), Serialization.unmarshal("[1, 2]", List.class));
+    assertEquals(Arrays.asList(1, 2), Serialization.unmarshal("- 1\n- 2", List.class));
+  }
+
+  @Test
+  void unmarshalPrimitives() {
+    // as json
+    RawExtension raw = Serialization.unmarshal("\"a\"");
+    assertEquals("a", raw.getValue());
+    // as yaml
+    raw = Serialization.unmarshal("a");
+    assertEquals("a", raw.getValue());
+
+    assertEquals("a", Serialization.unmarshal("\"a\"", String.class));
+    assertEquals("a", Serialization.unmarshal("a", String.class));
   }
 
   @Test

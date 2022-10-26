@@ -23,6 +23,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.DumperOptions;
@@ -158,6 +159,8 @@ public class Serialization {
 
   /**
    * Unmarshals a stream.
+   * <p>
+   * The type is assumed to be {@link KubernetesResource}
    *
    * @param is The {@link InputStream}.
    * @param <T> The target type.
@@ -170,6 +173,8 @@ public class Serialization {
 
   /**
    * Unmarshals a stream optionally performing placeholder substitution to the stream.
+   * <p>
+   * The type is assumed to be {@link KubernetesResource}
    *
    * @param is The {@link InputStream}.
    * @param parameters A {@link Map} with parameters for placeholder substitution.
@@ -190,6 +195,8 @@ public class Serialization {
 
   /**
    * Unmarshals a stream.
+   * <p>
+   * The type is assumed to be {@link KubernetesResource}
    *
    * @param is The {@link InputStream}.
    * @param mapper The {@link ObjectMapper} to use.
@@ -202,6 +209,8 @@ public class Serialization {
 
   /**
    * Unmarshals a stream optionally performing placeholder substitution to the stream.
+   * <p>
+   * The type is assumed to be {@link KubernetesResource}
    *
    * @param is The {@link InputStream}.
    * @param mapper The {@link ObjectMapper} to use.
@@ -231,11 +240,15 @@ public class Serialization {
       bis.reset();
 
       final T result;
-      if (intch != '{') {
+      if (intch != '{' && intch != '[') {
         final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(),
             new CustomYamlTagResolverWithLimit());
-        final Map<String, Object> obj = yaml.load(bis);
-        result = mapper.convertValue(obj, type);
+        final Object obj = yaml.load(bis);
+        if (obj instanceof Map) {
+          result = mapper.convertValue(obj, type);
+        } else {
+          result = mapper.convertValue(new RawExtension(obj), type);
+        }
       } else {
         result = mapper.readerFor(type).readValue(bis);
       }
@@ -247,6 +260,8 @@ public class Serialization {
 
   /**
    * Unmarshals a {@link String}
+   * <p>
+   * The type is assumed to be {@link KubernetesResource}
    *
    * @param str The {@link String}.
    * @param <T> template argument denoting type

@@ -89,9 +89,12 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
       return fromObjectNode(jp, node);
     } else if (node.isArray()) {
       return fromArrayNode(jp, node);
-    } else {
+    }
+    Object object = node.traverse(jp.getCodec()).readValueAs(Object.class);
+    if (object == null) {
       return null;
     }
+    return new RawExtension(object);
   }
 
   private KubernetesResource fromArrayNode(JsonParser jp, JsonNode node) throws IOException {
@@ -105,6 +108,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
           throw new JsonMappingException(jp, "Cannot parse a nested array containing a non-HasMetadata resource");
         }
         list.add((HasMetadata) resource);
+      } else {
+        throw new JsonMappingException(jp, "Cannot parse a nested array containing non-object resource");
       }
     }
     return new KubernetesListBuilder().withItems(list).build();
