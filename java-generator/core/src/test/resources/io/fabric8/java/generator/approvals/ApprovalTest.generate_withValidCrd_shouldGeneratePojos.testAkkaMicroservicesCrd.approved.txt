@@ -21,7 +21,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Akka Management (Cluster Bootstrap) HTTP port in the range 1024 - 65535. Can be disabled with \"off\". This port is exposed as HTTP_MGMT_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private String akkaManagementPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"8558\"", String.class);
+    private String akkaManagementPort = "8558";
 
     public String getAkkaManagementPort() {
         return akkaManagementPort;
@@ -186,7 +186,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("gRPC port in the range 1024 - 65535. Can be disabled with \"off\". This port is exposed as GRPC_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private String grpcPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"8101\"", String.class);
+    private String grpcPort = "8101";
 
     public String getGrpcPort() {
         return grpcPort;
@@ -219,7 +219,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("HTTP port in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private String httpPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"off\"", String.class);
+    private String httpPort = "off";
 
     public String getHttpPort() {
         return httpPort;
@@ -285,7 +285,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("javaOptions")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Additional arguments to the application JVM. It will be added to the `JAVA_TOOL_OPTIONS` environment variable, which will be used by most JVM implementations.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private String javaOptions = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"\"", String.class);
+    private String javaOptions = "";
 
     public String getJavaOptions() {
         return javaOptions;
@@ -398,7 +398,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @io.fabric8.generator.annotation.Pattern("^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("HTTP port to expose metrics for Prometheus to scrape. Must be  in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PROMETHEUS_PORT environment variable if it is enabled.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private String prometheusPort = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("\"off\"", String.class);
+    private String prometheusPort = "off";
 
     public String getPrometheusPort() {
         return prometheusPort;
@@ -432,7 +432,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @io.fabric8.generator.annotation.Min(0.0)
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Number of desired pods.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private Long replicas = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("1", Long.class);
+    private Long replicas = 1L;
 
     public Long getReplicas() {
         return replicas;
