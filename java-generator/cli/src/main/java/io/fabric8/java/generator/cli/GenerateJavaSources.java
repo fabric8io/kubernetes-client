@@ -64,6 +64,7 @@ public class GenerateJavaSources implements Runnable {
     final Config.Prefix pSt = (prefixStrategy != null) ? Config.Prefix.valueOf(prefixStrategy) : null;
     final Config.Suffix sSt = (suffixStrategy != null) ? Config.Suffix.valueOf(suffixStrategy) : null;
     final Config.CodeStructure structure = (codeStructure != null) ? Config.CodeStructure.valueOf(codeStructure) : null;
+    final Boolean generatedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : null;
     final Config config = new Config(
         uppercaseEnum,
         pSt,
@@ -71,7 +72,7 @@ public class GenerateJavaSources implements Runnable {
         alwaysPreserveUnkownFields,
         addExtraAnnotations,
         structure,
-        !skipGeneratedAnnotations);
+        generatedAnnotations);
     final CRGeneratorRunner runner = new CRGeneratorRunner(config);
     runner.run(source, target);
   }
