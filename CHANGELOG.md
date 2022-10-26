@@ -11,6 +11,7 @@
 
 #### Improvements
 * Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
+*  Fix #4530: generalizing the Serialization logic to allow for primitive values and clarifying the type expectations.
 
 #### Dependency Upgrade
 
