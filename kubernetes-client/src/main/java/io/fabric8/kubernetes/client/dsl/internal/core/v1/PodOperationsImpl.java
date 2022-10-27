@@ -185,8 +185,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     try {
       return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, in, out);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -194,8 +194,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public LocalPortForward portForward(int port) {
     try {
       return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -203,8 +203,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public LocalPortForward portForward(int port, int localPort) {
     try {
       return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, localPort);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -274,8 +274,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     try {
       URL url = getExecURLWithCommandParams(actualCommands);
       return setupConnectionToPod(url.toURI());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("exec"), t);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("exec"), e);
     }
   }
 
@@ -284,8 +284,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     try {
       URL url = getAttachURL();
       return setupConnectionToPod(url.toURI());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("attach"), t);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("attach"), e);
     }
   }
 
@@ -591,7 +591,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   public static String shellQuote(String value) {
-    return "'" + value.replace("'", "'\\\\''") + "'";
+    return "'" + value.replace("'", "'\\''") + "'";
   }
 
   @Override

@@ -179,6 +179,24 @@ class PodUploadTest {
     assertThat(result, equalTo("mkdir -p '/tmp/foo' && base64 -d - > '/tmp/foo/cp.log'"));
   }
 
+  @Test
+  void createExecCommandForUpload_withSingleQuoteInPath() {
+    // When
+    String result = PodUpload.createExecCommandForUpload("/tmp/fo'o/cp.log");
+
+    // Then
+    assertThat(result, equalTo("mkdir -p '/tmp/fo\'\\'\'o' && base64 -d - > '/tmp/fo\'\\'\'o/cp.log'"));
+  }
+
+  @Test
+  void createExecCommandForUpload_withMultipleSingleQuotesInPath() {
+    // When
+    String result = PodUpload.createExecCommandForUpload("/tmp/f'o'o/c'p.log");
+
+    // Then
+    assertThat(result, equalTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o' && base64 -d - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log'"));
+  }
+
   void uploadFileAndVerify(PodUploadTester<Boolean> fileUploadMethodToTest) throws IOException, InterruptedException {
     this.operation = operation.file("/mock/dir/file");
     WebSocket.Builder builder = Mockito.mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
