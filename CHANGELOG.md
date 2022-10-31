@@ -3,6 +3,7 @@
 ### 6.3-SNAPSHOT
 
 #### Bugs
+Fix #4547: preventing timing issues with leader election cancel
 
 #### Improvements
 

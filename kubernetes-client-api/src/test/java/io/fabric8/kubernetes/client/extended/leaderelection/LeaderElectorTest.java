@@ -134,6 +134,8 @@ class LeaderElectorTest {
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
     assertEquals(0, activeLer.get().getLeaderTransitions());
 
+    // create a new elector, they are no good after a single use
+    leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
     // the leader is now empty/null, we should be able to re-acquire
     assertTrue(leaderElector.tryAcquireOrRenew());
 

@@ -50,6 +50,7 @@ public class LeaderElector {
   private final AtomicReference<LeaderElectionRecord> observedRecord = new AtomicReference<>();
   private final AtomicReference<LocalDateTime> observedTime = new AtomicReference<>();
   private final Executor executor;
+  private boolean stopped;
 
   public LeaderElector(KubernetesClient kubernetesClient, LeaderElectionConfig leaderElectionConfig, Executor executor) {
     this.kubernetesClient = kubernetesClient;
@@ -110,7 +111,8 @@ public class LeaderElector {
     return result;
   }
 
-  private void stopLeading() {
+  private synchronized void stopLeading() {
+    stopped = true;
     LeaderElectionRecord current = observedRecord.get();
     if (current == null || !isLeader(current)) {
       return; // not leading
@@ -182,7 +184,10 @@ public class LeaderElector {
     }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
 
-  boolean tryAcquireOrRenew() throws LockException {
+  synchronized boolean tryAcquireOrRenew() throws LockException {
+    if (stopped) {
+      return false;
+    }
     final Lock lock = leaderElectionConfig.getLock();
     final ZonedDateTime now = now();
     final LeaderElectionRecord oldLeaderElectionRecord = lock.get(kubernetesClient);
