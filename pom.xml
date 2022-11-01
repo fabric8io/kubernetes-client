@@ -113,7 +113,7 @@
     <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.33</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
-    <commons-compress.version>1.21</commons-compress.version>
+    <commons-compress.version>1.22</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.1.0</jsonschema2pojo.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
