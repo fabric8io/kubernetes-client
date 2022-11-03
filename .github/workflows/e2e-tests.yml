@@ -35,6 +35,9 @@ env:
   IT_MODULE: kubernetes-itests
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
+permissions:
+  contents: read  #  to fetch code (actions/checkout)
+
 jobs:
   buildWithoutTests:
     name: BuildWithoutTests
