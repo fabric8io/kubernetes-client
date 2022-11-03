@@ -41,6 +41,9 @@ env:
 #permissions:
 #  contents: read
 
+permissions:
+  contents: read  #  to fetch code (actions/checkout)
+
 jobs:
   release-java-8:
     name: Release Java 8 ${{ github.event.inputs.tag }}
