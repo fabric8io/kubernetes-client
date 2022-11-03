@@ -36,6 +36,9 @@ env:
 #permissions:
 #  contents: read
 
+permissions:
+  contents: read  #  to fetch code (actions/checkout)
+
 jobs:
   build-release-java-8-snapshot:
     name: Release Java 8 SNAPSHOT
