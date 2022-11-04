@@ -18,14 +18,14 @@ package io.fabric8.kubernetes.client.dsl;
 public interface FieldValidateable<T> {
 
   public enum Validation {
-    WARN,
-    IGNORE,
-    STRICT;
+    WARN("Warn"),
+    IGNORE("Ignore"),
+    STRICT("Strict");
 
     String parameterValue;
 
-    private Validation() {
-      this.parameterValue = this.name().charAt(0) + this.name().toLowerCase().substring(1);
+    private Validation(String parameterValue) {
+      this.parameterValue = parameterValue;
     }
 
     public String parameterValue() {
