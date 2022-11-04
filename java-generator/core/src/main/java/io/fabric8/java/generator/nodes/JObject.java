@@ -22,8 +22,10 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.utils.StringEscapeUtils;
 import io.fabric8.java.generator.Config;
@@ -280,6 +282,13 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
       objField.createGetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnyGetter");
       objField.createSetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
+
+      MethodDeclaration additionalSetter = clz.addMethod("setAdditionalProperties", Modifier.Keyword.PUBLIC);
+      additionalSetter.addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
+      additionalSetter.addParameter("String", "key");
+      additionalSetter.addParameter("Object", "value");
+      additionalSetter
+          .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value);")));
     }
 
     buffer.add(new GeneratorResult.ClassResult(this.className, cu));
