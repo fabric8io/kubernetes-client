@@ -3,7 +3,8 @@
 ### 6.3-SNAPSHOT
 
 #### Bugs
-Fix #4547: preventing timing issues with leader election cancel
+* Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
+* Fix #4547: preventing timing issues with leader election cancel
 
 #### Improvements
 
