@@ -37,15 +37,6 @@ import java.util.stream.Collectors;
 
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
-  private static final Set<String> IGNORED_FIELDS = new HashSet<>();
-
-  static {
-    IGNORED_FIELDS.add("description");
-    IGNORED_FIELDS.add("schema");
-    IGNORED_FIELDS.add("example");
-    IGNORED_FIELDS.add("examples");
-  }
-
   private final String type;
   private final String className;
   private final String pkg;
@@ -97,19 +88,17 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
-        if (!IGNORED_FIELDS.contains(field.getKey())) {
-          String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
-          String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
-          this.fields.put(
-              field.getKey(),
-              AbstractJSONSchema2Pojo.fromJsonSchema(
-                  field.getKey(),
-                  field.getValue(),
-                  nextPackagePath,
-                  nextPrefix,
-                  nextSuffix,
-                  config));
-        }
+        String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
+        String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
+        this.fields.put(
+            field.getKey(),
+            AbstractJSONSchema2Pojo.fromJsonSchema(
+                field.getKey(),
+                field.getValue(),
+                nextPackagePath,
+                nextPrefix,
+                nextSuffix,
+                config));
       }
     }
   }

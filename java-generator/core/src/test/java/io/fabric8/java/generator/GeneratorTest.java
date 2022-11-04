@@ -665,6 +665,39 @@ class GeneratorTest {
   }
 
   @Test
+  void testObjectWithSpecialFieldNames() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps newObj = new JSONSchemaProps();
+    newObj.setType("string");
+    props.put("description", newObj);
+
+    JObject obj = new JObject(
+        null,
+        "t",
+        props,
+        null,
+        false,
+        "",
+        "",
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    assertEquals(1, res.getTopLevelClasses().size());
+    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    assertTrue(clzT.isPresent());
+    assertTrue(clzT.get().getFieldByName("description").isPresent());
+  }
+
+  @Test
   void testObjectNullableFieldsManagement() {
     // Arrange
     Map<String, JSONSchemaProps> props = new HashMap<>();
