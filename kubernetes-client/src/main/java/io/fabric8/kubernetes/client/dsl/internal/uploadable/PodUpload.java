@@ -55,7 +55,7 @@ public class PodUpload {
     throw new IllegalArgumentException("Provided arguments are not valid (file, directory, path)");
   }
 
-  private static interface UploadProcessor {
+  private interface UploadProcessor {
 
     void process(OutputStream out) throws IOException;
 
