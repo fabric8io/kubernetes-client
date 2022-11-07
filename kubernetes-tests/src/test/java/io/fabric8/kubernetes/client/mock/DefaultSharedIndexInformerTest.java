@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -35,7 +36,6 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
-import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
@@ -64,12 +64,11 @@ import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -906,9 +905,9 @@ class DefaultSharedIndexInformerTest {
   void terminalExceptionWhenNoResourcesFoundIsPropagatedToStopped() {
     try (SharedIndexInformer<Pod> informer = client.pods().runnableInformer(0)) {
       final KubernetesClientException runException = assertThrows(KubernetesClientException.class, informer::run);
-      final CompletableFuture<Void> stopped = informer.stopped();
+      final CompletionStage<Void> stopped = informer.stopped();
       final ExecutionException result = assertThrows(ExecutionException.class,
-          () -> stopped.get(10, TimeUnit.SECONDS));
+          () -> stopped.toCompletableFuture().get(10, TimeUnit.SECONDS));
       assertThat(result)
           .cause()
           .isInstanceOf(KubernetesClientException.class)
@@ -934,9 +933,9 @@ class DefaultSharedIndexInformerTest {
         .done().always();
     try (SharedIndexInformer<Pod> informer = client.pods().inAnyNamespace().runnableInformer(0)) {
       informer.run();
-      final CompletableFuture<Void> stopped = informer.stopped();
+      final CompletionStage<Void> stopped = informer.stopped();
       final ExecutionException result = assertThrows(ExecutionException.class,
-          () -> stopped.get(10, TimeUnit.SECONDS));
+          () -> stopped.toCompletableFuture().get(10, TimeUnit.SECONDS));
       assertThat(result)
           .cause()
           .isInstanceOf(WatcherException.class)
@@ -1016,6 +1015,27 @@ class DefaultSharedIndexInformerTest {
     assertEquals(0, foundExistingAnimal.getCount());
   }
 
+  @Test
+  void testCustomExceptionHandler() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(Animal.class, "ns1", this::getList,
+        r -> new WatchEvent(new StatusBuilder().withCode(500).build(), "ERROR"), null, null);
+    setupMockServerExpectations(Animal.class, "ns1", this::getList,
+        r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
+
+    // When
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
+        .genericKubernetesResources(animalContext).inNamespace("ns1").runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingAnimal = new CountDownLatch(1);
+    animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
+    animalSharedIndexInformer.exceptionHandler((b, t) -> true).start();
+    foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    animalSharedIndexInformer.stop();
+
+    // Then
+    assertEquals(0, foundExistingAnimal.getCount());
+  }
+
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
     AnimalSpec animalSpec = new AnimalSpec();
     animalSpec.setOrder(order);
@@ -1027,7 +1047,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   private <T extends HasMetadata> KubernetesResourceList<T> getList(String startResourceVersion, Class<T> crClass) {
-    final CustomResourceList<T> list = new CustomResourceList<>();
+    final DefaultKubernetesResourceList<T> list = new DefaultKubernetesResourceList<>();
     list.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
     return list;
   }
@@ -1092,7 +1112,7 @@ class DefaultSharedIndexInformerTest {
         .waitFor(WATCH_EVENT_EMIT_TIME)
         .andEmit(watchEventSupplier.apply(endResourceVersion))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-        .andEmit(outdatedEvent).done().always();
+        .andEmit(outdatedEvent).done().once();
   }
 
   private static class TestResourceHandler<T extends HasMetadata> implements ResourceEventHandler<T> {

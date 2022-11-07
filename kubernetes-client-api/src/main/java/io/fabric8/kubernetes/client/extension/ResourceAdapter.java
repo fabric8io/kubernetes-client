@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
+import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Watchable;
@@ -300,6 +301,11 @@ public class ResourceAdapter<T> implements Resource<T> {
   @Override
   public T patch(PatchContext patchContext) {
     return resource.patch(patchContext);
+  }
+
+  @Override
+  public NonDeletingOperation<T> fieldValidation(Validation fieldValidation) {
+    return resource.fieldValidation(fieldValidation);
   }
 
 }

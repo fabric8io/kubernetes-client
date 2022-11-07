@@ -1,35 +1,60 @@
 ## CHANGELOG
 
-### 6.2-SNAPSHOT
+### 6.3-SNAPSHOT
 
 #### Bugs
+* Fix #4491: added a more explicit shutdown exception for okhttp
+* Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
+* Fix #4535: The shell command string will now have single quotes sanitized
+* Fix #4547: preventing timing issues with leader election cancel
+
+#### Improvements
+* Fix #4201: Removed sendAsync from the individual http client implementations
+
+#### Dependency Upgrade
+
+#### New Features
+* Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
+
+#### _**Note**_: Breaking changes in the API
+
+### 6.2.0 (2022-10-20)
+
+#### Bugs
+* Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
 * Fix #4312: fix timestamp can't be deserialized for IstioCondition
 * Fix #4369: Informers will retry with a backoff on list/watch failure as they did in 5.12 and prior.
 * Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 * Fix #3733: The authentication command from the .kube/config won't be discarded if no arguments are specified
-* Fix #4460: removing split packages.  Converting Default clients into adapters rather than real instances.
-* Fix #4441: corrected patch base handling for the patch methods available from a Resource - resource(item).patch() will be evaluated as resource(latest).patch(item).  Also undeprecated patch(item), which is consistent with leaving patch(context, item) undeprecated as well.  For consistency with the other operations (such as edit), patch(item) will use the context item as the base when available, or the server side item when not.  This means that patch(item) is only the same as resource(item).patch() when the patch(item) is called when the context item is missing or is the same as the latest.
+* Fix #4441: corrected patch base handling for the patch methods available from a Resource - resource(item).patch() will be evaluated as resource(latest).patch(item). Also undeprecated patch(item), which is consistent with leaving patch(context, item) undeprecated as well. For consistency with the other operations (such as edit), patch(item) will use the context item as the base when available, or the server side item when not. This means that patch(item) is only the same as resource(item).patch() when the patch(item) is called when the context item is missing or is the same as the latest.
 * Fix #4442: TokenRefreshInterceptor doesn't overwrite existing OAuth token with empty string
+* Fix #4350: SchemaSwap annotation is now repeatable and is applied multiple times if classes are used more than once in the class hierarchy.
 * Fix #4459: Fixed OSGi startup exceptions while using KubernetesClient/OpenShiftClient
-* Fix #4482: Fixing blocking behavior of okhttp log watch
+* Fix #4460: removing split packages. Converting Default clients into adapters rather than real instances.
 * Fix #4473: Fix regression in backoff interval introduced in #4365
-* Fix #4426: [java-generator] Encode an `AnyType` instead of an Object if `x-kubernetes-preserve-unknown-fields` is present and the type is null.
+* Fix #4478: Removing the resourceVersion bump with null status
+* Fix #4482: Fixing blocking behavior of okhttp log watch
+* Fix #4487: Schema for multimaps is now generated correctly
+* Fix #4496: Removing watch handling of lists
 
 #### Improvements
 * Fix #4471: Adding KubernetesClientBuilder.withHttpClientBuilderConsumer to further customize the HttpClient for any implementation.
 * Fix #4348: Introduce specific annotations for the generators
-* Refactor #4441: refactoring `TokenRefreshInterceptor`
-* Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled.  Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
+* Fix #4441: refactoring `TokenRefreshInterceptor`
+* Fix #4365: The Watch retry logic will handle more cases, as well as perform an exceptional close for events that are not properly handled. Informers can directly provide those exceptional outcomes via the SharedIndexInformer.stopped CompletableFuture.
 * Fix #4396: Provide more error context when @Group/@Version annotations are missing
 * Fix #4384: The Java generator now supports the generation of specific annotations (min, max, pattern, etc.), as defined by #4348
+* Fix #4408: Allowing informers started via the start() method to have configurable exception / retry handling.
 * Fix #3864: Change ManagedOpenShiftClient OSGi ConfigurationPolicy to REQUIRE
-* Fix #4201: Removed sendAsync from the individual http client implementations
+* Fix #4470: Added timestamps support for deployment logs and other resources.
+* Fix #4476: \[crd-generator\] Support custom `Annotations` and `Labels` to be emitted in the CRD
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0
 * Fix #4243: Update Tekton triggers model to v0.20.2
 * Fix #4383: bump snakeyaml from 1.30 to 1.31
 * Fix #4347: Update Kubernetes Model to v1.25.0
+* Fix #4413: Update sundrio to 0.93.1
 
 #### New Features
 * Fix #4398: add annotation @PreserveUnknownFields for marking generated field have `x-kubernetes-preserve-unknown-fields: true` defined
@@ -41,6 +66,8 @@
 * Fix #3864: Now it's compulsory to provide `etc/io.fabric8.openshift.client.cfg` file in order to load ManagedOpenShiftClient in OSGi environment.
 * Fix #3924: Extension Mock modules have been removed
 * Fix #4384: javax.validation.* annotations are no longer added by the Java generator.
+* Fix #3906: removed BaseKubernetesList, use KubernetesList instead
+* Fix #4408: deprecated SharedInformerFactory.addSharedInformerEventListener, instead use the SharedIndexInformer.stopped method.  Also the signature of SharedIndexInformer.start was changed to a CompletionStage rather than a CompletableFuture.
 
 ### 5.12.4 (2022-09-30)
 

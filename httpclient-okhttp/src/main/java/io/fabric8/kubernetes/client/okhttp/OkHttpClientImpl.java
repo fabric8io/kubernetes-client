@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -42,6 +43,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Function;
 
 public class OkHttpClientImpl implements HttpClient {
@@ -247,22 +249,28 @@ public class OkHttpClientImpl implements HttpClient {
       Function<BufferedSource, AsyncBody> handler) {
     CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
     Call call = httpClient.newCall(((OkHttpRequestImpl) request).getRequest());
-    call.enqueue(new Callback() {
+    try {
+      call.enqueue(new Callback() {
 
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
-        BufferedSource source = response.body().source();
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+          BufferedSource source = response.body().source();
 
-        AsyncBody asyncBody = handler.apply(source);
+          AsyncBody asyncBody = handler.apply(source);
 
-        future.complete(new OkHttpResponseImpl<>(response, asyncBody));
-      }
+          future.complete(new OkHttpResponseImpl<>(response, asyncBody));
+        }
 
-      @Override
-      public void onFailure(Call call, IOException e) {
-        future.completeExceptionally(e);
-      }
-    });
+        @Override
+        public void onFailure(Call call, IOException e) {
+          future.completeExceptionally(e);
+        }
+      });
+    } catch (RejectedExecutionException e) {
+      throw new KubernetesClientException("The okhttp client executor has been shutdown.  "
+          + "More than likely this is because the KubernetesClient.close method has been called "
+          + "- please ensure that is intentional.", e);
+    }
     future.whenComplete((r, t) -> {
       if (future.isCancelled()) {
         call.cancel();

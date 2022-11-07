@@ -79,7 +79,7 @@ class ConfigMapCrudTest {
     client.configMaps().inAnyNamespace().waitUntilCondition(c -> {
       uids.add(c.getMetadata().getUid());
       return true;
-    }, 1, TimeUnit.SECONDS);
+    }, 10, TimeUnit.SECONDS);
 
     assertEquals(3, uids.size());
 

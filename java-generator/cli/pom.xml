@@ -22,7 +22,7 @@
   <parent>
     <artifactId>java-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.2-SNAPSHOT</version>
+    <version>6.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,7 +30,7 @@
   <name>Fabric8 :: Java generator :: CLI</name>
 
   <properties>
-    <picocli.version>4.6.3</picocli.version>
+    <picocli.version>4.7.0</picocli.version>
   </properties>
 
   <dependencies>
@@ -84,7 +84,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.4.1</version>
         <executions>
             <execution>
                 <phase>package</phase>

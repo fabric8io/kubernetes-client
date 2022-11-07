@@ -202,7 +202,11 @@ public class OperationSupport {
 
   public URL getResourceURLForWriteOperation(URL resourceURL) throws MalformedURLException {
     if (dryRun) {
-      return new URL(URLUtils.join(resourceURL.toString(), "?dryRun=All"));
+      resourceURL = new URL(URLUtils.join(resourceURL.toString(), "?dryRun=All"));
+    }
+    if (context.fieldValidation != null) {
+      resourceURL = new URL(
+          URLUtils.join(resourceURL.toString(), "?fieldValidation=" + context.fieldValidation.parameterValue()));
     }
     return resourceURL;
   }
@@ -225,6 +229,8 @@ public class OperationSupport {
       }
       if (patchContext.getFieldValidation() != null) {
         url = URLUtils.join(url, "?fieldValidation=" + patchContext.getFieldValidation());
+      } else if (this.context.fieldValidation != null) {
+        url = URLUtils.join(url, "?fieldValidation=" + this.context.fieldValidation.parameterValue());
       }
       return new URL(url);
     }
@@ -627,6 +633,10 @@ public class OperationSupport {
    * @param response The {@link HttpResponse} object.
    */
   protected void assertResponseCode(HttpRequest request, HttpResponse<?> response) {
+    List<String> warnings = response.headers("Warning");
+    if (warnings != null && !warnings.isEmpty()) {
+      LOG.warn("Recieved warning(s) from request at {}: {}", request.uri(), warnings);
+    }
     if (response.isSuccessful()) {
       return;
     }

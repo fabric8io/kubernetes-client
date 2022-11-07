@@ -106,7 +106,7 @@ public class KubeSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("CatalogSource")
     private CatalogSource catalogSource;
     @JsonProperty("CatalogSourceList")
@@ -201,7 +201,7 @@ public class KubeSchema {
      * @param operatorCondition
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -255,12 +255,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

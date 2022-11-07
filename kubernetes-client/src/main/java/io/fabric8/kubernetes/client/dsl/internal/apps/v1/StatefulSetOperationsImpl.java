@@ -24,9 +24,14 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
@@ -101,15 +106,16 @@ public class StatefulSetOperationsImpl
 
   @Override
   public String getLog(boolean isPretty) {
-    return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
+    return PodOperationUtil.getLog(
+        new StatefulSetOperationsImpl(rollingOperationContext.withPrettyOutput(isPretty), context).doGetLog(), isPretty);
   }
 
-  private List<PodResource> doGetLog(boolean isPretty) {
+  private List<PodResource> doGetLog() {
     StatefulSet statefulSet = requireFromServer();
 
-    return PodOperationUtil.getPodOperationsForController(context, statefulSet.getMetadata().getUid(),
-        getStatefulSetSelectorLabels(statefulSet), isPretty, rollingOperationContext.getLogWaitTimeout(),
-        rollingOperationContext.getContainerId());
+    return PodOperationUtil.getPodOperationsForController(context,
+        rollingOperationContext.getPodOperationContext(), statefulSet.getMetadata().getUid(),
+        getStatefulSetSelectorLabels(statefulSet));
   }
 
   /**
@@ -119,7 +125,7 @@ public class StatefulSetOperationsImpl
    */
   @Override
   public Reader getLogReader() {
-    return PodOperationUtil.getLogReader(doGetLog(false));
+    return PodOperationUtil.getLogReader(doGetLog());
   }
 
   /**
@@ -129,12 +135,12 @@ public class StatefulSetOperationsImpl
    */
   @Override
   public InputStream getLogInputStream() {
-    return PodOperationUtil.getLogInputStream(doGetLog(false));
+    return PodOperationUtil.getLogInputStream(doGetLog());
   }
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    return PodOperationUtil.watchLog(doGetLog(false), out);
+    return PodOperationUtil.watchLog(doGetLog(), out);
   }
 
   @Override
@@ -198,4 +204,38 @@ public class StatefulSetOperationsImpl
     return value.getSpec().getTemplate().getSpec().getContainers();
   }
 
+  @Override
+  public TimeTailPrettyLoggable limitBytes(int limitBytes) {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withLimitBytes(limitBytes), context);
+  }
+
+  @Override
+  public TimeTailPrettyLoggable terminated() {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withTerminatedStatus(true), context);
+  }
+
+  @Override
+  public Loggable withPrettyOutput() {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withPrettyOutput(true), context);
+  }
+
+  @Override
+  public PrettyLoggable tailingLines(int lines) {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withTailingLines(lines), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceTime(String timestamp) {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withSinceTimestamp(timestamp), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceSeconds(int seconds) {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withSinceSeconds(seconds), context);
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
+    return new StatefulSetOperationsImpl(rollingOperationContext.withTimestamps(true), context);
+  }
 }

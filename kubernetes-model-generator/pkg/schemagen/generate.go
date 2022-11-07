@@ -180,7 +180,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "RawExtension":
 			return "io.fabric8.kubernetes.api.model.KubernetesResource"			
 		case "List":
-			return pkgDesc.JavaPackage + ".BaseKubernetesList"
+			return pkgDesc.JavaPackage + ".KubernetesList"
 		default:
 			return pkgDesc.JavaPackage + "." + t.Name()
 		}

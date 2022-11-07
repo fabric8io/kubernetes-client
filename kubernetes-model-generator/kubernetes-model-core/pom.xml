@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
-    <version>6.2-SNAPSHOT</version>
+    <version>6.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-model-core</artifactId>
@@ -179,6 +179,9 @@
                       verbose="true" />
                     <delete
                       file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/KubernetesResource.java"
+                      verbose="true" />
+                    <delete
+                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/KubernetesList.java"
                       verbose="true" />
                     <delete verbose="true">
                       <fileset dir="${generate.targetDirectory}">

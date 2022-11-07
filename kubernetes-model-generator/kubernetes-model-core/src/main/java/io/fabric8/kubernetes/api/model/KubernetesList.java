@@ -15,18 +15,20 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.model.annotation.Generated;
 import io.sundr.builder.annotations.Buildable;
 
-import io.fabric8.kubernetes.model.annotation.Generated;
-
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  *
@@ -35,42 +37,44 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-        "apiVersion",
-        "kind",
-        "metadata",
-        "items",
+    "apiVersion",
+    "kind",
+    "metadata",
+    "items",
 })
 @JsonDeserialize(using = JsonDeserializer.None.class)
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class KubernetesList extends BaseKubernetesList implements KubernetesResource {
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
+public class KubernetesList extends DefaultKubernetesResourceList<HasMetadata> implements KubernetesResource {
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public KubernetesList() {
-        super();
-    }
+  @JsonIgnore
+  private Map<String, Object> additionalProperties = new LinkedHashMap<>();
 
-    public KubernetesList(String apiVersion,
-                          List<HasMetadata> items,
-                          String kind,
-                          ListMeta metadata) {
-        super(apiVersion, items, kind, metadata);
-    }
+  /**
+   * No args constructor for use in serialization
+   */
+  public KubernetesList() {
+    this("v1", new ArrayList<>(), "List", null);
+  }
 
-    //Let's just override those, cause some IDEs can't handle extending a generated class and can't see those and get crazy.
-    @Override
-    public String getKind() {
-      return super.getKind();
-    }
+  public KubernetesList(String apiVersion,
+      List<HasMetadata> items,
+      String kind,
+      ListMeta metadata) {
+    super();
+    this.setMetadata(metadata);
+    this.setApiVersion(apiVersion);
+    this.setKind(kind);
+    this.setItems(items);
+  }
 
-    @Override
-    public String getApiVersion() {
-      return super.getApiVersion();
-    }
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
 
-    @Override
-    public List<HasMetadata> getItems() {
-      return super.getItems();
-    }
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
+
 }

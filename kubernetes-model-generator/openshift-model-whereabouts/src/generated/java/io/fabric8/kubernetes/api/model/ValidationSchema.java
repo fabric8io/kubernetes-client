@@ -77,7 +77,7 @@ public class ValidationSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("IPAllocation")
     private IPAllocation iPAllocation;
     @JsonProperty("IPPool")
@@ -127,7 +127,7 @@ public class ValidationSchema {
      * @param info
      * @param status
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, IPAllocation iPAllocation, IPPool iPPool, IPPoolList iPPoolList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OverlappingRangeIPReservation overlappingRangeIPReservation, OverlappingRangeIPReservationList overlappingRangeIPReservationList, Patch patch, Status status, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, IPAllocation iPAllocation, IPPool iPPool, IPPoolList iPPoolList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OverlappingRangeIPReservation overlappingRangeIPReservation, OverlappingRangeIPReservationList overlappingRangeIPReservationList, Patch patch, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -166,12 +166,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

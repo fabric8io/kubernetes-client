@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
 public class ValidationSchema {
 
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("ObjectMeta")
@@ -117,7 +117,7 @@ public class ValidationSchema {
      * @param info
      * @param status
      */
-    public ValidationSchema(BaseKubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Quantity quantity, Status status, TypeMeta typeMeta, io.fabric8.kubernetes.api.model.node.v1.RuntimeClass v1RuntimeClass, io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList v1RuntimeClassList, io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClass v1alpha1RuntimeClass, io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClassList v1alpha1RuntimeClassList, io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass v1beta1RuntimeClass, io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList v1beta1RuntimeClassList) {
+    public ValidationSchema(KubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Quantity quantity, Status status, TypeMeta typeMeta, io.fabric8.kubernetes.api.model.node.v1.RuntimeClass v1RuntimeClass, io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList v1RuntimeClassList, io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClass v1alpha1RuntimeClass, io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClassList v1alpha1RuntimeClassList, io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass v1beta1RuntimeClass, io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList v1beta1RuntimeClassList) {
         super();
         this.baseKubernetesList = baseKubernetesList;
         this.info = info;
@@ -135,12 +135,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

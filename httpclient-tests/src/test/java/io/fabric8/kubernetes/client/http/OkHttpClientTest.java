@@ -141,12 +141,12 @@ class OkHttpClientTest {
 
         });
 
-    assertFalse(latch.await(2, TimeUnit.SECONDS));
+    assertFalse(latch.await(10, TimeUnit.SECONDS));
     assertEquals(1, latch.getCount());
 
     startedFuture.get().request();
 
-    assertTrue(latch.await(1, TimeUnit.SECONDS));
+    assertTrue(latch.await(10, TimeUnit.SECONDS));
   }
 
   @Test
@@ -181,7 +181,7 @@ class OkHttpClientTest {
       }
     });
 
-    assertEquals(byteCount, consumed.get(5, TimeUnit.SECONDS));
+    assertEquals(byteCount, consumed.get(10, TimeUnit.SECONDS));
   }
 
   @Test
@@ -215,7 +215,7 @@ class OkHttpClientTest {
       }
     });
 
-    consumed.get(5, TimeUnit.SECONDS);
+    consumed.get(10, TimeUnit.SECONDS);
     assertEquals(Arrays.asList("hello", "world", "lines"), strings);
   }
 

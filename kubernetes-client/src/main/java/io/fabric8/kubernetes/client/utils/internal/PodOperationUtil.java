@@ -18,11 +18,9 @@ package io.fabric8.kubernetes.client.utils.internal;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
@@ -66,17 +64,16 @@ public class PodOperationUtil {
     return pods;
   }
 
-  public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout,
-      String containerId) {
+  public static PodOperationsImpl getGenericPodOperations(OperationContext context, PodOperationContext podOperationContext) {
     return new PodOperationsImpl(
-        PodOperationContext.builder().containerId(containerId).prettyOutput(isPretty).logWaitTimeout(podLogWaitTimeout).build(),
+        podOperationContext,
         context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
   }
 
-  public static List<PodResource> getPodOperationsForController(OperationContext context, String controllerUid,
-      Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
+  public static List<PodResource> getPodOperationsForController(OperationContext context,
+      PodOperationContext podOperationContext, String controllerUid, Map<String, String> selectorLabels) {
     return getPodOperationsForController(
-        PodOperationUtil.getGenericPodOperations(context, isPretty, podLogWaitTimeout, containerId), controllerUid,
+        PodOperationUtil.getGenericPodOperations(context, podOperationContext), controllerUid,
         selectorLabels);
   }
 

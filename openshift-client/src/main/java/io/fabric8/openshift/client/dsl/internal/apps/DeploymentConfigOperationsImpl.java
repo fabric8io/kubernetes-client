@@ -19,9 +19,13 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
@@ -161,17 +165,18 @@ public class DeploymentConfigOperationsImpl
 
   @Override
   public String getLog() {
-    return getLog(false);
+    return getLog(rollingOperationContext.getPodOperationContext().isPrettyOutput());
   }
 
   @Override
   public String getLog(boolean isPretty) {
-    return doGetLog(isPretty, String.class);
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withPrettyOutput(isPretty), context)
+        .doGetLog(String.class);
   }
 
-  private <T> T doGetLog(Boolean isPretty, Class<T> type) {
+  private <T> T doGetLog(Class<T> type) {
     try {
-      URL url = getResourceLogUrl(isPretty, false);
+      URL url = getResourceLogUrl(false);
       return handleRawGet(url, type);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
@@ -185,7 +190,7 @@ public class DeploymentConfigOperationsImpl
    */
   @Override
   public Reader getLogReader() {
-    return doGetLog(false, Reader.class);
+    return doGetLog(Reader.class);
   }
 
   /**
@@ -195,7 +200,7 @@ public class DeploymentConfigOperationsImpl
    */
   @Override
   public InputStream getLogInputStream() {
-    return doGetLog(false, InputStream.class);
+    return doGetLog(InputStream.class);
   }
 
   @Override
@@ -208,7 +213,7 @@ public class DeploymentConfigOperationsImpl
     try {
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
       waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
-      URL url = getResourceLogUrl(false, true);
+      URL url = getResourceLogUrl(true);
       final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
       return callback.callAndWait(this.httpClient, url);
     } catch (Throwable t) {
@@ -216,27 +221,26 @@ public class DeploymentConfigOperationsImpl
     }
   }
 
-  private URL getResourceLogUrl(Boolean withPrettyOutput, Boolean follow) throws MalformedURLException {
-    URLBuilder requestUrlBuilder = new URLBuilder(URLUtils.join(getResourceUrl().toString(), "log"));
-    if (Boolean.TRUE.equals(withPrettyOutput)) {
-      requestUrlBuilder.addQueryParameter("pretty", withPrettyOutput.toString());
-    }
+  private URL getResourceLogUrl(Boolean follow) throws MalformedURLException {
     if (Boolean.TRUE.equals(follow)) {
-      requestUrlBuilder.addQueryParameter("follow", "true");
+      return new URL(URLUtils.join(getResourceUrl().toString(),
+          rollingOperationContext.getPodOperationContext().getLogParameters() + "&follow=true"));
+    } else {
+      return new URL(
+          URLUtils.join(getResourceUrl().toString(), rollingOperationContext.getPodOperationContext().getLogParameters()));
     }
-    return requestUrlBuilder.build();
   }
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new DeploymentConfigOperationsImpl(rollingOperationContext.withLogWaitTimout(logWaitTimeout), context);
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withLogWaitTimeout(logWaitTimeout), context);
   }
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
-    Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
+    Integer podLogWaitTimeout = rollingOperationContext.getPodOperationContext().getLogWaitTimeout();
     List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
-        deploymentConfig.getMetadata().getUid(),
-        getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, rollingOperationContext.getContainerId());
+        rollingOperationContext.getPodOperationContext(),
+        deploymentConfig.getMetadata().getUid(), getDeploymentConfigPodLabels(deploymentConfig));
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
@@ -258,5 +262,40 @@ public class DeploymentConfigOperationsImpl
   @Override
   public Loggable inContainer(String id) {
     return new DeploymentConfigOperationsImpl(rollingOperationContext.withContainerId(id), context);
+  }
+
+  @Override
+  public TimeTailPrettyLoggable limitBytes(int limitBytes) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withLimitBytes(limitBytes), context);
+  }
+
+  @Override
+  public TimeTailPrettyLoggable terminated() {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withTerminatedStatus(true), context);
+  }
+
+  @Override
+  public Loggable withPrettyOutput() {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withPrettyOutput(true), context);
+  }
+
+  @Override
+  public PrettyLoggable tailingLines(int lines) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withTailingLines(lines), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceTime(String timestamp) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withSinceTimestamp(timestamp), context);
+  }
+
+  @Override
+  public TailPrettyLoggable sinceSeconds(int seconds) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withSinceSeconds(seconds), context);
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withTimestamps(true), context);
   }
 }

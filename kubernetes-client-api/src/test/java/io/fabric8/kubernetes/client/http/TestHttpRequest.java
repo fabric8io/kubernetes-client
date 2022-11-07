@@ -20,7 +20,7 @@ import java.net.URI;
 /**
  * Basic {@link HttpRequest} implementation to be used in tests instead of mocks or real requests.
  */
-public class TestHttpRequest extends TestHttpHeaders<TestHttpRequest> implements HttpRequest {
+public class TestHttpRequest extends StandardHttpHeaders implements HttpRequest {
 
   private URI uri;
   private String method;

@@ -280,7 +280,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.KubernetesResource\u003e"
@@ -4293,7 +4293,7 @@
     },
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_List",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.KubernetesList"
     },
     "CreateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_CreateOptions",
@@ -4808,7 +4808,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "batch/v1",
+          "default": "batch/v1beta1",
           "required": true
         },
         "kind": {
@@ -4821,12 +4821,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_batch_v1_CronJobSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobSpec"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJobSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_batch_v1_CronJobStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobStatus"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJobStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobStatus"
         }
       },
       "additionalProperties": true
@@ -4835,14 +4835,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "batch/v1",
+          "default": "batch/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_batch_v1_CronJob",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJob"
+            "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJob",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob"
           }
         },
         "kind": {
@@ -4866,8 +4866,8 @@
           "type": "integer"
         },
         "jobTemplate": {
-          "$ref": "#/definitions/kubernetes_batch_v1_JobTemplateSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.JobTemplateSpec"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_JobTemplateSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.JobTemplateSpec"
         },
         "schedule": {
           "type": "string"

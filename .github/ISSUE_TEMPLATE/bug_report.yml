@@ -48,6 +48,7 @@ body:
       description: Fabric8 Kubernetes Client version (can be found in pom.xml dependency or build.gradle implementation section)
       options:
         - "SNAPSHOT"
+        - "6.2.0"
         - "6.1.1"
         - "6.1.0"
         - "6.0.0"
@@ -108,10 +109,10 @@ body:
       label: Kubernetes API Server version
       description: Kubernetes API Server version
       options:
-        - "1.24.2@latest"
+        - "1.25.3@latest"
         - "next (development version)"
+        - "1.24"
         - "1.23"
-        - "1.22"
         - "other (please specify in additional context)"
     validations:
       required: true

@@ -96,7 +96,7 @@ public class KubeSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("ConsoleCLIDownload")
     private ConsoleCLIDownload consoleCLIDownload;
     @JsonProperty("ConsoleCLIDownloadList")
@@ -176,7 +176,7 @@ public class KubeSchema {
      * @param info
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsolePluginList consolePlugin, ConsolePluginList consolePluginList, ConsoleQuickStart consoleQuickStart, ConsoleQuickStartList consoleQuickStartList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, ResourceAttributes resourceAttributes, Status status, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsolePluginList consolePlugin, ConsolePluginList consolePluginList, ConsoleQuickStart consoleQuickStart, ConsoleQuickStartList consoleQuickStartList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, ResourceAttributes resourceAttributes, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -225,12 +225,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

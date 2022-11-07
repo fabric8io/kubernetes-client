@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.example.map;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,4 +33,32 @@ public class ContainingMapsSpec {
     return test2;
   }
 
+  private MultiHashMap<String, Integer> stringToIntMultiMap1;
+  private MultiMap<String, Integer> stringToIntMultiMap2;
+  private SwappedParametersMap<List<Integer>, String> stringToIntMultiMap3;
+  private RedundantParametersMap<Object, Runnable, String, List<Integer>> stringToIntMultiMap4;
+  private RedundantParametersStringToIntMultiMap<Integer, Long> stringToIntMultiMap5;
+  private StringKeyedMultiHashMap<Integer> stringToIntMultiMap6;
+  private IntValuedMultiMap<String> stringToIntMultiMap7;
+
+  static class MultiHashMap<K, V> extends HashMap<K, List<V>> {
+  }
+
+  interface MultiMap<K, V> extends Map<K, List<V>> {
+  }
+
+  interface SwappedParametersMap<V, K> extends Map<K, V> {
+  }
+
+  interface RedundantParametersMap<A, B, K, V> extends Map<K, V> {
+  }
+
+  interface RedundantParametersStringToIntMultiMap<K, V> extends Map<String, List<Integer>> {
+  }
+
+  static class StringKeyedMultiHashMap<V> extends MultiHashMap<String, V> {
+  }
+
+  interface IntValuedMultiMap<K> extends MultiMap<K, Integer> {
+  }
 }

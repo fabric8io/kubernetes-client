@@ -705,6 +705,39 @@ class DeploymentTest {
     assertEquals("hello", log);
   }
 
+  @Test
+  @DisplayName("Should get logs for a Deployment with timestamps")
+  void testDeploymentGetLogTimestamps() {
+    // Given
+    ReplicaSet replicaSet = createMockReplicaSet("deploy1", "136581bf-82c2-4675-af05-63c55500b378", "deploy1-hk9nf",
+        Collections.singletonMap("app", "nginx"), "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4");
+    Pod deployPod = createMockPod("1", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4", "deploy1-hk9nf",
+        Collections.singletonMap("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4"));
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .always();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
+        .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSet).build())
+        .once();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/deploy1-hk9nf")
+        .andReturn(HttpURLConnection.HTTP_OK, replicaSet)
+        .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+        .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(deployPod).build())
+        .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false&timestamps=true")
+        .andReturn(HttpURLConnection.HTTP_OK, "hello")
+        .once();
+
+    // When
+    String log = client.apps().deployments().inNamespace("ns1").withName("deploy1").usingTimestamps().getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
   private DeploymentBuilder createDeploymentBuilder() {
     return new DeploymentBuilder()
         .withNewMetadata()

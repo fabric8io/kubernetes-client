@@ -44,23 +44,23 @@ class CrudInformerTest {
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 4000);
     BlockingQueue<Pod> events = new LinkedBlockingQueue<>();
     podInformer.addEventHandler(
-      new ResourceEventHandler<Pod>() {
-        @Override
-        public void onAdd(Pod obj) {
-          events.add(obj);
-        }
+        new ResourceEventHandler<Pod>() {
+          @Override
+          public void onAdd(Pod obj) {
+            events.add(obj);
+          }
 
-        @Override
-        public void onUpdate(Pod oldObj, Pod newObj) {
-        }
+          @Override
+          public void onUpdate(Pod oldObj, Pod newObj) {
+          }
 
-        @Override
-        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) {
-        }
-      });
+          @Override
+          public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) {
+          }
+        });
     factory.startAllRegisteredInformers();
     client.pods().create(podToCreate);
-    Pod readPod = events.poll(5, TimeUnit.SECONDS);
+    Pod readPod = events.poll(10, TimeUnit.SECONDS);
     assertNotNull(readPod);
     assertEquals(readPod.getMetadata().getName(), podToCreate.getMetadata().getName());
     factory.stopAllRegisteredInformers();

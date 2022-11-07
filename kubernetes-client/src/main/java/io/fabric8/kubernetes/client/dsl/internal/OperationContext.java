@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.FieldValidateable;
+import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.impl.ResourceHandler;
@@ -48,6 +50,7 @@ public class OperationContext {
   protected String name;
   protected boolean reloadingFromServer;
   protected boolean dryRun;
+  protected FieldValidateable.Validation fieldValidation;
 
   // Default to -1 to respect the value set in the resource or the Kubernetes default (30 seconds)
   protected long gracePeriodSeconds = -1L;
@@ -70,7 +73,7 @@ public class OperationContext {
     this(other.client, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy,
-        other.dryRun, other.selectorAsString, other.defaultNamespace);
+        other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation);
   }
 
   public OperationContext(Client client, String plural, String namespace, String name,
@@ -78,7 +81,7 @@ public class OperationContext {
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-      boolean dryRun, String selectorAsString, boolean defaultNamespace) {
+      boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation) {
     this.client = client;
     this.item = item;
     this.plural = plural;
@@ -98,6 +101,7 @@ public class OperationContext {
     this.propagationPolicy = propagationPolicy;
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
+    this.fieldValidation = fieldValidation;
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
@@ -475,7 +479,7 @@ public class OperationContext {
     // operationcontext
     OperationContext newContext = HasMetadataOperationsImpl.defaultContext(client).withDryRun(getDryRun())
         .withGracePeriodSeconds(getGracePeriodSeconds()).withPropagationPolicy(getPropagationPolicy())
-        .withReloadingFromServer(isReloadingFromServer());
+        .withReloadingFromServer(isReloadingFromServer()).withFieldValidation(this.fieldValidation);
 
     // check before setting to prevent flipping the default flag
     if (!Objects.equals(getNamespace(), newContext.getNamespace())
@@ -488,6 +492,15 @@ public class OperationContext {
 
   public Executor getExecutor() {
     return getClient().adapt(BaseClient.class).getExecutor();
+  }
+
+  public OperationContext withFieldValidation(Validation fieldValidation) {
+    if (this.fieldValidation == fieldValidation) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.fieldValidation = fieldValidation;
+    return context;
   }
 
 }

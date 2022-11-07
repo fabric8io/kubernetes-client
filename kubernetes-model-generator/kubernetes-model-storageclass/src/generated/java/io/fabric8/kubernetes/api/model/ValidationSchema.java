@@ -95,7 +95,7 @@ public class ValidationSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("CSIDriver")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver;
     @JsonProperty("CSIDriverList")
@@ -205,7 +205,7 @@ public class ValidationSchema {
      * @param time
      * @param status
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -264,12 +264,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

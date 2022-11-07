@@ -85,7 +85,7 @@ public class ValidationSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("CertificateSigningRequest")
     private io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest certificateSigningRequest;
     @JsonProperty("CertificateSigningRequestCondition")
@@ -174,7 +174,7 @@ public class ValidationSchema {
      * @param status
      * @param v1Beta1CertificateSigningRequest
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest certificateSigningRequest, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition certificateSigningRequestCondition, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList certificateSigningRequestList, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec certificateSigningRequestSpec, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus certificateSigningRequestStatus, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest v1Beta1CertificateSigningRequest, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition v1Beta1CertificateSigningRequestCondition, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList v1Beta1CertificateSigningRequestList, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec v1Beta1CertificateSigningRequestSpec, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus v1Beta1CertificateSigningRequestStatus) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest certificateSigningRequest, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition certificateSigningRequestCondition, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList certificateSigningRequestList, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec certificateSigningRequestSpec, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus certificateSigningRequestStatus, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest v1Beta1CertificateSigningRequest, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition v1Beta1CertificateSigningRequestCondition, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList v1Beta1CertificateSigningRequestList, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec v1Beta1CertificateSigningRequestSpec, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus v1Beta1CertificateSigningRequestStatus) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -226,12 +226,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

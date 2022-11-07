@@ -205,6 +205,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
+  public ListVisitFromServerWritable<HasMetadata> fieldValidation(Validation fieldValidation) {
+    return newInstance(this.context.withFieldValidation(fieldValidation), namespaceVisitOperationContext);
+  }
+
+  @Override
   public List<HasMetadata> createOrReplace() {
     List<? extends Resource<HasMetadata>> operations = getResources();
 

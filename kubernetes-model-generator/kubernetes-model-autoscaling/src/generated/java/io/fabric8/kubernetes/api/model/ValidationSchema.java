@@ -85,7 +85,7 @@ public class ValidationSchema {
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
-    private BaseKubernetesList baseKubernetesList;
+    private KubernetesList baseKubernetesList;
     @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
     @JsonProperty("DeleteOptions")
@@ -171,7 +171,7 @@ public class ValidationSchema {
      * @param time
      * @param status
      */
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Scale scale, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler v1HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList v1HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscaler v2HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscalerList v2HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler v2beta1HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscalerList v2beta1HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler v2beta2HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList v2beta2HorizontalPodAutoscalerList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Scale scale, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler v1HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList v1HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscaler v2HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscalerList v2HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler v2beta1HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscalerList v2beta1HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler v2beta2HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList v2beta2HorizontalPodAutoscalerList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -222,12 +222,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("BaseKubernetesList")
-    public BaseKubernetesList getBaseKubernetesList() {
+    public KubernetesList getBaseKubernetesList() {
         return baseKubernetesList;
     }
 
     @JsonProperty("BaseKubernetesList")
-    public void setBaseKubernetesList(BaseKubernetesList baseKubernetesList) {
+    public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
     }
 

@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
@@ -52,7 +53,7 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
   private String name;
   private String namespace;
 
-  private KubernetesClient client;
+  private final KubernetesClient client;
 
   public SharedInformerFactoryImpl(KubernetesClient client) {
     this.client = client;
@@ -110,12 +111,12 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
 
     if (!informers.isEmpty()) {
       for (SharedIndexInformer<?> informer : informers) {
-        CompletableFuture<Void> future = informer.start();
+        CompletableFuture<Void> future = informer.start().toCompletableFuture();
         startInformerTasks.add(future);
         future.whenComplete((v, t) -> {
           if (t != null) {
             if (this.eventListeners.isEmpty()) {
-              log.warn("Failed to start informer {}", informer.toString(), t);
+              log.warn("Failed to start informer {}", informer, t);
             } else {
               this.eventListeners
                   .forEach(listener -> listener.onException(informer, KubernetesClientException.launderThrowable(t)));
