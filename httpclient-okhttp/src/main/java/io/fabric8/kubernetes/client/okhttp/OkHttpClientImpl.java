@@ -282,7 +282,11 @@ public class OkHttpClientImpl implements HttpClient {
 
       @Override
       public void onResponse(Call call, Response response) throws IOException {
-        future.complete(new OkHttpResponseImpl<>(response, type));
+        try {
+          future.complete(new OkHttpResponseImpl<T>(response, type));
+        } catch (IOException e) {
+          future.completeExceptionally(e);
+        }
       }
 
       @Override
