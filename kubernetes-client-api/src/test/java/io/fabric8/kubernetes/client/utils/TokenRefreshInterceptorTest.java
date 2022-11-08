@@ -38,7 +38,8 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_TRYKUBECONFIG_
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_KUBECONFIG_FILE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * Ignoring for now - the token refresh should be based upon the java 11 client or the provided client library and not okhttp
@@ -98,40 +99,42 @@ class TokenRefreshInterceptorTest {
   @DisplayName("#4442 token auto refresh should not overwrite existing token when not applicable")
   void refreshShouldNotOverwriteExistingToken() throws Exception {
     // Given
+    final Config originalConfig = spy(new ConfigBuilder(Config.empty())
+        .withOauthToken("existing-token")
+        .build());
     final Config autoConfig = new ConfigBuilder(Config.empty())
         .withOauthToken("") // empty token
         .build();
-    final Config config = Mockito.mock(Config.class);
-    Mockito.when(config.getOauthToken()).thenReturn("existing-token");
-    Mockito.when(config.refresh()).thenReturn(autoConfig);
+    when(originalConfig.refresh()).thenReturn(autoConfig);
     final TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(
-        config, null, Instant.now().minusSeconds(61));
+        originalConfig, null, Instant.now().minusSeconds(61));
     // When
     final boolean result = tokenRefreshInterceptor
         .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401)).get();
     // Then
     assertThat(result).isFalse();
-    Mockito.verify(config, never()).setOauthToken("new-token");
+    assertThat(originalConfig).hasFieldOrPropertyWithValue("oauthToken", "existing-token");
   }
 
   @Test
   @DisplayName("#4442 token auto refresh should  overwrite existing token when applicable")
   void refreshShouldOverwriteExistingToken() throws Exception {
     // Given
+    final Config originalConfig = spy(new ConfigBuilder(Config.empty())
+        .withOauthToken("existing-token")
+        .build());
     final Config autoConfig = new ConfigBuilder(Config.empty())
         .withOauthToken("new-token")
         .build();
-    final Config config = Mockito.mock(Config.class);
-    Mockito.when(config.getOauthToken()).thenReturn("existing-token");
-    Mockito.when(config.refresh()).thenReturn(autoConfig);
+    when(originalConfig.refresh()).thenReturn(autoConfig);
     final TokenRefreshInterceptor tokenRefreshInterceptor = new TokenRefreshInterceptor(
-        config, null, Instant.now().minusSeconds(61));
+        originalConfig, null, Instant.now().minusSeconds(61));
     // When
     final boolean result = tokenRefreshInterceptor
         .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401)).get();
     // Then
     assertThat(result).isTrue();
-    Mockito.verify(config).setOauthToken("new-token");
+    assertThat(originalConfig).hasFieldOrPropertyWithValue("oauthToken", "new-token");
   }
 
   @Test
