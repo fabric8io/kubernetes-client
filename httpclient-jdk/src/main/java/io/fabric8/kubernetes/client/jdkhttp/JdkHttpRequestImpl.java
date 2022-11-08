@@ -115,7 +115,7 @@ class JdkHttpRequestImpl implements HttpRequest {
     }
 
     public Builder timeout(Duration duration) {
-      if (duration != null) {
+      if (duration != null && !Duration.ZERO.equals(duration)) {
         builder.timeout(duration);
       }
       return this;

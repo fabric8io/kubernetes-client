@@ -53,7 +53,7 @@ class JdkHttpClientBuilderImpl
       return new JdkHttpClientImpl(this, client.getHttpClient(), this.requestConfig);
     }
     java.net.http.HttpClient.Builder builder = clientFactory.createNewHttpClientBuilder();
-    if (connectTimeout != null) {
+    if (connectTimeout != null && !java.time.Duration.ZERO.equals(connectTimeout)) {
       builder.connectTimeout(connectTimeout);
     }
     if (sslContext != null) {
