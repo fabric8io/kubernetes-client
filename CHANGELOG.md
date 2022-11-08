@@ -9,6 +9,7 @@
 * Fix #4535: The shell command string will now have single quotes sanitized
 * Fix #4543: (Java Generator) additionalProperties JsonAny setter method generated as setAdditionalProperty
 * Fix #4547: preventing timing issues with leader election cancel
+* Fix #4569: fixing jdk httpclient regression with 0 timeouts
 
 #### Improvements
 * Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
