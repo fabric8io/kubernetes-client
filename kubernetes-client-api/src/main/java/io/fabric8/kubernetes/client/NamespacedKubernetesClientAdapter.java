@@ -284,6 +284,11 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   }
 
   @Override
+  public NamespaceableResource<HasMetadata> resource(InputStream is) {
+    return getClient().resource(is);
+  }
+
+  @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
     return getClient().bindings();
   }
