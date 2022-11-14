@@ -283,7 +283,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       objField.createGetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnyGetter");
       objField.createSetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
 
-      MethodDeclaration additionalSetter = clz.addMethod("setAdditionalProperties", Modifier.Keyword.PUBLIC);
+      MethodDeclaration additionalSetter = clz.addMethod("setAdditionalProperty", Modifier.Keyword.PUBLIC);
       additionalSetter.addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
       additionalSetter.addParameter("String", "key");
       additionalSetter.addParameter("Object", "value");

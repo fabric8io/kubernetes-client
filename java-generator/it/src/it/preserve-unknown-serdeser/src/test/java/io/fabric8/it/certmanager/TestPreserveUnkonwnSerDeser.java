@@ -56,12 +56,12 @@ class TestPreserveUnknownSerDeser {
 
     io.dapr.v1alpha1.componentspec.Test t = new io.dapr.v1alpha1.componentspec.Test();
 
-    t.setAdditionalProperties("one", "ONE");
+    t.setAdditionalProperty("one", "ONE");
 
     HashMap<String, Object> twoContent = new HashMap();
     twoContent.put("more", 1);
     twoContent.put("complex", true);
-    t.setAdditionalProperties("two", twoContent);
+    t.setAdditionalProperty("two", twoContent);
     
     spec.setTest(t);
 
