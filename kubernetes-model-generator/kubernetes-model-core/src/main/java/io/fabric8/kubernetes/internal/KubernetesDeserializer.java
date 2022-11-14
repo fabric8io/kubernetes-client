@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -113,7 +114,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     TypeKey key = getKey(node);
     Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
     if (resourceType == null) {
-      if (key == null || (key.version == null && key.apiGroup == null)) {
+      if (key == null) {
         // just a wrapper around a map
         // if this raw mapping typed as HasMetadata, a failure will result
         return jp.getCodec().treeToValue(node, RawExtension.class);
@@ -171,24 +172,21 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     }
 
     public void registerKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
-      mappings.put(createKey(apiVersion, kind), clazz);
+      Optional.ofNullable(createKey(apiVersion, kind)).ifPresent(k -> mappings.put(k, clazz));
     }
 
     /**
      * Returns a composite key for apiVersion and kind.
      */
     TypeKey createKey(String apiVersion, String kind) {
-      if (kind == null) {
+      if (kind == null || apiVersion == null) {
         return null;
-      } else if (apiVersion == null) {
-        return new TypeKey(kind, null, null);
-      } else {
-        String[] versionParts = new String[] { null, apiVersion };
-        if (apiVersion.contains("/")) {
-          versionParts = apiVersion.split("/", 2);
-        }
-        return new TypeKey(kind, versionParts[0], versionParts[1]);
       }
+      String[] versionParts = new String[] { null, apiVersion };
+      if (apiVersion.contains("/")) {
+        versionParts = apiVersion.split("/", 2);
+      }
+      return new TypeKey(kind, versionParts[0], versionParts[1]);
     }
 
     private void registerClasses(ClassLoader classLoader) {
@@ -209,11 +207,14 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
       } else if (apiVersion != null && !apiVersion.isEmpty()) {
         return createKey(apiVersion, kind);
       }
-      return new TypeKey(kind, null, null);
+      return null;
     }
 
     private void addMapping(Class<? extends KubernetesResource> clazz) {
       TypeKey keyFromClass = getKeyFromClass(clazz);
+      if (keyFromClass == null) {
+        return;
+      }
       mappings.put(keyFromClass, clazz);
 
       // oc behavior - allow resolving against just the version

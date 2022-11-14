@@ -52,17 +52,7 @@ class KubernetesDeserializerTest {
   }
 
   @Test
-  void shouldNPEIfRegisterNullKind() {
-    // given
-    // when
-    assertThrows(NullPointerException.class, () -> {
-      mapping.registerKind("version1", null, SmurfResource.class);
-    });
-    // then throws
-  }
-
-  @Test
-  void shouldRegisterKindWithoutVersionIfNullVersion() {
+  void shouldNotRegisterKindWithoutVersionIfNullVersion() {
     // given
     String version = null;
     String kind = "kind1";
@@ -71,7 +61,7 @@ class KubernetesDeserializerTest {
     mapping.registerKind(version, kind, SmurfResource.class);
     // then
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
-    assertThat(clazz).isEqualTo(SmurfResource.class);
+    assertThat(clazz).isNull();
   }
 
   @Test
