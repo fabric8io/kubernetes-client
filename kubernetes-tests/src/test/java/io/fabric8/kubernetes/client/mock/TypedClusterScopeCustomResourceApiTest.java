@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -58,8 +58,8 @@ class TypedClusterScopeCustomResourceApiTest {
 
   @Test
   void list() {
-    KubernetesResourceList<Star> starList = new CustomResourceList<>();
-    ((CustomResourceList<Star>) starList).setItems(Collections.singletonList(getStar()));
+    KubernetesResourceList<Star> starList = new DefaultKubernetesResourceList<>();
+    ((DefaultKubernetesResourceList<Star>) starList).setItems(Collections.singletonList(getStar()));
     server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, starList).once();
     starClient = client.resources(Star.class);
 
