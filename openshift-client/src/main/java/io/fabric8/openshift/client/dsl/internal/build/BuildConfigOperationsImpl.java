@@ -36,7 +36,6 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
-import io.fabric8.openshift.client.dsl.InputStreamable;
 import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AuthorEmailable;
@@ -80,9 +79,6 @@ public class BuildConfigOperationsImpl
   private final String message;
   private final String asFile;
 
-  private final long timeout;
-  private final TimeUnit timeoutUnit;
-
   public BuildConfigOperationsImpl(Client client) {
     this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
@@ -100,8 +96,6 @@ public class BuildConfigOperationsImpl
     this.commit = context.getCommit();
     this.message = context.getMessage();
     this.asFile = context.getAsFile();
-    this.timeout = context.getTimeout();
-    this.timeoutUnit = context.getTimeoutUnit();
   }
 
   @Override
@@ -244,12 +238,12 @@ public class BuildConfigOperationsImpl
   }
 
   @Override
-  public InputStreamable<Build> withTimeout(long timeout, TimeUnit unit) {
-    return new BuildConfigOperationsImpl(getContext().withTimeout(timeout).withTimeoutUnit(unit), context);
+  public BuildConfigOperationsImpl withTimeout(long timeout, TimeUnit unit) {
+    return new BuildConfigOperationsImpl(getContext(), context.withTimeout(timeout, unit));
   }
 
   @Override
-  public InputStreamable<Build> withTimeoutInMillis(long timeoutInMillis) {
+  public BuildConfigOperationsImpl withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
@@ -261,8 +255,8 @@ public class BuildConfigOperationsImpl
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
       HttpClient newClient = this.httpClient.newBuilder()
-          .readTimeout(timeout, timeoutUnit)
-          .writeTimeout(timeout, timeoutUnit)
+          .readTimeout(this.context.getTimeout(), this.context.getTimeoutUnit())
+          .writeTimeout(this.context.getTimeout(), this.context.getTimeoutUnit())
           .build();
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)

@@ -19,7 +19,15 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 
+import java.util.concurrent.TimeUnit;
+
 public interface DeletableWithOptions extends GracePeriodConfigurable<PropagationPolicyConfigurable<? extends Deletable>>,
-    PropagationPolicyConfigurable<GracePeriodConfigurable<? extends Deletable>> {
+    PropagationPolicyConfigurable<GracePeriodConfigurable<? extends Deletable>>, Timeoutable {
+
+  @Override
+  DeletableWithOptions withTimeout(long timeout, TimeUnit unit);
+
+  @Override
+  DeletableWithOptions withTimeoutInMillis(long timeoutInMillis);
 
 }

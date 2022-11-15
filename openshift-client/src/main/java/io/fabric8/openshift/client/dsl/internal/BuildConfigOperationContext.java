@@ -15,8 +15,15 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import java.util.concurrent.TimeUnit;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class BuildConfigOperationContext {
 
   private String secret;
@@ -30,112 +37,40 @@ public class BuildConfigOperationContext {
   private String message;
   private String asFile;
 
-  private long timeout;
-  private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
-
-  public BuildConfigOperationContext() {
-  }
-
-  public BuildConfigOperationContext(String secret, String triggerType, String authorName, String authorEmail, String committerName, String committerEmail, String commit, String message, String asFile, Long timeout, TimeUnit timeUnit) {
-    this.secret = secret;
-    this.triggerType = triggerType;
-    this.authorName = authorName;
-    this.authorEmail = authorEmail;
-    this.committerName = committerName;
-    this.committerEmail = committerEmail;
-    this.commit = commit;
-    this.message = message;
-    this.asFile = asFile;
-    this.timeout = timeout;
-    this.timeoutUnit = timeUnit != null ? timeUnit : TimeUnit.MILLISECONDS;
-  }
-
-  public String getSecret() {
-    return secret;
-  }
-
-  public String getTriggerType() {
-    return triggerType;
-  }
-
-  public String getAuthorName() {
-    return authorName;
-  }
-
-  public String getAuthorEmail() {
-    return authorEmail;
-  }
-
-  public String getCommitterName() {
-    return committerName;
-  }
-
-  public String getCommitterEmail() {
-    return committerEmail;
-  }
-
-  public String getCommit() {
-    return commit;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public String getAsFile() {
-    return asFile;
-  }
-
-  public long getTimeout() {
-    return timeout;
-  }
-
-  public TimeUnit getTimeoutUnit() {
-    return timeoutUnit;
-  }
-
   public BuildConfigOperationContext withSecret(String secret) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().secret(secret).build();
   }
 
   public BuildConfigOperationContext withTriggerType(String triggerType) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().triggerType(triggerType).build();
   }
 
   public BuildConfigOperationContext withAuthorName(String authorName) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().authorName(authorName).build();
   }
 
   public BuildConfigOperationContext withAuthorEmail(String authorEmail) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().authorEmail(authorEmail).build();
   }
 
   public BuildConfigOperationContext withCommitterName(String committerName) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().committerName(committerName).build();
   }
 
   public BuildConfigOperationContext withCommitterEmail(String committerEmail) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().committerEmail(committerEmail).build();
   }
 
   public BuildConfigOperationContext withCommit(String commit) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().commit(commit).build();
   }
 
   public BuildConfigOperationContext withMessage(String message) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().message(message).build();
   }
 
   public BuildConfigOperationContext withAsFile(String asFile) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
-  }
-
-  public BuildConfigOperationContext withTimeout(long timeout) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
-  }
-
-  public BuildConfigOperationContext withTimeoutUnit(TimeUnit timeoutUnit) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return toBuilder().asFile(asFile).build();
   }
 
 }

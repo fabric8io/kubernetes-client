@@ -451,6 +451,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public List<StatusDetails> delete() {
+    List<StatusDetails> deleted = deleteAll();
+    if (this.context.getTimeout() > 0) {
+      Set<String> uids = deleted.stream().map(StatusDetails::getUid).collect(Collectors.toSet());
+      CompletableFuture<List<T>> delete = this
+          .informOnCondition(l -> l.stream().map(i -> i.getMetadata().getUid()).noneMatch(uid -> uids.contains(uid)));
+      Utils.waitUntilReadyOrFail(delete, this.context.getTimeout(), this.context.getTimeoutUnit());
+    }
+    return deleted;
+  }
+
+  protected List<StatusDetails> deleteAll() {
     if (Utils.isNotNullOrEmpty(name) || Utils.isNotNullOrEmpty(namespace) || !isResourceNamespaced()) {
       try {
         URL resourceURLForWriteOperation = getResourceURLForWriteOperation(getResourceUrl());
@@ -1101,6 +1112,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T serverSideApply() {
     return this.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY));
+  }
+
+  @Override
+  public ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit) {
+    return newInstance(context.withTimeout(timeout, unit));
   }
 
 }

@@ -78,6 +78,11 @@
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
     </dependency>
+    
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.felix</groupId>

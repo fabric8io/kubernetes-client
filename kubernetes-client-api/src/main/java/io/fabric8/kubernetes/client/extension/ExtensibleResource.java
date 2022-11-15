@@ -20,9 +20,11 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.WritableOperation;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -83,5 +85,13 @@ public interface ExtensibleResource<T> extends Resource<T> {
 
   @Override
   ExtensibleResource<T> forceConflicts();
+
+  @Override
+  ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit);
+
+  @Override
+  default WritableOperation<T> withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
 
 }

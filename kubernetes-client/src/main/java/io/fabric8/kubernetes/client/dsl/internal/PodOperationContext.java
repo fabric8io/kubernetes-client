@@ -67,6 +67,8 @@ public class PodOperationContext {
   private String dir;
   private boolean terminateOnError;
 
+  private boolean rolling;
+
   public PodOperationContext withContainerId(String containerId) {
     return this.toBuilder().containerId(containerId).build();
   }

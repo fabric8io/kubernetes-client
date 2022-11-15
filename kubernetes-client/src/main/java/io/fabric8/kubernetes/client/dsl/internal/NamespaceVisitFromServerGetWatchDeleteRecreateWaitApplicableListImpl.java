@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.dsl.DeletableWithOptions;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
@@ -312,6 +313,16 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   @Override
   public List<HasMetadata> replaceStatus() {
     return performOperation(Resource::replaceStatus);
+  }
+
+  @Override
+  public DeletableWithOptions withTimeout(long timeout, TimeUnit unit) {
+    return newInstance(context.withTimeout(timeout, unit));
+  }
+
+  @Override
+  public DeletableWithOptions withTimeoutInMillis(long timeoutInMillis) {
+    return this.withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
 }

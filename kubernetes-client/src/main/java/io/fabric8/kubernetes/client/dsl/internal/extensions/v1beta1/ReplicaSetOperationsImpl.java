@@ -22,10 +22,18 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
@@ -43,10 +51,10 @@ public class ReplicaSetOperationsImpl
     implements TimeoutImageEditReplacePatchable<ReplicaSet> {
 
   public ReplicaSetOperationsImpl(Client client) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
-  ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+  ReplicaSetOperationsImpl(PodOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("extensions")
         .withApiGroupVersion("v1beta1")
         .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);
@@ -58,8 +66,9 @@ public class ReplicaSetOperationsImpl
   }
 
   @Override
-  public ReplicaSetOperationsImpl newInstance(RollingOperationContext context) {
-    return new ReplicaSetOperationsImpl(context, this.context);
+  public ReplicaSetOperationsImpl newInstance(PodOperationContext context,
+      OperationContext superContext) {
+    return new ReplicaSetOperationsImpl(context, superContext);
   }
 
   @Override
@@ -128,7 +137,7 @@ public class ReplicaSetOperationsImpl
   private List<PodResource> doGetLog() {
     ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context,
-        rollingOperationContext.getPodOperationContext(), replicaSet.getMetadata().getUid(),
+        rollingOperationContext, replicaSet.getMetadata().getUid(),
         getReplicaSetSelectorLabels(replicaSet));
   }
 

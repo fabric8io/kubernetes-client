@@ -33,7 +33,7 @@ import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
@@ -51,10 +51,10 @@ public class ReplicationControllerOperationsImpl extends
     implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
   public ReplicationControllerOperationsImpl(Client client) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
-  public ReplicationControllerOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+  public ReplicationControllerOperationsImpl(PodOperationContext context, OperationContext superContext) {
     super(context, superContext.withPlural("replicationcontrollers"), ReplicationController.class,
         ReplicationControllerList.class);
   }
@@ -65,8 +65,9 @@ public class ReplicationControllerOperationsImpl extends
   }
 
   @Override
-  public ReplicationControllerOperationsImpl newInstance(RollingOperationContext context) {
-    return new ReplicationControllerOperationsImpl(context, this.context);
+  public ReplicationControllerOperationsImpl newInstance(PodOperationContext context,
+      OperationContext superContext) {
+    return new ReplicationControllerOperationsImpl(context, superContext);
   }
 
   @Override
@@ -113,7 +114,7 @@ public class ReplicationControllerOperationsImpl extends
     ReplicationController rc = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context,
-        rollingOperationContext.getPodOperationContext(), rc.getMetadata().getUid(),
+        rollingOperationContext, rc.getMetadata().getUid(),
         getReplicationControllerPodLabels(rc));
   }
 

@@ -18,10 +18,21 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.util.concurrent.TimeUnit;
 
-public interface Timeoutable<T> {
+public interface Timeoutable {
 
-  T withTimeout(long timeout, TimeUnit unit);
+  /**
+   * Wait for the given operation timeout. For list contexts it applies to each delete operation.
+   *
+   * @param timeout 0 indicates no wait
+   * @param unit
+   */
+  Object withTimeout(long timeout, TimeUnit unit);
 
+  /**
+   * Wait for the given operation timeout in milliseconds. For list contexts it applies to each delete operation.
+   *
+   * @param timeoutInMillis 0 indicates no wait
+   */
+  Object withTimeoutInMillis(long timeoutInMillis);
 
-  T withTimeoutInMillis(long timeoutInMillis);
 }

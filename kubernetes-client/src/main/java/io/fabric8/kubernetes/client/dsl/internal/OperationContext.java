@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,9 @@ public class OperationContext {
 
   protected Client client;
 
+  private long timeout;
+  private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
+
   public OperationContext() {
   }
 
@@ -76,7 +80,7 @@ public class OperationContext {
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
-        other.forceConflicts);
+        other.forceConflicts, other.timeout, other.timeoutUnit);
   }
 
   public OperationContext(Client client, String plural, String namespace, String name,
@@ -85,7 +89,7 @@ public class OperationContext {
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
       boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation,
-      String fieldManager, Boolean forceConflicts) {
+      String fieldManager, Boolean forceConflicts, long timeout, TimeUnit timeoutUnit) {
     this.client = client;
     this.item = item;
     this.plural = plural;
@@ -108,6 +112,8 @@ public class OperationContext {
     this.fieldValidation = fieldValidation;
     this.fieldManager = fieldManager;
     this.forceConflicts = forceConflicts;
+    this.timeout = timeout;
+    this.timeoutUnit = timeoutUnit;
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
@@ -241,6 +247,14 @@ public class OperationContext {
 
   public boolean getDryRun() {
     return dryRun;
+  }
+
+  public long getTimeout() {
+    return timeout;
+  }
+
+  public TimeUnit getTimeoutUnit() {
+    return timeoutUnit;
   }
 
   public String getLabelQueryParam() {
@@ -485,7 +499,8 @@ public class OperationContext {
     // operationcontext
     OperationContext newContext = HasMetadataOperationsImpl.defaultContext(client).withDryRun(getDryRun())
         .withGracePeriodSeconds(getGracePeriodSeconds()).withPropagationPolicy(getPropagationPolicy())
-        .withReloadingFromServer(isReloadingFromServer()).withFieldValidation(this.fieldValidation);
+        .withReloadingFromServer(isReloadingFromServer()).withFieldValidation(this.fieldValidation)
+        .withTimeout(this.timeout, this.timeoutUnit);
 
     // check before setting to prevent flipping the default flag
     if (!Objects.equals(getNamespace(), newContext.getNamespace())
@@ -524,6 +539,13 @@ public class OperationContext {
     }
     final OperationContext context = new OperationContext(this);
     context.forceConflicts = true;
+    return context;
+  }
+
+  public OperationContext withTimeout(long timeout, TimeUnit timeUnit) {
+    final OperationContext context = new OperationContext(this);
+    context.timeout = timeout;
+    context.timeoutUnit = timeUnit == null ? TimeUnit.MILLISECONDS : timeUnit;
     return context;
   }
 
