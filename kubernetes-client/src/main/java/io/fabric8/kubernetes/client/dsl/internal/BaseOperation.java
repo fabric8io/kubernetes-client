@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -66,6 +68,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -390,7 +393,16 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(fetchListUrl);
-      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listType, getParameters());
+      Type refinedType = listType.equals(DefaultKubernetesResourceList.class)
+          ? Serialization.jsonMapper().getTypeFactory().constructParametricType(listType, type)
+          : listType;
+      TypeReference<L> listTypeReference = new TypeReference<L>() {
+        @Override
+        public Type getType() {
+          return refinedType;
+        }
+      };
+      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference, getParameters());
       return futureAnswer.thenApply(l -> {
         updateApiVersion(l);
         return l;
