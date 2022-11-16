@@ -38,11 +38,6 @@
     <osgi.export>
       io.fabric8.certmanager.api.model.*
     </osgi.export>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /model-v1.properties=target/classes/model.properties
-    </osgi.include.resources>
-
     <clone-kube>true</clone-kube>
   </properties>
 

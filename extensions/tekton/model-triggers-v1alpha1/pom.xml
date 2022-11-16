@@ -39,10 +39,6 @@
     <osgi.export>
       io.fabric8.tekton.*
     </osgi.export>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /tekton-triggers.properties=target/classes/model.properties
-    </osgi.include.resources>
   </properties>
 
   <dependencies>

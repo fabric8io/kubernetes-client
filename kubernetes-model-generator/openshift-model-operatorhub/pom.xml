@@ -32,10 +32,6 @@
 
   <properties>
     <clone-kube>true</clone-kube>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /operatorhub.properties=target/classes/operatorhub.properties
-    </osgi.include.resources>
     <osgi.import>*</osgi.import>
     <osgi.export>
       io.fabric8.openshift.api.model.operatorhub**,

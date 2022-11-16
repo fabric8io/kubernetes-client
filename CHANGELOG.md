@@ -19,6 +19,7 @@
 * Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 
 ### 6.2.0 (2022-10-20)
 

@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
@@ -59,7 +58,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   public static final String OPENSHIFT_PACKAGE = "openshift";
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
-  protected String moduleName = null;
 
   private final Set<String> handledClasses = new HashSet<>();
 
@@ -113,7 +111,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         final JDefinedClass resourceClass = pendingResources.remove(resourceName);
         if (resourceClass != null) {
           annotate(clazz, apiVersion, apiGroup);
-          addClassesToPropertyFiles(resourceClass);
         } else {
           pendingLists.put(resourceName, clazz);
         }
@@ -121,7 +118,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         final JDefinedClass resourceListClass = pendingLists.remove(resourceName);
         if (resourceListClass != null) {
           annotate(resourceListClass, apiVersion, apiGroup);
-          addClassesToPropertyFiles(clazz);
         } else {
           annotate(clazz, apiVersion, apiGroup);
           pendingResources.put(resourceName, clazz);
@@ -137,10 +133,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   @Override
   public void propertyInclusion(JDefinedClass clazz, JsonNode schema) {
-    if (moduleName == null && schema.has("$module")) {
-      moduleName = schema.get("$module").textValue();
-    }
-
     if (schema.has("serializer")) {
       annotateSerde(clazz, JsonSerialize.class, schema.get("serializer").asText());
     }
@@ -199,35 +191,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         .param("generateBuilderPackage", true)
         .param("lazyCollectionInitEnabled", false)
         .param("builderPackage", "io.fabric8.kubernetes.api.builder");
-  }
-
-  protected void addClassesToPropertyFiles(JDefinedClass clazz) {
-    if (moduleName == null || moduleName.equals(getPackageCategory(clazz.getPackage().name()))) {
-      JAnnotationUse annotation = clazz.annotations().stream()
-          .filter(a -> a.getAnnotationClass().name().equals(TemplateTransformations.class.getSimpleName())).findFirst().get();
-      JAnnotationArrayMember arrayMember = (JAnnotationArrayMember) annotation.getAnnotationMembers().get(ANNOTATION_VALUE);
-      arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
-          .param("outputPath", (moduleName == null ? "model" : moduleName) + ".properties").param("gather", true);
-    }
-  }
-
-  private String getPackageCategory(String packageName) {
-    if (packageName.isEmpty()) {
-      return null;
-    }
-    if (packageName.equals("io.fabric8.kubernetes.api.model")) {
-      return CORE_PACKAGE;
-    } else if (packageName.equals("io.fabric8.openshift.api.model")) {
-      return OPENSHIFT_PACKAGE;
-    }
-    // append whatever is after io.fabric8.kubernetes.api.model whether it's
-    // io.fabric8.kubernetes.api.model.apps or
-    // io.fabric8.kubernetes.api.model.batch.v1
-    String[] parts = packageName.split("\\.");
-    if (parts.length < 6) {
-      throw new IllegalArgumentException("Invalid package name encountered: " + packageName);
-    }
-    return parts[5];
   }
 
   private boolean hasInterfaceFields(JsonNode propertiesNode) {
