@@ -2369,26 +2369,17 @@
     },
     "machinepool": {
       "properties": {
-        "additionalNetworkIDs": {
+        "bootVolume": {
+          "$ref": "#/definitions/os_installer_ibmcloud_v1_BootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.BootVolume"
+        },
+        "dedicatedHosts": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/os_installer_ibmcloud_v1_DedicatedHost",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.DedicatedHost"
           }
-        },
-        "additionalSecurityGroupIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "rootVolume": {
-          "$ref": "#/definitions/os_installer_openstack_v1_RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.RootVolume"
-        },
-        "serverGroupPolicy": {
-          "type": "string"
         },
         "type": {
           "type": "string"
@@ -2620,16 +2611,11 @@
     },
     "osdisk": {
       "properties": {
-        "DiskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "diskSizeGB": {
+          "type": "integer"
         },
-        "DiskType": {
+        "diskType": {
           "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_installer_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.EncryptionKeyReference"
         }
       },
       "additionalProperties": true

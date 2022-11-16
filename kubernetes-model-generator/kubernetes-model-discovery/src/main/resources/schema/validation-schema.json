@@ -1437,8 +1437,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_ForZone",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.ForZone"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_ForZone",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.ForZone"
           }
         }
       },
@@ -1503,14 +1503,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "discovery.k8s.io/v1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointSlice",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointSlice",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice"
           }
         },
         "kind": {

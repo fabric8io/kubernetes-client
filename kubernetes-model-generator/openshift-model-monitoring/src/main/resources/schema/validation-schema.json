@@ -9150,40 +9150,23 @@
     },
     "probe": {
       "properties": {
-        "exec": {
-          "$ref": "#/definitions/kubernetes_core_ExecAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ExecAction"
+        "apiVersion": {
+          "type": "string",
+          "default": "monitoring.coreos.com/v1",
+          "required": true
         },
-        "failureThreshold": {
-          "type": "integer"
+        "kind": {
+          "type": "string",
+          "default": "Probe",
+          "required": true
         },
-        "grpc": {
-          "$ref": "#/definitions/kubernetes_core_GRPCAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.GRPCAction"
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "httpGet": {
-          "$ref": "#/definitions/kubernetes_core_HTTPGetAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HTTPGetAction"
-        },
-        "initialDelaySeconds": {
-          "type": "integer"
-        },
-        "periodSeconds": {
-          "type": "integer"
-        },
-        "successThreshold": {
-          "type": "integer"
-        },
-        "tcpSocket": {
-          "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
-        },
-        "terminationGracePeriodSeconds": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "timeoutSeconds": {
-          "type": "integer"
+        "spec": {
+          "$ref": "#/definitions/os_monitoring_v1_ProbeSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.monitoring.v1.ProbeSpec"
         }
       },
       "additionalProperties": true
