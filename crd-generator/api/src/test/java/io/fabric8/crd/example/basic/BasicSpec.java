@@ -38,6 +38,26 @@ public class BasicSpec {
     this.myLong = myLong;
   }
 
+  private double myDouble;
+
+  public double getMyDouble() {
+    return myDouble;
+  }
+
+  public void setMyDouble(long myDouble) {
+    this.myDouble = myDouble;
+  }
+
+  private float myFloat;
+
+  public float getMyFloat() {
+    return myFloat;
+  }
+
+  public void setMyFloat(long myFloat) {
+    this.myFloat = myFloat;
+  }
+
   @JsonIgnore
   public Class<?> clazz;
 }
