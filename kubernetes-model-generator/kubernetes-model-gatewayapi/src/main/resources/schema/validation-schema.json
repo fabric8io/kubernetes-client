@@ -3225,14 +3225,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1beta1",
+          "default": "gateway.networking.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_Gateway",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_Gateway",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway"
           }
         },
         "kind": {
@@ -3276,8 +3276,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayAddress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayAddress"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayAddress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayAddress"
           }
         },
         "conditions": {
@@ -3292,8 +3292,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ListenerStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ListenerStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ListenerStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ListenerStatus"
           }
         }
       },
@@ -3462,8 +3462,8 @@
           "type": "string"
         },
         "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathModifier",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathModifier"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPPathModifier",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPPathModifier"
         },
         "port": {
           "type": "integer"
@@ -3536,14 +3536,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1beta1",
+          "default": "gateway.networking.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRoute",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRoute",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute"
           }
         },
         "kind": {
@@ -3708,8 +3708,8 @@
     "listener": {
       "properties": {
         "allowedRoutes": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_AllowedRoutes",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.AllowedRoutes"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_AllowedRoutes",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.AllowedRoutes"
         },
         "hostname": {
           "type": "string"
@@ -3724,8 +3724,8 @@
           "type": "string"
         },
         "tls": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayTLSConfig",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayTLSConfig"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayTLSConfig",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayTLSConfig"
         }
       },
       "additionalProperties": true
@@ -4138,8 +4138,8 @@
           "type": "string"
         },
         "parentRef": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
         }
       },
       "additionalProperties": true

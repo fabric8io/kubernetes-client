@@ -1283,7 +1283,7 @@
         },
         "apiVersion": {
           "type": "string",
-          "default": "events.k8s.io/v1beta1",
+          "default": "events.k8s.io/v1",
           "required": true
         },
         "deprecatedCount": {
@@ -1335,8 +1335,8 @@
           "type": "string"
         },
         "series": {
-          "$ref": "#/definitions/kubernetes_events_v1beta1_EventSeries",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.events.v1beta1.EventSeries"
+          "$ref": "#/definitions/kubernetes_events_v1_EventSeries",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.events.v1.EventSeries"
         },
         "type": {
           "type": "string"
