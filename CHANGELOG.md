@@ -25,6 +25,7 @@
 
 #### _**Note**_: Breaking changes in the API
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
+* Fix #3923: removed KubernetesResourceMappingProvider - a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource list of resources is used instead.
 
 ### 6.2.0 (2022-10-20)
 
