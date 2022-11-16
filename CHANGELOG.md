@@ -24,6 +24,7 @@
 * Fix #4582: updated [client.secrets] createOrReplace document
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 
 ### 6.2.0 (2022-10-20)
 

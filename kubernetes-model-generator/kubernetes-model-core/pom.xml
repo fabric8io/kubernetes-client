@@ -32,10 +32,6 @@
 
   <properties>
     <clone-kube>true</clone-kube>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /core.properties=target/classes/core.properties,
-    </osgi.include.resources>
     <osgi.import>
       *,
       io.fabric8.kubernetes.api.model.admission.v1,

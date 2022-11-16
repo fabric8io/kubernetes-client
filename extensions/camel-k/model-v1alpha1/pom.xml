@@ -37,10 +37,6 @@
         <osgi.export>
             io.fabric8.camelk.*
         </osgi.export>
-        <osgi.include.resources>
-          ${osgi.include.resources.default},
-          /camel-k-v1alpha1.properties=target/classes/model.properties
-        </osgi.include.resources>
     </properties>
 
     <dependencies>
