@@ -33,7 +33,7 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
   private static final Map<String, Set<String>> traversedClasses = new HashMap<>();
   private static final Map<String, Set<String>> crdNameToCrClass = new HashMap<>();
   private final Set<String> classesForCR;
-  private final Set<String> processed = new HashSet<>();
+  private final Set<ClassRef> processed = new HashSet<>();
 
   public ClassDependenciesVisitor(String crClassName, String crdName) {
     // need to record all classes associated with the different versions of the CR (not the CRD spec)
@@ -49,7 +49,7 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
     // note that we cannot simply check the traversed class set to know if a class has been processed because classes
     // are usually added to the traversed set before they're looked at in depth
     final String className = type.getFullyQualifiedName();
-    if (ignore(className) || processed.contains(className)) {
+    if (ignore(className)) {
       return;
     }
 
@@ -74,19 +74,21 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
 
     // add classes from extends list
     type.getExtendsList().forEach(this::processTypeRef);
-
-    // add class to the processed classes
-    processed.add(className);
   }
 
   private boolean ignore(String className) {
-    return (className.startsWith("java.") && !className.startsWith("java.util.")) || className.startsWith("com.fasterxml.jackson") || className.startsWith("jdk.");
+    return (className.startsWith("java.") && !className.startsWith("java.util."))
+        || className.startsWith("com.fasterxml.jackson") || className.startsWith("jdk.");
   }
 
   private void processTypeRef(TypeRef t) {
     if (t instanceof ClassRef) {
       ClassRef classRef = (ClassRef) t;
-      visit(new TypeDefBuilder(Types.typeDefFrom(classRef)));
+      // only process the class reference if we haven't already
+      // note that the references are stored in the set including type arguments, so List<A> and List<B> are not the same
+      if (processed.add(classRef)) {
+        visit(new TypeDefBuilder(Types.typeDefFrom(classRef)));
+      }
     }
   }
 
@@ -101,7 +103,7 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
   public static Set<String> getDependentClassesFromCRDName(String crdName) {
     // retrieve all dependent classes that might affect any of the CR versions
     return crdNameToCrClass.get(crdName).stream()
-      .flatMap(crClassName -> traversedClasses.get(crClassName).stream())
-      .collect(Collectors.toSet());
+        .flatMap(crClassName -> traversedClasses.get(crClassName).stream())
+        .collect(Collectors.toSet());
   }
 }

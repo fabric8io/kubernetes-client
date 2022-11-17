@@ -22,8 +22,10 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.utils.StringEscapeUtils;
 import io.fabric8.java.generator.Config;
@@ -36,15 +38,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
-
-  private static final Set<String> IGNORED_FIELDS = new HashSet<>();
-
-  static {
-    IGNORED_FIELDS.add("description");
-    IGNORED_FIELDS.add("schema");
-    IGNORED_FIELDS.add("example");
-    IGNORED_FIELDS.add("examples");
-  }
 
   private final String type;
   private final String className;
@@ -97,19 +90,17 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
-        if (!IGNORED_FIELDS.contains(field.getKey())) {
-          String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
-          String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
-          this.fields.put(
-              field.getKey(),
-              AbstractJSONSchema2Pojo.fromJsonSchema(
-                  field.getKey(),
-                  field.getValue(),
-                  nextPackagePath,
-                  nextPrefix,
-                  nextSuffix,
-                  config));
-        }
+        String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
+        String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
+        this.fields.put(
+            field.getKey(),
+            AbstractJSONSchema2Pojo.fromJsonSchema(
+                field.getKey(),
+                field.getValue(),
+                nextPackagePath,
+                nextPrefix,
+                nextSuffix,
+                config));
       }
     }
   }
@@ -253,7 +244,19 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         }
 
         if (prop.getDefaultValue() != null) {
-          objField.getVariable(0).setInitializer(generateDefaultInitializerExpression(prop));
+          Expression primitiveDefault = generatePrimitiveDefaultInitializerExpression(prop);
+
+          if (primitiveDefault != null) {
+            objField.getVariable(0).setInitializer(primitiveDefault);
+          } else {
+            objField.getVariable(0).setInitializer(
+                new NameExpr(
+                    "io.fabric8.kubernetes.client.utils.Serialization.unmarshal("
+                        + "\"" + StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())) + "\""
+                        + ", "
+                        + prop.getClassType() + ".class"
+                        + ")"));
+          }
         }
       } catch (Exception cause) {
         throw new JavaGeneratorException(
@@ -280,6 +283,13 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
       objField.createGetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnyGetter");
       objField.createSetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
+
+      MethodDeclaration additionalSetter = clz.addMethod("setAdditionalProperty", Modifier.Keyword.PUBLIC);
+      additionalSetter.addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
+      additionalSetter.addParameter("String", "key");
+      additionalSetter.addParameter("Object", "value");
+      additionalSetter
+          .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value);")));
     }
 
     buffer.add(new GeneratorResult.ClassResult(this.className, cu));
@@ -288,17 +298,25 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   }
 
   /**
-   * This method is responsible for creating an expression that will initialize the default value.
+   * This method is responsible for creating an expression that will initialize the default value if primitive
    *
    * @return a {@link Expression} instance that contains a call to the
    *         {@link Serialization#unmarshal(String, Class)} method.
    */
-  private Expression generateDefaultInitializerExpression(AbstractJSONSchema2Pojo prop) {
-    return new NameExpr(
-        "io.fabric8.kubernetes.client.utils.Serialization.unmarshal("
-            + "\"" + StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())) + "\""
-            + ", "
-            + prop.getClassType() + ".class"
-            + ")");
+  private Expression generatePrimitiveDefaultInitializerExpression(AbstractJSONSchema2Pojo prop) {
+    if (prop.getDefaultValue().isValueNode()) {
+      String value = prop.getDefaultValue().toString();
+      if (prop.getClassType().equals("Long") && prop.getDefaultValue().canConvertToLong()) {
+        return new LongLiteralExpr(value + "L");
+      } else if (prop.getClassType().equals("Float") && prop.getDefaultValue().isFloatingPointNumber()) {
+        return new DoubleLiteralExpr(value + "f");
+      } else if (prop.getClassType().equals("Boolean") && prop.getDefaultValue().isBoolean()) {
+        return new BooleanLiteralExpr(prop.getDefaultValue().booleanValue());
+      } else {
+        return new NameExpr(value);
+      }
+    } else {
+      return null;
+    }
   }
 }

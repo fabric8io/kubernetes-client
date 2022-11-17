@@ -357,12 +357,28 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     return new NamespaceableResourceAdapter<>(item, op);
   }
 
+  private NamespaceableResource<HasMetadata> resource(Object resource) {
+    if (resource instanceof HasMetadata) {
+      return resource((HasMetadata) resource);
+    }
+    throw new KubernetesClientException("Unable to create a valid resource from the provided object (" +
+        resource.getClass().getName() + ")");
+  }
+
   /**
    * {@inheritDoc}
    */
   @Override
   public NamespaceableResource<HasMetadata> resource(String s) {
-    return resource((HasMetadata) Serialization.unmarshal(s));
+    return resource(Serialization.<Object> unmarshal(s));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public NamespaceableResource<HasMetadata> resource(InputStream is) {
+    return resource(Serialization.<Object> unmarshal(is));
   }
 
   /**

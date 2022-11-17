@@ -61,6 +61,7 @@ import java.util.concurrent.TimeUnit;
 
 public class OperationSupport {
 
+  private static final String FIELD_MANAGER_PARAM = "?fieldManager=";
   public static final String JSON = "application/json";
   public static final String JSON_PATCH = "application/json-patch+json";
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
@@ -214,23 +215,33 @@ public class OperationSupport {
   public URL getResourceURLForPatchOperation(URL resourceUrl, PatchContext patchContext) throws MalformedURLException {
     if (patchContext != null) {
       String url = resourceUrl.toString();
-      if (patchContext.getForce() != null) {
-        url = URLUtils.join(url, "?force=" + patchContext.getForce());
+      Boolean forceConflicts = patchContext.getForce();
+
+      if (forceConflicts == null) {
+        forceConflicts = this.context.forceConflicts;
+      }
+      if (forceConflicts != null) {
+        url = URLUtils.join(url, "?force=" + forceConflicts);
       }
       if ((patchContext.getDryRun() != null && !patchContext.getDryRun().isEmpty()) || dryRun) {
         url = URLUtils.join(url, "?dryRun=All");
       }
       String fieldManager = patchContext.getFieldManager();
+      if (fieldManager == null) {
+        fieldManager = this.context.fieldManager;
+      }
       if (fieldManager == null && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
         fieldManager = "fabric8";
       }
       if (fieldManager != null) {
-        url = URLUtils.join(url, "?fieldManager=" + fieldManager);
+        url = URLUtils.join(url, FIELD_MANAGER_PARAM + fieldManager);
       }
-      if (patchContext.getFieldValidation() != null) {
-        url = URLUtils.join(url, "?fieldValidation=" + patchContext.getFieldValidation());
-      } else if (this.context.fieldValidation != null) {
-        url = URLUtils.join(url, "?fieldValidation=" + this.context.fieldValidation.parameterValue());
+      String fieldValidation = patchContext.getFieldValidation();
+      if (fieldValidation == null && this.context.fieldValidation != null) {
+        fieldValidation = this.context.fieldValidation.parameterValue();
+      }
+      if (fieldValidation != null) {
+        url = URLUtils.join(url, "?fieldValidation=" + fieldValidation);
       }
       return new URL(url);
     }

@@ -209,7 +209,7 @@ class CompilationTest {
 
     // Assert
     assertTrue(compilation.errors().isEmpty());
-    assertEquals(13, compilation.sourceFiles().size());
+    assertEquals(16, compilation.sourceFiles().size());
     assertEquals(Compilation.Status.SUCCESS, compilation.status());
   }
 

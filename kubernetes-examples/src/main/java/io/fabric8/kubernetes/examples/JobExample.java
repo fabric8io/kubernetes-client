@@ -32,51 +32,53 @@ import java.util.concurrent.TimeUnit;
  * Creates a simple run to complete job that computes π to 2000 places and prints it out.
  */
 public class JobExample {
-    private static final Logger logger = LoggerFactory.getLogger(JobExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(JobExample.class);
 
-    public static void main(String[] args) {
-        final ConfigBuilder configBuilder = new ConfigBuilder();
-        if (args.length > 0) {
-          configBuilder.withMasterUrl(args[0]);
-        }
-        try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
-          final String namespace = "default";
-          final Job job = new JobBuilder()
-            .withApiVersion("batch/v1")
-            .withNewMetadata()
-            .withName("pi")
-            .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
-            .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
-            .endMetadata()
-            .withNewSpec()
-            .withNewTemplate()
-            .withNewSpec()
-            .addNewContainer()
-            .withName("pi")
-            .withImage("perl")
-            .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
-            .endContainer()
-            .withRestartPolicy("Never")
-            .endSpec()
-            .endTemplate()
-            .endSpec()
-            .build();
-
-          logger.info("Creating job pi.");
-          client.batch().v1().jobs().inNamespace(namespace).createOrReplace(job);
-
-          // Get All pods created by the job
-          PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
-          // Wait for pod to complete
-          client.pods().inNamespace(namespace).withName(podList.getItems().get(0).getMetadata().getName())
-            .waitUntilCondition(pod -> pod.getStatus().getPhase().equals("Succeeded"), 2, TimeUnit.MINUTES);
-
-          // Print Job's log
-          String joblog = client.batch().v1().jobs().inNamespace(namespace).withName("pi").getLog();
-          logger.info(joblog);
-
-        } catch (KubernetesClientException e) {
-            logger.error("Unable to create job", e);
-        }
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
+      final String namespace = "default";
+      final Job job = new JobBuilder()
+          .withApiVersion("batch/v1")
+          .withNewMetadata()
+          .withName("pi")
+          .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
+          .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
+          .endMetadata()
+          .withNewSpec()
+          .withNewTemplate()
+          .withNewSpec()
+          .addNewContainer()
+          .withName("pi")
+          .withImage("perl")
+          .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
+          .endContainer()
+          .withRestartPolicy("Never")
+          .endSpec()
+          .endTemplate()
+          .endSpec()
+          .build();
+
+      logger.info("Creating job pi.");
+
+      client.batch().v1().jobs().inNamespace("default").resource(job).create();
+
+      // Get All pods created by the job
+      PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
+
+      // Wait for pod to complete         
+      client.pods().inNamespace(namespace).withName(podList.getItems().get(0).getMetadata().getName())
+          .waitUntilCondition(pod -> pod.getStatus().getPhase().equals("Succeeded"), 2, TimeUnit.MINUTES);
+
+      // Print Job's log
+      String joblog = client.batch().v1().jobs().inNamespace(namespace).withName("pi").getLog();
+      logger.info(joblog);
+
+    } catch (KubernetesClientException e) {
+      logger.error("Unable to create job", e);
+    }
+  }
 }

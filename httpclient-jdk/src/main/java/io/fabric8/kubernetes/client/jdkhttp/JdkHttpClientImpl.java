@@ -31,6 +31,7 @@ import java.net.http.HttpResponse.BodySubscriber;
 import java.net.http.HttpResponse.ResponseInfo;
 import java.net.http.WebSocketHandshakeException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -389,8 +390,9 @@ public class JdkHttpClientImpl implements HttpClient {
     }
     // the Watch logic sets a websocketTimeout as the readTimeout
     // TODO: this should probably be made clearer in the docs
-    if (this.builder.getReadTimeout() != null) {
-      newBuilder.connectTimeout(this.builder.getReadTimeout());
+    Duration readTimeout = this.builder.getReadTimeout();
+    if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
+      newBuilder.connectTimeout(readTimeout);
     }
 
     AtomicLong queueSize = new AtomicLong();
