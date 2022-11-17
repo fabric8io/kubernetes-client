@@ -666,7 +666,7 @@ Secret secretCreated = client.secrets().inNamespace("default").create(secret1);
 ```
 - Create or Replace an existing `Secret`:
 ```
-Secret createdSecret = client.secrets().inNamespace("default").createOrReplace(secret1);
+Secret createdSecret = client.secrets().inNamespace("default").resource(secret1).createOrReplace();
 ```
 - List `Secret` resources in some namespace:
 ```
