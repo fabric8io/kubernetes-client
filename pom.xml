@@ -109,7 +109,7 @@
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
-    <slf4j.version>1.7.36</slf4j.version>
+    <slf4j.version>2.0.4</slf4j.version>
     <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.33</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
