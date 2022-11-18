@@ -136,7 +136,7 @@
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
-    <maven.install.plugin.version>3.0.1</maven.install.plugin.version>
+    <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.3.0</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.7.0</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
