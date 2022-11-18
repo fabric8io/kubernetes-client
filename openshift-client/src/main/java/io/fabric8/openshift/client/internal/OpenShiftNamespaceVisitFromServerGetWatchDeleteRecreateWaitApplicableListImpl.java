@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
@@ -40,9 +39,8 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
     super(client, item);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context,
-      NamespaceVisitOperationContext namespaceVisitOperationContext) {
-    super(context, namespaceVisitOperationContext);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context) {
+    super(context);
   }
 
   @Override
@@ -102,9 +100,7 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
   }
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context,
-      NamespaceVisitOperationContext namespaceVisitOperationContext) {
-    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context,
-        namespaceVisitOperationContext);
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context) {
+    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context);
   }
 }

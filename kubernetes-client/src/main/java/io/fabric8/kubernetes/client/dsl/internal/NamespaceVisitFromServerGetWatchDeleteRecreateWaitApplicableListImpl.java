@@ -16,14 +16,12 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -63,36 +61,19 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
     Waitable<List<HasMetadata>, HasMetadata> {
 
-  static class ChangeNamespace extends TypedVisitor<ObjectMetaBuilder> {
-
-    private final String explicitNamespace;
-
-    ChangeNamespace(String explicitNamespace) {
-      this.explicitNamespace = explicitNamespace;
-    }
-
-    @Override
-    public void visit(ObjectMetaBuilder builder) {
-      builder.withNamespace(explicitNamespace);
-    }
-  }
-
   private static final Logger LOGGER = LoggerFactory
       .getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
   protected static final String EXPRESSION = "expression";
   protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  private final NamespaceVisitOperationContext namespaceVisitOperationContext;
   private OperationContext context;
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context,
-      NamespaceVisitOperationContext namespaceVisitOperationContext) {
-    this.namespaceVisitOperationContext = namespaceVisitOperationContext;
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context) {
     this.context = context;
   }
 
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(Client client, Object item) {
-    this(HasMetadataOperationsImpl.defaultContext(client).withItem(item), new NamespaceVisitOperationContext());
+    this(HasMetadataOperationsImpl.defaultContext(client).withItem(item));
   }
 
   @Override
@@ -110,7 +91,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
     return asHasMetadata(item).stream()
         .map(meta -> acceptVisitors(meta,
-            Collections.emptyList(), namespaceVisitOperationContext.getExplicitNamespace(), this.context))
+            Collections.emptyList(), this.context))
         .collect(Collectors.toList());
   }
 
@@ -196,17 +177,17 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(
       Map<String, String> parameters) {
     Object item = Serialization.unmarshal((InputStream) context.getItem(), parameters);
-    return newInstance(context.withItem(item), namespaceVisitOperationContext);
+    return newInstance(context.withItem(item));
   }
 
   @Override
   public ListVisitFromServerWritable<HasMetadata> dryRun(boolean isDryRun) {
-    return newInstance(this.context.withDryRun(isDryRun), namespaceVisitOperationContext);
+    return newInstance(this.context.withDryRun(isDryRun));
   }
 
   @Override
   public ListVisitFromServerWritable<HasMetadata> fieldValidation(Validation fieldValidation) {
-    return newInstance(this.context.withFieldValidation(fieldValidation), namespaceVisitOperationContext);
+    return newInstance(this.context.withFieldValidation(fieldValidation));
   }
 
   @Override
@@ -234,31 +215,30 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     if (explicitNamespace == null) {
       throw new KubernetesClientException("namespace cannot be null");
     }
-    return newInstance(context.withNamespace(explicitNamespace),
-        namespaceVisitOperationContext.withExplicitNamespace(explicitNamespace));
+    return newInstance(context.withNamespace(explicitNamespace));
   }
 
   @Override
   public Gettable<List<HasMetadata>> fromServer() {
-    return newInstance(context.withReloadingFromServer(true), namespaceVisitOperationContext);
+    return newInstance(context.withReloadingFromServer(true));
   }
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor... visitors) {
     return newInstance(context.withItem(getItems().stream()
-        .map(i -> acceptVisitors(i, Arrays.asList(visitors), namespaceVisitOperationContext.getExplicitNamespace(), context))
-        .collect(Collectors.toList())), namespaceVisitOperationContext);
+        .map(i -> acceptVisitors(i, Arrays.asList(visitors), context))
+        .collect(Collectors.toList())));
   }
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withGracePeriod(long gracePeriodSeconds) {
-    return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds), namespaceVisitOperationContext);
+    return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withPropagationPolicy(
       DeletionPropagation propagationPolicy) {
-    return newInstance(context.withPropagationPolicy(propagationPolicy), namespaceVisitOperationContext);
+    return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
   protected Readiness getReadiness() {
@@ -287,23 +267,21 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     return result;
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context,
-      NamespaceVisitOperationContext namespaceVisitOperationContext) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context, namespaceVisitOperationContext);
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context);
   }
 
-  static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace,
-      OperationContext context) {
-    VisitableBuilder<HasMetadata, ?> builder = context.getHandler(item).edit(item);
+  static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, OperationContext context) {
+    if (!visitors.isEmpty()) {
+      VisitableBuilder<HasMetadata, ?> builder = context.getHandler(item).edit(item);
 
-    //Let's apply any visitor that might have been specified.
-    for (Visitor v : visitors) {
-      builder.accept(v);
+      //Let's apply any visitor that might have been specified.
+      for (Visitor v : visitors) {
+        builder.accept(v);
+      }
+      item = builder.build();
     }
-    if (explicitNamespace != null) {
-      builder.accept(new ChangeNamespace(explicitNamespace));
-    }
-    return builder.build();
+    return item;
   }
 
   @Override
@@ -318,8 +296,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inAnyNamespace() {
-    return newInstance(context.withNamespace(null),
-        namespaceVisitOperationContext.withExplicitNamespace(null));
+    return newInstance(context.withNamespace(null));
   }
 
   @Override
