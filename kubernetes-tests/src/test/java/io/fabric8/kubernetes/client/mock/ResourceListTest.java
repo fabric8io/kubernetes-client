@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWait
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,14 +106,16 @@ public class ResourceListTest {
   }
 
   @Test
-  void testCreateWithExplicitNamespace() {
+  void testCreateWithExplicitNamespace() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HTTP_CREATED, pod1).once();
 
-    List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).inNamespace("ns1")
-        .createOrReplace();
-    assertTrue(response.contains(pod1));
+    client.resourceList(new PodListBuilder().addToItems(pod1).build()).inNamespace("ns1").createOrReplace();
+
+    Pod sent = Serialization.unmarshal(server.getLastRequest().getBody().inputStream());
+    // ensure the namespace was modified
+    assertEquals("ns1", sent.getMetadata().getNamespace());
   }
 
   @Test
