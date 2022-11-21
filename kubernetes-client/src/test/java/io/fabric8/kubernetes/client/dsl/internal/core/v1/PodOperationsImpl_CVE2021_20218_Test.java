@@ -39,7 +39,7 @@ class PodOperationsImpl_CVE2021_20218_Test {
   }
 
   @Test
-  void testWithForgedTar(@TempDir Path targetDirParent) throws Exception {
+  void testWithForgedTar(@TempDir Path targetDirParent) {
     // Given
     final Path targetDir = targetDirParent.resolve("target");
     final PodOperationsImpl poi = spy(new PodOperationsImpl(baseContext.withDir("/var/source-dir"), new OperationContext()));

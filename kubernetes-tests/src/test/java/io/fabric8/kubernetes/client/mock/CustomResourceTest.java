@@ -390,7 +390,7 @@ class CustomResourceTest {
         });
 
     // Then
-    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceived.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -421,7 +421,7 @@ class CustomResourceTest {
         });
 
     // Then
-    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceived.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -455,7 +455,7 @@ class CustomResourceTest {
         });
 
     // Then
-    assertTrue(anyEventReceieved.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceieved.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -488,7 +488,7 @@ class CustomResourceTest {
         });
 
     // Then
-    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceived.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -524,7 +524,7 @@ class CustomResourceTest {
         });
 
     // Then
-    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceived.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -561,7 +561,7 @@ class CustomResourceTest {
             });
 
     // Then
-    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceived.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 
@@ -598,7 +598,7 @@ class CustomResourceTest {
             });
 
     // Then
-    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    assertTrue(anyEventReceived.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 }

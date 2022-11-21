@@ -23,7 +23,7 @@ import java.util.Optional;
  *
  * @param <T> type of the response body.
  */
-public class TestHttpResponse<T> extends TestHttpHeaders<TestHttpResponse<T>> implements HttpResponse<T> {
+public class TestHttpResponse<T> extends StandardHttpHeaders implements HttpResponse<T> {
 
   private int code;
   private T body;

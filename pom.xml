@@ -85,11 +85,11 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.13.4</jackson.version>
+    <jackson.version>2.14.0</jackson.version>
     <jetty.version>11.0.12</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.6</maven-core.version>
-    <maven-plugin-annotations.version>3.6.4</maven-plugin-annotations.version>
+    <maven-plugin-annotations.version>3.7.0</maven-plugin-annotations.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -99,7 +99,7 @@
     <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>18.5.0</approvaltests.version>
-    <mockito.version>4.8.0</mockito.version>
+    <mockito.version>4.9.0</mockito.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <generex.version>1.0.2</generex.version>
@@ -113,7 +113,7 @@
     <lombok.version>1.18.24</lombok.version>
     <snakeyaml.version>1.33</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
-    <commons-compress.version>1.21</commons-compress.version>
+    <commons-compress.version>1.22</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.1.0</jsonschema2pojo.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
@@ -127,7 +127,7 @@
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
-    <maven.release.plugin.version>3.0.0-M6</maven.release.plugin.version>
+    <maven.release.plugin.version>3.0.0-M7</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.1.0</maven.enforcer.plugin.version>
@@ -135,10 +135,10 @@
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
-    <maven.shade.plugin.version>3.4.0</maven.shade.plugin.version>
-    <maven.install.plugin.version>3.0.1</maven.install.plugin.version>
+    <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
+    <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.3.0</maven.invoker.plugin.version>
-    <maven.plugin.plugin.version>3.6.4</maven.plugin.plugin.version>
+    <maven.plugin.plugin.version>3.7.0</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
     <jandex.version>2.4.3.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
@@ -845,6 +845,18 @@
   </dependencyManagement>
 
   <build>
+    <resources>
+      <resource>
+        <directory>target/classes</directory>
+        <!-- allow the BND plugin to include an optionally generated resource -->
+        <includes>
+          <include>META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -1056,7 +1068,6 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless-maven-plugin.version}</version>
         <configuration>
-          <ratchetFrom>origin/master</ratchetFrom>
           <java>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>

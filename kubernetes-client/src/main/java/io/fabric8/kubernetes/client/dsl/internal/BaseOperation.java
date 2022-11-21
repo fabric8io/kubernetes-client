@@ -44,6 +44,7 @@ import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -927,6 +928,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public ExtensibleResource<T> fieldValidation(Validation fieldValidation) {
+    return newInstance(context.withFieldValidation(fieldValidation));
+  }
+
+  @Override
   public ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
     result.indexers = indexers;
@@ -1080,6 +1086,21 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     parts.remove(0); // api(s)
     addNamespacedUrlPathParts(parts, this.namespace, this.resourceT);
     return parts.stream().collect(Collectors.joining("/"));
+  }
+
+  @Override
+  public ExtensibleResource<T> fieldManager(String manager) {
+    return newInstance(context.withFieldManager(manager));
+  }
+
+  @Override
+  public ExtensibleResource<T> forceConflicts() {
+    return newInstance(context.withForceConflicts());
+  }
+
+  @Override
+  public T serverSideApply() {
+    return this.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY));
   }
 
 }

@@ -54,7 +54,7 @@ class DeleteIT {
     boolean isDeleted = client.secrets().withName(name).delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.secrets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.secrets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -66,7 +66,7 @@ class DeleteIT {
         .withGracePeriod(0).delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.secrets().withName(name).waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
+    client.secrets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -77,7 +77,7 @@ class DeleteIT {
     boolean isDeleted = client.apps().replicaSets().withName(name).cascading(true).delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -90,7 +90,7 @@ class DeleteIT {
         .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -103,7 +103,7 @@ class DeleteIT {
         .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -131,7 +131,7 @@ class DeleteIT {
     boolean isDeleted = client.resource(replicaSet).delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -143,7 +143,7 @@ class DeleteIT {
     boolean isDeleted = client.resource(replicaSet).cascading(true).delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -157,7 +157,7 @@ class DeleteIT {
         .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test
@@ -171,7 +171,7 @@ class DeleteIT {
         .delete().size() == 1;
     // Then
     assertTrue(isDeleted);
-    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+    client.apps().replicaSets().withName(name).waitUntilCondition(Objects::isNull, 60, TimeUnit.SECONDS);
   }
 
   @Test

@@ -21,13 +21,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
-import com.github.javaparser.ast.stmt.BlockStmt;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -662,6 +659,39 @@ class GeneratorTest {
     Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
     assertTrue(clzT.isPresent());
     assertTrue(clzT.get().getFieldByName("additionalProperties").isPresent());
+  }
+
+  @Test
+  void testObjectWithSpecialFieldNames() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps newObj = new JSONSchemaProps();
+    newObj.setType("string");
+    props.put("description", newObj);
+
+    JObject obj = new JObject(
+        null,
+        "t",
+        props,
+        null,
+        false,
+        "",
+        "",
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    assertEquals(1, res.getTopLevelClasses().size());
+    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    assertTrue(clzT.isPresent());
+    assertTrue(clzT.get().getFieldByName("description").isPresent());
   }
 
   @Test

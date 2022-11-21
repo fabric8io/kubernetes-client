@@ -13,3 +13,5 @@ You can easily rely on Fabric8 Kubernetes Client to implement your Kubernetes Op
 - [Activiti Cloud Apps Operator](https://github.com/salaboy/activiti-cloud-apps-operator)
 - [JVM Controller(Demo)](https://github.com/nfrankel/jvm-controller)
 - [RabbitMQ Operator](https://github.com/YJFinBJ/rabbitmq-operator)
+- [Locust k8s operator: Cloud native solution to run Locust on any Kubernetes cluster](https://github.com/AbdelrhmanHamouda/locust-k8s-operator)
+

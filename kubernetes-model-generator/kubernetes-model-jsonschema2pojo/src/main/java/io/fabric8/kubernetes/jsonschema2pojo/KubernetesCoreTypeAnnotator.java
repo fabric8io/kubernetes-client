@@ -58,7 +58,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   public static final String OPENSHIFT_PACKAGE = "openshift";
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
-  protected String moduleName = null;
 
   private final Set<String> handledClasses = new HashSet<>();
 
@@ -101,13 +100,17 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         apiVersion = apiVersion.substring(apiGroup.length() + 1);
       }
 
+      JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
+          .paramArray(ANNOTATION_VALUE);
+      arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
+          .param("outputPath", "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource").param("gather", true);
+
       String resourceName = clazz.fullName();
       if (resourceName.endsWith("List")) {
         resourceName = resourceName.substring(0, resourceName.length() - 4);
         final JDefinedClass resourceClass = pendingResources.remove(resourceName);
         if (resourceClass != null) {
           annotate(clazz, apiVersion, apiGroup);
-          addClassesToPropertyFiles(resourceClass);
         } else {
           pendingLists.put(resourceName, clazz);
         }
@@ -115,7 +118,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         final JDefinedClass resourceListClass = pendingLists.remove(resourceName);
         if (resourceListClass != null) {
           annotate(resourceListClass, apiVersion, apiGroup);
-          addClassesToPropertyFiles(clazz);
         } else {
           annotate(clazz, apiVersion, apiGroup);
           pendingResources.put(resourceName, clazz);
@@ -131,10 +133,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   @Override
   public void propertyInclusion(JDefinedClass clazz, JsonNode schema) {
-    if (moduleName == null && schema.has("$module")) {
-      moduleName = schema.get("$module").textValue();
-    }
-
     if (schema.has("serializer")) {
       annotateSerde(clazz, JsonSerialize.class, schema.get("serializer").asText());
     }
@@ -193,38 +191,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         .param("generateBuilderPackage", true)
         .param("lazyCollectionInitEnabled", false)
         .param("builderPackage", "io.fabric8.kubernetes.api.builder");
-  }
-
-  protected void addClassesToPropertyFiles(JDefinedClass clazz) {
-    if (moduleName == null || moduleName.equals(getPackageCategory(clazz.getPackage().name())) /*
-                                                                                                * &&
-                                                                                                * shouldIncludeClass(clazz.name(
-                                                                                                * ))
-                                                                                                */) {
-      JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
-          .paramArray(ANNOTATION_VALUE);
-      arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
-          .param("outputPath", (moduleName == null ? "model" : moduleName) + ".properties").param("gather", true);
-    }
-  }
-
-  private String getPackageCategory(String packageName) {
-    if (packageName.isEmpty()) {
-      return null;
-    }
-    if (packageName.equals("io.fabric8.kubernetes.api.model")) {
-      return CORE_PACKAGE;
-    } else if (packageName.equals("io.fabric8.openshift.api.model")) {
-      return OPENSHIFT_PACKAGE;
-    }
-    // append whatever is after io.fabric8.kubernetes.api.model whether it's
-    // io.fabric8.kubernetes.api.model.apps or
-    // io.fabric8.kubernetes.api.model.batch.v1
-    String[] parts = packageName.split("\\.");
-    if (parts.length < 6) {
-      throw new IllegalArgumentException("Invalid package name encountered: " + packageName);
-    }
-    return parts[5];
   }
 
   private boolean hasInterfaceFields(JsonNode propertiesNode) {

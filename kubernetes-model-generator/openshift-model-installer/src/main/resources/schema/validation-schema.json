@@ -2369,17 +2369,20 @@
     },
     "machinepool": {
       "properties": {
-        "imageID": {
-          "type": "string"
+        "bootVolume": {
+          "$ref": "#/definitions/os_installer_ibmcloud_v1_BootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.BootVolume"
         },
-        "instanceType": {
-          "type": "string"
+        "dedicatedHosts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_ibmcloud_v1_DedicatedHost",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.DedicatedHost"
+          }
         },
-        "systemDiskCategory": {
+        "type": {
           "type": "string"
-        },
-        "systemDiskSize": {
-          "type": "integer"
         },
         "zones": {
           "type": "array",
@@ -2645,47 +2648,33 @@
     },
     "platform": {
       "properties": {
-        "apiVIP": {
-          "type": "string"
+        "affinityGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_ovirt_v1_AffinityGroup",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.AffinityGroup"
+          }
         },
-        "cluster": {
-          "type": "string"
-        },
-        "clusterOSImage": {
-          "type": "string"
-        },
-        "datacenter": {
-          "type": "string"
-        },
-        "defaultDatastore": {
+        "api_vip": {
           "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
         },
-        "diskType": {
+        "ingress_vip": {
           "type": "string"
         },
-        "folder": {
+        "ovirt_cluster_id": {
           "type": "string"
         },
-        "ingressVIP": {
+        "ovirt_network_name": {
           "type": "string"
         },
-        "network": {
+        "ovirt_storage_domain_id": {
           "type": "string"
         },
-        "password": {
-          "type": "string"
-        },
-        "resourcePool": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "vCenter": {
+        "vnicProfileID": {
           "type": "string"
         }
       },

@@ -317,7 +317,7 @@ class ResourceTest {
         .done()
         .always();
 
-    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -365,7 +365,7 @@ class ResourceTest {
         .done()
         .always();
 
-    Pod p = client.pods().withName("pod1").waitUntilReady(5, SECONDS);
+    Pod p = client.pods().withName("pod1").waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -436,7 +436,7 @@ class ResourceTest {
                 .getConditions()
                 .stream()
                 .anyMatch(c -> "Dummy".equals(c.getType()) && "True".equals(c.getStatus())),
-            8, SECONDS);
+            10, SECONDS);
 
     assertThat(p.getStatus().getConditions())
         .extracting("type", "status")
@@ -484,7 +484,7 @@ class ResourceTest {
         .done()
         .once();
 
-    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -529,7 +529,7 @@ class ResourceTest {
         .done()
         .once();
 
-    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -548,7 +548,7 @@ class ResourceTest {
     // once not ready, to begin watch
     list(ready);
 
-    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -584,7 +584,7 @@ class ResourceTest {
 
     list(ready);
 
-    client.resource(noReady).waitUntilReady(5, SECONDS);
+    client.resource(noReady).waitUntilReady(10, SECONDS);
   }
 
   @Test
@@ -615,7 +615,7 @@ class ResourceTest {
         .done()
         .once();
 
-    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull, 8, SECONDS);
+    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull, 10, SECONDS);
     assertNull(p);
   }
 
@@ -700,7 +700,7 @@ class ResourceTest {
     // When
     HasMetadata response = client
         .resource(new PodBuilder(conditionMetPod).build())
-        .waitUntilCondition(p -> "MET".equals(p.getMetadata().getLabels().get("CONDITION")), 1, SECONDS);
+        .waitUntilCondition(p -> "MET".equals(p.getMetadata().getLabels().get("CONDITION")), 10, SECONDS);
     // Then
     assertEquals(conditionMetPod, response);
     assertEquals(2, server.getRequestCount());
@@ -715,7 +715,7 @@ class ResourceTest {
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build())
         .once();
 
-    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull, 1, SECONDS);
+    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull, 10, SECONDS);
     assertNull(p);
   }
 

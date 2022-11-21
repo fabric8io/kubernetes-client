@@ -58,11 +58,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
 @Version("v1beta1")
 @Group("policy")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "policy.properties", gather = true)
-})
 public class PodDisruptionBudget implements HasMetadata, Namespaced
 {
 

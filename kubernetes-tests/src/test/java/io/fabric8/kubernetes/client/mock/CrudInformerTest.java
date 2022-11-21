@@ -60,7 +60,7 @@ class CrudInformerTest {
         });
     factory.startAllRegisteredInformers();
     client.pods().create(podToCreate);
-    Pod readPod = events.poll(5, TimeUnit.SECONDS);
+    Pod readPod = events.poll(10, TimeUnit.SECONDS);
     assertNotNull(readPod);
     assertEquals(readPod.getMetadata().getName(), podToCreate.getMetadata().getName());
     factory.stopAllRegisteredInformers();

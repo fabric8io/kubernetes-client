@@ -71,11 +71,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
 @Version("v1")
 @Group("events.k8s.io")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "events.properties", gather = true)
-})
 public class Event implements HasMetadata, Namespaced
 {
 

@@ -25,7 +25,6 @@ import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
 import java.util.Locale;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_KEYWORDS;

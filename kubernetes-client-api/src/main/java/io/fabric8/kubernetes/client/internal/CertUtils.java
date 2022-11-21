@@ -172,14 +172,13 @@ public class CertUtils {
   private static PrivateKey handleOtherKeys(InputStream keyInputStream, String clientKeyAlgo)
       throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     byte[] keyBytes = decodePem(keyInputStream);
-    KeyFactory keyFactory = KeyFactory.getInstance(clientKeyAlgo);
     try {
       // First let's try PKCS8
-      return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
+      return KeyFactory.getInstance(clientKeyAlgo).generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
     } catch (InvalidKeySpecException e) {
       // Otherwise try PKCS8
       RSAPrivateCrtKeySpec keySpec = PKCS1Util.decodePKCS1(keyBytes);
-      return keyFactory.generatePrivate(keySpec);
+      return KeyFactory.getInstance(clientKeyAlgo).generatePrivate(keySpec);
     }
   }
 

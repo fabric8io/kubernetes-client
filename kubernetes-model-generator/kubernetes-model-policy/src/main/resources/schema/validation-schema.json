@@ -2381,14 +2381,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1beta1",
+          "default": "policy/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudget",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget"
+            "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget"
           }
         },
         "kind": {

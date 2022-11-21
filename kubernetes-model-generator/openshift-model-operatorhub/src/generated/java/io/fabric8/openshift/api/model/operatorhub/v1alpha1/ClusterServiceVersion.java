@@ -58,11 +58,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
 @Version("v1alpha1")
 @Group("operators.coreos.com")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "operatorhub.properties", gather = true)
-})
 public class ClusterServiceVersion implements HasMetadata, Namespaced
 {
 

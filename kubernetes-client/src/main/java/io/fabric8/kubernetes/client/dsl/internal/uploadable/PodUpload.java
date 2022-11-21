@@ -55,7 +55,7 @@ public class PodUpload {
     throw new IllegalArgumentException("Provided arguments are not valid (file, directory, path)");
   }
 
-  private static interface UploadProcessor {
+  private interface UploadProcessor {
 
     void process(OutputStream out) throws IOException;
 
@@ -63,10 +63,6 @@ public class PodUpload {
 
   private static boolean upload(PodOperationsImpl operation, String command, UploadProcessor processor) throws IOException {
     operation = operation.redirectingInput().terminateOnError();
-    String containerId = operation.getContext().getContainerId();
-    if (Utils.isNotNullOrEmpty(containerId)) {
-      operation = operation.inContainer(containerId);
-    }
     CompletableFuture<Integer> exitFuture;
     try (ExecWatch execWatch = operation.exec("sh", "-c", command)) {
       OutputStream out = execWatch.getInput();

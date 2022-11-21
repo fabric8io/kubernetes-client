@@ -3,14 +3,29 @@
 ### 6.3-SNAPSHOT
 
 #### Bugs
+* Fix #4159: ensure the token refresh obeys how the Config was created
+* Fix #4491: added a more explicit shutdown exception for okhttp
+* Fix #4510: Fix StackOverflow on cyclic references involving collections.
+* Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
+* Fix #4535: The shell command string will now have single quotes sanitized
+* Fix #4543: (Java Generator) additionalProperties JsonAny setter method generated as setAdditionalProperty
+* Fix #4547: preventing timing issues with leader election cancel
+* Fix #4569: fixing jdk httpclient regression with 0 timeouts
 
 #### Improvements
+* Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
+*  Fix #4530: generalizing the Serialization logic to allow for primitive values and clarifying the type expectations.
 
 #### Dependency Upgrade
 
 #### New Features
+* Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
+* Fix #3896: added dsl support for server side apply
+* Fix #4582: updated [client.secrets] createOrReplace document
 
 #### _**Note**_: Breaking changes in the API
+* Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
+* Fix #3923: removed KubernetesResourceMappingProvider - a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource list of resources is used instead.
 
 ### 6.2.0 (2022-10-20)
 

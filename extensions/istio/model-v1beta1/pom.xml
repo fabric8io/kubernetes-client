@@ -39,10 +39,6 @@
     <osgi.export>
       io.fabric8.istio.*
     </osgi.export>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /model.properties=target/classes/model.properties
-    </osgi.include.resources>
   </properties>
 
   <dependencies>

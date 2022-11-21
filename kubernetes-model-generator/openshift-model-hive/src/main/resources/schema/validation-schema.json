@@ -11739,19 +11739,27 @@
     },
     "machinepool": {
       "properties": {
-        "coresPerSocket": {
-          "type": "integer"
+        "apiVersion": {
+          "type": "string",
+          "default": "hive.openshift.io/v1",
+          "required": true
         },
-        "cpus": {
-          "type": "integer"
+        "kind": {
+          "type": "string",
+          "default": "MachinePool",
+          "required": true
         },
-        "memoryMB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "osDisk": {
-          "$ref": "#/definitions/os_hive_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk"
+        "spec": {
+          "$ref": "#/definitions/os_hive_v1_MachinePoolSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.MachinePoolSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_hive_v1_MachinePoolStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.MachinePoolStatus"
         }
       },
       "additionalProperties": true
@@ -11879,29 +11887,30 @@
     },
     "machinepoolplatform": {
       "properties": {
-        "aws": {
-          "$ref": "#/definitions/os_hive_aws_v1_MachinePoolPlatform",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform"
+        "rootVolume": {
+          "$ref": "#/definitions/os_hive_aws_v1_EC2RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.EC2RootVolume"
         },
-        "azure": {
-          "$ref": "#/definitions/os_hive_azure_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.MachinePool"
+        "spotMarketOptions": {
+          "$ref": "#/definitions/os_hive_aws_v1_SpotMarketOptions",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.SpotMarketOptions"
         },
-        "gcp": {
-          "$ref": "#/definitions/os_hive_gcp_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool"
+        "subnets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
-        "openstack": {
-          "$ref": "#/definitions/os_hive_openstack_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool"
+        "type": {
+          "type": "string"
         },
-        "ovirt": {
-          "$ref": "#/definitions/os_hive_ovirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool"
-        },
-        "vsphere": {
-          "$ref": "#/definitions/os_hive_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool"
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -12491,9 +12500,12 @@
     },
     "platform": {
       "properties": {
-        "libvirtSSHPrivateKeySecretRef": {
+        "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "region": {
+          "type": "string"
         }
       },
       "additionalProperties": true

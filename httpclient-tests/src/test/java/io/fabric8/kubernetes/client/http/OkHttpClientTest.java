@@ -136,12 +136,12 @@ class OkHttpClientTest {
 
         });
 
-    assertFalse(latch.await(2, TimeUnit.SECONDS));
+    assertFalse(latch.await(10, TimeUnit.SECONDS));
     assertEquals(1, latch.getCount());
 
     startedFuture.get().request();
 
-    assertTrue(latch.await(1, TimeUnit.SECONDS));
+    assertTrue(latch.await(10, TimeUnit.SECONDS));
   }
 
   @Test
@@ -175,7 +175,7 @@ class OkHttpClientTest {
       }
     });
 
-    assertTrue(consumed.get(5, TimeUnit.SECONDS));
+    assertTrue(consumed.get(10, TimeUnit.SECONDS));
   }
 
   @DisplayName("Supported response body types")

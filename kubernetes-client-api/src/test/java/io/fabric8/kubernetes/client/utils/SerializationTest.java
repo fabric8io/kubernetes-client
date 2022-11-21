@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -44,12 +45,16 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,14 +62,18 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SerializationTest {
 
@@ -178,10 +187,11 @@ class SerializationTest {
         .isNotNull()
         .hasFieldOrPropertyWithValue("metadata.name", "test-pod-with-alias")
         .hasFieldOrPropertyWithValue("spec.nodeSelector.workload", "build")
-        .hasFieldOrPropertyWithValue("spec.tolerations.size", 1)
         .hasFieldOrPropertyWithValue("spec.securityContext.runAsGroup", 1000L)
         .hasFieldOrPropertyWithValue("spec.securityContext.runAsUser", 1000L)
-        .extracting(Pod::getSpec).extracting(PodSpec::getContainers).asList()
+        .extracting(Pod::getSpec)
+        .returns(Arrays.asList(new Toleration("NoSchedule", "nodeType", "Equal", null, "build")), PodSpec::getTolerations)
+        .extracting(PodSpec::getContainers).asList()
         .hasSize(2)
         .extracting("name", "image", "resources.requests.cpu")
         .containsExactly(
@@ -190,7 +200,7 @@ class SerializationTest {
   }
 
   @Test
-  void testClone() {
+  void cloneKubernetesResourceReturnsDifferentInstance() {
     // Given
     Pod pod = new PodBuilder().withNewMetadata().withName("pod").endMetadata().build();
     // When
@@ -203,7 +213,7 @@ class SerializationTest {
   }
 
   @Test
-  void testCloneNonResource() {
+  void cloneNonResourceReturnsDifferentInstance() {
     // Given
     Map<String, String> value = Collections.singletonMap("key", "value");
     // When
@@ -232,15 +242,69 @@ class SerializationTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with invalid YAML content, should throw Exception")
-  void unmarshalWithInvalidYamlShouldThrowException() {
+  void unmarshalWithInvalidYamlShouldReturnRawExtension() {
     // Given
     final InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-yaml.yml");
     // When
-    final ClassCastException result = assertThrows(ClassCastException.class, () -> Serialization.unmarshal(is));
+    RawExtension result = Serialization.unmarshal(is);
     // Then
-    assertThat(result)
-        .hasMessageContainingAll("java.lang.String", "cannot be cast to", "java.util.Map");
+    assertEquals("This\nis not\nYAML", result.getValue());
+  }
+
+  @Test
+  void unmarshalYamlArrayShouldThrowException() {
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> Serialization.unmarshal("- 1\n- 2"))
+        .withMessageStartingWith("Cannot parse a nested array containing non-object resource");
+  }
+
+  @Test
+  void unmarshalJsonArrayShouldThrowException() {
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> Serialization.unmarshal("[1, 2]"))
+        .withMessage("An error has occurred.")
+        .havingCause()
+        .withMessageStartingWith("Cannot parse a nested array containing non-object resource");
+  }
+
+  @Test
+  void unmarshalYamlArrayWithProvidedTypeShouldDeserialize() {
+    // not valid as KubernetesResource - we'd have to look ahead to know if the array values
+    // were not hasmetadata
+    assertEquals(Arrays.asList(1, 2), Serialization.unmarshal("- 1\n- 2", List.class));
+  }
+
+  @Test
+  void unmarshalJsonArrayWithProvidedTypeShouldDeserialize() {
+    // not valid as KubernetesResource - we'd have to look ahead to know if the array values
+    // were not hasmetadata
+    assertEquals(Arrays.asList(1, 2), Serialization.unmarshal("[1, 2]", List.class));
+  }
+
+  @ParameterizedTest(name = "''{0}'' should be deserialized as ''{1}''")
+  @MethodSource("unmarshalPrimitivesInput")
+  void unmarshalPrimitives(String input, Object expected) {
+    assertThat(Serialization.<RawExtension> unmarshal(input))
+        .extracting(RawExtension::getValue)
+        .isEqualTo(expected);
+    assertEquals("a", Serialization.unmarshal("\"a\"", String.class));
+    assertEquals("a", Serialization.unmarshal("a", String.class));
+  }
+
+  @ParameterizedTest(name = "''{0}'' and ''{2}'' target type should be deserialized as ''{1}''")
+  @MethodSource("unmarshalPrimitivesInput")
+  void unmarshalPrimitivesWithType(String input, Object expected, Class<?> targetType) {
+    assertThat(Serialization.unmarshal(input, targetType))
+        .isEqualTo(expected);
+  }
+
+  static Stream<Arguments> unmarshalPrimitivesInput() {
+    return Stream.of(
+        Arguments.arguments("\"a\"", "a", String.class), // JSON
+        Arguments.arguments("a", "a", String.class), // YAML
+        Arguments.arguments("1", 1, Integer.class),
+        Arguments.arguments("true", true, Boolean.class),
+        Arguments.arguments("1.2", 1.2, Double.class));
   }
 
   @Test

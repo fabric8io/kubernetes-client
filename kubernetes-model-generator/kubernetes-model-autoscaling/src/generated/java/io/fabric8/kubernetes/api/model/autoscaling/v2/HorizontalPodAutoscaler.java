@@ -58,11 +58,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
 @Version("v2")
 @Group("autoscaling")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "autoscaling.properties", gather = true)
-})
 public class HorizontalPodAutoscaler implements HasMetadata, Namespaced
 {
 

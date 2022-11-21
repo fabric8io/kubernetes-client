@@ -30,10 +30,6 @@
 
   <properties>
     <clone-kube>true</clone-kube>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /autoscaling.properties=target/classes/autoscaling.properties,
-    </osgi.include.resources>
     <osgi.import>*</osgi.import>
     <osgi.export>
       io.fabric8.kubernetes.api.model.autoscaling**

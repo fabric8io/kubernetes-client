@@ -76,7 +76,7 @@ class EventTest {
     });
 
     // Then
-    assertTrue(eventReceivedLatch.await(1, TimeUnit.SECONDS));
+    assertTrue(eventReceivedLatch.await(10, TimeUnit.SECONDS));
     watch.close();
   }
 

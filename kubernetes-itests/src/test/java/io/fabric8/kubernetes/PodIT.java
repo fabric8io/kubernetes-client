@@ -274,6 +274,7 @@ class PodIT {
 
     assertUploaded("pod-standard", tmpFile, "/tmp/toBeUploaded");
     assertUploaded("pod-standard", tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");
+    assertUploaded("pod-standard", tmpFile, "/tmp/002'special");
   }
 
   private void assertUploaded(String podName, final Path tmpFile, String filename) throws IOException {

@@ -51,3 +51,8 @@ jobs:
           distribution: 'temurin'
       - name: Build Project
         run: ./mvnw ${MAVEN_ARGS} clean install
+
+      - name: Check java-generator CLI
+        run: |
+          chmod a+x java-generator/cli/target/java-gen
+          java-generator/cli/target/java-gen --source=java-generator/core/src/test/resources/crontab-crd.yml --target=./tmp

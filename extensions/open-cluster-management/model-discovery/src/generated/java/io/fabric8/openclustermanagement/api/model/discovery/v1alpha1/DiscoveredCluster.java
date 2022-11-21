@@ -66,11 +66,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
 @Version("v1alpha1")
 @Group("discovery.open-cluster-management.io")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "model.properties", gather = true)
-})
 public class DiscoveredCluster implements HasMetadata, Namespaced
 {
 

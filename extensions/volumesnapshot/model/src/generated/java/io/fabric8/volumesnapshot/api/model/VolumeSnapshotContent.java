@@ -65,11 +65,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
 @Version("v1")
 @Group("snapshot.storage.k8s.io")
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "model.properties", gather = true)
-})
 public class VolumeSnapshotContent implements HasMetadata
 {
 

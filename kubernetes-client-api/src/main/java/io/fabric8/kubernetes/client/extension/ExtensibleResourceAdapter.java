@@ -101,4 +101,19 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
     return resource.getItem();
   }
 
+  @Override
+  public ExtensibleResource<T> fieldValidation(Validation fieldValidation) {
+    return newInstance().init(resource.fieldValidation(fieldValidation), client);
+  }
+
+  @Override
+  public ExtensibleResource<T> fieldManager(String manager) {
+    return newInstance().init(resource.fieldManager(manager), client);
+  }
+
+  @Override
+  public ExtensibleResource<T> forceConflicts() {
+    return newInstance().init(resource.forceConflicts(), client);
+  }
+
 }

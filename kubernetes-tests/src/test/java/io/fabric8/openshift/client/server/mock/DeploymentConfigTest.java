@@ -277,7 +277,7 @@ class DeploymentConfigTest {
     LogWatch logWatch = client.deploymentConfigs().inNamespace("ns1").withName("dc1").watchLog(byteArrayOutputStream);
 
     // Then
-    await().atMost(2, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
+    await().atMost(10, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
     assertNotNull(byteArrayOutputStream.toString());
     assertEquals("testlog", byteArrayOutputStream.toString());
     logWatch.close();
@@ -299,7 +299,7 @@ class DeploymentConfigTest {
     InputStreamPumper.pump(is, byteArrayOutputStream::write, exec);
 
     // Then
-    await().atMost(2, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
+    await().atMost(10, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
     assertNotNull(byteArrayOutputStream.toString());
     assertEquals("testlog", byteArrayOutputStream.toString());
     // graceful close
