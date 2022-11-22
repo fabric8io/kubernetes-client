@@ -24,9 +24,10 @@
 * Fix #3896: added dsl support for server side apply
 * Fix #4582: updated [client.secrets] createOrReplace document
 
-#### _**Note**_: Breaking changes in the API
+#### _**Note**_: Breaking changes
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 * Fix #3923: removed KubernetesResourceMappingProvider - a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource list of resources is used instead.
+* Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`
 
 ### 6.2.0 (2022-10-20)
 
