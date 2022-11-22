@@ -87,7 +87,7 @@ class OkHttpClientTest {
 
     assertThrows(WebSocketHandshakeException.class, () -> {
       try {
-        startedFuture.get();
+        startedFuture.get(10, TimeUnit.SECONDS);
       } catch (ExecutionException e) {
         throw e.getCause();
       }
@@ -144,7 +144,7 @@ class OkHttpClientTest {
     assertFalse(latch.await(10, TimeUnit.SECONDS));
     assertEquals(1, latch.getCount());
 
-    startedFuture.get().request();
+    startedFuture.get(10, TimeUnit.SECONDS).request();
 
     assertTrue(latch.await(10, TimeUnit.SECONDS));
   }

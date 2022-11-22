@@ -106,9 +106,12 @@ public class HttpClientReadableByteChannel implements ReadableByteChannel, BodyC
             consumeRequested = true;
             this.asyncBody.consume();
             // the consume call may actually trigger result deliver
-            // if it did, then just start the loop over
+            // if it did, then just start the loop over or be done
             if (!consumeRequested) {
               continue;
+            }
+            if (done) {
+              return -1;
             }
           }
           try {
