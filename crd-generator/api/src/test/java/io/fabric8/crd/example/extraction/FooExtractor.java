@@ -16,13 +16,12 @@
 package io.fabric8.crd.example.extraction;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotNull;
+import io.fabric8.generator.annotation.Required;
 
 public class FooExtractor {
 
   @JsonProperty("BAZ")
-  @NotNull
+  @Required
   public int bar;
 
 }

@@ -24,8 +24,6 @@ import io.fabric8.generator.annotation.Nullable;
 import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Required;
 
-import javax.validation.constraints.NotNull;
-
 public class AnnotatedSpec {
   @JsonProperty("from-field")
   @JsonPropertyDescription("from-field-description")
@@ -37,7 +35,7 @@ public class AnnotatedSpec {
   private int max;
   private String singleDigit;
   private String nullable;
-  @NotNull
+  @Required
   private boolean emptySetter;
   @Required
   private boolean emptySetter2;
@@ -52,7 +50,7 @@ public class AnnotatedSpec {
 
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")
-  @NotNull
+  @Required
   public int getFoo() {
     return foo;
   }

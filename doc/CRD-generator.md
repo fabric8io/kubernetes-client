@@ -250,13 +250,11 @@ The field will have the `nullable` property in the generated CRD, such as:
 
 ### io.fabric8.generator.annotation.Required
 
-__DEPRECATED:__ `javax.validation.constraints.NotNull`
-
 If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Required`
 
 ```java
 public class ExampleSpec {
-  @NotNull
+  @Required
   int someValue;
 }
 ```
