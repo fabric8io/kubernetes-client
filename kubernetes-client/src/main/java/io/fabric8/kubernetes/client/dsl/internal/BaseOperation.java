@@ -43,6 +43,7 @@ import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
@@ -452,13 +453,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public List<StatusDetails> delete() {
     List<StatusDetails> deleted = deleteAll();
-    if (this.context.getTimeout() > 0) {
-      Set<String> uids = deleted.stream().map(StatusDetails::getUid).collect(Collectors.toSet());
-      CompletableFuture<List<T>> delete = this
-          .informOnCondition(l -> l.stream().map(i -> i.getMetadata().getUid()).noneMatch(uid -> uids.contains(uid)));
-      Utils.waitUntilReadyOrFail(delete, this.context.getTimeout(), this.context.getTimeoutUnit());
-    }
+    waitForDelete(deleted, this.context, this);
     return deleted;
+  }
+
+  static void waitForDelete(List<StatusDetails> deleted, OperationContext context,
+      Waitable<?, ? extends HasMetadata> waitable) {
+    if (context.getTimeout() > 0) {
+      Set<String> uids = deleted.stream().map(StatusDetails::getUid).collect(Collectors.toSet());
+      waitable.waitUntilCondition(h -> h == null || !uids.contains(h.getMetadata().getUid()), context.getTimeout(),
+          context.getTimeoutUnit());
+    }
   }
 
   protected List<StatusDetails> deleteAll() {

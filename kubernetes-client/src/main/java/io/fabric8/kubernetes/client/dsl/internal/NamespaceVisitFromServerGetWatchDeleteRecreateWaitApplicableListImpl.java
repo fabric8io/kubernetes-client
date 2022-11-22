@@ -203,7 +203,9 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public List<StatusDetails> delete() {
-    return resources().flatMap(r -> r.delete().stream()).collect(Collectors.toList());
+    List<StatusDetails> deleted = resources().flatMap(r -> r.delete().stream()).collect(Collectors.toList());
+    BaseOperation.waitForDelete(deleted, this.context, this);
+    return deleted;
   }
 
   @Override

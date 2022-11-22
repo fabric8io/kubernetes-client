@@ -499,8 +499,7 @@ public class OperationContext {
     // operationcontext
     OperationContext newContext = HasMetadataOperationsImpl.defaultContext(client).withDryRun(getDryRun())
         .withGracePeriodSeconds(getGracePeriodSeconds()).withPropagationPolicy(getPropagationPolicy())
-        .withReloadingFromServer(isReloadingFromServer()).withFieldValidation(this.fieldValidation)
-        .withTimeout(this.timeout, this.timeoutUnit);
+        .withReloadingFromServer(isReloadingFromServer()).withFieldValidation(this.fieldValidation);
 
     // check before setting to prevent flipping the default flag
     if (!Objects.equals(getNamespace(), newContext.getNamespace())

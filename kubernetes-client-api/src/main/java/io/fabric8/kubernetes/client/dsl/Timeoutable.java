@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public interface Timeoutable {
 
   /**
-   * Wait for the given operation timeout. For list contexts it applies to each delete operation.
+   * Wait for the given operation timeout.
    *
    * @param timeout 0 indicates no wait
    * @param unit
@@ -29,7 +29,7 @@ public interface Timeoutable {
   Object withTimeout(long timeout, TimeUnit unit);
 
   /**
-   * Wait for the given operation timeout in milliseconds. For list contexts it applies to each delete operation.
+   * Wait for the given operation timeout in milliseconds.
    *
    * @param timeoutInMillis 0 indicates no wait
    */
