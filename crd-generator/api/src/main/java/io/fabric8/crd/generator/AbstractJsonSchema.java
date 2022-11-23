@@ -85,7 +85,6 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_PATTERN = "io.fabric8.generator.annotation.Pattern";
   public static final String ANNOTATION_NULLABLE = "io.fabric8.generator.annotation.Nullable";
   public static final String ANNOTATION_REQUIRED = "io.fabric8.generator.annotation.Required";
-  public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
   public static final String ANNOTATION_SCHEMA_FROM = "io.fabric8.crd.generator.annotation.SchemaFrom";
   public static final String ANNOTATION_PERSERVE_UNKNOWN_FIELDS = "io.fabric8.crd.generator.annotation.PreserveUnknownFields";
   public static final String ANNOTATION_SCHEMA_SWAP = "io.fabric8.crd.generator.annotation.SchemaSwap";
@@ -357,11 +356,6 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_PATTERN:
             pattern = (String) a.getParameters().get(VALUE);
-            break;
-          case ANNOTATION_NOT_NULL:
-            LOGGER.warn("Annotation: {} on property: {} is deprecated. Please use: {} instead", ANNOTATION_NOT_NULL, name,
-                ANNOTATION_REQUIRED);
-            required = true;
             break;
           case ANNOTATION_REQUIRED:
             required = true;
