@@ -26,6 +26,7 @@
 * Fix #4582: updated [client.secrets] createOrReplace document
 
 #### _**Note**_: Breaking changes
+* Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 * Fix #3923: removed KubernetesResourceMappingProvider - a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource list of resources is used instead.
 * Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`

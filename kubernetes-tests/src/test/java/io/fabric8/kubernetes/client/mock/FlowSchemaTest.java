@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableKubernetesMockClient
@@ -37,7 +38,7 @@ class FlowSchemaTest {
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/v1beta1-flowschema.yml")).get();
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/v1beta1-flowschema.yml")).items();
     assertThat(items).isNotNull().hasSize(1);
     assertThat(items.get(0))
         .isInstanceOf(FlowSchema.class)

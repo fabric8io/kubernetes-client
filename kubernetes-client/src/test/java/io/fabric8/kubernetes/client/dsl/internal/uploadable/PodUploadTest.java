@@ -23,10 +23,12 @@ import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,8 +89,10 @@ class PodUploadTest {
         .withNewMetadata().withName("pod").endMetadata()
         .withNewSpec().addNewContainer().withName("container").endContainer().endSpec()
         .build();
-    this.operation = new PodOperationsImpl(
-        new PodOperationContext(), new OperationContext().withItem(item).withClient(client));
+    this.operation = (PodOperationsImpl) new PodOperationsImpl(
+        new PodOperationContext(), new OperationContext().withClient(client)).resource(item);
+    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class)))
+        .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, Serialization.asJson(item))));
   }
 
   @Test
@@ -193,7 +197,7 @@ class PodUploadTest {
     assertThat(result).isTrue();
     verify(builder, times(1)).uri(argThat(request -> {
       assertThat(request).hasToString(
-          "https://openshift.com:8443/api/v1/namespaces/default/pods/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true");
+          "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true");
       return true;
     }));
     verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
@@ -222,7 +226,7 @@ class PodUploadTest {
     assertThat(result).isTrue();
     verify(builder, times(1)).uri(argThat(request -> {
       assertThat(request).hasToString(
-          "https://openshift.com:8443/api/v1/namespaces/default/pods/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%7C%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true");
+          "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%7C%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true");
       return true;
     }));
     verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));

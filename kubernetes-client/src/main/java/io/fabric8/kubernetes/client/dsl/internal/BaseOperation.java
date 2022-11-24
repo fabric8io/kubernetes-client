@@ -101,7 +101,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private final T item;
 
   private final String resourceVersion;
-  private final boolean reloadingFromServer;
   private final long gracePeriodSeconds;
   private final DeletionPropagation propagationPolicy;
 
@@ -115,7 +114,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   protected BaseOperation(OperationContext ctx) {
     super(ctx);
     this.item = (T) ctx.getItem();
-    this.reloadingFromServer = ctx.isReloadingFromServer();
     this.resourceVersion = ctx.getResourceVersion();
     this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
     this.propagationPolicy = ctx.getPropagationPolicy();
@@ -137,9 +135,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T get() {
     try {
-      final T answer = getMandatory();
-      updateApiVersion(answer);
-      return answer;
+      return requireFromServer();
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
@@ -151,22 +147,35 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T require() {
     try {
-      T answer = getMandatory();
-      if (answer == null) {
-        throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
-      }
-      return answer;
+      return requireFromServer();
     } catch (KubernetesClientException e) {
-      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-        throw e;
-      }
-      throw new ResourceNotFoundException("Resource not found : " + e.getMessage(), e);
+      throw new ResourceNotFoundException("Resource couldn't be fetched : " + e.getMessage(), e);
     }
   }
 
-  public T getMandatory() {
-    if (item != null && !reloadingFromServer) {
+  /**
+   * Return the context item or retrieves the remote item
+   *
+   * @return
+   */
+  public T getItemOrRequireFromServer() {
+    if (item != null) {
       return Serialization.clone(item);
+    }
+    return requireFromServer();
+  }
+
+  /**
+   * Get the current item from the server
+   * <br>
+   * Will always return non-null or throw an exception.
+   * <br>
+   * Differs from {@link #require()} in that it does not throw a {@link ResourceNotFoundException} exception
+   * which for some reason is not a {@link KubernetesClientException}
+   */
+  protected T requireFromServer() {
+    if (Utils.isNullOrEmpty(getName())) {
+      throw new KubernetesClientException("name not specified for an operation requiring one.");
     }
     try {
       URL requestUrl = getCompleteResourceUrl();
@@ -278,7 +287,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> fromServer() {
-    return newInstance(context.withReloadingFromServer(true));
+    return this;
   }
 
   @Override
@@ -523,19 +532,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T patchStatus() {
-    // fromServer shouldn't be necessary here as we're using a merge patch, but
-    // just in case that changes we want consistency with the other patch methods
-    return this.fromServer().patchStatus(getNonNullItem());
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   @Override
   public T patch() {
-    return this.fromServer().patch(getNonNullItem());
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   @Override
   public T patch(PatchContext patchContext) {
-    return this.fromServer().patch(patchContext, getNonNullItem());
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   protected T getNonNullItem() {
@@ -720,10 +727,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     URL requestUrl = getNamespacedUrl(checkNamespace(item));
     if (name != null) {
       requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
-    } else if (item != null && reloadingFromServer) {
-      requestUrl = new URL(URLUtils.join(requestUrl.toString(), checkName(item)));
     }
     return requestUrl;
+  }
+
+  @Override
+  public T item() {
+    return getItem();
   }
 
   @Override
@@ -733,10 +743,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public String getResourceVersion() {
     return resourceVersion;
-  }
-
-  public Boolean isReloadingFromServer() {
-    return reloadingFromServer;
   }
 
   public Long getGracePeriodSeconds() {
@@ -832,7 +838,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public final boolean isReady() {
-    T item = fromServer().get();
+    T item = get();
     if (item == null) {
       return false;
     }

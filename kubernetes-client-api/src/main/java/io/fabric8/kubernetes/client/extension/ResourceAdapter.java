@@ -324,4 +324,9 @@ public class ResourceAdapter<T> implements Resource<T> {
     return resource.serverSideApply();
   }
 
+  @Override
+  public T item() {
+    return resource.item();
+  }
+
 }

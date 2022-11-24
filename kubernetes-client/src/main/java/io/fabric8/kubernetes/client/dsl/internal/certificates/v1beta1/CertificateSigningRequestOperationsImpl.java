@@ -68,7 +68,7 @@ public class CertificateSigningRequestOperationsImpl extends
   private CertificateSigningRequest addStatusToCSRAndSubmit(
       CertificateSigningRequestCondition certificateSigningRequestCondition) {
     try {
-      CertificateSigningRequest fromServerCsr = fromServer().get();
+      CertificateSigningRequest fromServerCsr = get();
       fromServerCsr.setStatus(createCertificateSigningRequestStatus(certificateSigningRequestCondition));
       return handleApproveOrDeny(fromServerCsr, CertificateSigningRequest.class);
     } catch (InterruptedException ie) {

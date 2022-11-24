@@ -96,6 +96,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   }
 
   @Override
+  public List<HasMetadata> items() {
+    return getItems();
+  }
+
+  @Override
   public Stream<NamespaceableResource<HasMetadata>> resources() {
     return getItems().stream()
         .map(this::getResource);
@@ -121,7 +126,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     if (operations.isEmpty()) {
       return Collections.emptyList();
     }
-    List<HasMetadata> items = operations.stream().map(Resource::get).collect(Collectors.toList());
+    List<HasMetadata> items = operations.stream().map(Resource::item).collect(Collectors.toList());
     final List<CompletableFuture<List<HasMetadata>>> futures = new ArrayList<>(items.size());
     for (final Resource<HasMetadata> impl : operations) {
       CompletableFuture<List<HasMetadata>> futureCondition = impl.informOnCondition(l -> {
@@ -220,7 +225,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public Gettable<List<HasMetadata>> fromServer() {
-    return newInstance(context.withReloadingFromServer(true));
+    return this;
   }
 
   @Override

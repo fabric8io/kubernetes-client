@@ -147,7 +147,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       return super.edit(function);
     }
     try {
-      T oldObj = getMandatory();
+      T oldObj = getItemOrRequireFromServer();
       T newObj = function.apply(Serialization.clone(oldObj));
       return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(oldObj, newObj);
     } catch (Exception e) {
@@ -160,7 +160,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     if (!rolling) {
       return super.replace(t);
     }
-    return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), t);
+    return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getItemOrRequireFromServer(), t);
   }
 
   @Override
@@ -168,7 +168,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     if (!rolling || patchContext == null || patchContext.getPatchType() != PatchType.JSON) {
       return super.patch(patchContext, item);
     }
-    return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), item);
+    return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getItemOrRequireFromServer(), item);
   }
 
   public abstract RollableScalableResourceOperation<T, L, R> newInstance(RollingOperationContext context);

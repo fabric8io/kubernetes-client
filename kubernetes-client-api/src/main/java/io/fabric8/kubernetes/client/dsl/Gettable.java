@@ -18,6 +18,10 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Gettable<T> {
 
   /**
+   * Get the current state from the api server.
+   *
+   * See also {@link Resource#item()}
+   *
    * @return the item or null if the item doesn't exist.
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
    */

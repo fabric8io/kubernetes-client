@@ -41,7 +41,7 @@ class ImageStreamIT {
   @Test
   void load() {
     ImageStream aImageStream = client.imageStreams()
-        .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
+        .load(getClass().getResourceAsStream("/test-imagestream.yml")).item();
     assertThat(aImageStream).isNotNull();
     assertEquals("my-ruby", aImageStream.getMetadata().getName());
   }

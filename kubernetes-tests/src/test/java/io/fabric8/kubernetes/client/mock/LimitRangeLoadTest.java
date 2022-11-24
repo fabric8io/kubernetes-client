@@ -33,7 +33,7 @@ public class LimitRangeLoadTest {
 
   @Test
   public void load() {
-    LimitRange limitRange = client.limitRanges().load(getClass().getResourceAsStream("/test-limitRange.yml")).get();
+    LimitRange limitRange = client.limitRanges().load(getClass().getResourceAsStream("/test-limitRange.yml")).item();
     assertNotNull(limitRange);
     assertEquals("resource-limits", limitRange.getMetadata().getName());
   }

@@ -83,9 +83,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public String getURL(String portName) {
-    String clusterIP = getMandatory().getSpec().getClusterIP();
+    String clusterIP = getItemOrRequireFromServer().getSpec().getClusterIP();
     if ("None".equals(clusterIP)) {
-      throw new IllegalStateException("Service: " + getMandatory().getMetadata().getName() + " in namespace "
+      throw new IllegalStateException("Service: " + getItemOrRequireFromServer().getMetadata().getName() + " in namespace "
           + namespace + " is head-less. Search for endpoints instead");
     }
     return getUrlHelper(portName);
@@ -104,7 +104,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     // Sort all loaded implementations according to priority
     Collections.sort(servicesList, new ServiceToUrlSortComparator());
     for (ServiceToURLProvider serviceToURLProvider : servicesList) {
-      String url = serviceToURLProvider.getURL(getMandatory(), portName, namespace,
+      String url = serviceToURLProvider.getURL(getItemOrRequireFromServer(), portName, namespace,
           context.getClient().adapt(KubernetesClient.class));
       if (url != null && URLUtils.isValidURL(url)) {
         return url;
