@@ -182,7 +182,7 @@ If a field or one of its accessors is annotated with `io.fabric8.generator.annot
 
 ```java
 public class ExampleSpec {
-  @Min(1)
+  @Max(1)
   int someValue;
 }
 ```
@@ -217,7 +217,7 @@ The field will have the `pattern` property in the generated CRD, such as:
           spec:
             properties:
               someValue:
-                maximum: "\\b[1-9]\\b"
+                pattern: "\\b[1-9]\\b"
                 type: string
             required:
             - someValue
