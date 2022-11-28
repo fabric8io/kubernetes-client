@@ -1,6 +1,10 @@
 
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,11 +30,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -60,7 +59,7 @@ import java.util.Map;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class),
+    @BuildableReference(RawExtension.class)
 })
 public class ConversionRequest implements KubernetesResource
 {
@@ -76,13 +75,13 @@ public class ConversionRequest implements KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     *
+     * 
      */
     public ConversionRequest() {
     }
 
     /**
-     *
+     * 
      * @param uid
      * @param objects
      * @param desiredAPIVersion
