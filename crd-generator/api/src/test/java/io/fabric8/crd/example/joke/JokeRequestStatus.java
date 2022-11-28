@@ -15,6 +15,8 @@
  */
 package io.fabric8.crd.example.joke;
 
+import io.fabric8.kubernetes.model.annotation.PrinterColumn;
+
 public class JokeRequestStatus {
   public enum State {
     CREATED,
@@ -27,6 +29,9 @@ public class JokeRequestStatus {
   private State state = State.UNKNOWN;
   private boolean error;
   private String message;
+
+  @PrinterColumn(name = "jokeCategory")
+  private JokeRequestSpec.Category category = JokeRequestSpec.Category.Any;
 
   public State getState() {
     return state;
@@ -50,5 +55,13 @@ public class JokeRequestStatus {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public JokeRequestSpec.Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(JokeRequestSpec.Category category) {
+    this.category = category;
   }
 }
