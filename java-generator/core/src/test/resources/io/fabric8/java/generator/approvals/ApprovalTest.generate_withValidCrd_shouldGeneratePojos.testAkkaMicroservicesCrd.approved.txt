@@ -2,6 +2,8 @@ AkkaMicroserviceJavaCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("akka.lightbend.com")
+@io.fabric8.kubernetes.model.annotation.Singular("akkamicroservice")
+@io.fabric8.kubernetes.model.annotation.Plural("akkamicroservices")
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class AkkaMicroservice extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.AkkaMicroserviceSpec, org.test.v1.AkkaMicroserviceStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }

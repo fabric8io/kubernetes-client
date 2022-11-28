@@ -2,6 +2,8 @@ KeycloakJavaCr[0] = package org.test.v1alpha1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1alpha1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("keycloak.org")
+@io.fabric8.kubernetes.model.annotation.Singular("keycloak")
+@io.fabric8.kubernetes.model.annotation.Plural("keycloaks")
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class Keycloak extends io.fabric8.kubernetes.client.CustomResource<org.test.v1alpha1.KeycloakSpec, org.test.v1alpha1.KeycloakStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }

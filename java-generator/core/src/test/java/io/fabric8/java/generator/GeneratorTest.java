@@ -69,6 +69,8 @@ class GeneratorTest {
         true,
         true,
         true,
+        "t",
+        "ts",
         defaultConfig);
 
     // Act
@@ -93,6 +95,8 @@ class GeneratorTest {
         true,
         true,
         true,
+        "t",
+        "ts",
         defaultConfig);
 
     // Act

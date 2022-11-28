@@ -2,6 +2,8 @@ CrontabJavaExtraAnnotationsCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("stable.example.com")
+@io.fabric8.kubernetes.model.annotation.Singular("crontab")
+@io.fabric8.kubernetes.model.annotation.Plural("crontabs")
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode(callSuper = true)

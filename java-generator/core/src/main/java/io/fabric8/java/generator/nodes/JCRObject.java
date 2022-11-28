@@ -37,6 +37,8 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
   private final String statusClassName;
   private final boolean withSpec;
   private final boolean withStatus;
+  private final String singular;
+  private final String plural;
 
   private final boolean storage;
   private final boolean served;
@@ -52,6 +54,8 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
       boolean withStatus,
       boolean storage,
       boolean served,
+      String singular,
+      String plural,
       Config config) {
     super(config, null, false, null, null);
 
@@ -66,6 +70,8 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     this.withStatus = withStatus;
     this.storage = storage;
     this.served = served;
+    this.singular = singular;
+    this.plural = plural;
   }
 
   @Override
@@ -95,6 +101,20 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
         new SingleMemberAnnotationExpr(
             new Name("io.fabric8.kubernetes.model.annotation.Group"),
             new StringLiteralExpr(group)));
+
+    if (singular != null) {
+      clz.addAnnotation(
+          new SingleMemberAnnotationExpr(
+              new Name("io.fabric8.kubernetes.model.annotation.Singular"),
+              new StringLiteralExpr(singular)));
+    }
+
+    if (plural != null) {
+      clz.addAnnotation(
+          new SingleMemberAnnotationExpr(
+              new Name("io.fabric8.kubernetes.model.annotation.Plural"),
+              new StringLiteralExpr(plural)));
+    }
 
     ClassOrInterfaceType jlVoid = new ClassOrInterfaceType().setName("java.lang.Void");
 
