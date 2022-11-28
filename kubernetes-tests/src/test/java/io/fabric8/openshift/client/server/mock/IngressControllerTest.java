@@ -15,30 +15,46 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.operator.v1.IngressController;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerBuilder;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerList;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerListBuilder;
+import io.fabric8.openshift.api.model.operator.v1.IngressControllerSpec;
+import io.fabric8.openshift.api.model.operator.v1.IngressControllerSpecBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class IngressControllerTest {
 
-  OpenShiftMockServer server;
+  KubernetesMockServer server;
   OpenShiftClient client;
+
+  @Test
+  void build() {
+    IngressControllerSpec ic = new IngressControllerSpecBuilder()
+        .withUnsupportedConfigOverrides(new RawExtension(Arrays.asList(1, 2)))
+        .build();
+    // make sure the value is not dropped
+    assertNotNull(ic.getUnsupportedConfigOverrides());
+  }
 
   @Test
   void create() {
     // Given
     IngressController dnsrecord = getIngressController();
-    server.expect().post()
+    server.expect()
+        .post()
         .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
         .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
         .once();
@@ -54,7 +70,8 @@ class IngressControllerTest {
   @Test
   void get() {
     // Given
-    server.expect().get()
+    server.expect()
+        .get()
         .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
         .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
         .once();
@@ -70,9 +87,11 @@ class IngressControllerTest {
   @Test
   void list() {
     // Given
-    server.expect().get()
+    server.expect()
+        .get()
         .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
-        .andReturn(HttpURLConnection.HTTP_OK, new IngressControllerListBuilder().withItems(getIngressController()).build())
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new IngressControllerListBuilder().withItems(getIngressController()).build())
         .once();
 
     // When
@@ -87,7 +106,8 @@ class IngressControllerTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete()
+    server.expect()
+        .delete()
         .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
         .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
         .once();
