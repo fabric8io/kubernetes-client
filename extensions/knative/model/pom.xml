@@ -73,32 +73,42 @@
       <artifactId>lombok</artifactId>
     </dependency>
   </dependencies>
+  
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jsonschema2pojo</groupId>
+            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <target>
+                    <!-- removing the generated Schema class -->
+                    <delete
+                      file="${generate.targetDirectory}/io/fabric8/knative/api/model/KnativeSchema.java"
+                      verbose="true" />
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.jsonschema2pojo</groupId>
-        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <configuration>
-              <target>
-                <!-- removing the generated Schema class -->
-                <delete
-                  file="${generate.targetDirectory}/io/fabric8/knative/api/model/KnativeSchema.java"
-                  verbose="true" />
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
