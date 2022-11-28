@@ -23,6 +23,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JAnnotationUse;
+import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
@@ -31,6 +34,7 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.TemplateTransformation;
 import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
@@ -41,13 +45,18 @@ import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
+
+  public static final String BUILDABLE_REFERENCE_VALUE = "value";
+
   protected static final String ANNOTATION_VALUE = "value";
   protected static final String API_VERSION = "apiVersion";
   protected static final String METADATA = "metadata";
@@ -185,12 +194,34 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   }
 
   protected void processBuildable(JDefinedClass clazz) {
-    clazz.annotate(Buildable.class)
+    JAnnotationUse buildable = clazz.annotate(Buildable.class)
         .param("editableEnabled", false)
         .param("validationEnabled", false)
-        .param("generateBuilderPackage", true)
+        .param("generateBuilderPackage", generateBuilderPackage())
         .param("lazyCollectionInitEnabled", false)
         .param("builderPackage", "io.fabric8.kubernetes.api.builder");
+
+    List<String> types = new ArrayList<>();
+    addBuildableTypes(clazz, types);
+    if (!types.isEmpty()) {
+      JAnnotationArrayMember arrayMember = buildable.paramArray("refs");
+      types.stream().forEach(s -> {
+        try {
+          arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
+              new JCodeModel()._class(s));
+        } catch (JClassAlreadyExistsException e) {
+          e.printStackTrace();
+        }
+      });
+    }
+  }
+
+  protected boolean generateBuilderPackage() {
+    return true;
+  }
+
+  protected void addBuildableTypes(JDefinedClass clazz, List<String> types) {
+
   }
 
   private boolean hasInterfaceFields(JsonNode propertiesNode) {

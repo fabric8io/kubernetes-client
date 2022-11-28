@@ -15,60 +15,40 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
-import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JAnnotationUse;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
 import org.jsonschema2pojo.GenerationConfig;
 
-public class KubernetesTypeAnnotator extends KubernetesCoreTypeAnnotator {
+import java.util.List;
 
-  public static final String BUILDABLE_REFERENCE_VALUE = "value";
+public class KubernetesTypeAnnotator extends KubernetesCoreTypeAnnotator {
 
   public KubernetesTypeAnnotator(GenerationConfig generationConfig) {
     super(generationConfig);
   }
 
   @Override
-  public void processBuildable(JDefinedClass clazz) {
-    try {
-      JAnnotationUse buildable = clazz.annotate(Buildable.class)
-          .param("editableEnabled", false)
-          .param("validationEnabled", false)
-          .param("generateBuilderPackage", false)
-          .param("lazyCollectionInitEnabled", false)
-          .param("builderPackage", "io.fabric8.kubernetes.api.builder");
-
-      JAnnotationArrayMember arrayMember = buildable.paramArray("refs");
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.LabelSelector"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.Container"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.PodTemplateSpec"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.ResourceRequirements"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.IntOrString"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectReference"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.LocalObjectReference"));
-      arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-          new JCodeModel()._class("io.fabric8.kubernetes.api.model.PersistentVolumeClaim"));
-      addBuildableTypes(arrayMember);
-    } catch (JClassAlreadyExistsException e) {
-      e.printStackTrace();
-    }
+  protected boolean generateBuilderPackage() {
+    return false;
   }
 
-  protected void addBuildableTypes(JAnnotationArrayMember arrayMember) throws JClassAlreadyExistsException {
-
+  @Override
+  protected void addBuildableTypes(JDefinedClass clazz, List<String> types) {
+    types.add("io.fabric8.kubernetes.api.model.ObjectMeta");
+    types.add("io.fabric8.kubernetes.api.model.LabelSelector");
+    types.add("io.fabric8.kubernetes.api.model.Container");
+    types.add("io.fabric8.kubernetes.api.model.PodTemplateSpec");
+    types.add("io.fabric8.kubernetes.api.model.ResourceRequirements");
+    types.add("io.fabric8.kubernetes.api.model.IntOrString");
+    types.add("io.fabric8.kubernetes.api.model.ObjectReference");
+    types.add("io.fabric8.kubernetes.api.model.LocalObjectReference");
+    types.add("io.fabric8.kubernetes.api.model.PersistentVolumeClaim");
+    if (clazz.fields().values().stream()
+        .anyMatch(f -> f.type().fullName().contains("io.fabric8.kubernetes.api.model.KubernetesResource")
+            || f.type().fullName().contains("io.fabric8.kubernetes.api.model.HasMetadata")
+            || f.type().fullName().contains("io.fabric8.kubernetes.api.model.RawExtension"))) {
+      types.add("io.fabric8.kubernetes.api.model.GenericKubernetesResource");
+      types.add("io.fabric8.kubernetes.api.model.runtime.RawExtension");
+    }
   }
 
 }
