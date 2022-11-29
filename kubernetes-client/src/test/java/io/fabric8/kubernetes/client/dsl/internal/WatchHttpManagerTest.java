@@ -47,7 +47,7 @@ class WatchHttpManagerTest {
     BaseOperation baseOperation = Mockito.mock(BaseOperation.class);
     Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
     CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
-    Mockito.when(client.consumeLines(Mockito.any(), Mockito.any())).thenReturn(future);
+    Mockito.when(client.consumeBytes(Mockito.any(), Mockito.any())).thenReturn(future);
 
     CountDownLatch reconnect = new CountDownLatch(1);
     WatchHTTPManager<HasMetadata, KubernetesResourceList<HasMetadata>> watch = new WatchHTTPManager(client,

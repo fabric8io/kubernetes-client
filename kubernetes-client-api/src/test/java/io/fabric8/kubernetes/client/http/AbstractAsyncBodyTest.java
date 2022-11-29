@@ -23,15 +23,10 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class AbstractAsyncBodyTest {
 
@@ -49,72 +44,6 @@ public abstract class AbstractAsyncBodyTest {
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
-
-  @Test
-  @DisplayName("Lines are processed and consumed only after the consume() invocation")
-  public void consumeLinesProcessedAfterConsume() throws Exception {
-    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
-      server.expect().withPath("/consume-lines")
-          .andReturn(200, "This is the response body\n")
-          .always();
-      final StringBuffer responseText = new StringBuffer();
-      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeLines(
-          client.newHttpRequestBuilder().uri(server.url("/consume-lines")).build(),
-          (value, asyncBody) -> {
-            responseText.append(value);
-            asyncBody.consume();
-          })
-          .get(10L, TimeUnit.SECONDS);
-      assertThat(responseText).isEmpty();
-      asyncBodyResponse.body().consume();
-      asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
-      assertThat(responseText).contains("This is the response body");
-    }
-  }
-
-  @Test
-  @DisplayName("Lines are not processed when cancel() invocation")
-  public void consumeLinesNotProcessedIfCancelled() throws Exception {
-    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
-      server.expect().withPath("/cancel")
-          .andReturn(200, "This would be the response body")
-          .always();
-      final StringBuffer responseText = new StringBuffer();
-      final HttpResponse<AsyncBody> asyncBodyResponse = client
-          .consumeLines(client.newHttpRequestBuilder()
-              .uri(server.url("/cancel")).build(), (value, asyncBody) -> {
-                responseText.append(value);
-                asyncBody.consume();
-              })
-          .get(10L, TimeUnit.SECONDS);
-      asyncBodyResponse.body().cancel();
-      asyncBodyResponse.body().consume();
-      final CompletableFuture<Void> doneFuture = asyncBodyResponse.body().done();
-      assertThrows(CancellationException.class, () -> doneFuture.get(10L, TimeUnit.SECONDS));
-      assertThat(responseText).isEmpty();
-    }
-  }
-
-  @Test
-  @DisplayName("Lines are processed completely")
-  public void consumeLinesProcessesAllLines() throws Exception {
-    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
-      server.expect().withPath("/consume-lines")
-          .andReturn(200, "This is the response body\nWith\nMultiple\n lines\n")
-          .always();
-      final List<String> receivedLines = new ArrayList<>();
-      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeLines(
-          client.newHttpRequestBuilder().uri(server.url("/consume-lines")).build(),
-          (value, asyncBody) -> {
-            receivedLines.add(value);
-            asyncBody.consume();
-          })
-          .get(10L, TimeUnit.SECONDS);
-      asyncBodyResponse.body().consume();
-      asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
-      assertThat(receivedLines).containsExactly("This is the response body", "With", "Multiple", " lines");
-    }
-  }
 
   @Test
   @DisplayName("Bytes are processed and consumed only after the consume() invocation")

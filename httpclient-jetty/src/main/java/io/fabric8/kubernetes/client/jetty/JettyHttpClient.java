@@ -30,7 +30,6 @@ import org.eclipse.jetty.client.util.StringRequestContent;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -74,29 +73,6 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   @Override
   public DerivedClientBuilder newBuilder() {
     return builder.copy(this);
-  }
-
-  @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(
-      HttpRequest originalRequest, AsyncBody.Consumer<String> consumer) {
-    final var request = toStandardHttpRequest(originalRequest);
-    final var future = new JettyAsyncResponseListener(request) {
-
-      final StringBuilder builder = new StringBuilder();
-
-      @Override
-      protected void onContent(ByteBuffer content) throws Exception {
-        for (char c : StandardCharsets.UTF_8.decode(content).array()) {
-          if (c == '\n') {
-            consumer.consume(builder.toString(), this);
-            builder.setLength(0);
-          } else {
-            builder.append(c);
-          }
-        }
-      }
-    }.listen(newRequest(request));
-    return interceptResponse(request.toBuilder(), future, r -> consumeLines(r, consumer));
   }
 
   @Override
