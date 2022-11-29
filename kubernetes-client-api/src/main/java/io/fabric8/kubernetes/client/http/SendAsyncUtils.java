@@ -16,16 +16,11 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.http.HttpClient.AsyncBody;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -35,61 +30,6 @@ class SendAsyncUtils {
 
   private SendAsyncUtils() {
     // just utils
-  }
-
-  /**
-   * Allows for changing the body type - there is further redesign that could be done here
-   */
-  static class HttpResponseAdapter<T> implements HttpResponse<T> {
-
-    private final HttpResponse<?> response;
-    private final T body;
-
-    public HttpResponseAdapter(HttpResponse<?> response, T body) {
-      this.response = response;
-      this.body = body;
-    }
-
-    @Override
-    public List<String> headers(String key) {
-      return response.headers(key);
-    }
-
-    @Override
-    public boolean isSuccessful() {
-      return response.isSuccessful();
-    }
-
-    @Override
-    public Map<String, List<String>> headers() {
-      return response.headers();
-    }
-
-    @Override
-    public int code() {
-      return response.code();
-    }
-
-    @Override
-    public String message() {
-      return response.message();
-    }
-
-    @Override
-    public HttpRequest request() {
-      return response.request();
-    }
-
-    @Override
-    public Optional<HttpResponse<?>> previousResponse() {
-      return response.previousResponse();
-    }
-
-    @Override
-    public T body() {
-      return body;
-    }
-
   }
 
   static CompletableFuture<HttpResponse<Reader>> reader(HttpRequest request, HttpClient client) {
@@ -119,23 +59,6 @@ class SendAsyncUtils {
   static CompletableFuture<HttpResponse<String>> string(HttpRequest request, HttpClient client) {
     return bytes(request, client)
         .thenApply(res -> new HttpResponseAdapter<>(res, new String(res.body(), StandardCharsets.UTF_8)));
-  }
-
-  @SuppressWarnings("rawtypes")
-  static <T> CompletableFuture sendAsync(HttpRequest request, Class<T> type, HttpClient httpClient) {
-    if (type == String.class) {
-      return string(request, httpClient);
-    }
-    if (type == byte[].class) {
-      return bytes(request, httpClient);
-    }
-    if (type == Reader.class) {
-      return reader(request, httpClient);
-    }
-    if (type == InputStream.class) {
-      return inputStream(request, httpClient);
-    }
-    throw new AssertionError("unknown type");
   }
 
 }

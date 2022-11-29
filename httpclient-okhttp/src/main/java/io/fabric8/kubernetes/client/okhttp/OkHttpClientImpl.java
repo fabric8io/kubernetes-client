@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -51,9 +52,6 @@ public class OkHttpClientImpl implements HttpClient {
   static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
 
   public static final MediaType JSON = parseMediaType("application/json");
-  public static final MediaType JSON_PATCH = parseMediaType("application/json-patch+json");
-  public static final MediaType STRATEGIC_MERGE_JSON_PATCH = parseMediaType("application/strategic-merge-patch+json");
-  public static final MediaType JSON_MERGE_PATCH = parseMediaType("application/merge-patch+json");
 
   static MediaType parseMediaType(String contentType) {
     MediaType result = MediaType.parse(contentType);
@@ -62,11 +60,11 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   private abstract class OkHttpAsyncBody<T> implements AsyncBody {
-    private final BodyConsumer<T> consumer;
+    private final AsyncBody.Consumer<T> consumer;
     private final BufferedSource source;
     private final CompletableFuture<Void> done = new CompletableFuture<>();
 
-    private OkHttpAsyncBody(BodyConsumer<T> consumer, BufferedSource source) {
+    private OkHttpAsyncBody(AsyncBody.Consumer<T> consumer, BufferedSource source) {
       this.consumer = consumer;
       this.source = source;
     }
@@ -217,8 +215,8 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request,
-      BodyConsumer<String> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(
+      HttpRequest request, AsyncBody.Consumer<String> consumer) {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<String>(consumer, s) {
       @Override
       protected String process(BufferedSource source) throws IOException {
@@ -232,8 +230,8 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request,
-      BodyConsumer<List<ByteBuffer>> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(
+      HttpRequest request, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
       @Override
       protected List<ByteBuffer> process(BufferedSource source) throws IOException {

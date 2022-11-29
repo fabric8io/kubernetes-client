@@ -16,16 +16,14 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.http.HttpClient.AsyncBody;
-import io.fabric8.kubernetes.client.http.HttpClient.BodyConsumer;
-
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
-public class ByteArrayBodyHandler implements BodyConsumer<List<ByteBuffer>> {
+import static io.fabric8.kubernetes.client.http.BufferUtil.toArray;
+
+public class ByteArrayBodyHandler implements AsyncBody.Consumer<List<ByteBuffer>> {
 
   private final LinkedList<ByteBuffer> buffers = new LinkedList<>();
   private final CompletableFuture<byte[]> result = new CompletableFuture<>();
@@ -46,15 +44,7 @@ public class ByteArrayBodyHandler implements BodyConsumer<List<ByteBuffer>> {
     if (t != null) {
       result.completeExceptionally(t);
     } else {
-      int size = buffers.stream().map(ByteBuffer::remaining).collect(Collectors.summingInt(Integer::intValue)).intValue();
-      byte[] res = new byte[size];
-      int from = 0;
-      for (ByteBuffer b : buffers) {
-        int l = b.remaining();
-        b.get(res, from, l);
-        from += l;
-      }
-      result.complete(res);
+      result.complete(toArray(buffers));
     }
     buffers.clear();
   }

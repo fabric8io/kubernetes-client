@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
@@ -45,7 +46,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private volatile InputStream output;
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
-  private volatile Optional<HttpClient.AsyncBody> asyncBody = Optional.empty();
+  private volatile Optional<AsyncBody> asyncBody = Optional.empty();
   private final SerialExecutor serialExecutor;
 
   public LogWatchCallback(OutputStream out, Executor executor) {
@@ -65,7 +66,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     if (!closed.compareAndSet(false, true)) {
       return;
     }
-    asyncBody.ifPresent(HttpClient.AsyncBody::cancel);
+    asyncBody.ifPresent(AsyncBody::cancel);
     serialExecutor.shutdownNow();
   }
 
