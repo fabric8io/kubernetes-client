@@ -18,26 +18,27 @@ package io.fabric8.crd.generator.v1.decorator;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresourcesFluent;
 
-public class AddStatusReplicasPathDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
+public class AddStatusReplicasPathDecorator
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
 
   private final String path;
- 
-	public AddStatusReplicasPathDecorator(String name, String version, String path) {
-		super(name, version);
-		this.path = path;
-	}
- 
-	@Override
-	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
-    if (subresources.hasScale())  {
+
+  public AddStatusReplicasPathDecorator(String name, String version, String path) {
+    super(name, version);
+    this.path = path;
+  }
+
+  @Override
+  public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
+    if (subresources.hasScale()) {
       subresources.editScale().withStatusReplicasPath(path).endScale();
     } else {
       subresources.withNewScale().withStatusReplicasPath(path).endScale();
     }
-	}
+  }
 
-	@Override
-	public Class<? extends Decorator>[] after() {
-		return new Class[] { AddSubresourcesDecorator.class };
-	}
+  @Override
+  public Class<? extends Decorator>[] after() {
+    return new Class[] { AddSubresourcesDecorator.class };
+  }
 }

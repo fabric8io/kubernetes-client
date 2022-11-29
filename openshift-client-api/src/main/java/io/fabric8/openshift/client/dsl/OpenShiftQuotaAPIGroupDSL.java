@@ -25,5 +25,6 @@ import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 
 public interface OpenShiftQuotaAPIGroupDSL extends Client {
   MixedOperation<AppliedClusterResourceQuota, AppliedClusterResourceQuotaList, Resource<AppliedClusterResourceQuota>> appliedClusterResourceQuotas();
+
   MixedOperation<ClusterResourceQuota, ClusterResourceQuotaList, Resource<ClusterResourceQuota>> clusterResourceQuotas();
 }

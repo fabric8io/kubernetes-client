@@ -24,14 +24,14 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
  * Service YAML manifest and then applies it to the Kubernetes Cluster.
  */
 public class LoadAndCreateService {
-    public static void main(String[] args) {
-        try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-            // Load Service YAML Manifest into Java object
-            Service svc = k8s.services()
-                    .load(LoadAndCreateService.class.getResourceAsStream("/test-svc.yaml"))
-                    .get();
-            // Apply it to Kubernetes Cluster
-            k8s.services().inNamespace("default").create(svc);
-        }
+  public static void main(String[] args) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
+      // Load Service YAML Manifest into Java object
+      Service svc = k8s.services()
+          .load(LoadAndCreateService.class.getResourceAsStream("/test-svc.yaml"))
+          .get();
+      // Apply it to Kubernetes Cluster
+      k8s.services().inNamespace("default").create(svc);
     }
+  }
 }

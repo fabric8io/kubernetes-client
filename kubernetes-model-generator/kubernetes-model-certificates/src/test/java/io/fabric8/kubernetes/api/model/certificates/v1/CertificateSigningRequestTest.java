@@ -23,12 +23,12 @@ class CertificateSigningRequestTest {
   @Test
   void testBuilder() {
     CertificateSigningRequest csr = new io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestBuilder()
-      .withNewMetadata().withName("my-svc.my-namespace").endMetadata()
-      .withNewSpec()
-      .withRequest("$(cat server.csr | base64 | tr -d '\\n')")
-      .addToUsages("digital signature", "key encipherment", "server auth")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("my-svc.my-namespace").endMetadata()
+        .withNewSpec()
+        .withRequest("$(cat server.csr | base64 | tr -d '\\n')")
+        .addToUsages("digital signature", "key encipherment", "server auth")
+        .endSpec()
+        .build();
 
     assertEquals("my-svc.my-namespace", csr.getMetadata().getName());
     assertEquals("$(cat server.csr | base64 | tr -d '\\n')", csr.getSpec().getRequest());

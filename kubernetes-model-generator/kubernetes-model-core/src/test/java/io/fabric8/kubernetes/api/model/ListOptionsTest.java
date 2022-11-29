@@ -23,10 +23,10 @@ public class ListOptionsTest {
   @Test
   public void testBuilder() {
     ListOptions listOptions = new io.fabric8.kubernetes.api.model.ListOptionsBuilder()
-      .withLimit(100L)
-      .withContinue("23243434")
-      .withFieldSelector("metadata.name=my-service")
-      .build();
+        .withLimit(100L)
+        .withContinue("23243434")
+        .withFieldSelector("metadata.name=my-service")
+        .build();
 
     assertEquals(100L, listOptions.getLimit());
     assertEquals("23243434", listOptions.getContinue());

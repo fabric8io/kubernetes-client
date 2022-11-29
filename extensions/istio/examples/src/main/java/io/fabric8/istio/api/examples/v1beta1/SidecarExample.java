@@ -39,14 +39,14 @@ public class SidecarExample {
     System.out.println("Creating a sidecar");
     // Example from: https://istio.io/latest/docs/reference/config/networking/sidecar/
     client.v1beta1().sidecars().inNamespace(NAMESPACE).create(new SidecarBuilder()
-      .withNewMetadata()
-      .withName("default")
-      .endMetadata()
-      .withNewSpec()
-      .withEgress(new IstioEgressListenerBuilder()
-        .withHosts("./*", "istio-system/*").build())
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("default")
+        .endMetadata()
+        .withNewSpec()
+        .withEgress(new IstioEgressListenerBuilder()
+            .withHosts("./*", "istio-system/*").build())
+        .endSpec()
+        .build());
 
     System.out.println("Listing sidecar instances:");
     SidecarList list = client.v1beta1().sidecars().inNamespace(NAMESPACE).list();

@@ -32,12 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnableKubernetesMockClient
 public class KeyLoadTests {
   @Test
-  public void testECKeyLoad() throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  public void testECKeyLoad()
+      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl/fabric8-ec.key"));
     String certPath = Utils.filePath(getClass().getResource("/ssl/fabric8-ec.cert"));
 
-    KeyStore trustStore =
-      CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
+    KeyStore trustStore = CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
 
     assertEquals(1, trustStore.size());
   }

@@ -28,15 +28,15 @@ public class Helper {
   private Helper() {
     throw new IllegalStateException("Utility class");
   }
-    public static String loadJson(String path) {
-        try (InputStream resourceAsStream = Helper.class.getResourceAsStream(path)) {
-            final Scanner scanner = new Scanner(resourceAsStream).useDelimiter("\\A");
-            return scanner.hasNext() ? scanner.next() : "";
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
+  public static String loadJson(String path) {
+    try (InputStream resourceAsStream = Helper.class.getResourceAsStream(path)) {
+      final Scanner scanner = new Scanner(resourceAsStream).useDelimiter("\\A");
+      return scanner.hasNext() ? scanner.next() : "";
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
     Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
@@ -50,8 +50,8 @@ public class Helper {
 
   private static Annotation getAnnotation(Class kubernetesResourceType, Class annotationClass) {
     return Arrays.stream(kubernetesResourceType.getAnnotations())
-      .filter(annotation -> annotation.annotationType().equals(annotationClass))
-      .findFirst()
-      .orElse(null);
+        .filter(annotation -> annotation.annotationType().equals(annotationClass))
+        .findFirst()
+        .orElse(null);
   }
 }

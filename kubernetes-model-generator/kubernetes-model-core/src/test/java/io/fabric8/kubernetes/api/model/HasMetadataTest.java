@@ -18,8 +18,9 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 class HasMetadataTest {
   @Test
@@ -48,11 +48,11 @@ class HasMetadataTest {
     final String finalizer = "example.fabric8.io/finalizer";
     assertTrue(hasMetadata.addFinalizer(finalizer));
     assertEquals(hasMetadata.getMetadata().getFinalizers().contains(finalizer), hasMetadata.hasFinalizer(finalizer));
-    
+
     assertTrue(hasMetadata.removeFinalizer(finalizer));
     assertFalse(hasMetadata.hasFinalizer(finalizer));
   }
-  
+
   @Test
   void shouldNotAddFinalizerToMarkedForDeletion() {
     HasMetadata hasMetadata = new Default() {
@@ -61,7 +61,7 @@ class HasMetadataTest {
         return true;
       }
     };
-    
+
     assertFalse(hasMetadata.addFinalizer("example.fabric8.io/finalizer"));
   }
 
@@ -73,7 +73,7 @@ class HasMetadataTest {
     assertTrue(HasMetadata.validateFinalizer("fabric8.io/finalizer"));
     // other cases are indirectly validated in invalidFinalizersShouldFail
   }
-  
+
   @Test
   void invalidFinalizersShouldFail() {
     HasMetadata hasMetadata = new Default();
@@ -83,12 +83,15 @@ class HasMetadataTest {
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("-fabric8.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.i/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8./finalizer"));
-    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("this-label-is-too-long-12345678901234567890123456789012345678901234567890qwertyuiopasdfghjkl.io/finalizer"));
-    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("this.dns.name.is.way.way.too.long.more.than.255.characters.12345678901234567890.qwertyuiop.asdfghjkl.zxcvbnm.qwertyuiop.adfghjkl.zxcvbnm.mnbvcxz.lkjhgfdsa.poiuytrewq12345678901234567890.qwertyuiop.asdfghjkl.zxcvbnm.qwertyuiop.adfghjkl.zxcvbnm.mnbvcxz.lkjhgfdsa.poiuytrewq.io/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(
+        "this-label-is-too-long-12345678901234567890123456789012345678901234567890qwertyuiopasdfghjkl.io/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(
+        "this.dns.name.is.way.way.too.long.more.than.255.characters.12345678901234567890.qwertyuiop.asdfghjkl.zxcvbnm.qwertyuiop.adfghjkl.zxcvbnm.mnbvcxz.lkjhgfdsa.poiuytrewq12345678901234567890.qwertyuiop.asdfghjkl.zxcvbnm.qwertyuiop.adfghjkl.zxcvbnm.mnbvcxz.lkjhgfdsa.poiuytrewq.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(".io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/-finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizer-"));
-    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizerreallyreallywaywaywaytooooooooooooooooooooolooooooooonnnnnnnnnnng"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata
+        .addFinalizer("fabric8.io/finalizerreallyreallywaywaywaytooooooooooooooooooooolooooooooonnnnnnnnnnng"));
   }
 
   @Test
@@ -102,7 +105,8 @@ class HasMetadataTest {
       }
     };
 
-    IllegalArgumentException iae = assertThrows(IllegalArgumentException.class, () -> target.addOwnerReference((OwnerReference) null));
+    IllegalArgumentException iae = assertThrows(IllegalArgumentException.class,
+        () -> target.addOwnerReference((OwnerReference) null));
     String msg = iae.getMessage();
     assertTrue(msg.contains("null reference to '" + name + "' " + kind));
     iae = assertThrows(IllegalArgumentException.class, () -> target.addOwnerReference((HasMetadata) null));
@@ -115,7 +119,7 @@ class HasMetadataTest {
     final HasMetadata target = new Empty();
 
     IllegalArgumentException iae = assertThrows(IllegalArgumentException.class,
-      () -> target.addOwnerReference((OwnerReference) null));
+        () -> target.addOwnerReference((OwnerReference) null));
     String msg = iae.getMessage();
     assertTrue(msg.contains("null reference to unnamed " + target.getKind()));
   }
@@ -152,11 +156,11 @@ class HasMetadataTest {
     HasMetadata owner = new InvalidOwner();
 
     IllegalArgumentException iae = assertThrows(IllegalArgumentException.class,
-      () -> hasMetadata.addOwnerReference(owner));
+        () -> hasMetadata.addOwnerReference(owner));
     final String msg = iae.getMessage();
     assertTrue(
-      msg.contains("uid") && msg.contains("apiVersion") && msg.contains("name") && msg.contains(
-        "kind"));
+        msg.contains("uid") && msg.contains("apiVersion") && msg.contains("name") && msg.contains(
+            "kind"));
   }
 
   @Test
@@ -306,7 +310,7 @@ class HasMetadataTest {
       return "   ";
     }
   }
-  
+
   private static class Default implements HasMetadata {
     protected final ObjectMeta meta = new ObjectMeta();
 
@@ -321,22 +325,22 @@ class HasMetadataTest {
     public ObjectMeta getMetadata() {
       return meta;
     }
-    
+
     @Override
     public void setMetadata(ObjectMeta metadata) {
       throw new RuntimeException("setMetadata shouldn't be called");
     }
-    
+
     @Override
     public String getKind() {
       throw new RuntimeException("getKind shouldn't be called");
     }
-    
+
     @Override
     public String getApiVersion() {
       throw new RuntimeException("getApiVersion shouldn't be called");
     }
-    
+
     @Override
     public void setApiVersion(String version) {
       throw new RuntimeException("setApiVersion shouldn't be called");

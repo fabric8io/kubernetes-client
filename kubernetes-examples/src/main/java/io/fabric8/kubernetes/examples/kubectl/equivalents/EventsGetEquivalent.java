@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *  This example is Java equivalent to `kubectl get events`. It gets
- *  events related to specified namespace in a Kubernetes Cluster.
+ * This example is Java equivalent to `kubectl get events`. It gets
+ * events related to specified namespace in a Kubernetes Cluster.
  */
 public class EventsGetEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(EventsGetEquivalent.class);
@@ -31,8 +31,8 @@ public class EventsGetEquivalent {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.v1().events().inNamespace("default").list().getItems().stream()
-        .map(Event::getMessage)
-        .forEach(logger::info);
+          .map(Event::getMessage)
+          .forEach(logger::info);
     }
   }
 }

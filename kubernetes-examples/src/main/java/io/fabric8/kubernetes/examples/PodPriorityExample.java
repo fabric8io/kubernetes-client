@@ -40,21 +40,21 @@ public class PodPriorityExample {
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       PriorityClass priorityClass = new PriorityClassBuilder()
-        .withNewMetadata().withName("high-priority").endMetadata()
-        .withValue(100000)
-        .withGlobalDefault(false)
-        .withDescription("This priority class should be used for XYZ service pods only.")
-        .build();
+          .withNewMetadata().withName("high-priority").endMetadata()
+          .withValue(100000)
+          .withGlobalDefault(false)
+          .withDescription("This priority class should be used for XYZ service pods only.")
+          .build();
       client.scheduling().v1beta1().priorityClasses().create(priorityClass);
 
       client.pods().inNamespace("default").create(new PodBuilder()
-        .withNewMetadata().withName("nginx").withLabels(Collections.singletonMap("env", "test")).endMetadata()
-        .withNewSpec()
-        .addToContainers(new ContainerBuilder().withName("nginx").withImage("nginx").withImagePullPolicy("IfNotPresent").build())
-        .withPriorityClassName("high-priority")
-        .endSpec()
-        .build()
-      );
+          .withNewMetadata().withName("nginx").withLabels(Collections.singletonMap("env", "test")).endMetadata()
+          .withNewSpec()
+          .addToContainers(
+              new ContainerBuilder().withName("nginx").withImage("nginx").withImagePullPolicy("IfNotPresent").build())
+          .withPriorityClassName("high-priority")
+          .endSpec()
+          .build());
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);
     }

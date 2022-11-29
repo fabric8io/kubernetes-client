@@ -33,8 +33,8 @@ class UserIdentityMappingTest {
     // Given
     UserIdentityMapping userIdentityMapping = createNewUserIdentityMapping("ldap_provider:foo_s", "foo");
     server.expect().post().withPath("/apis/user.openshift.io/v1/useridentitymappings")
-      .andReturn(HTTP_CREATED, userIdentityMapping)
-      .once();
+        .andReturn(HTTP_CREATED, userIdentityMapping)
+        .once();
 
     // When
     UserIdentityMapping userIdentityMappingCreated = client.userIdentityMappings().create(userIdentityMapping);
@@ -45,13 +45,13 @@ class UserIdentityMappingTest {
 
   private UserIdentityMapping createNewUserIdentityMapping(String name, String userName) {
     return new UserIdentityMappingBuilder()
-      .withNewMetadata().withName(name).endMetadata()
-      .withNewIdentity()
-      .withName(name)
-      .endIdentity()
-      .withNewUser()
-      .withName(userName)
-      .endUser()
-      .build();
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewIdentity()
+        .withName(name)
+        .endIdentity()
+        .withNewUser()
+        .withName(userName)
+        .endUser()
+        .build();
   }
 }

@@ -15,37 +15,33 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class KubernetesVersionPriorityTest {
 
-    @Test
-    public void should_version_with_highest_priority() {
-        // given
-        String highest = "v10";
-        List<String> versions = Arrays.asList(
-                "foo10",
-                "v11alpha2",
-                "foo1",
-                "v3beta1",
-                "v2",
-                "v10beta3",
-                highest,
-                "v11beta2",
-                "v1",
-                "v12alpha1"
-        );
-        // when
-        String computed = KubernetesVersionPriority.highestPriority(versions);
-        // then
-        assertThat(computed).isEqualTo(highest);
-    }
+  @Test
+  public void should_version_with_highest_priority() {
+    // given
+    String highest = "v10";
+    List<String> versions = Arrays.asList(
+        "foo10",
+        "v11alpha2",
+        "foo1",
+        "v3beta1",
+        "v2",
+        "v10beta3",
+        highest,
+        "v11beta2",
+        "v1",
+        "v12alpha1");
+    // when
+    String computed = KubernetesVersionPriority.highestPriority(versions);
+    // then
+    assertThat(computed).isEqualTo(highest);
+  }
 }

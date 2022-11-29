@@ -26,12 +26,14 @@ import io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryCo
 public interface OpenClusterManagementDiscoveryAPIGroupDSL extends Client {
   /**
    * API entrypoint for DiscoveredCluster (discovery.open-cluster-management.io/v1alpha1)
+   * 
    * @return {@link MixedOperation} for DiscoveredCluster
    */
   MixedOperation<DiscoveredCluster, DiscoveredClusterList, Resource<DiscoveredCluster>> discoveredClusters();
 
   /**
    * API entrypoint for DiscoveryConfig (discovery.open-cluster-management.io/v1alpha1)
+   * 
    * @return {@link MixedOperation} for DiscoveryConfig
    */
   MixedOperation<DiscoveryConfig, DiscoveryConfigList, Resource<DiscoveryConfig>> discoveryConfigs();

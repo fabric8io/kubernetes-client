@@ -35,18 +35,18 @@ public class HorizontalPodAutoscalerV1Example {
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       HorizontalPodAutoscaler horizontalPodAutoscaler = new HorizontalPodAutoscalerBuilder()
-        .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
-        .withNewSpec()
-        .withNewScaleTargetRef()
-        .withApiVersion("apps/v1")
-        .withKind("Deployment")
-        .withName("the-deployment")
-        .endScaleTargetRef()
-        .withMinReplicas(1)
-        .withMaxReplicas(10)
-        .withTargetCPUUtilizationPercentage(50)
-        .endSpec()
-        .build();
+          .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
+          .withNewSpec()
+          .withNewScaleTargetRef()
+          .withApiVersion("apps/v1")
+          .withKind("Deployment")
+          .withName("the-deployment")
+          .endScaleTargetRef()
+          .withMinReplicas(1)
+          .withMaxReplicas(10)
+          .withTargetCPUUtilizationPercentage(50)
+          .endSpec()
+          .build();
 
       client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("default").createOrReplace(horizontalPodAutoscaler);
     } catch (KubernetesClientException e) {

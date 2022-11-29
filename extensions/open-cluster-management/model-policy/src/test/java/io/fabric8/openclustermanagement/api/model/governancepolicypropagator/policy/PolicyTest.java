@@ -35,8 +35,8 @@ class PolicyTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-policy.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final Policy policy = mapper.readValue(originalJson, Policy.class);
@@ -57,16 +57,16 @@ class PolicyTest {
   void builderShouldCreateObject() {
     // Given
     PolicyBuilder policyBuilder = new PolicyBuilder()
-      .withNewMetadata()
-      .withName("test-policy-swagger")
-      .endMetadata()
-      .withNewSpec()
-      .withDisabled(false)
-      .withRemediationAction("enforce")
-      .addNewPolicyTemplate()
-      .withObjectDefinition(Collections.singletonMap("kind", "ConfigurationPolicy"))
-      .endPolicyTemplate()
-      .endSpec();
+        .withNewMetadata()
+        .withName("test-policy-swagger")
+        .endMetadata()
+        .withNewSpec()
+        .withDisabled(false)
+        .withRemediationAction("enforce")
+        .addNewPolicyTemplate()
+        .withObjectDefinition(Collections.singletonMap("kind", "ConfigurationPolicy"))
+        .endPolicyTemplate()
+        .endSpec();
 
     // When
     Policy policy = policyBuilder.build();
@@ -76,6 +76,7 @@ class PolicyTest {
     assertEquals("test-policy-swagger", policy.getMetadata().getName());
     assertEquals("enforce", policy.getSpec().getRemediationAction());
     assertFalse(policy.getSpec().getDisabled());
-    assertEquals(Collections.singletonMap("kind", "ConfigurationPolicy"), policy.getSpec().getPolicyTemplates().get(0).getObjectDefinition());
+    assertEquals(Collections.singletonMap("kind", "ConfigurationPolicy"),
+        policy.getSpec().getPolicyTemplates().get(0).getObjectDefinition());
   }
 }

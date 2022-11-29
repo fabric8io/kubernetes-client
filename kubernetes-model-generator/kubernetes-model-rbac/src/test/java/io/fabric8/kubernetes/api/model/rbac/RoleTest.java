@@ -26,51 +26,50 @@ import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
 public class RoleTest {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
-    @Test
-    public void kubernetesRoleTest() throws Exception {
-        // given
-        final String originalJson = Helper.loadJson("/valid-role.json");
+  @Test
+  public void kubernetesRoleTest() throws Exception {
+    // given
+    final String originalJson = Helper.loadJson("/valid-role.json");
 
-        // when
-        final Role kubernetesRole = mapper.readValue(originalJson, Role.class);
-        final String serializedJson = mapper.writeValueAsString(kubernetesRole);
+    // when
+    final Role kubernetesRole = mapper.readValue(originalJson, Role.class);
+    final String serializedJson = mapper.writeValueAsString(kubernetesRole);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
-    }
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
+  }
 
-    @Test
-    public void kubernetesRoleBuilderTest() throws Exception {
+  @Test
+  public void kubernetesRoleBuilderTest() throws Exception {
 
-        // given
-        final String originalJson = Helper.loadJson("/valid-role.json");
+    // given
+    final String originalJson = Helper.loadJson("/valid-role.json");
 
-        // when
-        Role kubernetesRole = new RoleBuilder()
-                .withNewMetadata()
-                    .withName("job-reader")
-                    .withNamespace("default")
-                .endMetadata()
-                .addToRules(0, new PolicyRuleBuilder()
-                        .addToApiGroups(0,"batch")
-                        .addToNonResourceURLs(0,"/healthz")
-                        .addToResourceNames(0,"my-job")
-                        .addToResources(0,"jobs")
-                        .addToVerbs(0, "get")
-                        .addToVerbs(1, "watch")
-                        .addToVerbs(2, "list")
-                        .build()
-                    )
-                .build();
+    // when
+    Role kubernetesRole = new RoleBuilder()
+        .withNewMetadata()
+        .withName("job-reader")
+        .withNamespace("default")
+        .endMetadata()
+        .addToRules(0, new PolicyRuleBuilder()
+            .addToApiGroups(0, "batch")
+            .addToNonResourceURLs(0, "/healthz")
+            .addToResourceNames(0, "my-job")
+            .addToResources(0, "jobs")
+            .addToVerbs(0, "get")
+            .addToVerbs(1, "watch")
+            .addToVerbs(2, "list")
+            .build())
+        .build();
 
-        final String serializedJson = mapper.writeValueAsString(kubernetesRole);
+    final String serializedJson = mapper.writeValueAsString(kubernetesRole);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
 
-    }
+  }
 }

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectMetaFluent;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class Metadata {
   private Metadata() {
     throw new IllegalStateException("Utility class");
   }
+
   public static Optional<String> getKind(Builder builder) {
     try {
       Method method = builder.getClass().getMethod("getKind");
@@ -96,9 +98,9 @@ public class Metadata {
    * @return The predicate.
    */
   public static Predicate<VisitableBuilder<? extends HasMetadata, ?>> matching(
-    HasMetadata candidate) {
+      HasMetadata candidate) {
     return matching(candidate.getApiVersion(), candidate.getKind(),
-      candidate.getMetadata().getName());
+        candidate.getMetadata().getName());
   }
 
   /**
@@ -110,13 +112,13 @@ public class Metadata {
    * @return The predicate.
    */
   public static Predicate<VisitableBuilder<? extends HasMetadata, ?>> matching(String apiVersion,
-    String kind, String name) {
+      String kind, String name) {
     return builder -> {
       HasMetadata item = builder.build();
       ObjectMeta metadata = item.getMetadata();
       return apiVersion.equals(item.getApiVersion()) &&
-        kind != null && kind.equals(item.getKind()) &&
-        name != null && name.equals(metadata.getName());
+          kind != null && kind.equals(item.getKind()) &&
+          name != null && name.equals(metadata.getName());
     };
   }
 }

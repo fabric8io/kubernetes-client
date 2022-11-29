@@ -35,9 +35,9 @@ class RunConfigUtilTest {
   void testGetObjectMetadataFromRunConfig() {
     // Given
     RunConfig config = new RunConfigBuilder()
-      .withName("test")
-      .withLabels(Collections.singletonMap("foo", "bar"))
-      .build();
+        .withName("test")
+        .withLabels(Collections.singletonMap("foo", "bar"))
+        .build();
 
     // When
     ObjectMeta objectMeta = RunConfigUtil.getObjectMetadataFromRunConfig(config);
@@ -53,12 +53,12 @@ class RunConfigUtilTest {
   void testGetPodSpecFromRunConfig() {
     // Given
     RunConfig config = new RunConfigBuilder()
-      .withName("test")
-      .withImage("test:latest")
-      .withEnv(Collections.singletonMap("TEST_KEY", "TEST_VALUE"))
-      .withImagePullPolicy("IfNotPresent")
-      .withLimits(getLimits())
-      .build();
+        .withName("test")
+        .withImage("test:latest")
+        .withEnv(Collections.singletonMap("TEST_KEY", "TEST_VALUE"))
+        .withImagePullPolicy("IfNotPresent")
+        .withLimits(getLimits())
+        .build();
 
     // When
     PodSpec podSpec = RunConfigUtil.getPodSpecFromRunConfig(config);
@@ -105,46 +105,46 @@ class RunConfigUtilTest {
   void testContainerFromConfigWithArgs() {
     // Given
     final RunConfig runConfig = initMockRunConfigBuilder()
-      .withArgs("arg1", "arg2")
-      .build();
+        .withArgs("arg1", "arg2")
+        .build();
     // When
     final Container result = RunConfigUtil.containerFromConfig(runConfig);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("command", Collections.emptyList())
-      .extracting(Container::getArgs)
-      .asList().containsExactly("arg1", "arg2");
+        .hasFieldOrPropertyWithValue("command", Collections.emptyList())
+        .extracting(Container::getArgs)
+        .asList().containsExactly("arg1", "arg2");
   }
 
   @Test
   void testContainerFromConfigWithCommand() {
     // Given
     final RunConfig runConfig = initMockRunConfigBuilder()
-      .withCommand("/bin/sh")
-      .build();
+        .withCommand("/bin/sh")
+        .build();
     // When
     final Container result = RunConfigUtil.containerFromConfig(runConfig);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("args", Collections.emptyList())
-      .extracting(Container::getCommand)
-      .asList().containsExactly("/bin/sh");
+        .hasFieldOrPropertyWithValue("args", Collections.emptyList())
+        .extracting(Container::getCommand)
+        .asList().containsExactly("/bin/sh");
   }
 
   @Test
   void testContainerFromConfigWithCommandAndArgs() {
     // Given
     final RunConfig runConfig = initMockRunConfigBuilder()
-      .withCommand("/bin/sh")
-      .withArgs("-c", "echo hello")
-      .build();
+        .withCommand("/bin/sh")
+        .withArgs("-c", "echo hello")
+        .build();
     // When
     final Container result = RunConfigUtil.containerFromConfig(runConfig);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("args", Collections.emptyList())
-      .extracting(Container::getCommand)
-      .asList().containsExactly("/bin/sh", "-c", "echo hello");
+        .hasFieldOrPropertyWithValue("args", Collections.emptyList())
+        .extracting(Container::getCommand)
+        .asList().containsExactly("/bin/sh", "-c", "echo hello");
   }
 
   private Map<String, Quantity> getLimits() {
@@ -163,12 +163,12 @@ class RunConfigUtilTest {
 
   private RunConfigBuilder initMockRunConfigBuilder() {
     return new RunConfigBuilder()
-      .withName("test")
-      .withImage("test:latest")
-      .withEnv(Collections.singletonMap("TEST_KEY", "TEST_VALUE"))
-      .withImagePullPolicy("IfNotPresent")
-      .withPort(5701)
-      .withLimits(getLimits())
-      .withRequests(getRequests());
+        .withName("test")
+        .withImage("test:latest")
+        .withEnv(Collections.singletonMap("TEST_KEY", "TEST_VALUE"))
+        .withImagePullPolicy("IfNotPresent")
+        .withPort(5701)
+        .withLimits(getLimits())
+        .withRequests(getRequests());
   }
 }

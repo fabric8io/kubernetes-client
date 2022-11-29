@@ -33,12 +33,12 @@ public class NamespaceListEquivalent {
 
       // List all namespaces
       client.namespaces()
-        .list()
-        .getItems()
-        .stream()
-        .map(Namespace::getMetadata)
-        .map(ObjectMeta::getName)
-        .forEach(logger::info);
+          .list()
+          .getItems()
+          .stream()
+          .map(Namespace::getMetadata)
+          .map(ObjectMeta::getName)
+          .forEach(logger::info);
 
     } catch (KubernetesClientException aException) {
       logger.error("Problem encountered in Kubernetes Client");

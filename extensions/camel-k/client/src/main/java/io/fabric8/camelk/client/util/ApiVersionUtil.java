@@ -86,7 +86,7 @@ public class ApiVersionUtil {
    *
    * @param apiVersion The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return Just the apiGroupName part without the apiGroupName, or apiVersion if no separator is
-   *     found.
+   *         found.
    */
   private static String trimGroup(String apiVersion) {
     if (apiVersion != null && apiVersion.contains("/")) {

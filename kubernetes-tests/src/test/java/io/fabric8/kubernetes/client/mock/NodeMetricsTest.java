@@ -39,28 +39,29 @@ class NodeMetricsTest {
   void testMetrics() {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/nodes/the-node").andReturn(HTTP_OK,
-      new NodeMetricsListBuilder().addToItems(new NodeMetricsBuilder()
-          .withNewMetadata().withName("the-metric").endMetadata()
-        .build()).build()).once();
+        new NodeMetricsListBuilder().addToItems(new NodeMetricsBuilder()
+            .withNewMetadata().withName("the-metric").endMetadata()
+            .build()).build())
+        .once();
     // When
     final NodeMetricsList result = client.top().nodes().withName("the-node").metrics();
     // Then
     assertThat(result)
-      .extracting(NodeMetricsList::getItems).asList().singleElement()
-      .hasFieldOrPropertyWithValue("Kind", "NodeMetrics")
-      .hasFieldOrPropertyWithValue("metadata.name", "the-metric");
+        .extracting(NodeMetricsList::getItems).asList().singleElement()
+        .hasFieldOrPropertyWithValue("Kind", "NodeMetrics")
+        .hasFieldOrPropertyWithValue("metadata.name", "the-metric");
   }
 
   @Test
   void testInform() {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/nodes").andReturn(HTTP_OK,
-      new NodeMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
+        new NodeMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/nodes?allowWatchBookmarks=true&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .done()
-      .once();
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
     // When
     try (SharedIndexInformer<NodeMetrics> result = client.resources(NodeMetrics.class).inAnyNamespace().inform()) {
       // Then

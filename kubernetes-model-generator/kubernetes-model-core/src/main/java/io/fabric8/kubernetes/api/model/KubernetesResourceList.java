@@ -18,11 +18,11 @@ package io.fabric8.kubernetes.api.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
-import java.util.List;
 import java.io.Serializable;
+import java.util.List;
 
 @JsonDeserialize(using = KubernetesDeserializer.class)
-public interface KubernetesResourceList<E extends io.fabric8.kubernetes.api.model.HasMetadata> extends Serializable  {
+public interface KubernetesResourceList<E extends io.fabric8.kubernetes.api.model.HasMetadata> extends Serializable {
 
   ListMeta getMetadata();
 

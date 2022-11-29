@@ -41,15 +41,15 @@ class AdaptTest {
   @Test
   void testSharedClient() {
     server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("autoscaling.k8s.io")
-      .endGroup()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("security.openshift.io")
-      .endGroup()
-      .build()).once();
+        .addNewGroup()
+        .withApiVersion("v1")
+        .withName("autoscaling.k8s.io")
+        .endGroup()
+        .addNewGroup()
+        .withApiVersion("v1")
+        .withName("security.openshift.io")
+        .endGroup()
+        .build()).once();
 
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
     assertNotNull(client.getHttpClient());
@@ -62,29 +62,35 @@ class AdaptTest {
     String authorizationEndpoint = client.getMasterUrl() + "oauth/authorize";
     server.expect().withPath("/apis").andReturn(HttpURLConnection.HTTP_UNAUTHORIZED, null).once();
     server.expect().get().withPath("/.well-known/oauth-authorization-server")
-      .andReturn(HttpURLConnection.HTTP_OK, "{\"authorization_endpoint\":\"" + authorizationEndpoint + "\"}")
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, "{\"authorization_endpoint\":\"" + authorizationEndpoint + "\"}")
+        .once();
     server.expect().get().withPath("/oauth/authorize?response_type=token&client_id=openshift-challenging-client")
-      .andReply(new ResponseProvider<Object>() {
-        @Override
-        public Object getBody(RecordedRequest recordedRequest) { return null; }
+        .andReply(new ResponseProvider<Object>() {
+          @Override
+          public Object getBody(RecordedRequest recordedRequest) {
+            return null;
+          }
 
-        @Override
-        public int getStatusCode(RecordedRequest recordedRequest) { return HttpURLConnection.HTTP_MOVED_TEMP; }
+          @Override
+          public int getStatusCode(RecordedRequest recordedRequest) {
+            return HttpURLConnection.HTTP_MOVED_TEMP;
+          }
 
-        @Override
-        public Headers getHeaders() {
-          return new Headers.Builder()
-            .add("Location", client.getMasterUrl() + "oauth/token/implicit#access_token=sha256~UkDpAaw0AARKGVvJ0nypSjIDGGLMyxuS9ORWVyMQ2F8&expires_in=86400&scope=user%3Afull&token_type=Bearer")
-            .build();
-        }
+          @Override
+          public Headers getHeaders() {
+            return new Headers.Builder()
+                .add("Location", client.getMasterUrl()
+                    + "oauth/token/implicit#access_token=sha256~UkDpAaw0AARKGVvJ0nypSjIDGGLMyxuS9ORWVyMQ2F8&expires_in=86400&scope=user%3Afull&token_type=Bearer")
+                .build();
+          }
 
-        @Override
-        public void setHeaders(Headers headers) { }
-      }).once();
+          @Override
+          public void setHeaders(Headers headers) {
+          }
+        }).once();
     server.expect().withPath("/apis").andReturn(HttpURLConnection.HTTP_OK, new APIGroupListBuilder()
-      .addToGroups(new APIGroupBuilder().withName("security.internal.openshift.io").build()))
-      .once();
+        .addToGroups(new APIGroupBuilder().withName("security.internal.openshift.io").build()))
+        .once();
 
     client.getConfiguration().setUsername("foo");
     client.getConfiguration().setPassword("foo-pwd");

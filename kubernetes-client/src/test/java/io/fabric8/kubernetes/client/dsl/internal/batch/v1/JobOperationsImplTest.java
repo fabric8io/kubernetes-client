@@ -42,13 +42,13 @@ class JobOperationsImplTest {
 
   private Job getMockedJob() {
     return new JobBuilder()
-      .withNewMetadata()
-      .addToLabels("controller-uid", "63e8e54b-bc7a-4bb3-a7ad-2ea5f0b5b591")
-      .addToLabels("job-name", "pi")
-      .withName("pi")
-      .withUid("63e8e54b-bc7a-4bb3-a7ad-2ea5f0b5b591")
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .addToLabels("controller-uid", "63e8e54b-bc7a-4bb3-a7ad-2ea5f0b5b591")
+        .addToLabels("job-name", "pi")
+        .withName("pi")
+        .withUid("63e8e54b-bc7a-4bb3-a7ad-2ea5f0b5b591")
+        .endMetadata()
+        .build();
   }
 
 }

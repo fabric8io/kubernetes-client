@@ -22,26 +22,26 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import java.util.Map;
 
 public interface PodMetricOperation extends MetricOperation<PodMetrics, PodMetricsList>, Nameable<PodMetricOperation>,
-        Namespaceable<PodMetricOperation> {
+    Namespaceable<PodMetricOperation> {
 
-    @Override
-    PodMetricOperation withLabels(Map<String, String> labels);
+  @Override
+  PodMetricOperation withLabels(Map<String, String> labels);
 
-    /**
-     * Get PodMetricsList for a namespace.
-     *
-     * @param namespace namespace for which PodMetrics are queries
-     * @return PodMetricsList for all pods in specified namespace
-     */
-    PodMetricsList metrics(String namespace);
+  /**
+   * Get PodMetricsList for a namespace.
+   *
+   * @param namespace namespace for which PodMetrics are queries
+   * @return PodMetricsList for all pods in specified namespace
+   */
+  PodMetricsList metrics(String namespace);
 
-    /**
-     * Get PodMetrics in a namespace with a name.
-     *
-     * @param namespace namespace of pod
-     * @param podName name of pod
-     * @return PodMetric corresponding to specified Pod
-     */
-    PodMetrics metrics(String namespace, String podName);
+  /**
+   * Get PodMetrics in a namespace with a name.
+   *
+   * @param namespace namespace of pod
+   * @param podName name of pod
+   * @return PodMetric corresponding to specified Pod
+   */
+  PodMetrics metrics(String namespace, String podName);
 
 }

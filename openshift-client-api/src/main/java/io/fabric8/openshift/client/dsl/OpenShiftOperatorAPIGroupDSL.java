@@ -88,96 +88,112 @@ public interface OpenShiftOperatorAPIGroupDSL extends Client {
    * @return NonNamespaceOperation object for Etcd type
    */
   NonNamespaceOperation<Etcd, EtcdList, Resource<Etcd>> etcds();
+
   /**
    * API entrypoint for KubeStorageVersionMigrator related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeStorageVersionMigrator type
    */
   NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, Resource<KubeStorageVersionMigrator>> kubeStorageVersionMigrators();
+
   /**
    * API entrypoint for KubeControllerManager related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeControllerManager type
    */
   NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, Resource<KubeControllerManager>> kubeControllerManagers();
+
   /**
    * API entrypoint for CSISnapshotController related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for CSISnapshotController type
    */
   NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, Resource<CSISnapshotController>> csiSnapshotControllers();
+
   /**
    * API entrypoint for Network related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Network type
    */
   NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks();
+
   /**
    * API entrypoint for KubeScheduler related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeScheduler type
    */
   NonNamespaceOperation<KubeScheduler, KubeSchedulerList, Resource<KubeScheduler>> kubeSchedulers();
+
   /**
    * API entrypoint for Console related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Console type
    */
   NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles();
+
   /**
    * API entrypoint for ServiceCatalogControllerManager related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ServiceCatalogControllerManager type
    */
   NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers();
+
   /**
    * API entrypoint for ServiceCA related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ServiceCA type
    */
   NonNamespaceOperation<ServiceCA, ServiceCAList, Resource<ServiceCA>> serviceCAs();
+
   /**
    * API entrypoint for ImageContentSourcePolicy related operations(operator.openshift.io/v1alpha1)
    *
    * @return NonNamespaceOperation object for ImageContentSourcePolicy type
    */
   NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, Resource<ImageContentSourcePolicy>> imageContentSourcePolicies();
+
   /**
    * API entrypoint for DNS related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for DNS type
    */
   NonNamespaceOperation<DNS, DNSList, Resource<DNS>> dnses();
+
   /**
    * API entrypoint for DNSRecord related operations(operator.openshift.io/v1)
    *
    * @return MixedOperation object for DNSRecord type
    */
   MixedOperation<DNSRecord, DNSRecordList, Resource<DNSRecord>> dnsRecords();
+
   /**
    * API entrypoint for OpenShiftControllerManager related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OpenShiftControllerManager type
    */
   NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, Resource<OpenShiftControllerManager>> openShiftControllerManagers();
+
   /**
    * API entrypoint for OpenShiftAPIServer related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OpenShiftAPIServer type
    */
   NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, Resource<OpenShiftAPIServer>> openShiftAPIServers();
+
   /**
    * API entrypoint for KubeAPIServer related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeAPIServer type
    */
   NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, Resource<KubeAPIServer>> kubeAPIServers();
+
   /**
    * API entrypoint for IngressController related operations(operator.openshift.io/v1)
    *
    * @return MixedOperation object for IngressController type
    */
   MixedOperation<IngressController, IngressControllerList, Resource<IngressController>> ingressControllers();
+
   /**
    * API entrypoint for ImagePruner related operations(imageregistry.operator.openshift.io/v1)
    *

@@ -41,47 +41,46 @@ public class SharedInformerExample {
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
-        new ResourceEventHandler<Pod>() {
-          @Override
-          public void onAdd(Pod pod) {
-            logger.info("{} pod added", pod.getMetadata().getName());
-          }
+          new ResourceEventHandler<Pod>() {
+            @Override
+            public void onAdd(Pod pod) {
+              logger.info("{} pod added", pod.getMetadata().getName());
+            }
 
-          @Override
-          public void onUpdate(Pod oldPod, Pod newPod) {
-            logger.info("{} pod updated", oldPod.getMetadata().getName());
-          }
+            @Override
+            public void onUpdate(Pod oldPod, Pod newPod) {
+              logger.info("{} pod updated", oldPod.getMetadata().getName());
+            }
 
-          @Override
-          public void onDelete(Pod pod, boolean deletedFinalStateUnknown) {
-            logger.info("{} pod deleted", pod.getMetadata().getName());
-          }
-        }
-      );
+            @Override
+            public void onDelete(Pod pod, boolean deletedFinalStateUnknown) {
+              logger.info("{} pod deleted", pod.getMetadata().getName());
+            }
+          });
 
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
       Pod testPod = new PodBuilder()
-        .withNewMetadata().withName(POD_NAME).withLabels(Collections.singletonMap("app", POD_NAME)).endMetadata()
-        .withNewSpec()
-        .addNewContainer()
-        .withName("myapp-container")
-        .withImage("busybox:1.28")
-        .withCommand("sh", "-c", "echo The app is running!; sleep 10")
-        .endContainer()
-        .addNewInitContainer()
-        .withName("init-myservice")
-        .withImage("busybox:1.28")
-        .withCommand("sh", "-c", "echo inititalizing...; sleep 5")
-        .endInitContainer()
-        .endSpec()
-        .build();
+          .withNewMetadata().withName(POD_NAME).withLabels(Collections.singletonMap("app", POD_NAME)).endMetadata()
+          .withNewSpec()
+          .addNewContainer()
+          .withName("myapp-container")
+          .withImage("busybox:1.28")
+          .withCommand("sh", "-c", "echo The app is running!; sleep 10")
+          .endContainer()
+          .addNewInitContainer()
+          .withName("init-myservice")
+          .withImage("busybox:1.28")
+          .withCommand("sh", "-c", "echo inititalizing...; sleep 5")
+          .endInitContainer()
+          .endSpec()
+          .build();
 
       client.pods().inNamespace("default").create(testPod);
       logger.info("Pod created");
       Thread.sleep(3000L);
 
-      Lister<Pod> podLister = new Lister<> (podInformer.getIndexer(), "default");
+      Lister<Pod> podLister = new Lister<>(podInformer.getIndexer(), "default");
       Pod myPod = podLister.get(POD_NAME);
       logger.info("PodLister has {}", podLister.list().size());
 

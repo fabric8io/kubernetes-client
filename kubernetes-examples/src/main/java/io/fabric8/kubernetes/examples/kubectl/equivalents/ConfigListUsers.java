@@ -41,8 +41,8 @@ public class ConfigListUsers {
 
       // Print users
       kubeConfigObj.getUsers().stream()
-        .map(NamedAuthInfo::getName)
-        .forEach(logger::info);
+          .map(NamedAuthInfo::getName)
+          .forEach(logger::info);
     }
   }
 }

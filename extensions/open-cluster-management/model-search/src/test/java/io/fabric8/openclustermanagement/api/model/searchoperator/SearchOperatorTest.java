@@ -33,8 +33,8 @@ class SearchOperatorTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-searchoperator.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final SearchOperator searchOperator = mapper.readValue(originalJson, SearchOperator.class);
@@ -51,29 +51,30 @@ class SearchOperatorTest {
     assertEquals("1Gi", searchOperator.getSpec().getRedisgraphResource().getLimitMemory());
     assertEquals("64Mi", searchOperator.getSpec().getRedisgraphResource().getRequestMemory());
     assertEquals("25m", searchOperator.getSpec().getRedisgraphResource().getRequestCpu());
-    assertEquals("quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069", searchOperator.getSpec().getSearchimageoverrides().getRedisgraphTls());
+    assertEquals("quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069",
+        searchOperator.getSpec().getSearchimageoverrides().getRedisgraphTls());
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     SearchOperatorBuilder searchOperatorBuilder = new SearchOperatorBuilder()
-      .withNewMetadata()
-      .withName("searchoperator")
-      .endMetadata()
-      .withNewSpec()
-      .withPullpolicy("Always")
-      .withNewRedisgraphResource()
-      .withLimitMemory("1Gi")
-      .withRequestCpu("25m")
-      .withRequestMemory("64Mi")
-      .endRedisgraphResource()
-      .withPullpolicy("Always")
-      .withPullsecret("multiclusterhub-operator-pull-secret")
-      .withNewSearchimageoverrides()
-      .withRedisgraphTls("quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069")
-      .endSearchimageoverrides()
-      .endSpec();
+        .withNewMetadata()
+        .withName("searchoperator")
+        .endMetadata()
+        .withNewSpec()
+        .withPullpolicy("Always")
+        .withNewRedisgraphResource()
+        .withLimitMemory("1Gi")
+        .withRequestCpu("25m")
+        .withRequestMemory("64Mi")
+        .endRedisgraphResource()
+        .withPullpolicy("Always")
+        .withPullsecret("multiclusterhub-operator-pull-secret")
+        .withNewSearchimageoverrides()
+        .withRedisgraphTls("quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069")
+        .endSearchimageoverrides()
+        .endSpec();
 
     // When
     SearchOperator searchOperator = searchOperatorBuilder.build();
@@ -86,6 +87,7 @@ class SearchOperatorTest {
     assertEquals("1Gi", searchOperator.getSpec().getRedisgraphResource().getLimitMemory());
     assertEquals("64Mi", searchOperator.getSpec().getRedisgraphResource().getRequestMemory());
     assertEquals("25m", searchOperator.getSpec().getRedisgraphResource().getRequestCpu());
-    assertEquals("quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069", searchOperator.getSpec().getSearchimageoverrides().getRedisgraphTls());
+    assertEquals("quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069",
+        searchOperator.getSpec().getSearchimageoverrides().getRedisgraphTls());
   }
 }

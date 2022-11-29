@@ -23,6 +23,7 @@ public interface NamespacedOpenShiftClient extends OpenShiftClient, NamespacedKu
 
   @Override
   NamespacedOpenShiftClient inAnyNamespace();
+
   @Override
   NamespacedOpenShiftClient inNamespace(String namespace);
 

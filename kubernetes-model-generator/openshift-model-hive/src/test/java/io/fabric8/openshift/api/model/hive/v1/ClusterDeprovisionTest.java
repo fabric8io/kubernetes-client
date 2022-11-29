@@ -30,8 +30,8 @@ class ClusterDeprovisionTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clusterdeprovision.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ClusterDeprovision clusterDeprovision = mapper.readValue(originalJson, ClusterDeprovision.class);
@@ -41,40 +41,40 @@ class ClusterDeprovisionTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(clusterDeprovision)
-      .isNotNull()
-      .isEqualTo(clusterDeprovisionFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "clusterdeprovision-sample")
-      .hasFieldOrPropertyWithValue("spec.infraID", "cluster-infra-id")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "cluster-aws-creds");
+        .isNotNull()
+        .isEqualTo(clusterDeprovisionFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "clusterdeprovision-sample")
+        .hasFieldOrPropertyWithValue("spec.infraID", "cluster-infra-id")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "cluster-aws-creds");
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     ClusterDeprovisionBuilder clusterDeprovisionBuilder = new ClusterDeprovisionBuilder()
-      .withNewMetadata()
-      .withName("clusterdeprovision-sample")
-      .endMetadata()
-      .withNewSpec()
-      .withInfraID("cluster-infra-id")
-      .withNewPlatform()
-      .withNewAws()
-      .withNewCredentialsSecretRef().withName("cluster-aws-creds").endCredentialsSecretRef()
-      .withRegion("us-east-1")
-      .endAws()
-      .endPlatform()
-      .endSpec();
+        .withNewMetadata()
+        .withName("clusterdeprovision-sample")
+        .endMetadata()
+        .withNewSpec()
+        .withInfraID("cluster-infra-id")
+        .withNewPlatform()
+        .withNewAws()
+        .withNewCredentialsSecretRef().withName("cluster-aws-creds").endCredentialsSecretRef()
+        .withRegion("us-east-1")
+        .endAws()
+        .endPlatform()
+        .endSpec();
 
     // When
     ClusterDeprovision clusterDeprovision = clusterDeprovisionBuilder.build();
 
     // Then
     assertThat(clusterDeprovision)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "clusterdeprovision-sample")
-      .hasFieldOrPropertyWithValue("spec.infraID", "cluster-infra-id")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "cluster-aws-creds");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "clusterdeprovision-sample")
+        .hasFieldOrPropertyWithValue("spec.infraID", "cluster-infra-id")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "cluster-aws-creds");
   }
 }

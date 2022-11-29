@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +14,26 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
+
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceBuilder;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 public class ProvisionService {
 
-    public static void main(String[] args) {
-        ServiceCatalogClient client = ClientFactory.newClient(args);
-        System.out.println("Provisioning a service");
-        ServiceInstance instance = client.serviceInstances().inNamespace("iocanel").create(new ServiceInstanceBuilder()
-                .withNewMetadata()
-                .withName("myserivce")
-                .endMetadata()
-                .withNewSpec()
-                .withClusterServiceClassExternalName("jenkins-ephemeral")
-                .withClusterServicePlanExternalName("default")
-                .endSpec()
-                .build());
-        System.out.println("Done");
-    }
+  public static void main(String[] args) {
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    System.out.println("Provisioning a service");
+    ServiceInstance instance = client.serviceInstances().inNamespace("iocanel").create(new ServiceInstanceBuilder()
+        .withNewMetadata()
+        .withName("myserivce")
+        .endMetadata()
+        .withNewSpec()
+        .withClusterServiceClassExternalName("jenkins-ephemeral")
+        .withClusterServicePlanExternalName("default")
+        .endSpec()
+        .build());
+    System.out.println("Done");
+  }
 }

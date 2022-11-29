@@ -56,7 +56,7 @@ public abstract class Decorator<T> extends TypedVisitor<T> implements Comparable
         return -1;
       }
     }
-   //Reproducible order every single time
+    //Reproducible order every single time
     int result = getClass().getName().compareTo(o.getClass().getName());
     if (result == 0) {
       result = hashCode() - o.hashCode();

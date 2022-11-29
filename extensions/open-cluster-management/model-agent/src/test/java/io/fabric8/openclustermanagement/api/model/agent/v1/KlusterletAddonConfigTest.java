@@ -32,8 +32,8 @@ class KlusterletAddonConfigTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-klusterletaddonconfig.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final KlusterletAddonConfig kac = mapper.readValue(originalJson, KlusterletAddonConfig.class);
@@ -56,26 +56,26 @@ class KlusterletAddonConfigTest {
   void builderShouldCreateObject() {
     // Given
     io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigBuilder klusterletAddonConfigBuilder = new io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigBuilder()
-      .withNewMetadata()
-      .withName("test-kac")
-      .endMetadata()
-      .withNewSpec()
-      .withNewApplicationManager()
-      .withEnabled(true)
-      .endApplicationManager()
-      .withNewPolicyController()
-      .withEnabled(true)
-      .endPolicyController()
-      .withNewSearchCollector()
-      .withEnabled(true)
-      .endSearchCollector()
-      .withNewCertPolicyController()
-      .withEnabled(true)
-      .endCertPolicyController()
-      .withNewIamPolicyController()
-      .withEnabled(true)
-      .endIamPolicyController()
-      .endSpec();
+        .withNewMetadata()
+        .withName("test-kac")
+        .endMetadata()
+        .withNewSpec()
+        .withNewApplicationManager()
+        .withEnabled(true)
+        .endApplicationManager()
+        .withNewPolicyController()
+        .withEnabled(true)
+        .endPolicyController()
+        .withNewSearchCollector()
+        .withEnabled(true)
+        .endSearchCollector()
+        .withNewCertPolicyController()
+        .withEnabled(true)
+        .endCertPolicyController()
+        .withNewIamPolicyController()
+        .withEnabled(true)
+        .endIamPolicyController()
+        .endSpec();
 
     // When
     KlusterletAddonConfig kac = klusterletAddonConfigBuilder.build();

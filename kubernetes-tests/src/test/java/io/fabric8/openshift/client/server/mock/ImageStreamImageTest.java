@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-
 import io.fabric8.openshift.api.model.ImageStreamImage;
 import io.fabric8.openshift.api.model.ImageStreamImageBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -34,9 +33,9 @@ class ImageStreamImageTest {
   void get() {
     // Given
     server.expect().get().withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagestreamimages/isi1")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createImageStreamImageBuilder("isi1")
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createImageStreamImageBuilder("isi1")
+            .build())
+        .once();
 
     // When
     ImageStreamImage result = client.imageStreamImages().inNamespace("ns1").withName("isi1").get();
@@ -47,6 +46,6 @@ class ImageStreamImageTest {
 
   private ImageStreamImageBuilder createImageStreamImageBuilder(String name) {
     return new ImageStreamImageBuilder()
-      .withNewMetadata().withName(name).endMetadata();
+        .withNewMetadata().withName(name).endMetadata();
   }
 }

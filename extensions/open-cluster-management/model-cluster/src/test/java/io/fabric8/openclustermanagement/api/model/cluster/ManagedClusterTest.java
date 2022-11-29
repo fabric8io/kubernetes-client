@@ -34,8 +34,8 @@ class ManagedClusterTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-managedcluster.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ManagedCluster managedCluster = mapper.readValue(originalJson, ManagedCluster.class);
@@ -55,17 +55,17 @@ class ManagedClusterTest {
   void builderShouldCreateObject() {
     // Given
     ManagedClusterBuilder managedClusterBuilder = new ManagedClusterBuilder()
-      .withNewMetadata()
-      .addToLabels("vendor", "OpenShift")
-      .withName("cluster1")
-      .endMetadata()
-      .withNewSpec()
-      .withHubAcceptsClient(true)
-      .addNewManagedClusterClientConfig()
-      .withCaBundle("test")
-      .withUrl("https://test.com")
-      .endManagedClusterClientConfig()
-      .endSpec();
+        .withNewMetadata()
+        .addToLabels("vendor", "OpenShift")
+        .withName("cluster1")
+        .endMetadata()
+        .withNewSpec()
+        .withHubAcceptsClient(true)
+        .addNewManagedClusterClientConfig()
+        .withCaBundle("test")
+        .withUrl("https://test.com")
+        .endManagedClusterClientConfig()
+        .endSpec();
 
     // When
     ManagedCluster managedCluster = managedClusterBuilder.build();

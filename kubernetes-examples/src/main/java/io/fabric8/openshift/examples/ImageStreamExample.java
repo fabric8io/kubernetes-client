@@ -35,34 +35,29 @@ public class ImageStreamExample {
       final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       final String imageStreamName = "slave-jenkins";
       final ImageStream imageStream = client.imageStreams().inNamespace(project).create(
-        new ImageStreamBuilder()
-          .withNewMetadata()
-          .withName(imageStreamName)
-          .endMetadata()
-          .withNewSpec()
-          .addToTags(0, new TagReferenceBuilder()
-            .withName("base")
-            .withFrom(new ObjectReferenceBuilder()
-              .withKind("DockerImage")
-              .withName("docker.io/openshift/jenkins-slave-maven-centos7:latest")
-              .build()
-            )
-            .build()
-          )
-          .addToTags(1, new TagReferenceBuilder()
-            .addToAnnotations("role", "jenkins-slave")
-            .addToAnnotations("slave-label", "jenkins-slave")
-            .withName("latest")
-            .withFrom(new ObjectReferenceBuilder()
-              .withKind("ImageStreamTag")
-              .withName("base")
-              .build()
-            )
-            .build()
-          )
-          .endSpec()
-          .build()
-      );
+          new ImageStreamBuilder()
+              .withNewMetadata()
+              .withName(imageStreamName)
+              .endMetadata()
+              .withNewSpec()
+              .addToTags(0, new TagReferenceBuilder()
+                  .withName("base")
+                  .withFrom(new ObjectReferenceBuilder()
+                      .withKind("DockerImage")
+                      .withName("docker.io/openshift/jenkins-slave-maven-centos7:latest")
+                      .build())
+                  .build())
+              .addToTags(1, new TagReferenceBuilder()
+                  .addToAnnotations("role", "jenkins-slave")
+                  .addToAnnotations("slave-label", "jenkins-slave")
+                  .withName("latest")
+                  .withFrom(new ObjectReferenceBuilder()
+                      .withKind("ImageStreamTag")
+                      .withName("base")
+                      .build())
+                  .build())
+              .endSpec()
+              .build());
       logger.info("Created ImageStream: {}/{}", project, imageStream.getMetadata().getName());
       final ImageStream isFromServer = client.imageStreams().inNamespace(project).withName(imageStreamName).fromServer().get();
       logger.info("Tags in ImageStream are:");
@@ -74,4 +69,3 @@ public class ImageStreamExample {
     }
   }
 }
-

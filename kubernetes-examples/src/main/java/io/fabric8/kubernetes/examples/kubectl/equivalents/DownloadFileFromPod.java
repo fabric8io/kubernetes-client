@@ -32,10 +32,10 @@ public class DownloadFileFromPod {
       Path downloadToPath = new File("/home/rohaan/Downloads/test-1.0.0-runner.jar").toPath();
       // Using Kubernetes Client to copy file from pod
       client.pods()
-        .inNamespace("default")                         // <- Namespace of pod
-        .withName("my-pod")                             // <- Name of pod
-        .file("/tmp/test-1.0.0-runner.jar")             // <- Path of file inside pod
-        .copy(downloadToPath);                            // <- Local path where to copy downloaded file
+          .inNamespace("default") // <- Namespace of pod
+          .withName("my-pod") // <- Name of pod
+          .file("/tmp/test-1.0.0-runner.jar") // <- Path of file inside pod
+          .copy(downloadToPath); // <- Local path where to copy downloaded file
     }
   }
 }

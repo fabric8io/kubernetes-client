@@ -22,17 +22,17 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
 import java.util.Map;
 
 public interface NodeMetricOperation
-        extends MetricOperation<NodeMetrics, NodeMetricsList>, Nameable<NodeMetricOperation> {
+    extends MetricOperation<NodeMetrics, NodeMetricsList>, Nameable<NodeMetricOperation> {
 
-    @Override
-    NodeMetricOperation withLabels(Map<String, String> labels);
+  @Override
+  NodeMetricOperation withLabels(Map<String, String> labels);
 
-    /**
-     * Get NodeMetric with specified name
-     *
-     * @param nodeName name of the node
-     * @return NodeMetric fetched from ApiServer
-     */
-    NodeMetrics metrics(String nodeName);
+  /**
+   * Get NodeMetric with specified name
+   *
+   * @param nodeName name of the node
+   * @return NodeMetric fetched from ApiServer
+   */
+  NodeMetrics metrics(String nodeName);
 
 }

@@ -33,7 +33,9 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 public class RunConfigUtil {
   private static final String DEFAULT_RESTART_POLICY = "Always";
-  private RunConfigUtil() { }
+
+  private RunConfigUtil() {
+  }
 
   public static ObjectMeta getObjectMetadataFromRunConfig(RunConfig generatorRunConfig) {
     ObjectMetaBuilder objectMetaBuilder = new ObjectMetaBuilder();
@@ -80,20 +82,20 @@ public class RunConfigUtil {
 
     if (runConfig.getPort() > 0) {
       containerBuilder.withPorts(new ContainerPortBuilder()
-        .withContainerPort(runConfig.getPort())
-        .build());
+          .withContainerPort(runConfig.getPort())
+          .build());
     }
 
     if (runConfig.getLimits() != null) {
       containerBuilder.editOrNewResources()
-        .addToLimits(runConfig.getLimits())
-        .endResources();
+          .addToLimits(runConfig.getLimits())
+          .endResources();
     }
 
     if (runConfig.getRequests() != null) {
       containerBuilder.editOrNewResources()
-        .addToRequests(runConfig.getRequests())
-        .endResources();
+          .addToRequests(runConfig.getRequests())
+          .endResources();
     }
     return containerBuilder.build();
   }

@@ -15,39 +15,38 @@
  */
 package io.fabric8.kubernetes.model.annotation;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
-import java.lang.annotation.Documented;
-
 /**
- *  Drop-in replacement for javax.annotation.Generated, meant to be used itnernally to avoid bringin in the whole jar.
- */ 
+ * Drop-in replacement for javax.annotation.Generated, meant to be used itnernally to avoid bringin in the whole jar.
+ */
 @Documented
 @Retention(SOURCE)
-@Target({PACKAGE, TYPE, ANNOTATION_TYPE, METHOD, CONSTRUCTOR, FIELD, 
-        LOCAL_VARIABLE, PARAMETER})
+@Target({ PACKAGE, TYPE, ANNOTATION_TYPE, METHOD, CONSTRUCTOR, FIELD,
+    LOCAL_VARIABLE, PARAMETER })
 public @interface Generated {
 
   /**
-    * The value element must have the name of the code generator.
-    * The recommended convention is to use the fully qualified name of the
-    * code generator. For example: <code>com.acme.generator.CodeGen</code>.
-    */
-   String[] value();
+   * The value element must have the name of the code generator.
+   * The recommended convention is to use the fully qualified name of the
+   * code generator. For example: <code>com.acme.generator.CodeGen</code>.
+   */
+  String[] value();
 
-   /**
-    * Date when the source was generated.
-    */
-   String date() default "";
+  /**
+   * Date when the source was generated.
+   */
+  String date() default "";
 
-   /**
-    * A place holder for any comments that the code generator may want to 
-    * include in the generated code.
-    */
-   String comments() default "";
+  /**
+   * A place holder for any comments that the code generator may want to
+   * include in the generated code.
+   */
+  String comments() default "";
 
 }

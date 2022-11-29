@@ -38,25 +38,26 @@ public class ServiceExample {
         namespace = args[0];
       }
       Service service = new ServiceBuilder()
-        .withNewMetadata()
-        .withName("my-service")
-        .endMetadata()
-        .withNewSpec()
-        .withSelector(Collections.singletonMap("app", "MyApp"))
-        .addNewPort()
-        .withName("test-port")
-        .withProtocol("TCP")
-        .withPort(80)
-        .withTargetPort(new IntOrString(9376))
-        .endPort()
-        .withType("LoadBalancer")
-        .endSpec()
-        .build();
+          .withNewMetadata()
+          .withName("my-service")
+          .endMetadata()
+          .withNewSpec()
+          .withSelector(Collections.singletonMap("app", "MyApp"))
+          .addNewPort()
+          .withName("test-port")
+          .withProtocol("TCP")
+          .withPort(80)
+          .withTargetPort(new IntOrString(9376))
+          .endPort()
+          .withType("LoadBalancer")
+          .endSpec()
+          .build();
 
       service = client.services().inNamespace(namespace).create(service);
       logger.info("Created service with name {}", service.getMetadata().getName());
 
-      String serviceURL = client.services().inNamespace(namespace).withName(service.getMetadata().getName()).getURL("test-port");
+      String serviceURL = client.services().inNamespace(namespace).withName(service.getMetadata().getName())
+          .getURL("test-port");
       logger.info("Service URL {}", serviceURL);
     }
   }

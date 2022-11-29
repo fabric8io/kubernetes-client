@@ -17,6 +17,6 @@ package io.fabric8.crd.example.annotated;
 
 import io.fabric8.kubernetes.client.CustomResource;
 
-public class Annotated extends  CustomResource<AnnotatedSpec, Void> {
+public class Annotated extends CustomResource<AnnotatedSpec, Void> {
 
 }

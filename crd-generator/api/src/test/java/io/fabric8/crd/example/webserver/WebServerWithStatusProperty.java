@@ -22,9 +22,8 @@ public class WebServerWithStatusProperty {
   private String name;
   private int port;
 
- @SpecReplicas
- private int replicas;
+  @SpecReplicas
+  private int replicas;
 
   private WebServerStatus status;
 }
-

@@ -36,13 +36,13 @@ class KubernetesResourceTest {
   void deserializeWithRegisteredApiVersionKindShouldReturnPod() throws Exception {
     // When
     final HasMetadata result = objectMapper.readerFor(KubernetesResource.class)
-      .readValue("{\"kind\": \"Pod\", \"apiVersion\": \"v1\"}");
+        .readValue("{\"kind\": \"Pod\", \"apiVersion\": \"v1\"}");
     // Then
     assertThat(result)
-      .isNotNull()
-      .isInstanceOf(Pod.class)
-      .hasFieldOrPropertyWithValue("kind", "Pod")
-      .hasFieldOrPropertyWithValue("apiVersion", "v1");
+        .isNotNull()
+        .isInstanceOf(Pod.class)
+        .hasFieldOrPropertyWithValue("kind", "Pod")
+        .hasFieldOrPropertyWithValue("apiVersion", "v1");
   }
 
   @Test
@@ -50,12 +50,12 @@ class KubernetesResourceTest {
   void deserializeWithUnregisteredApiVersionKindShouldReturnGenericCustomResource() throws Exception {
     // When
     final HasMetadata result = objectMapper.readerFor(KubernetesResource.class)
-      .readValue("{\"kind\": \"CustomKind\", \"apiVersion\": \"custom/v1\"}");
+        .readValue("{\"kind\": \"CustomKind\", \"apiVersion\": \"custom/v1\"}");
     // Then
     assertThat(result)
-      .isNotNull()
-      .isInstanceOf(GenericKubernetesResource.class)
-      .hasFieldOrPropertyWithValue("kind", "CustomKind")
-      .hasFieldOrPropertyWithValue("apiVersion", "custom/v1");
+        .isNotNull()
+        .isInstanceOf(GenericKubernetesResource.class)
+        .hasFieldOrPropertyWithValue("kind", "CustomKind")
+        .hasFieldOrPropertyWithValue("apiVersion", "custom/v1");
   }
 }

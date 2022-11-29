@@ -33,11 +33,11 @@ class BuildConfigCrudTest {
   @Test
   void testCrud() {
     BuildConfig buildConfig = new BuildConfigBuilder()
-      .withNewMetadata()
+        .withNewMetadata()
         .withName("bc2")
-        .withLabels(Collections.singletonMap("key","value"))
-      .endMetadata()
-      .build();
+        .withLabels(Collections.singletonMap("key", "value"))
+        .endMetadata()
+        .build();
 
     client.buildConfigs().create(buildConfig);
 

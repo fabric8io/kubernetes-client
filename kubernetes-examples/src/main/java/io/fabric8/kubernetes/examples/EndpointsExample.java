@@ -38,24 +38,27 @@ public class EndpointsExample {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-      Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build();
+      Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata()
+          .build();
       logger.info("Created namespace: {}", client.namespaces().createOrReplace(ns));
       try {
         logger.info("Namespace: {}", ns);
-        Deployment deployment = client.apps().deployments().inNamespace(NAMESPACE).load(EndpointsExample.class.getResourceAsStream("/endpoints-deployment.yml")).get();
+        Deployment deployment = client.apps().deployments().inNamespace(NAMESPACE)
+            .load(EndpointsExample.class.getResourceAsStream("/endpoints-deployment.yml")).get();
         logger.info("Deployment created");
         client.apps().deployments().inNamespace(NAMESPACE).create(deployment);
 
-        Service service = client.services().inNamespace(NAMESPACE).load(EndpointsExample.class.getResourceAsStream("/endpoints-service.yml")).get();
+        Service service = client.services().inNamespace(NAMESPACE)
+            .load(EndpointsExample.class.getResourceAsStream("/endpoints-service.yml")).get();
         logger.info("Service created");
         client.services().inNamespace(NAMESPACE).create(service);
 
         Endpoints endpoints = new EndpointsBuilder()
-          .withNewMetadata().withName("external-web").withNamespace(NAMESPACE).endMetadata()
-          .withSubsets().addNewSubset().addNewAddress().withIp("10.10.50.53").endAddress()
-          .addNewPort().withPort(80).withName("apache").endPort()
-          .endSubset()
-          .build();
+            .withNewMetadata().withName("external-web").withNamespace(NAMESPACE).endMetadata()
+            .withSubsets().addNewSubset().addNewAddress().withIp("10.10.50.53").endAddress()
+            .addNewPort().withPort(80).withName("apache").endPort()
+            .endSubset()
+            .build();
         logger.info("Endpoint created");
         client.endpoints().inNamespace(NAMESPACE).create(endpoints);
         logger.info("Endpoint url");

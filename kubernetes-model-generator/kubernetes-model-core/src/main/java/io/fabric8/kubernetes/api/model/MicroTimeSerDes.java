@@ -27,7 +27,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
 public class MicroTimeSerDes {
-  private MicroTimeSerDes() { }
+  private MicroTimeSerDes() {
+  }
 
   public static class Serializer extends JsonSerializer<MicroTime> {
     @Override

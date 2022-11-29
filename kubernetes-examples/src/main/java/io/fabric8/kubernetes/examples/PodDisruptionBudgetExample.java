@@ -36,17 +36,17 @@ public class PodDisruptionBudgetExample {
       configBuilder.withMasterUrl(args[0]);
       logger.info("Using master with URL: {}", args[0]);
     }
-    try (KubernetesClient client= new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       final String namespace = "default";
       PodDisruptionBudget podDisruptionBudget = new PodDisruptionBudgetBuilder()
-        .withNewMetadata().withName("zk-pkb").endMetadata()
-        .withNewSpec()
-        .withMaxUnavailable(new IntOrString("1%"))
-        .withNewSelector()
-        .withMatchLabels(Collections.singletonMap("app", "zookeeper"))
-        .endSelector()
-        .endSpec()
-        .build();
+          .withNewMetadata().withName("zk-pkb").endMetadata()
+          .withNewSpec()
+          .withMaxUnavailable(new IntOrString("1%"))
+          .withNewSelector()
+          .withMatchLabels(Collections.singletonMap("app", "zookeeper"))
+          .endSelector()
+          .endSpec()
+          .build();
 
       logger.info("Current namespace is {}", namespace);
       client.policy().v1().podDisruptionBudget().inNamespace(namespace).createOrReplace(podDisruptionBudget);

@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +14,24 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
+
 import io.fabric8.servicecatalog.api.model.ServiceBindingBuilder;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
-
 public class CreateBinding {
 
-    public static void main(String[] args) {
-        ServiceCatalogClient client = ClientFactory.newClient(args);
-        System.out.println("Creating a service binding");
-        client.serviceBindings().inNamespace("iocanel").create(new ServiceBindingBuilder()
-            .withNewMetadata()
-            .withName("mybinding")
-            .endMetadata()
-            .withNewSpec()
-            .withNewInstanceRef("myservice")
-            .withSecretName("mysercret")
-            .endSpec().build());
+  public static void main(String[] args) {
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    System.out.println("Creating a service binding");
+    client.serviceBindings().inNamespace("iocanel").create(new ServiceBindingBuilder()
+        .withNewMetadata()
+        .withName("mybinding")
+        .endMetadata()
+        .withNewSpec()
+        .withNewInstanceRef("myservice")
+        .withSecretName("mysercret")
+        .endSpec().build());
 
-    }
+  }
 }

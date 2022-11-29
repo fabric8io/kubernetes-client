@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,8 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
+
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerBuilder;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
@@ -21,14 +23,14 @@ import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 public class CreateBroker {
 
   public static void main(String[] args) {
-     ServiceCatalogClient client = ClientFactory.newClient(args);
-     ClusterServiceBroker broker = client.clusterServiceBrokers().create(new ClusterServiceBrokerBuilder()
-          .withNewMetadata()
-          .withName("mybroker")
-          .endMetadata()
-          .withNewSpec()
-          .withUrl("http://url.to.service.broker")
-          .endSpec()
-          .build());
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    ClusterServiceBroker broker = client.clusterServiceBrokers().create(new ClusterServiceBrokerBuilder()
+        .withNewMetadata()
+        .withName("mybroker")
+        .endMetadata()
+        .withNewSpec()
+        .withUrl("http://url.to.service.broker")
+        .endSpec()
+        .build());
   }
 }

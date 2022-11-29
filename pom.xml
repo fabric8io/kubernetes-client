@@ -1068,7 +1068,6 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless-maven-plugin.version}</version>
         <configuration>
-          <ratchetFrom>origin/master</ratchetFrom>
           <java>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>
@@ -1076,6 +1075,7 @@
             <importOrder>
               <file>ide-config/eclipse.importorder</file>
             </importOrder>
+            <removeUnusedImports/>
           </java>
         </configuration>
       </plugin>

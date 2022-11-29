@@ -54,7 +54,7 @@ class GenerationTest {
         .endMetadata()
         .build();
     final ConfigMapBuilder inServer = new ConfigMapBuilder(
-      client.configMaps().inNamespace(NAMESPACE).createOrReplace(original));
+        client.configMaps().inNamespace(NAMESPACE).createOrReplace(original));
     inServer.addToData("key", "value");
 
     final ConfigMap result = client.configMaps().inNamespace(NAMESPACE).createOrReplace(inServer.build());
@@ -64,19 +64,18 @@ class GenerationTest {
   @Test
   void testUpdatingMetadataDoesNotIncrementGeneration() {
     final ConfigMap original = new ConfigMapBuilder()
-      .withNewMetadata()
-      .withName("test-configmap-updated-metadata")
-      .withNamespace(NAMESPACE)
-      .endMetadata()
-      .build();
+        .withNewMetadata()
+        .withName("test-configmap-updated-metadata")
+        .withNamespace(NAMESPACE)
+        .endMetadata()
+        .build();
     final ConfigMapBuilder inServer = new ConfigMapBuilder(
-      client.configMaps().inNamespace(NAMESPACE).createOrReplace(original));
+        client.configMaps().inNamespace(NAMESPACE).createOrReplace(original));
 
     inServer.editMetadata().addToAnnotations("new-annotation", "new-value");
 
     final ConfigMap result = client.configMaps().inNamespace(NAMESPACE).createOrReplace(inServer.build());
     assertEquals(1L, result.getMetadata().getGeneration());
   }
-
 
 }

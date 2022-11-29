@@ -33,7 +33,7 @@ public class HttpServerTest {
 
   @Test
   public void testListWithTrustCerts() {
-   server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
     //We override the config to create a client that doesn't trust all certs.
     Config override = new ConfigBuilder(client.getConfiguration()).build();
 

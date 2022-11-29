@@ -32,10 +32,10 @@ public class PodListGlobalEquivalent {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inAnyNamespace().list().getItems()
-        .stream()
-        .map(Pod::getMetadata)
-        .map(ObjectMeta::getName)
-        .forEach(logger::info);
+          .stream()
+          .map(Pod::getMetadata)
+          .map(ObjectMeta::getName)
+          .forEach(logger::info);
     }
   }
 }

@@ -47,11 +47,11 @@ class WatchIT {
   @Test
   void testWatch() throws InterruptedException {
     Pod pod1 = new PodBuilder()
-      .withNewMetadata().withName("sample-watch-pod").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("nginx").withImage("nginx").endContainer()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("sample-watch-pod").endMetadata()
+        .withNewSpec()
+        .addNewContainer().withName("nginx").withImage("nginx").endContainer()
+        .endSpec()
+        .build();
 
     client.pods().create(pod1);
 
@@ -152,11 +152,11 @@ class WatchIT {
             .build());
 
     configMapClient
-    .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new ConfigMapBuilder()
-        .withNewMetadata()
-        .addToLabels("foo", "bar1")
-        .endMetadata()
-        .build());
+        .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new ConfigMapBuilder()
+            .withNewMetadata()
+            .addToLabels("foo", "bar1")
+            .endMetadata()
+            .build());
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
     assertTrue(modifyLatch.await(15, TimeUnit.SECONDS));

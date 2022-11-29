@@ -15,10 +15,6 @@
  */
 package io.fabric8.crd.generator;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -27,6 +23,10 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CustomResourceInfoTest {
 
@@ -77,9 +77,11 @@ public class CustomResourceInfoTest {
     String specClassName = info.specClassName().get();
     assertEquals(Spec.class.getCanonicalName(), specClassName);
     // todo: check that we can load and instantiate class from the returned class name
-    /*Class<?> specClass = Class.forName(specClassName);
-    Object o = specClass.getDeclaredConstructor().newInstance();
-    assertNotNull(o);*/
+    /*
+     * Class<?> specClass = Class.forName(specClassName);
+     * Object o = specClass.getDeclaredConstructor().newInstance();
+     * assertNotNull(o);
+     */
     assertEquals(Status.class.getCanonicalName(), info.statusClassName().get());
     assertEquals(HasMetadata.getSingular(ClusteredCR.class), info.singular());
     assertEquals(HasMetadata.getPlural(ClusteredCR.class), info.plural());

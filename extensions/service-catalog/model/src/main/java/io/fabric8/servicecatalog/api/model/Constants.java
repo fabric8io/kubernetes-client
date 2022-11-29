@@ -19,5 +19,6 @@ public class Constants {
   private Constants() {
     throw new IllegalStateException("Utility class");
   }
-    public static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
+
+  public static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
 }

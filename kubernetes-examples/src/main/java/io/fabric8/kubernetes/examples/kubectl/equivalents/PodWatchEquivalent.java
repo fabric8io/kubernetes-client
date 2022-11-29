@@ -30,45 +30,45 @@ import java.util.concurrent.CountDownLatch;
  * all the pods in specified namespace("default" in this case).
  */
 public class PodWatchEquivalent {
-    private static final Logger logger = LoggerFactory.getLogger(PodWatchEquivalent.class.getSimpleName());
+  private static final Logger logger = LoggerFactory.getLogger(PodWatchEquivalent.class.getSimpleName());
 
-    public static void main(String[] args) {
-        String namespace = "default";
+  public static void main(String[] args) {
+    String namespace = "default";
 
-        // Latch for Watch termination
-        final CountDownLatch isWatchClosed = new CountDownLatch(1);
-        try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-            k8s.pods().inNamespace(namespace).watch(new Watcher<Pod>() {
-                @Override
-                public void eventReceived(Action action, Pod pod) {
-                    logger.info("{} {}", action.name(), pod.getMetadata().getName());
-                    switch (action) {
-                        case ADDED:
-                            logger.info("{} got added", pod.getMetadata().getName());
-                            break;
-                        case DELETED:
-                            logger.info("{} got deleted", pod.getMetadata().getName());
-                            break;
-                      case MODIFIED:
-                            logger.info("{} got modified",  pod.getMetadata().getName());
-                            break;
-                        default:
-                            logger.error("Unrecognized event: {}", action.name());
-                    }
-                }
-
-                @Override
-                public void onClose(WatcherException e) {
-                    logger.info( "Closed");
-                    isWatchClosed.countDown();
-                }
-            });
-
-            // Wait till watch gets closed
-            isWatchClosed.await();
-        } catch (InterruptedException interruptedException) {
-            logger.warn("Interrupted while waiting for the watch to close: {}", interruptedException.getMessage());
-            Thread.currentThread().interrupt();
+    // Latch for Watch termination
+    final CountDownLatch isWatchClosed = new CountDownLatch(1);
+    try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
+      k8s.pods().inNamespace(namespace).watch(new Watcher<Pod>() {
+        @Override
+        public void eventReceived(Action action, Pod pod) {
+          logger.info("{} {}", action.name(), pod.getMetadata().getName());
+          switch (action) {
+            case ADDED:
+              logger.info("{} got added", pod.getMetadata().getName());
+              break;
+            case DELETED:
+              logger.info("{} got deleted", pod.getMetadata().getName());
+              break;
+            case MODIFIED:
+              logger.info("{} got modified", pod.getMetadata().getName());
+              break;
+            default:
+              logger.error("Unrecognized event: {}", action.name());
+          }
         }
+
+        @Override
+        public void onClose(WatcherException e) {
+          logger.info("Closed");
+          isWatchClosed.countDown();
+        }
+      });
+
+      // Wait till watch gets closed
+      isWatchClosed.await();
+    } catch (InterruptedException interruptedException) {
+      logger.warn("Interrupted while waiting for the watch to close: {}", interruptedException.getMessage());
+      Thread.currentThread().interrupt();
     }
+  }
 }

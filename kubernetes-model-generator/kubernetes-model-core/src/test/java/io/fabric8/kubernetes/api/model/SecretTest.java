@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -26,59 +27,58 @@ import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import io.fabric8.kubernetes.model.util.Helper;
 
 public class SecretTest {
-    private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
-    @Test
-    public void secretTest() throws Exception {
-        // given
-        final String originalJson = Helper.loadJson("/valid-secret.json");
+  @Test
+  public void secretTest() throws Exception {
+    // given
+    final String originalJson = Helper.loadJson("/valid-secret.json");
 
-        // when
-        final Secret secret = mapper.readValue(originalJson, Secret.class);
-        final String serializedJson = mapper.writeValueAsString(secret);
+    // when
+    final Secret secret = mapper.readValue(originalJson, Secret.class);
+    final String serializedJson = mapper.writeValueAsString(secret);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
-    }
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
+  }
 
-    @Test
-    public void secretBuilderTest(){
+  @Test
+  public void secretBuilderTest() {
 
-        Secret secret = new io.fabric8.kubernetes.api.model.SecretBuilder()
-                .withNewMetadata()
-                .withName("test-secret")
-                .withNamespace("my-namespace")
-                .endMetadata()
-                .withType("opaque")
-                .withData(new HashMap<String, String>() {{
-                    put("username", "dmFsdWUtMQ0K");
-                    put("password", "dmFsdWUtMg0KDQo=");
-                    put(".secret-file", "dmFsdWUtMg0KDQo=");
-                    }}
-                )
-                .withStringData(new HashMap<String, String>() {{
-                    put("hostname", "myapp.mydomain.com");
-                    put("secret.properties", "property1=valueA\nproperty2=valueB");
-                    }}
-                )
-                .build();
+    Secret secret = new io.fabric8.kubernetes.api.model.SecretBuilder()
+        .withNewMetadata()
+        .withName("test-secret")
+        .withNamespace("my-namespace")
+        .endMetadata()
+        .withType("opaque")
+        .withData(new HashMap<String, String>() {
+          {
+            put("username", "dmFsdWUtMQ0K");
+            put("password", "dmFsdWUtMg0KDQo=");
+            put(".secret-file", "dmFsdWUtMg0KDQo=");
+          }
+        })
+        .withStringData(new HashMap<String, String>() {
+          {
+            put("hostname", "myapp.mydomain.com");
+            put("secret.properties", "property1=valueA\nproperty2=valueB");
+          }
+        })
+        .build();
 
-        assertNotNull(secret);
-        assertEquals("test-secret", secret.getMetadata().getName());
-        assertEquals("my-namespace",secret.getMetadata().getNamespace());
-        assertEquals("opaque", secret.getType());
-        assertEquals(3,secret.getData().size());
-        assertEquals("dmFsdWUtMQ0K",secret.getData().get("username"));
-        assertEquals("dmFsdWUtMg0KDQo=",secret.getData().get("password"));
-        assertEquals("dmFsdWUtMg0KDQo=",secret.getData().get(".secret-file"));
-        assertEquals(2,secret.getStringData().size());
-        assertEquals("myapp.mydomain.com",secret.getStringData().get("hostname"));
-        assertEquals("property1=valueA\nproperty2=valueB",secret.getStringData().get("secret.properties"));
-    }
+    assertNotNull(secret);
+    assertEquals("test-secret", secret.getMetadata().getName());
+    assertEquals("my-namespace", secret.getMetadata().getNamespace());
+    assertEquals("opaque", secret.getType());
+    assertEquals(3, secret.getData().size());
+    assertEquals("dmFsdWUtMQ0K", secret.getData().get("username"));
+    assertEquals("dmFsdWUtMg0KDQo=", secret.getData().get("password"));
+    assertEquals("dmFsdWUtMg0KDQo=", secret.getData().get(".secret-file"));
+    assertEquals(2, secret.getStringData().size());
+    assertEquals("myapp.mydomain.com", secret.getStringData().get("hostname"));
+    assertEquals("property1=valueA\nproperty2=valueB", secret.getStringData().get("secret.properties"));
+  }
 }

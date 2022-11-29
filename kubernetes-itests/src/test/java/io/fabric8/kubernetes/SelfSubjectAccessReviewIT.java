@@ -34,14 +34,14 @@ class SelfSubjectAccessReviewIT {
   void testCreate() {
     // Given
     SelfSubjectAccessReview selfSubjectAccessReview = new SelfSubjectAccessReviewBuilder()
-      .withNewSpec()
-      .withNewResourceAttributes()
-      .withNamespace(namespace.getMetadata().getName())
-      .withVerb("get")
-      .withResource("pods")
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewResourceAttributes()
+        .withNamespace(namespace.getMetadata().getName())
+        .withVerb("get")
+        .withResource("pods")
+        .endResourceAttributes()
+        .endSpec()
+        .build();
 
     // When
     selfSubjectAccessReview = client.authorization().v1().selfSubjectAccessReview().create(selfSubjectAccessReview);

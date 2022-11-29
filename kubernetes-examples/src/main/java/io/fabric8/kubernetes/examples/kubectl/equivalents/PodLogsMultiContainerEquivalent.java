@@ -26,8 +26,8 @@ public class PodLogsMultiContainerEquivalent {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       logger.info(k8s.pods().inNamespace("default").withName("multi-container-pod")
-        .inContainer("c1")
-        .getLog());
+          .inContainer("c1")
+          .getLog());
     }
   }
 }

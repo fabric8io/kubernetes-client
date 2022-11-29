@@ -25,14 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 public class ResourceCompare {
-  private ResourceCompare() {}
+  private ResourceCompare() {
+  }
 
-  private static TypeReference<HashMap<String, Object>> TYPE_REF = new TypeReference<HashMap<String, Object>>(){};
+  private static TypeReference<HashMap<String, Object>> TYPE_REF = new TypeReference<HashMap<String, Object>>() {
+  };
 
   private static final String METADATA = "metadata";
   private static final String SPEC = "spec";
   private static final String ITEMS = "items";
-
 
   /**
    * This method returns true when left Kubernetes resource contains
@@ -46,7 +47,7 @@ public class ResourceCompare {
    *
    * @return boolean value whether both resources are actually equal or not
    */
-  public static <T>  boolean equals(T left, T right) {
+  public static <T> boolean equals(T left, T right) {
     ObjectMapper jsonMapper = Serialization.jsonMapper();
     if (left == null && right == null) {
       return true;
@@ -66,8 +67,8 @@ public class ResourceCompare {
   }
 
   public static boolean compareKubernetesList(Map<String, Object> leftJson, Map<String, Object> rightJson) {
-    List<Map<String, Object>> leftItems = (List<Map<String, Object>>)leftJson.get(ITEMS);
-    List<Map<String, Object>> rightItems = (List<Map<String, Object>>)rightJson.get(ITEMS);
+    List<Map<String, Object>> leftItems = (List<Map<String, Object>>) leftJson.get(ITEMS);
+    List<Map<String, Object>> rightItems = (List<Map<String, Object>>) rightJson.get(ITEMS);
 
     if (leftItems != null && rightItems != null) {
       if (leftItems.size() != rightItems.size()) {
@@ -79,13 +80,14 @@ public class ResourceCompare {
           return false;
         }
       }
-    } else return leftItems != null;
+    } else
+      return leftItems != null;
     return true;
   }
 
   public static boolean compareKubernetesResource(Map<String, Object> leftJson, Map<String, Object> rightJson) {
     return isEqualMetadata(leftJson, rightJson) &&
-      isEqualSpec(leftJson, rightJson);
+        isEqualSpec(leftJson, rightJson);
   }
 
   private static boolean isEqualMetadata(Map<String, Object> leftMap, Map<String, Object> rightMap) {

@@ -60,20 +60,19 @@ import java.util.Map;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-public class TraitConfiguration implements KubernetesResource
-{
+public class TraitConfiguration implements KubernetesResource {
 
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<>();
+  @JsonIgnore
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
 
 }

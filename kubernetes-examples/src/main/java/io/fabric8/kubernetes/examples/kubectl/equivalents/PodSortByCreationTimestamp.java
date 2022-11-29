@@ -40,13 +40,13 @@ public class PodSortByCreationTimestamp {
       podList.sort((o1, o2) -> {
         long o1Timestamp = Instant.parse(o1.getMetadata().getCreationTimestamp()).getEpochSecond();
         long o2Timestamp = Instant.parse(o2.getMetadata().getCreationTimestamp()).getEpochSecond();
-        return (int)(o2Timestamp - o1Timestamp);
+        return (int) (o2Timestamp - o1Timestamp);
       });
 
       // Check if list is sorted
       for (Pod pod : podList) {
         logger.info("{} : {} minutes old", pod.getMetadata().getName(),
-          Duration.between(Instant.now(), Instant.parse(pod.getMetadata().getCreationTimestamp())).toMinutes());
+            Duration.between(Instant.now(), Instant.parse(pod.getMetadata().getCreationTimestamp())).toMinutes());
       }
     }
   }

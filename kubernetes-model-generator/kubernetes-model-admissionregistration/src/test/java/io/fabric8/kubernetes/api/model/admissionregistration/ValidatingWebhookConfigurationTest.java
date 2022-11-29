@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.api.model.admissionregistration;
 
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,27 +24,27 @@ public class ValidatingWebhookConfigurationTest {
   @Test
   public void testBuilder() {
     ValidatingWebhookConfiguration vwc = new io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationBuilder()
-      .withNewMetadata().withName("pod-policy.example.com").endMetadata()
-      .addNewWebhook()
-      .withName("pod-policy.example.com")
-      .addNewRule()
-      .withApiGroups("")
-      .withApiVersions("v1")
-      .withOperations("CREATE")
-      .withResources("pods")
-      .withScope("Namespaced")
-      .endRule()
-      .withNewClientConfig()
-      .withNewService()
-      .withNamespace("example-namespace")
-      .withName("example-service")
-      .endService()
-      .endClientConfig()
-      .withAdmissionReviewVersions("v1", "v1beta1")
-      .withSideEffects("None")
-      .withTimeoutSeconds(5)
-      .endWebhook()
-      .build();
+        .withNewMetadata().withName("pod-policy.example.com").endMetadata()
+        .addNewWebhook()
+        .withName("pod-policy.example.com")
+        .addNewRule()
+        .withApiGroups("")
+        .withApiVersions("v1")
+        .withOperations("CREATE")
+        .withResources("pods")
+        .withScope("Namespaced")
+        .endRule()
+        .withNewClientConfig()
+        .withNewService()
+        .withNamespace("example-namespace")
+        .withName("example-service")
+        .endService()
+        .endClientConfig()
+        .withAdmissionReviewVersions("v1", "v1beta1")
+        .withSideEffects("None")
+        .withTimeoutSeconds(5)
+        .endWebhook()
+        .build();
 
     assertEquals("pod-policy.example.com", vwc.getMetadata().getName());
     assertEquals(1, vwc.getWebhooks().size());

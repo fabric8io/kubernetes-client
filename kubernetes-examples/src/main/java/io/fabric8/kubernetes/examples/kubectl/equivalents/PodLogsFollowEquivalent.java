@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
- *  Java equivalent to `kubectl logs pod/my-pod -f`
+ * Java equivalent to `kubectl logs pod/my-pod -f`
  */
 public class PodLogsFollowEquivalent {
   public static void main(String[] args) {

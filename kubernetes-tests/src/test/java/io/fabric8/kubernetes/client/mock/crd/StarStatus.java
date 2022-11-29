@@ -29,7 +29,7 @@ public class StarStatus {
   @Override
   public String toString() {
     return "StarStatus{" +
-      " location=" + location +
-      "}";
+        " location=" + location +
+        "}";
   }
 }

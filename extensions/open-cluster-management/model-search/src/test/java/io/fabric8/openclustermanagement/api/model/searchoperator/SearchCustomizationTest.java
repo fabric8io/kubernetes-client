@@ -34,8 +34,8 @@ class SearchCustomizationTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-searchcustomization.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final SearchCustomization searchCustomization = mapper.readValue(originalJson, SearchCustomization.class);
@@ -54,12 +54,12 @@ class SearchCustomizationTest {
   void builderShouldCreateObject() {
     // Given
     SearchCustomizationBuilder searchCustomizationBuilder = new SearchCustomizationBuilder()
-      .withNewMetadata()
-      .withName("searchcustomization")
-      .endMetadata()
-      .withNewSpec()
-      .withPersistence(true)
-      .endSpec();
+        .withNewMetadata()
+        .withName("searchcustomization")
+        .endMetadata()
+        .withNewSpec()
+        .withPersistence(true)
+        .endSpec();
 
     // When
     SearchCustomization searchCustomization = searchCustomizationBuilder.build();

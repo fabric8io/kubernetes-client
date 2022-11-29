@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.LocalPortForward;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -45,22 +44,23 @@ public class PortForwardExample {
       String namespace = "default";
       logger.info("Using namespace: {}", namespace);
       Pod pod = client.pods().inNamespace(namespace)
-        .load(PortForwardExample.class.getResourceAsStream("/portforward-example-pod.yml")).get();
+          .load(PortForwardExample.class.getResourceAsStream("/portforward-example-pod.yml")).get();
       final String podName = pod.getMetadata().getName();
       client.pods().inNamespace(namespace).create(pod);
       logger.info("Pod {} created", podName);
 
-      int containerPort =  pod.getSpec().getContainers().get(0).getPorts().get(0).getContainerPort();
+      int containerPort = pod.getSpec().getContainers().get(0).getPorts().get(0).getContainerPort();
       client.pods().inNamespace(namespace).withName(podName).waitUntilReady(10, TimeUnit.SECONDS);
 
-      InetAddress inetAddress = InetAddress.getByAddress(new byte[]{127,0,0,1});
-      LocalPortForward portForward = client.pods().inNamespace("default").withName("testpod").portForward(containerPort, inetAddress, 8080);
+      InetAddress inetAddress = InetAddress.getByAddress(new byte[] { 127, 0, 0, 1 });
+      LocalPortForward portForward = client.pods().inNamespace("default").withName("testpod").portForward(containerPort,
+          inetAddress, 8080);
       logger.info("Port forwarded for 60 seconds at http://127.0.0.1:{}", portForward.getLocalPort());
 
       logger.info("Checking forwarded port:-");
-      final ResponseBody responseBody =  new OkHttpClient()
-        .newCall(new Request.Builder().get().url("http://127.0.0.1:" + portForward.getLocalPort()).build()).execute()
-        .body();
+      final ResponseBody responseBody = new OkHttpClient()
+          .newCall(new Request.Builder().get().url("http://127.0.0.1:" + portForward.getLocalPort()).build()).execute()
+          .body();
       logger.info("Response: \n{}", responseBody != null ? responseBody.string() : "[Empty Body]");
       Thread.sleep(60 * 1000L);
       logger.info("Closing forwarded port");

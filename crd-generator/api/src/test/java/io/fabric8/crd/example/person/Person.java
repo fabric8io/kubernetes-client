@@ -29,6 +29,7 @@ public class Person {
   private Type type;
 
   public enum Type {
-    crazy, crazier
+    crazy,
+    crazier
   }
 }

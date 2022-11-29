@@ -37,38 +37,37 @@ class ReplicaSetV1beta1Test {
   @Test
   void testCreateOrReplace() {
     ReplicaSet oldReplicaSet = new ReplicaSetBuilder()
-      .withApiVersion("extensions/v1beta1")
-      .withNewMetadata()
-      .withName("test-replicaset")
-      .endMetadata()
-      .build();
+        .withApiVersion("extensions/v1beta1")
+        .withNewMetadata()
+        .withName("test-replicaset")
+        .endMetadata()
+        .build();
 
     ReplicaSet newReplicaSet = new ReplicaSetBuilder()
-      .withApiVersion("extensions/v1beta1")
-      .withNewMetadata()
-      .withName("test-deployment")
-      .withAnnotations(Collections.singletonMap("newAnnotation", "test"))
-      .endMetadata()
-      .build();
+        .withApiVersion("extensions/v1beta1")
+        .withNewMetadata()
+        .withName("test-deployment")
+        .withAnnotations(Collections.singletonMap("newAnnotation", "test"))
+        .endMetadata()
+        .build();
 
     server.expect()
-      .post()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/replicasets")
-      .andReturn(HttpURLConnection.HTTP_CONFLICT, oldReplicaSet)
-      .once();
+        .post()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/replicasets")
+        .andReturn(HttpURLConnection.HTTP_CONFLICT, oldReplicaSet)
+        .once();
 
     server.expect()
-      .get()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/test-deployment")
-      .andReturn(HttpURLConnection.HTTP_OK, oldReplicaSet)
-      .times(2);
+        .get()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/test-deployment")
+        .andReturn(HttpURLConnection.HTTP_OK, oldReplicaSet)
+        .times(2);
 
     server.expect()
-      .put()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/test-deployment")
-      .andReturn(HttpURLConnection.HTTP_OK, newReplicaSet)
-      .once();
-
+        .put()
+        .withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/test-deployment")
+        .andReturn(HttpURLConnection.HTTP_OK, newReplicaSet)
+        .once();
 
     ReplicaSet result = client.extensions().replicaSets().inNamespace("test").createOrReplace(newReplicaSet);
     assertNotNull(result);

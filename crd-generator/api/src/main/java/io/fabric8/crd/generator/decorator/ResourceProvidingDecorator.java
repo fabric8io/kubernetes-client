@@ -15,7 +15,6 @@
  */
 package io.fabric8.crd.generator.decorator;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

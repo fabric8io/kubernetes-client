@@ -19,23 +19,25 @@ package io.fabric8.kubernetes.client.http;
 import java.net.URI;
 
 public interface BasicBuilder {
-  
+
   BasicBuilder uri(URI uri);
-  
+
   /**
-   * Add the key value pair.  Will append to an existing key.
+   * Add the key value pair. Will append to an existing key.
+   * 
    * @param k key
    * @param v value
    * @return the builder
    */
   BasicBuilder header(String k, String v);
-  
+
   /**
-   * Set the key value pair.  Will overwrite an existing key.
+   * Set the key value pair. Will overwrite an existing key.
+   * 
    * @param k key
    * @param v value
    * @return the builder
    */
   BasicBuilder setHeader(String k, String v);
-  
+
 }

@@ -30,11 +30,10 @@ public class LoginExample {
 
   public static void main(String[] args) {
     try (KubernetesClient kubernetesClient = new KubernetesClientBuilder().withConfig(new ConfigBuilder()
-      .withMasterUrl("cluster_url")
-      .withUsername("my_username")
-      .withPassword("my_password")
-      .build()).build()
-    ) {
+        .withMasterUrl("cluster_url")
+        .withUsername("my_username")
+        .withPassword("my_password")
+        .build()).build()) {
       final OpenShiftClient openShiftClient = kubernetesClient.adapt(OpenShiftClient.class);
       logger.info("Login Successful");
       final ProjectList pl = openShiftClient.projects().list();

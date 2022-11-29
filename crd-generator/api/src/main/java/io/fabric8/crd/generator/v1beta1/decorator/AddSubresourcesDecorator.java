@@ -19,7 +19,7 @@ import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
 
 public class AddSubresourcesDecorator extends
-  CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+    CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
   public AddSubresourcesDecorator(String name, String version) {
     super(name, version);
@@ -34,11 +34,11 @@ public class AddSubresourcesDecorator extends
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class};
+    return new Class[] { AddCustomResourceDefinitionVersionDecorator.class };
   }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() +"]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "]";
+  }
 }

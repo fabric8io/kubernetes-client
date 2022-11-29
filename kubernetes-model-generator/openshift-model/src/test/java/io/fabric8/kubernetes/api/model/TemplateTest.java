@@ -33,16 +33,16 @@ class TemplateTest {
   void getObjectsWithObjectsShouldReturnList() {
     // Given
     final Template template = new TemplateBuilder()
-      .addToObjects(new SecretBuilder().build())
-      .addToObjects(new ServiceBuilder().build())
-      .addToObjects(new ProjectBuilder().build())
-      .build();
+        .addToObjects(new SecretBuilder().build())
+        .addToObjects(new ServiceBuilder().build())
+        .addToObjects(new ProjectBuilder().build())
+        .build();
     // When
     final List<HasMetadata> result = template.getObjects();
     // Then
     assertThat(result)
-      .extracting("class")
-      .containsExactly(Secret.class, Service.class, Project.class);
+        .extracting("class")
+        .containsExactly(Secret.class, Service.class, Project.class);
   }
 
 }

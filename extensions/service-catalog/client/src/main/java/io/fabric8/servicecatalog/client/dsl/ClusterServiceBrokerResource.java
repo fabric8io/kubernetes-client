@@ -22,27 +22,28 @@ import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 
 public interface ClusterServiceBrokerResource extends Resource<ClusterServiceBroker> {
 
+  /**
+   * List all {@link io.fabric8.servicecatalog.api.model.ClusterServicePlan}s available to the current broker.
+   * It's an alternative of listing all plans and filtering by field.
+   * 
+   * @return The list of plans.
+   */
+  ClusterServicePlanList listPlans();
 
-    /**
-     * List all {@link io.fabric8.servicecatalog.api.model.ClusterServicePlan}s available to the current broker.
-     * It's an alternative of listing all plans and filtering by field.
-     * @return The list of plans.
-     */
-    ClusterServicePlanList listPlans();
+  /**
+   * List all {@link io.fabric8.servicecatalog.api.model.ClusterServiceClass}es available to the current broker.
+   * It's an alternative of listing all classes and filtering by field.
+   * 
+   * @return The list of plans.
+   */
+  ClusterServiceClassList listClasses();
 
-    /**
-     * List all {@link io.fabric8.servicecatalog.api.model.ClusterServiceClass}es available to the current broker.
-     * It's an alternative of listing all classes and filtering by field.
-     * @return The list of plans.
-     */
-    ClusterServiceClassList listClasses();
-
-
-    /**
-     * Switch to the {@link ClusterServiceClassResource} with the specified external name.
-     * @param externalName
-     * @return the resource.
-     * @throws IllegalArgumentException if no unique resource with externalName is found.
-     */
-    ClusterServiceClassResource useServiceClass(String externalName);
+  /**
+   * Switch to the {@link ClusterServiceClassResource} with the specified external name.
+   * 
+   * @param externalName
+   * @return the resource.
+   * @throws IllegalArgumentException if no unique resource with externalName is found.
+   */
+  ClusterServiceClassResource useServiceClass(String externalName);
 }

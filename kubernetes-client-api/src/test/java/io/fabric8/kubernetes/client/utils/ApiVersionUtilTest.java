@@ -26,48 +26,48 @@ class ApiVersionUtilTest {
   @Test
   void apiGroup() {
     assertThat(ApiVersionUtil.apiGroup(new Deployment(), "apps/v1"))
-      .isEqualTo("apps");
+        .isEqualTo("apps");
     assertThat(ApiVersionUtil.apiGroup(new DeploymentSpec(), "apps/v1"))
-      .isEqualTo("apps");
+        .isEqualTo("apps");
     assertThat(ApiVersionUtil.apiGroup(new Pod(), "v1"))
-      .isNull();
+        .isNull();
     assertThat(ApiVersionUtil.apiGroup(new DeploymentSpec(), ""))
-      .isNull();
+        .isNull();
   }
 
   @Test
   void apiVersion() {
     assertThat(ApiVersionUtil.apiVersion(new Deployment(), "apps/v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
     assertThat(ApiVersionUtil.apiVersion(new DeploymentSpec(), "apps/v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
     assertThat(ApiVersionUtil.apiVersion(new Pod(), "v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
     assertThat(ApiVersionUtil.apiVersion(new DeploymentSpec(), ""))
-      .isNull();
+        .isNull();
   }
 
   @Test
   void joinApiGroupAndVersion() {
     assertThat(ApiVersionUtil.joinApiGroupAndVersion("", "v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
     assertThat(ApiVersionUtil.joinApiGroupAndVersion("apps", "v1"))
-      .isEqualTo("apps/v1");
+        .isEqualTo("apps/v1");
   }
 
   @Test
   void trimVersion() {
     assertThat(ApiVersionUtil.trimVersion("rbac.authorization.k8s.io/v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
     assertThat(ApiVersionUtil.trimVersion("v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
   }
 
   @Test
   void trimGroup() {
     assertThat(ApiVersionUtil.trimGroup("rbac.authorization.k8s.io/v1"))
-      .isEqualTo("rbac.authorization.k8s.io");
+        .isEqualTo("rbac.authorization.k8s.io");
     assertThat(ApiVersionUtil.trimGroup("v1"))
-      .isEqualTo("v1");
+        .isEqualTo("v1");
   }
 }

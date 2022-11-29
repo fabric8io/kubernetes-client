@@ -23,4 +23,3 @@ public class WebServerWithSpec {
 
   private WebServerStatus status;
 }
-

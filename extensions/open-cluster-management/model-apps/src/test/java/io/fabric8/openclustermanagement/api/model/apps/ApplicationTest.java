@@ -34,8 +34,8 @@ class ApplicationTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-application.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final Application application = mapper.readValue(originalJson, Application.class);
@@ -57,16 +57,16 @@ class ApplicationTest {
   void builderShouldCreateObject() {
     // Given
     ApplicationBuilder applicationBuilder = new ApplicationBuilder()
-      .withNewMetadata()
-      .addToLabels("app", "nginx-app-details")
-      .withName("nginx-app-3")
-      .endMetadata()
-      .withNewSpec()
-      .addNewComponentKind("apps.open-cluster-management.io", "Subscription")
-      .withNewSelector()
-      .addToMatchLabels("app", "nginx-app-details")
-      .endSelector()
-      .endSpec();
+        .withNewMetadata()
+        .addToLabels("app", "nginx-app-details")
+        .withName("nginx-app-3")
+        .endMetadata()
+        .withNewSpec()
+        .addNewComponentKind("apps.open-cluster-management.io", "Subscription")
+        .withNewSelector()
+        .addToMatchLabels("app", "nginx-app-details")
+        .endSelector()
+        .endSpec();
 
     // When
     Application application = applicationBuilder.build();

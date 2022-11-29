@@ -29,10 +29,10 @@ public class ManagedClusterList {
     try (OpenClusterManagementClient ocmClient = new DefaultOpenClusterManagementClient()) {
       logger.info("Listing all ManagedClusters: ");
       ocmClient.clusters().managedClusters()
-        .list().getItems().stream()
-        .map(ManagedCluster::getMetadata)
-        .map(ObjectMeta::getName)
-        .forEach(logger::info);
+          .list().getItems().stream()
+          .map(ManagedCluster::getMetadata)
+          .map(ObjectMeta::getName)
+          .forEach(logger::info);
     }
   }
 }

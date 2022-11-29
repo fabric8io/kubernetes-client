@@ -36,14 +36,14 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-  "apiVersion",
-  "kind",
-  "metadata",
-  "acquireTime",
-  "holderIdentity",
-  "leaseDurationSeconds",
-  "leaseTransitions",
-  "renewTime"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "acquireTime",
+    "holderIdentity",
+    "leaseDurationSeconds",
+    "leaseTransitions",
+    "renewTime"
 })
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @ToString
@@ -74,7 +74,8 @@ public class LeaseSpec implements KubernetesResource {
   public LeaseSpec() {
   }
 
-  public LeaseSpec(ZonedDateTime acquireTime, String holderIdentity, Integer leaseDurationSeconds, Integer leaseTransitions, ZonedDateTime renewTime) {
+  public LeaseSpec(ZonedDateTime acquireTime, String holderIdentity, Integer leaseDurationSeconds, Integer leaseTransitions,
+      ZonedDateTime renewTime) {
     this.acquireTime = acquireTime;
     this.holderIdentity = holderIdentity;
     this.leaseDurationSeconds = leaseDurationSeconds;

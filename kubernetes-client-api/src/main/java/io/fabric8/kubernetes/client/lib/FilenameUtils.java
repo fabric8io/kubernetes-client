@@ -136,7 +136,7 @@ public class FilenameUtils {
   /**
    * Checks if the character is a separator.
    *
-   * @param ch  the character to check
+   * @param ch the character to check
    * @return true if it is a separator character
    */
   private static boolean isSeparator(final char ch) {
@@ -181,7 +181,7 @@ public class FilenameUtils {
    * </pre>
    * (Note the file separator returned will be correct for Windows/Unix)
    *
-   * @param fileName  the fileName to normalize, null returns null
+   * @param fileName the fileName to normalize, null returns null
    * @return the normalized fileName, or null if invalid. Null bytes inside string will be removed
    */
   public static String normalize(final String fileName) {
@@ -225,9 +225,9 @@ public class FilenameUtils {
    * ~/../bar             --&gt;   null
    * </pre>
    *
-   * @param fileName  the fileName to normalize, null returns null
+   * @param fileName the fileName to normalize, null returns null
    * @param unixSeparator {@code true} if a unix separator should
-   * be used or {@code false} if a windows separator should be used.
+   *        be used or {@code false} if a windows separator should be used.
    * @return the normalized fileName, or null if invalid. Null bytes inside string will be removed
    * @since 2.0
    */
@@ -239,9 +239,9 @@ public class FilenameUtils {
   /**
    * Internal method to perform the normalization.
    *
-   * @param fileName  the fileName
+   * @param fileName the fileName
    * @param separator The separator character to use
-   * @param keepSeparator  true to keep the final separator
+   * @param keepSeparator true to keep the final separator
    * @return the normalized fileName. Null bytes inside string will be removed.
    */
   private static String doNormalize(final String fileName, final char separator, final boolean keepSeparator) {
@@ -260,7 +260,7 @@ public class FilenameUtils {
       return null;
     }
 
-    final char[] array = new char[size + 2];  // +1 for possible extra slash, +2 for arraycopy
+    final char[] array = new char[size + 2]; // +1 for possible extra slash, +2 for arraycopy
     fileName.getChars(0, fileName.length(), array, 0);
 
     // fix separators throughout
@@ -290,21 +290,20 @@ public class FilenameUtils {
     // dot slash
     for (int i = prefix + 1; i < size; i++) {
       if (array[i] == separator && array[i - 1] == '.' &&
-        (i == prefix + 1 || array[i - 2] == separator)) {
+          (i == prefix + 1 || array[i - 2] == separator)) {
         if (i == size - 1) {
           lastIsDirectory = true;
         }
         System.arraycopy(array, i + 1, array, i - 1, size - i);
-        size -=2;
+        size -= 2;
         i--;
       }
     }
 
     // double dot slash
-    outer:
-    for (int i = prefix + 2; i < size; i++) {
+    outer: for (int i = prefix + 2; i < size; i++) {
       if (array[i] == separator && array[i - 1] == '.' && array[i - 2] == '.' &&
-        (i == prefix + 2 || array[i - 3] == separator)) {
+          (i == prefix + 2 || array[i - 3] == separator)) {
         if (i == prefix + 2) {
           return null;
         }
@@ -312,7 +311,7 @@ public class FilenameUtils {
           lastIsDirectory = true;
         }
         int j;
-        for (j = i - 4 ; j >= prefix; j--) {
+        for (j = i - 4; j >= prefix; j--) {
           if (array[j] == separator) {
             // remove b/../ from a/b/../c
             System.arraycopy(array, i + 1, array, j + 1, size - i);
@@ -328,23 +327,22 @@ public class FilenameUtils {
       }
     }
 
-    if (size <= 0) {  // should never be less than 0
+    if (size <= 0) { // should never be less than 0
       return EMPTY_STRING;
     }
-    if (size <= prefix) {  // should never be less than prefix
+    if (size <= prefix) { // should never be less than prefix
       return new String(array, 0, size);
     }
     if (lastIsDirectory && keepSeparator) {
-      return new String(array, 0, size);  // keep trailing separator
+      return new String(array, 0, size); // keep trailing separator
     }
-    return new String(array, 0, size - 1);  // lose trailing separator
+    return new String(array, 0, size - 1); // lose trailing separator
   }
-
 
   /**
    * Converts all separators to the Unix separator of forward slash.
    *
-   * @param path  the path to be changed, null ignored
+   * @param path the path to be changed, null ignored
    * @return the updated path
    */
   public static String separatorsToUnix(final String path) {
@@ -357,7 +355,7 @@ public class FilenameUtils {
   /**
    * Converts all separators to the Windows separator of backslash.
    *
-   * @param path  the path to be changed, null ignored
+   * @param path the path to be changed, null ignored
    * @return the updated path
    */
   public static String separatorsToWindows(final String path) {
@@ -370,7 +368,7 @@ public class FilenameUtils {
   /**
    * Converts all separators to the system separator.
    *
-   * @param path  the path to be changed, null ignored
+   * @param path the path to be changed, null ignored
    * @return the updated path
    */
   public static String separatorsToSystem(final String path) {
@@ -416,7 +414,7 @@ public class FilenameUtils {
    * These must be followed by a server name, so double-slashes are not collapsed
    * to a single slash at the start of the fileName.
    *
-   * @param fileName  the fileName to find the prefix in, null returns -1
+   * @param fileName the fileName to find the prefix in, null returns -1
    * @return the length of the prefix, -1 if invalid or null
    */
   public static int getPrefixLength(final String fileName) {
@@ -433,7 +431,7 @@ public class FilenameUtils {
     }
     if (len == 1) {
       if (ch0 == '~') {
-        return 2;  // return a length greater than the input
+        return 2; // return a length greater than the input
       }
       return isSeparator(ch0) ? 1 : 0;
     }
@@ -441,7 +439,7 @@ public class FilenameUtils {
       int posUnix = fileName.indexOf(UNIX_SEPARATOR, 1);
       int posWin = fileName.indexOf(WINDOWS_SEPARATOR, 1);
       if (posUnix == NOT_FOUND && posWin == NOT_FOUND) {
-        return len + 1;  // return a length greater than the input
+        return len + 1; // return a length greater than the input
       }
       posUnix = posUnix == NOT_FOUND ? posWin : posUnix;
       posWin = posWin == NOT_FOUND ? posUnix : posWin;
@@ -489,7 +487,7 @@ public class FilenameUtils {
   private static void requireNonNullChars(final String path) {
     if (path.indexOf(0) >= 0) {
       throw new IllegalArgumentException("Null byte present in file/path name. There are no "
-        + "known legitimate use cases for such data, but several injection attacks may use it");
+          + "known legitimate use cases for such data, but several injection attacks may use it");
     }
   }
 
@@ -497,9 +495,11 @@ public class FilenameUtils {
    * Checks whether a given string is a valid host name according to
    * RFC 3986.
    *
-   * <p>Accepted are IP addresses (v4 and v6) as well as what the
+   * <p>
+   * Accepted are IP addresses (v4 and v6) as well as what the
    * RFC calls a "reg-name". Percent encoded names don't seem to be
-   * valid names in UNC paths.</p>
+   * valid names in UNC paths.
+   * </p>
    *
    * @see "https://tools.ietf.org/html/rfc3986#section-3.2.2"
    * @param name the hostname to validate
@@ -509,8 +509,7 @@ public class FilenameUtils {
     return isIPv6Address(name) || isRFC3986HostName(name);
   }
 
-  private static final Pattern IPV4_PATTERN =
-    Pattern.compile("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$");
+  private static final Pattern IPV4_PATTERN = Pattern.compile("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$");
   private static final int IPV4_MAX_OCTET_VALUE = 255;
 
   /**
@@ -561,7 +560,7 @@ public class FilenameUtils {
       return false;
     }
     if ((inet6Address.startsWith(":") && !inet6Address.startsWith("::"))
-      || (inet6Address.endsWith(":") && !inet6Address.endsWith("::"))) {
+        || (inet6Address.endsWith(":") && !inet6Address.endsWith("::"))) {
       return false;
     }
     String[] octets = inet6Address.split(":");
@@ -614,6 +613,7 @@ public class FilenameUtils {
     }
     return validOctets <= IPV6_MAX_HEX_GROUPS && (validOctets >= IPV6_MAX_HEX_GROUPS || containsCompressedZeroes);
   }
+
   private static final Pattern REG_NAME_PART_PATTERN = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9-]*$");
 
   /**

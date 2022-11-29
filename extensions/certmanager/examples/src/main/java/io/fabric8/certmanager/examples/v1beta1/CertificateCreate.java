@@ -27,7 +27,7 @@ public class CertificateCreate {
       String namespace = "default";
 
       Certificate certificate = new CertificateBuilder()
-        .build();
+          .build();
 
       // Create Certificate
       certManagerClient.v1beta1().certificates().inNamespace(namespace).create(certificate);

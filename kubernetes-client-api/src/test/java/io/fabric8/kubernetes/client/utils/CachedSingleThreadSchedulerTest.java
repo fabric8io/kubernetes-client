@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CachedSingleThreadSchedulerTest {
-  
+
   @Test
   void testAutoShutdown() throws InterruptedException {
     CachedSingleThreadScheduler scheduler = new CachedSingleThreadScheduler(50);
@@ -38,7 +38,7 @@ class CachedSingleThreadSchedulerTest {
     latch.await();
     assertFalse(future.isDone());
     future.cancel(true);
-    await().atMost(1, TimeUnit.SECONDS).until(()->!scheduler.hasExecutor());
+    await().atMost(1, TimeUnit.SECONDS).until(() -> !scheduler.hasExecutor());
     // should start again
     future = scheduler.scheduleWithFixedDelay(latch::countDown, 50, 50, TimeUnit.MILLISECONDS);
     assertTrue(scheduler.hasExecutor());

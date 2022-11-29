@@ -40,24 +40,28 @@ public interface OpenShiftConsoleAPIGroupDSL extends Client {
    * @return NonNamespaceOperation object for ConsoleCLIDownload type
    */
   NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, Resource<ConsoleCLIDownload>> consoleCLIDownloads();
+
   /**
    * API entrypoint for ConsoleExternalLogLink related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleExternalLogLink type
    */
   NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, Resource<ConsoleExternalLogLink>> consoleExternalLogLinks();
+
   /**
    * API entrypoint for ConsoleLink related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleLink type
    */
   NonNamespaceOperation<ConsoleLink, ConsoleLinkList, Resource<ConsoleLink>> consoleLinks();
+
   /**
    * API entrypoint for ConsoleNotification related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleNotification type
    */
   NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, Resource<ConsoleNotification>> consoleNotifications();
+
   /**
    * API entrypoint for ConsoleYAMLSample related operations(console.openshift.io/v1)
    *

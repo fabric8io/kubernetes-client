@@ -41,8 +41,8 @@ class MicroTimeTest {
     // Given
     String timeFormat = OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     MicroTime microTime = new MicroTimeBuilder()
-      .withTime(timeFormat)
-      .build();
+        .withTime(timeFormat)
+        .build();
 
     // When
     String result = mapper.writeValueAsString(microTime);

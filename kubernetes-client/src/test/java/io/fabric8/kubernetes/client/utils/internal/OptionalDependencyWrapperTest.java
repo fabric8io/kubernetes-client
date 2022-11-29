@@ -28,7 +28,7 @@ class OptionalDependencyWrapperTest {
   @Test
   void testWrapRunWithOptionalDependencyHasAllDependenciesShouldNotThrowException() {
     final boolean result = wrapRunWithOptionalDependency(() -> true,
-      "I have no optional dependencies");
+        "I have no optional dependencies");
 
     assertThat(result, equalTo(true));
   }
@@ -36,11 +36,11 @@ class OptionalDependencyWrapperTest {
   @Test
   void testWrapRunWithOptionalDependencyUsesDependencyShouldThrowException() {
     final KubernetesClientException exception = assertThrows(KubernetesClientException.class,
-      () -> wrapRunWithOptionalDependency(() -> {
-        throw new NoClassDefFoundError("com.1337.invalid.IDontExist");
-      }, "IDontExist class is provided by some optional package"));
+        () -> wrapRunWithOptionalDependency(() -> {
+          throw new NoClassDefFoundError("com.1337.invalid.IDontExist");
+        }, "IDontExist class is provided by some optional package"));
 
     assertThat(exception.getMessage(), equalTo(
-      "IDontExist class is provided by some optional package, an optional dependency. To use this functionality you must explicitly add this dependency to the classpath."));
+        "IDontExist class is provided by some optional package, an optional dependency. To use this functionality you must explicitly add this dependency to the classpath."));
   }
 }

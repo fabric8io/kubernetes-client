@@ -22,15 +22,14 @@ import org.junit.jupiter.api.Test;
 class ModelTest {
 
   @Test
-  void shouldCreateIntegration()  {
+  void shouldCreateIntegration() {
     Integration integration = new IntegrationBuilder()
-      .withNewMetadata()
-      .withName("my-integration")
-      .endMetadata()
-      .withNewSpec()
-      //.addToFlows("form this to that")
-      .endSpec()
-      .build();
+        .withNewMetadata()
+        .withName("my-integration")
+        .endMetadata()
+        .withNewSpec()
+        //.addToFlows("form this to that")
+        .endSpec()
+        .build();
   }
 }
-

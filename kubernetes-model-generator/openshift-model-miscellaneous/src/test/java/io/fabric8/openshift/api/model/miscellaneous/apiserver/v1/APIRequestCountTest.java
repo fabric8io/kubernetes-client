@@ -31,8 +31,8 @@ class APIRequestCountTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-apirequestcount.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final APIRequestCount apiRequestCount = mapper.readValue(originalJson, APIRequestCount.class);
@@ -44,7 +44,8 @@ class APIRequestCountTest {
     assertNotNull(serializedJson);
     assertNotNull(apiRequestCountFromSerializedJson);
     assertEquals(apiRequestCount.getMetadata().getName(), apiRequestCountFromSerializedJson.getMetadata().getName());
-    assertEquals(apiRequestCount.getSpec().getNumberOfUsersToReport(), apiRequestCountFromSerializedJson.getSpec().getNumberOfUsersToReport());
+    assertEquals(apiRequestCount.getSpec().getNumberOfUsersToReport(),
+        apiRequestCountFromSerializedJson.getSpec().getNumberOfUsersToReport());
     assertEquals(apiRequestCount.getStatus().getCurrentHour(), apiRequestCountFromSerializedJson.getStatus().getCurrentHour());
     assertEquals(apiRequestCount.getStatus().getLast24h(), apiRequestCountFromSerializedJson.getStatus().getLast24h());
   }
@@ -53,30 +54,30 @@ class APIRequestCountTest {
   void builderShouldCreateObject() {
     // Given
     APIRequestCountBuilder apiRequestCountBuilder = new APIRequestCountBuilder()
-      .withNewMetadata().withName("users.v1.user.openshift.io").endMetadata()
-      .withNewSpec().withNumberOfUsersToReport(10L).endSpec()
-      .withNewStatus()
-      .withNewCurrentHour()
-      .addNewByNode()
-      .addNewByUser()
-      .addNewByVerb()
-      .withRequestCount(4L)
-      .withVerb("get")
-      .endByVerb()
-      .withRequestCount(4L)
-      .withUserAgent("oc/v1.11.0+d4cacc0")
-      .withUsername("kubeadmin")
-      .endByUser()
-      .endByNode()
-      .endCurrentHour()
-      .addNewLast24h()
-      .addNewByNode()
-      .withNodeName("192.168.126.11")
-      .withRequestCount(0L)
-      .endByNode()
-      .withRequestCount(0L)
-      .endLast24h()
-      .endStatus();
+        .withNewMetadata().withName("users.v1.user.openshift.io").endMetadata()
+        .withNewSpec().withNumberOfUsersToReport(10L).endSpec()
+        .withNewStatus()
+        .withNewCurrentHour()
+        .addNewByNode()
+        .addNewByUser()
+        .addNewByVerb()
+        .withRequestCount(4L)
+        .withVerb("get")
+        .endByVerb()
+        .withRequestCount(4L)
+        .withUserAgent("oc/v1.11.0+d4cacc0")
+        .withUsername("kubeadmin")
+        .endByUser()
+        .endByNode()
+        .endCurrentHour()
+        .addNewLast24h()
+        .addNewByNode()
+        .withNodeName("192.168.126.11")
+        .withRequestCount(0L)
+        .endByNode()
+        .withRequestCount(0L)
+        .endLast24h()
+        .endStatus();
 
     // When
     APIRequestCount apiRequestCount = apiRequestCountBuilder.build();

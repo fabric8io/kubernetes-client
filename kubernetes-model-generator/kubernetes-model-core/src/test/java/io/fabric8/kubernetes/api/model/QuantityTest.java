@@ -67,7 +67,7 @@ public class QuantityTest {
     Quantity quantity = new Quantity(".5Mi");
     assertEquals(new BigDecimal("524288.0"), Quantity.getAmountInBytes(quantity));
 
-    Quantity quantity1 =  new Quantity("512Ki");
+    Quantity quantity1 = new Quantity("512Ki");
     assertEquals(Quantity.getAmountInBytes(quantity1).toBigInteger(), Quantity.getAmountInBytes(quantity).toBigInteger());
   }
 

@@ -30,8 +30,8 @@ class ClusterImageSetTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clusterimageset.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ClusterImageSet clusterImageSet = mapper.readValue(originalJson, ClusterImageSet.class);
@@ -41,30 +41,30 @@ class ClusterImageSetTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(clusterImageSet)
-      .isNotNull()
-      .isEqualTo(clusterImageSetFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "clusterimageset-sample")
-      .hasFieldOrPropertyWithValue("spec.releaseImage", "quay.io/openshift-release-dev/ocp-release:4.0.0-0.6");
+        .isNotNull()
+        .isEqualTo(clusterImageSetFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "clusterimageset-sample")
+        .hasFieldOrPropertyWithValue("spec.releaseImage", "quay.io/openshift-release-dev/ocp-release:4.0.0-0.6");
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     ClusterImageSetBuilder clusterImageSetBuilder = new ClusterImageSetBuilder()
-      .withNewMetadata()
-      .withName("clusterimageset-sample")
-      .endMetadata()
-      .withNewSpec()
-      .withReleaseImage("quay.io/openshift-release-dev/ocp-release:4.0.0-0.6")
-      .endSpec();
+        .withNewMetadata()
+        .withName("clusterimageset-sample")
+        .endMetadata()
+        .withNewSpec()
+        .withReleaseImage("quay.io/openshift-release-dev/ocp-release:4.0.0-0.6")
+        .endSpec();
 
     // When
     ClusterImageSet clusterImageSet = clusterImageSetBuilder.build();
 
     // Then
     assertThat(clusterImageSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "clusterimageset-sample")
-      .hasFieldOrPropertyWithValue("spec.releaseImage", "quay.io/openshift-release-dev/ocp-release:4.0.0-0.6");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "clusterimageset-sample")
+        .hasFieldOrPropertyWithValue("spec.releaseImage", "quay.io/openshift-release-dev/ocp-release:4.0.0-0.6");
   }
 }

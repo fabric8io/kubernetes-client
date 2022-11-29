@@ -16,5 +16,5 @@
 package io.fabric8.chaosmesh.client;
 
 public interface NamespacedChaosMeshClient extends ChaosMeshClient,
-  GenericChaosMeshClient<NamespacedChaosMeshClient> {
+    GenericChaosMeshClient<NamespacedChaosMeshClient> {
 }

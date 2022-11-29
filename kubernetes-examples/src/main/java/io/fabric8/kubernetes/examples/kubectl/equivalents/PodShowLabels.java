@@ -33,12 +33,12 @@ public class PodShowLabels {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inNamespace("default").list().getItems()
-        .stream()
-        .map(Pod::getMetadata)
-        .map(ObjectMeta::getLabels)
-        .filter(Objects::nonNull)
-        .map(Objects::toString)
-        .forEach(logger::info);
+          .stream()
+          .map(Pod::getMetadata)
+          .map(ObjectMeta::getLabels)
+          .filter(Objects::nonNull)
+          .map(Objects::toString)
+          .forEach(logger::info);
     }
   }
 }

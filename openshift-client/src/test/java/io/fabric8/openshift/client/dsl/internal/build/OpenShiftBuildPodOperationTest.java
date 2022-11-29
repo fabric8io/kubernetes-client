@@ -30,8 +30,8 @@ public class OpenShiftBuildPodOperationTest {
   void testBuildSelectorLabels() {
     // Given
     Build build = new BuildBuilder()
-      .withNewMetadata().withName("dc1").endMetadata()
-      .build();
+        .withNewMetadata().withName("dc1").endMetadata()
+        .build();
 
     // When
     Map<String, String> labels = BuildOperationsImpl.getBuildPodLabels(build);

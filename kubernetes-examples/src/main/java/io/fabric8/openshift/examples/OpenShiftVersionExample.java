@@ -32,7 +32,7 @@ public class OpenShiftVersionExample {
       configBuilder.withMasterUrl(args[0]);
     }
     try (OpenShiftClient client = new KubernetesClientBuilder()
-      .withConfig(configBuilder.build()).build().adapt(OpenShiftClient.class)) {
+        .withConfig(configBuilder.build()).build().adapt(OpenShiftClient.class)) {
       VersionInfo openShiftVersionInfo = client.getVersion();
 
       logger.info("Version details of this OpenShift cluster :-");

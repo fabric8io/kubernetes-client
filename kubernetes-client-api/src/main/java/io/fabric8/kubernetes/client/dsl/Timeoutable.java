@@ -22,6 +22,5 @@ public interface Timeoutable<T> {
 
   T withTimeout(long timeout, TimeUnit unit);
 
-
   T withTimeoutInMillis(long timeoutInMillis);
 }

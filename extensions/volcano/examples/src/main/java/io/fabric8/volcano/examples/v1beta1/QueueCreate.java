@@ -35,10 +35,9 @@ public class QueueCreate {
 
       // Wait for status or 5s timeout
       volcanoClient.v1beta1().queues().withName(queueName).waitUntilCondition(
-        q -> Objects.nonNull(q.getStatus()) && q.getStatus().getState().equals("Open"),
-        5,
-        TimeUnit.SECONDS
-      );
+          q -> Objects.nonNull(q.getStatus()) && q.getStatus().getState().equals("Open"),
+          5,
+          TimeUnit.SECONDS);
       System.out.println("Created: " + queue.getMetadata().getName());
 
       // List queue

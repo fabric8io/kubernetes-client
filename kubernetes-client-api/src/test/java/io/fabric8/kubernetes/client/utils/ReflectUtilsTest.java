@@ -15,22 +15,23 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class ReflectUtilsTest {
 
   static class Foo {
     private ObjectMeta metadata;
+
     public void setMetadata(ObjectMeta metadata) {
       this.metadata = metadata;
     }
+
     public ObjectMeta getMetadata() {
       return metadata;
     }
@@ -47,14 +48,17 @@ class ReflectUtilsTest {
     public void setMetadata(ObjectMeta metadata) {
       this.metadata = metadata;
     }
+
     @Override
     public ObjectMeta getMetadata() {
       return this.metadata;
     }
+
     @Override
     public void setApiVersion(String version) {
-     this.apiVersion = version;
+      this.apiVersion = version;
     }
+
     @Override
     public String getApiVersion() {
       return this.apiVersion;
@@ -70,7 +74,7 @@ class ReflectUtilsTest {
   }
 
   @Test
-  void testDirectReflection () throws ReflectiveOperationException {
+  void testDirectReflection() throws ReflectiveOperationException {
     ObjectMeta meta = new ObjectMeta();
     Foo foo = new Foo();
     foo.setMetadata(meta);
@@ -78,7 +82,7 @@ class ReflectUtilsTest {
   }
 
   @Test
-  void testDerivedReflection () throws ReflectiveOperationException {
+  void testDerivedReflection() throws ReflectiveOperationException {
     ObjectMeta meta = new ObjectMeta();
     Foo bar = new Bar();
     bar.setMetadata(meta);

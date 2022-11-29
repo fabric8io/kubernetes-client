@@ -25,15 +25,15 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
  * a csr with specified name exists in the cluster.
  */
 public class CertificateSigningRequestDenyYamlEquivalent {
-    public static void main(String[] args) {
-        try(KubernetesClient client = new KubernetesClientBuilder().build()) {
-            CertificateSigningRequestCondition csrCondition = new CertificateSigningRequestConditionBuilder()
-              .withType("Denied")
-              .withStatus("True")
-              .withReason("DeniedViaRESTApi")
-              .withMessage("Denied by REST API /approval endpoint.")
-              .build();
-            client.certificates().v1().certificateSigningRequests().withName("my-cert").deny(csrCondition);
-        }
+  public static void main(String[] args) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
+      CertificateSigningRequestCondition csrCondition = new CertificateSigningRequestConditionBuilder()
+          .withType("Denied")
+          .withStatus("True")
+          .withReason("DeniedViaRESTApi")
+          .withMessage("Denied by REST API /approval endpoint.")
+          .build();
+      client.certificates().v1().certificateSigningRequests().withName("my-cert").deny(csrCondition);
     }
+  }
 }

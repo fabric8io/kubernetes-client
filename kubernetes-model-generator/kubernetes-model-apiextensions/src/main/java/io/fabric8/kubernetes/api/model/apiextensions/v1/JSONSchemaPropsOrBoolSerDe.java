@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+
+import java.io.IOException;
 
 public class JSONSchemaPropsOrBoolSerDe {
 
@@ -32,8 +32,8 @@ public class JSONSchemaPropsOrBoolSerDe {
   public static class Serializer extends JsonSerializer<JSONSchemaPropsOrBool> {
     @Override
     public void serialize(JSONSchemaPropsOrBool jsonSchemaPropsOrBool,
-                          JsonGenerator jsonGenerator,
-                          SerializerProvider serializerProvider) throws IOException {
+        JsonGenerator jsonGenerator,
+        SerializerProvider serializerProvider) throws IOException {
       if (jsonSchemaPropsOrBool.getSchema() != null) {
         jsonGenerator.writeObject(jsonSchemaPropsOrBool.getSchema());
       } else {
@@ -45,11 +45,12 @@ public class JSONSchemaPropsOrBoolSerDe {
   public static class Deserializer extends JsonDeserializer<JSONSchemaPropsOrBool> {
 
     @Override
-    public JSONSchemaPropsOrBool deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public JSONSchemaPropsOrBool deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+        throws IOException {
       JSONSchemaPropsOrBoolBuilder builder = new JSONSchemaPropsOrBoolBuilder();
       if (jsonParser.isExpectedStartObjectToken()) {
         builder.withSchema(
-          jsonParser.readValueAs(JSONSchemaProps.class));
+            jsonParser.readValueAs(JSONSchemaProps.class));
         builder.withAllows(true);
       } else {
         builder.withAllows(jsonParser.getBooleanValue());

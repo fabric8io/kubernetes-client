@@ -18,26 +18,27 @@ package io.fabric8.crd.generator.v1.decorator;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluent;
 
-public class AddSubresourcesDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+public class AddSubresourcesDecorator
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
-	public AddSubresourcesDecorator(String name, String version) {
-		super(name, version);
-	}
+  public AddSubresourcesDecorator(String name, String version) {
+    super(name, version);
+  }
 
-	@Override
-	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
+  @Override
+  public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
     if (!spec.hasSubresources()) {
       spec.withNewSubresources().endSubresources();
     }
-	}
+  }
 
-	@Override
-	public Class<? extends Decorator>[] after() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class};
-	}
+  @Override
+  public Class<? extends Decorator>[] after() {
+    return new Class[] { AddCustomResourceDefinitionVersionDecorator.class };
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() +"]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "]";
+  }
 }

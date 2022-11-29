@@ -18,25 +18,26 @@ package io.fabric8.crd.generator.v1.decorator;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresourcesFluent;
 
-public class AddStatusSubresourceDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
+public class AddStatusSubresourceDecorator
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
 
-	public AddStatusSubresourceDecorator(String name, String version) {
-		super(name, version);
-	}
-
-	@Override
-	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
-    subresources.withNewStatus().endStatus();
-	}
-
-	@Override
-	public Class<? extends Decorator>[] after() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class,
-      AddSubresourcesDecorator.class};
+  public AddStatusSubresourceDecorator(String name, String version) {
+    super(name, version);
   }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() +"]";
-	}
+  @Override
+  public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
+    subresources.withNewStatus().endStatus();
+  }
+
+  @Override
+  public Class<? extends Decorator>[] after() {
+    return new Class[] { AddCustomResourceDefinitionVersionDecorator.class,
+        AddSubresourcesDecorator.class };
+  }
+
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "]";
+  }
 }

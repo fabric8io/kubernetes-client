@@ -21,5 +21,5 @@ import io.fabric8.servicecatalog.api.model.*;
 
 public interface ServiceBindingResource extends Resource<ServiceBinding> {
 
-    Secret getSecret();
+  Secret getSecret();
 }

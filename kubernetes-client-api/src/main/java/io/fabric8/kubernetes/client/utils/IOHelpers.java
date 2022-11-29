@@ -33,43 +33,42 @@ public class IOHelpers {
   private IOHelpers() {
     throw new IllegalStateException("Utility class");
   }
-  
+
   public static String readFully(InputStream in, Charset charset) throws IOException {
     Reader r = new BufferedReader(new InputStreamReader(in, charset));
     return readFully(r);
   }
-  
-    public static String readFully(InputStream in) throws IOException {
-      return readFully(in, Charset.defaultCharset());
-    }
 
-    public static String readFully(Reader r) throws IOException {
-        try (StringWriter w = new StringWriter()) {
-            copy(r, w);
-            return w.toString();
-        }
-    }
+  public static String readFully(InputStream in) throws IOException {
+    return readFully(in, Charset.defaultCharset());
+  }
 
-
-    private static void copy(Reader reader, Writer writer) throws IOException {
-        char[] buffer = new char[8192];
-        int len;
-        for (; ; ) {
-            len = reader.read(buffer);
-            if (len > 0) {
-                writer.write(buffer, 0, len);
-            } else {
-                writer.flush();
-                break;
-            }
-        }
+  public static String readFully(Reader r) throws IOException {
+    try (StringWriter w = new StringWriter()) {
+      copy(r, w);
+      return w.toString();
     }
+  }
+
+  private static void copy(Reader reader, Writer writer) throws IOException {
+    char[] buffer = new char[8192];
+    int len;
+    for (;;) {
+      len = reader.read(buffer);
+      if (len > 0) {
+        writer.write(buffer, 0, len);
+      } else {
+        writer.flush();
+        break;
+      }
+    }
+  }
 
   public static boolean isJSONValid(String json) {
-    try{
+    try {
       ObjectMapper objectMapper = Serialization.jsonMapper();
       objectMapper.readTree(json);
-    } catch(JsonProcessingException e){
+    } catch (JsonProcessingException e) {
       return false;
     }
     return true;
@@ -84,10 +83,10 @@ public class IOHelpers {
   }
 
   public static String convertToJson(String jsonOrYaml) throws IOException {
-      if (isJSONValid(jsonOrYaml)) {
-        return jsonOrYaml;
-      }
-      return convertYamlToJson(jsonOrYaml);
+    if (isJSONValid(jsonOrYaml)) {
+      return jsonOrYaml;
+    }
+    return convertYamlToJson(jsonOrYaml);
   }
 
 }

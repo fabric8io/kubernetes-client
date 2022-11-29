@@ -43,7 +43,7 @@ public class PodSecurityPolicyExample {
         final PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().load(localYamlStream).get();
         client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName()).delete();
         client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName())
-          .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
+            .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
         client.policy().v1beta1().podSecurityPolicies().create(podSecurityPolicy);
         logger.info("PodSecurityPolicy created with Name : {}", podSecurityPolicy.getMetadata().getName());
       }
@@ -52,18 +52,18 @@ public class PodSecurityPolicyExample {
       final String podSecurityPolicyName = "example2";
       client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicyName).delete();
       client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicyName)
-        .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
+          .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
       final PodSecurityPolicy programmaticPodSecurityPolicy = new PodSecurityPolicyBuilder().withNewMetadata()
-        .withName(podSecurityPolicyName)
-        .endMetadata()
-        .withNewSpec()
-        .withPrivileged(false)
-        .withNewRunAsUser().withRule("RunAsAny").endRunAsUser()
-        .withNewFsGroup().withRule("RunAsAny").endFsGroup()
-        .withNewSeLinux().withRule("RunAsAny").endSeLinux()
-        .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
-        .endSpec()
-        .build();
+          .withName(podSecurityPolicyName)
+          .endMetadata()
+          .withNewSpec()
+          .withPrivileged(false)
+          .withNewRunAsUser().withRule("RunAsAny").endRunAsUser()
+          .withNewFsGroup().withRule("RunAsAny").endFsGroup()
+          .withNewSeLinux().withRule("RunAsAny").endSeLinux()
+          .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
+          .endSpec()
+          .build();
       client.policy().v1beta1().podSecurityPolicies().create(programmaticPodSecurityPolicy);
       logger.info("PodSecurityPolicy created with Name: {}", programmaticPodSecurityPolicy.getMetadata().getName());
     } catch (KubernetesClientException clientException) {

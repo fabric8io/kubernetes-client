@@ -18,10 +18,10 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReviewBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableOpenShiftMockClient
@@ -34,13 +34,13 @@ class PodSecurityPolicyReviewTest {
     // Given
     PodSecurityPolicyReview pspr = createPodSecurityPolicyReviewBuilder().build();
     server.expect().post().withPath("/apis/security.openshift.io/v1/namespaces/ns1/podsecuritypolicyreviews")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createPodSecurityPolicyReviewBuilder()
-        .withNewStatus()
-        .addNewAllowedServiceAccount()
-        .withName("test")
-        .endAllowedServiceAccount()
-        .endStatus().build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createPodSecurityPolicyReviewBuilder()
+            .withNewStatus()
+            .addNewAllowedServiceAccount()
+            .withName("test")
+            .endAllowedServiceAccount()
+            .endStatus().build())
+        .once();
 
     // When
     PodSecurityPolicyReview createdPspr = client.podSecurityPolicyReviews().inNamespace("ns1").create(pspr);
@@ -53,18 +53,18 @@ class PodSecurityPolicyReviewTest {
 
   private PodSecurityPolicyReviewBuilder createPodSecurityPolicyReviewBuilder() {
     return new PodSecurityPolicyReviewBuilder()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToAnnotations("foo", "bar")
-      .endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withImage("nginx:perl-stable")
-      .withName("test")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec();
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToAnnotations("foo", "bar")
+        .endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withImage("nginx:perl-stable")
+        .withName("test")
+        .endContainer()
+        .endSpec()
+        .endTemplate()
+        .endSpec();
   }
 }

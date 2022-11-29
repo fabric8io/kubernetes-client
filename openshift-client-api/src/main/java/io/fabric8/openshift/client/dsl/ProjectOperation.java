@@ -34,5 +34,6 @@ public interface ProjectOperation extends NonNamespaceOperation<Project, Project
    * @param requestingUser project requesting user
    * @return list of items created
    */
-  List<HasMetadata> createProjectAndRoleBindings(String name, String description, String displayName, String adminUser, String requestingUser);
+  List<HasMetadata> createProjectAndRoleBindings(String name, String description, String displayName, String adminUser,
+      String requestingUser);
 }

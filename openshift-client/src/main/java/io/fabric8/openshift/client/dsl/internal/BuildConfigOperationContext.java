@@ -36,7 +36,9 @@ public class BuildConfigOperationContext {
   public BuildConfigOperationContext() {
   }
 
-  public BuildConfigOperationContext(String secret, String triggerType, String authorName, String authorEmail, String committerName, String committerEmail, String commit, String message, String asFile, Long timeout, TimeUnit timeUnit) {
+  public BuildConfigOperationContext(String secret, String triggerType, String authorName, String authorEmail,
+      String committerName, String committerEmail, String commit, String message, String asFile, Long timeout,
+      TimeUnit timeUnit) {
     this.secret = secret;
     this.triggerType = triggerType;
     this.authorName = authorName;
@@ -95,47 +97,58 @@ public class BuildConfigOperationContext {
   }
 
   public BuildConfigOperationContext withSecret(String secret) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withTriggerType(String triggerType) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withAuthorName(String authorName) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withAuthorEmail(String authorEmail) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withCommitterName(String committerName) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withCommitterEmail(String committerEmail) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withCommit(String commit) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withMessage(String message) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withAsFile(String asFile) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withTimeout(long timeout) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
   public BuildConfigOperationContext withTimeoutUnit(TimeUnit timeoutUnit) {
-    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message,asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationContext(secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit,
+        message, asFile, timeout, timeoutUnit);
   }
 
 }

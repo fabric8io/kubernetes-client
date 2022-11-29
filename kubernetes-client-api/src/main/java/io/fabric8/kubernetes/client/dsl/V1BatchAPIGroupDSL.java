@@ -24,12 +24,14 @@ import io.fabric8.kubernetes.client.Client;
 public interface V1BatchAPIGroupDSL extends Client {
   /**
    * DSL entrypoint for batch/v1 Job
+   * 
    * @return {@link MixedOperation} for Job resource
    */
   MixedOperation<Job, JobList, ScalableResource<Job>> jobs();
 
   /**
    * DSL entrypoint for batch/v1 CronJob
+   * 
    * @return {@link MixedOperation} for CronJob resource
    */
   MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs();

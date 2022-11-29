@@ -31,7 +31,8 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
   private final UnaryOperator<T> waitTask;
   private final UnaryOperator<T> reloadTask;
 
-  public CreateOrReplaceHelper(UnaryOperator<T> createTask, UnaryOperator<T> replaceTask, UnaryOperator<T> waitTask, UnaryOperator<T> reloadTask) {
+  public CreateOrReplaceHelper(UnaryOperator<T> createTask, UnaryOperator<T> replaceTask, UnaryOperator<T> waitTask,
+      UnaryOperator<T> reloadTask) {
     this.createTask = createTask;
     this.replaceTask = replaceTask;
     this.waitTask = waitTask;
@@ -67,8 +68,8 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
   }
 
   private T replace(T item, String resourceVersion) {
-      KubernetesResourceUtil.setResourceVersion(item, resourceVersion);
-      return replaceTask.apply(item);
+    KubernetesResourceUtil.setResourceVersion(item, resourceVersion);
+    return replaceTask.apply(item);
   }
 
   private boolean shouldRetry(int responseCode) {

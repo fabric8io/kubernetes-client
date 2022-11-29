@@ -18,20 +18,21 @@ package io.fabric8.servicecatalog.client.dsl;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.*;
 
-
 public interface ClusterServicePlanResource extends Resource<ClusterServicePlan> {
 
-    /**
-     * Instantiate the {@link ClusterServicePlan}.
-     * @param args      The instance name, or the namespace and instance name (var-arg).
-     * @return          The {@link ServiceInstance}.
-     */
-    ServiceInstance instantiate(String... args);
+  /**
+   * Instantiate the {@link ClusterServicePlan}.
+   * 
+   * @param args The instance name, or the namespace and instance name (var-arg).
+   * @return The {@link ServiceInstance}.
+   */
+  ServiceInstance instantiate(String... args);
 
-    /**
-     * Instantiate the {@link ClusterServicePlan} and returns the {@link ServiceInstanceResource}.
-     * @param args      The instance name, or the namespace and instance name (var-arg).
-     * @return          The {@link ServiceInstanceResource}.
-     */
-    ServiceInstanceResource instantiateAnd(String... args);
+  /**
+   * Instantiate the {@link ClusterServicePlan} and returns the {@link ServiceInstanceResource}.
+   * 
+   * @param args The instance name, or the namespace and instance name (var-arg).
+   * @return The {@link ServiceInstanceResource}.
+   */
+  ServiceInstanceResource instantiateAnd(String... args);
 }

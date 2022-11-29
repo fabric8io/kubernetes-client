@@ -19,9 +19,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
 /**
- *  This sample code is Java equivalent to `kubectl delete -f test-pod.yml`. It loads
- *  YAML manifest and deletes all objects in the manifest if they're present in
- *  the cluster
+ * This sample code is Java equivalent to `kubectl delete -f test-pod.yml`. It loads
+ * YAML manifest and deletes all objects in the manifest if they're present in
+ * the cluster
  */
 public class PodDeleteViaYaml {
   public static void main(String[] args) {
@@ -32,8 +32,8 @@ public class PodDeleteViaYaml {
        * here.
        */
       k8s.load(PodDeleteViaYaml.class.getResourceAsStream("/test-pod.yaml"))
-        .inNamespace("default")
-        .delete();
+          .inNamespace("default")
+          .delete();
     }
   }
 }
