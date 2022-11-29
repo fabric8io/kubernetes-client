@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,7 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
 
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
@@ -21,19 +22,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ListServicePlansByBroker {
-    private static final Logger logger = LoggerFactory.getLogger(ListServicePlansByBroker.class.getSimpleName());
+  private static final Logger logger = LoggerFactory.getLogger(ListServicePlansByBroker.class.getSimpleName());
 
-    public static void main(String[] args) {
-        ServiceCatalogClient client = ClientFactory.newClient(args);
-        String broker = ClientFactory.getOptions(args, "--broker", null);
-        if (broker == null || broker.isEmpty()) {
-            logger.info("Missing --broker option!");
-            System.exit(1);
-        }
-        logger.info("Listing Cluster Service Plans {} :", broker);
-        ClusterServicePlanList list = client.clusterServiceBrokers().withName(broker).listPlans();
-        list.getItems()
-                .forEach(b -> logger.info(b.getSpec().getClusterServiceClassRef()+ "\t\t\t" + b.getSpec().getExternalName() + "\t\t\t\t" + b.getMetadata().getName()));
-        logger.info("Done");
+  public static void main(String[] args) {
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    String broker = ClientFactory.getOptions(args, "--broker", null);
+    if (broker == null || broker.isEmpty()) {
+      logger.info("Missing --broker option!");
+      System.exit(1);
     }
+    logger.info("Listing Cluster Service Plans {} :", broker);
+    ClusterServicePlanList list = client.clusterServiceBrokers().withName(broker).listPlans();
+    list.getItems()
+        .forEach(b -> logger.info(b.getSpec().getClusterServiceClassRef() + "\t\t\t" + b.getSpec().getExternalName()
+            + "\t\t\t\t" + b.getMetadata().getName()));
+    logger.info("Done");
+  }
 }

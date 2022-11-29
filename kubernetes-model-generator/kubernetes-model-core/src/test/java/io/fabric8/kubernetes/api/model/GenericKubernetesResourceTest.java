@@ -43,7 +43,7 @@ class GenericKubernetesResourceTest {
   void deserializeWithEmptyShouldDeserializeEmpty() throws Exception {
     // When
     final GenericKubernetesResource result = objectMapper
-      .readValue(load("empty.json"), GenericKubernetesResource.class);
+        .readValue(load("empty.json"), GenericKubernetesResource.class);
     // Then
     assertThat(result).isEqualTo(new GenericKubernetesResource());
   }
@@ -55,12 +55,12 @@ class GenericKubernetesResourceTest {
     final ConfigMap configMap = objectMapper.readValue(load("config-map.json"), ConfigMap.class);
     // When
     final GenericKubernetesResource result = objectMapper
-      .readValue(load("config-map.json"), GenericKubernetesResource.class);
+        .readValue(load("config-map.json"), GenericKubernetesResource.class);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("metadata.namespace", "default")
-      .hasFieldOrPropertyWithValue("metadata.name", "generic-resource-test")
-      .hasFieldOrPropertyWithValue("additionalProperties.data", configMap.getData());
+        .hasFieldOrPropertyWithValue("metadata.namespace", "default")
+        .hasFieldOrPropertyWithValue("metadata.name", "generic-resource-test")
+        .hasFieldOrPropertyWithValue("additionalProperties.data", configMap.getData());
   }
 
   @Test
@@ -68,14 +68,14 @@ class GenericKubernetesResourceTest {
   void deserializeWithCustomResourceShouldDeserialize() throws Exception {
     // When
     final GenericKubernetesResource result = objectMapper
-      .readValue(load("custom-resource.json"), GenericKubernetesResource.class);
+        .readValue(load("custom-resource.json"), GenericKubernetesResource.class);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
-      .hasFieldOrPropertyWithValue("Kind", "SomeCustomResource")
-      .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
-      .hasFieldOrPropertyWithValue("additionalProperties.spec.field", "value")
-      .hasFieldOrPropertyWithValue("additionalProperties.status.reconciled", true);
+        .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
+        .hasFieldOrPropertyWithValue("Kind", "SomeCustomResource")
+        .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
+        .hasFieldOrPropertyWithValue("additionalProperties.spec.field", "value")
+        .hasFieldOrPropertyWithValue("additionalProperties.status.reconciled", true);
   }
 
   @Test
@@ -88,12 +88,13 @@ class GenericKubernetesResourceTest {
     gkr.setMetadata(new ObjectMetaBuilder().withName("custom-resource-example").build());
     gkr.setAdditionalProperties(Collections.singletonMap("spec", Collections.singletonMap("field", "value")));
     // When
-    final Map<String, ?> result = objectMapper.convertValue(gkr, new TypeReference<Map<String, ?>>() {});
+    final Map<String, ?> result = objectMapper.convertValue(gkr, new TypeReference<Map<String, ?>>() {
+    });
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
-      .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
-      .hasFieldOrPropertyWithValue("spec.field", "value");
+        .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
+        .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
+        .hasFieldOrPropertyWithValue("spec.field", "value");
   }
 
   @Test
@@ -110,12 +111,12 @@ class GenericKubernetesResourceTest {
     final GenericKubernetesResource gkr1 = objectMapper.convertValue(gkr, GenericKubernetesResource.class);
     // Then
     assertThat(gkr)
-      .isEqualTo(gkr1);
+        .isEqualTo(gkr1);
 
     gkr1.getAdditionalProperties().put("key", "value");
 
     assertThat(gkr)
-      .isNotEqualTo(gkr1);
+        .isNotEqualTo(gkr1);
   }
 
   @Test
@@ -123,19 +124,19 @@ class GenericKubernetesResourceTest {
   void builder() {
     // Given
     GenericKubernetesResourceBuilder genericKubernetesResourceBuilder = new GenericKubernetesResourceBuilder()
-      .withApiVersion("the-cr.example.com/v1")
-      .withKind("SomeCustomResource")
-      .withNewMetadata().withName("foo").withNamespace("ns1").endMetadata();
+        .withApiVersion("the-cr.example.com/v1")
+        .withKind("SomeCustomResource")
+        .withNewMetadata().withName("foo").withNamespace("ns1").endMetadata();
 
     // When
     GenericKubernetesResource genericKubernetesResource = genericKubernetesResourceBuilder.build();
 
     // Then
     assertThat(genericKubernetesResource)
-      .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
-      .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
-      .hasFieldOrPropertyWithValue("metadata.namespace", "ns1")
-      .hasFieldOrPropertyWithValue("metadata.name", "foo");
+        .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
+        .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
+        .hasFieldOrPropertyWithValue("metadata.namespace", "ns1")
+        .hasFieldOrPropertyWithValue("metadata.name", "foo");
   }
 
   @Test
@@ -144,7 +145,7 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
+        Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
     // When
     final int result = gkr.get("spec", "field", "nested");
     // Then
@@ -157,7 +158,7 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
+        Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
     // When
     final Object result = gkr.get("spec", "field", "nested", "not", "here");
     // Then
@@ -170,10 +171,9 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field",
-        Collections.singletonMap("nested", Arrays.asList(
-          true, false, 1337
-        )))));
+        Collections.singletonMap("field",
+            Collections.singletonMap("nested", Arrays.asList(
+                true, false, 1337)))));
     // When
     final Object result = gkr.get("spec", "field", "nested", Integer.MAX_VALUE);
     // Then
@@ -186,10 +186,9 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field",
-        Collections.singletonMap("nested", Arrays.asList(
-          true, false, 1337
-        )))));
+        Collections.singletonMap("field",
+            Collections.singletonMap("nested", Arrays.asList(
+                true, false, 1337)))));
     // When
     final boolean result = gkr.get("spec", "field", "nested", 1);
     // Then
@@ -202,11 +201,10 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field",
-        Collections.singletonMap("nested", Arrays.asList(
-          Collections.singletonMap("objectField", "Atomic"),
-          Collections.singletonMap("objectField", "Particles")
-        )))));
+        Collections.singletonMap("field",
+            Collections.singletonMap("nested", Arrays.asList(
+                Collections.singletonMap("objectField", "Atomic"),
+                Collections.singletonMap("objectField", "Particles"))))));
     // When
     final String result = gkr.get("spec", "field", "nested", 1, "objectField");
     // Then
@@ -219,9 +217,8 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field",
-        Collections.singletonMap("nested", Arrays.asList(42, 13, 37)
-        ))));
+        Collections.singletonMap("field",
+            Collections.singletonMap("nested", Arrays.asList(42, 13, 37)))));
     // When
     final int result = gkr.get("spec", "field", "nested", 2);
     // Then
@@ -234,8 +231,8 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested",
-        Collections.singletonMap("1", "not-an-array")))));
+        Collections.singletonMap("field", Collections.singletonMap("nested",
+            Collections.singletonMap("1", "not-an-array")))));
     // When
     final String result = gkr.get("spec", "field", "nested", 1);
     // Then
@@ -248,8 +245,8 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested",
-        Collections.singletonMap("false", "not-allowed")))));
+        Collections.singletonMap("field", Collections.singletonMap("nested",
+            Collections.singletonMap("false", "not-allowed")))));
     // When
     final String result = gkr.get("spec", "field", "nested", false);
     // Then
@@ -262,9 +259,8 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field\uD83E\uDD2Cwith.symbols[]!\"·$%&/()=`' {}_-<>",
-        Collections.singletonMap("check", "mate")
-      )));
+        Collections.singletonMap("field\uD83E\uDD2Cwith.symbols[]!\"·$%&/()=`' {}_-<>",
+            Collections.singletonMap("check", "mate"))));
     // When
     final String result = gkr.get("spec", "field\uD83E\uDD2Cwith.symbols[]!\"·$%&/()=`' {}_-<>", "check");
     // Then
@@ -307,17 +303,15 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("nested",
-        Collections.singletonMap("2dList", Arrays.asList(
-          Arrays.asList(
-            Collections.singletonMap("entry", 0),
-            Collections.singletonMap("entry", 1),
-            Collections.singletonMap("entry", 2)
-          ),
-          Collections.singletonList(Collections.singletonMap("entry", 3))
-        )))));
+        Collections.singletonMap("nested",
+            Collections.singletonMap("2dList", Arrays.asList(
+                Arrays.asList(
+                    Collections.singletonMap("entry", 0),
+                    Collections.singletonMap("entry", 1),
+                    Collections.singletonMap("entry", 2)),
+                Collections.singletonList(Collections.singletonMap("entry", 3)))))));
     // When
-    final int result = gkr.get("spec","nested", "2dList", 1, 0, "entry");
+    final int result = gkr.get("spec", "nested", "2dList", 1, 0, "entry");
     // Then
     assertThat(result).isEqualTo(3);
   }
@@ -328,18 +322,16 @@ class GenericKubernetesResourceTest {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("nested",
-        Collections.singletonMap("multidimensional", Collections.singletonList(
-          Collections.singletonList(
-            Collections.singletonList(
-              Arrays.asList(
-                Collections.singletonMap("entry", 0),
-                Collections.singletonMap("entry", 1),
-                Collections.singletonMap("entry", 2)
-              )
-            )))))));
+        Collections.singletonMap("nested",
+            Collections.singletonMap("multidimensional", Collections.singletonList(
+                Collections.singletonList(
+                    Collections.singletonList(
+                        Arrays.asList(
+                            Collections.singletonMap("entry", 0),
+                            Collections.singletonMap("entry", 1),
+                            Collections.singletonMap("entry", 2)))))))));
     // When
-    final int result = gkr.get("spec","nested", "multidimensional", 0, 0, 0, 2, "entry");
+    final int result = gkr.get("spec", "nested", "multidimensional", 0, 0, 0, 2, "entry");
     // Then
     assertThat(result).isEqualTo(2);
   }
@@ -349,18 +341,18 @@ class GenericKubernetesResourceTest {
   void getWithComplexStructureShouldRetrieveQueried() throws Exception {
     // When
     final GenericKubernetesResource result = objectMapper
-      .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
+        .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
     // Then
     assertThat(result)
-      .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
-      .returns("value", gkr -> gkr.get("spec", "field"))
-      .returns(42, gkr -> gkr.get("spec", "dot.in.field"))
-      .returns(2, gkr -> gkr.get("spec", "nested", "list", 1, "entry"))
-      .returns(1, gkr -> gkr.get("spec", "nested", "list", 0, "entry"))
-      .returns("ambiguous", gkr -> gkr.get("spec", "nested", "list[0]", "entry"))
-      .returns(3, gkr -> gkr.get("spec", "nested", "2dList", 1, 0, "entry"))
-      .returns(313373, gkr -> gkr.get("spec", "oh!.come-on![1337]this.is#Outrageous[0][1]", 0, 0, "impossible", 0))
-      .returns(true, gkr -> gkr.get("status", "reconciled"));
+        .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
+        .returns("value", gkr -> gkr.get("spec", "field"))
+        .returns(42, gkr -> gkr.get("spec", "dot.in.field"))
+        .returns(2, gkr -> gkr.get("spec", "nested", "list", 1, "entry"))
+        .returns(1, gkr -> gkr.get("spec", "nested", "list", 0, "entry"))
+        .returns("ambiguous", gkr -> gkr.get("spec", "nested", "list[0]", "entry"))
+        .returns(3, gkr -> gkr.get("spec", "nested", "2dList", 1, 0, "entry"))
+        .returns(313373, gkr -> gkr.get("spec", "oh!.come-on![1337]this.is#Outrageous[0][1]", 0, 0, "impossible", 0))
+        .returns(true, gkr -> gkr.get("status", "reconciled"));
   }
 
   @Test
@@ -368,12 +360,12 @@ class GenericKubernetesResourceTest {
   void getAdditionalPropertiesNodeWithComplexStructureShouldRetrieveQueried() throws Exception {
     // When
     final GenericKubernetesResource result = objectMapper
-      .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
+        .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
     // Then
     assertThat(result)
-      .extracting(GenericKubernetesResource::getAdditionalPropertiesNode)
-      .returns("value", node -> node.get("spec").get("field").asText())
-      .returns(2, node -> node.get("spec").get("nested").get("list").get(1).get("entry").asInt());
+        .extracting(GenericKubernetesResource::getAdditionalPropertiesNode)
+        .returns("value", node -> node.get("spec").get("field").asText())
+        .returns(2, node -> node.get("spec").get("nested").get("list").get(1).get("entry").asInt());
   }
 
   private static InputStream load(String resource) {

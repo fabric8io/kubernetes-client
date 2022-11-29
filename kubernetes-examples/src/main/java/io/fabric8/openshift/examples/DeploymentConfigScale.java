@@ -60,18 +60,18 @@ public class DeploymentConfigScale {
         oldReplicas = spec.getReplicas();
         spec.setReplicas(replicas);
         DeploymentConfig updated = resource.patch(deploymentConfig);
-        System.out.println("Updated the DeploymentConfig " + name + " version: " + deploymentConfig.getApiVersion() + " with replicas: " + replicas + " to resourceVersion: " + updated.getMetadata().getResourceVersion());
+        System.out.println("Updated the DeploymentConfig " + name + " version: " + deploymentConfig.getApiVersion()
+            + " with replicas: " + replicas + " to resourceVersion: " + updated.getMetadata().getResourceVersion());
       } catch (Exception e) {
         System.out.println("Failed to update the DeploymentConfig " + name + " with replicas: " + replicas);
         e.printStackTrace();
       }
 
-
       // now lets find the DC via list
       DeploymentConfigList list = Objects.requireNonNull(client.deploymentConfigs().list(),
-        "No DeploymentConfigList returned");
+          "No DeploymentConfigList returned");
       List<DeploymentConfig> items = Objects.requireNonNull(list.getItems(),
-        "No DeploymentConfigList.getItems() returned");
+          "No DeploymentConfigList.getItems() returned");
 
       DeploymentConfig found = null;
       for (DeploymentConfig item : items) {
@@ -85,7 +85,8 @@ public class DeploymentConfigScale {
 
       try {
         DeploymentConfig updated = resource.patch(found);
-        System.out.println("Updated the list.item DeploymentConfig " + name + " version: " + found.getApiVersion() + " with replicas: " + oldReplicas + " to resourceVersion: " + updated.getMetadata().getResourceVersion());
+        System.out.println("Updated the list.item DeploymentConfig " + name + " version: " + found.getApiVersion()
+            + " with replicas: " + oldReplicas + " to resourceVersion: " + updated.getMetadata().getResourceVersion());
       } catch (Exception e) {
         System.out.println("Failed to update the list.item DeploymentConfig " + name + " with replicas: " + oldReplicas);
         e.printStackTrace();

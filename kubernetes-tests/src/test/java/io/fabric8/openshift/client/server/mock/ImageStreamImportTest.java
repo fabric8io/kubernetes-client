@@ -18,10 +18,9 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.openshift.api.model.ImageStreamImport;
 import io.fabric8.openshift.api.model.ImageStreamImportBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
-
-import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,9 +34,9 @@ class ImageStreamImportTest {
     // Given
     ImageStreamImport isi1 = createImageStreamImportBuilder("isi1").build();
     server.expect().post().withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagestreamimports")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createImageStreamImportBuilder("isi1")
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED, createImageStreamImportBuilder("isi1")
+            .build())
+        .once();
 
     // When
     ImageStreamImport result = client.imageStreamImports().inNamespace("ns1").create(isi1);
@@ -47,19 +46,19 @@ class ImageStreamImportTest {
   }
 
   private ImageStreamImportBuilder createImageStreamImportBuilder(String name) {
-      return new ImageStreamImportBuilder()
-          .withNewMetadata().withName(name).endMetadata()
-          .withNewSpec()
-          .addNewImage()
-          .withNewFrom()
-          .withName("registry.example.dk:5000/spilbraet/fafnir-sso:1.0.84")
-          .withKind("DockerImage")
-          .endFrom()
-          .withNewTo()
-          .withName("latest")
-          .endTo()
-          .withNewReferencePolicy("Source")
-          .endImage()
-          .endSpec();
+    return new ImageStreamImportBuilder()
+        .withNewMetadata().withName(name).endMetadata()
+        .withNewSpec()
+        .addNewImage()
+        .withNewFrom()
+        .withName("registry.example.dk:5000/spilbraet/fafnir-sso:1.0.84")
+        .withKind("DockerImage")
+        .endFrom()
+        .withNewTo()
+        .withName("latest")
+        .endTo()
+        .withNewReferencePolicy("Source")
+        .endImage()
+        .endSpec();
   }
 }

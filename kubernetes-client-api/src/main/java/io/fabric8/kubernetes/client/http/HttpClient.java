@@ -150,35 +150,6 @@ public interface HttpClient extends AutoCloseable {
     Builder preferHttp11();
   }
 
-  /**
-   * A simplified java.util.concurrent.Flow.Subscription and a future tracking done.
-   * <br>
-   * The body should be consumed until the end or cancelled.
-   */
-  interface AsyncBody {
-    /**
-     * Called to deliver results to the {@link BodyConsumer}
-     */
-    void consume();
-
-    /**
-     * Tracks the completion of the body.
-     *
-     * @return the future
-     */
-    CompletableFuture<Void> done();
-
-    void cancel();
-  }
-
-  /**
-   * A functional interface for consuming async result bodies
-   */
-  @FunctionalInterface
-  interface BodyConsumer<T> {
-    void consume(T value, AsyncBody asyncBody) throws Exception;
-  }
-
   @Override
   void close();
 
@@ -204,7 +175,9 @@ public interface HttpClient extends AutoCloseable {
    * @param type one of InputStream, Reader, String, byte[]
    * @return a CompletableFuture that returns the resulting HttpResponse when complete
    */
-  <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
+  default <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
+    return HttpResponse.SupportedResponses.from(type).sendAsync(request, this);
+  }
 
   /**
    * Send a request and consume the lines of the response body using the same logic as {@link BufferedReader} to
@@ -214,16 +187,18 @@ public interface HttpClient extends AutoCloseable {
    * @param consumer the response body consumer
    * @return the future which will be ready after the headers have been read
    */
-  CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer);
+  CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, AsyncBody.Consumer<String> consumer);
 
   /**
    * Send a request and consume the bytes of the resulting response body
+   * <p>
+   * HtttpClient implementations will provide ByteBuffers that may be held directly.
    *
    * @param request the HttpRequest to send
    * @param consumer the response body consumer
    * @return the future which will be ready after the headers have been read
    */
-  CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer);
+  CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, AsyncBody.Consumer<List<ByteBuffer>> consumer);
 
   WebSocket.Builder newWebSocketBuilder();
 

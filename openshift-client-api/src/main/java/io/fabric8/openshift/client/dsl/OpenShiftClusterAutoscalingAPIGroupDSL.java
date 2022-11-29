@@ -19,5 +19,6 @@ import io.fabric8.kubernetes.client.Client;
 
 public interface OpenShiftClusterAutoscalingAPIGroupDSL extends Client {
   V1ClusterAutoscalingAPIGroupDSL v1();
+
   V1beta1ClusterAutoscalingAPIGroupDSL v1beta1();
 }

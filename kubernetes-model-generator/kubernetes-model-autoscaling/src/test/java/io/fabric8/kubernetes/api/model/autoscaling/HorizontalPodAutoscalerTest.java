@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.api.model.autoscaling;
 
-import org.junit.jupiter.api.Test;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.MetricSpecBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBuilder;
+import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.MetricSpecBuilder;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,27 +26,27 @@ public class HorizontalPodAutoscalerTest {
   @Test
   public void testBuilder() {
     HorizontalPodAutoscaler horizontalPodAutoscaler = new HorizontalPodAutoscalerBuilder()
-      .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
-      .withNewSpec()
-      .withNewScaleTargetRef()
-      .withApiVersion("apps/v1")
-      .withKind("Deployment")
-      .withName("the-deployment")
-      .endScaleTargetRef()
-      .withMinReplicas(1)
-      .withMaxReplicas(10)
-      .addToMetrics(new MetricSpecBuilder()
-        .withType("Resource")
-        .withNewResource()
-        .withName("cpu")
-        .withNewTarget()
-        .withType("Utilization")
-        .withAverageUtilization(50)
-        .endTarget()
-        .endResource()
-        .build())
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
+        .withNewSpec()
+        .withNewScaleTargetRef()
+        .withApiVersion("apps/v1")
+        .withKind("Deployment")
+        .withName("the-deployment")
+        .endScaleTargetRef()
+        .withMinReplicas(1)
+        .withMaxReplicas(10)
+        .addToMetrics(new MetricSpecBuilder()
+            .withType("Resource")
+            .withNewResource()
+            .withName("cpu")
+            .withNewTarget()
+            .withType("Utilization")
+            .withAverageUtilization(50)
+            .endTarget()
+            .endResource()
+            .build())
+        .endSpec()
+        .build();
 
     assertEquals("the-hpa", horizontalPodAutoscaler.getMetadata().getName());
     assertEquals(1, horizontalPodAutoscaler.getSpec().getMetrics().size());

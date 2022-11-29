@@ -15,41 +15,39 @@
  */
 package io.fabric8.tekton;
 
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.tekton.pipeline.v1beta1.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ModelTest {
 
   @Test
-  void shouldHaveBuildableContainer()  {
+  void shouldHaveBuildableContainer() {
     Task service = new TaskBuilder()
-      .withNewSpec()
-      .addNewVolume()
+        .withNewSpec()
+        .addNewVolume()
         .withName("m2-cache")
         .withNewNfs()
-          .withPath("my.nfs-server.com/m2")
+        .withPath("my.nfs-server.com/m2")
         .endNfs()
-      .endVolume()
-      .addNewStep()
+        .endVolume()
+        .addNewStep()
         .withName("maven-build")
         .withCommand("mvn")
         .withArgs("clean", "install")
         .withImage("maven:3.6.3-jdk11")
         .addNewVolumeMount()
-          .withName("m2-cache")
-          .withMountPath("/m2-cache")
+        .withName("m2-cache")
+        .withMountPath("/m2-cache")
         .endVolumeMount()
         .addNewEnv()
-          .withName("FOO")
-          .withValue("BAR")
+        .withName("FOO")
+        .withValue("BAR")
         .endEnv()
-      .endStep()
-      .endSpec()
-      .build();
+        .endStep()
+        .endSpec()
+        .build();
     assertNotNull(service);
   }
 }
-

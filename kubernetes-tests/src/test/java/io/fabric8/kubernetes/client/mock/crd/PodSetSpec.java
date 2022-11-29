@@ -16,18 +16,18 @@
 package io.fabric8.kubernetes.client.mock.crd;
 
 public class PodSetSpec {
-    public int getReplicas() {
-        return replicas;
-    }
+  public int getReplicas() {
+    return replicas;
+  }
 
-    @Override
-    public String toString() {
-        return "PodSetSpec{replicas=" + replicas + "}";
-    }
+  @Override
+  public String toString() {
+    return "PodSetSpec{replicas=" + replicas + "}";
+  }
 
-    public void setReplicas(int replicas) {
-        this.replicas = replicas;
-    }
+  public void setReplicas(int replicas) {
+    this.replicas = replicas;
+  }
 
-    private int replicas;
+  private int replicas;
 }

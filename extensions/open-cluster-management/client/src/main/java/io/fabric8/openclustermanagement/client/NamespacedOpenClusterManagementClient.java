@@ -15,7 +15,6 @@
  */
 package io.fabric8.openclustermanagement.client;
 
-
 public interface NamespacedOpenClusterManagementClient extends OpenClusterManagementClient,
-        GenericOpenClusterManagementClient<NamespacedOpenClusterManagementClient> {
+    GenericOpenClusterManagementClient<NamespacedOpenClusterManagementClient> {
 }

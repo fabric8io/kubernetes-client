@@ -49,34 +49,33 @@ public class PersistentVolumeClaimExample {
       try {
 
         StorageClass storageClass = client.storage().storageClasses()
-          .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-storage.yml")).get();
+            .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-storage.yml")).get();
         client.storage().storageClasses().create(storageClass);
 
         logger.info("Creating PersistentVolume object");
         PersistentVolume pv = new PersistentVolumeBuilder()
-          .withNewMetadata().withName("test-local-pv").endMetadata()
-          .withNewSpec()
-          .addToCapacity(Collections.singletonMap("storage", new Quantity("500Gi")))
-          .withAccessModes("ReadWriteOnce")
-          .withPersistentVolumeReclaimPolicy("Retain")
-          .withStorageClassName(storageClassName)
-          .withNewLocal()
-          .withPath("/mnt/disks/vol1")
-          .endLocal()
-          .withNewNodeAffinity()
-          .withNewRequired()
-          .addNewNodeSelectorTerm()
-          .withMatchExpressions(Collections.singletonList(new NodeSelectorRequirementBuilder()
-            .withKey("kubernetes.io/hostname")
-            .withOperator("In")
-            .withValues("my-node")
-            .build()
-          ))
-          .endNodeSelectorTerm()
-          .endRequired()
-          .endNodeAffinity()
-          .endSpec()
-          .build();
+            .withNewMetadata().withName("test-local-pv").endMetadata()
+            .withNewSpec()
+            .addToCapacity(Collections.singletonMap("storage", new Quantity("500Gi")))
+            .withAccessModes("ReadWriteOnce")
+            .withPersistentVolumeReclaimPolicy("Retain")
+            .withStorageClassName(storageClassName)
+            .withNewLocal()
+            .withPath("/mnt/disks/vol1")
+            .endLocal()
+            .withNewNodeAffinity()
+            .withNewRequired()
+            .addNewNodeSelectorTerm()
+            .withMatchExpressions(Collections.singletonList(new NodeSelectorRequirementBuilder()
+                .withKey("kubernetes.io/hostname")
+                .withOperator("In")
+                .withValues("my-node")
+                .build()))
+            .endNodeSelectorTerm()
+            .endRequired()
+            .endNodeAffinity()
+            .endSpec()
+            .build();
 
         client.persistentVolumes().create(pv);
 
@@ -84,21 +83,22 @@ public class PersistentVolumeClaimExample {
 
         logger.info("Creating PersistentVolumeClaim object");
         PersistentVolumeClaim persistentVolumeClaim = new PersistentVolumeClaimBuilder()
-          .withNewMetadata().withName("test-pv-claim").withNamespace(namespace).endMetadata()
-          .withNewSpec()
-          .withStorageClassName(storageClassName)
-          .withAccessModes("ReadWriteOnce")
-          .withNewResources()
-          .addToRequests("storage", new Quantity("500Gi"))
-          .endResources()
-          .endSpec()
-          .build();
+            .withNewMetadata().withName("test-pv-claim").withNamespace(namespace).endMetadata()
+            .withNewSpec()
+            .withStorageClassName(storageClassName)
+            .withAccessModes("ReadWriteOnce")
+            .withNewResources()
+            .addToRequests("storage", new Quantity("500Gi"))
+            .endResources()
+            .endSpec()
+            .build();
 
         client.persistentVolumeClaims().create(persistentVolumeClaim);
         logger.info("Successfully created PersistentVolumeClaim object");
 
         logger.info("Creating pod");
-        Pod pod = client.pods().inNamespace(namespace).load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).get();
+        Pod pod = client.pods().inNamespace(namespace)
+            .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).get();
         client.pods().inNamespace(namespace).create(pod);
         logger.info("Successfully created pod");
       } finally {

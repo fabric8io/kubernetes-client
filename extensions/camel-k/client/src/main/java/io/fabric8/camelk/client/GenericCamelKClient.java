@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
 
 public interface GenericCamelKClient<C extends Client> extends Client, CamelKClient,
-        Namespaceable<C>,
-        AnyNamespaceable<C>,
-        RequestConfigurable<C> {
+    Namespaceable<C>,
+    AnyNamespaceable<C>,
+    RequestConfigurable<C> {
 }

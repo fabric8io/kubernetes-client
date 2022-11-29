@@ -15,23 +15,23 @@
  */
 package io.fabric8.crd.generator;
 
+import io.fabric8.crd.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
+import io.fabric8.crd.generator.v1.decorator.SortPrinterColumnsDecorator;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-
-import io.fabric8.crd.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
-import io.fabric8.crd.generator.v1.decorator.SortPrinterColumnsDecorator;
-
 public class ResourcesTest {
-
 
   @Test
   public void shouldSupportMultiplePrinterColumns() {
     Resources r = new Resources();
 
-    AddAdditionPrinterColumnDecorator dec1 = new AddAdditionPrinterColumnDecorator("resource", "v1", "string", "replicas", ".replicas", null, null);
-    AddAdditionPrinterColumnDecorator dec2 = new AddAdditionPrinterColumnDecorator("resource", "v1", "boolean", "enabled", ".replicas", null, null);
+    AddAdditionPrinterColumnDecorator dec1 = new AddAdditionPrinterColumnDecorator("resource", "v1", "string", "replicas",
+        ".replicas", null, null);
+    AddAdditionPrinterColumnDecorator dec2 = new AddAdditionPrinterColumnDecorator("resource", "v1", "boolean", "enabled",
+        ".replicas", null, null);
 
     r.decorate(dec1);
     r.decorate(dec2);
@@ -40,7 +40,6 @@ public class ResourcesTest {
     assertTrue(r.getDecorators().contains(dec1));
     assertTrue(r.getDecorators().contains(dec2));
   }
-
 
   @Test
   public void shouldSupportMultipleSortPrinterColums() {

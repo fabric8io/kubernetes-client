@@ -56,20 +56,36 @@ import io.fabric8.openshift.api.model.hive.v1.SyncSetList;
 
 public interface OpenShiftHiveAPIGroupDSL extends Client {
   MixedOperation<Checkpoint, CheckpointList, Resource<Checkpoint>> checkpoints();
+
   MixedOperation<ClusterClaim, ClusterClaimList, Resource<ClusterClaim>> clusterClaims();
+
   MixedOperation<ClusterDeployment, ClusterDeploymentList, Resource<ClusterDeployment>> clusterDeployments();
+
   MixedOperation<ClusterDeprovision, ClusterDeprovisionList, Resource<ClusterDeprovision>> clusterDeprovisions();
+
   MixedOperation<ClusterProvision, ClusterProvisionList, Resource<ClusterProvision>> clusterProvisions();
+
   NonNamespaceOperation<ClusterImageSet, ClusterImageSetList, Resource<ClusterImageSet>> clusterImageSets();
+
   MixedOperation<ClusterPool, ClusterPoolList, Resource<ClusterPool>> clusterPools();
+
   MixedOperation<ClusterRelocate, ClusterRelocateList, Resource<ClusterRelocate>> clusterRelocates();
+
   MixedOperation<ClusterState, ClusterStateList, Resource<ClusterState>> clusterStates();
+
   MixedOperation<DNSZone, DNSZoneList, Resource<DNSZone>> dnsZones();
+
   NonNamespaceOperation<HiveConfig, HiveConfigList, Resource<HiveConfig>> hiveConfigs();
+
   MixedOperation<MachinePoolNameLease, MachinePoolNameLeaseList, Resource<MachinePoolNameLease>> machinePoolNameLeases();
+
   MixedOperation<MachinePool, MachinePoolList, Resource<MachinePool>> machinePools();
+
   NonNamespaceOperation<SelectorSyncIdentityProvider, SelectorSyncIdentityProviderList, Resource<SelectorSyncIdentityProvider>> selectorSyncIdentityProviders();
+
   NonNamespaceOperation<SelectorSyncSet, SelectorSyncSetList, Resource<SelectorSyncSet>> selectorSyncSets();
+
   MixedOperation<SyncIdentityProvider, SyncIdentityProviderList, Resource<SyncIdentityProvider>> syncIdentityProviders();
+
   MixedOperation<SyncSet, SyncSetList, Resource<SyncSet>> syncSets();
 }

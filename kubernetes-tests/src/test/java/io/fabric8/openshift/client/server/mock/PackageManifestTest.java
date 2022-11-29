@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.ConditionBuilder;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestBuilder;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;

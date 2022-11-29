@@ -20,11 +20,12 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 public class EnsureSingleStorageVersionDecorator extends
-  CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
+    CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
   private final AtomicReference<String> storageVersion = new AtomicReference<>();
 
@@ -45,8 +46,8 @@ public class EnsureSingleStorageVersionDecorator extends
         String existing = storageVersion.get();
         if (existing != null && !existing.equals(version.getName())) {
           throw new IllegalStateException(String.format(
-            "'%s' custom resource has versions %s and %s marked as storage. Only one version can be marked as storage per custom resource.",
-            resourceMeta.getName(), version.getName(), existing));
+              "'%s' custom resource has versions %s and %s marked as storage. Only one version can be marked as storage per custom resource.",
+              resourceMeta.getName(), version.getName(), existing));
         } else {
           storageVersion.set(version.getName());
         }
@@ -56,12 +57,12 @@ public class EnsureSingleStorageVersionDecorator extends
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{AddCustomResourceDefinitionResourceDecorator.class,
-      AddCustomResourceDefinitionVersionDecorator.class, SetStorageVersionDecorator.class};
+    return new Class[] { AddCustomResourceDefinitionResourceDecorator.class,
+        AddCustomResourceDefinitionVersionDecorator.class, SetStorageVersionDecorator.class };
   }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() +"]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + "]";
+  }
 }

@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,20 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
+
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 public class ListBrokers {
 
   public static void main(String[] args) {
-      ServiceCatalogClient client = ClientFactory.newClient(args);
-      ClusterServiceBrokerList list = client.clusterServiceBrokers().list();
-      System.out.println("Listing Cluster Service Brokers:");
-      list.getItems().stream()
-          .map(b->b.getMetadata().getName())
-          .forEach(System.out::println);
-      System.out.println("Done");
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    ClusterServiceBrokerList list = client.clusterServiceBrokers().list();
+    System.out.println("Listing Cluster Service Brokers:");
+    list.getItems().stream()
+        .map(b -> b.getMetadata().getName())
+        .forEach(System.out::println);
+    System.out.println("Done");
   }
 }

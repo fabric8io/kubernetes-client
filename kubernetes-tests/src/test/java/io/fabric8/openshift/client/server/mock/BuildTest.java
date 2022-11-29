@@ -27,7 +27,8 @@ class BuildTest {
 
   @Test
   void testLogWithoutTimestamps() {
-    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false").andReturn(200, "test build output").times(2);
+    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false")
+        .andReturn(200, "test build output").times(2);
 
     String log = openShiftClient.builds().inNamespace("ns1").withName("test-build").getLog();
     assertEquals("test build output", log);
@@ -35,7 +36,8 @@ class BuildTest {
 
   @Test
   void testLogWithTimestamps() {
-    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false&timestamps=true").andReturn(200, "test build output").times(2);
+    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false&timestamps=true")
+        .andReturn(200, "test build output").times(2);
 
     String log = openShiftClient.builds().inNamespace("ns1").withName("test-build").usingTimestamps().getLog();
     assertEquals("test build output", log);

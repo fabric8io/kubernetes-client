@@ -18,9 +18,9 @@ package io.fabric8.tekton.api.examples;
 import io.fabric8.tekton.client.*;
 
 public class PipelineResourceList {
-  
+
   public static void main(String[] args) {
-    try ( TektonClient client = ClientFactory.newClient(args)) {
+    try (TektonClient client = ClientFactory.newClient(args)) {
       System.out.println("Pipeline resources:");
       client.v1alpha1().pipelineResources().list().getItems().forEach(System.out::println);
       System.out.println("done.");

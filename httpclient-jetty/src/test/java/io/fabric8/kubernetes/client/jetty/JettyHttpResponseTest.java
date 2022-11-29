@@ -17,22 +17,13 @@ package io.fabric8.kubernetes.client.jetty;
 
 import org.eclipse.jetty.client.HttpResponse;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class JettyHttpResponseTest {
 
@@ -56,22 +47,4 @@ class JettyHttpResponseTest {
         .containsEntry("Via", Arrays.asList("proxy-1", "proxy-2"));
   }
 
-  @ParameterizedTest(name = "{index}: SupportedResponse: from type ''{0}'' is ''{1}''")
-  @MethodSource("supportedResponsesInput")
-  void supportedResponses(Class<?> type, JettyHttpResponse.SupportedResponse supportedResponse) {
-    // When
-    final var result = JettyHttpResponse.SupportedResponse.from(type);
-    // Then
-    assertThat(result).isEqualTo(supportedResponse);
-  }
-
-  static Stream<Arguments> supportedResponsesInput() {
-    return Stream.of(
-        arguments(String.class, JettyHttpResponse.SupportedResponse.TEXT),
-        arguments(InputStream.class, JettyHttpResponse.SupportedResponse.INPUT_STREAM),
-        arguments(ByteArrayInputStream.class, JettyHttpResponse.SupportedResponse.INPUT_STREAM),
-        arguments(Reader.class, JettyHttpResponse.SupportedResponse.READER),
-        arguments(InputStreamReader.class, JettyHttpResponse.SupportedResponse.READER),
-        arguments(byte[].class, JettyHttpResponse.SupportedResponse.BYTE_ARRAY));
-  }
 }

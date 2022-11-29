@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.utils.internal;
 
-import java.util.function.Supplier;
-
 import io.fabric8.kubernetes.client.KubernetesClientException;
+
+import java.util.function.Supplier;
 
 public class OptionalDependencyWrapper {
 
@@ -29,7 +29,7 @@ public class OptionalDependencyWrapper {
    *
    * @param supplier implementation to safely run
    * @param message to display for caught exceptions (e.g. "Base64InputStream class is provided by
-   *                 commons-codec"
+   *        commons-codec"
    * @param <R> type of supplier
    * @return run object
    */
@@ -39,8 +39,8 @@ public class OptionalDependencyWrapper {
       return supplier.get();
     } catch (NoClassDefFoundError ex) {
       throw new KubernetesClientException(String.format(
-        "%s, an optional dependency. To use this functionality you must explicitly add this dependency to the classpath.",
-        message), ex);
+          "%s, an optional dependency. To use this functionality you must explicitly add this dependency to the classpath.",
+          message), ex);
     }
   }
 }

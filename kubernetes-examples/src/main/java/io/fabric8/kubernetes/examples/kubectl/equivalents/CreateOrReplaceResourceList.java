@@ -26,8 +26,8 @@ public class CreateOrReplaceResourceList {
   public static void main(String[] args) {
     try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.load(CreateOrReplaceResourceList.class.getResourceAsStream("/test-resource-list.yaml"))
-        .inNamespace("default")
-        .createOrReplace();
+          .inNamespace("default")
+          .createOrReplace();
     }
   }
 }

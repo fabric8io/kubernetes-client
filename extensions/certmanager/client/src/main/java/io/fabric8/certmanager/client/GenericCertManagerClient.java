@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
 
 public interface GenericCertManagerClient<C extends Client> extends Client, CertManagerClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C>,
-  RequestConfigurable<C> {
+    Namespaceable<C>,
+    AnyNamespaceable<C>,
+    RequestConfigurable<C> {
 }

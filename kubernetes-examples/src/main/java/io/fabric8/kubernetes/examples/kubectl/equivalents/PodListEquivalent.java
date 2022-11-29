@@ -27,17 +27,17 @@ import org.slf4j.LoggerFactory;
  * all the pods in specified namespace("default" in this case).
  */
 public class PodListEquivalent {
-    private static final Logger logger = LoggerFactory.getLogger(PodListEquivalent.class);
+  private static final Logger logger = LoggerFactory.getLogger(PodListEquivalent.class);
 
-    public static void main(String[] args) {
-        try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-            // Print names of all pods in specified namespace
-            k8s.pods().inNamespace("default").list()
-              .getItems()
-              .stream()
-              .map(Pod::getMetadata)
-              .map(ObjectMeta::getName)
-              .forEach(logger::info);
-        }
+  public static void main(String[] args) {
+    try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
+      // Print names of all pods in specified namespace
+      k8s.pods().inNamespace("default").list()
+          .getItems()
+          .stream()
+          .map(Pod::getMetadata)
+          .map(ObjectMeta::getName)
+          .forEach(logger::info);
     }
+  }
 }

@@ -39,7 +39,6 @@ import io.fabric8.openshift.api.model.ResourceAccessReview;
 import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
-import io.fabric8.openshift.client.OpenShiftConfig;
 
 import java.net.MalformedURLException;
 import java.net.URL;

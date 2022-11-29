@@ -15,11 +15,6 @@
  */
 package io.fabric8.istio.api.networking.v1beta1;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -42,28 +36,33 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-  "allowCredentials",
-  "allowHeaders",
-  "allowMethods",
-  "allowOrigin",
-  "allowOrigins",
-  "exposeHeaders",
-  "maxAge"
+    "allowCredentials",
+    "allowHeaders",
+    "allowMethods",
+    "allowOrigin",
+    "allowOrigins",
+    "exposeHeaders",
+    "maxAge"
 })
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @ToString
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-  @BuildableReference(ObjectMeta.class),
-  @BuildableReference(ObjectReference.class),
-  @BuildableReference(LabelSelector.class),
-  @BuildableReference(Container.class),
-  @BuildableReference(EnvVar.class),
-  @BuildableReference(ContainerPort.class),
-  @BuildableReference(Volume.class),
-  @BuildableReference(VolumeMount.class)
+    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
+    @BuildableReference(EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
 })
 public class CorsPolicy implements KubernetesResource {
 
@@ -105,7 +104,7 @@ public class CorsPolicy implements KubernetesResource {
    * @param allowOrigins
    */
   public CorsPolicy(Boolean allowCredentials, List<String> allowHeaders, List<String> allowMethods,
-    List<String> deprecatedAllowOrigin, List<StringMatch> allowOrigins, List<String> exposeHeaders, String maxAge) {
+      List<String> deprecatedAllowOrigin, List<StringMatch> allowOrigins, List<String> exposeHeaders, String maxAge) {
     super();
     this.allowCredentials = allowCredentials;
     this.allowHeaders = allowHeaders;

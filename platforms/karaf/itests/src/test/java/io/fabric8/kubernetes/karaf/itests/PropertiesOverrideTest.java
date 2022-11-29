@@ -31,9 +31,9 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
-import javax.inject.Inject;
-
 import java.util.Arrays;
+
+import javax.inject.Inject;
 
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
@@ -42,46 +42,43 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 @ExamReactorStrategy(PerClass.class)
 public class PropertiesOverrideTest extends TestBase {
 
-    @Inject
-    protected BundleContext bundleContext;
+  @Inject
+  protected BundleContext bundleContext;
 
-    @Inject
-    NamespacedKubernetesClient kubernetesClient;
+  @Inject
+  NamespacedKubernetesClient kubernetesClient;
 
-    @Inject
-    NamespacedOpenShiftClient openShiftClient;
+  @Inject
+  NamespacedOpenShiftClient openShiftClient;
 
-    //Need to check this for class loading errors
-    @Test
-    public void testNamespacedClients() {
-        Assert.assertNotNull(kubernetesClient);
-        Assert.assertNotNull(openShiftClient);
+  //Need to check this for class loading errors
+  @Test
+  public void testNamespacedClients() {
+    Assert.assertNotNull(kubernetesClient);
+    Assert.assertNotNull(openShiftClient);
 
-        Assert.assertEquals("my-namespace", kubernetesClient.getNamespace());
-        Assert.assertEquals("my.kube.master", kubernetesClient.getMasterUrl().getHost());
-        Assert.assertEquals(8443, kubernetesClient.getMasterUrl().getPort());
+    Assert.assertEquals("my-namespace", kubernetesClient.getNamespace());
+    Assert.assertEquals("my.kube.master", kubernetesClient.getMasterUrl().getHost());
+    Assert.assertEquals(8443, kubernetesClient.getMasterUrl().getPort());
 
-        Assert.assertEquals("my-namespace", openShiftClient.getNamespace());
-        Assert.assertEquals("my.kube.master", openShiftClient.getMasterUrl().getHost());
-        Assert.assertEquals(8443, openShiftClient.getMasterUrl().getPort());
-    }
+    Assert.assertEquals("my-namespace", openShiftClient.getNamespace());
+    Assert.assertEquals("my.kube.master", openShiftClient.getMasterUrl().getHost());
+    Assert.assertEquals(8443, openShiftClient.getMasterUrl().getPort());
+  }
 
+  @ProbeBuilder
+  public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+    probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+    return probe;
+  }
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
-
-    @Configuration
-    public Option[] config() {
-        return baseConfiguration(
-          features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"),
-          Arrays.asList(
+  @Configuration
+  public Option[] config() {
+    return baseConfiguration(
+        features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"),
+        Arrays.asList(
             systemProperty("kubernetes.namespace").value("my-namespace"),
             systemProperty("kubernetes.master").value("http://my.kube.master:8443"),
-            systemProperty("kubernetes.auth.tryKubeConfig").value("false")
-          )
-        );
-    }
+            systemProperty("kubernetes.auth.tryKubeConfig").value("false")));
+  }
 }

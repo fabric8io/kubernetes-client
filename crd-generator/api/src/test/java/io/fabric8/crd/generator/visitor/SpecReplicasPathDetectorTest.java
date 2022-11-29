@@ -15,9 +15,6 @@
  */
 package io.fabric8.crd.generator.visitor;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.crd.example.webserver.WebServerWithSpec;
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
 import io.sundr.adapter.api.AdapterContext;
@@ -25,8 +22,10 @@ import io.sundr.adapter.api.Adapters;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 import io.sundr.model.repo.DefinitionRepository;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SpecReplicasPathDetectorTest {
 
@@ -41,7 +40,6 @@ class SpecReplicasPathDetectorTest {
     assertEquals(".replicas", detector.getPath().get());
   }
 
-
   @Test
   public void shoudDetectNestedSpecReplicasPath() throws Exception {
     TypeDef def = Adapters.adaptType(WebServerWithSpec.class, CONTEXT);
@@ -51,4 +49,3 @@ class SpecReplicasPathDetectorTest {
     assertEquals(".spec.replicas", detector.getPath().get());
   }
 }
-

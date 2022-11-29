@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1NetworkAPIGroupDSL extends Client {
   MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies();
+
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
+
   NonNamespaceOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses();
 }

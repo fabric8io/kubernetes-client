@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.api.model.batch.v1;
 
 import org.junit.jupiter.api.Test;
-import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
+
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,25 +25,25 @@ public class JobTest {
   @Test
   public void testBuilder() {
     final Job job = new JobBuilder()
-      .withApiVersion("batch/v1")
-      .withNewMetadata()
-      .withName("pi")
-      .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
-      .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
-      .endMetadata()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("pi")
-      .withImage("perl")
-      .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
-      .endContainer()
-      .withRestartPolicy("Never")
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withApiVersion("batch/v1")
+        .withNewMetadata()
+        .withName("pi")
+        .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
+        .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
+        .endMetadata()
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("pi")
+        .withImage("perl")
+        .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
+        .endContainer()
+        .withRestartPolicy("Never")
+        .endSpec()
+        .endTemplate()
+        .endSpec()
+        .build();
 
     assertEquals("pi", job.getMetadata().getName());
     assertEquals(1, job.getSpec().getTemplate().getSpec().getContainers().size());

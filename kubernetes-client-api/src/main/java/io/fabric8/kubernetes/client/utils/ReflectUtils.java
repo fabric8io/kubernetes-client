@@ -28,8 +28,9 @@ public class ReflectUtils {
   private ReflectUtils() {
     throw new IllegalStateException("Utility class");
   }
+
   public static ObjectMeta objectMetadata(Object obj) throws ReflectiveOperationException {
-    if( obj == null ) {
+    if (obj == null) {
       return null;
     }
     if (obj instanceof HasMetadata) {
@@ -44,7 +45,7 @@ public class ReflectUtils {
   }
 
   public static String namespace(Object obj) throws ReflectiveOperationException {
-    if( obj == null ) {
+    if (obj == null) {
       return "";
     }
     return objectMetadata(obj).getNamespace();

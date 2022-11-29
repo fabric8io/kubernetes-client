@@ -40,10 +40,10 @@ public class PodExecEquivalent {
       ByteArrayOutputStream error = new ByteArrayOutputStream();
 
       ExecWatch execWatch = k8s.pods().inNamespace("default").withName("my-pod")
-        .writingOutput(out)
-        .writingError(error)
-        .usingListener(new MyPodExecListener())
-        .exec("ls", "/");
+          .writingOutput(out)
+          .writingError(error)
+          .usingListener(new MyPodExecListener())
+          .exec("ls", "/");
 
       boolean latchTerminationStatus = execLatch.await(5, TimeUnit.SECONDS);
       if (!latchTerminationStatus) {

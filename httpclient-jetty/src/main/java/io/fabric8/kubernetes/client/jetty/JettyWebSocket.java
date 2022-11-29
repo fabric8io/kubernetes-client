@@ -36,7 +36,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   private final Condition backPressure;
   private final AtomicBoolean closed;
   private boolean moreMessages;
-  private Session webSocketSession;
+  private volatile Session webSocketSession;
 
   public JettyWebSocket(WebSocket.Listener listener) {
     this.listener = listener;
@@ -115,6 +115,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public void onWebSocketConnect(Session session) {
+    this.webSocketSession = session;
     listener.onOpen(this);
   }
 
@@ -131,11 +132,6 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       return;
     }
     listener.onError(this, cause);
-  }
-
-  public JettyWebSocket setWebSocketSession(Session webSocketSession) {
-    this.webSocketSession = webSocketSession;
-    return this;
   }
 
   private void backPressure() {

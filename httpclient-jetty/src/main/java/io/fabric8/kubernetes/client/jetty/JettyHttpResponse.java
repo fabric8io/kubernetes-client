@@ -17,19 +17,13 @@ package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.eclipse.jetty.client.api.Response;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 public class JettyHttpResponse<T> implements HttpResponse<T> {
 
@@ -82,45 +76,4 @@ public class JettyHttpResponse<T> implements HttpResponse<T> {
     return Optional.empty();
   }
 
-  enum SupportedResponse {
-
-    TEXT(String.class, (r, bytes) -> new String(bytes, responseCharset(r))),
-    INPUT_STREAM(ByteArrayInputStream.class, (r, bytes) -> new ByteArrayInputStream(bytes)),
-    READER(InputStreamReader.class, (r, bytes) -> new InputStreamReader(new ByteArrayInputStream(bytes), responseCharset(r))),
-    BYTE_ARRAY(byte[].class, (r, bytes) -> bytes);
-
-    private final Class<?> type;
-    private final BiFunction<Response, byte[], Object> processor;
-
-    SupportedResponse(Class<?> type, BiFunction<Response, byte[], Object> processor) {
-      this.type = type;
-      this.processor = processor;
-    }
-
-    public <T> T process(Response response, byte[] bytes, Class<T> type) {
-      return type.cast(processor.apply(response, bytes));
-    }
-
-    static SupportedResponse from(Class<?> type) {
-      for (SupportedResponse sr : SupportedResponse.values()) {
-        if (type.isAssignableFrom(sr.type)) {
-          return sr;
-        }
-      }
-      throw new IllegalArgumentException("Unsupported response type: " + type.getName());
-    }
-
-    private static Charset responseCharset(Response response) {
-      var responseCharset = StandardCharsets.UTF_8;
-      final var responseEncoding = response.getHeaders().get("Content-Encoding");
-      if (Utils.isNotNullOrEmpty(responseEncoding)) {
-        try {
-          responseCharset = Charset.forName(responseEncoding);
-        } catch (Exception e) {
-          // ignored
-        }
-      }
-      return responseCharset;
-    }
-  }
 }

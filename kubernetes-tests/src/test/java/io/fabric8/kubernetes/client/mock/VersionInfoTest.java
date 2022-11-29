@@ -43,12 +43,12 @@ class VersionInfoTest {
   @Test
   void testClusterVersioning() throws ParseException {
     server.expect().withPath("/version").andReturn(200, "{" +
-      "    \"buildDate\": \"2018-03-01T14:27:17Z\"," +
-      "    \"gitCommit\": \"e6301f88a8\"," +
-      "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +
-      "    \"major\": \"3\"," +
-      "    \"minor\": \"6\"" +
-      "}").always();
+        "    \"buildDate\": \"2018-03-01T14:27:17Z\"," +
+        "    \"gitCommit\": \"e6301f88a8\"," +
+        "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +
+        "    \"major\": \"3\"," +
+        "    \"minor\": \"6\"" +
+        "}").always();
 
     assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
     assertEquals("e6301f88a8", client.getVersion().getGitCommit());
@@ -56,17 +56,17 @@ class VersionInfoTest {
     assertEquals("6", client.getVersion().getMinor());
     assertEquals(118, client.getVersion().getBuildDate().getYear());
     assertEquals(new SimpleDateFormat(VersionInfo.VersionKeys.BUILD_DATE_FORMAT).parse("2018-03-01T14:27:17Z").getTime(),
-      client.getVersion().getBuildDate().getTime());
+        client.getVersion().getBuildDate().getTime());
   }
 
   @Test
   void testClusterVersioningWithMissingBuildDate() {
     server.expect().withPath("/version").andReturn(200, "{" +
-      "    \"gitCommit\": \"e6301f88a8\"," +
-      "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +
-      "    \"major\": \"3\"," +
-      "    \"minor\": \"6\"" +
-      "}").always();
+        "    \"gitCommit\": \"e6301f88a8\"," +
+        "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +
+        "    \"major\": \"3\"," +
+        "    \"minor\": \"6\"" +
+        "}").always();
 
     assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
     assertEquals("e6301f88a8", client.getVersion().getGitCommit());

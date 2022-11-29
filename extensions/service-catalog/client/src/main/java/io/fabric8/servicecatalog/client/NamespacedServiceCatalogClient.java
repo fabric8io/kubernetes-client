@@ -16,5 +16,5 @@
 package io.fabric8.servicecatalog.client;
 
 public interface NamespacedServiceCatalogClient extends ServiceCatalogClient,
-  GenericServiceCatalogClient<NamespacedServiceCatalogClient> {
+    GenericServiceCatalogClient<NamespacedServiceCatalogClient> {
 }

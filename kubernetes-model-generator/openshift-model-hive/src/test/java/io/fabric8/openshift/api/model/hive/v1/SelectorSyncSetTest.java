@@ -34,8 +34,8 @@ class SelectorSyncSetTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-selectorsyncset.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final SelectorSyncSet selectorSyncSet = mapper.readValue(originalJson, SelectorSyncSet.class);
@@ -45,42 +45,44 @@ class SelectorSyncSetTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(selectorSyncSet)
-      .isNotNull()
-      .isEqualTo(selectorSyncSetFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
-      .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels", Collections.singletonMap("cluster-group", "abutcher"))
-      .extracting("spec.resources").asList()
-      .hasSize(1);
+        .isNotNull()
+        .isEqualTo(selectorSyncSetFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
+        .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels",
+            Collections.singletonMap("cluster-group", "abutcher"))
+        .extracting("spec.resources").asList()
+        .hasSize(1);
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     Group group = new GroupBuilder()
-      .withNewMetadata().withName("mygroup").endMetadata()
-      .addToUsers("abutcher")
-      .build();
+        .withNewMetadata().withName("mygroup").endMetadata()
+        .addToUsers("abutcher")
+        .build();
     Map<String, Object> groupResource = mapper.convertValue(group, Map.class);
     SelectorSyncSetBuilder selectorSyncSetBuilder = new SelectorSyncSetBuilder()
-      .withNewMetadata()
-      .withName("mygroup")
-      .endMetadata()
-      .withNewSpec()
-      .withNewClusterDeploymentSelector()
-      .addToMatchLabels("cluster-group", "abutcher")
-      .endClusterDeploymentSelector()
-      .withResources(Collections.singletonList(groupResource))
-      .endSpec();
+        .withNewMetadata()
+        .withName("mygroup")
+        .endMetadata()
+        .withNewSpec()
+        .withNewClusterDeploymentSelector()
+        .addToMatchLabels("cluster-group", "abutcher")
+        .endClusterDeploymentSelector()
+        .withResources(Collections.singletonList(groupResource))
+        .endSpec();
 
     // When
     SelectorSyncSet selectorSyncSet = selectorSyncSetBuilder.build();
 
     // Then
     assertThat(selectorSyncSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
-      .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels", Collections.singletonMap("cluster-group", "abutcher"))
-      .extracting("spec.resources").asList()
-      .hasSize(1);
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
+        .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels",
+            Collections.singletonMap("cluster-group", "abutcher"))
+        .extracting("spec.resources").asList()
+        .hasSize(1);
   }
 }

@@ -37,9 +37,9 @@ class OpenShiftReadinessTest {
   @Test
   void testOpenShiftReadinessWithDeploymentConfig() {
     DeploymentConfig dc = new DeploymentConfigBuilder()
-      .withNewSpec().withReplicas(2).endSpec()
-      .withNewStatus().withAvailableReplicas(2).withReplicas(2).endStatus()
-      .build();
+        .withNewSpec().withReplicas(2).endSpec()
+        .withNewStatus().withAvailableReplicas(2).withReplicas(2).endStatus()
+        .build();
 
     assertTrue(readiness.isReady(dc));
   }

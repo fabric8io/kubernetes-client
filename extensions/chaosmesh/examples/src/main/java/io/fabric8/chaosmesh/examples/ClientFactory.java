@@ -20,7 +20,8 @@ import io.fabric8.chaosmesh.client.DefaultChaosMeshClient;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 
 public class ClientFactory {
-  private ClientFactory() {}
+  private ClientFactory() {
+  }
 
   public static ChaosMeshClient newClient(String[] args) {
     ConfigBuilder config = new ConfigBuilder();
@@ -62,4 +63,3 @@ public class ClientFactory {
     return defaultValue;
   }
 }
-

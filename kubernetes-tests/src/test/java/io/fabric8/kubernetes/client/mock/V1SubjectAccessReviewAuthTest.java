@@ -57,22 +57,23 @@ class V1SubjectAccessReviewAuthTest {
   void createSubjectAccessReviewTest() {
     // Given
     SubjectAccessReview review = new SubjectAccessReviewBuilder()
-      .withNewSpec()
-      .withUser("admin-user")
-      .withNewResourceAttributes()
-      .withResource("pod")
-      .withVerb("create")
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withUser("admin-user")
+        .withNewResourceAttributes()
+        .withResource("pod")
+        .withVerb("create")
+        .endResourceAttributes()
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/authorization.k8s.io/v1/subjectaccessreviews")
-      .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
-        LocalSubjectAccessReview reviewResponse = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), LocalSubjectAccessReview.class);
-        reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
+        .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
+          LocalSubjectAccessReview reviewResponse = Serialization
+              .unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), LocalSubjectAccessReview.class);
+          reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
 
-        return reviewResponse;
-      }).once();
+          return reviewResponse;
+        }).once();
 
     // When
     SubjectAccessReview reviewResponse = client.authorization().v1().subjectAccessReview().create(review);
@@ -87,33 +88,34 @@ class V1SubjectAccessReviewAuthTest {
   void createLocalSubjectAccessReviewTest() {
     // Given
     LocalSubjectAccessReview review = new LocalSubjectAccessReviewBuilder().withNewSpec()
-      .withUser("admin-user")
-      .withNewResourceAttributes()
-      .withResource("pod")
-      .withNamespace("test")
-      .withVerb("create")
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+        .withUser("admin-user")
+        .withNewResourceAttributes()
+        .withResource("pod")
+        .withNamespace("test")
+        .withVerb("create")
+        .endResourceAttributes()
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/authorization.k8s.io/v1/namespaces/test/localsubjectaccessreviews")
-      .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
-        LocalSubjectAccessReview reviewResponse = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), LocalSubjectAccessReview.class);
-        reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
+        .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
+          LocalSubjectAccessReview reviewResponse = Serialization
+              .unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), LocalSubjectAccessReview.class);
+          reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
 
-        return reviewResponse;
-      }).once();
+          return reviewResponse;
+        }).once();
 
     // When
     LocalSubjectAccessReview reviewResponse = client.authorization().v1()
-      .localSubjectAccessReview()
-      .inNamespace("test")
-      .create(review);
+        .localSubjectAccessReview()
+        .inNamespace("test")
+        .create(review);
 
     // Then
     assertNotNull(reviewResponse);
     assertEquals("test", reviewResponse.getSpec().getResourceAttributes().getNamespace());
-    assertTrue( reviewResponse.getStatus().getAllowed());
+    assertTrue(reviewResponse.getStatus().getAllowed());
   }
 
   @Test
@@ -121,48 +123,49 @@ class V1SubjectAccessReviewAuthTest {
   void testCreateSelfSubjectRulesReview() {
     // Given
     SelfSubjectRulesReview selfSubjectRulesReview = new SelfSubjectRulesReviewBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withNewSpec()
-      .withNamespace("test")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withNewSpec()
+        .withNamespace("test")
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/authorization.k8s.io/v1/selfsubjectrulesreviews")
-      .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
-        SelfSubjectRulesReview reviewResponse = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), SelfSubjectRulesReview.class);
-        List<NonResourceRule> nonResourceRuleList = new ArrayList<>();
-        nonResourceRuleList.add(new NonResourceRuleBuilder().withNonResourceURLs("*").withVerbs("*").build());
-        nonResourceRuleList.add(new NonResourceRuleBuilder()
-          .withNonResourceURLs("/healthz", "/livez", "/readyz", "/version", "/version/")
-          .withVerbs("get")
-          .build());
-        nonResourceRuleList.add(new NonResourceRuleBuilder()
-          .withNonResourceURLs("/api", "/api/*", "/apis", "/apis/*", "/healthz", "/livez", "/openapi", "/openapi/*", "/readyz", "/version", "/version/")
-          .withVerbs("get")
-          .build());
+        .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
+          SelfSubjectRulesReview reviewResponse = Serialization
+              .unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), SelfSubjectRulesReview.class);
+          List<NonResourceRule> nonResourceRuleList = new ArrayList<>();
+          nonResourceRuleList.add(new NonResourceRuleBuilder().withNonResourceURLs("*").withVerbs("*").build());
+          nonResourceRuleList.add(new NonResourceRuleBuilder()
+              .withNonResourceURLs("/healthz", "/livez", "/readyz", "/version", "/version/")
+              .withVerbs("get")
+              .build());
+          nonResourceRuleList.add(new NonResourceRuleBuilder()
+              .withNonResourceURLs("/api", "/api/*", "/apis", "/apis/*", "/healthz", "/livez", "/openapi", "/openapi/*",
+                  "/readyz", "/version", "/version/")
+              .withVerbs("get")
+              .build());
 
-        List<ResourceRule> resourceRuleList = new ArrayList<>();
-        resourceRuleList.add(new ResourceRuleBuilder().withApiGroups("*").withResources("*").withVerbs("*").build());
-        resourceRuleList.add(new ResourceRuleBuilder()
-          .withApiGroups("authorization.k8s.io")
-          .withResources("selfsubjectaccessreviews", "selfsubjectrulesreviews")
-          .withVerbs("create")
-          .build());
+          List<ResourceRule> resourceRuleList = new ArrayList<>();
+          resourceRuleList.add(new ResourceRuleBuilder().withApiGroups("*").withResources("*").withVerbs("*").build());
+          resourceRuleList.add(new ResourceRuleBuilder()
+              .withApiGroups("authorization.k8s.io")
+              .withResources("selfsubjectaccessreviews", "selfsubjectrulesreviews")
+              .withVerbs("create")
+              .build());
 
+          reviewResponse.setStatus(new SubjectRulesReviewStatusBuilder()
+              .withIncomplete(false)
+              .withNonResourceRules(nonResourceRuleList)
+              .withResourceRules(resourceRuleList)
+              .build());
 
-        reviewResponse.setStatus(new SubjectRulesReviewStatusBuilder()
-          .withIncomplete(false)
-          .withNonResourceRules(nonResourceRuleList)
-          .withResourceRules(resourceRuleList)
-          .build());
-
-        return reviewResponse;
-      }).once();
+          return reviewResponse;
+        }).once();
 
     // When
     SelfSubjectRulesReview reviewResponse = client.authorization().v1()
-      .selfSubjectRulesReview()
-      .create(selfSubjectRulesReview);
+        .selfSubjectRulesReview()
+        .create(selfSubjectRulesReview);
 
     // Then
     assertNotNull(reviewResponse);
@@ -178,28 +181,29 @@ class V1SubjectAccessReviewAuthTest {
   void testCreateSelfSubjectAccessReview() {
     // Given
     SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
-      .withNewSpec()
-      .withNewResourceAttributes()
-      .withGroup("apps")
-      .withResource("deployments")
-      .withVerb("create")
-      .withNamespace("test")
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+        .withNewSpec()
+        .withNewResourceAttributes()
+        .withGroup("apps")
+        .withResource("deployments")
+        .withVerb("create")
+        .withNamespace("test")
+        .endResourceAttributes()
+        .endSpec()
+        .build();
 
     server.expect().post().withPath("/apis/authorization.k8s.io/v1/selfsubjectaccessreviews")
-      .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
-        SelfSubjectAccessReview reviewResponse = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), SelfSubjectAccessReview.class);
-        reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
+        .andReply(HttpURLConnection.HTTP_OK, recordedRequest -> {
+          SelfSubjectAccessReview reviewResponse = Serialization
+              .unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), SelfSubjectAccessReview.class);
+          reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
 
-        return reviewResponse;
-      }).once();
+          return reviewResponse;
+        }).once();
 
     // When
     SelfSubjectAccessReview reviewResponse = client.authorization().v1()
-      .selfSubjectAccessReview()
-      .create(ssar);
+        .selfSubjectAccessReview()
+        .create(ssar);
 
     // Then
     assertNotNull(reviewResponse);

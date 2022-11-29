@@ -16,10 +16,6 @@
 package io.fabric8.kubernetes.api.model.rbac;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
-import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
-import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
-import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
 
@@ -30,54 +26,52 @@ import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
 public class RoleBindingTest {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
-    @Test
-    public void kubernetesRoleBindingTest() throws Exception {
-        // given
-        final String originalJson = Helper.loadJson("/valid-roleBinding.json");
+  @Test
+  public void kubernetesRoleBindingTest() throws Exception {
+    // given
+    final String originalJson = Helper.loadJson("/valid-roleBinding.json");
 
-        // when
-        final RoleBinding kubernetesRoleBinding = mapper.readValue(originalJson, RoleBinding.class);
-        final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
+    // when
+    final RoleBinding kubernetesRoleBinding = mapper.readValue(originalJson, RoleBinding.class);
+    final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
-    }
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
+  }
 
-    @Test
-    public void kubernetesRoleBuilderTest() throws Exception {
+  @Test
+  public void kubernetesRoleBuilderTest() throws Exception {
 
-        // given
-        final String originalJson = Helper.loadJson("/valid-roleBinding.json");
+    // given
+    final String originalJson = Helper.loadJson("/valid-roleBinding.json");
 
-        // when
-        RoleBinding kubernetesRoleBinding = new RoleBindingBuilder()
-                .withNewMetadata()
-                    .withName("read-jobs")
-                    .withNamespace("default")
-                .endMetadata()
-                .addToSubjects(0, new SubjectBuilder()
-                        .withApiGroup("rbac.authorization.k8s.io")
-                        .withKind("User")
-                        .withName("jane")
-                        .withNamespace("default")
-                        .build()
-                )
-                .withRoleRef(new RoleRefBuilder()
-                        .withApiGroup("rbac.authorization.k8s.io")
-                        .withKind("Role")
-                        .withName("job-reader")
-                        .build()
-                )
-                .build();
+    // when
+    RoleBinding kubernetesRoleBinding = new RoleBindingBuilder()
+        .withNewMetadata()
+        .withName("read-jobs")
+        .withNamespace("default")
+        .endMetadata()
+        .addToSubjects(0, new SubjectBuilder()
+            .withApiGroup("rbac.authorization.k8s.io")
+            .withKind("User")
+            .withName("jane")
+            .withNamespace("default")
+            .build())
+        .withRoleRef(new RoleRefBuilder()
+            .withApiGroup("rbac.authorization.k8s.io")
+            .withKind("Role")
+            .withName("job-reader")
+            .build())
+        .build();
 
-        final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
+    final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
 
-        // then
-        assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                 .isEqualTo(originalJson);
+    // then
+    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
+        .isEqualTo(originalJson);
 
-    }
+  }
 }

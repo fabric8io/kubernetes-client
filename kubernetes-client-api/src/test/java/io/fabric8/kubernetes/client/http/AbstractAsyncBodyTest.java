@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +58,7 @@ public abstract class AbstractAsyncBodyTest {
           .andReturn(200, "This is the response body\n")
           .always();
       final StringBuffer responseText = new StringBuffer();
-      final HttpResponse<HttpClient.AsyncBody> asyncBodyResponse = client.consumeLines(
+      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeLines(
           client.newHttpRequestBuilder().uri(server.url("/consume-lines")).build(),
           (value, asyncBody) -> {
             responseText.append(value);
@@ -78,7 +80,7 @@ public abstract class AbstractAsyncBodyTest {
           .andReturn(200, "This would be the response body")
           .always();
       final StringBuffer responseText = new StringBuffer();
-      final HttpResponse<HttpClient.AsyncBody> asyncBodyResponse = client
+      final HttpResponse<AsyncBody> asyncBodyResponse = client
           .consumeLines(client.newHttpRequestBuilder()
               .uri(server.url("/cancel")).build(), (value, asyncBody) -> {
                 responseText.append(value);
@@ -94,14 +96,35 @@ public abstract class AbstractAsyncBodyTest {
   }
 
   @Test
+  @DisplayName("Lines are processed completely")
+  public void consumeLinesProcessesAllLines() throws Exception {
+    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      server.expect().withPath("/consume-lines")
+          .andReturn(200, "This is the response body\nWith\nMultiple\n lines\n")
+          .always();
+      final List<String> receivedLines = new ArrayList<>();
+      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeLines(
+          client.newHttpRequestBuilder().uri(server.url("/consume-lines")).build(),
+          (value, asyncBody) -> {
+            receivedLines.add(value);
+            asyncBody.consume();
+          })
+          .get(10L, TimeUnit.SECONDS);
+      asyncBodyResponse.body().consume();
+      asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
+      assertThat(receivedLines).containsExactly("This is the response body", "With", "Multiple", " lines");
+    }
+  }
+
+  @Test
   @DisplayName("Bytes are processed and consumed only after the consume() invocation")
-  public void consumeByteBufferLinesProcessedAfterConsume() throws Exception {
+  public void consumeBytesProcessedAfterConsume() throws Exception {
     try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
       server.expect().withPath("/consume-bytes")
           .andReturn(200, "This is the response body as bytes")
           .always();
       final StringBuffer responseText = new StringBuffer();
-      final HttpResponse<HttpClient.AsyncBody> asyncBodyResponse = client.consumeBytes(
+      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeBytes(
           client.newHttpRequestBuilder().uri(server.url("/consume-bytes")).build(),
           (value, asyncBody) -> {
             responseText.append(value.stream().map(StandardCharsets.UTF_8::decode)

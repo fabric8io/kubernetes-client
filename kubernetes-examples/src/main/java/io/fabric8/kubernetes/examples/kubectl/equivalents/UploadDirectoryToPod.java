@@ -28,10 +28,10 @@ public class UploadDirectoryToPod {
   public static void main(String[] args) {
     try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       File fileToUpload = new File("/tmp/test-dir-src");
-      k8s.pods().inNamespace("default")     // <- Namespace of Pod
-        .withName("my-pod")                 // <- Name of Pod
-        .dir("/tmp/test-dir")               // <- Path of directory inside Pod
-        .upload(fileToUpload.toPath());       // <- Local Path of directory
+      k8s.pods().inNamespace("default") // <- Namespace of Pod
+          .withName("my-pod") // <- Name of Pod
+          .dir("/tmp/test-dir") // <- Path of directory inside Pod
+          .upload(fileToUpload.toPath()); // <- Local Path of directory
     }
   }
 }

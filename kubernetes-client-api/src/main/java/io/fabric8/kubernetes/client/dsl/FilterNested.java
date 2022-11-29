@@ -19,9 +19,9 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.builder.Nested;
 
 public interface FilterNested<T> extends Filterable<FilterNested<T>>, Nested<T> {
-  
+
   default T endFilter() {
     return and();
   }
-  
+
 }

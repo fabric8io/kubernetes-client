@@ -25,41 +25,39 @@ import org.slf4j.LoggerFactory;
 
 public class SecurityContextConstraintExample {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityContextConstraintExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(SecurityContextConstraintExample.class);
 
-    //You need to be login as admin on OpenShift for this Example
-    //command for that is
-    //oc login -u system:admin
+  //You need to be login as admin on OpenShift for this Example
+  //command for that is
+  //oc login -u system:admin
 
-    public static void main(String[] args) {
-        try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
-          logger.info("Cluster SecurityContextConstraints:");
-          client.securityContextConstraints().list().getItems().forEach(scc ->
-            logger.info(" - {}", scc.getMetadata().getName()));
-          final SecurityContextConstraints scc = client.securityContextConstraints().create(
-            new SecurityContextConstraintsBuilder()
-            .withNewMetadata().withName("scc").endMetadata()
-            .withAllowPrivilegedContainer(true)
-            .withNewRunAsUser()
-            .withType("RunAsAny")
-            .endRunAsUser()
-            .withNewSeLinuxContext()
-            .withType("RunAsAny")
-            .endSeLinuxContext()
-            .withNewFsGroup()
-            .withType("RunAsAny")
-            .endFsGroup()
-            .withNewSupplementalGroups()
-            .withType("RunAsAny")
-            .endSupplementalGroups()
-            .addToUsers("admin")
-            .addToGroups("admin-group")
-            .build()
-          );
-          logger.info("Created SecurityContextConstraints {}", scc);
-        } catch (KubernetesClientException e) {
-          logger.error(e.getMessage(), e);
-        }
+  public static void main(String[] args) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
+      logger.info("Cluster SecurityContextConstraints:");
+      client.securityContextConstraints().list().getItems().forEach(scc -> logger.info(" - {}", scc.getMetadata().getName()));
+      final SecurityContextConstraints scc = client.securityContextConstraints().create(
+          new SecurityContextConstraintsBuilder()
+              .withNewMetadata().withName("scc").endMetadata()
+              .withAllowPrivilegedContainer(true)
+              .withNewRunAsUser()
+              .withType("RunAsAny")
+              .endRunAsUser()
+              .withNewSeLinuxContext()
+              .withType("RunAsAny")
+              .endSeLinuxContext()
+              .withNewFsGroup()
+              .withType("RunAsAny")
+              .endFsGroup()
+              .withNewSupplementalGroups()
+              .withType("RunAsAny")
+              .endSupplementalGroups()
+              .addToUsers("admin")
+              .addToGroups("admin-group")
+              .build());
+      logger.info("Created SecurityContextConstraints {}", scc);
+    } catch (KubernetesClientException e) {
+      logger.error(e.getMessage(), e);
     }
+  }
 
 }

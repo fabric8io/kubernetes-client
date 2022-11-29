@@ -28,13 +28,13 @@ public class CertificateSigningRequestApproveYamlEquivalent {
 
   public static void main(String[] args) {
 
-    try( KubernetesClient client = new KubernetesClientBuilder().build()) {
+    try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       CertificateSigningRequestCondition csrCondition = new CertificateSigningRequestConditionBuilder()
-            .withType("Approved")
-            .withStatus("True")
-            .withReason("ApprovedViaRESTApi")
-            .withMessage("Approved by REST API /approval endpoint.")
-            .build();
+          .withType("Approved")
+          .withStatus("True")
+          .withReason("ApprovedViaRESTApi")
+          .withMessage("Approved by REST API /approval endpoint.")
+          .build();
       client.certificates().v1().certificateSigningRequests().withName("my-cert").approve(csrCondition);
     }
   }

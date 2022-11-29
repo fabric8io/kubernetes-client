@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Version(Good.VERSION)
 @Group(Good.GROUP)
-public
-class Good extends CustomResource {
+public class Good extends CustomResource {
   public static final String VERSION = "v1beta1";
   public static final String GROUP = "sample.fabric8.io";
 }

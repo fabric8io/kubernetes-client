@@ -32,7 +32,7 @@ public class ListImageStreams {
   private static final Logger logger = LoggerFactory.getLogger(ListImageStreams.class);
 
   public static void main(String[] args) {
-    try(OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.IMAGE)) {
         logger.warn("This cluster does not support the API Group {}", OpenShiftAPIGroups.IMAGE);
         return;

@@ -15,12 +15,12 @@
  */
 package io.fabric8.istio.api.examples.v1beta1;
 
-import java.util.Collections;
-
 import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryBuilder;
 import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+
+import java.util.Collections;
 
 public class WorkloadEntryExample {
   private static final String NAMESPACE = "test";
@@ -40,14 +40,14 @@ public class WorkloadEntryExample {
     System.out.println("Creating a workload entry");
     // Example from: https://istio.io/latest/docs/reference/config/networking/workload-entry/
     client.v1beta1().workloadEntries().inNamespace(NAMESPACE).create(new WorkloadEntryBuilder()
-      .withNewMetadata()
-      .withName("details-svc")
-      .endMetadata()
-      .withNewSpec()
-      .withServiceAccount("details-legacy")
-      .withLabels(Collections.singletonMap("app", "details-legacy"))
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("details-svc")
+        .endMetadata()
+        .withNewSpec()
+        .withServiceAccount("details-legacy")
+        .withLabels(Collections.singletonMap("app", "details-legacy"))
+        .endSpec()
+        .build());
 
     System.out.println("Listing workload entry instances:");
     WorkloadEntryList list = client.v1beta1().workloadEntries().inNamespace(NAMESPACE).list();

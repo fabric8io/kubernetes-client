@@ -41,33 +41,33 @@ public class CronJobExample {
 
     log("Using master with url ", master);
     Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try(final KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
+    try (final KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
       final String namespace = client.getNamespace();
 
       CronJob cronJob1 = new CronJobBuilder()
-        .withApiVersion("batch/v1beta1")
-        .withNewMetadata()
-        .withName("hello")
-        .withLabels(Collections.singletonMap("foo", "bar"))
-        .endMetadata()
-        .withNewSpec()
-        .withSchedule("*/1 * * * *")
-        .withNewJobTemplate()
-        .withNewSpec()
-        .withNewTemplate()
-        .withNewSpec()
-        .addNewContainer()
-        .withName("hello")
-        .withImage("busybox")
-        .withArgs("/bin/sh", "-c", "date; echo Hello from Kubernetes")
-        .endContainer()
-        .withRestartPolicy("OnFailure")
-        .endSpec()
-        .endTemplate()
-        .endSpec()
-        .endJobTemplate()
-        .endSpec()
-        .build();
+          .withApiVersion("batch/v1beta1")
+          .withNewMetadata()
+          .withName("hello")
+          .withLabels(Collections.singletonMap("foo", "bar"))
+          .endMetadata()
+          .withNewSpec()
+          .withSchedule("*/1 * * * *")
+          .withNewJobTemplate()
+          .withNewSpec()
+          .withNewTemplate()
+          .withNewSpec()
+          .addNewContainer()
+          .withName("hello")
+          .withImage("busybox")
+          .withArgs("/bin/sh", "-c", "date; echo Hello from Kubernetes")
+          .endContainer()
+          .withRestartPolicy("OnFailure")
+          .endSpec()
+          .endTemplate()
+          .endSpec()
+          .endJobTemplate()
+          .endSpec()
+          .build();
 
       log("Creating cron job from object");
       cronJob1 = client.batch().v1().cronjobs().inNamespace(namespace).create(cronJob1);
@@ -79,7 +79,7 @@ public class CronJobExample {
         @Override
         public void eventReceived(Action action, Pod aPod) {
           log(aPod.getMetadata().getName(), aPod.getStatus().getPhase());
-          if(aPod.getStatus().getPhase().equals("Succeeded")) {
+          if (aPod.getStatus().getPhase().equals("Succeeded")) {
             log("Logs -> ", client.pods().inNamespace(namespace).withName(aPod.getMetadata().getName()).getLog());
             watchLatch.countDown();
           }

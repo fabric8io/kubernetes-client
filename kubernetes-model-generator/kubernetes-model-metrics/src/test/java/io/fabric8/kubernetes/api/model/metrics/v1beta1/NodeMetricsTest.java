@@ -40,8 +40,8 @@ class NodeMetricsTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-nodemetric.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final NodeMetrics nodeMetrics = mapper.readValue(originalJson, NodeMetrics.class);
@@ -59,20 +59,20 @@ class NodeMetricsTest {
   void builderShouldCreateObject() throws ParseException {
     // Given
     NodeMetricsBuilder nodeMetricsBuilder = new NodeMetricsBuilder()
-      .withNewMetadata().withName("minikube").endMetadata()
-      .withTimestamp("2021-12-23T16:05:09Z")
-      .withWindow(Duration.parse("30s"))
-      .withUsage(Collections.singletonMap("cpu", new Quantity("134994244n")));
+        .withNewMetadata().withName("minikube").endMetadata()
+        .withTimestamp("2021-12-23T16:05:09Z")
+        .withWindow(Duration.parse("30s"))
+        .withUsage(Collections.singletonMap("cpu", new Quantity("134994244n")));
 
     // When
     NodeMetrics nodeMetrics = nodeMetricsBuilder.build();
 
     // Then
     assertThat(nodeMetrics)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "minikube")
-      .hasFieldOrPropertyWithValue("timestamp", "2021-12-23T16:05:09Z")
-      .hasFieldOrPropertyWithValue("window", Duration.parse("30s"))
-      .hasFieldOrPropertyWithValue("usage", Collections.singletonMap("cpu", new Quantity("134994244n")));
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "minikube")
+        .hasFieldOrPropertyWithValue("timestamp", "2021-12-23T16:05:09Z")
+        .hasFieldOrPropertyWithValue("window", Duration.parse("30s"))
+        .hasFieldOrPropertyWithValue("usage", Collections.singletonMap("cpu", new Quantity("134994244n")));
   }
 }

@@ -27,12 +27,14 @@ import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityopera
 public interface OpenClusterManagementObservabilityAPIGroupDSL extends Client {
   /**
    * API entrypoint for MultiClusterObservability (observability.open-cluster-management.io/v1beta2)
+   * 
    * @return {@link NonNamespaceOperation} for MultiClusterObservability
    */
   NonNamespaceOperation<MultiClusterObservability, MultiClusterObservabilityList, Resource<MultiClusterObservability>> multiClusterObservailities();
 
   /**
    * API entrypoint for ObservabilityAddon (observability.open-cluster-management.io/v1beta1)
+   * 
    * @return {@link MixedOperation} for ObservabilityAddon
    */
   MixedOperation<ObservabilityAddon, ObservabilityAddonList, Resource<ObservabilityAddon>> observabilityAddons();

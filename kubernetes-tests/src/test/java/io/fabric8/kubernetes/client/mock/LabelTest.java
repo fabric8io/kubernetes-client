@@ -43,37 +43,35 @@ class LabelTest {
   @BeforeEach
   void init() {
     pod1 = new PodBuilder()
-      .withNewMetadata().withName("pod1").addToLabels("foo", "bar").endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("test")
-      .withImage("nginx")
-      .addNewPort().withContainerPort(80).endPort()
-      .endContainer()
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("pod1").addToLabels("foo", "bar").endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("test")
+        .withImage("nginx")
+        .addNewPort().withContainerPort(80).endPort()
+        .endContainer()
+        .endSpec()
+        .build();
 
     pod2 = new PodBuilder()
-      .withNewMetadata().withName("pod2").addToLabels("app", "busybox").endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withImage("busybox")
-      .withCommand("sleep", "3600")
-      .withImagePullPolicy("IfNotPresent")
-      .withName("busybox")
-      .endContainer()
-      .withRestartPolicy("Always")
-      .endSpec()
-      .build();
+        .withNewMetadata().withName("pod2").addToLabels("app", "busybox").endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withImage("busybox")
+        .withCommand("sleep", "3600")
+        .withImagePullPolicy("IfNotPresent")
+        .withName("busybox")
+        .endContainer()
+        .withRestartPolicy("Always")
+        .endSpec()
+        .build();
   }
-
 
   @Test
   void testBasicList() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods")
-      .andReturn(200, new PodListBuilder().withItems(pod1, pod2).build())
-      .once();
-
+        .andReturn(200, new PodListBuilder().withItems(pod1, pod2).build())
+        .once();
 
     PodList list = client.pods().inNamespace("test").list();
     assertNotNull(list);
@@ -83,16 +81,16 @@ class LabelTest {
   @Test
   void testWithLabels() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("foo=bar"))
-      .andReturn(200, new PodListBuilder().withItems(pod1).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod1).build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx,foo=bar"))
-      .andReturn(200, new PodListBuilder().build())
-      .once();
+        .andReturn(200, new PodListBuilder().build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
-      .andReturn(200, new PodListBuilder().withItems(pod2).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod2).build())
+        .once();
 
     Map<String, String> filterLabels = new HashMap<>();
 
@@ -115,12 +113,12 @@ class LabelTest {
   @Test
   void testWithLabel() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=foo")
-      .andReturn(200, new PodListBuilder().withItems(pod1).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod1).build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=app")
-      .andReturn(200, new PodListBuilder().withItems(pod2).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod2).build())
+        .once();
 
     PodList list = client.pods().inNamespace("test").withLabel("foo").list();
     assertNotNull(list);
@@ -134,16 +132,16 @@ class LabelTest {
   @Test
   void testWithoutLabels() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("foo!=bar"))
-      .andReturn(200, new PodListBuilder().withItems(pod2).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod2).build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("app!=nginx,foo!=bar"))
-      .andReturn(200, new PodListBuilder().build())
-      .once();
+        .andReturn(200, new PodListBuilder().build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("app!=nginx"))
-      .andReturn(200, new PodListBuilder().withItems(pod1).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod1).build())
+        .once();
 
     Map<String, String> filterLabels = new HashMap<>();
 
@@ -166,12 +164,12 @@ class LabelTest {
   @Test
   void testWithoutLabel() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("!foo"))
-      .andReturn(200, new PodListBuilder().withItems(pod2).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod2).build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("!app"))
-      .andReturn(200, new PodListBuilder().withItems(pod1).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod1).build())
+        .once();
 
     PodList list = client.pods().inNamespace("test").withoutLabel("foo").list();
     assertNotNull(list);
@@ -185,12 +183,12 @@ class LabelTest {
   @Test
   void testLabelsIn() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=foo%20in%20%28bar%29")
-      .andReturn(200, new PodListBuilder().withItems(pod1).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod1).build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=app%20in%20%28nginx%29")
-      .andReturn(200, new PodListBuilder().withItems(pod2).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod2).build())
+        .once();
 
     Map<String, String> filterLabels = new HashMap<>();
 
@@ -207,12 +205,12 @@ class LabelTest {
   @Test
   void testLabelsNotIn() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=foo%20notin%20%28bar%29")
-      .andReturn(200, new PodListBuilder().withItems(pod2).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod2).build())
+        .once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=app%20notin%20%28nginx%29")
-      .andReturn(200, new PodListBuilder().withItems(pod1).build())
-      .once();
+        .andReturn(200, new PodListBuilder().withItems(pod1).build())
+        .once();
 
     Map<String, String> filterLabels = new HashMap<>();
 

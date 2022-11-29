@@ -33,8 +33,8 @@ class ClusterManagerTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clustermanager.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ClusterManager clusterManager = mapper.readValue(originalJson, ClusterManager.class);
@@ -55,14 +55,14 @@ class ClusterManagerTest {
   void builderShouldCreateObject() {
     // Given
     ClusterManagerBuilder clusterManagerBuilder = new ClusterManagerBuilder()
-      .withNewMetadata()
-      .withName("cluster-manager")
-      .endMetadata()
-      .withNewSpec()
-      .withRegistrationImagePullSpec("quay.io/open-cluster-management/registration")
-      .withWorkImagePullSpec("quay.io/open-cluster-management/work")
-      .withPlacementImagePullSpec("quay.io/open-cluster-management/placement")
-      .endSpec();
+        .withNewMetadata()
+        .withName("cluster-manager")
+        .endMetadata()
+        .withNewSpec()
+        .withRegistrationImagePullSpec("quay.io/open-cluster-management/registration")
+        .withWorkImagePullSpec("quay.io/open-cluster-management/work")
+        .withPlacementImagePullSpec("quay.io/open-cluster-management/placement")
+        .endSpec();
 
     // When
     ClusterManager clusterManager = clusterManagerBuilder.build();

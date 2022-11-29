@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.openshift.api.model.ImageSignature;
 
-public interface NameableCreateOrDeleteable extends Nameable<CreateOrDeleteable<ImageSignature>>, CreateOrDeleteable<ImageSignature> {
+public interface NameableCreateOrDeleteable
+    extends Nameable<CreateOrDeleteable<ImageSignature>>, CreateOrDeleteable<ImageSignature> {
 
 }

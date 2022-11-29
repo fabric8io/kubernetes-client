@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 public interface NamespacedKubernetesClient extends KubernetesClient {
 
   NamespacedKubernetesClient inAnyNamespace();
+
   NamespacedKubernetesClient inNamespace(String namespace);
 
   FunctionCallable<? extends NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig);

@@ -40,14 +40,14 @@ public class PeerAuthenticationExample {
   public static void createResource(IstioClient client) {
     System.out.println("Creating a PeerAuthentication entry");
     client.v1beta1().peerAuthentications().inNamespace(NAMESPACE).create(new PeerAuthenticationBuilder()
-      .withNewMetadata()
-      .withName("details-svc")
-      .endMetadata()
-      .withNewSpec()
-      .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
-      .withMtls(new PeerAuthenticationMutualTLS(PeerAuthenticationMutualTLSMode.DISABLE))
-      .endSpec()
-      .build());
+        .withNewMetadata()
+        .withName("details-svc")
+        .endMetadata()
+        .withNewSpec()
+        .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
+        .withMtls(new PeerAuthenticationMutualTLS(PeerAuthenticationMutualTLSMode.DISABLE))
+        .endSpec()
+        .build());
 
     System.out.println("Listing workload entry instances:");
     PeerAuthenticationList list = client.v1beta1().peerAuthentications().inNamespace(NAMESPACE).list();

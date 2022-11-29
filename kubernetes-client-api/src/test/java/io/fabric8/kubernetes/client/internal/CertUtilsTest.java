@@ -69,26 +69,27 @@ class CertUtilsTest {
   }
 
   @Test
-  void testLoadingMultipleCertsFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  void testLoadingMultipleCertsFromSameFile()
+      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     KeyStore ts = CertUtils.createTrustStore(
-      null, "src/test/resources/ssl/multiple-certs.pem", null, "changeit");
+        null, "src/test/resources/ssl/multiple-certs.pem", null, "changeit");
     assertTrue(ts.size() >= 2);
   }
 
   @Test
-  void testLoadingMultipleCertsWithSameSubjectFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  void testLoadingMultipleCertsWithSameSubjectFromSameFile()
+      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     KeyStore ts = CertUtils.createTrustStore(
-      null, "src/test/resources/ssl/nonunique-subject.pem", null, "changeit");
+        null, "src/test/resources/ssl/nonunique-subject.pem", null, "changeit");
 
     assertTrue(ts.size() >= 2);
   }
 
   @Test
   void testLoadTrustStoreFromFileUsingConfigProperties()
-    throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
-    KeyStore trustStore =
-      CertUtils.createTrustStore(
+    KeyStore trustStore = CertUtils.createTrustStore(
         null, "src/test/resources/ssl/multiple-certs.pem", FABRIC8_STORE_PATH, FABRIC8_STORE_PASSPHRASE);
 
     assertEquals(3, trustStore.size());
@@ -97,13 +98,12 @@ class CertUtilsTest {
 
   @Test
   void testLoadTrustStoreFromFileUsingSystemProperties()
-    throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
     System.setProperty("javax.net.ssl.trustStore", FABRIC8_STORE_PATH);
     System.setProperty("javax.net.ssl.trustStorePassword", FABRIC8_STORE_PASSPHRASE);
 
-    KeyStore trustStore =
-      CertUtils.createTrustStore(
+    KeyStore trustStore = CertUtils.createTrustStore(
         null, "src/test/resources/ssl/multiple-certs.pem", null, null);
 
     assertEquals(3, trustStore.size());
@@ -112,10 +112,9 @@ class CertUtilsTest {
 
   @Test
   void testLoadKeyStoreFromFileUsingConfigProperties()
-    throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
-    KeyStore trustStore =
-      CertUtils.createKeyStore(
+    KeyStore trustStore = CertUtils.createKeyStore(
         null, "src/test/resources/ssl/multiple-certs.pem",
         null, "src/test/resources/ssl/fabric8", "RSA", "changeit",
         FABRIC8_STORE_PATH, FABRIC8_STORE_PASSPHRASE);
@@ -126,7 +125,8 @@ class CertUtilsTest {
 
   @Test
   void testLoadKeyStoreFromFileUsingSystemProperties()
-    throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, URISyntaxException {
+      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException,
+      URISyntaxException {
 
     System.setProperty("javax.net.ssl.keyStore", FABRIC8_STORE_PATH);
     System.setProperty("javax.net.ssl.keyStorePassword", String.valueOf(FABRIC8_STORE_PASSPHRASE));
@@ -134,8 +134,8 @@ class CertUtilsTest {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl/fabric8"));
     String multipleCertsPath = Utils.filePath(getClass().getResource("/ssl/multiple-certs.pem"));
 
-    KeyStore trustStore =
-      CertUtils.createKeyStore(null, multipleCertsPath, null, privateKeyPath, "RSA", "changeit", null, null);
+    KeyStore trustStore = CertUtils.createKeyStore(null, multipleCertsPath, null, privateKeyPath, "RSA", "changeit", null,
+        null);
 
     assertEquals(2, trustStore.size());
     verifyFabric8InStore(trustStore);
@@ -144,7 +144,8 @@ class CertUtilsTest {
   @Test
   void testGetInputStreamFromDataOrFileShouldNotDecodedPEMAgain() throws IOException {
     // Given
-    File certFile = new File(Objects.requireNonNull(getClass().getResource("/ssl/valid-non-base64-encoded-cert.pem")).getFile());
+    File certFile = new File(
+        Objects.requireNonNull(getClass().getResource("/ssl/valid-non-base64-encoded-cert.pem")).getFile());
     String certData = new String(Files.readAllBytes(certFile.toPath()));
 
     // When
@@ -170,13 +171,13 @@ class CertUtilsTest {
   }
 
   private void verifyFabric8InStore(KeyStore trustStore)
-    throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
+      throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
 
     Certificate certificate = trustStore.getCertificate("fabric8-in-store");
     assertNotNull(certificate);
 
     KeyStore storeWithCert = CertUtils.createTrustStore(
-      null, "src/test/resources/ssl/fabric8.crt", null, "");
+        null, "src/test/resources/ssl/fabric8.crt", null, "");
     String certificateAlias = storeWithCert.getCertificateAlias(certificate);
     assertNotNull(certificateAlias);
   }

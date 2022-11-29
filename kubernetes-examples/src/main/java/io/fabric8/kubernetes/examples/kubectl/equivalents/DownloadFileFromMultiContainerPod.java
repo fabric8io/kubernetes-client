@@ -32,11 +32,11 @@ public class DownloadFileFromMultiContainerPod {
       Path downloadToPath = new File("/tmp/docker-entrypoint.sh").toPath();
       // Using Kubernetes Client to copy file from pod
       client.pods()
-        .inNamespace("default")             // <- Namespace of pod
-        .withName("multi-container-pod")    // <- Name of pod
-        .inContainer("c1")                  // <- Container from which file has to be downloaded
-        .file("/docker-entrypoint.sh")      // <- Path of file inside pod
-        .copy(downloadToPath);                // <- Local path where to copy downloaded file
+          .inNamespace("default") // <- Namespace of pod
+          .withName("multi-container-pod") // <- Name of pod
+          .inContainer("c1") // <- Container from which file has to be downloaded
+          .file("/docker-entrypoint.sh") // <- Path of file inside pod
+          .copy(downloadToPath); // <- Local path where to copy downloaded file
     }
   }
 }

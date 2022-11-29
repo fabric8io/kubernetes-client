@@ -15,15 +15,15 @@
  */
 package io.fabric8.crd.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Resources {
   private final KubernetesListBuilder global = new KubernetesListBuilder();
@@ -38,13 +38,13 @@ public class Resources {
     return this.global;
   }
 
-
   /**
    * Get the Decorator Set.
    * The method is visible for testing purposes.
+   * 
    * @return the Set of registed Decorators.
    */
-  protected Set<Decorator> getDecorators()  {
+  protected Set<Decorator> getDecorators() {
     return globalDecorators;
   }
 
@@ -57,7 +57,6 @@ public class Resources {
     globalDecorators.add(decorator);
   }
 
-
   /**
    * Add a resource to all groups.
    *
@@ -66,7 +65,6 @@ public class Resources {
   public void add(HasMetadata metadata) {
     global.addToItems(metadata);
   }
-
 
   /**
    * Generate all resources.
@@ -90,8 +88,8 @@ public class Resources {
     // In other words we don't ANY sorting algorithm, we need bubble sort.
     // We also might need it more than once. So, we'll do it as many times as we have to, till there are not more transformations.
     // But hey, let's have an upper limit of 5 just to prevent infinite loops
-    for(int i=0; i<10 && bubbleSort(array); i++) {
-      System.out.println("Sorting again:" + (i+1));
+    for (int i = 0; i < 10 && bubbleSort(array); i++) {
+      System.out.println("Sorting again:" + (i + 1));
     }
 
     for (Decorator d : array) {
@@ -102,6 +100,7 @@ public class Resources {
 
   /**
    * Bubble sort for decorators.
+   * 
    * @param decorators the {@link Decorator} array to be sorted
    */
   private boolean bubbleSort(Decorator[] decorators) {

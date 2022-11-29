@@ -34,7 +34,7 @@ public class ConfigViewEquivalent {
     if (kubeConfigFileName != null) {
       File kubeConfigFile = new File(kubeConfigFileName);
       Files.readAllLines(kubeConfigFile.toPath())
-        .forEach(logger::warn);
+          .forEach(logger::warn);
     }
   }
 }

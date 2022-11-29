@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.Client;
 
-public interface BatchAPIGroupDSL extends Client{
+public interface BatchAPIGroupDSL extends Client {
 
   /**
    * DSL entrypoint for batch/v1 Jobs

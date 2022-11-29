@@ -31,8 +31,8 @@ class DNSZoneTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-dnszone.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final DNSZone dnsZone = mapper.readValue(originalJson, DNSZone.class);
@@ -42,37 +42,37 @@ class DNSZoneTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(dnsZone)
-      .isNotNull()
-      .isEqualTo(dnsZoneFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "dnszone-sample")
-      .hasFieldOrPropertyWithValue("spec.zone", "testzone.testdomain.com")
-      .hasFieldOrPropertyWithValue("spec.aws.credentialsSecretRef.name", "route53-creds-secret");
+        .isNotNull()
+        .isEqualTo(dnsZoneFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "dnszone-sample")
+        .hasFieldOrPropertyWithValue("spec.zone", "testzone.testdomain.com")
+        .hasFieldOrPropertyWithValue("spec.aws.credentialsSecretRef.name", "route53-creds-secret");
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     DNSZoneBuilder dnsZoneBuilder = new DNSZoneBuilder()
-      .withNewMetadata()
-      .addToAnnotations(Collections.singletonMap("hive.openshift.io/delete-after", "8h"))
-      .withName("dnszone-sample")
-      .endMetadata()
-      .withNewSpec()
-      .withPreserveOnDelete(false)
-      .withZone("testzone.testdomain.com")
-      .withNewAws()
-      .withNewCredentialsSecretRef().withName("route53-creds-secret").endCredentialsSecretRef()
-      .endAws()
-      .endSpec();
+        .withNewMetadata()
+        .addToAnnotations(Collections.singletonMap("hive.openshift.io/delete-after", "8h"))
+        .withName("dnszone-sample")
+        .endMetadata()
+        .withNewSpec()
+        .withPreserveOnDelete(false)
+        .withZone("testzone.testdomain.com")
+        .withNewAws()
+        .withNewCredentialsSecretRef().withName("route53-creds-secret").endCredentialsSecretRef()
+        .endAws()
+        .endSpec();
 
     // When
     DNSZone dnsZone = dnsZoneBuilder.build();
 
     // Then
     assertThat(dnsZone)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "dnszone-sample")
-      .hasFieldOrPropertyWithValue("spec.zone", "testzone.testdomain.com")
-      .hasFieldOrPropertyWithValue("spec.aws.credentialsSecretRef.name", "route53-creds-secret");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "dnszone-sample")
+        .hasFieldOrPropertyWithValue("spec.zone", "testzone.testdomain.com")
+        .hasFieldOrPropertyWithValue("spec.aws.credentialsSecretRef.name", "route53-creds-secret");
   }
 }

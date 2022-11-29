@@ -36,7 +36,7 @@ public interface OperationInfo {
   default String getPlural() {
     return null;
   }
-  
+
   default String getVersion() {
     return null;
   }

@@ -25,7 +25,7 @@ import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 public class OpenShiftReadiness extends Readiness {
 
   private static final String OPENSHIFT_READINESS_APPLICABLE_RESOURCES = READINESS_APPLICABLE_RESOURCES +
-    ", " + "DeploymentConfig";
+      ", " + "DeploymentConfig";
 
   private static class OpenShiftReadinessHolder {
     public static final OpenShiftReadiness INSTANCE = new OpenShiftReadiness();
@@ -38,8 +38,7 @@ public class OpenShiftReadiness extends Readiness {
   @Override
   protected boolean isReadinessApplicable(HasMetadata item) {
     return super.isReadinessApplicable(item) ||
-      item instanceof DeploymentConfig
-      ;
+        item instanceof DeploymentConfig;
   }
 
   @Override
@@ -70,7 +69,7 @@ public class OpenShiftReadiness extends Readiness {
     }
 
     return spec.getReplicas().intValue() == status.getReplicas() &&
-      spec.getReplicas() <= status.getAvailableReplicas();
+        spec.getReplicas() <= status.getAvailableReplicas();
   }
 
 }

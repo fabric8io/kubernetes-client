@@ -64,58 +64,59 @@ public class URLUtils {
   private URLUtils() {
     throw new IllegalStateException("Utility class");
   }
+
   public static String join(String... parts) {
-        StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
 
-        String urlQueryParams = "";
-        if (parts.length > 0) {
-          String urlWithoutQuery = parts[0];
-          try {
-            URI uri = new URI(parts[0]);
-            if (containsQueryParam(uri)) {
-              urlQueryParams = uri.getQuery();
-              urlWithoutQuery = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null, uri.getFragment())
-                .toString();
-            }
-          } catch (URISyntaxException e) {
-            // Not all first parameters are URL
-          }
-          sb.append(urlWithoutQuery).append("/");
+    String urlQueryParams = "";
+    if (parts.length > 0) {
+      String urlWithoutQuery = parts[0];
+      try {
+        URI uri = new URI(parts[0]);
+        if (containsQueryParam(uri)) {
+          urlQueryParams = uri.getQuery();
+          urlWithoutQuery = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null, uri.getFragment())
+              .toString();
+        }
+      } catch (URISyntaxException e) {
+        // Not all first parameters are URL
+      }
+      sb.append(urlWithoutQuery).append("/");
+    }
+
+    StringBuilder queryParams = new StringBuilder();
+    for (int i = 1; i < parts.length; i++) {
+      try {
+        URI partUri = new URI(parts[i]);
+        if (containsQueryParam(partUri)) {
+          queryParams = getQueryParams(partUri, parts, i + 1);
+          // If we start detecting query params then everything will be query params part
+          break;
         }
 
-        StringBuilder queryParams = new StringBuilder();
-        for (int i = 1; i < parts.length; i++) {
-          try {
-            URI partUri = new URI(parts[i]);
-            if (containsQueryParam(partUri)) {
-              queryParams = getQueryParams(partUri, parts, i+1);
-              // If we start detecting query params then everything will be query params part
-              break;
-            }
+        sb.append(parts[i]);
 
-            sb.append(parts[i]);
+      } catch (URISyntaxException e) {
+        sb.append(parts[i]);
+      }
 
-          } catch (URISyntaxException e) {
-            sb.append(parts[i]);
-          }
-
-          if (i < parts.length - 1) {
-            sb.append("/");
-          }
-
-        }
-
-        appendQueryParametersFromOriginalUrl(sb, urlQueryParams, queryParams);
-        String joined = sb.toString();
-
-        // And normalize it...
-        return joined
-                .replaceAll("/+", "/")
-                .replaceAll("/\\?", "?")
-                .replaceAll("/#", "#")
-                .replaceAll(":/", "://");
+      if (i < parts.length - 1) {
+        sb.append("/");
+      }
 
     }
+
+    appendQueryParametersFromOriginalUrl(sb, urlQueryParams, queryParams);
+    String joined = sb.toString();
+
+    // And normalize it...
+    return joined
+        .replaceAll("/+", "/")
+        .replaceAll("/\\?", "?")
+        .replaceAll("/#", "#")
+        .replaceAll(":/", "://");
+
+  }
 
   private static void appendQueryParametersFromOriginalUrl(StringBuilder sb, String urlQueryParams, StringBuilder queryParams) {
     if (!urlQueryParams.isEmpty()) {
@@ -131,27 +132,28 @@ public class URLUtils {
   }
 
   private static StringBuilder getQueryParams(URI firstPart, String[] parts, int index) {
-        StringBuilder queryParams = new StringBuilder();
-        queryParams.append(firstPart.toString());
+    StringBuilder queryParams = new StringBuilder();
+    queryParams.append(firstPart.toString());
 
-        for (int i = index; i < parts.length; i++) {
-            String param = parts[i];
+    for (int i = index; i < parts.length; i++) {
+      String param = parts[i];
 
-            if (!param.startsWith("&")) {
-                queryParams.append("&");
-            }
-            queryParams.append((param));
-        }
-
-        return queryParams;
+      if (!param.startsWith("&")) {
+        queryParams.append("&");
+      }
+      queryParams.append((param));
     }
 
-    private static boolean containsQueryParam(URI uri) {
-       return uri.getQuery() != null;
-    }
+    return queryParams;
+  }
+
+  private static boolean containsQueryParam(URI uri) {
+    return uri.getQuery() != null;
+  }
 
   /**
-   * Joins all the given strings, ignoring nulls so that they form a URL with / between the paths without a // if the previous path ends with / and the next path starts with / unless a path item is blank
+   * Joins all the given strings, ignoring nulls so that they form a URL with / between the paths without a // if the previous
+   * path ends with / and the next path starts with / unless a path item is blank
    *
    * @param strings A list of strings which you need to concatenate.
    * @return the strings concatenated together with / while avoiding a double // between non blank strings.
@@ -194,6 +196,6 @@ public class URLUtils {
   }
 
   public static String encodeToUTF(String url) {
-	  return HttpRequest.formURLEncode(url);
+    return HttpRequest.formURLEncode(url);
   }
 }

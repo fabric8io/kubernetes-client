@@ -26,9 +26,9 @@ public class PodAddAnnotation {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.pods().inNamespace("default").withName("my-pod").edit(p -> new PodBuilder(p).editMetadata()
-        .addToAnnotations("icon-url", "http://goo.gl/XXBTWq")
-        .endMetadata()
-        .build());
+          .addToAnnotations("icon-url", "http://goo.gl/XXBTWq")
+          .endMetadata()
+          .build());
     }
   }
 }

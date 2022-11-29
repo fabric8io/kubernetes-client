@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.http.HttpClient.AsyncBody;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -31,12 +30,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -51,8 +56,8 @@ class OkHttpClientTest {
     return new OkHttpClientFactory();
   }
 
-  private KubernetesMockServer server;
-  private KubernetesClient client;
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @BeforeEach
   void setUp() {
@@ -82,7 +87,7 @@ class OkHttpClientTest {
 
     assertThrows(WebSocketHandshakeException.class, () -> {
       try {
-        startedFuture.get();
+        startedFuture.get(10, TimeUnit.SECONDS);
       } catch (ExecutionException e) {
         throw e.getCause();
       }
@@ -139,22 +144,24 @@ class OkHttpClientTest {
     assertFalse(latch.await(10, TimeUnit.SECONDS));
     assertEquals(1, latch.getCount());
 
-    startedFuture.get().request();
+    startedFuture.get(10, TimeUnit.SECONDS).request();
 
     assertTrue(latch.await(10, TimeUnit.SECONDS));
   }
 
   @Test
   void testAsyncBody() throws Exception {
-    server.expect().withPath("/async").andReturn(200, "hello world").always();
+    int byteCount = 20000;
+    server.expect().withPath("/async").andReturn(200, new String(new byte[byteCount], StandardCharsets.UTF_8)).always();
 
-    CompletableFuture<Boolean> consumed = new CompletableFuture<>();
+    CompletableFuture<Integer> consumed = new CompletableFuture<>();
+    AtomicInteger total = new AtomicInteger();
 
     CompletableFuture<HttpResponse<AsyncBody>> responseFuture = client.getHttpClient().consumeBytes(
         client.getHttpClient().newHttpRequestBuilder().uri(URI.create(client.getConfiguration().getMasterUrl() + "async"))
             .build(),
         (value, asyncBody) -> {
-          consumed.complete(true);
+          value.stream().map(ByteBuffer::remaining).forEach(total::addAndGet);
           asyncBody.consume();
         });
 
@@ -167,29 +174,74 @@ class OkHttpClientTest {
         r.body().done().whenComplete((v, ex) -> {
           if (ex != null) {
             consumed.completeExceptionally(ex);
-          }
-          if (v != null) {
-            consumed.complete(false);
+          } else {
+            consumed.complete(total.get());
           }
         });
       }
     });
 
-    assertTrue(consumed.get(10, TimeUnit.SECONDS));
+    assertEquals(byteCount, consumed.get(10, TimeUnit.SECONDS));
+  }
+
+  @Test
+  void testConsumeLines() throws Exception {
+    server.expect().withPath("/async").andReturn(200, "hello\nworld\nlines\n").always();
+
+    ArrayList<String> strings = new ArrayList<>();
+    CompletableFuture<Void> consumed = new CompletableFuture<>();
+
+    CompletableFuture<HttpResponse<AsyncBody>> responseFuture = client.getHttpClient().consumeLines(
+        client.getHttpClient().newHttpRequestBuilder().uri(URI.create(client.getConfiguration().getMasterUrl() + "async"))
+            .build(),
+        (value, asyncBody) -> {
+          strings.add(value);
+          asyncBody.consume();
+        });
+
+    responseFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        consumed.completeExceptionally(t);
+      }
+      if (r != null) {
+        r.body().consume();
+        r.body().done().whenComplete((v, ex) -> {
+          if (ex != null) {
+            consumed.completeExceptionally(ex);
+          } else {
+            consumed.complete(null);
+          }
+        });
+      }
+    });
+
+    consumed.get(10, TimeUnit.SECONDS);
+    assertEquals(Arrays.asList("hello", "world", "lines"), strings);
   }
 
   @DisplayName("Supported response body types")
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })
-  void testSupportedTypes(Class<?> type) throws Exception {
-    server.expect().withPath("/type").andReturn(200, "hello world").always();
+  void supportedResponseBodyTypes(Class<?> type) throws Exception {
+    String value = new String(new byte[16384]);
+    server.expect().withPath("/type").andReturn(200, value).always();
     final HttpResponse<?> result = client.getHttpClient()
         .sendAsync(client.getHttpClient().newHttpRequestBuilder()
             .uri(URI.create(client.getConfiguration().getMasterUrl() + "type")).build(), type)
         .get(10, TimeUnit.SECONDS);
     assertThat(result)
         .satisfies(r -> assertThat(r.body()).isInstanceOf(type))
-        .satisfies(r -> assertThat(r.bodyString()).isEqualTo("hello world"));
+        .satisfies(r -> assertThat(r.bodyString()).isEqualTo(value));
   }
 
+  @Test
+  void supportedResponseTypeWithInvalid() {
+    final HttpClient httpClient = client.getHttpClient();
+    final HttpRequest request = httpClient.newHttpRequestBuilder()
+        .uri(URI.create(client.getConfiguration().getMasterUrl() + "type")).build();
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> httpClient.sendAsync(request, Boolean.class))
+        .withMessageStartingWith("Unsupported response type: ")
+        .withMessageContaining("Boolean");
+  }
 }

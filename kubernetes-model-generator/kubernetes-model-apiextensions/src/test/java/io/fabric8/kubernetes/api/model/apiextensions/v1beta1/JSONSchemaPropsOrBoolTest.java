@@ -16,21 +16,17 @@
 
 package io.fabric8.kubernetes.api.model.apiextensions.v1beta1;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
-
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolBuilder;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 class JSONSchemaPropsOrBoolTest {
 
@@ -40,25 +36,26 @@ class JSONSchemaPropsOrBoolTest {
     JSONSchemaProps props = new ObjectMapper().readValue(resourceAsStream, JSONSchemaProps.class);
 
     Assertions.assertEquals(props, new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
-        .withAllows(true)
-        .build())
-      .build());
+        .withType("object")
+        .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
+            .withAllows(true)
+            .build())
+        .build());
   }
 
   @Test
   void itSerializesAdditionalPropertiesTrue() throws JsonProcessingException {
-    String expectedJson = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/additionalproperties_true.json"), StandardCharsets.UTF_8))
-      .lines()
-      .collect(Collectors.joining("\n"));
+    String expectedJson = new BufferedReader(
+        new InputStreamReader(getClass().getResourceAsStream("/additionalproperties_true.json"), StandardCharsets.UTF_8))
+            .lines()
+            .collect(Collectors.joining("\n"));
 
     String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
-        .withAllows(true)
-        .build())
-      .build());
+        .withType("object")
+        .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
+            .withAllows(true)
+            .build())
+        .build());
 
     Assertions.assertEquals(expectedJson, outputJson);
   }
@@ -69,26 +66,27 @@ class JSONSchemaPropsOrBoolTest {
     JSONSchemaProps props = new ObjectMapper().readValue(resourceAsStream, JSONSchemaProps.class);
 
     Assertions.assertEquals(props, new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
-        .withAllows(true)
-        .withNewSchema().withType("string").endSchema()
-        .build())
-      .build());
+        .withType("object")
+        .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
+            .withAllows(true)
+            .withNewSchema().withType("string").endSchema()
+            .build())
+        .build());
   }
 
   @Test
   void itSerializesAdditionalPropertiesTyped() throws JsonProcessingException {
-    String expectedJson = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/additionalproperties_typed.json"), StandardCharsets.UTF_8))
-      .lines()
-      .collect(Collectors.joining("\n"));
+    String expectedJson = new BufferedReader(
+        new InputStreamReader(getClass().getResourceAsStream("/additionalproperties_typed.json"), StandardCharsets.UTF_8))
+            .lines()
+            .collect(Collectors.joining("\n"));
 
     String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
-      .withType("object")
-      .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
-        .withNewSchema().withType("string").endSchema()
-        .build())
-      .build());
+        .withType("object")
+        .withAdditionalProperties(new JSONSchemaPropsOrBoolBuilder()
+            .withNewSchema().withType("string").endSchema()
+            .build())
+        .build());
 
     Assertions.assertEquals(expectedJson, outputJson);
   }

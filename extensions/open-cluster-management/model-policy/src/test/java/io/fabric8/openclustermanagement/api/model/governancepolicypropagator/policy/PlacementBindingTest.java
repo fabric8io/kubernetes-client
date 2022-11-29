@@ -33,8 +33,8 @@ class PlacementBindingTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-placementbinding.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final PlacementBinding placementBinding = mapper.readValue(originalJson, PlacementBinding.class);
@@ -56,19 +56,19 @@ class PlacementBindingTest {
   void builderShouldCreateObject() {
     // Given
     PlacementBindingBuilder placementBindingBuilder = new PlacementBindingBuilder()
-      .withNewMetadata()
-      .withName("test-policy-pb")
-      .endMetadata()
-      .withNewPlacementRef()
-      .withName("test-policy-plr")
-      .withApiGroup("apps.open-cluster-management.io")
-      .withKind("PlacementRule")
-      .endPlacementRef()
-      .addNewSubject()
-      .withName("test-policy")
-      .withApiGroup("policy.open-cluster-management.io")
-      .withKind("Policy")
-      .endSubject();
+        .withNewMetadata()
+        .withName("test-policy-pb")
+        .endMetadata()
+        .withNewPlacementRef()
+        .withName("test-policy-plr")
+        .withApiGroup("apps.open-cluster-management.io")
+        .withKind("PlacementRule")
+        .endPlacementRef()
+        .addNewSubject()
+        .withName("test-policy")
+        .withApiGroup("policy.open-cluster-management.io")
+        .withKind("Policy")
+        .endSubject();
 
     // When
     PlacementBinding placementBinding = placementBindingBuilder.build();

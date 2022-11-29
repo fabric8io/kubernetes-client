@@ -85,7 +85,7 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.14.0</jackson.version>
+    <jackson.version>2.14.1</jackson.version>
     <jetty.version>11.0.12</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.6</maven-core.version>
@@ -144,7 +144,7 @@
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.27.2</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.28.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -1068,7 +1068,6 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless-maven-plugin.version}</version>
         <configuration>
-          <ratchetFrom>origin/master</ratchetFrom>
           <java>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>
@@ -1076,6 +1075,7 @@
             <importOrder>
               <file>ide-config/eclipse.importorder</file>
             </importOrder>
+            <removeUnusedImports/>
           </java>
         </configuration>
       </plugin>

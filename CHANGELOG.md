@@ -15,7 +15,8 @@
 
 #### Improvements
 * Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
-*  Fix #4530: generalizing the Serialization logic to allow for primitive values and clarifying the type expectations.
+* Fix #4530: generalizing the Serialization logic to allow for primitive values and clarifying the type expectations.
+* Fix #4201: Removed sendAsync from the individual http client implementations
 
 #### Dependency Upgrade
 
@@ -25,9 +26,10 @@
 * Fix #4582: updated [client.secrets] createOrReplace document
 * Fix #4516: added support for blocking delete operations using the withTimeout methods: op.withTimeout(1, TimeUnit.MINUTE).delete() - will wait for up to 1 minute for the resources to be fully deleted. This makes for a more concise replacement of the deletingExisting method.
 
-#### _**Note**_: Breaking changes in the API
+#### _**Note**_: Breaking changes
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 * Fix #3923: removed KubernetesResourceMappingProvider - a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource list of resources is used instead.
+* Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`
 
 ### 6.2.0 (2022-10-20)
 

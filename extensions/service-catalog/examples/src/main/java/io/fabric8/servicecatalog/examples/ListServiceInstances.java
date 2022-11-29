@@ -1,4 +1,4 @@
-package io.fabric8.servicecatalog.examples; /**
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,7 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
+package io.fabric8.servicecatalog.examples;
 
 import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
@@ -24,13 +25,13 @@ public class ListServiceInstances {
   private static final Logger logger = LoggerFactory.getLogger(ListServiceInstances.class.getSimpleName());
 
   public static void main(String[] args) {
-      ServiceCatalogClient client = ClientFactory.newClient(args);
-      ServiceInstanceList list = client.serviceInstances().inNamespace("iocanel").list();
+    ServiceCatalogClient client = ClientFactory.newClient(args);
+    ServiceInstanceList list = client.serviceInstances().inNamespace("iocanel").list();
 
-      logger.info("Listing Service Instances:");
-      list.getItems()
-          .forEach(b -> logger.info(b.getMetadata().getName()));
+    logger.info("Listing Service Instances:");
+    list.getItems()
+        .forEach(b -> logger.info(b.getMetadata().getName()));
 
-      logger.info("Done");
+    logger.info("Done");
   }
 }

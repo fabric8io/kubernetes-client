@@ -32,6 +32,7 @@ import java.util.*;
 
 import static io.sundr.model.utils.Types.BOOLEAN_REF;
 import static io.sundr.model.utils.Types.DOUBLE_REF;
+import static io.sundr.model.utils.Types.FLOAT_REF;
 import static io.sundr.model.utils.Types.INT_REF;
 import static io.sundr.model.utils.Types.LONG_REF;
 import static io.sundr.model.utils.Types.STRING_REF;
@@ -70,6 +71,7 @@ public abstract class AbstractJsonSchema<T, B> {
 
   protected static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
   protected static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
+  protected static final TypeRef P_FLOAT_REF = new PrimitiveRefBuilder().withName("float").build();
   protected static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
   protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName(BOOLEAN_MARKER)
       .build();
@@ -85,7 +87,6 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_PATTERN = "io.fabric8.generator.annotation.Pattern";
   public static final String ANNOTATION_NULLABLE = "io.fabric8.generator.annotation.Nullable";
   public static final String ANNOTATION_REQUIRED = "io.fabric8.generator.annotation.Required";
-  public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
   public static final String ANNOTATION_SCHEMA_FROM = "io.fabric8.crd.generator.annotation.SchemaFrom";
   public static final String ANNOTATION_PERSERVE_UNKNOWN_FIELDS = "io.fabric8.crd.generator.annotation.PreserveUnknownFields";
   public static final String ANNOTATION_SCHEMA_SWAP = "io.fabric8.crd.generator.annotation.SchemaSwap";
@@ -101,6 +102,8 @@ public abstract class AbstractJsonSchema<T, B> {
     COMMON_MAPPINGS.put(P_INT_REF, INTEGER_MARKER);
     COMMON_MAPPINGS.put(LONG_REF, INTEGER_MARKER);
     COMMON_MAPPINGS.put(P_LONG_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(FLOAT_REF, NUMBER_MARKER);
+    COMMON_MAPPINGS.put(P_FLOAT_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(P_DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(BOOLEAN_REF, BOOLEAN_MARKER);
@@ -357,11 +360,6 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_PATTERN:
             pattern = (String) a.getParameters().get(VALUE);
-            break;
-          case ANNOTATION_NOT_NULL:
-            LOGGER.warn("Annotation: {} on property: {} is deprecated. Please use: {} instead", ANNOTATION_NOT_NULL, name,
-                ANNOTATION_REQUIRED);
-            required = true;
             break;
           case ANNOTATION_REQUIRED:
             required = true;

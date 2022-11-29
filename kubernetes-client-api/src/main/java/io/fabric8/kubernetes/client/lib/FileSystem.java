@@ -43,8 +43,8 @@ public enum FileSystem {
    * Linux file system.
    */
   LINUX(true, true, 255, 4096, new char[] {
-    // KEEP THIS ARRAY SORTED!
-    // @formatter:off
+      // KEEP THIS ARRAY SORTED!
+      // @formatter:off
     // ASCII NUL
     0,
     '/'
@@ -55,8 +55,8 @@ public enum FileSystem {
    * MacOS file system.
    */
   MAC_OSX(true, true, 255, 1024, new char[] {
-    // KEEP THIS ARRAY SORTED!
-    // @formatter:off
+      // KEEP THIS ARRAY SORTED!
+      // @formatter:off
     // ASCII NUL
     0,
     '/',
@@ -68,9 +68,9 @@ public enum FileSystem {
    * Windows file system.
    */
   WINDOWS(false, true, 255,
-    32000, new char[] {
-    // KEEP THIS ARRAY SORTED!
-    // @formatter:off
+      32000, new char[] {
+          // KEEP THIS ARRAY SORTED!
+          // @formatter:off
     // ASCII NUL
     0,
     // 1-31 may be allowed in file streams
@@ -78,9 +78,10 @@ public enum FileSystem {
     29, 30, 31,
     '"', '*', '/', ':', '<', '>', '?', '\\', '|'
     // @formatter:on
-  }, // KEEP THIS ARRAY SORTED!
-    new String[] { "AUX", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "CON", "LPT1",
-      "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "NUL", "PRN" }, true);
+      }, // KEEP THIS ARRAY SORTED!
+      new String[] { "AUX", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "CON", "LPT1",
+          "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "NUL", "PRN" },
+      true);
 
   /**
    * <p>
@@ -139,7 +140,7 @@ public enum FileSystem {
    * Decides if the operating system matches.
    *
    * @param osNamePrefix
-   *            the prefix for the os name
+   *        the prefix for the os name
    * @return true if matches, or false if not or can't determine
    */
   private static boolean getOsMatchesName(final String osNamePrefix) {
@@ -156,7 +157,7 @@ public enum FileSystem {
    * </p>
    *
    * @param property
-   *            the system property name
+   *        the system property name
    * @return the system property value or {@code null} if a security problem occurs
    */
   private static String getSystemProperty(final String property) {
@@ -165,7 +166,7 @@ public enum FileSystem {
     } catch (final SecurityException ex) {
       // we are not allowed to look at this property
       System.err.println("Caught a SecurityException reading the system property '" + property
-        + "'; the SystemUtils property value will default to null.");
+          + "'; the SystemUtils property value will default to null.");
       return null;
     }
   }
@@ -177,9 +178,9 @@ public enum FileSystem {
    * </p>
    *
    * @param osName
-   *            the actual OS name
+   *        the actual OS name
    * @param osNamePrefix
-   *            the prefix for the expected OS name
+   *        the prefix for the expected OS name
    * @return true if matches, or false if not or can't determine
    */
   private static boolean isOsNameMatch(final String osName, final String osNamePrefix) {
@@ -209,8 +210,8 @@ public enum FileSystem {
    * @param supportsDriveLetter Whether this file system support driver letters.
    */
   FileSystem(final boolean caseSensitive, final boolean casePreserving, final int maxFileLength,
-             final int maxPathLength, final char[] illegalFileNameChars, final String[] reservedFileNames,
-             final boolean supportsDriveLetter) {
+      final int maxPathLength, final char[] illegalFileNameChars, final String[] reservedFileNames,
+      final boolean supportsDriveLetter) {
     this.maxFileNameLength = maxFileLength;
     this.maxPathLength = maxPathLength;
     this.illegalFileNameChars = Objects.requireNonNull(illegalFileNameChars, "illegalFileNameChars");
@@ -278,7 +279,7 @@ public enum FileSystem {
    * Returns {@code true} if the given character is illegal in a file name, {@code false} otherwise.
    *
    * @param c
-   *            the character to test
+   *        the character to test
    * @return {@code true} if the given character is illegal in a file name, {@code false} otherwise.
    */
   private boolean isIllegalFileNameChar(final char c) {
@@ -291,7 +292,7 @@ public enum FileSystem {
    * an illegal character then the check fails.
    *
    * @param candidate
-   *            a candidate file name (without a path) like {@code "filename.ext"} or {@code "filename"}
+   *        a candidate file name (without a path) like {@code "filename.ext"} or {@code "filename"}
    * @return {@code true} if the candidate name is legal
    */
   public boolean isLegalFileName(final CharSequence candidate) {
@@ -313,7 +314,7 @@ public enum FileSystem {
    * Returns whether the given string is a reserved file name.
    *
    * @param candidate
-   *            the string to test
+   *        the string to test
    * @return {@code true} if the given string is a reserved file name.
    */
   public boolean isReservedFileName(final CharSequence candidate) {
@@ -343,20 +344,20 @@ public enum FileSystem {
    * {@link #getMaxFileNameLength()}.
    *
    * @param candidate
-   *            a candidate file name (without a path) like {@code "filename.ext"} or {@code "filename"}
+   *        a candidate file name (without a path) like {@code "filename.ext"} or {@code "filename"}
    * @param replacement
-   *            Illegal characters in the candidate name are replaced by this character
+   *        Illegal characters in the candidate name are replaced by this character
    * @return a String without illegal characters
    */
   public String toLegalFileName(final String candidate, final char replacement) {
     if (isIllegalFileNameChar(replacement)) {
       throw new IllegalArgumentException(
-        String.format("The replacement character '%s' cannot be one of the %s illegal characters: %s",
-          // %s does not work properly with NUL
-          replacement == '\0' ? "\\0" : replacement, name(), Arrays.toString(illegalFileNameChars)));
+          String.format("The replacement character '%s' cannot be one of the %s illegal characters: %s",
+              // %s does not work properly with NUL
+              replacement == '\0' ? "\\0" : replacement, name(), Arrays.toString(illegalFileNameChars)));
     }
     final String truncated = candidate.length() > maxFileNameLength ? candidate.substring(0, maxFileNameLength)
-      : candidate;
+        : candidate;
     boolean changed = false;
     final char[] charArray = truncated.toCharArray();
     for (int i = 0; i < charArray.length; i++) {

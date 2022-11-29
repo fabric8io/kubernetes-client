@@ -25,9 +25,11 @@ import io.fabric8.kubernetes.client.V1beta1NetworkAPIGroupDSL;
 
 public interface NetworkAPIGroupDSL extends Client {
   V1NetworkAPIGroupDSL v1();
+
   V1beta1NetworkAPIGroupDSL v1beta1();
 
   MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies();
+
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingress();
 
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();

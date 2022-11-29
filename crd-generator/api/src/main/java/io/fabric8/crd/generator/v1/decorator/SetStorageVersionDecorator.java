@@ -17,22 +17,23 @@ package io.fabric8.crd.generator.v1.decorator;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluent;
 
-public class SetStorageVersionDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+public class SetStorageVersionDecorator
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
   private final boolean storage;
 
-	public SetStorageVersionDecorator(String name, String version, boolean storage) {
-		super(name, version);
-		this.storage = storage;
-	}
+  public SetStorageVersionDecorator(String name, String version, boolean storage) {
+    super(name, version);
+    this.storage = storage;
+  }
 
-	@Override
-	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
+  @Override
+  public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
     version.withStorage(storage);
-	}
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() + ", storage:"+ storage+"]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + ", storage:" + storage + "]";
+  }
 }

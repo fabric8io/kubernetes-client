@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -24,27 +25,23 @@ import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse.BodySubscriber;
-import java.net.http.HttpResponse.BodySubscribers;
+import java.net.http.HttpResponse.ResponseInfo;
 import java.net.http.WebSocketHandshakeException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
@@ -55,40 +52,72 @@ import java.util.function.Supplier;
  */
 public class JdkHttpClientImpl implements HttpClient {
 
-  private final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
-    private final BodyConsumer<T> consumer;
-    private CompletableFuture<Void> done = new CompletableFuture<Void>();
-    private final AtomicBoolean subscribed = new AtomicBoolean();
-    private volatile Flow.Subscription subscription;
-    private T initialItem;
-    private boolean first = true;
-    private boolean isComplete;
+  /**
+   * Adapts the BodyHandler to immediately complete the body
+   */
+  private static final class BodyHandlerAdapter implements BodyHandler<AsyncBody> {
+    private final AsyncBodySubscriber<?> subscriber;
+    private final BodyHandler<Void> handler;
 
-    private AsyncBodySubscriber(BodyConsumer<T> consumer) {
+    private BodyHandlerAdapter(AsyncBodySubscriber<?> subscriber, BodyHandler<Void> handler) {
+      this.subscriber = subscriber;
+      this.handler = handler;
+    }
+
+    @Override
+    public BodySubscriber<AsyncBody> apply(ResponseInfo responseInfo) {
+      BodySubscriber<Void> bodySubscriber = handler.apply(responseInfo);
+      return new BodySubscriber<AsyncBody>() {
+        CompletableFuture<AsyncBody> cf = CompletableFuture.completedFuture(subscriber);
+
+        @Override
+        public void onSubscribe(Subscription subscription) {
+          bodySubscriber.onSubscribe(subscription);
+        }
+
+        @Override
+        public void onNext(List<ByteBuffer> item) {
+          bodySubscriber.onNext(item);
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+          bodySubscriber.onError(throwable);
+        }
+
+        @Override
+        public void onComplete() {
+          bodySubscriber.onComplete();
+        }
+
+        @Override
+        public CompletionStage<AsyncBody> getBody() {
+          return cf;
+        }
+      };
+    }
+  }
+
+  private static final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
+    private final AsyncBody.Consumer<T> consumer;
+    private CompletableFuture<Void> done = new CompletableFuture<Void>();
+    private CompletableFuture<Flow.Subscription> subscription = new CompletableFuture<>();
+
+    private AsyncBodySubscriber(AsyncBody.Consumer<T> consumer) {
       this.consumer = consumer;
     }
 
     @Override
     public void onSubscribe(Subscription subscription) {
-      if (!subscribed.compareAndSet(false, true)) {
+      if (this.subscription.isDone()) {
         subscription.cancel();
         return;
       }
-      this.subscription = subscription;
-      // the sendAsync future won't complete unless we do the initial request here
-      // so in onNext we'll trap the item until we're ready
-      subscription.request(1);
+      this.subscription.complete(subscription);
     }
 
     @Override
     public void onNext(T item) {
-      synchronized (this) {
-        if (first) {
-          this.initialItem = item;
-          first = false;
-          return;
-        }
-      }
       try {
         if (item == null) {
           done.complete(null);
@@ -96,7 +125,7 @@ public class JdkHttpClientImpl implements HttpClient {
           consumer.consume(item, this);
         }
       } catch (Exception e) {
-        subscription.cancel();
+        subscription.thenAccept(Subscription::cancel);
         done.completeExceptionally(e);
       }
     }
@@ -108,10 +137,6 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public synchronized void onComplete() {
-      if (initialItem != null) {
-        this.isComplete = true;
-        return;
-      }
       done.complete(null);
     }
 
@@ -120,19 +145,7 @@ public class JdkHttpClientImpl implements HttpClient {
       if (done.isDone()) {
         return;
       }
-      try {
-        first = false;
-        if (initialItem != null) {
-          T item = initialItem;
-          initialItem = null;
-          onNext(item);
-        }
-      } finally {
-        if (isComplete) {
-          done.complete(null);
-        }
-        this.subscription.request(1);
-      }
+      this.subscription.thenAccept(s -> s.request(1));
     }
 
     @Override
@@ -142,7 +155,7 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public void cancel() {
-      subscription.cancel();
+      subscription.thenAccept(Subscription::cancel);
       done.cancel(false);
     }
 
@@ -240,50 +253,24 @@ public class JdkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, AsyncBody.Consumer<String> consumer) {
     return sendAsync(request, () -> {
       AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
       BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
-      return new HandlerAndAsyncBody<>(handler, subscriber);
-    }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
+      BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
+      return new HandlerAndAsyncBody<>(handlerAdapter, subscriber);
+    }).thenApply(r -> new JdkHttpResponseImpl<>(r.response, r.asyncBody));
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request,
+      AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     return sendAsync(request, () -> {
       AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
       BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
-      return new HandlerAndAsyncBody<>(handler, subscriber);
+      BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
+      return new HandlerAndAsyncBody<>(handlerAdapter, subscriber);
     }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
-  }
-
-  @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    return sendAsync(request, () -> new HandlerAndAsyncBody<T>(toBodyHandler(type), null))
-        .thenApply(ar -> new JdkHttpResponseImpl<>(ar.response));
-  }
-
-  private <T> BodyHandler<T> toBodyHandler(Class<T> type) {
-    BodyHandler<T> bodyHandler;
-    if (type == null) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.discarding();
-    } else if (type == InputStream.class) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.ofInputStream();
-    } else if (type == String.class) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.ofString();
-    } else if (type == byte[].class) {
-      bodyHandler = (BodyHandler<T>) BodyHandlers.ofByteArray();
-    } else {
-      bodyHandler = responseInfo -> {
-        BodySubscriber<InputStream> upstream = BodyHandlers.ofInputStream().apply(responseInfo);
-
-        BodySubscriber<Reader> downstream = BodySubscribers.mapping(
-            upstream,
-            (InputStream is) -> new InputStreamReader(is, StandardCharsets.UTF_8));
-        return (BodySubscriber<T>) downstream;
-      };
-    }
-    return bodyHandler;
   }
 
   public <T> CompletableFuture<AsyncResponse<T>> sendAsync(HttpRequest request,

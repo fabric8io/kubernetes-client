@@ -26,12 +26,14 @@ import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.Search
 public interface OpenClusterManagementSearchAPIGroupDSL extends Client {
   /**
    * API entrypoint for SearchCustomization (search.open-cluster-management.io/v1alpha1)
+   * 
    * @return {@link MixedOperation} for SearchCustomization
    */
   MixedOperation<SearchCustomization, SearchCustomizationList, Resource<SearchCustomization>> searchCustomizations();
 
   /**
    * API entrypoint for SearchOperator (search.open-cluster-management.io/v1alpha1
+   * 
    * @return {@link MixedOperation} for SearchOperator
    */
   MixedOperation<SearchOperator, SearchOperatorList, Resource<SearchOperator>> searchOperators();

@@ -31,7 +31,7 @@ class TestUnmarshal {
 
   @Test
   void testUnmarshalYAMLTemplate() {
-   Template t = Serialization.unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
+    Template t = Serialization.unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 

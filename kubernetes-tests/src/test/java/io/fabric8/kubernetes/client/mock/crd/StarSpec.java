@@ -39,8 +39,8 @@ public class StarSpec {
   @Override
   public String toString() {
     return "StarSpec{" +
-      "type=" + type +
-      ", location='" + location + "'" +
-      "}";
+        "type=" + type +
+        ", location='" + location + "'" +
+        "}";
   }
 }

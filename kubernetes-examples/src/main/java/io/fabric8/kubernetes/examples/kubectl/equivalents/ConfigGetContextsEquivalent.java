@@ -31,9 +31,9 @@ public class ConfigGetContextsEquivalent {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.getConfiguration().getContexts()
-        .stream()
-        .map(NamedContext::getName)
-        .forEach(logger::info);
+          .stream()
+          .map(NamedContext::getName)
+          .forEach(logger::info);
     }
   }
 }

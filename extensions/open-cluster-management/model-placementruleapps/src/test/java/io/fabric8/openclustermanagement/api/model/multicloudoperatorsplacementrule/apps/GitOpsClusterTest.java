@@ -33,8 +33,8 @@ class GitOpsClusterTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-gitopscluster.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final GitOpsCluster gitOpsCluster = mapper.readValue(originalJson, GitOpsCluster.class);
@@ -58,21 +58,21 @@ class GitOpsClusterTest {
   void builderShouldCreateObject() {
     // Given
     GitOpsClusterBuilder gitOpsClusterBuilder = new GitOpsClusterBuilder()
-      .withNewMetadata()
-      .withName("argo-acm-importer")
-      .endMetadata()
-      .withNewSpec()
-      .withNewArgoServer()
-      .withCluster("notused")
-      .withArgoNamespace("openshift-gitops")
-      .endArgoServer()
-      .withNewPlacementRef()
-      .withApiVersion("cluster.open-cluster-management.io/v1alpha1")
-      .withKind("Placement")
-      .withName("all-openshift-clusters")
-      .withNamespace("openshift-gitops")
-      .endPlacementRef()
-      .endSpec();
+        .withNewMetadata()
+        .withName("argo-acm-importer")
+        .endMetadata()
+        .withNewSpec()
+        .withNewArgoServer()
+        .withCluster("notused")
+        .withArgoNamespace("openshift-gitops")
+        .endArgoServer()
+        .withNewPlacementRef()
+        .withApiVersion("cluster.open-cluster-management.io/v1alpha1")
+        .withKind("Placement")
+        .withName("all-openshift-clusters")
+        .withNamespace("openshift-gitops")
+        .endPlacementRef()
+        .endSpec();
 
     // When
     GitOpsCluster gitOpsCluster = gitOpsClusterBuilder.build();

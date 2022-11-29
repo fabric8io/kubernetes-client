@@ -19,24 +19,25 @@ package io.fabric8.kubernetes.client.http;
 import java.io.IOException;
 
 public final class WebSocketHandshakeException extends IOException {
-  
+
   private final transient HttpResponse<?> response;
-  
+
   public WebSocketHandshakeException(HttpResponse<?> response) {
     this.response = response;
   }
-  
+
   /**
    * Get the response, which includes the code of failure.
+   * 
    * @return the response, never null
    */
   public HttpResponse<?> getResponse() {
     return response;
   }
-  
+
   @Override
   public synchronized WebSocketHandshakeException initCause(Throwable cause) {
-      return (WebSocketHandshakeException) super.initCause(cause);
+    return (WebSocketHandshakeException) super.initCause(cause);
   }
 
 }

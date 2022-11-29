@@ -20,6 +20,6 @@ import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.kubernetes.client.CustomResource;
 
 @SchemaSwap(originalType = BasicSpec.class, fieldName = "bar", targetType = FooExtractor.class)
-public class IncorrectExtraction2 extends  CustomResource<ExtractionSpec, Void> {
+public class IncorrectExtraction2 extends CustomResource<ExtractionSpec, Void> {
 
 }

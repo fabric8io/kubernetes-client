@@ -15,7 +15,6 @@
  */
 package io.fabric8.certmanager.client.dsl;
 
-
 import io.fabric8.certmanager.api.model.acme.v1.Challenge;
 import io.fabric8.certmanager.api.model.acme.v1.ChallengeList;
 import io.fabric8.certmanager.api.model.acme.v1.Order;

@@ -20,28 +20,29 @@ import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResourceBuilder;
 
 public class PipelineResourceCreate {
-  
+
   public static void main(String[] args) {
-    try ( TektonClient client = ClientFactory.newClient(args)) {
+    try (TektonClient client = ClientFactory.newClient(args)) {
       String namespace = "default";
       PipelineResource resource = new PipelineResourceBuilder()
-        .withNewMetadata()
-        .withName("client-repo")
-        .endMetadata()
-        .withNewSpec()
-        .withType("git")
-        .addNewParam()
-        .withName("revision")
-        .withValue("v4.2.2")
-        .endParam()
-        .addNewParam()
-        .withName("url")
-        .withValue("https://github.com/fabric8io/kubernetes-client")
-        .endParam()
-        .endSpec()
-        .build();
-      
-      System.out.println("Created:" + client.v1alpha1().pipelineResources().inNamespace(namespace).create(resource).getMetadata().getName());
+          .withNewMetadata()
+          .withName("client-repo")
+          .endMetadata()
+          .withNewSpec()
+          .withType("git")
+          .addNewParam()
+          .withName("revision")
+          .withValue("v4.2.2")
+          .endParam()
+          .addNewParam()
+          .withName("url")
+          .withValue("https://github.com/fabric8io/kubernetes-client")
+          .endParam()
+          .endSpec()
+          .build();
+
+      System.out.println(
+          "Created:" + client.v1alpha1().pipelineResources().inNamespace(namespace).create(resource).getMetadata().getName());
     }
     System.exit(0);
   }

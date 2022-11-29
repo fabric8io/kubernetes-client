@@ -34,9 +34,11 @@ public class URLFromServiceUtil {
   private static final String HOST_SUFFIX = "_SERVICE_HOST";
   private static final String PORT_SUFFIX = "_SERVICE_PORT";
   private static final String PROTO_SUFFIX = "_TCP_PROTO";
+
   private URLFromServiceUtil() {
     throw new IllegalStateException("Utility class");
   }
+
   public static String resolveHostFromEnvVarOrSystemProperty(String serviceName) {
     return getEnvVarOrSystemProperty(toServiceHostEnvironmentVariable(serviceName), "");
   }
@@ -59,7 +61,8 @@ public class URLFromServiceUtil {
   }
 
   public static String resolveProtocolFromEnvVarOrSystemProperty(String serviceName, String servicePort) {
-    return getEnvVarOrSystemProperty(toEnvVariable(serviceName + PORT_SUFFIX + "_" + servicePort + PROTO_SUFFIX), DEFAULT_PROTO);
+    return getEnvVarOrSystemProperty(toEnvVariable(serviceName + PORT_SUFFIX + "_" + servicePort + PROTO_SUFFIX),
+        DEFAULT_PROTO);
   }
 
   public static Map<String, String> getOrCreateAnnotations(HasMetadata entity) {
@@ -100,10 +103,11 @@ public class URLFromServiceUtil {
     return serviceName.toUpperCase(Locale.ROOT).replaceAll("-", "_");
   }
 
-  public static String getURLFromIngressList(List<Ingress> ingressList, String namespace, String serviceName, ServicePort port) {
-    for(Ingress item : ingressList) {
+  public static String getURLFromIngressList(List<Ingress> ingressList, String namespace, String serviceName,
+      ServicePort port) {
+    for (Ingress item : ingressList) {
       String ns = getNamespace(item);
-      if(Objects.equals(ns, namespace) && item.getSpec() != null) {
+      if (Objects.equals(ns, namespace) && item.getSpec() != null) {
         return getURLFromIngressSpec(item.getSpec(), serviceName, port);
       }
     }
@@ -112,10 +116,10 @@ public class URLFromServiceUtil {
 
   public static String getURLFromIngressSpec(IngressSpec spec, String serviceName, ServicePort port) {
     List<IngressRule> ingressRules = spec.getRules();
-    if(ingressRules != null && !ingressRules.isEmpty()) {
-      for(IngressRule rule : ingressRules) {
+    if (ingressRules != null && !ingressRules.isEmpty()) {
+      for (IngressRule rule : ingressRules) {
         HTTPIngressRuleValue http = rule.getHttp();
-        if(http != null && http.getPaths() != null) {
+        if (http != null && http.getPaths() != null) {
           return getURLFromIngressRules(http.getPaths(), spec, serviceName, port, rule);
         }
       }
@@ -123,18 +127,19 @@ public class URLFromServiceUtil {
     return null;
   }
 
-  public static String getURLFromIngressRules(List<HTTPIngressPath> paths, IngressSpec spec, String serviceName, ServicePort port, IngressRule rule) {
-    for(HTTPIngressPath path : paths) {
+  public static String getURLFromIngressRules(List<HTTPIngressPath> paths, IngressSpec spec, String serviceName,
+      ServicePort port, IngressRule rule) {
+    for (HTTPIngressPath path : paths) {
       IngressBackend backend = path.getBackend();
-      if(backend != null) {
+      if (backend != null) {
         String backendServiceName = backend.getServiceName();
-        if(serviceName.equals(backendServiceName) && portsMatch(port, backend.getServicePort())) {
+        if (serviceName.equals(backendServiceName) && portsMatch(port, backend.getServicePort())) {
           String pathPostFix = path.getPath();
-          if(spec.getTls() != null) {
+          if (spec.getTls() != null) {
             return getURLFromTLSHost(rule, pathPostFix);
           }
           String answer = rule.getHost();
-          if(answer != null && !answer.isEmpty()) {
+          if (answer != null && !answer.isEmpty()) {
             pathPostFix = fixPathPostFixIfEmpty(pathPostFix);
             return "http://" + URLUtils.pathJoin(answer, pathPostFix);
           }
@@ -168,7 +173,7 @@ public class URLFromServiceUtil {
         } else {
           /// should we find the port by name now?
         }
-      } else if (strVal != null ){
+      } else if (strVal != null) {
         return strVal.equals(servicePort.getName());
       }
     }

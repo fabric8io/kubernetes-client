@@ -30,8 +30,8 @@ class SyncSetTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-syncset.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final SyncSet syncSet = mapper.readValue(originalJson, SyncSet.class);
@@ -41,10 +41,10 @@ class SyncSetTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(syncSet)
-      .isNotNull()
-      .isEqualTo(syncSetFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
-      .hasFieldOrPropertyWithValue("spec.resourceApplyMode", "Upsert");
+        .isNotNull()
+        .isEqualTo(syncSetFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
+        .hasFieldOrPropertyWithValue("spec.resourceApplyMode", "Upsert");
     assertThat(syncSet.getSpec().getClusterDeploymentRefs()).hasSize(1);
     assertThat(syncSet.getSpec().getResources()).hasSize(1);
     assertThat(syncSet.getSpec().getPatches()).hasSize(1);
@@ -55,34 +55,34 @@ class SyncSetTest {
   void builderShouldCreateObject() {
     // Given
     SyncSetBuilder syncSetBuilder = new SyncSetBuilder()
-      .withNewMetadata()
-      .withName("mygroup")
-      .endMetadata()
-      .withNewSpec()
-      .withResourceApplyMode("Upsert")
-      .addNewClusterDeploymentRef()
-      .withName("ClusterName")
-      .endClusterDeploymentRef()
-      .addNewSecretMapping()
-      .withNewSourceRef()
-      .withName("ad-bind-password")
-      .withNamespace("default")
-      .endSourceRef()
-      .withNewTargetRef()
-      .withName("ad-bind-password")
-      .withNamespace("openshift-config")
-      .endTargetRef()
-      .endSecretMapping()
-      .endSpec();
+        .withNewMetadata()
+        .withName("mygroup")
+        .endMetadata()
+        .withNewSpec()
+        .withResourceApplyMode("Upsert")
+        .addNewClusterDeploymentRef()
+        .withName("ClusterName")
+        .endClusterDeploymentRef()
+        .addNewSecretMapping()
+        .withNewSourceRef()
+        .withName("ad-bind-password")
+        .withNamespace("default")
+        .endSourceRef()
+        .withNewTargetRef()
+        .withName("ad-bind-password")
+        .withNamespace("openshift-config")
+        .endTargetRef()
+        .endSecretMapping()
+        .endSpec();
 
     // When
     SyncSet syncSet = syncSetBuilder.build();
 
     // Then
     assertThat(syncSet)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
-      .hasFieldOrPropertyWithValue("spec.resourceApplyMode", "Upsert");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "mygroup")
+        .hasFieldOrPropertyWithValue("spec.resourceApplyMode", "Upsert");
     assertThat(syncSet.getSpec().getClusterDeploymentRefs()).hasSize(1);
     assertThat(syncSet.getSpec().getSecretMappings()).hasSize(1);
   }

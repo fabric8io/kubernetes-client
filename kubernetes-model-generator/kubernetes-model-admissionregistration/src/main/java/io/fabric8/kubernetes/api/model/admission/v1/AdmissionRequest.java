@@ -41,12 +41,11 @@ import java.util.Map;
 @JsonDeserialize
 @ToString
 @EqualsAndHashCode
-public class AdmissionRequest implements KubernetesResource
-{
+public class AdmissionRequest implements KubernetesResource {
 
   /*
    * DryRun indicates that modifications will definitely not be persisted for this request.
-	 * Defaults to false.
+   * Defaults to false.
    */
   @JsonProperty("dryRun")
   private Boolean dryRun;
@@ -58,8 +57,8 @@ public class AdmissionRequest implements KubernetesResource
   private GroupVersionKind kind;
 
   /*
-   * Name is the name of the object as presented in the request.  On a CREATE operation, the client may omit name and
-   * rely on the server to generate the name.  If that is the case, this field will contain an empty string.
+   * Name is the name of the object as presented in the request. On a CREATE operation, the client may omit name and
+   * rely on the server to generate the name. If that is the case, this field will contain an empty string.
    */
   @JsonProperty("name")
   private String name;
@@ -84,7 +83,7 @@ public class AdmissionRequest implements KubernetesResource
 
   /*
    * Operation is the operation being performed. This may be different than the operation
-	 * requested. e.g. a patch can result in either a CREATE or UPDATE Operation.
+   * requested. e.g. a patch can result in either a CREATE or UPDATE Operation.
    */
   @JsonProperty("operation")
   private String operation;
@@ -94,13 +93,14 @@ public class AdmissionRequest implements KubernetesResource
 
   /*
    * RequestResource is the fully-qualified resource of the original API request (for example, v1.pods).
-	 * If this is specified and differs from the value in "resource", an equivalent match and conversion was performed.
-	 *
-	 * For example, if deployments can be modified via apps/v1 and apps/v1beta1, and a webhook registered a rule of
-	 * `apiGroups:["apps"], apiVersions:["v1"], resources: ["deployments"]` and `matchPolicy: Equivalent`,
-	 * an API request to apps/v1beta1 deployments would be converted and sent to the webhook
-	 * with `resource: {group:"apps", version:"v1", resource:"deployments"}` (matching the resource the webhook registered for),
-	 * and `requestResource: {group:"apps", version:"v1beta1", resource:"deployments"}` (indicating the resource of the original API request).
+   * If this is specified and differs from the value in "resource", an equivalent match and conversion was performed.
+   *
+   * For example, if deployments can be modified via apps/v1 and apps/v1beta1, and a webhook registered a rule of
+   * `apiGroups:["apps"], apiVersions:["v1"], resources: ["deployments"]` and `matchPolicy: Equivalent`,
+   * an API request to apps/v1beta1 deployments would be converted and sent to the webhook
+   * with `resource: {group:"apps", version:"v1", resource:"deployments"}` (matching the resource the webhook registered for),
+   * and `requestResource: {group:"apps", version:"v1beta1", resource:"deployments"}` (indicating the resource of the original
+   * API request).
    */
   @JsonProperty("requestKind")
   private GroupVersionKind requestKind;
@@ -113,7 +113,8 @@ public class AdmissionRequest implements KubernetesResource
    * `apiGroups:["apps"], apiVersions:["v1"], resources: ["deployments"]` and `matchPolicy: Equivalent`,
    * an API request to apps/v1beta1 deployments would be converted and sent to the webhook
    * with `resource: {group:"apps", version:"v1", resource:"deployments"}` (matching the resource the webhook registered for),
-   * and `requestResource: {group:"apps", version:"v1beta1", resource:"deployments"}` (indicating the resource of the original API request).
+   * and `requestResource: {group:"apps", version:"v1beta1", resource:"deployments"}` (indicating the resource of the original
+   * API request).
    *
    * See documentation for the "matchPolicy" field in the webhook configuration type.
    */
@@ -163,7 +164,10 @@ public class AdmissionRequest implements KubernetesResource
   public AdmissionRequest() {
   }
 
-  public AdmissionRequest(Boolean dryRun, GroupVersionKind kind, String name, String namespace, KubernetesResource object, KubernetesResource oldObject, String operation, KubernetesResource options, GroupVersionKind requestKind, GroupVersionResource requestResource, String requestSubResource, GroupVersionResource resource, String subResource, String uid, UserInfo userInfo) {
+  public AdmissionRequest(Boolean dryRun, GroupVersionKind kind, String name, String namespace, KubernetesResource object,
+      KubernetesResource oldObject, String operation, KubernetesResource options, GroupVersionKind requestKind,
+      GroupVersionResource requestResource, String requestSubResource, GroupVersionResource resource, String subResource,
+      String uid, UserInfo userInfo) {
     this.dryRun = dryRun;
     this.kind = kind;
     this.name = name;
@@ -193,6 +197,7 @@ public class AdmissionRequest implements KubernetesResource
 
   /**
    * Set Dry run
+   * 
    * @param dryRun The dryRun
    */
   @JsonProperty("dryRun")

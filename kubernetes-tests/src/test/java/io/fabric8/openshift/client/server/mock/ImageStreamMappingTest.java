@@ -24,7 +24,6 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @EnableOpenShiftMockClient
 class ImageStreamMappingTest {
   private OpenShiftClient client;
@@ -35,9 +34,10 @@ class ImageStreamMappingTest {
     // Given
     ImageStreamMapping isi1 = createImageStreamMappingBuilder("isi1").build();
     server.expect().post().withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagestreammappings")
-      .andReturn(HttpURLConnection.HTTP_CREATED, createImageStreamMappingBuilder("sha256:c5c25414687677f55e897e1e06cf79b93e58c2324b1531dadcd5b159bdf42b75")
-        .build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_CREATED,
+            createImageStreamMappingBuilder("sha256:c5c25414687677f55e897e1e06cf79b93e58c2324b1531dadcd5b159bdf42b75")
+                .build())
+        .once();
 
     // When
     ImageStreamMapping result = client.imageStreamMappings().inNamespace("ns1").create(isi1);
@@ -47,16 +47,16 @@ class ImageStreamMappingTest {
   }
 
   private ImageStreamMappingBuilder createImageStreamMappingBuilder(String name) {
-      return new ImageStreamMappingBuilder()
-          .withNewMetadata().withName(name).endMetadata()
-          .withTag("latest123")
-          .withNewImage()
-          .withDockerImageReference("image-registry.openshift-image-registry.svc:5000/openshift/ubi8-openjdk-8")
-          .addNewDockerImageLayer()
-          .withName("sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef")
-          .withSize(0L)
-          .endDockerImageLayer()
-          .withNewMetadata().withName(name).endMetadata()
-          .endImage();
+    return new ImageStreamMappingBuilder()
+        .withNewMetadata().withName(name).endMetadata()
+        .withTag("latest123")
+        .withNewImage()
+        .withDockerImageReference("image-registry.openshift-image-registry.svc:5000/openshift/ubi8-openjdk-8")
+        .addNewDockerImageLayer()
+        .withName("sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef")
+        .withSize(0L)
+        .endDockerImageLayer()
+        .withNewMetadata().withName(name).endMetadata()
+        .endImage();
   }
 }

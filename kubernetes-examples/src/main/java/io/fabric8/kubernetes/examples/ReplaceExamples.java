@@ -42,29 +42,27 @@ public class ReplaceExamples {
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       try {
         final Namespace namespace = client.namespaces().create(
-          new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()
-        );
+            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build());
         logger.info("Create namespace: {}", NAMESPACE);
 
         Pod createdPod = client.pods().inNamespace(namespace.getMetadata().getName()).create(new PodBuilder()
-          .withNewMetadata()
-          .withName("test-pod")
-          .addToLabels("server", "nginx")
-          .endMetadata()
-          .withNewSpec()
-          .addNewContainer().withName("nginx").withImage("nginx")
-          .addNewPort().withContainerPort(80).endPort()
-          .endContainer()
-          .endSpec()
-          .build());
+            .withNewMetadata()
+            .withName("test-pod")
+            .addToLabels("server", "nginx")
+            .endMetadata()
+            .withNewSpec()
+            .addNewContainer().withName("nginx").withImage("nginx")
+            .addNewPort().withContainerPort(80).endPort()
+            .endContainer()
+            .endSpec()
+            .build());
         logger.info("Created Pod: {}", createdPod.getMetadata().getName());
         logger.info(Serialization.asYaml(createdPod));
 
         Pod updatedPod = client.pods().inNamespace(NAMESPACE).withName("test-pod").edit(p -> new PodBuilder(p)
-          .editMetadata()
-          .addToLabels("server2", "nginx2")
-          .and().build()
-        );
+            .editMetadata()
+            .addToLabels("server2", "nginx2")
+            .and().build());
         logger.info("Replaced Pod: {}", updatedPod.getMetadata().getName());
         logger.info(Serialization.asYaml(updatedPod));
 

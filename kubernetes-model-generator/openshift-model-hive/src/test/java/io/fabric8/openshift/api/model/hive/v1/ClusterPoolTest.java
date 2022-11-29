@@ -30,8 +30,8 @@ class ClusterPoolTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clusterpool.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ClusterPool clusterPool = mapper.readValue(originalJson, ClusterPool.class);
@@ -41,59 +41,59 @@ class ClusterPoolTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(clusterPool)
-      .isNotNull()
-      .isEqualTo(clusterPoolFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "openshift-46-aws-us-east-1")
-      .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
-      .hasFieldOrPropertyWithValue("spec.baseDomain", "new-installer.openshift.com")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "hive-team-aws-creds")
-      .hasFieldOrPropertyWithValue("spec.pullSecretRef.name", "hive-team-pull-secret")
-      .hasFieldOrPropertyWithValue("spec.runningCount", 1)
-      .hasFieldOrPropertyWithValue("spec.size", 3);
+        .isNotNull()
+        .isEqualTo(clusterPoolFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "openshift-46-aws-us-east-1")
+        .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
+        .hasFieldOrPropertyWithValue("spec.baseDomain", "new-installer.openshift.com")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "hive-team-aws-creds")
+        .hasFieldOrPropertyWithValue("spec.pullSecretRef.name", "hive-team-pull-secret")
+        .hasFieldOrPropertyWithValue("spec.runningCount", 1)
+        .hasFieldOrPropertyWithValue("spec.size", 3);
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     ClusterPoolBuilder clusterPoolBuilder = new ClusterPoolBuilder()
-      .withNewMetadata()
-      .withName("openshift-46-aws-us-east-1")
-      .withNamespace("my-project")
-      .endMetadata()
-      .withNewSpec()
-      .withBaseDomain("new-installer.openshift.com")
-      .withNewImageSetRef()
-      .withName("openshift-4-6")
-      .endImageSetRef()
-      .withNewPlatform()
-      .withNewAws()
-      .withNewCredentialsSecretRef()
-      .withName("hive-team-aws-creds")
-      .endCredentialsSecretRef()
-      .withRegion("us-east-1")
-      .endAws()
-      .endPlatform()
-      .withNewPullSecretRef()
-      .withName("hive-team-pull-secret")
-      .endPullSecretRef()
-      .withRunningCount(1)
-      .withSize(3)
-      .endSpec();
+        .withNewMetadata()
+        .withName("openshift-46-aws-us-east-1")
+        .withNamespace("my-project")
+        .endMetadata()
+        .withNewSpec()
+        .withBaseDomain("new-installer.openshift.com")
+        .withNewImageSetRef()
+        .withName("openshift-4-6")
+        .endImageSetRef()
+        .withNewPlatform()
+        .withNewAws()
+        .withNewCredentialsSecretRef()
+        .withName("hive-team-aws-creds")
+        .endCredentialsSecretRef()
+        .withRegion("us-east-1")
+        .endAws()
+        .endPlatform()
+        .withNewPullSecretRef()
+        .withName("hive-team-pull-secret")
+        .endPullSecretRef()
+        .withRunningCount(1)
+        .withSize(3)
+        .endSpec();
 
     // When
     ClusterPool clusterPool = clusterPoolBuilder.build();
 
     // Then
     assertThat(clusterPool)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "openshift-46-aws-us-east-1")
-      .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
-      .hasFieldOrPropertyWithValue("spec.baseDomain", "new-installer.openshift.com")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
-      .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "hive-team-aws-creds")
-      .hasFieldOrPropertyWithValue("spec.pullSecretRef.name", "hive-team-pull-secret")
-      .hasFieldOrPropertyWithValue("spec.runningCount", 1)
-      .hasFieldOrPropertyWithValue("spec.size", 3);
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "openshift-46-aws-us-east-1")
+        .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
+        .hasFieldOrPropertyWithValue("spec.baseDomain", "new-installer.openshift.com")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.region", "us-east-1")
+        .hasFieldOrPropertyWithValue("spec.platform.aws.credentialsSecretRef.name", "hive-team-aws-creds")
+        .hasFieldOrPropertyWithValue("spec.pullSecretRef.name", "hive-team-pull-secret")
+        .hasFieldOrPropertyWithValue("spec.runningCount", 1)
+        .hasFieldOrPropertyWithValue("spec.size", 3);
   }
 }

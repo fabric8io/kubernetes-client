@@ -25,8 +25,8 @@ public class RolloutRestartEquivalent {
   public static void main(String[] args) {
     try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.apps().deployments().inNamespace("default").withName("nginx-deployment")
-        .rolling()
-        .restart();
+          .rolling()
+          .restart();
     }
   }
 }

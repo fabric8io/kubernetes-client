@@ -45,19 +45,19 @@ public interface V1APIGroupDSL extends Client {
    */
   MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs();
 
-    /**
-     * API entrypoint for Integration(camel.apache.org/v1)
-     *
-     * @return MixedOperation for Integration class
-     */
-    MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations();
+  /**
+   * API entrypoint for Integration(camel.apache.org/v1)
+   *
+   * @return MixedOperation for Integration class
+   */
+  MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations();
 
-    /**
-     * API entrypoint for IntegrationKit(camel.apache.org/v1)
-     *
-     * @return MixedOperation for IntegrationKit class
-     */
-    MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits();
+  /**
+   * API entrypoint for IntegrationKit(camel.apache.org/v1)
+   *
+   * @return MixedOperation for IntegrationKit class
+   */
+  MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits();
 
   /**
    * API entrypoint for IntegrationPlatform(camel.apache.org/v1)
@@ -66,4 +66,3 @@ public interface V1APIGroupDSL extends Client {
    */
   MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms();
 }
-

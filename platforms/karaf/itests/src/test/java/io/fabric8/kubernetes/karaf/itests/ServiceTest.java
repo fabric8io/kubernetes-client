@@ -39,44 +39,43 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 @ExamReactorStrategy(PerClass.class)
 public class ServiceTest extends TestBase {
 
-    @Inject
-    protected BundleContext bundleContext;
+  @Inject
+  protected BundleContext bundleContext;
 
-    @Inject
-    NamespacedKubernetesClient kubernetesClient;
+  @Inject
+  NamespacedKubernetesClient kubernetesClient;
 
-    @Inject
-    NamespacedOpenShiftClient openShiftClient;
+  @Inject
+  NamespacedOpenShiftClient openShiftClient;
 
-    @Test
-    public void testServiceAvailability() {
-        Assert.assertNotNull(kubernetesClient);
-        Assert.assertNotNull(openShiftClient);
-    }
+  @Test
+  public void testServiceAvailability() {
+    Assert.assertNotNull(kubernetesClient);
+    Assert.assertNotNull(openShiftClient);
+  }
 
-    //Need to check this for class loading errors
-    @Test
-    public void testNamespacedClients() {
-        Assert.assertNotNull(kubernetesClient);
-        Assert.assertNotNull(openShiftClient);
+  //Need to check this for class loading errors
+  @Test
+  public void testNamespacedClients() {
+    Assert.assertNotNull(kubernetesClient);
+    Assert.assertNotNull(openShiftClient);
 
-        NamespacedKubernetesClient knc = kubernetesClient.inNamespace("mytest1");
-        Assert.assertEquals("mytest1", knc.getNamespace());
+    NamespacedKubernetesClient knc = kubernetesClient.inNamespace("mytest1");
+    Assert.assertEquals("mytest1", knc.getNamespace());
 
-        NamespacedOpenShiftClient onc = openShiftClient.inNamespace("mytest2");
-        Assert.assertEquals("mytest2", onc.getNamespace());
-    }
+    NamespacedOpenShiftClient onc = openShiftClient.inNamespace("mytest2");
+    Assert.assertEquals("mytest2", onc.getNamespace());
+  }
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
+  @ProbeBuilder
+  public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+    probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+    return probe;
+  }
 
-    @Configuration
-    public Option[] config() {
-        return baseConfiguration(
-          features(getFeaturesFile().toURI().toString(), "scr", "openshift-client")
-        );
-    }
+  @Configuration
+  public Option[] config() {
+    return baseConfiguration(
+        features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"));
+  }
 }

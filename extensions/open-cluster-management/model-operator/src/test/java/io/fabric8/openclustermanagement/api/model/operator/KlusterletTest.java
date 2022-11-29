@@ -33,8 +33,8 @@ class KlusterletTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-klusterlet.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final Klusterlet klusterlet = mapper.readValue(originalJson, Klusterlet.class);
@@ -57,18 +57,18 @@ class KlusterletTest {
   void builderShouldCreateObject() {
     // Given
     KlusterletBuilder klusterletBuilder = new KlusterletBuilder()
-      .withNewMetadata()
-      .withName("klusterlet")
-      .endMetadata()
-      .withNewSpec()
-      .withRegistrationImagePullSpec("quay.io/open-cluster-management/registration")
-      .withWorkImagePullSpec("quay.io/open-cluster-management/work")
-      .withClusterName("cluster1")
-      .withNamespace("open-cluster-management-agent")
-      .addNewExternalServerURL()
-      .withUrl("https://localhost")
-      .endExternalServerURL()
-      .endSpec();
+        .withNewMetadata()
+        .withName("klusterlet")
+        .endMetadata()
+        .withNewSpec()
+        .withRegistrationImagePullSpec("quay.io/open-cluster-management/registration")
+        .withWorkImagePullSpec("quay.io/open-cluster-management/work")
+        .withClusterName("cluster1")
+        .withNamespace("open-cluster-management-agent")
+        .addNewExternalServerURL()
+        .withUrl("https://localhost")
+        .endExternalServerURL()
+        .endSpec();
 
     // When
     Klusterlet klusterlet = klusterletBuilder.build();

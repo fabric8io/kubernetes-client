@@ -15,5 +15,6 @@
  */
 package io.fabric8.verticalpodautoscaler.client;
 
-public interface NamespacedVerticalPodAutoscalerClient extends VerticalPodAutoscalerClient, GenericVerticalPodAutoscalerClient<NamespacedVerticalPodAutoscalerClient> {
+public interface NamespacedVerticalPodAutoscalerClient
+    extends VerticalPodAutoscalerClient, GenericVerticalPodAutoscalerClient<NamespacedVerticalPodAutoscalerClient> {
 }

@@ -35,8 +35,8 @@ class EgressRouterTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     final String originalJson = new Scanner(getClass().getResourceAsStream("/valid-egressrouter.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final EgressRouter egressRouter = mapper.readValue(originalJson, EgressRouter.class);
@@ -44,29 +44,29 @@ class EgressRouterTest {
 
     // then
     assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(originalJson);
+        .isEqualTo(originalJson);
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     EgressRouterBuilder egressRouterBuilder = new EgressRouterBuilder()
-      .withNewMetadata().withName("test-er").endMetadata()
-      .withNewSpec()
-      .addNewAddress()
-      .withGateway("192.168.3.1")
-      .withIp("192.168.3.10/24")
-      .endAddress()
-      .withMode("Redirect")
-      .withNewNetworkInterface()
-      .withNewMacvlan()
-      .withMode("Bridge")
-      .endMacvlan()
-      .endNetworkInterface()
-      .withNewRedirect()
-      .withFallbackIP("203.0.113.25")
-      .endRedirect()
-      .endSpec();
+        .withNewMetadata().withName("test-er").endMetadata()
+        .withNewSpec()
+        .addNewAddress()
+        .withGateway("192.168.3.1")
+        .withIp("192.168.3.10/24")
+        .endAddress()
+        .withMode("Redirect")
+        .withNewNetworkInterface()
+        .withNewMacvlan()
+        .withMode("Bridge")
+        .endMacvlan()
+        .endNetworkInterface()
+        .withNewRedirect()
+        .withFallbackIP("203.0.113.25")
+        .endRedirect()
+        .endSpec();
 
     // When
     final EgressRouter egressRouter = egressRouterBuilder.build();

@@ -35,27 +35,28 @@ class CustomResourceDefinitionTest {
   @Test
   public void testBuilder() {
     CustomResourceDefinition crd = new io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder()
-      .withApiVersion("apiextensions.k8s.io/v1beta1")
-      .withNewMetadata()
-      .withName("itests.examples.fabric8.io")
-      .endMetadata()
-      .withNewSpec()
-      .withGroup("examples.fabric8.io")
-      .withVersion("v1")
-      .addAllToVersions(Collections.singletonList(new io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder()
-        .withName("v1")
-        .withServed(true)
-        .withStorage(true)
-        .build()))
-      .withScope("Namespaced")
-      .withNewNames()
-      .withPlural("itests")
-      .withSingular("itest")
-      .withKind("Itest")
-      .withShortNames("it")
-      .endNames()
-      .endSpec()
-      .build();
+        .withApiVersion("apiextensions.k8s.io/v1beta1")
+        .withNewMetadata()
+        .withName("itests.examples.fabric8.io")
+        .endMetadata()
+        .withNewSpec()
+        .withGroup("examples.fabric8.io")
+        .withVersion("v1")
+        .addAllToVersions(Collections
+            .singletonList(new io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder()
+                .withName("v1")
+                .withServed(true)
+                .withStorage(true)
+                .build()))
+        .withScope("Namespaced")
+        .withNewNames()
+        .withPlural("itests")
+        .withSingular("itest")
+        .withKind("Itest")
+        .withShortNames("it")
+        .endNames()
+        .endSpec()
+        .build();
 
     assertEquals("itests.examples.fabric8.io", crd.getMetadata().getName());
     assertEquals("examples.fabric8.io", crd.getSpec().getGroup());
@@ -69,12 +70,13 @@ class CustomResourceDefinitionTest {
     final String originalJson = Helper.loadJson("/valid-crd.json");
 
     // when
-    final CustomResourceDefinition customResourceDefinition = objectMapper.readValue(originalJson, CustomResourceDefinition.class);
+    final CustomResourceDefinition customResourceDefinition = objectMapper.readValue(originalJson,
+        CustomResourceDefinition.class);
     final String serializedJson = objectMapper.writeValueAsString(customResourceDefinition);
 
     // then
     assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(originalJson);
+        .isEqualTo(originalJson);
   }
 
   @Test
@@ -91,7 +93,7 @@ class CustomResourceDefinitionTest {
 
     // then
     assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(jsonString);
+        .isEqualTo(jsonString);
   }
 
   @Test
@@ -108,6 +110,6 @@ class CustomResourceDefinitionTest {
 
     // then
     assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(jsonString);
+        .isEqualTo(jsonString);
   }
 }

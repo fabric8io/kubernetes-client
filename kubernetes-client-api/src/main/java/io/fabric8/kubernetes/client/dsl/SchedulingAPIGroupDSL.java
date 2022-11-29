@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.Client;
 public interface SchedulingAPIGroupDSL extends Client {
   @Deprecated
   MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass();
+
   V1SchedulingAPIGroupDSL v1();
+
   V1beta1SchedulingAPIGroupDSL v1beta1();
 }

@@ -31,8 +31,8 @@ class ClusterRelocateTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clusterrelocate.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final ClusterRelocate clusterRelocate = mapper.readValue(originalJson, ClusterRelocate.class);
@@ -42,40 +42,42 @@ class ClusterRelocateTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(clusterRelocate)
-      .isNotNull()
-      .isEqualTo(clusterRelocateFromSerializedJson)
-      .hasFieldOrPropertyWithValue("metadata.name", "hive2-cluster-relocator")
-      .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.name", "hive2-remote-kubeconfig-secret")
-      .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.namespace", "hive")
-      .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels", Collections.singletonMap("hive-instance", "hive2"));
+        .isNotNull()
+        .isEqualTo(clusterRelocateFromSerializedJson)
+        .hasFieldOrPropertyWithValue("metadata.name", "hive2-cluster-relocator")
+        .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.name", "hive2-remote-kubeconfig-secret")
+        .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.namespace", "hive")
+        .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels",
+            Collections.singletonMap("hive-instance", "hive2"));
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     ClusterRelocateBuilder clusterRelocateBuilder = new ClusterRelocateBuilder()
-      .withNewMetadata()
-      .withName("hive2-cluster-relocator")
-      .endMetadata()
-      .withNewSpec()
-      .withNewKubeconfigSecretRef()
-      .withName("hive2-remote-kubeconfig-secret")
-      .withNamespace("hive")
-      .endKubeconfigSecretRef()
-      .withNewClusterDeploymentSelector()
-      .addToMatchLabels("hive-instance", "hive2")
-      .endClusterDeploymentSelector()
-      .endSpec();
+        .withNewMetadata()
+        .withName("hive2-cluster-relocator")
+        .endMetadata()
+        .withNewSpec()
+        .withNewKubeconfigSecretRef()
+        .withName("hive2-remote-kubeconfig-secret")
+        .withNamespace("hive")
+        .endKubeconfigSecretRef()
+        .withNewClusterDeploymentSelector()
+        .addToMatchLabels("hive-instance", "hive2")
+        .endClusterDeploymentSelector()
+        .endSpec();
 
     // When
     ClusterRelocate clusterRelocate = clusterRelocateBuilder.build();
 
     // Then
     assertThat(clusterRelocate)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "hive2-cluster-relocator")
-      .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.name", "hive2-remote-kubeconfig-secret")
-      .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.namespace", "hive")
-      .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels", Collections.singletonMap("hive-instance", "hive2"));
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "hive2-cluster-relocator")
+        .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.name", "hive2-remote-kubeconfig-secret")
+        .hasFieldOrPropertyWithValue("spec.kubeconfigSecretRef.namespace", "hive")
+        .hasFieldOrPropertyWithValue("spec.clusterDeploymentSelector.matchLabels",
+            Collections.singletonMap("hive-instance", "hive2"));
   }
 }

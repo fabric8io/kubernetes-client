@@ -28,9 +28,9 @@ public class LoadAndCreateCustomResourceDefinition {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       CustomResourceDefinition crd = k8s.apiextensions().v1()
-        .customResourceDefinitions()
-        .load(LoadAndCreateCustomResourceDefinition.class.getResourceAsStream("/test-crd.yaml"))
-        .get();
+          .customResourceDefinitions()
+          .load(LoadAndCreateCustomResourceDefinition.class.getResourceAsStream("/test-crd.yaml"))
+          .get();
 
       k8s.apiextensions().v1().customResourceDefinitions().create(crd);
     }

@@ -36,16 +36,16 @@ class BindingTest {
   @Test
   void createOK() {
     server.expect().post().withPath("/api/v1/namespaces/default/bindings")
-      .andReturn(201, "{\"metadata\": {\"name\": \"binding-name\"}}")
-      .once();
+        .andReturn(201, "{\"metadata\": {\"name\": \"binding-name\"}}")
+        .once();
     // When
     final Binding result = client.bindings().inNamespace("default").create(new BindingBuilder()
-      .withNewMetadata().withName("binding-name").endMetadata()
-      .withNewTarget().withKind("Node").withApiVersion("v1").withName("node-name").endTarget()
-      .build());
+        .withNewMetadata().withName("binding-name").endMetadata()
+        .withNewTarget().withKind("Node").withApiVersion("v1").withName("node-name").endTarget()
+        .build());
     // Then
     assertThat(result)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "binding-name");
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "binding-name");
   }
 }

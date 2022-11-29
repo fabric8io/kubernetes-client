@@ -32,7 +32,7 @@ public class ListDeploymentConfigs {
   private static final Logger logger = LoggerFactory.getLogger(ListDeploymentConfigs.class);
 
   public static void main(String[] args) {
-    try(OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
+    try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.APPS)) {
         logger.warn("This cluster does not support the API Group {}", OpenShiftAPIGroups.APPS);
         return;

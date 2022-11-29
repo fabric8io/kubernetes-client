@@ -18,6 +18,5 @@ package io.fabric8.volumesnapshot.client;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 
-
 public interface VolumeSnapshotResource extends Resource<VolumeSnapshot> {
 }

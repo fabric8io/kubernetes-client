@@ -33,8 +33,8 @@ class SubscriptionTest {
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/valid-subscription.json"))
-      .useDelimiter("\\A")
-      .next();
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final Subscription subscription = mapper.readValue(originalJson, Subscription.class);
@@ -57,19 +57,19 @@ class SubscriptionTest {
   void builderShouldCreateObject() {
     // Given
     SubscriptionBuilder subscriptionBuilder = new SubscriptionBuilder()
-      .withNewMetadata()
-      .addToLabels("vendor", "OpenShift")
-      .withName("sample_subscription")
-      .addToAnnotations("apps.open-cluster-management.io/git-path", "apps/sample/")
-      .addToAnnotations("apps.open-cluster-management.io/git-branch", "sample_branch")
-      .endMetadata()
-      .withNewSpec()
-      .withChannel("channel_namespace/sample_channel")
-      .addNewPackageOverride()
-      .withPackageName("my-sample-application")
-      .withPackageAlias("the-sample-app")
-      .endPackageOverride()
-      .endSpec();
+        .withNewMetadata()
+        .addToLabels("vendor", "OpenShift")
+        .withName("sample_subscription")
+        .addToAnnotations("apps.open-cluster-management.io/git-path", "apps/sample/")
+        .addToAnnotations("apps.open-cluster-management.io/git-branch", "sample_branch")
+        .endMetadata()
+        .withNewSpec()
+        .withChannel("channel_namespace/sample_channel")
+        .addNewPackageOverride()
+        .withPackageName("my-sample-application")
+        .withPackageAlias("the-sample-app")
+        .endPackageOverride()
+        .endSpec();
 
     // When
     Subscription subscription = subscriptionBuilder.build();

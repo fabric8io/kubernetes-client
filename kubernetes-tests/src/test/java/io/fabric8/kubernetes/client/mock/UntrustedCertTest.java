@@ -41,8 +41,8 @@ public class UntrustedCertTest {
       server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
       //We override the config to create a client that doesn't trust all certs.
       Config override = new ConfigBuilder(client.getConfiguration())
-        .withTrustCerts(false)
-        .build();
+          .withTrustCerts(false)
+          .build();
 
       KubernetesClient client = new DefaultKubernetesClient(override);
       client.pods().list();
@@ -55,9 +55,9 @@ public class UntrustedCertTest {
       server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
       //We override the config to create a client that doesn't trust all certs.
       Config override = new ConfigBuilder(client.getConfiguration())
-        .withTrustCerts(false)
-        .withCaCertData(CA_CERT_DATA)
-        .build();
+          .withTrustCerts(false)
+          .withCaCertData(CA_CERT_DATA)
+          .build();
 
       KubernetesClient client = new DefaultKubernetesClient(override);
       client.pods().list();
@@ -66,12 +66,12 @@ public class UntrustedCertTest {
 
   @Test
   public void testListWithTrustCerts() {
-   server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
     //We override the config to create a client that doesn't trust all certs.
     Config override = new ConfigBuilder(client.getConfiguration())
-            .withTrustCerts(true)
-            .withCaCertData(CA_CERT_DATA)
-            .build();
+        .withTrustCerts(true)
+        .withCaCertData(CA_CERT_DATA)
+        .build();
 
     KubernetesClient client = new DefaultKubernetesClient(override);
     client.pods().list();

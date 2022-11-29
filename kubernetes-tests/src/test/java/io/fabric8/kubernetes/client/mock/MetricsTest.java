@@ -48,8 +48,7 @@ class MetricsTest {
   @Test
   void testPodMetricsAllNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/pods")
-      .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
-
+        .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
     PodMetricsList podMetricsList = client.top().pods().metrics();
     assertEquals(1, podMetricsList.getItems().size());
@@ -59,8 +58,7 @@ class MetricsTest {
   @Test
   void testPodMetricsNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods")
-      .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
-
+        .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
     PodMetricsList podMetricsList = client.top().pods().metrics("test");
     assertEquals(1, podMetricsList.getItems().size());
@@ -70,8 +68,7 @@ class MetricsTest {
   @Test
   void testPodMetricsNamespaceWithName() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods/test-pod")
-      .andReturn(200, getPodMetric()).once();
-
+        .andReturn(200, getPodMetric()).once();
 
     PodMetrics podMetrics = client.top().pods().metrics("test", "test-pod");
     assertEquals("foo", podMetrics.getMetadata().getName());
@@ -81,8 +78,8 @@ class MetricsTest {
   void testPodMetricsInNamespace() throws Exception {
     // Given
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods")
-      .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
+        .once();
 
     // When
     PodMetricsList podMetricsList = client.top().pods().inNamespace("test").metrics();
@@ -96,42 +93,42 @@ class MetricsTest {
   void testPodMetricWithLabels() throws Exception {
     // Given
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/ns1/pods?labelSelector=foo%3Dbar")
-      .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
+        .once();
 
     // When
     PodMetricsList podMetricsList = client.top().pods().inNamespace("ns1")
-      .withLabels(Collections.singletonMap("foo", "bar"))
-      .metrics();
+        .withLabels(Collections.singletonMap("foo", "bar"))
+        .metrics();
 
     // Then
     assertThat(podMetricsList)
-      .isNotNull()
-      .extracting(PodMetricsList::getItems).asList().hasSize(1);
+        .isNotNull()
+        .extracting(PodMetricsList::getItems).asList().hasSize(1);
   }
 
   @Test
   void testPodMetricWithLabelsAllNamespaces() throws Exception {
     // Given
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/pods?labelSelector=foo%3Dbar")
-      .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
-      .once();
+        .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
+        .once();
 
     // When
     PodMetricsList podMetricsList = client.top().pods()
-      .withLabels(Collections.singletonMap("foo", "bar"))
-      .metrics();
+        .withLabels(Collections.singletonMap("foo", "bar"))
+        .metrics();
 
     // Then
     assertThat(podMetricsList)
-      .isNotNull()
-      .extracting(PodMetricsList::getItems).asList().hasSize(1);
+        .isNotNull()
+        .extracting(PodMetricsList::getItems).asList().hasSize(1);
   }
 
   @Test
   void testAllNodeMetrics() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes")
-      .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
+        .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
 
     NodeMetricsList nodeMetricsList = client.top().nodes().metrics();
     assertEquals(1, nodeMetricsList.getItems().size());
@@ -141,7 +138,7 @@ class MetricsTest {
   @Test
   void testNodeMetric() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes/test-node")
-      .andReturn(200, getNodeMetric()).once();
+        .andReturn(200, getNodeMetric()).once();
 
     NodeMetrics nodeMetrics = client.top().nodes().metrics("test-node");
     assertEquals("foo", nodeMetrics.getMetadata().getName());
@@ -151,9 +148,9 @@ class MetricsTest {
   void testNodeMetricWithLabels() {
     // Given
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes?labelSelector=" + Utils.toUrlEncoded("ss=true,cs=true"))
-      .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
+        .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
 
-    Map<String,Object> lablesMap = new HashMap<>();
+    Map<String, Object> lablesMap = new HashMap<>();
     lablesMap.put("ss", "true");
     lablesMap.put("cs", "true");
 
@@ -166,22 +163,21 @@ class MetricsTest {
 
   private PodMetrics getPodMetric() throws Exception {
     return new PodMetricsBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withWindow(Duration.parse("1m0s"))
-      .addNewContainer()
-      .withName("test-container")
-      .withUsage(Collections.singletonMap("cpu", new Quantity("38m")))
-      .endContainer()
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withWindow(Duration.parse("1m0s"))
+        .addNewContainer()
+        .withName("test-container")
+        .withUsage(Collections.singletonMap("cpu", new Quantity("38m")))
+        .endContainer()
+        .build();
   }
 
   private NodeMetrics getNodeMetric() {
     return new NodeMetricsBuilder()
-      .withNewMetadata().withName("foo").endMetadata()
-      .withWindow(new Duration(java.time.Duration.ofMinutes(1L)))
-      .withUsage(Collections.singletonMap("cpu", new Quantity("38m")))
-      .build();
+        .withNewMetadata().withName("foo").endMetadata()
+        .withWindow(new Duration(java.time.Duration.ofMinutes(1L)))
+        .withUsage(Collections.singletonMap("cpu", new Quantity("38m")))
+        .build();
   }
-
 
 }
