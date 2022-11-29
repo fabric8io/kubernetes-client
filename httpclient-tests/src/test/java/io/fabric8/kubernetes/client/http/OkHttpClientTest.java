@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.http.HttpClient.AsyncBody;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -42,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -222,7 +222,7 @@ class OkHttpClientTest {
   @DisplayName("Supported response body types")
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })
-  void testSupportedTypes(Class<?> type) throws Exception {
+  void supportedResponseBodyTypes(Class<?> type) throws Exception {
     String value = new String(new byte[16384]);
     server.expect().withPath("/type").andReturn(200, value).always();
     final HttpResponse<?> result = client.getHttpClient()
@@ -234,4 +234,14 @@ class OkHttpClientTest {
         .satisfies(r -> assertThat(r.bodyString()).isEqualTo(value));
   }
 
+  @Test
+  void supportedResponseTypeWithInvalid() {
+    final HttpClient httpClient = client.getHttpClient();
+    final HttpRequest request = httpClient.newHttpRequestBuilder()
+        .uri(URI.create(client.getConfiguration().getMasterUrl() + "type")).build();
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> httpClient.sendAsync(request, Boolean.class))
+        .withMessageStartingWith("Unsupported response type: ")
+        .withMessageContaining("Boolean");
+  }
 }

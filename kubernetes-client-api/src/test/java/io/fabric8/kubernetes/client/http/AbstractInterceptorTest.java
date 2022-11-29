@@ -131,7 +131,7 @@ public abstract class AbstractInterceptorTest {
     final CompletableFuture<String> result = new CompletableFuture<>();
     // When
     try (HttpClient client = builder.build()) {
-      final HttpResponse<HttpClient.AsyncBody> asyncR = client.consumeLines(
+      final HttpResponse<AsyncBody> asyncR = client.consumeLines(
           client.newHttpRequestBuilder().uri(server.url("/not-found")).build(), (s, ab) -> {
             result.complete(s);
             ab.consume();
@@ -166,7 +166,7 @@ public abstract class AbstractInterceptorTest {
     final CompletableFuture<String> result = new CompletableFuture<>();
     // When
     try (HttpClient client = builder.build()) {
-      final HttpResponse<HttpClient.AsyncBody> asyncR = client.consumeBytes(
+      final HttpResponse<AsyncBody> asyncR = client.consumeBytes(
           client.newHttpRequestBuilder().uri(server.url("/not-found")).build(),
           (s, ab) -> {
             result.complete(StandardCharsets.UTF_8.decode(s.iterator().next()).toString());

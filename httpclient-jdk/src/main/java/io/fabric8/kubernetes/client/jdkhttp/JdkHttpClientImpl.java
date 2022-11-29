@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -97,12 +98,12 @@ public class JdkHttpClientImpl implements HttpClient {
     }
   }
 
-  private final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
-    private final BodyConsumer<T> consumer;
+  private static final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
+    private final AsyncBody.Consumer<T> consumer;
     private CompletableFuture<Void> done = new CompletableFuture<Void>();
     private CompletableFuture<Flow.Subscription> subscription = new CompletableFuture<>();
 
-    private AsyncBodySubscriber(BodyConsumer<T> consumer) {
+    private AsyncBodySubscriber(AsyncBody.Consumer<T> consumer) {
       this.consumer = consumer;
     }
 
@@ -252,17 +253,18 @@ public class JdkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, BodyConsumer<String> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, AsyncBody.Consumer<String> consumer) {
     return sendAsync(request, () -> {
       AsyncBodySubscriber<String> subscriber = new AsyncBodySubscriber<>(consumer);
       BodyHandler<Void> handler = BodyHandlers.fromLineSubscriber(subscriber);
       BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
       return new HandlerAndAsyncBody<>(handlerAdapter, subscriber);
-    }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
+    }).thenApply(r -> new JdkHttpResponseImpl<>(r.response, r.asyncBody));
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, BodyConsumer<List<ByteBuffer>> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request,
+      AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     return sendAsync(request, () -> {
       AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
       BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);

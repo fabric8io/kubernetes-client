@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -38,7 +39,7 @@ public interface HttpResponse<T> extends HttpHeaders {
 
   /**
    * Returns the HTTP status code.
-   * 
+   *
    * @return the HTTP status code.
    */
   int code();
@@ -63,29 +64,71 @@ public interface HttpResponse<T> extends HttpHeaders {
    * @throws IOException in case there's an I/O problem
    */
   default String bodyString() throws IOException {
-    Object body = body();
-    if (body == null) {
+    final Object body = body();
+    final SupportedResponses supportedResponse = SupportedResponses.from(body);
+    if (supportedResponse == null) {
       return "";
     }
-    if (body instanceof String) {
-      return (String) body;
-    }
-    if (body instanceof Reader) {
-      return IOHelpers.readFully((Reader) body);
-    }
-    if (body instanceof byte[]) {
-      return new String((byte[]) body, UTF_8);
-    }
-    return IOHelpers.readFully((InputStream) body, UTF_8);
+    return supportedResponse.asString(body);
   }
 
   /**
    * The original {@link HttpRequest} that initiated this response.
-   * 
+   *
    * @return the HTTP request.
    */
   HttpRequest request();
 
   Optional<HttpResponse<?>> previousResponse();
 
+  enum SupportedResponses {
+    TEXT(String.class, Object::toString, SendAsyncUtils::string),
+    INPUT_STREAM(InputStream.class, body -> IOHelpers.readFully((InputStream) body, UTF_8), SendAsyncUtils::inputStream),
+    READER(Reader.class, body -> IOHelpers.readFully((Reader) body), SendAsyncUtils::reader),
+    BYTE_ARRAY(byte[].class, body -> new String((byte[]) body, UTF_8), SendAsyncUtils::bytes);
+
+    private final Class<?> type;
+    private final ToString toString;
+    private final Async<?> async;
+
+    <T> SupportedResponses(Class<T> type, ToString toString, Async<T> async) {
+      this.type = type;
+      this.toString = toString;
+      this.async = async;
+    }
+
+    private String asString(Object body) throws IOException {
+      return toString.toString(body);
+    }
+
+    <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, HttpClient client) {
+      return ((Async<T>) async).sendAsync(request, client);
+    }
+
+    public static SupportedResponses from(Object object) {
+      if (object == null) {
+        return null;
+      }
+      return from(object.getClass());
+    }
+
+    public static SupportedResponses from(Class<?> type) {
+      for (SupportedResponses sr : SupportedResponses.values()) {
+        if (sr.type.isAssignableFrom(type)) {
+          return sr;
+        }
+      }
+      throw new IllegalArgumentException("Unsupported response type: " + type.getName());
+    }
+
+    @FunctionalInterface
+    interface ToString {
+      String toString(Object body) throws IOException;
+    }
+
+    @FunctionalInterface
+    interface Async<T> {
+      CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, HttpClient client);
+    }
+  }
 }

@@ -16,9 +16,6 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.http.HttpClient.AsyncBody;
-import io.fabric8.kubernetes.client.http.HttpClient.BodyConsumer;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedByInterruptException;
@@ -32,7 +29,7 @@ import java.util.List;
  * <p>
  * May be useful eventually to provide a non-blocking channel as well.
  */
-public class HttpClientReadableByteChannel implements ReadableByteChannel, BodyConsumer<List<ByteBuffer>> {
+public class HttpClientReadableByteChannel implements ReadableByteChannel, AsyncBody.Consumer<List<ByteBuffer>> {
 
   private final LinkedList<ByteBuffer> buffers = new LinkedList<>();
   private Throwable failed;

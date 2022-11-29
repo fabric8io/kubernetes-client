@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import org.eclipse.jetty.client.api.Request;
@@ -27,21 +27,20 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.LongConsumer;
 
-public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Adapter implements HttpClient.AsyncBody {
+public abstract class JettyAsyncResponseListener extends Response.Listener.Adapter implements AsyncBody {
 
   private final HttpRequest httpRequest;
-  private final HttpClient.BodyConsumer<T> bodyConsumer;
-  private final CompletableFuture<HttpResponse<HttpClient.AsyncBody>> asyncResponse;
+  private final CompletableFuture<HttpResponse<AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private CompletableFuture<LongConsumer> demand = new CompletableFuture<>();
+  private final CompletableFuture<LongConsumer> demand;
   private boolean initialConsumeCalled;
   private Runnable initialConsume;
 
-  JettyAsyncResponseListener(HttpRequest httpRequest, HttpClient.BodyConsumer<T> bodyConsumer) {
+  JettyAsyncResponseListener(HttpRequest httpRequest) {
     this.httpRequest = httpRequest;
-    this.bodyConsumer = bodyConsumer;
     asyncResponse = new CompletableFuture<>();
     asyncBodyDone = new CompletableFuture<>();
+    demand = new CompletableFuture<>();
   }
 
   @Override
@@ -78,7 +77,7 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
     asyncBodyDone.complete(null);
   }
 
-  public CompletableFuture<HttpResponse<HttpClient.AsyncBody>> listen(Request request) {
+  public CompletableFuture<HttpResponse<AsyncBody>> listen(Request request) {
     request.send(this);
     return asyncResponse;
   }
@@ -94,20 +93,21 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
       this.demand.complete(demand);
     }
     try {
-      // we must clone as the buffer can be reused after the call to succeeded
-      bodyConsumer.consume(process(response, clone(content)), this);
+      onContent(content);
       callback.succeeded();
     } catch (Exception e) {
       callback.failed(e);
     }
   }
 
-  protected abstract T process(Response response, ByteBuffer content);
+  /**
+   * Implement to consume the content of the chunked response.
+   * <p>
+   * Each chunk will be passed <b>in order</b> to this function (<code>onContent{callback.succeeded}</code>)
+   *
+   * @param content the ByteBuffer containing a chunk of the response.
+   * @throws Exception in case the downstream consumer throws an exception.
+   */
+  protected abstract void onContent(ByteBuffer content) throws Exception;
 
-  public static ByteBuffer clone(ByteBuffer original) {
-    ByteBuffer clone = ByteBuffer.allocate(original.remaining());
-    clone.put(original);
-    clone.flip();
-    return clone;
-  }
 }
