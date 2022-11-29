@@ -182,7 +182,7 @@ class JettyWebSocketTest {
     // Given
     final var jws = new JettyWebSocket(new Listener());
     final var session = mock(Session.class);
-    jws.setWebSocketSession(session);
+    jws.onWebSocketConnect(session);
     when(session.isOpen()).thenReturn(true);
     // When
     jws.sendClose(1000, "Closing");
@@ -196,7 +196,7 @@ class JettyWebSocketTest {
     // Given
     final var jws = new JettyWebSocket(new Listener());
     final var session = mock(Session.class);
-    jws.setWebSocketSession(session);
+    jws.onWebSocketConnect(session);
     when(session.isOpen()).thenReturn(false);
     // When
     jws.sendClose(1000, "Closing");
@@ -210,7 +210,7 @@ class JettyWebSocketTest {
     // Given
     final var jws = new JettyWebSocket(new Listener());
     final var session = mock(Session.class);
-    jws.setWebSocketSession(session);
+    jws.onWebSocketConnect(session);
     when(session.isOpen()).thenReturn(true);
     jws.sendClose(1000, "Closing");
     // When
@@ -226,7 +226,7 @@ class JettyWebSocketTest {
     // Given
     final var jws = new JettyWebSocket(new Listener());
     final var session = mock(Session.class, RETURNS_DEEP_STUBS);
-    jws.setWebSocketSession(session);
+    jws.onWebSocketConnect(session);
     when(session.isOpen()).thenReturn(true);
     // When
     jws.send(ByteBuffer.wrap(new byte[] { 1, 3, 3, 7 }));

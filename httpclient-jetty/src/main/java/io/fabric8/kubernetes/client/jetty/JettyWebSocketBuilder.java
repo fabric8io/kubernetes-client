@@ -58,7 +58,7 @@ public class JettyWebSocketBuilder extends AbstractBasicBuilder<JettyWebSocketBu
       final CompletableFuture<WebSocket> future = new CompletableFuture<>();
       final var webSocket = new JettyWebSocket(listener);
       return webSocketClient.connect(webSocket, Objects.requireNonNull(WebSocket.toWebSocketUri(getUri())), cur)
-          .thenApply(webSocket::setWebSocketSession)
+          .thenApply(s -> webSocket)
           .exceptionally(ex -> {
             if (ex instanceof CompletionException && ex.getCause() instanceof UpgradeException) {
               future.completeExceptionally(toHandshakeException((UpgradeException) ex.getCause()));

@@ -13,67 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpResponse;
-import org.eclipse.jetty.client.api.Response;
+package io.fabric8.kubernetes.client.http;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class JettyHttpResponse<T> implements HttpResponse<T> {
+/**
+ * HttpResponse implementation wrapping an existing HttpResponse with a processed body.
+ * <p>
+ * Allows for changing the body type - there is further redesign that could be done here
+ *
+ * @param <T> the type of the body.
+ */
+class HttpResponseAdapter<T> implements HttpResponse<T> {
 
-  private final HttpRequest request;
-  private final Response response;
+  private final HttpResponse<?> response;
   private final T body;
 
-  public JettyHttpResponse(HttpRequest request, Response response, T body) {
-    this.request = request;
+  public HttpResponseAdapter(HttpResponse<?> response, T body) {
     this.response = response;
     this.body = body;
   }
 
   @Override
   public List<String> headers(String key) {
-    return response.getHeaders().getValuesList(key);
+    return response.headers(key);
+  }
+
+  @Override
+  public boolean isSuccessful() {
+    return response.isSuccessful();
   }
 
   @Override
   public Map<String, List<String>> headers() {
-    return response.getHeaders().stream().reduce(new HashMap<>(), (m, e) -> {
-      m.compute(e.getName(), (k, v) -> {
-        if (v == null) {
-          v = new ArrayList<>();
-        }
-        v.add(e.getValue());
-        return v;
-      });
-      return m;
-    }, (m1, m2) -> m1);
+    return response.headers();
   }
 
   @Override
   public int code() {
-    return response.getStatus();
+    return response.code();
+  }
+
+  @Override
+  public String message() {
+    return response.message();
+  }
+
+  @Override
+  public HttpRequest request() {
+    return response.request();
+  }
+
+  @Override
+  public Optional<HttpResponse<?>> previousResponse() {
+    return response.previousResponse();
   }
 
   @Override
   public T body() {
     return body;
-  }
-
-  @Override
-  public HttpRequest request() {
-    return request;
-  }
-
-  @Override
-  public Optional<HttpResponse<?>> previousResponse() {
-    return Optional.empty();
   }
 
 }

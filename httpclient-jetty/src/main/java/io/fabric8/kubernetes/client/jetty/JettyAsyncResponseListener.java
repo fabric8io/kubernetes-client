@@ -15,37 +15,46 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.client.api.Result;
+import org.eclipse.jetty.util.Callback;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.LongConsumer;
 
-public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Adapter implements HttpClient.AsyncBody {
+public abstract class JettyAsyncResponseListener extends Response.Listener.Adapter implements AsyncBody {
 
   private final HttpRequest httpRequest;
-  private final HttpClient.BodyConsumer<T> bodyConsumer;
-  private final CompletableFuture<HttpResponse<HttpClient.AsyncBody>> asyncResponse;
+  private final CompletableFuture<HttpResponse<AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private boolean consume;
+  private final CompletableFuture<LongConsumer> demand;
+  private boolean initialConsumeCalled;
+  private Runnable initialConsume;
 
-  JettyAsyncResponseListener(HttpRequest httpRequest, HttpClient.BodyConsumer<T> bodyConsumer) {
+  JettyAsyncResponseListener(HttpRequest httpRequest) {
     this.httpRequest = httpRequest;
-    this.bodyConsumer = bodyConsumer;
     asyncResponse = new CompletableFuture<>();
     asyncBodyDone = new CompletableFuture<>();
-    consume = false;
+    demand = new CompletableFuture<>();
   }
 
   @Override
-  public synchronized void consume() {
-    consume = true;
-    this.notifyAll();
+  public void consume() {
+    synchronized (this) {
+      if (!this.initialConsumeCalled) {
+        this.initialConsumeCalled = true;
+        if (this.initialConsume != null) {
+          this.initialConsume.run();
+          this.initialConsume = null;
+        }
+      }
+    }
+    demand.thenAccept(l -> l.accept(1));
   }
 
   @Override
@@ -68,29 +77,37 @@ public abstract class JettyAsyncResponseListener<T> extends Response.Listener.Ad
     asyncBodyDone.complete(null);
   }
 
-  public CompletableFuture<HttpResponse<HttpClient.AsyncBody>> listen(Request request) {
+  public CompletableFuture<HttpResponse<AsyncBody>> listen(Request request) {
     request.send(this);
     return asyncResponse;
   }
 
   @Override
-  public void onContent(Response response, ByteBuffer content) {
+  public void onContent(Response response, LongConsumer demand, ByteBuffer content, Callback callback) {
+    synchronized (this) {
+      if (!initialConsumeCalled) {
+        // defer until consume is called
+        this.initialConsume = () -> onContent(response, demand, content, callback);
+        return;
+      }
+      this.demand.complete(demand);
+    }
     try {
-      synchronized (this) {
-        while (!consume && !asyncBodyDone.isCancelled()) {
-          this.wait();
-        }
-      }
-      if (!asyncBodyDone.isCancelled()) {
-        bodyConsumer.consume(process(response, content), this);
-      }
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e);
+      onContent(content);
+      callback.succeeded();
     } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
+      callback.failed(e);
     }
   }
 
-  protected abstract T process(Response response, ByteBuffer content);
+  /**
+   * Implement to consume the content of the chunked response.
+   * <p>
+   * Each chunk will be passed <b>in order</b> to this function (<code>onContent{callback.succeeded}</code>)
+   *
+   * @param content the ByteBuffer containing a chunk of the response.
+   * @throws Exception in case the downstream consumer throws an exception.
+   */
+  protected abstract void onContent(ByteBuffer content) throws Exception;
+
 }

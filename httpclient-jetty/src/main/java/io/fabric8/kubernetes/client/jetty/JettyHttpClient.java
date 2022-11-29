@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
@@ -24,14 +25,12 @@ import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.api.Response;
-import org.eclipse.jetty.client.api.Result;
-import org.eclipse.jetty.client.util.BufferingResponseListener;
 import org.eclipse.jetty.client.util.InputStreamRequestContent;
 import org.eclipse.jetty.client.util.StringRequestContent;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -39,9 +38,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import static io.fabric8.kubernetes.client.http.BufferUtil.copy;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.APPLICATION_OCTET_STREAM;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.TEXT_PLAIN;
-import static org.eclipse.jetty.util.BufferUtil.toArray;
 
 public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpClient {
 
@@ -50,7 +49,7 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   private final Collection<Interceptor> interceptors;
   private final JettyHttpClientBuilder builder;
   private final JettyHttpClientFactory factory;
-  private Config config;
+  private final Config config;
 
   public JettyHttpClient(JettyHttpClientBuilder builder, HttpClient httpClient, WebSocketClient webSocketClient,
       Collection<Interceptor> interceptors, JettyHttpClientFactory jettyHttpClientFactory, Config config) {
@@ -78,35 +77,23 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   }
 
   @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest originalRequest, Class<T> type) {
-    final var supportedResponse = JettyHttpResponse.SupportedResponse.from(type);
-    final var request = toStandardHttpRequest(originalRequest);
-    final CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
-    newRequest(request).send(new BufferingResponseListener() {
-
-      // TODO: Long Term Refactor - This Listener blocks until the full response is read and keeps it in memory.
-      //       Find a way to stream the response body without completing the future
-      //       We need two signals, one when the response is received, and one when the body is completely
-      //       read.
-      //       Should this method be completely replaced by consumeXxx()?
-      @Override
-      public void onComplete(Result result) {
-        future.complete(new JettyHttpResponse<>(
-            request, result.getResponse(), supportedResponse.process(result.getResponse(), getContent(), type)));
-      }
-    });
-    return interceptResponse(request.toBuilder(), future, r -> sendAsync(r, type));
-  }
-
-  @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(
-      HttpRequest originalRequest, BodyConsumer<String> consumer) {
+      HttpRequest originalRequest, AsyncBody.Consumer<String> consumer) {
     final var request = toStandardHttpRequest(originalRequest);
-    final var future = new JettyAsyncResponseListener<>(request, consumer) {
+    final var future = new JettyAsyncResponseListener(request) {
+
+      final StringBuilder builder = new StringBuilder();
 
       @Override
-      protected String process(Response response, ByteBuffer content) {
-        return JettyHttpResponse.SupportedResponse.TEXT.process(response, toArray(content), String.class);
+      protected void onContent(ByteBuffer content) throws Exception {
+        for (char c : StandardCharsets.UTF_8.decode(content).array()) {
+          if (c == '\n') {
+            consumer.consume(builder.toString(), this);
+            builder.setLength(0);
+          } else {
+            builder.append(c);
+          }
+        }
       }
     }.listen(newRequest(request));
     return interceptResponse(request.toBuilder(), future, r -> consumeLines(r, consumer));
@@ -114,13 +101,14 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
 
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(
-      HttpRequest originalRequest, BodyConsumer<List<ByteBuffer>> consumer) {
+      HttpRequest originalRequest, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     final var request = toStandardHttpRequest(originalRequest);
-    final var future = new JettyAsyncResponseListener<>(request, consumer) {
+    final var future = new JettyAsyncResponseListener(request) {
 
       @Override
-      protected List<ByteBuffer> process(Response response, ByteBuffer content) {
-        return Collections.singletonList(content);
+      protected void onContent(ByteBuffer content) throws Exception {
+        // we must clone as the buffer can be reused by the byte consumer
+        consumer.consume(Collections.singletonList(copy(content)), this);
       }
     }.listen(newRequest(request));
     return interceptResponse(request.toBuilder(), future, r -> consumeBytes(r, consumer));

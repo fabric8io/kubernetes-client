@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -51,9 +52,6 @@ public class OkHttpClientImpl implements HttpClient {
   static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
 
   public static final MediaType JSON = parseMediaType("application/json");
-  public static final MediaType JSON_PATCH = parseMediaType("application/json-patch+json");
-  public static final MediaType STRATEGIC_MERGE_JSON_PATCH = parseMediaType("application/strategic-merge-patch+json");
-  public static final MediaType JSON_MERGE_PATCH = parseMediaType("application/merge-patch+json");
 
   static MediaType parseMediaType(String contentType) {
     MediaType result = MediaType.parse(contentType);
@@ -62,11 +60,11 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   private abstract class OkHttpAsyncBody<T> implements AsyncBody {
-    private final BodyConsumer<T> consumer;
+    private final AsyncBody.Consumer<T> consumer;
     private final BufferedSource source;
     private final CompletableFuture<Void> done = new CompletableFuture<>();
 
-    private OkHttpAsyncBody(BodyConsumer<T> consumer, BufferedSource source) {
+    private OkHttpAsyncBody(AsyncBody.Consumer<T> consumer, BufferedSource source) {
       this.consumer = consumer;
       this.source = source;
     }
@@ -76,16 +74,21 @@ public class OkHttpClientImpl implements HttpClient {
       // consume should not block from a callers perspective
       try {
         httpClient.dispatcher().executorService().execute(() -> {
-          try {
-            if (!source.exhausted() && !done.isDone()) {
-              T value = process(source);
-              consumer.consume(value, this);
-            } else {
-              done.complete(null);
+          // we must serialize multiple consumes as source is not thread-safe
+          // it would be better to use SerialExecutor, but that would need to move modules, as to
+          // potentially not hold multiple executor threads
+          synchronized (source) {
+            try {
+              if (!source.exhausted() && !done.isDone()) {
+                T value = process(source);
+                consumer.consume(value, this);
+              } else {
+                done.complete(null);
+              }
+            } catch (Exception e) {
+              Utils.closeQuietly(source);
+              done.completeExceptionally(e);
             }
-          } catch (Exception e) {
-            Utils.closeQuietly(source);
-            done.completeExceptionally(e);
           }
         });
       } catch (Exception e) {
@@ -212,8 +215,8 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request,
-      BodyConsumer<String> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(
+      HttpRequest request, AsyncBody.Consumer<String> consumer) {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<String>(consumer, s) {
       @Override
       protected String process(BufferedSource source) throws IOException {
@@ -227,8 +230,8 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request,
-      BodyConsumer<List<ByteBuffer>> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(
+      HttpRequest request, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
       @Override
       protected List<ByteBuffer> process(BufferedSource source) throws IOException {
@@ -266,30 +269,6 @@ public class OkHttpClientImpl implements HttpClient {
           + "More than likely this is because the KubernetesClient.close method has been called "
           + "- please ensure that is intentional.", e);
     }
-    future.whenComplete((r, t) -> {
-      if (future.isCancelled()) {
-        call.cancel();
-      }
-    });
-    return future;
-  }
-
-  @Override
-  public <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
-    CompletableFuture<HttpResponse<T>> future = new CompletableFuture<>();
-    Call call = httpClient.newCall(((OkHttpRequestImpl) request).getRequest());
-    call.enqueue(new Callback() {
-
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
-        future.complete(new OkHttpResponseImpl<>(response, type));
-      }
-
-      @Override
-      public void onFailure(Call call, IOException e) {
-        future.completeExceptionally(e);
-      }
-    });
     future.whenComplete((r, t) -> {
       if (future.isCancelled()) {
         call.cancel();
