@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -646,7 +647,11 @@ public class OperationSupport {
   protected void assertResponseCode(HttpRequest request, HttpResponse<?> response) {
     List<String> warnings = response.headers("Warning");
     if (warnings != null && !warnings.isEmpty()) {
-      LOG.warn("Recieved warning(s) from request at {}: {}", request.uri(), warnings);
+      if (context.fieldValidation == Validation.WARN) {
+        LOG.warn("Recieved warning(s) from request {}: {}", request.uri(), warnings);
+      } else {
+        LOG.debug("Recieved warning(s) from request {}: {}", request.uri(), warnings);
+      }
     }
     if (response.isSuccessful()) {
       return;
