@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.AbstractBasicBuilder;
+import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
@@ -27,6 +29,8 @@ import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -37,27 +41,32 @@ public class JettyWebSocketBuilder extends AbstractBasicBuilder<JettyWebSocketBu
 
   private final WebSocketClient webSocketClient;
   private final Duration handshakeTimeout;
+  private final Collection<Interceptor> interceptors;
   private String subprotocol;
 
-  public JettyWebSocketBuilder(WebSocketClient webSocketClient, Duration handshakeTimeout) {
+  public JettyWebSocketBuilder(
+      WebSocketClient webSocketClient, Duration handshakeTimeout, Collection<Interceptor> interceptors) {
     this.webSocketClient = webSocketClient;
     this.handshakeTimeout = handshakeTimeout;
+    this.interceptors = interceptors;
   }
 
   @Override
   public CompletableFuture<WebSocket> buildAsync(WebSocket.Listener listener) {
     try {
       webSocketClient.start();
+      final var requestBuilder = copy(this);
+      interceptors.forEach(i -> i.before(requestBuilder, new StandardHttpHeaders(requestBuilder.getHeaders())));
       final ClientUpgradeRequest cur = new ClientUpgradeRequest();
-      if (Utils.isNotNullOrEmpty(subprotocol)) {
-        cur.setSubProtocols(subprotocol);
+      if (Utils.isNotNullOrEmpty(requestBuilder.subprotocol)) {
+        cur.setSubProtocols(requestBuilder.subprotocol);
       }
-      cur.setHeaders(getHeaders());
-      cur.setTimeout(handshakeTimeout.toMillis(), TimeUnit.MILLISECONDS);
+      cur.setHeaders(requestBuilder.getHeaders());
+      cur.setTimeout(requestBuilder.handshakeTimeout.toMillis(), TimeUnit.MILLISECONDS);
       // Extra-future required because we can't Map the UpgradeException to a WebSocketHandshakeException easily
       final CompletableFuture<WebSocket> future = new CompletableFuture<>();
       final var webSocket = new JettyWebSocket(listener);
-      return webSocketClient.connect(webSocket, Objects.requireNonNull(WebSocket.toWebSocketUri(getUri())), cur)
+      return webSocketClient.connect(webSocket, Objects.requireNonNull(WebSocket.toWebSocketUri(requestBuilder.getUri())), cur)
           .thenApply(s -> webSocket)
           .exceptionally(ex -> {
             if (ex instanceof CompletionException && ex.getCause() instanceof UpgradeException) {
@@ -90,5 +99,14 @@ public class JettyWebSocketBuilder extends AbstractBasicBuilder<JettyWebSocketBu
         new HttpResponse(null, Collections.emptyList()).status(ex.getResponseStatusCode()),
         null))
             .initCause(ex);
+  }
+
+  private static JettyWebSocketBuilder copy(JettyWebSocketBuilder original) {
+    final var copy = new JettyWebSocketBuilder(
+        original.webSocketClient, original.handshakeTimeout, new ArrayList<>(original.interceptors));
+    copy.uri(original.getUri());
+    original.getHeaders().forEach((h, values) -> values.forEach(v -> copy.header(h, v)));
+    copy.subprotocol(original.subprotocol);
+    return copy;
   }
 }

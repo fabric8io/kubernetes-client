@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.UnaryOperator;
 
 public interface Interceptor {
 
@@ -34,11 +35,13 @@ public interface Interceptor {
     return this;
   }
 
-  static Interceptor useConfig(Interceptor interceptor, Config config) {
-    if (config == null) {
-      return interceptor;
-    }
-    return interceptor.withConfig(config);
+  static UnaryOperator<Interceptor> useConfig(Config config) {
+    return interceptor -> {
+      if (config == null) {
+        return interceptor;
+      }
+      return interceptor.withConfig(config);
+    };
   }
 
   /**

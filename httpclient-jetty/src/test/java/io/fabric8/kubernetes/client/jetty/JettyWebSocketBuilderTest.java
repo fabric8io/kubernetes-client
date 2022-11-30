@@ -57,7 +57,7 @@ class JettyWebSocketBuilderTest {
         .done()
         .always();
     final var open = new AtomicBoolean(false);
-    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO)
+    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO, Collections.emptyList())
         .uri(URI.create(server.url("/websocket-test")))
         .buildAsync(new WebSocket.Listener() {
           @Override
@@ -71,7 +71,7 @@ class JettyWebSocketBuilderTest {
   @Test
   void buildAsyncCantUpgradeThrowsWebSocketHandshakeException() {
     final var result = assertThrows(ExecutionException.class,
-        () -> new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO)
+        () -> new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO, Collections.emptyList())
             .uri(URI.create(server.url("/not-found")))
             .buildAsync(new WebSocket.Listener() {
             })
@@ -87,7 +87,7 @@ class JettyWebSocketBuilderTest {
         .done()
         .always();
     final var open = new AtomicBoolean(false);
-    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO)
+    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO, Collections.emptyList())
         .header("A-Random-Header", "A-Random-Value")
         .subprotocol("amqp")
         .uri(URI.create(server.url("/websocket-headers-test")))

@@ -65,13 +65,13 @@ class OkHttpClientBuilderImpl implements Builder {
       Request.Builder requestBuilder = chain.request().newBuilder();
       Config config = chain.request().tag(Config.class);
       OkHttpRequestImpl.BuilderImpl builderImpl = new OkHttpRequestImpl.BuilderImpl(requestBuilder);
-      io.fabric8.kubernetes.client.http.Interceptor.useConfig(interceptor, config)
+      io.fabric8.kubernetes.client.http.Interceptor.useConfig(config).apply(interceptor)
           .before(new OkHttpRequestImpl.BuilderImpl(requestBuilder), new OkHttpRequestImpl(chain.request()));
       Response response = chain.proceed(requestBuilder.build());
       if (!response.isSuccessful()) {
         // for okhttp this token refresh will be blocking
         try {
-          boolean call = io.fabric8.kubernetes.client.http.Interceptor.useConfig(interceptor, config)
+          boolean call = io.fabric8.kubernetes.client.http.Interceptor.useConfig(config).apply(interceptor)
               .afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class)).get();
           if (call) {
             response.close();
