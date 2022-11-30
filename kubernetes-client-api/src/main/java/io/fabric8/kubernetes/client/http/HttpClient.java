@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 
-import java.io.BufferedReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -178,16 +177,6 @@ public interface HttpClient extends AutoCloseable {
   default <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type) {
     return HttpResponse.SupportedResponses.from(type).sendAsync(request, this);
   }
-
-  /**
-   * Send a request and consume the lines of the response body using the same logic as {@link BufferedReader} to
-   * break up the lines.
-   *
-   * @param request the HttpRequest to send
-   * @param consumer the response body consumer
-   * @return the future which will be ready after the headers have been read
-   */
-  CompletableFuture<HttpResponse<AsyncBody>> consumeLines(HttpRequest request, AsyncBody.Consumer<String> consumer);
 
   /**
    * Send a request and consume the bytes of the resulting response body

@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -66,8 +68,18 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   protected synchronized void start(URL url, Map<String, String> headers) {
     HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url);
     headers.forEach(builder::header);
-    call = client.consumeLines(builder.build(), (s, a) -> {
-      onMessage(s);
+    StringBuffer buffer = new StringBuffer();
+    call = client.consumeBytes(builder.build(), (b, a) -> {
+      for (ByteBuffer content : b) {
+        for (char c : StandardCharsets.UTF_8.decode(content).array()) {
+          if (c == '\n') {
+            onMessage(buffer.toString());
+            buffer.setLength(0);
+          } else {
+            buffer.append(c);
+          }
+        }
+      }
       a.consume();
     });
     call.whenComplete((response, t) -> {

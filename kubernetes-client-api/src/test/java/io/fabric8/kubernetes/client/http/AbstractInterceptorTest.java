@@ -116,41 +116,6 @@ public abstract class AbstractInterceptorTest {
   }
 
   @Test
-  @DisplayName("afterFailure (HTTP), replaces the HttpResponse produced by HttpClient.consumeLines")
-  public void afterHttpFailureReplacesResponseInConsumeLines() throws Exception {
-    // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works\n").once();
-    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .addOrReplaceInterceptor("test", new Interceptor() {
-          @Override
-          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
-            builder.uri(URI.create(server.url("/intercepted-url")));
-            return CompletableFuture.completedFuture(true);
-          }
-        });
-    final CompletableFuture<String> result = new CompletableFuture<>();
-    // When
-    try (HttpClient client = builder.build()) {
-      final HttpResponse<AsyncBody> asyncR = client.consumeLines(
-          client.newHttpRequestBuilder().uri(server.url("/not-found")).build(), (s, ab) -> {
-            result.complete(s);
-            ab.consume();
-          })
-          .get(10L, TimeUnit.SECONDS);
-      asyncR.body().consume();
-      asyncR.body().done().whenComplete((v, t) -> {
-        if (t != null) {
-          result.completeExceptionally(t);
-        } else {
-          result.complete(null);
-        }
-      });
-      // Then
-      assertThat(result.get(10L, TimeUnit.SECONDS)).isEqualTo("This works");
-    }
-  }
-
-  @Test
   @DisplayName("afterFailure (HTTP), replaces the HttpResponse produced by HttpClient.consumeBytes")
   public void afterHttpFailureReplacesResponseInConsumeBytes() throws Exception {
     // Given

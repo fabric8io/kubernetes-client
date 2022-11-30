@@ -215,21 +215,6 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeLines(
-      HttpRequest request, AsyncBody.Consumer<String> consumer) {
-    Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<String>(consumer, s) {
-      @Override
-      protected String process(BufferedSource source) throws IOException {
-        // this should probably be strict instead
-        // when non-strict if no newline is present, this will create a truncated string from
-        // what is available.  However as strict it will be blocking.
-        return source.readUtf8Line();
-      }
-    };
-    return sendAsync(request, handler);
-  }
-
-  @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(
       HttpRequest request, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
