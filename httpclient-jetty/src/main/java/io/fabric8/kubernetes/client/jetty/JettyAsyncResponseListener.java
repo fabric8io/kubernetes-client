@@ -93,8 +93,10 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
       this.demand.complete(demand);
     }
     try {
-      onContent(content);
-      callback.succeeded();
+      if (!asyncBodyDone.isCancelled()) {
+        onContent(content);
+        callback.succeeded();
+      }
     } catch (Exception e) {
       callback.failed(e);
     }

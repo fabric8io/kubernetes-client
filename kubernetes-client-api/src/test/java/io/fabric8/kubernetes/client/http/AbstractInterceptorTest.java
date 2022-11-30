@@ -32,28 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractInterceptorTest {
 
-  private static final class ConfigAwareInterceptor implements Interceptor {
-
-    private Config config;
-
-    @Override
-    public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
-      String endpoint = "intercepted-url";
-      if (config != null && config.getImpersonateUsername() != null) {
-        endpoint = config.getImpersonateUsername();
-      }
-      builder.uri(URI.create(server.url("/" + endpoint)));
-      return CompletableFuture.completedFuture(true);
-    }
-
-    @Override
-    public Interceptor withConfig(Config config) {
-      ConfigAwareInterceptor result = new ConfigAwareInterceptor();
-      result.config = config;
-      return result;
-    }
-  }
-
   private static DefaultMockServer server;
 
   @BeforeAll
@@ -146,6 +124,30 @@ public abstract class AbstractInterceptorTest {
   }
 
   @Test
+  @DisplayName("afterFailure (HTTP) sees the overridden RequestConfig")
+  public void afterHttpFailureSuppliedConfig() throws Exception {
+    // Given
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
+    server.expect().withPath("/other-url").andReturn(200, "Overridden").once();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new ConfigAwareInterceptor());
+    // When
+    try (HttpClient client = builder.build()) {
+      Config config = Config.empty();
+      config.setImpersonateUsername("other-url");
+      HttpClient derivedClient = client.newBuilder().requestConfig(config).build();
+
+      final HttpResponse<String> result = derivedClient
+          .sendAsync(derivedClient.newHttpRequestBuilder().uri(server.url("/not-found")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(result)
+          .returns("Overridden", HttpResponse::body)
+          .returns(200, HttpResponse::code);
+    }
+  }
+
+  @Test
   @DisplayName("interceptors should be applied in the order they were added")
   public void interceptorsAreAppliedInOrder() throws Exception {
     // Given
@@ -172,27 +174,25 @@ public abstract class AbstractInterceptorTest {
         .containsEntry("test-header", Collections.singletonList("Test-Value-Override"));
   }
 
-  @Test
-  @DisplayName("afterFailure sees the overriden RequestConfig")
-  public void afterHttpFailureSuppliedConfig() throws Exception {
-    // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
-    server.expect().withPath("/other-url").andReturn(200, "Overriden").once();
-    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .addOrReplaceInterceptor("test", new ConfigAwareInterceptor());
-    // When
-    try (HttpClient client = builder.build()) {
-      Config config = Config.empty();
-      config.setImpersonateUsername("other-url");
-      HttpClient derivedClient = client.newBuilder().requestConfig(config).build();
+  private static final class ConfigAwareInterceptor implements Interceptor {
 
-      final HttpResponse<String> result = derivedClient
-          .sendAsync(derivedClient.newHttpRequestBuilder().uri(server.url("/not-found")).build(), String.class)
-          .get(10L, TimeUnit.SECONDS);
-      // Then
-      assertThat(result)
-          .returns("Overriden", HttpResponse::body)
-          .returns(200, HttpResponse::code);
+    private Config config;
+
+    @Override
+    public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+      String endpoint = "intercepted-url";
+      if (config != null && config.getImpersonateUsername() != null) {
+        endpoint = config.getImpersonateUsername();
+      }
+      builder.uri(URI.create(server.url("/" + endpoint)));
+      return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    public Interceptor withConfig(Config config) {
+      ConfigAwareInterceptor result = new ConfigAwareInterceptor();
+      result.config = config;
+      return result;
     }
   }
 }

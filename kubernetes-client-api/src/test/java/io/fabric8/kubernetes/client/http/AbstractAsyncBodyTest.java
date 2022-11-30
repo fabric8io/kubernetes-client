@@ -23,10 +23,13 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public abstract class AbstractAsyncBodyTest {
 
@@ -65,6 +68,31 @@ public abstract class AbstractAsyncBodyTest {
       asyncBodyResponse.body().consume();
       asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
       assertThat(responseText).contains("This is the response body as bytes");
+    }
+  }
+
+  @Test
+  @DisplayName("Bytes are not processed when cancel() invocation")
+  public void consumeBytesNotProcessedIfCancelled() throws Exception {
+    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      server.expect().withPath("/consume-bytes")
+          .andReturn(200, "This would be the response body as bytes")
+          .always();
+      final StringBuffer responseText = new StringBuffer();
+      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeBytes(
+          client.newHttpRequestBuilder().uri(server.url("/consume-bytes")).build(),
+          (value, asyncBody) -> {
+            responseText.append(value.stream().map(StandardCharsets.UTF_8::decode)
+                .map(CharBuffer::toString).collect(Collectors.joining()));
+            asyncBody.consume();
+          })
+          .get(10L, TimeUnit.SECONDS);
+      asyncBodyResponse.body().cancel();
+      asyncBodyResponse.body().consume();
+      final CompletableFuture<Void> doneFuture = asyncBodyResponse.body().done();
+      assertThatThrownBy(() -> doneFuture.get(10L, TimeUnit.SECONDS))
+          .isInstanceOf(CancellationException.class);
+      assertThat(responseText).isEmpty();
     }
   }
 
