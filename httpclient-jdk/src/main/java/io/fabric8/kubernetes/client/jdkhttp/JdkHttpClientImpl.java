@@ -268,7 +268,7 @@ public class JdkHttpClientImpl implements HttpClient {
     JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl) request;
     JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
     for (Interceptor interceptor : builder.getInterceptors().values()) {
-      Interceptor.useConfig(interceptor, config).before(builderImpl, jdkRequest);
+      Interceptor.useConfig(config).apply(interceptor).before(builderImpl, jdkRequest);
       jdkRequest = builderImpl.build();
     }
 
@@ -281,7 +281,7 @@ public class JdkHttpClientImpl implements HttpClient {
       cf = cf.thenCompose(ar -> {
         java.net.http.HttpResponse<T> response = ar.response;
         if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
-          return Interceptor.useConfig(interceptor, config).afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))
+          return Interceptor.useConfig(config).apply(interceptor).afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))
               .thenCompose(b -> {
                 if (b) {
                   HandlerAndAsyncBody<T> interceptedHandlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
@@ -326,9 +326,8 @@ public class JdkHttpClientImpl implements HttpClient {
   public CompletableFuture<WebSocket> buildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder, Listener listener) {
     JdkWebSocketImpl.BuilderImpl copy = webSocketBuilder.copy();
 
-    for (Interceptor interceptor : builder.getInterceptors().values()) {
-      Interceptor.useConfig(interceptor, config).before(copy, new JdkHttpRequestImpl(null, copy.asRequest()));
-    }
+    builder.getInterceptors().values().stream().map(Interceptor.useConfig(config))
+        .forEach(i -> i.before(copy, new JdkHttpRequestImpl(null, copy.asRequest())));
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
@@ -337,7 +336,7 @@ public class JdkHttpClientImpl implements HttpClient {
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null) {
-          return Interceptor.useConfig(interceptor, config)
+          return Interceptor.useConfig(config).apply(interceptor)
               .afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse())).thenCompose(b -> {
                 if (b) {
                   return this.internalBuildAsync(copy, listener);

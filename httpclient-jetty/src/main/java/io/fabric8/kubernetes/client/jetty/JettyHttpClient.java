@@ -30,12 +30,14 @@ import org.eclipse.jetty.client.util.StringRequestContent;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.http.BufferUtil.copy;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.APPLICATION_OCTET_STREAM;
@@ -92,7 +94,9 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
 
   @Override
   public WebSocket.Builder newWebSocketBuilder() {
-    return new JettyWebSocketBuilder(jettyWs, builder.getReadTimeout());
+    return new JettyWebSocketBuilder(
+        jettyWs, builder.getReadTimeout(),
+        interceptors.stream().map(Interceptor.useConfig(config)).collect(Collectors.toCollection(ArrayList::new)));
   }
 
   @Override
@@ -111,7 +115,7 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
       throw KubernetesClientException.launderThrowable(e);
     }
     final var requestBuilder = originalRequest.toBuilder();
-    interceptors.forEach(i -> Interceptor.useConfig(i, config).before(requestBuilder, originalRequest));
+    interceptors.stream().map(Interceptor.useConfig(config)).forEach(i -> i.before(requestBuilder, originalRequest));
     final var request = requestBuilder.build();
 
     var jettyRequest = jetty.newRequest(request.uri()).method(request.method());
@@ -133,7 +137,7 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
     for (var interceptor : interceptors) {
       originalResponse = originalResponse.thenCompose(r -> {
         if (!r.isSuccessful()) {
-          return Interceptor.useConfig(interceptor, config).afterFailure(builder, r)
+          return Interceptor.useConfig(config).apply(interceptor).afterFailure(builder, r)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
                   return function.apply(builder.build());

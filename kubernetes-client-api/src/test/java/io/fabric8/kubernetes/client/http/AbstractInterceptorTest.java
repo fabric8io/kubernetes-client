@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.mockwebserver.DefaultMockServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,22 +34,22 @@ public abstract class AbstractInterceptorTest {
 
   private static DefaultMockServer server;
 
-  @BeforeAll
-  static void beforeAll() {
+  @BeforeEach
+  void startServer() {
     server = new DefaultMockServer(false);
     server.start();
   }
 
-  @AfterAll
-  static void afterAll() {
+  @AfterEach
+  void stopServer() {
     server.shutdown();
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
 
   @Test
-  @DisplayName("before, should add a header to the HTTP request")
-  public void beforeAddsHeaderToRequest() throws Exception {
+  @DisplayName("before (HTTP), should add a header to the HTTP request")
+  public void beforeHttpAddsHeaderToRequest() throws Exception {
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("test", new Interceptor() {
@@ -66,6 +66,79 @@ public abstract class AbstractInterceptorTest {
     // Then
     assertThat(server.getLastRequest().getHeaders().toMultimap())
         .containsEntry("test-header", Collections.singletonList("Test-Value"));
+  }
+
+  @Test
+  @DisplayName("before (HTTP), should modify the HTTP request URI")
+  public void beforeHttpModifiesRequestUri() throws Exception {
+    // Given
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.uri(URI.create(server.url("valid-url")));
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      client.sendAsync(client.newHttpRequestBuilder().uri(server.url("/invalid-url")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(1);
+    assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
+  }
+
+  @Test
+  @DisplayName("before (WS), should add a header to the HTTP request")
+  public void beforeWsAddsHeaderToRequest() throws Exception {
+    // Given
+    server.expect().withPath("/intercept-before")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.header("Test-Header", "Test-Value");
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("intercept-before")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest().getHeaders().toMultimap())
+        .containsEntry("test-header", Collections.singletonList("Test-Value"));
+  }
+
+  @Test
+  @DisplayName("before (WS), should modify the HTTP request URI")
+  public void beforeWsModifiesRequestUri() throws Exception {
+    // Given
+    server.expect().withPath("/valid-url")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.uri(URI.create(server.url("valid-url")));
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("invalid-url")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(1);
+    assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
   }
 
   @Test
