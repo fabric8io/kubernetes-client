@@ -15,12 +15,10 @@
  */
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.ByteArrayBodyContent;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -51,9 +49,7 @@ class StandardHttpRequestTest {
         .returns("{\"v\":true}", HttpRequest::bodyString)
         .extracting(HttpHeaders::headers, InstanceOfAssertFactories.map(String.class, List.class))
         .containsOnly(
-            entry("h1", Arrays.asList("v1", "v2")),
-            entry("Content-Type", Collections.singletonList("application/json")),
-            entry("Expect", Collections.singletonList("100-Continue")));
+            entry("h1", Arrays.asList("v1", "v2")));
   }
 
   @Test
@@ -70,11 +66,7 @@ class StandardHttpRequestTest {
         .asInstanceOf(InstanceOfAssertFactories.type(StandardHttpRequest.class))
         .returns(URI.create("https://example.com/alex"), HttpRequest::uri)
         .returns("POST", HttpRequest::method)
-        .returns("The bytes", r -> toString(r.bodyStream()))
-        .extracting(HttpHeaders::headers, InstanceOfAssertFactories.map(String.class, List.class))
-        .containsOnly(
-            entry("Content-Type", Collections.singletonList("text/plain")),
-            entry("Content-Length", Collections.singletonList("9")));
+        .returns("The bytes", r -> new String((((ByteArrayBodyContent) r.body()).getContent()), StandardCharsets.UTF_8));
   }
 
   @Test
@@ -84,7 +76,7 @@ class StandardHttpRequestTest {
         .header("h1", "v1")
         .uri("https://example.com/julia");
     // When
-    final HttpRequest.Builder result = ((StandardHttpRequest) b.build()).toBuilder();
+    final HttpRequest.Builder result = ((StandardHttpRequest) b.build()).newBuilder();
     // Then
     assertThat(result)
         .isNotSameAs(b)
@@ -97,11 +89,4 @@ class StandardHttpRequestTest {
             entry("h1", Collections.singletonList("v1")));
   }
 
-  static String toString(InputStream is) {
-    try {
-      return IOHelpers.readFully(is);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 }

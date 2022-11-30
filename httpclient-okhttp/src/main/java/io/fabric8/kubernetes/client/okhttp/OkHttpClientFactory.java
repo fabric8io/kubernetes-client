@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
@@ -54,8 +53,8 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   }
 
   @Override
-  public Builder newBuilder() {
-    return new OkHttpClientBuilderImpl(newOkHttpClientBuilder(), this, null);
+  public OkHttpClientBuilderImpl newBuilder() {
+    return new OkHttpClientBuilderImpl(this, newOkHttpClientBuilder());
   }
 
   /**
@@ -67,7 +66,8 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   @Override
   public OkHttpClientBuilderImpl newBuilder(Config config) {
     try {
-      OkHttpClient.Builder httpClientBuilder = newOkHttpClientBuilder();
+      OkHttpClientBuilderImpl builderWrapper = newBuilder();
+      OkHttpClient.Builder httpClientBuilder = builderWrapper.getBuilder();
 
       if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
         httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
@@ -90,8 +90,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
         httpClientBuilder.dispatcher(dispatcher);
       }
-
-      OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder, this, null);
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
 

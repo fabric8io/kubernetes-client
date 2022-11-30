@@ -16,13 +16,18 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
+import org.eclipse.jetty.client.HttpResponse;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
+import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
@@ -45,6 +50,14 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     backPressure = lock.newCondition();
     closed = new AtomicBoolean();
     moreMessages = true;
+  }
+
+  static WebSocketHandshakeException toHandshakeException(UpgradeException ex) {
+    return new WebSocketHandshakeException(new JettyHttpResponse<>(
+        new StandardHttpRequest.Builder().uri(ex.getRequestURI()).build(),
+        new HttpResponse(null, Collections.emptyList()).status(ex.getResponseStatusCode()),
+        null))
+            .initCause(ex);
   }
 
   @Override

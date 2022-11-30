@@ -18,18 +18,7 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.http.BasicBuilder;
-import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.Interceptor;
-import okhttp3.Interceptor.Chain;
-import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -62,26 +51,6 @@ class OkHttpClientFactoryTest {
     client = new OkHttpClientFactory().newBuilder(config).build();
 
     assertEquals(20, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
-  }
-
-  @Test
-  void inteceptorClosure() throws IOException {
-    OkHttpClientBuilderImpl.InteceptorAdapter adapter = new OkHttpClientBuilderImpl.InteceptorAdapter(new Interceptor() {
-      @Override
-      public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
-        return CompletableFuture.completedFuture(true);
-      }
-    }, "name");
-
-    Chain chain = Mockito.mock(Chain.class);
-    Mockito.when(chain.request()).thenReturn(Mockito.mock(Request.class));
-    Mockito.when(chain.request().newBuilder()).thenReturn(Mockito.mock(Builder.class));
-    Response response = Mockito.mock(Response.class);
-    Mockito.when(chain.proceed(Mockito.any())).thenReturn(response);
-
-    adapter.intercept(chain);
-
-    Mockito.verify(response).close();
   }
 
 }

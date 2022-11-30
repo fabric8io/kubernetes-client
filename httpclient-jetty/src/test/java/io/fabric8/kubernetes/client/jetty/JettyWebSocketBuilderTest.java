@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocket.Builder;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.eclipse.jetty.client.HttpClient;
@@ -23,9 +24,9 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -57,7 +58,8 @@ class JettyWebSocketBuilderTest {
         .done()
         .always();
     final var open = new AtomicBoolean(false);
-    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO, Collections.emptyList())
+
+    createWebSocketBuilder()
         .uri(URI.create(server.url("/websocket-test")))
         .buildAsync(new WebSocket.Listener() {
           @Override
@@ -68,10 +70,17 @@ class JettyWebSocketBuilderTest {
     assertThat(open).isTrue();
   }
 
+  private Builder createWebSocketBuilder() {
+    HttpClient client = new HttpClient();
+    WebSocketClient wsClient = new WebSocketClient();
+    JettyHttpClient jettyClient = new JettyHttpClient(Mockito.mock(JettyHttpClientBuilder.class), client, wsClient);
+    return jettyClient.newWebSocketBuilder();
+  }
+
   @Test
   void buildAsyncCantUpgradeThrowsWebSocketHandshakeException() {
     final var result = assertThrows(ExecutionException.class,
-        () -> new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO, Collections.emptyList())
+        () -> createWebSocketBuilder()
             .uri(URI.create(server.url("/not-found")))
             .buildAsync(new WebSocket.Listener() {
             })
@@ -87,7 +96,7 @@ class JettyWebSocketBuilderTest {
         .done()
         .always();
     final var open = new AtomicBoolean(false);
-    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO, Collections.emptyList())
+    createWebSocketBuilder()
         .header("A-Random-Header", "A-Random-Value")
         .subprotocol("amqp")
         .uri(URI.create(server.url("/websocket-headers-test")))

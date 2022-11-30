@@ -15,51 +15,55 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.AsyncBody;
+import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.http.StandardHttpClient;
+import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
+import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.ByteArrayBodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.InputStreamBodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
+import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.client.util.BytesRequestContent;
 import org.eclipse.jetty.client.util.InputStreamRequestContent;
 import org.eclipse.jetty.client.util.StringRequestContent;
+import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.http.BufferUtil.copy;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.APPLICATION_OCTET_STREAM;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.TEXT_PLAIN;
 
-public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpClient {
+public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
 
   private final HttpClient jetty;
   private final WebSocketClient jettyWs;
-  private final Collection<Interceptor> interceptors;
-  private final JettyHttpClientBuilder builder;
-  private final JettyHttpClientFactory factory;
-  private final Config config;
 
-  public JettyHttpClient(JettyHttpClientBuilder builder, HttpClient httpClient, WebSocketClient webSocketClient,
-      Collection<Interceptor> interceptors, JettyHttpClientFactory jettyHttpClientFactory, Config config) {
-    this.builder = builder;
-    this.jetty = httpClient;
-    this.jettyWs = webSocketClient;
-    this.interceptors = interceptors;
-    this.factory = jettyHttpClientFactory;
-    this.config = config;
+  public JettyHttpClient(StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> builder,
+      HttpClient jetty, WebSocketClient jettyWs) {
+    super(builder);
+    this.jetty = jetty;
+    this.jettyWs = jettyWs;
   }
 
   @Override
@@ -73,15 +77,9 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
   }
 
   @Override
-  public DerivedClientBuilder newBuilder() {
-    return builder.copy(this);
-  }
-
-  @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(
-      HttpRequest originalRequest, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
-    final var request = toStandardHttpRequest(originalRequest);
-    final var future = new JettyAsyncResponseListener(request) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
+      Consumer<List<ByteBuffer>> consumer) {
+    return new JettyAsyncResponseListener(request) {
 
       @Override
       protected void onContent(ByteBuffer content) throws Exception {
@@ -89,23 +87,6 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
         consumer.consume(Collections.singletonList(copy(content)), this);
       }
     }.listen(newRequest(request));
-    return interceptResponse(request.toBuilder(), future, r -> consumeBytes(r, consumer));
-  }
-
-  @Override
-  public WebSocket.Builder newWebSocketBuilder() {
-    return new JettyWebSocketBuilder(
-        jettyWs, builder.getReadTimeout(),
-        interceptors.stream().map(Interceptor.useConfig(config)).collect(Collectors.toCollection(ArrayList::new)));
-  }
-
-  @Override
-  public HttpRequest.Builder newHttpRequestBuilder() {
-    return new StandardHttpRequest.Builder();
-  }
-
-  public Factory getFactory() {
-    return factory;
   }
 
   private Request newRequest(StandardHttpRequest originalRequest) {
@@ -114,48 +95,77 @@ public class JettyHttpClient implements io.fabric8.kubernetes.client.http.HttpCl
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-    final var requestBuilder = originalRequest.toBuilder();
-    interceptors.stream().map(Interceptor.useConfig(config)).forEach(i -> i.before(requestBuilder, originalRequest));
+    final var requestBuilder = originalRequest.newBuilder();
     final var request = requestBuilder.build();
 
     var jettyRequest = jetty.newRequest(request.uri()).method(request.method());
     jettyRequest.timeout(builder.getReadTimeout().toMillis() + builder.getWriteTimeout().toMillis(), TimeUnit.MILLISECONDS);
     jettyRequest.headers(m -> request.headers().forEach((k, l) -> l.forEach(v -> m.add(k, v))));
 
-    final var contentType = request.headers("Content-Type").stream().findAny();
-    if (request.bodyString() != null) {
-      jettyRequest.body(new StringRequestContent(contentType.orElse(TEXT_PLAIN), request.bodyString()));
-    } else if (request.bodyStream() != null) {
-      jettyRequest.body(new InputStreamRequestContent(contentType.orElse(APPLICATION_OCTET_STREAM), request.bodyStream()));
+    final var contentType = Optional.ofNullable(request.getContentType());
+
+    BodyContent body = request.body();
+    if (body != null) {
+      if (body instanceof StringBodyContent) {
+        jettyRequest.body(new StringRequestContent(contentType.orElse(TEXT_PLAIN), ((StringBodyContent) body).getContent()));
+      } else if (body instanceof ByteArrayBodyContent) {
+        jettyRequest.body(
+            new BytesRequestContent(contentType.orElse(APPLICATION_OCTET_STREAM), ((ByteArrayBodyContent) body).getContent()));
+      } else if (body instanceof InputStreamBodyContent) {
+        InputStreamBodyContent bodyContent = (InputStreamBodyContent) body;
+        if (bodyContent.getLength() >= 0) {
+          jettyRequest.headers(m -> m.put(StandardHttpHeaders.CONTENT_LENGTH, Long.toString(bodyContent.getLength())));
+        }
+        jettyRequest
+            .body(new InputStreamRequestContent(contentType.orElse(APPLICATION_OCTET_STREAM), bodyContent.getContent()));
+      } else {
+        throw new AssertionError("Unsupported body content");
+      }
     }
+
+    if (request.isExpectContinue()) {
+      jettyRequest.headers(m -> m.put(StandardHttpHeaders.EXPECT, StandardHttpHeaders.EXPECT_CONTINUE));
+    }
+
     return jettyRequest;
   }
 
-  private <T> CompletableFuture<HttpResponse<T>> interceptResponse(
-      StandardHttpRequest.Builder builder, CompletableFuture<HttpResponse<T>> originalResponse,
-      Function<HttpRequest, CompletableFuture<HttpResponse<T>>> function) {
-    for (var interceptor : interceptors) {
-      originalResponse = originalResponse.thenCompose(r -> {
-        if (!r.isSuccessful()) {
-          return Interceptor.useConfig(config).apply(interceptor).afterFailure(builder, r)
-              .thenCompose(b -> {
-                if (Boolean.TRUE.equals(b)) {
-                  return function.apply(builder.build());
-                }
-                return CompletableFuture.completedFuture(r);
-              });
-        }
-        return CompletableFuture.completedFuture(r);
-      });
+  @Override
+  public CompletableFuture<WebSocketResponse> buildWebSocketDirect(StandardWebSocketBuilder standardWebSocketBuilder,
+      Listener listener) {
+    try {
+      jettyWs.start();
+      HttpRequest request = standardWebSocketBuilder.asHttpRequest();
+      final ClientUpgradeRequest cur = new ClientUpgradeRequest();
+      if (Utils.isNotNullOrEmpty(standardWebSocketBuilder.getSubprotocol())) {
+        cur.setSubProtocols(standardWebSocketBuilder.getSubprotocol());
+      }
+      cur.setHeaders(request.headers());
+      if (builder.getReadTimeout() != null) {
+        cur.setTimeout(builder.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS);
+      }
+      // Extra-future required because we can't Map the UpgradeException to a WebSocketHandshakeException easily
+      final CompletableFuture<WebSocketResponse> future = new CompletableFuture<>();
+      final JettyWebSocket webSocket = new JettyWebSocket(listener);
+      jettyWs.connect(webSocket, Objects.requireNonNull(WebSocket.toWebSocketUri(request.uri())), cur)
+          .whenComplete((s, ex) -> {
+            if (ex != null) {
+              if (ex instanceof CompletionException && ex.getCause() instanceof UpgradeException) {
+                future.complete(
+                    new WebSocketResponse(webSocket, JettyWebSocket.toHandshakeException((UpgradeException) ex.getCause())));
+              } else if (ex instanceof UpgradeException) {
+                future.complete(new WebSocketResponse(webSocket, JettyWebSocket.toHandshakeException((UpgradeException) ex)));
+              } else {
+                future.completeExceptionally(ex);
+              }
+            } else {
+              future.complete(new WebSocketResponse(webSocket, null));
+            }
+          });
+      return future;
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
-    return originalResponse;
-  }
-
-  private static StandardHttpRequest toStandardHttpRequest(HttpRequest request) {
-    if (!(request instanceof StandardHttpRequest)) {
-      throw new IllegalArgumentException("Only StandardHttpRequest is supported");
-    }
-    return (StandardHttpRequest) request;
   }
 
   HttpClient getJetty() {

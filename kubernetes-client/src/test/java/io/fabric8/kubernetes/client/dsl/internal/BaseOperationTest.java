@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.TestHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
@@ -249,7 +249,7 @@ class BaseOperationTest {
     HttpClient mockClient = mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     HttpRequest.Builder mockRequestBuilder = mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
     when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
-    when(mockRequestBuilder.build()).thenReturn(new TestHttpRequest().withUri("https://k8s.example.com"));
+    when(mockRequestBuilder.build()).thenReturn(new StandardHttpRequest.Builder().uri("https://k8s.example.com").build());
     when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class))).thenAnswer(
         invocation -> {
           int count = httpExecutionCounter.getAndIncrement();

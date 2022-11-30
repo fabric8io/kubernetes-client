@@ -16,21 +16,28 @@
 
 package io.fabric8.kubernetes.client.jdkhttp;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.http.StandardHttpClient;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.ByteArrayBodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.InputStreamBodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
+import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 
 import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse.BodySubscriber;
 import java.net.http.HttpResponse.ResponseInfo;
-import java.net.http.WebSocketHandshakeException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
@@ -43,14 +50,15 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Supplier;
+
+import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
 
 /**
  * TODO:
  * - Mapping to a Reader is always UTF-8
  * - determine if write timeout should be implemented
  */
-public class JdkHttpClientImpl implements HttpClient {
+public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, JdkHttpClientFactory, JdkHttpClientBuilderImpl> {
 
   /**
    * Adapts the BodyHandler to immediately complete the body
@@ -197,7 +205,9 @@ public class JdkHttpClientImpl implements HttpClient {
 
     @Override
     public HttpRequest request() {
-      return new JdkHttpRequestImpl(null, response.request());
+      java.net.http.HttpRequest request = response.request();
+      // TODO: could try to subscribe to the request body, will just assume a null body for now
+      return new StandardHttpRequest(request.headers().map(), request.uri(), request.method(), null);
     }
 
     @Override
@@ -207,34 +217,11 @@ public class JdkHttpClientImpl implements HttpClient {
 
   }
 
-  static class AsyncResponse<T> {
-    java.net.http.HttpResponse<T> response;
-    AsyncBody asyncBody;
-
-    public AsyncResponse(java.net.http.HttpResponse<T> response, AsyncBody asyncBody) {
-      this.response = response;
-      this.asyncBody = asyncBody;
-    }
-  }
-
-  static class HandlerAndAsyncBody<T> {
-    BodyHandler<T> handler;
-    AsyncBody asyncBody;
-
-    public HandlerAndAsyncBody(BodyHandler<T> handler, AsyncBody asyncBody) {
-      this.handler = handler;
-      this.asyncBody = asyncBody;
-    }
-  }
-
-  private JdkHttpClientBuilderImpl builder;
   private java.net.http.HttpClient httpClient;
-  private Config config;
 
-  public JdkHttpClientImpl(JdkHttpClientBuilderImpl builderImpl, java.net.http.HttpClient httpClient, Config config) {
-    this.builder = builderImpl;
+  public JdkHttpClientImpl(JdkHttpClientBuilderImpl builder, HttpClient httpClient) {
+    super(builder);
     this.httpClient = httpClient;
-    this.config = config;
   }
 
   @Override
@@ -253,131 +240,71 @@ public class JdkHttpClientImpl implements HttpClient {
   }
 
   @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request,
-      AsyncBody.Consumer<List<ByteBuffer>> consumer) {
-    return sendAsync(request, () -> {
-      AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
-      BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
-      BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
-      return new HandlerAndAsyncBody<>(handlerAdapter, subscriber);
-    }).thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r.response, r.asyncBody));
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
+      Consumer<List<ByteBuffer>> consumer) {
+    AsyncBodySubscriber<List<ByteBuffer>> subscriber = new AsyncBodySubscriber<>(consumer);
+    BodyHandler<Void> handler = BodyHandlers.fromSubscriber(subscriber);
+    BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
+
+    return this.getHttpClient().sendAsync(requestBuilder(request).build(), handlerAdapter)
+        .thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, r.body()));
   }
 
-  public <T> CompletableFuture<AsyncResponse<T>> sendAsync(HttpRequest request,
-      Supplier<HandlerAndAsyncBody<T>> handlerAndAsyncBodySupplier) {
-    JdkHttpRequestImpl jdkRequest = (JdkHttpRequestImpl) request;
-    JdkHttpRequestImpl.BuilderImpl builderImpl = jdkRequest.newBuilder();
-    for (Interceptor interceptor : builder.getInterceptors().values()) {
-      Interceptor.useConfig(config).apply(interceptor).before(builderImpl, jdkRequest);
-      jdkRequest = builderImpl.build();
+  java.net.http.HttpRequest.Builder requestBuilder(StandardHttpRequest request) {
+    java.net.http.HttpRequest.Builder requestBuilder = java.net.http.HttpRequest.newBuilder();
+
+    Duration readTimeout = this.builder.getReadTimeout();
+    if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
+      requestBuilder.timeout(readTimeout);
     }
 
-    HandlerAndAsyncBody<T> handlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
-
-    CompletableFuture<AsyncResponse<T>> cf = this.getHttpClient().sendAsync(builderImpl.build().request,
-        handlerAndAsyncBody.handler).thenApply(r -> new AsyncResponse<>(r, handlerAndAsyncBody.asyncBody));
-
-    for (Interceptor interceptor : builder.getInterceptors().values()) {
-      cf = cf.thenCompose(ar -> {
-        java.net.http.HttpResponse<T> response = ar.response;
-        if (response != null && !HttpResponse.isSuccessful(response.statusCode())) {
-          return Interceptor.useConfig(config).apply(interceptor).afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))
-              .thenCompose(b -> {
-                if (b) {
-                  HandlerAndAsyncBody<T> interceptedHandlerAndAsyncBody = handlerAndAsyncBodySupplier.get();
-
-                  return this.getHttpClient().sendAsync(builderImpl.build().request, interceptedHandlerAndAsyncBody.handler)
-                      .thenApply(r -> new AsyncResponse<>(r, interceptedHandlerAndAsyncBody.asyncBody));
-                }
-                return CompletableFuture.completedFuture(ar);
-              });
-        }
-        return CompletableFuture.completedFuture(ar);
-      });
+    request.headers().entrySet().stream()
+        .forEach(e -> e.getValue().stream().forEach(v -> requestBuilder.header(e.getKey(), v)));
+    if (request.getContentType() != null) {
+      requestBuilder.setHeader(CONTENT_TYPE, request.getContentType());
     }
 
-    return cf;
-  }
+    BodyContent body = request.body();
+    if (body != null) {
+      if (body instanceof StringBodyContent) {
+        requestBuilder.method(request.method(), BodyPublishers.ofString(((StringBodyContent) body).getContent()));
+      } else if (body instanceof ByteArrayBodyContent) {
+        requestBuilder.method(request.method(), BodyPublishers.ofByteArray(((ByteArrayBodyContent) body).getContent()));
+      } else if (body instanceof InputStreamBodyContent) {
+        InputStreamBodyContent bodyContent = (InputStreamBodyContent) body;
+        BodyPublisher publisher = BodyPublishers.ofInputStream(bodyContent::getContent);
+        requestBuilder.method(request.method(), new BodyPublisher() {
 
-  @Override
-  public io.fabric8.kubernetes.client.http.WebSocket.Builder newWebSocketBuilder() {
-    return new JdkWebSocketImpl.BuilderImpl(this);
-  }
+          @Override
+          public void subscribe(Subscriber<? super ByteBuffer> subscriber) {
+            publisher.subscribe(subscriber);
+          }
 
-  @Override
-  public io.fabric8.kubernetes.client.http.HttpRequest.Builder newHttpRequestBuilder() {
-    return new JdkHttpRequestImpl.BuilderImpl().timeout(this.builder.getReadTimeout());
-  }
-
-  /*
-   * TODO: this may not be the best way to do this - in general
-   * instead we create a reponse to hold them both
-   */
-  private static class WebSocketResponse {
-    public WebSocketResponse(WebSocket w, java.net.http.WebSocketHandshakeException wshse) {
-      this.webSocket = w;
-      this.wshse = wshse;
-    }
-
-    WebSocket webSocket;
-    java.net.http.WebSocketHandshakeException wshse;
-  }
-
-  public CompletableFuture<WebSocket> buildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder, Listener listener) {
-    JdkWebSocketImpl.BuilderImpl copy = webSocketBuilder.copy();
-
-    builder.getInterceptors().values().stream().map(Interceptor.useConfig(config))
-        .forEach(i -> i.before(copy, new JdkHttpRequestImpl(null, copy.asRequest())));
-
-    CompletableFuture<WebSocket> result = new CompletableFuture<>();
-
-    CompletableFuture<WebSocketResponse> cf = internalBuildAsync(copy, listener);
-
-    for (Interceptor interceptor : builder.getInterceptors().values()) {
-      cf = cf.thenCompose(response -> {
-        if (response.wshse != null && response.wshse.getResponse() != null) {
-          return Interceptor.useConfig(config).apply(interceptor)
-              .afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse())).thenCompose(b -> {
-                if (b) {
-                  return this.internalBuildAsync(copy, listener);
-                }
-                return CompletableFuture.completedFuture(response);
-              });
-        }
-        return CompletableFuture.completedFuture(response);
-      });
-    }
-
-    // map back to the expected convention with the future completed by the response exception
-    cf.whenComplete((r, t) -> {
-      if (t != null) {
-        result.completeExceptionally(t);
-      } else if (r != null) {
-        if (r.wshse != null) {
-          result.completeExceptionally(new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(
-              new JdkHttpResponseImpl<>(r.wshse.getResponse())).initCause(r.wshse));
-        } else {
-          result.complete(r.webSocket);
-        }
+          @Override
+          public long contentLength() {
+            return bodyContent.getLength();
+          }
+        });
       } else {
-        // shouldn't happen
-        result.complete(null);
+        throw new AssertionError("Unsupported body content");
       }
-    });
+    }
 
-    return result;
+    requestBuilder.uri(request.uri());
+    if (request.isExpectContinue()) {
+      requestBuilder.expectContinue(true);
+    }
+    return requestBuilder;
   }
 
-  /**
-   * Convert the invocation of a JDK build async into a holder of both the exception and the response
-   */
-  public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder,
-      Listener listener) {
-    java.net.http.HttpRequest request = webSocketBuilder.asRequest();
+  @Override
+  public CompletableFuture<StandardHttpClient.WebSocketResponse> buildWebSocketDirect(
+      StandardWebSocketBuilder standardWebSocketBuilder, Listener listener) {
+    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
     java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();
-    request.headers().map().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
-    if (webSocketBuilder.subprotocol != null) {
-      newBuilder.subprotocols(webSocketBuilder.subprotocol);
+    request.headers().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
+    if (standardWebSocketBuilder.getSubprotocol() != null) {
+      newBuilder.subprotocols(standardWebSocketBuilder.getSubprotocol());
     }
     // the Watch logic sets a websocketTimeout as the readTimeout
     // TODO: this should probably be made clearer in the docs
@@ -397,7 +324,12 @@ public class JdkHttpClientImpl implements HttpClient {
         t = t.getCause();
       }
       if (t instanceof java.net.http.WebSocketHandshakeException) {
-        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), (WebSocketHandshakeException) t));
+        response
+            .complete(
+                new WebSocketResponse(new JdkWebSocketImpl(queueSize, w),
+                    new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(
+                        new JdkHttpResponseImpl<>(((java.net.http.WebSocketHandshakeException) t).getResponse()))
+                            .initCause(t)));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {
@@ -406,10 +338,6 @@ public class JdkHttpClientImpl implements HttpClient {
     });
 
     return response;
-  }
-
-  public JdkHttpClientBuilderImpl getBuilder() {
-    return builder;
   }
 
   java.net.http.HttpClient getHttpClient() {

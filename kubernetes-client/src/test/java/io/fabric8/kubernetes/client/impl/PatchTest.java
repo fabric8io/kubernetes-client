@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
-import io.fabric8.kubernetes.client.http.TestHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ class PatchTest {
     kubernetesClient = new KubernetesClientImpl(mockClient, config);
     when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
-      when(result.build()).thenReturn(new TestHttpRequest().withUri("https://localhost:8443/"));
+      when(result.build()).thenReturn(new StandardHttpRequest.Builder().uri("https://localhost:8443/").build());
       builders.add(result);
       return result;
     });

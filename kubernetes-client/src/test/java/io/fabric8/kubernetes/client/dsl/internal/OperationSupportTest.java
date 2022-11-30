@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.TestHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -91,7 +91,7 @@ class OperationSupportTest {
   @DisplayName("assertResponse, with successful code, should do nothing")
   void assertResponseCodeSuccessful() {
     // Given
-    final HttpRequest request = new TestHttpRequest();
+    final HttpRequest request = new StandardHttpRequest.Builder().uri("https://example.com").build();
     final HttpResponse<String> response = new TestHttpResponse<String>().withCode(200);
     // When - Then
     assertDoesNotThrow(() -> operationSupport.assertResponseCode(request, response));
@@ -101,7 +101,8 @@ class OperationSupportTest {
   @DisplayName("assertResponse, with client error, should throw exception")
   void assertResponseCodeClientError() throws Exception {
     // Given
-    final HttpRequest request = new TestHttpRequest().withMethod("GET").withUri(new URI("https://example.com"));
+    final HttpRequest request = new StandardHttpRequest.Builder().method("GET", null, null).uri(new URI("https://example.com"))
+        .build();
     final HttpResponse<String> response = new TestHttpResponse<String>().withCode(400);
     // When
     final KubernetesClientException result = assertThrows(KubernetesClientException.class,
@@ -115,7 +116,8 @@ class OperationSupportTest {
   void assertResponseCodeClientErrorAndCustomMessage() throws Exception {
     // Given
     operationSupport.getConfig().getErrorMessages().put(400, "Custom message");
-    final HttpRequest request = new TestHttpRequest().withMethod("GET").withUri(new URI("https://example.com"));
+    final HttpRequest request = new StandardHttpRequest.Builder().method("GET", null, null).uri(new URI("https://example.com"))
+        .build();
     final HttpResponse<String> response = new TestHttpResponse<String>().withCode(400);
     // When
     final KubernetesClientException result = assertThrows(KubernetesClientException.class,
