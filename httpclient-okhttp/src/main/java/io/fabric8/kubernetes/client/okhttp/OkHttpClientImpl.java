@@ -16,12 +16,20 @@
 
 package io.fabric8.kubernetes.client.okhttp;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.StandardHttpClient;
+import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.ByteArrayBodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.InputStreamBodyContent;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
+import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
+import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -30,12 +38,19 @@ import okhttp3.Dispatcher;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSink;
 import okio.BufferedSource;
+import okio.Okio;
+import okio.Source;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +62,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Function;
 
-public class OkHttpClientImpl implements HttpClient {
+public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHttpClientFactory, OkHttpClientBuilderImpl> {
 
   static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
 
@@ -154,7 +169,22 @@ public class OkHttpClientImpl implements HttpClient {
 
     @Override
     public HttpRequest request() {
-      return new OkHttpRequestImpl(response.request());
+      String bodyString = null;
+      Request request = response.request();
+      if (request.body() != null) {
+        Buffer buffer = new Buffer();
+        try {
+          request.body().writeTo(buffer);
+          bodyString = buffer.readUtf8();
+        } catch (IOException e) {
+          // just ignore, the bodyString is only for informational purposes
+        }
+      }
+      return new StandardHttpRequest(
+          request.headers().toMultimap(),
+          request.url().uri(),
+          request.method(),
+          bodyString);
     }
 
     @Override
@@ -181,13 +211,10 @@ public class OkHttpClientImpl implements HttpClient {
   }
 
   private final okhttp3.OkHttpClient httpClient;
-  private final OkHttpClientFactory factory;
-  private final Config config;
 
-  public OkHttpClientImpl(OkHttpClient httpClient, OkHttpClientFactory factory, Config config) {
-    this.httpClient = httpClient;
-    this.factory = factory;
-    this.config = config;
+  public OkHttpClientImpl(OkHttpClient client, OkHttpClientBuilderImpl builder) {
+    super(builder);
+    this.httpClient = client;
   }
 
   @Override
@@ -209,29 +236,10 @@ public class OkHttpClientImpl implements HttpClient {
     }
   }
 
-  @Override
-  public DerivedClientBuilder newBuilder() {
-    return new OkHttpClientBuilderImpl(httpClient.newBuilder(), this.factory, this.config);
-  }
-
-  @Override
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(
-      HttpRequest request, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
-    Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
-      @Override
-      protected List<ByteBuffer> process(BufferedSource source) throws IOException {
-        // read only what is available otherwise okhttp will block trying to read
-        // a whole fetch size 8k worth
-        return Collections.singletonList(ByteBuffer.wrap(source.readByteArray(source.buffer().size())));
-      }
-    };
-    return sendAsync(request, handler);
-  }
-
   private CompletableFuture<HttpResponse<AsyncBody>> sendAsync(HttpRequest request,
       Function<BufferedSource, AsyncBody> handler) {
     CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
-    Call call = httpClient.newCall(((OkHttpRequestImpl) request).getRequest());
+    Call call = httpClient.newCall(requestBuilder((StandardHttpRequest) request).build());
     try {
       call.enqueue(new Callback() {
 
@@ -262,22 +270,88 @@ public class OkHttpClientImpl implements HttpClient {
     return future;
   }
 
-  @Override
-  public io.fabric8.kubernetes.client.http.WebSocket.Builder newWebSocketBuilder() {
-    return new OkHttpWebSocketImpl.BuilderImpl(this.httpClient, newRequestBuilder());
-  }
-
   public okhttp3.OkHttpClient getOkHttpClient() {
     return httpClient;
   }
 
-  @Override
-  public HttpRequest.Builder newHttpRequestBuilder() {
-    return new OkHttpRequestImpl.BuilderImpl(newRequestBuilder());
+  private okhttp3.Request.Builder newRequestBuilder() {
+    return new Request.Builder();
   }
 
-  private okhttp3.Request.Builder newRequestBuilder() {
-    return new Request.Builder().tag(Config.class, config);
+  @Override
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
+      Consumer<List<ByteBuffer>> consumer) {
+    Function<BufferedSource, AsyncBody> handler = s -> new OkHttpAsyncBody<List<ByteBuffer>>(consumer, s) {
+      @Override
+      protected List<ByteBuffer> process(BufferedSource source) throws IOException {
+        // read only what is available otherwise okhttp will block trying to read
+        // a whole fetch size 8k worth
+        return Collections.singletonList(ByteBuffer.wrap(source.readByteArray(source.buffer().size())));
+      }
+    };
+    return sendAsync(request, handler);
+  }
+
+  Request.Builder requestBuilder(StandardHttpRequest request) {
+    okhttp3.Request.Builder requestBuilder = newRequestBuilder();
+
+    BodyContent body = request.body();
+    if (body != null) {
+      String contentType = request.getContentType();
+      if (body instanceof StringBodyContent) {
+        requestBuilder.method(request.method(),
+            RequestBody.create(OkHttpClientImpl.parseMediaType(contentType), ((StringBodyContent) body).getContent()));
+      } else if (body instanceof ByteArrayBodyContent) {
+        requestBuilder.method(request.method(),
+            RequestBody.create(OkHttpClientImpl.parseMediaType(contentType), ((ByteArrayBodyContent) body).getContent()));
+      } else if (body instanceof InputStreamBodyContent) {
+        InputStreamBodyContent bodyContent = (InputStreamBodyContent) body;
+        requestBuilder.method(request.method(), new RequestBody() {
+
+          @Override
+          public void writeTo(BufferedSink sink) throws IOException {
+            try (final BufferedInputStream bis = new BufferedInputStream(bodyContent.getContent());
+                final Source source = Okio.source(bis)) {
+              sink.writeAll(source);
+            }
+          }
+
+          @Override
+          public MediaType contentType() {
+            return OkHttpClientImpl.parseMediaType(contentType);
+          }
+
+          @Override
+          public long contentLength() throws IOException {
+            return bodyContent.getLength();
+          }
+        });
+      } else {
+        throw new AssertionError("Unsupported body content");
+      }
+    }
+
+    request.headers().entrySet().stream()
+        .forEach(e -> e.getValue().stream().forEach(v -> requestBuilder.addHeader(e.getKey(), v)));
+    try {
+      requestBuilder.url(request.uri().toURL());
+    } catch (MalformedURLException e) {
+      throw new IllegalArgumentException(request.uri().toString(), e);
+    }
+    if (request.isExpectContinue()) {
+      requestBuilder.header(StandardHttpHeaders.EXPECT, StandardHttpHeaders.EXPECT_CONTINUE);
+    }
+    return requestBuilder;
+  }
+
+  @Override
+  public CompletableFuture<WebSocketResponse> buildWebSocketDirect(StandardWebSocketBuilder standardWebSocketBuilder,
+      Listener listener) {
+    Request.Builder reqeustBuilder = requestBuilder(standardWebSocketBuilder.asHttpRequest());
+    if (standardWebSocketBuilder.getSubprotocol() != null) {
+      reqeustBuilder.header("Sec-WebSocket-Protocol", standardWebSocketBuilder.getSubprotocol());
+    }
+    return OkHttpWebSocketImpl.buildAsync(httpClient, reqeustBuilder.build(), listener);
   }
 
 }

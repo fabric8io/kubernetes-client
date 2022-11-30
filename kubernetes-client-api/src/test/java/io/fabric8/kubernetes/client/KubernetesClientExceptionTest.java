@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.TestHttpRequest;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -34,7 +34,7 @@ class KubernetesClientExceptionTest {
   void exceptionFromHttpRequestContainsExpectedMetadata(String url, String expectedGroup, String expectedVersion,
       String expectedPlural, String expectedNamespace, String expectedName) {
     final KubernetesClientException result = new KubernetesClientException(
-        null, null, -1, null, new TestHttpRequest().withUri(url));
+        null, null, -1, null, new StandardHttpRequest.Builder().uri(url).build());
     assertThat(result)
         .hasFieldOrPropertyWithValue("group", expectedGroup)
         .hasFieldOrPropertyWithValue("version", expectedVersion)
