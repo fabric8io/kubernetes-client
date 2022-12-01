@@ -17,9 +17,9 @@
 package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.http.StandardHttpClient.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
+import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

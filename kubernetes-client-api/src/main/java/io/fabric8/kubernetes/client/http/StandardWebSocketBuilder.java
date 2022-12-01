@@ -25,8 +25,8 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 public class StandardWebSocketBuilder implements WebSocket.Builder {
 
-  private StandardHttpClient<?, ?, ?> httpClient;
-  private StandardHttpRequest.Builder builder;
+  private final StandardHttpClient<?, ?, ?> httpClient;
+  private final StandardHttpRequest.Builder builder;
   private String subprotocol;
 
   public StandardWebSocketBuilder(StandardHttpClient<?, ?, ?> httpClient) {
