@@ -48,7 +48,7 @@ public abstract class AbstractHttpClientProxyTest {
 
   @Test
   @DisplayName("Proxied HttpClient adds required headers to the request")
-  void proxyConfigurationAddsRequiredHeaders() throws Exception {
+  protected void proxyConfigurationAddsRequiredHeaders() throws Exception {
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .proxyAddress(new InetSocketAddress("localhost", server.getPort()))

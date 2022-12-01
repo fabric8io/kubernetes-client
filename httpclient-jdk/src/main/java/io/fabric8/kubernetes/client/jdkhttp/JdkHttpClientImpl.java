@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
 import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import io.fabric8.kubernetes.client.http.WebSocketResponse;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -298,7 +299,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   }
 
   @Override
-  public CompletableFuture<StandardHttpClient.WebSocketResponse> buildWebSocketDirect(
+  public CompletableFuture<WebSocketResponse> buildWebSocketDirect(
       StandardWebSocketBuilder standardWebSocketBuilder, Listener listener) {
     StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
     java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();

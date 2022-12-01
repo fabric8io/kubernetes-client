@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.http.StandardHttpRequest.InputStreamBodyCont
 import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
 import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -347,11 +348,11 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
   @Override
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
-    Request.Builder reqeustBuilder = requestBuilder(standardWebSocketBuilder.asHttpRequest());
+    Request.Builder requestBuilder = requestBuilder(standardWebSocketBuilder.asHttpRequest());
     if (standardWebSocketBuilder.getSubprotocol() != null) {
-      reqeustBuilder.header("Sec-WebSocket-Protocol", standardWebSocketBuilder.getSubprotocol());
+      requestBuilder.header("Sec-WebSocket-Protocol", standardWebSocketBuilder.getSubprotocol());
     }
-    return OkHttpWebSocketImpl.buildAsync(httpClient, reqeustBuilder.build(), listener);
+    return OkHttpWebSocketImpl.buildAsync(httpClient, requestBuilder.build(), listener);
   }
 
 }
