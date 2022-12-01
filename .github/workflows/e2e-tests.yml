@@ -23,7 +23,7 @@ on:
       - master
   pull_request:
   schedule:
-    - cron: '0 1 * * *' # Everyday at 1
+    - cron: '0 1 * * *' # Every day at 1
 
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.
@@ -64,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.25.0, v1.24.0, v1.23.3, v1.22.6, v1.20.15, v1.19.16, v1.14.10]
+        kubernetes: [v1.25.0, v1.24.0, v1.23.3, v1.22.6, v1.20.15, v1.19.16]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -73,6 +73,37 @@ jobs:
         with:
           minikube version: v1.25.1
           kubernetes version: ${{ matrix.kubernetes }}
+          github token: ${{ secrets.GITHUB_TOKEN }}
+          start args: '--force'
+      - name: Cache .m2 registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
+      - name: Setup Java 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Install and Run Integration Tests
+        run: |
+          ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
+
+  k8s-legacy:
+    name: K8S legacy
+    needs: buildWithoutTests
+    runs-on: ubuntu-20.04
+    if: github.repository == 'fabric8io/kubernetes-client'
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Minikube-Kubernetes
+        uses: manusa/actions-setup-minikube@v2.7.1
+        with:
+          minikube version: v1.25.1
+          kubernetes version: v1.12.10
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
       - name: Cache .m2 registry
