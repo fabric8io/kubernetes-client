@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public abstract class AbstractBasicBuilder<T extends BasicBuilder> implements BasicBuilder {
 
   private URI uri;
@@ -61,6 +62,6 @@ public abstract class AbstractBasicBuilder<T extends BasicBuilder> implements Ba
 
   protected final void setHeaders(Map<String, List<String>> headers) {
     this.headers.clear();
-    this.headers.putAll(headers);
+    headers.forEach((header, values) -> values.forEach(value -> header(header, value)));
   }
 }

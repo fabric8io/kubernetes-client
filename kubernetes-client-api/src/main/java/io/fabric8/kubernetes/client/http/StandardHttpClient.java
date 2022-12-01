@@ -22,29 +22,23 @@ import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient {
-
-  /*
-   * TODO: this may not be the best way to do this - in general
-   * instead we create a response to hold them both
-   */
-  public static class WebSocketResponse {
-    public WebSocketResponse(WebSocket w, WebSocketHandshakeException wshse) {
-      this.webSocket = w;
-      this.wshse = wshse;
-    }
-
-    WebSocket webSocket;
-    WebSocketHandshakeException wshse;
-  }
 
   protected StandardHttpClientBuilder<C, F, T> builder;
 
   protected StandardHttpClient(StandardHttpClientBuilder<C, F, T> builder) {
     this.builder = builder;
   }
+
+  public abstract CompletableFuture<WebSocketResponse> buildWebSocketDirect(
+      StandardWebSocketBuilder standardWebSocketBuilder,
+      Listener listener);
+
+  public abstract CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
+      Consumer<List<ByteBuffer>> consumer);
 
   @Override
   public DerivedClientBuilder newBuilder() {
@@ -81,9 +75,6 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     return cf;
   }
 
-  public abstract CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
-      Consumer<List<ByteBuffer>> consumer);
-
   @Override
   public io.fabric8.kubernetes.client.http.WebSocket.Builder newWebSocketBuilder() {
     return new StandardWebSocketBuilder(this);
@@ -95,19 +86,14 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     return new StandardHttpRequest.Builder();
   }
 
-  protected CompletableFuture<WebSocket> buildWebSocket(StandardWebSocketBuilder standardWebSocketBuilder,
+  final CompletableFuture<WebSocket> buildWebSocket(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
 
-    StandardWebSocketBuilder copy = standardWebSocketBuilder.newBuilder();
-
-    for (Interceptor interceptor : builder.getInterceptors().values()) {
-      Interceptor.useConfig(builder.requestConfig).apply(interceptor).before(copy, copy.asHttpRequest());
-    }
-
-    CompletableFuture<WebSocket> result = new CompletableFuture<>();
+    final StandardWebSocketBuilder copy = standardWebSocketBuilder.newBuilder();
+    builder.getInterceptors().values().stream().map(Interceptor.useConfig(builder.requestConfig))
+        .forEach(i -> i.before(copy, copy.asHttpRequest()));
 
     CompletableFuture<WebSocketResponse> cf = buildWebSocketDirect(copy, listener);
-
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null) {
@@ -123,8 +109,15 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       });
     }
 
+    final CompletableFuture<WebSocket> result = new CompletableFuture<>();
     // map back to the expected convention with the future completed by the response exception
-    cf.whenComplete((r, t) -> {
+    cf.whenComplete(onWebSocketComplete(result));
+    return result;
+
+  }
+
+  private static BiConsumer<WebSocketResponse, Throwable> onWebSocketComplete(CompletableFuture<WebSocket> result) {
+    return (r, t) -> {
       if (t != null) {
         result.completeExceptionally(t);
       } else if (r != null) {
@@ -137,14 +130,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         // shouldn't happen
         result.complete(null);
       }
-    });
-
-    return result;
-
+    };
   }
-
-  public abstract CompletableFuture<WebSocketResponse> buildWebSocketDirect(
-      StandardWebSocketBuilder standardWebSocketBuilder,
-      Listener listener);
 
 }

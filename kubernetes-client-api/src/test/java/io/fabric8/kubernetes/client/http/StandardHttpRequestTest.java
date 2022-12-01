@@ -23,7 +23,9 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -87,6 +89,29 @@ class StandardHttpRequestTest {
         .extracting(HttpHeaders::headers, InstanceOfAssertFactories.map(String.class, List.class))
         .containsOnly(
             entry("h1", Collections.singletonList("v1")));
+  }
+
+  @Test
+  void builderSetHeadersDeepCopiesHeaders() {
+    // Given
+    final Map<String, List<String>> originalHeaders = new HashMap<>();
+    originalHeaders.put("h1", Arrays.asList("v1", "v2"));
+    originalHeaders.put("h2", Collections.singletonList("v3"));
+    // When
+    final StandardHttpRequest.Builder builder = new StandardHttpRequest.Builder();
+    builder.uri("https://example.com/");
+    builder.setHeaders(originalHeaders);
+    builder.header("h1", "v4");
+    builder.setHeader("h2", "v5");
+    // Then
+    assertThat(originalHeaders)
+        .containsOnly(
+            entry("h1", Arrays.asList("v1", "v2")),
+            entry("h2", Collections.singletonList("v3")));
+    assertThat(builder.build().headers())
+        .containsOnly(
+            entry("h1", Arrays.asList("v1", "v2", "v4")),
+            entry("h2", Collections.singletonList("v5")));
   }
 
 }

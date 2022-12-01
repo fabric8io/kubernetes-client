@@ -221,8 +221,35 @@ public abstract class AbstractInterceptorTest {
   }
 
   @Test
-  @DisplayName("interceptors should be applied in the order they were added")
-  public void interceptorsAreAppliedInOrder() throws Exception {
+  @DisplayName("afterFailure (WS), replaces the URL and returns true, should reconnect to valid URL")
+  public void afterWSFailureTODOReplacesResponseInSendAsync() throws Exception {
+    // Given
+    server.expect().withPath("/valid-url")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+            builder.uri(URI.create(server.url("valid-url")));
+            return CompletableFuture.completedFuture(true);
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("invalid-url")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(2);
+    assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
+  }
+
+  @Test
+  @DisplayName("interceptors (HTTP) should be applied in the order they were added")
+  public void interceptorsHttpAreAppliedInOrder() throws Exception {
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("first", new Interceptor() {
@@ -241,6 +268,38 @@ public abstract class AbstractInterceptorTest {
     try (HttpClient client = builder.build()) {
       client.sendAsync(client.newHttpRequestBuilder().uri(server.url("/intercept-before")).build(), String.class)
           .get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest().getHeaders().toMultimap())
+        .containsEntry("test-header", Collections.singletonList("Test-Value-Override"));
+  }
+
+  @Test
+  @DisplayName("interceptors (WS) should be applied in the order they were added")
+  public void interceptorWssAreAppliedInOrder() throws Exception {
+    // Given
+    server.expect().withPath("/intercept-before")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("first", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.header("Test-Header", "Test-Value");
+          }
+        })
+        .addOrReplaceInterceptor("second", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.setHeader("Test-Header", "Test-Value-Override");
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("intercept-before")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
     }
     // Then
     assertThat(server.getLastRequest().getHeaders().toMultimap())
