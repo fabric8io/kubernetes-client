@@ -32,29 +32,23 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
   private final HttpRequest httpRequest;
   private final CompletableFuture<HttpResponse<AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private final CompletableFuture<LongConsumer> demand;
+  private LongConsumer demand;
   private boolean initialConsumeCalled;
-  private Runnable initialConsume;
 
   JettyAsyncResponseListener(HttpRequest httpRequest) {
     this.httpRequest = httpRequest;
     asyncResponse = new CompletableFuture<>();
     asyncBodyDone = new CompletableFuture<>();
-    demand = new CompletableFuture<>();
   }
 
   @Override
-  public void consume() {
-    synchronized (this) {
-      if (!this.initialConsumeCalled) {
-        this.initialConsumeCalled = true;
-        if (this.initialConsume != null) {
-          this.initialConsume.run();
-          this.initialConsume = null;
-        }
-      }
+  public synchronized void consume() {
+    if (!this.initialConsumeCalled) {
+      this.initialConsumeCalled = true;
     }
-    demand.thenAccept(l -> l.accept(1));
+    if (demand != null) {
+      demand.accept(1);
+    }
   }
 
   @Override
@@ -83,15 +77,18 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
   }
 
   @Override
-  public void onContent(Response response, LongConsumer demand, ByteBuffer content, Callback callback) {
+  public void onBeforeContent(Response response, LongConsumer demand) {
     synchronized (this) {
-      if (!initialConsumeCalled) {
-        // defer until consume is called
-        this.initialConsume = () -> onContent(response, demand, content, callback);
+      if (!this.initialConsumeCalled) {
+        this.demand = demand;
         return;
       }
-      this.demand.complete(demand);
     }
+    demand.accept(1);
+  }
+
+  @Override
+  public void onContent(Response response, ByteBuffer content, Callback callback) {
     try {
       if (!asyncBodyDone.isCancelled()) {
         onContent(content);
