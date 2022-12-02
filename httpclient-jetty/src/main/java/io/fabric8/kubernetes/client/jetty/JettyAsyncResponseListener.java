@@ -24,13 +24,14 @@ import org.eclipse.jetty.client.api.Result;
 import org.eclipse.jetty.util.Callback;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.LongConsumer;
 
 public abstract class JettyAsyncResponseListener extends Response.Listener.Adapter implements AsyncBody {
 
   private final HttpRequest httpRequest;
-  private final CompletableFuture<HttpResponse<AsyncBody>> asyncResponse;
+  private final CompletableFuture<JettyHttpResponse<AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
   private LongConsumer demand;
   private boolean initialConsumeCalled;
@@ -58,7 +59,10 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
 
   @Override
   public void cancel() {
-    asyncBodyDone.cancel(false);
+    if (!asyncBodyDone.isDone()) {
+      asyncBodyDone.cancel(false);
+      asyncResponse.thenAccept(r -> r.getResponse().abort(new CancellationException()));
+    }
   }
 
   @Override
@@ -73,7 +77,7 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
 
   public CompletableFuture<HttpResponse<AsyncBody>> listen(Request request) {
     request.send(this);
-    return asyncResponse;
+    return asyncResponse.thenApply(HttpResponse.class::cast);
   }
 
   @Override

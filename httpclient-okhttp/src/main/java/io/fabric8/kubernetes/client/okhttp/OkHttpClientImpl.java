@@ -79,6 +79,8 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     private final AsyncBody.Consumer<T> consumer;
     private final BufferedSource source;
     private final CompletableFuture<Void> done = new CompletableFuture<>();
+    private boolean consuming;
+    private boolean requested;
 
     private OkHttpAsyncBody(AsyncBody.Consumer<T> consumer, BufferedSource source) {
       this.consumer = consumer;
@@ -86,29 +88,40 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     }
 
     @Override
-    public void consume() {
-      // consume should not block from a callers perspective
+    public synchronized void consume() {
+      requested = true;
+      if (consuming) {
+        return;
+      }
+      consuming = true;
       try {
-        httpClient.dispatcher().executorService().execute(() -> {
-          // we must serialize multiple consumes as source is not thread-safe
-          // it would be better to use SerialExecutor, but that would need to move modules, as to
-          // potentially not hold multiple executor threads
-          synchronized (source) {
-            try {
-              if (!source.exhausted() && !done.isDone()) {
-                T value = process(source);
-                consumer.consume(value, this);
-              } else {
-                done.complete(null);
-              }
-            } catch (Exception e) {
-              Utils.closeQuietly(source);
-              done.completeExceptionally(e);
-            }
-          }
-        });
+        // consume should not block a caller, delegate to the dispatcher thread pool
+        httpClient.dispatcher().executorService().execute(this::doConsume);
       } catch (Exception e) {
         // executor is likely shutdown
+        Utils.closeQuietly(source);
+        done.completeExceptionally(e);
+      }
+    }
+
+    private void doConsume() {
+      try {
+        while (true) {
+          synchronized (this) {
+            if (!requested || done.isDone()) {
+              consuming = false;
+              return;
+            }
+            requested = false;
+          }
+          if (!source.exhausted()) { // this is a blocking call
+            T value = process(source);
+            consumer.consume(value, this);
+          } else {
+            done.complete(null);
+          }
+        }
+      } catch (Exception e) {
         Utils.closeQuietly(source);
         done.completeExceptionally(e);
       }

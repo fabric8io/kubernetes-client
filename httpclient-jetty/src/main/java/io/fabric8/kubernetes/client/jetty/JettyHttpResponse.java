@@ -71,6 +71,10 @@ public class JettyHttpResponse<T> implements HttpResponse<T> {
     return request;
   }
 
+  public Response getResponse() {
+    return response;
+  }
+
   @Override
   public Optional<HttpResponse<?>> previousResponse() {
     return Optional.empty();
