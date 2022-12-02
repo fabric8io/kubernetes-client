@@ -30,6 +30,7 @@ import okio.ByteString;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -123,7 +124,14 @@ class OkHttpWebSocketImpl implements WebSocket {
         lock.lock();
         try {
           while (!more) {
-            moreRequested.await();
+            // arbitrary timeout to make it clearer that messages are not being processed
+            // - likely due to streams returned off of websocket not being read
+            // by default okhttp seems to silently hang on thread exhaustion
+            // hopefully this will help avoid having to get a thread dump
+            if (!moreRequested.await(30, TimeUnit.SECONDS)) {
+              throw new KubernetesClientException(
+                  "OkHttp HttpClient thread is waiting too long for the consumption of previous websocket message");
+            }
           }
           more = false;
         } catch (InterruptedException e) {

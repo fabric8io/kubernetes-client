@@ -37,14 +37,12 @@ public class HttpClientReadableByteChannel implements ReadableByteChannel, Async
   private boolean done;
   private AsyncBody asyncBody;
   private ByteBuffer currentBuffer;
-  private boolean consumeRequested;
 
   @Override
   public synchronized void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
     this.buffers.addAll(value);
     // could proactively consume based up some byte limit
     this.notifyAll();
-    this.consumeRequested = false;
   }
 
   protected synchronized void onResponse(HttpResponse<AsyncBody> response) {
@@ -99,20 +97,13 @@ public class HttpClientReadableByteChannel implements ReadableByteChannel, Async
           if (done) {
             return -1;
           }
-          if (!consumeRequested && this.asyncBody != null) {
-            consumeRequested = true;
+          if (this.asyncBody != null) {
             this.asyncBody.consume();
-            // the consume call may actually trigger result deliver
-            // if it did, then just start the loop over or be done
-            if (!consumeRequested) {
-              continue;
-            }
-            if (done) {
-              return -1;
-            }
           }
           try {
-            this.wait(); // block until more buffers are delivered
+            while (!done && buffers.isEmpty()) {
+              this.wait(); // block until more buffers are delivered
+            }
           } catch (InterruptedException e) {
             close();
             Thread.currentThread().interrupt();
