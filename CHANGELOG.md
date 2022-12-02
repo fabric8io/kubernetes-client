@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4633: provided inline access to all RunConfig builder methods via run().withNewRunConfig()
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
 
 #### Dependency Upgrade
@@ -13,6 +14,7 @@
 
 #### _**Note**_: Breaking changes
 * Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
+* Fix #4633: client.run().withRunConfig was deprecated.  Use withNewRunConfig instead.
 
 ### 6.3.1 (2022-12-15)
 

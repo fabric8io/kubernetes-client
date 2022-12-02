@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 public class PodRunEquivalent {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-      k8s.run().inNamespace("default")
+      k8s.run().inNamespace("default").withNewRunConfig()
           .withImage("nginx:mainline-alpine")
           .withName("my-pod")
           .done();
