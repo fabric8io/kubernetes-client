@@ -109,8 +109,8 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
 
   private static final class AsyncBodySubscriber<T> implements Subscriber<T>, AsyncBody {
     private final AsyncBody.Consumer<T> consumer;
-    private CompletableFuture<Void> done = new CompletableFuture<Void>();
-    private CompletableFuture<Flow.Subscription> subscription = new CompletableFuture<>();
+    private final CompletableFuture<Void> done = new CompletableFuture<Void>();
+    private final CompletableFuture<Flow.Subscription> subscription = new CompletableFuture<>();
 
     private AsyncBodySubscriber(AsyncBody.Consumer<T> consumer) {
       this.consumer = consumer;
@@ -145,12 +145,12 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     }
 
     @Override
-    public synchronized void onComplete() {
+    public void onComplete() {
       done.complete(null);
     }
 
     @Override
-    public synchronized void consume() {
+    public void consume() {
       if (done.isDone()) {
         return;
       }

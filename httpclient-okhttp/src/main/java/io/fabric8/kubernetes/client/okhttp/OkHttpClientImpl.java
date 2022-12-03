@@ -88,12 +88,14 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     }
 
     @Override
-    public synchronized void consume() {
-      requested = true;
-      if (consuming) {
-        return;
+    public void consume() {
+      synchronized (this) {
+        requested = true;
+        if (consuming) {
+          return;
+        }
+        consuming = true;
       }
-      consuming = true;
       try {
         // consume should not block a caller, delegate to the dispatcher thread pool
         httpClient.dispatcher().executorService().execute(this::doConsume);
