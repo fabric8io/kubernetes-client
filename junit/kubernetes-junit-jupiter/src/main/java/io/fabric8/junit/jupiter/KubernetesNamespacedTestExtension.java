@@ -39,9 +39,6 @@ import java.util.stream.Stream;
 
 public class KubernetesNamespacedTestExtension implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
 
-  private static final ExtensionContext.Namespace EXT_NAMESPACE = ExtensionContext.Namespace
-      .create(KubernetesNamespacedTestExtension.class);
-
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
     final KubernetesClient client = new KubernetesClientBuilder().build();
@@ -82,7 +79,9 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
   }
 
   private static ExtensionContext.Store getStore(ExtensionContext context) {
-    return context.getRoot().getStore(EXT_NAMESPACE);
+    ExtensionContext.Namespace namespace = ExtensionContext.Namespace.create(KubernetesNamespacedTestExtension.class,
+        context.getRequiredTestClass());
+    return context.getRoot().getStore(namespace);
   }
 
   /**

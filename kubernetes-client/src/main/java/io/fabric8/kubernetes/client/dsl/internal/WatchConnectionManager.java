@@ -52,7 +52,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   protected WatcherWebSocketListener<T> listener;
   private volatile CompletableFuture<WebSocket> websocketFuture;
-  private WebSocket websocket;
 
   private volatile boolean ready;
 
@@ -86,8 +85,10 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
-  protected synchronized void closeRequest() {
-    closeWebSocket(websocket);
+  protected void closeRequest() {
+    if (this.listener != null) {
+      this.listener.close();
+    }
     Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> {
       this.websocketFuture = null;
       theFuture.whenComplete((w, t) -> {
@@ -98,20 +99,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     });
   }
 
-  synchronized WatcherWebSocketListener<T> getListener() {
-    return listener;
-  }
-
   public CompletableFuture<WebSocket> getWebsocketFuture() {
     return websocketFuture;
-  }
-
-  @Override
-  protected void onMessage(String message) {
-    // for consistency we only want to process the message when we're open
-    if (this.websocketFuture != null) {
-      super.onMessage(message);
-    }
   }
 
   @Override
@@ -147,7 +136,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       }
       if (w != null) {
         this.ready = true;
-        this.websocket = w;
       }
       return w;
     });
