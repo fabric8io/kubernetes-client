@@ -47,9 +47,12 @@ import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 import okio.Source;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
@@ -64,6 +67,8 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Function;
 
 public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHttpClientFactory, OkHttpClientBuilderImpl> {
+
+  static final transient Logger LOG = LoggerFactory.getLogger(OkHttpClientImpl.class);
 
   static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
 
@@ -235,6 +240,7 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
   @Override
   public void close() {
+    LOG.debug("Shutting down dispatcher " + this.httpClient.dispatcher(), new Exception());
     ConnectionPool connectionPool = httpClient.connectionPool();
     Dispatcher dispatcher = httpClient.dispatcher();
     ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
@@ -270,13 +276,15 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
         @Override
         public void onFailure(Call call, IOException e) {
-          future.completeExceptionally(e);
+          Throwable t = e;
+          if (e instanceof InterruptedIOException && e.getCause() instanceof RejectedExecutionException) {
+            t = wrapRejected((RejectedExecutionException) e.getCause());
+          }
+          future.completeExceptionally(t);
         }
       });
     } catch (RejectedExecutionException e) {
-      throw new KubernetesClientException("The okhttp client executor has been shutdown.  "
-          + "More than likely this is because the KubernetesClient.close method has been called "
-          + "- please ensure that is intentional.", e);
+      throw wrapRejected(e);
     }
     future.whenComplete((r, t) -> {
       if (future.isCancelled()) {
@@ -284,6 +292,12 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
       }
     });
     return future;
+  }
+
+  private KubernetesClientException wrapRejected(RejectedExecutionException e) {
+    return new KubernetesClientException("The okhttp client executor has been shutdown.  "
+        + "More than likely this is because the KubernetesClient.close method (see debug logging) has been called "
+        + "- please ensure that is intentional. Dispatcher: " + this.httpClient.dispatcher(), e);
   }
 
   public okhttp3.OkHttpClient getOkHttpClient() {
