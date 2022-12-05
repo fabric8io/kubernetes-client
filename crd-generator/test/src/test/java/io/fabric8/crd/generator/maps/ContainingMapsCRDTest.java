@@ -25,6 +25,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContainingMapsCRDTest {
 
@@ -44,7 +46,12 @@ class ContainingMapsCRDTest {
     final Map<String, JSONSchemaProps> specProps = v1.getSchema().getOpenAPIV3Schema()
         .getProperties().get("spec").getProperties();
 
-    assertEquals(7, specProps.size());
+    assertEquals(8, specProps.size());
+
+    final JSONSchemaProps freeFormObjectSchema = specProps.get("freeFormObject");
+    assertEquals("object", freeFormObjectSchema.getType());
+    assertNull(freeFormObjectSchema.getAdditionalProperties().getSchema());
+    assertTrue(freeFormObjectSchema.getAdditionalProperties().getAllows());
 
     for (int i = 1; i <= 7; i++) {
       String name = "stringToIntMultiMap" + i;

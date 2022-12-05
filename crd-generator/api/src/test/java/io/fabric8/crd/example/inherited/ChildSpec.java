@@ -18,7 +18,7 @@ package io.fabric8.crd.example.inherited;
 import java.util.Map;
 
 public class ChildSpec extends BaseSpec {
-  private Map<String, Object> unsupported;
+  private Map<String, Object> freeform;
   private Map<String, String> supported;
   private Map unsupported2;
 }

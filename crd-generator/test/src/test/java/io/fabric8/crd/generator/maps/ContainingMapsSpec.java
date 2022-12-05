@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ContainingMapsSpec {
+  private Map<String, Object> freeFormObject;
   private MultiHashMap<String, Integer> stringToIntMultiMap1;
   private MultiMap<String, Integer> stringToIntMultiMap2;
   private SwappedParametersMap<List<Integer>, String> stringToIntMultiMap3;

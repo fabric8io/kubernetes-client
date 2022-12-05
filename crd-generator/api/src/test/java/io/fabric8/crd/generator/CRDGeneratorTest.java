@@ -277,7 +277,7 @@ class CRDGeneratorTest {
           .getProperties().get("spec").getProperties();
       assertEquals(4, specProps.size());
       assertEquals("integer", specProps.get("baseInt").getType());
-      checkMapProp(specProps, "unsupported", "object");
+      checkFreeFormObject(specProps, "freeform");
       checkMapProp(specProps, "unsupported2", "object");
       checkMapProp(specProps, "supported", "string");
     });
@@ -293,7 +293,7 @@ class CRDGeneratorTest {
       final Map<String, JSONSchemaProps> specProps = version.getSchema().getOpenAPIV3Schema()
           .getProperties().get("spec").getProperties();
 
-      assertEquals(9, specProps.size());
+      assertEquals(10, specProps.size());
 
       JSONSchemaProps testSchema = checkMapProp(specProps, "test", "array");
       assertEquals("string", testSchema.getItems().getSchema().getType());
@@ -304,6 +304,7 @@ class CRDGeneratorTest {
       assertEquals("array", valueType);
       assertEquals("boolean", valueSchema.getItems().getSchema().getType());
 
+      checkFreeFormObject(specProps, "freeFormObject");
       for (int i = 1; i <= 7; i++) {
         String name = "stringToIntMultiMap" + i;
         JSONSchemaProps schema = checkMapProp(specProps, name, "array");
@@ -319,6 +320,13 @@ class CRDGeneratorTest {
     assertEquals(valueType, props.getAdditionalProperties().getSchema().getType(),
         name + "'s value type should be " + valueType);
     return props.getAdditionalProperties().getSchema();
+  }
+
+  private void checkFreeFormObject(Map<String, JSONSchemaProps> specProps, String name) {
+    final JSONSchemaProps freeFormObjectSchema = specProps.get(name);
+    assertEquals("object", freeFormObjectSchema.getType());
+    assertNull(freeFormObjectSchema.getAdditionalProperties().getSchema());
+    assertTrue(freeFormObjectSchema.getAdditionalProperties().getAllows());
   }
 
   @Test

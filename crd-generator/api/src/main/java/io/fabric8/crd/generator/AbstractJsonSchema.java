@@ -637,6 +637,12 @@ public abstract class AbstractJsonSchema<T, B> {
       }
 
       final TypeRef valueType = TypeAs.UNWRAP_MAP_VALUE_OF.apply(typeRef);
+      if (valueType instanceof ClassRef) {
+        ClassRef classRef = (ClassRef) valueType;
+        if (Object.class.getName().equals(classRef.getFullyQualifiedName())) {
+          return mapLikeProperty(true);
+        }
+      }
       T schema = internalFromImpl(name, valueType, visited, schemaSwaps);
       if (schema == null) {
         LOGGER.warn(
@@ -723,6 +729,14 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return the schema for the map-like property
    */
   protected abstract T mapLikeProperty(T schema);
+
+  /**
+   * Builds the schema for map-like properties
+   *
+   * @param allows allows
+   * @return the schema for the map-like property
+   */
+  protected abstract T mapLikeProperty(boolean allows);
 
   /**
    * Builds the schema for standard, simple (e.g. string) property types

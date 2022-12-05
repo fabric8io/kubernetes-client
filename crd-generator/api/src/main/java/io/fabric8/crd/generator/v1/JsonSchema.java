@@ -109,6 +109,16 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   }
 
   @Override
+  protected JSONSchemaProps mapLikeProperty(boolean allows) {
+    return new JSONSchemaPropsBuilder()
+      .withType("object")
+      .withNewAdditionalProperties()
+      .withAllows(allows)
+      .endAdditionalProperties()
+      .build();
+  }
+
+  @Override
   protected JSONSchemaProps singleProperty(String typeName) {
     return new JSONSchemaPropsBuilder().withType(typeName).build();
   }

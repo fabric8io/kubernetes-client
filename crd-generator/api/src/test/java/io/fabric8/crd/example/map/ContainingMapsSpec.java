@@ -33,6 +33,12 @@ public class ContainingMapsSpec {
     return test2;
   }
 
+  private Map<String, Object> freeFormObject;
+
+  public Map<String, Object> getFreeFormObject() {
+    return freeFormObject;
+  }
+
   private MultiHashMap<String, Integer> stringToIntMultiMap1;
   private MultiMap<String, Integer> stringToIntMultiMap2;
   private SwappedParametersMap<List<Integer>, String> stringToIntMultiMap3;

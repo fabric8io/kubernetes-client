@@ -24,6 +24,7 @@ import io.fabric8.crd.example.extraction.IncorrectExtraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction2;
 import io.fabric8.crd.example.extraction.MultipleSchemaSwaps;
 import io.fabric8.crd.example.json.ContainingJson;
+import io.fabric8.crd.example.map.ContainingMaps;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -168,6 +169,23 @@ class JsonSchemaTest {
 
     assertEquals("object", fooField.getType());
     assertTrue(fooField.getXKubernetesPreserveUnknownFields());
+  }
+
+
+  @Test
+  void shouldProduceFreeFormObject() {
+    TypeDef containingMaps = Types.typeDefFrom(ContainingMaps.class);
+    JSONSchemaProps schema = JsonSchema.from(containingMaps);
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    final JSONSchemaProps specSchema = properties.get("spec");
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 10);
+
+    assertTrue(spec.containsKey("freeFormObject"));
+    JSONSchemaProps freeFormObject = spec.get("freeFormObject");
+
+    assertEquals("object", freeFormObject.getType());
+    assertTrue(freeFormObject.getAdditionalProperties().getAllows());
   }
 
   @Test
