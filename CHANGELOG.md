@@ -3,6 +3,7 @@
 ### 6.3-SNAPSHOT
 
 #### Bugs
+* Fix #4598: support for free-form objects in crd generato
 * Fix #4590: only using a builder if there are visitors
 * Fix #4159: ensure the token refresh obeys how the Config was created
 * Fix #4491: added a more explicit shutdown exception for okhttp
