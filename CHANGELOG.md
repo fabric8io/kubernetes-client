@@ -10,6 +10,7 @@
 * Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
 * Fix #4535: The shell command string will now have single quotes sanitized
 * Fix #4543: (Java Generator) additionalProperties JsonAny setter method generated as setAdditionalProperty
+* Fix #4641: fixed regression with missing initial watch event
 * Fix #4547: preventing timing issues with leader election cancel
 * Fix #4540: treating GenericKubernetesResource and RawExtension as buildable
 * Fix #4569: fixing jdk httpclient regression with 0 timeouts
