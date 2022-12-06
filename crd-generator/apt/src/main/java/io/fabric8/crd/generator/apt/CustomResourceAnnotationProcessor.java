@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -50,12 +51,18 @@ import javax.tools.StandardLocation;
 @SupportedAnnotationTypes({ "io.fabric8.kubernetes.model.annotation.Version" })
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
+  public static final String PROCESSOR_OPTION_PARALLEL = "io.fabric8.crd.generator.parallel";
   private final CRDGenerator generator = new CRDGenerator();
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {
       final Messager messager = processingEnv.getMessager();
-      final CRDGenerationInfo allCRDs = generator.withOutput(new FileObjectCRDOutput(processingEnv)).detailedGenerate();
+      final CRDGenerator crdGenerator = generator
+          .withOutput(new FileObjectCRDOutput(processingEnv));
+      final Map<String, String> options = processingEnv.getOptions();
+      enableParallelGeneration(messager, crdGenerator, options);
+      final CRDGenerationInfo allCRDs = crdGenerator
+          .detailedGenerate();
       allCRDs.getCRDDetailsPerNameAndVersion().forEach((crdName, versionToInfo) -> {
         messager.printMessage(Diagnostic.Kind.NOTE, "Generating CRD " + crdName + ":\n");
         versionToInfo.forEach(
@@ -86,6 +93,16 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     }
 
     return false;
+  }
+
+  private void enableParallelGeneration(Messager messager, CRDGenerator crdGenerator, Map<String, String> options) {
+    if (options.containsKey(PROCESSOR_OPTION_PARALLEL)) {
+      final String rawValue = options.get(PROCESSOR_OPTION_PARALLEL);
+      final boolean parallel = Boolean.parseBoolean(rawValue);
+      messager.printMessage(Diagnostic.Kind.NOTE,
+          String.format("Found option %s set to %s, parallel set to %b ", PROCESSOR_OPTION_PARALLEL, rawValue, parallel));
+      crdGenerator.withParallelGenerationEnabled(parallel);
+    }
   }
 
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {

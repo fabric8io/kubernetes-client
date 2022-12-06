@@ -6,12 +6,18 @@
 
 #### Improvements
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
+* Fix #4644: generate crds in parallel and optimize code
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+
+### 6.4.1-SNAPSHOT
+
+#### Improvements
+* Fix #4644: generate crds in parallel and optimize code
 
 ### 6.4.0 (2023-01-19)
 

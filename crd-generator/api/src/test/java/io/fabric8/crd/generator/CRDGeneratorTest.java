@@ -58,10 +58,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class CRDGeneratorTest {
 
   private final TestCRDOutput output = new TestCRDOutput();
+  protected boolean parallelCRDGeneration;
 
   @Test
   void choosingCRDVersionsShouldWork() {
-    CRDGenerator generator = new CRDGenerator();
+    CRDGenerator generator = newCRDGenerator();
     assertTrue(generator.getHandlers().isEmpty());
 
     generator.forCRDVersions();
@@ -91,7 +92,7 @@ class CRDGeneratorTest {
 
   @Test
   void addingCustomResourceInfosShouldWork() {
-    CRDGenerator generator = new CRDGenerator();
+    CRDGenerator generator = newCRDGenerator();
     assertTrue(generator.getCustomResourceInfos().isEmpty());
 
     generator.customResourceClasses();
@@ -133,7 +134,7 @@ class CRDGeneratorTest {
 
   @Test
   void shouldProperlyRecordNumberOfGeneratedCRDs() {
-    CRDGenerator generator = new CRDGenerator();
+    CRDGenerator generator = newCRDGenerator();
     assertEquals(0, generator.generate());
     assertEquals(0, generator.detailedGenerate().numberOfGeneratedCRDs());
 
@@ -158,7 +159,7 @@ class CRDGeneratorTest {
 
   @Test
   void shouldProperlyGenerateMultipleVersionsOfCRDs() {
-    CRDGenerator generator = new CRDGenerator();
+    CRDGenerator generator = newCRDGenerator();
     final String specVersion = "v1beta1";
     final CRDGenerationInfo info = generator
         .customResourceClasses(Multiple.class, io.fabric8.crd.example.multiple.v2.Multiple.class)
@@ -195,7 +196,7 @@ class CRDGeneratorTest {
 
   @Test
   void notDefiningOutputShouldNotGenerateAnything() {
-    CRDGenerator generator = new CRDGenerator();
+    CRDGenerator generator = newCRDGenerator();
     assertEquals(0, generator.generate());
 
     CustomResourceInfo joke = CustomResourceInfo.fromClass(Joke.class);
@@ -206,7 +207,7 @@ class CRDGeneratorTest {
 
   @Test
   void generatingACycleShouldFail() {
-    final CRDGenerator generator = new CRDGenerator()
+    final CRDGenerator generator = newCRDGenerator()
         .customResourceClasses(Cyclic.class)
         .forCRDVersions("v1", "v1beta1")
         .withOutput(output);
@@ -217,9 +218,14 @@ class CRDGeneratorTest {
         "An IllegalArgument Exception hasn't been thrown when generating a CRD with cyclic references");
   }
 
+  private CRDGenerator newCRDGenerator() {
+    return new CRDGenerator()
+        .withParallelGenerationEnabled(parallelCRDGeneration);
+  }
+
   @Test
   void generatingACycleInListShouldFail() {
-    final CRDGenerator generator = new CRDGenerator()
+    final CRDGenerator generator = newCRDGenerator()
         .customResourceClasses(CyclicList.class)
         .forCRDVersions("v1", "v1beta1")
         .withOutput(output);
@@ -232,7 +238,7 @@ class CRDGeneratorTest {
 
   @Test
   void notGeneratingACycleShouldSucceed() {
-    final CRDGenerator generator = new CRDGenerator()
+    final CRDGenerator generator = newCRDGenerator()
         .customResourceClasses(NoCyclic.class)
         .forCRDVersions("v1", "v1beta1")
         .withOutput(output);
@@ -420,7 +426,7 @@ class CRDGeneratorTest {
 
   private CustomResourceDefinitionSpec checkSpec(
       Class<? extends CustomResource<?, ?>> customResource, Scope scope, Class<?>... mustContainTraversedClasses) {
-    CRDGenerator generator = new CRDGenerator();
+    CRDGenerator generator = newCRDGenerator();
 
     // record info to be able to output it if the test fails
     final String outputName = keyFor(customResource);

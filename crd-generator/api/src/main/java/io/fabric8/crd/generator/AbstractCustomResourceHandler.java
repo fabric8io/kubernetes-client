@@ -18,15 +18,22 @@ package io.fabric8.crd.generator;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.*;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.sundr.builder.Visitor;
 import io.sundr.model.AnnotationRef;
 import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -36,9 +43,11 @@ import java.util.stream.Collectors;
 public abstract class AbstractCustomResourceHandler {
 
   protected final Resources resources;
+  private final boolean parallel;
 
-  protected AbstractCustomResourceHandler(Resources resources) {
+  protected AbstractCustomResourceHandler(Resources resources, boolean parallel) {
     this.resources = resources;
+    this.parallel = parallel;
   }
 
   public void handle(CustomResourceInfo config) {
@@ -54,20 +63,18 @@ public abstract class AbstractCustomResourceHandler {
 
     ClassDependenciesVisitor traversedClassesVisitor = new ClassDependenciesVisitor(config.crClassName(), name);
 
-    TypeDefBuilder builder = new TypeDefBuilder(def);
+    List<Visitor<TypeDefBuilder>> visitors = new ArrayList<>();
     if (config.specClassName().isPresent()) {
-      builder.accept(specReplicasPathDetector);
+      visitors.add(specReplicasPathDetector);
     }
-
     if (config.statusClassName().isPresent()) {
-      builder.accept(statusReplicasPathDetector);
+      visitors.add(statusReplicasPathDetector);
     }
+    visitors.add(labelSelectorPathDetector);
+    visitors.add(additionalPrinterColumnDetector);
+    visitors.add(traversedClassesVisitor);
 
-    def = builder
-        .accept(labelSelectorPathDetector)
-        .accept(additionalPrinterColumnDetector)
-        .accept(traversedClassesVisitor)
-        .build();
+    visitTypeDef(def, visitors);
 
     addDecorators(config, def, specReplicasPathDetector.getPath(),
         statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
@@ -89,6 +96,54 @@ public abstract class AbstractCustomResourceHandler {
       resources.decorate(
           getPrinterColumnDecorator(name, version, path, type, column, description, format));
     });
+  }
+
+  private TypeDef visitTypeDef(TypeDef def, List<Visitor<TypeDefBuilder>> visitors) {
+    if (visitors.isEmpty()) {
+      return def;
+    }
+    if (parallel) {
+      return visitTypeDefInParallel(def, visitors);
+    } else {
+      return visitTypeDefSequentially(def, visitors);
+    }
+  }
+
+  private TypeDef visitTypeDefSequentially(TypeDef def, List<Visitor<TypeDefBuilder>> visitors) {
+    TypeDefBuilder builder = new TypeDefBuilder(def);
+    for (Visitor<TypeDefBuilder> visitor : visitors) {
+      builder.accept(visitor);
+    }
+    return builder.build();
+  }
+
+  private TypeDef visitTypeDefInParallel(TypeDef def, List<Visitor<TypeDefBuilder>> visitors) {
+    final ExecutorService executorService = Executors.newFixedThreadPool(
+        Math.min(visitors.size(), Runtime.getRuntime().availableProcessors()));
+    try {
+      List<CompletableFuture<Void>> futures = new ArrayList<>();
+      for (Visitor<TypeDefBuilder> visitor : visitors) {
+        futures.add(CompletableFuture.runAsync(() -> {
+          // in this case we're not building a new typedef,
+          // instead we just need to traverse the object graph.
+          TypeDefBuilder builder = new TypeDefBuilder(def);
+          builder.accept(visitor);
+        }, executorService));
+      }
+      try {
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).get();
+      } catch (InterruptedException interruptedException) {
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException ex) {
+        if (ex.getCause() instanceof RuntimeException) {
+          throw (RuntimeException) ex.getCause();
+        }
+        throw new RuntimeException(ex.getCause());
+      }
+    } finally {
+      executorService.shutdown();
+    }
+    return def;
   }
 
   /**
