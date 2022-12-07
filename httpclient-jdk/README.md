@@ -9,6 +9,7 @@ This client "mostly" works.  However, there are a few key issues:
 It is not yet documented the difference in configuration.  Not all Config properties are applicable to this client.  They include:
 - setting a hostnameVerifier when isTrustCerts or isDisableHostnameVerification.  The alternative is to set the jdk.internal.httpclient.disableHostnameVerification system property to true
 - getWebsocketPingInterval, getMaxConcurrentRequests, and getMaxConcurrentRequestsPerHost are unused.  I don't see that the jdk provides similar mechanisms.
+- authenticatorNone, forStreaming, and writeTimeout are unused - and seem unnecessary for the JDK implementation
 
 Other concerns:
 - see the note about proxy authorization handling in JdkHttpClientBuilderImpl.  That approach needs to be validated and there is an additional system property that may need set.
