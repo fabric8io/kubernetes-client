@@ -24,55 +24,60 @@
     <version>6.3-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kubernetes-httpclient-tests</artifactId>
+  <artifactId>kubernetes-httpclient-vertx</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: Kubernetes :: HttpClient Tests</name>
+  <name>Fabric8 :: Kubernetes :: HttpClient :: Vert.x</name>
 
   <properties>
     <maven.compiler.release>11</maven.compiler.release>
+    <osgi.require-capability>
+      osgi.extender;
+      filter:="(osgi.extender=osgi.serviceloader.registrar)",
+    </osgi.require-capability>
+    <osgi.import>
+      !android.util*,
+      *,
+    </osgi.import>
+    <osgi.export>
+      io.fabric8.kubernetes.client.vertx*;-noimport:=true,
+    </osgi.export>
+    <osgi.private>
+    </osgi.private>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-httpclient-okhttp</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-httpclient-jdk</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-httpclient-jetty</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-httpclient-vertx</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-server-mock</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.awaitility</groupId>
-      <artifactId>awaitility</artifactId>
+      <groupId>io.fabric8</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -133,6 +138,39 @@
             <goals>
               <goal>report-aggregate</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>bundle</id>
+            <phase>package</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+            <configuration>
+              <instructions>
+                <Bundle-Name>${project.name}</Bundle-Name>
+                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                <Export-Package>${osgi.export}</Export-Package>
+                <Import-Package>${osgi.import}</Import-Package>
+                <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+                <Require-Capability>${osgi.require-capability}</Require-Capability>
+                <Provide-Capability>${osgi.provide-capability}</Provide-Capability>
+                <Private-Package>${osgi.private}</Private-Package>
+                <Require-Bundle>${osgi.bundles}</Require-Bundle>
+                <Bundle-Activator>${osgi.activator}</Bundle-Activator>
+                <Export-Service>${osgi.export.service}</Export-Service>
+                <Include-Resource>
+                  /META-INF/services/io.fabric8.kubernetes.client.http.HttpClient$Factory=target/classes/META-INF/services/io.fabric8.kubernetes.client.http.HttpClient$Factory,
+                </Include-Resource>
+              </instructions>
+              <classifier>bundle</classifier>
+            </configuration>
           </execution>
         </executions>
       </plugin>

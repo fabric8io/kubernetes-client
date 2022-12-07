@@ -64,6 +64,10 @@ public interface HttpClient extends AutoCloseable {
 
     HttpClient build();
 
+    /**
+     * Sets the read timeout for normal http requests.  Will also 
+     * be used as the connection timeout for {@link WebSocket}s
+     */
     DerivedClientBuilder readTimeout(long readTimeout, TimeUnit unit);
 
     DerivedClientBuilder writeTimeout(long writeTimeout, TimeUnit unit);

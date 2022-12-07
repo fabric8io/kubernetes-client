@@ -90,6 +90,7 @@
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.6</maven-core.version>
     <maven-plugin-annotations.version>3.7.0</maven-plugin-annotations.version>
+    <vertx.version>4.3.4</vertx.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -196,6 +197,7 @@
     <module>crd-generator</module>
     <module>java-generator</module>
     <module>httpclient-okhttp</module>
+    <module>httpclient-vertx</module>
   </modules>
 
   <dependencyManagement>
@@ -431,6 +433,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-jetty</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -760,6 +767,16 @@
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
         <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-core</artifactId>
+        <version>${vertx.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web-client</artifactId>
+        <version>${vertx.version}</version>
       </dependency>
 
       <!-- Testing and Mocking -->
