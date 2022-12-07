@@ -43,6 +43,7 @@ import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
@@ -451,6 +452,21 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public List<StatusDetails> delete() {
+    List<StatusDetails> deleted = deleteAll();
+    waitForDelete(deleted, this.context, this);
+    return deleted;
+  }
+
+  static void waitForDelete(List<StatusDetails> deleted, OperationContext context,
+      Waitable<?, ? extends HasMetadata> waitable) {
+    if (context.getTimeout() > 0) {
+      Set<String> uids = deleted.stream().map(StatusDetails::getUid).collect(Collectors.toSet());
+      waitable.waitUntilCondition(h -> h == null || !uids.contains(h.getMetadata().getUid()), context.getTimeout(),
+          context.getTimeoutUnit());
+    }
+  }
+
+  protected List<StatusDetails> deleteAll() {
     if (Utils.isNotNullOrEmpty(name) || Utils.isNotNullOrEmpty(namespace) || !isResourceNamespaced()) {
       try {
         URL resourceURLForWriteOperation = getResourceURLForWriteOperation(getResourceUrl());
@@ -1101,6 +1117,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T serverSideApply() {
     return this.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY));
+  }
+
+  @Override
+  public ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit) {
+    return newInstance(context.withTimeout(timeout, unit));
   }
 
 }

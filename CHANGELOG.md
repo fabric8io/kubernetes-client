@@ -26,6 +26,7 @@
 * Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
 * Fix #3896: added dsl support for server side apply
 * Fix #4582: updated [client.secrets] createOrReplace document
+* Fix #4516: added support for blocking delete operations using the withTimeout methods: op.withTimeout(1, TimeUnit.MINUTE).delete() - will wait for up to 1 minute for the resources to be fully deleted. This makes for a more concise replacement of the deletingExisting method.
 
 #### _**Note**_: Breaking changes
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed

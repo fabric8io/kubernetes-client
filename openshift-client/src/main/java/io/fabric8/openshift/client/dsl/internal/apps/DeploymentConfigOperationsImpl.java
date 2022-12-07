@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -60,13 +60,13 @@ public class DeploymentConfigOperationsImpl
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
-  private final RollingOperationContext rollingOperationContext;
+  private final PodOperationContext rollingOperationContext;
 
   public DeploymentConfigOperationsImpl(Client client) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
-  public DeploymentConfigOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+  public DeploymentConfigOperationsImpl(PodOperationContext context, OperationContext superContext) {
     super(superContext.withApiGroupName(APPS).withPlural("deploymentconfigs"),
         DeploymentConfig.class, DeploymentConfigList.class);
     this.rollingOperationContext = context;
@@ -164,7 +164,7 @@ public class DeploymentConfigOperationsImpl
 
   @Override
   public String getLog() {
-    return getLog(rollingOperationContext.getPodOperationContext().isPrettyOutput());
+    return getLog(rollingOperationContext.isPrettyOutput());
   }
 
   @Override
@@ -223,10 +223,10 @@ public class DeploymentConfigOperationsImpl
   private URL getResourceLogUrl(Boolean follow) throws MalformedURLException {
     if (Boolean.TRUE.equals(follow)) {
       return new URL(URLUtils.join(getResourceUrl().toString(),
-          rollingOperationContext.getPodOperationContext().getLogParameters() + "&follow=true"));
+          rollingOperationContext.getLogParameters() + "&follow=true"));
     } else {
       return new URL(
-          URLUtils.join(getResourceUrl().toString(), rollingOperationContext.getPodOperationContext().getLogParameters()));
+          URLUtils.join(getResourceUrl().toString(), rollingOperationContext.getLogParameters()));
     }
   }
 
@@ -236,9 +236,9 @@ public class DeploymentConfigOperationsImpl
   }
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
-    Integer podLogWaitTimeout = rollingOperationContext.getPodOperationContext().getLogWaitTimeout();
+    Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
     List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
-        rollingOperationContext.getPodOperationContext(),
+        rollingOperationContext,
         deploymentConfig.getMetadata().getUid(), getDeploymentConfigPodLabels(deploymentConfig));
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
