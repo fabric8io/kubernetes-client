@@ -19,13 +19,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.zjsonpatch.JsonDiff;
 
-import java.util.Map;
-import java.util.function.BiFunction;
+import java.util.Optional;
 
 public class PatchUtils {
 
@@ -39,51 +39,45 @@ public class PatchUtils {
 
   private static class SingletonHolder {
     public static final ObjectMapper patchMapper;
-    public static final ObjectMapper yamlMapper;
 
     static {
       patchMapper = Serialization.jsonMapper().copy();
-      patchMapper.addMixIn(ObjectMeta.class, ObjectMetaMixIn.class);
+      // if this isn't set the patches are still correct, but not as compact for some reason - array values are added individually
       patchMapper.setConfig(patchMapper.getSerializationConfig().without(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
-
-      yamlMapper = Serialization.yamlMapper().copy();
-      yamlMapper.addMixIn(ObjectMeta.class, ObjectMetaMixIn.class);
-      yamlMapper.setConfig(yamlMapper.getSerializationConfig().without(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
     }
   }
 
   public static String withoutRuntimeState(Object object, Format format, boolean omitStatus) {
-    return withoutRuntimeState(object, format, omitStatus, (m, v) -> {
-      try {
-        return m.writeValueAsString(v);
-      } catch (JsonProcessingException e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    });
+    ObjectMapper mapper = format == Format.JSON ? Serialization.jsonMapper() : Serialization.yamlMapper();
+    try {
+      return mapper.writeValueAsString(withoutRuntimeState(object, omitStatus));
+    } catch (JsonProcessingException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
+  /**
+   * See also {@link ResourceCompare#withoutRuntimeState}
+   */
   static JsonNode withoutRuntimeState(Object object, boolean omitStatus) {
-    return withoutRuntimeState(object, Format.JSON, omitStatus, (m, v) -> m.convertValue(v, JsonNode.class));
-  }
-
-  static <T> T withoutRuntimeState(Object object, Format format, boolean omitStatus,
-      BiFunction<ObjectMapper, Object, T> result) {
-    ObjectMapper mapper = SingletonHolder.patchMapper;
-    if (format == Format.YAML) {
-      mapper = SingletonHolder.yamlMapper;
-    }
-    Object value = object;
+    ObjectNode raw = SingletonHolder.patchMapper.convertValue(object, ObjectNode.class);
+    Optional.ofNullable(raw.get("metadata")).filter(ObjectNode.class::isInstance).map(ObjectNode.class::cast).ifPresent(m -> {
+      m.remove("creationTimestamp");
+      m.remove("deletionTimestamp");
+      m.remove("generation");
+      m.remove("resourceVersion");
+      m.remove("selfLink");
+      m.remove("uid");
+    });
     if (omitStatus) {
-      Map<?, ?> raw = mapper.convertValue(object, Map.class);
       raw.remove("status");
-      value = raw;
     }
-    return result.apply(mapper, value);
+    return raw;
   }
 
   public static String jsonDiff(Object current, Object updated, boolean omitStatus) {
     try {
-      return SingletonHolder.patchMapper.writeValueAsString(
+      return Serialization.jsonMapper().writeValueAsString(
           JsonDiff.asJson(withoutRuntimeState(current, omitStatus), withoutRuntimeState(updated, omitStatus)));
     } catch (JsonProcessingException e) {
       throw KubernetesClientException.launderThrowable(e);
