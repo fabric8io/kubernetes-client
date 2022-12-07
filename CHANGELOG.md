@@ -21,6 +21,7 @@
 * Fix #4201: Removed sendAsync from the individual http client implementations
 * Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
 * Fix #4530: generalizing the Serialization logic to allow for primitive values and clarifying the type expectations.
+* Fix #4363: exposed ResourceCompare.metadataChanged
 
 #### Dependency Upgrade
 
@@ -35,6 +36,7 @@
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 * Fix #4579: the implicit registration of resource and list types that happens when using the resource(class) methods has been removed. This makes the behavior of the client more predictable as that was an undocumented side-effect.  If you expect to see instances of a custom type from an untyped api call - typically KubernetesClient.load, KubernetesClient.resourceList, KubernetesClient.resource(InputStream|String), then you must either create a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource file (see above #3923), or make calls to KubernetesDeserializer.registerCustomKind - however since KubernetesDeserializer is an internal class that mechanism is not preferred.
 * Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`
+* Fix #4363: deprecated existing ResourceCompare methods such as compareKubernetesResource as they are not for general use
 
 ### 6.2.0 (2022-10-20)
 
