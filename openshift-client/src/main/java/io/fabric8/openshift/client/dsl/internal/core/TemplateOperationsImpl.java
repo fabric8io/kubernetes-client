@@ -20,20 +20,12 @@ import com.mifmif.common.regex.Generex;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.extension.ExtensibleResourceAdapter;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.api.model.TemplateBuilder;
-import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import org.slf4j.Logger;
@@ -43,40 +35,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
-
 public class TemplateOperationsImpl
-    extends HasMetadataOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>>
-    implements TemplateResource<Template, KubernetesList>,
-    MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> {
+    extends ExtensibleResourceAdapter<Template>
+    implements TemplateResource {
 
   private static final Logger logger = LoggerFactory.getLogger(TemplateOperationsImpl.class);
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
 
-  public TemplateOperationsImpl(Client client) {
-    this(HasMetadataOperationsImpl.defaultContext(client));
-  }
-
-  public TemplateOperationsImpl(OperationContext context) {
-    super(context.withApiGroupName(TEMPLATE)
-        .withPlural("templates"), Template.class, TemplateList.class);
-  }
-
   @Override
-  public TemplateOperationsImpl newInstance(OperationContext context) {
-    return new TemplateOperationsImpl(context);
+  public ExtensibleResourceAdapter<Template> newInstance() {
+    return new TemplateOperationsImpl();
   }
 
   @Override
@@ -90,7 +66,7 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList process(InputStream is) {
-    return process(unmarshal(is, MAPS_REFERENCE));
+    return process(Serialization.unmarshal(is, MAPS_REFERENCE));
   }
 
   @Override
@@ -108,9 +84,7 @@ public class TemplateOperationsImpl
         }
       }
 
-      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(t))
-          .url(getProcessUrl());
-      t = handleResponse(requestBuilder);
+      t = this.operation(Scope.NAMESPACE, "processedtemplates", "POST", t, Template.class);
       KubernetesList l = new KubernetesList();
       l.setItems(t.getObjects());
       return l;
@@ -139,7 +113,7 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList processLocally(InputStream is) {
-    return processLocally(unmarshal(is, MAPS_REFERENCE));
+    return processLocally(Serialization.unmarshal(is, MAPS_REFERENCE));
   }
 
   @Override
@@ -160,91 +134,37 @@ public class TemplateOperationsImpl
         .withItems(t != null && t.getObjects() != null ? t.getObjects() : Collections.<HasMetadata> emptyList())
         .build();
 
-    try {
-      String json = JSON_MAPPER.writeValueAsString(list);
-      String last = null;
+    String json = Serialization.asJson(list);
+    String last = null;
 
-      if (parameters != null && !parameters.isEmpty()) {
-        while (!Objects.equals(last, json)) {
-          last = json;
-          for (Parameter parameter : parameters) {
-            String parameterName = parameter.getName();
-            String parameterValue;
-            if (valuesMap.containsKey(parameterName)) {
-              parameterValue = valuesMap.get(parameterName);
-            } else if (Utils.isNotNullOrEmpty(parameter.getValue())) {
-              parameterValue = parameter.getValue();
-            } else if (EXPRESSION.equals(parameter.getGenerate())) {
-              Generex generex = new Generex(parameter.getFrom());
-              parameterValue = generex.random();
-            } else if (parameter.getRequired() == null || !parameter.getRequired()) {
-              parameterValue = "";
-            } else {
-              throw new IllegalArgumentException("No value available for parameter name: " + parameterName);
-            }
-            if (parameterValue == null) {
-              logger.debug("Parameter {} has a null value", parameterName);
-              parameterValue = "";
-            }
-            json = Utils.interpolateString(json, Collections.singletonMap(parameterName, parameterValue));
+    if (parameters != null && !parameters.isEmpty()) {
+      while (!Objects.equals(last, json)) {
+        last = json;
+        for (Parameter parameter : parameters) {
+          String parameterName = parameter.getName();
+          String parameterValue;
+          if (valuesMap.containsKey(parameterName)) {
+            parameterValue = valuesMap.get(parameterName);
+          } else if (Utils.isNotNullOrEmpty(parameter.getValue())) {
+            parameterValue = parameter.getValue();
+          } else if (EXPRESSION.equals(parameter.getGenerate())) {
+            Generex generex = new Generex(parameter.getFrom());
+            parameterValue = generex.random();
+          } else if (parameter.getRequired() == null || !parameter.getRequired()) {
+            parameterValue = "";
+          } else {
+            throw new IllegalArgumentException("No value available for parameter name: " + parameterName);
           }
+          if (parameterValue == null) {
+            logger.debug("Parameter {} has a null value", parameterName);
+            parameterValue = "";
+          }
+          json = Utils.interpolateString(json, Collections.singletonMap(parameterName, parameterValue));
         }
       }
-
-      list = JSON_MAPPER.readValue(json, KubernetesList.class);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-    return list;
-  }
-
-  private URL getProcessUrl() throws MalformedURLException {
-    return getNamespacedUrl(getNamespace(), "processedtemplates");
-  }
-
-  @Override
-  public TemplateResource<Template, KubernetesList> load(InputStream is) {
-    String generatedName = "template-" + Utils.randomString(5);
-    Template template = null;
-    Object item = Serialization.unmarshal(is);
-    if (item instanceof Template) {
-      template = (Template) item;
-    } else if (item instanceof HasMetadata) {
-      HasMetadata h = (HasMetadata) item;
-      template = new TemplateBuilder()
-          .withNewMetadata()
-          .withName(generatedName)
-          .withNamespace(h.getMetadata() != null ? h.getMetadata().getNamespace() : null)
-          .endMetadata()
-          .withObjects(h).build();
-    } else if (item instanceof KubernetesResourceList) {
-      List<HasMetadata> list = ((KubernetesResourceList<HasMetadata>) item).getItems();
-      template = new TemplateBuilder()
-          .withNewMetadata()
-          .withName(generatedName)
-          .endMetadata()
-          .withObjects(list.toArray(new HasMetadata[list.size()])).build();
-    } else if (item instanceof HasMetadata[]) {
-      template = new TemplateBuilder()
-          .withNewMetadata()
-          .withName(generatedName)
-          .endMetadata()
-          .withObjects((HasMetadata[]) item).build();
-    } else if (item instanceof Collection) {
-      List<HasMetadata> items = new ArrayList<>();
-      for (Object o : (Collection) item) {
-        if (o instanceof HasMetadata) {
-          items.add((HasMetadata) o);
-        }
-      }
-      template = new TemplateBuilder()
-          .withNewMetadata()
-          .withName(generatedName)
-          .endMetadata()
-          .withObjects(items.toArray(new HasMetadata[items.size()])).build();
     }
 
-    return newInstance(context.withItem(template));
+    return Serialization.unmarshal(json, KubernetesList.class);
   }
 
 }

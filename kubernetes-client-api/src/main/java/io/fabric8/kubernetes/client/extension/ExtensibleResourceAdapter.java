@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.OperationInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -125,6 +126,16 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   @Override
   public ExtensibleResource<T> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public OperationInfo forOperationType(String type) {
+    return this.resource.forOperationType(type);
+  }
+
+  @Override
+  public <X> X operation(Scope scope, String operation, String method, Object payload, Class<X> responseType) {
+    return this.resource.operation(scope, operation, method, payload, responseType);
   }
 
 }

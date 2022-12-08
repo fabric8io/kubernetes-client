@@ -25,8 +25,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -172,7 +170,9 @@ public class OperationSupport {
       parts.add("namespaces");
       parts.add(namespace);
     }
-    parts.add(type);
+    if (type != null) {
+      parts.add(type);
+    }
   }
 
   public URL getNamespacedUrl() throws MalformedURLException {
@@ -434,39 +434,6 @@ public class OperationSupport {
   }
 
   /**
-   * Replace Scale of specified Kubernetes Resource
-   *
-   * @param resourceUrl Kubernetes resource URL
-   * @param scale Scale object which we want to inject
-   * @return updated Scale object
-   * @throws InterruptedException in case thread is interrupted
-   * @throws IOException in some other I/O problem
-   */
-  protected Scale handleScale(String resourceUrl, Scale scale) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/scale");
-    if (scale != null) {
-      requestBuilder.put(JSON, JSON_MAPPER.writeValueAsString(scale));
-    }
-    return handleResponse(requestBuilder, Scale.class);
-  }
-
-  /**
-   * Create rollback of a Deployment
-   *
-   * @param resourceUrl resource url
-   * @param deploymentRollback DeploymentRollback resource
-   * @return Status
-   * @throws InterruptedException in case thread is interrupted
-   * @throws IOException in some other I/O problem
-   */
-  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback)
-      throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON,
-        JSON_MAPPER.writeValueAsString(deploymentRollback));
-    return handleResponse(requestBuilder, Status.class);
-  }
-
-  /**
    * Send an http get.
    *
    * @param resourceUrl resource URL to be processed
@@ -474,7 +441,6 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns a deserialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws IOException {

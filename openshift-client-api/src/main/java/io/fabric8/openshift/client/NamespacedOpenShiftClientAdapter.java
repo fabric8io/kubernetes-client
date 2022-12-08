@@ -18,7 +18,6 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
@@ -99,10 +98,8 @@ import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
-import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateInstance;
 import io.fabric8.openshift.api.model.TemplateInstanceList;
-import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserIdentityMapping;
 import io.fabric8.openshift.api.model.UserList;
@@ -140,7 +137,7 @@ import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
-import io.fabric8.openshift.client.dsl.TemplateResource;
+import io.fabric8.openshift.client.dsl.TemplateOperation;
 
 import java.net.URL;
 
@@ -347,7 +344,7 @@ public class NamespacedOpenShiftClientAdapter extends NamespacedKubernetesClient
   }
 
   @Override
-  public MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
+  public TemplateOperation templates() {
     return getClient().templates();
   }
 

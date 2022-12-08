@@ -180,7 +180,7 @@ public class Serialization {
    * @param <T> The target type.
    * @return returns returns de-serialized object
    *
-   * @deprecated
+   * @deprecated providing parameter substitution will be removed in a subsequent release
    */
   @Deprecated
   @SuppressWarnings("unchecked")
@@ -213,7 +213,7 @@ public class Serialization {
    * @param <T> The target type.
    * @return returns de-serialized object
    *
-   * @deprecated
+   * @deprecated providing parameter substitution will be removed in a subsequent release
    */
   @Deprecated
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
@@ -310,7 +310,7 @@ public class Serialization {
    *
    * @return returns de-serialized object
    *
-   * @deprecated
+   * @deprecated you may directly call {@link Utils#interpolateString(String, Map)}
    */
   @Deprecated
   public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) {
@@ -347,7 +347,7 @@ public class Serialization {
    * @param <T> Template argument denoting type
    * @return returns de-serialized object
    *
-   * @deprecated
+   * @deprecated providing parameter substitution will be removed in a subsequent release
    */
   @Deprecated
   public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) {
@@ -381,7 +381,7 @@ public class Serialization {
    *
    * @return returns de-serialized object
    *
-   * @deprecated
+   * @deprecated providing parameter substitution will be removed in a subsequent release
    */
   @Deprecated
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {

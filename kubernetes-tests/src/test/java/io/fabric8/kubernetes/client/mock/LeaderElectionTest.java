@@ -64,6 +64,7 @@ public class LeaderElectionTest {
     server.expect().get().withPath("/api/v1/namespaces/namespace/configmaps/name")
         .andReturn(200, new ConfigMapBuilder()
             .withNewMetadata()
+            .withName("name")
             .withResourceVersion("1")
             .withAnnotations(Collections.singletonMap(
                 "control-plane.alpha.kubernetes.io/leader",

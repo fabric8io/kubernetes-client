@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Service;
@@ -29,6 +28,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.ParameterBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
@@ -200,18 +200,21 @@ class TemplateTest {
   }
 
   @Test
-  void testProcess() {
+  void testProcess() throws InterruptedException {
     server.expect()
         .withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1")
-        .andReturn(200, new TemplateBuilder().build())
+        .andReturn(200, new TemplateBuilder().addNewParameter().withName("name1").endParameter().build())
         .once();
     server.expect()
         .withPath("/apis/template.openshift.io/v1/namespaces/test/processedtemplates")
-        .andReturn(201, new KubernetesListBuilder().build())
+        .andReturn(201, new TemplateBuilder().withObjects(new Pod()).build())
         .once();
 
     KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));
+    Template body = Serialization.unmarshal(server.getLastRequest().getBody().inputStream(), Template.class);
+    assertEquals("value1", body.getParameters().get(0).getValue());
     assertNotNull(list);
+    assertEquals(1, list.getItems().size());
   }
 
   @Test

@@ -715,27 +715,37 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   protected Scale handleScale(Scale scaleParam) {
-    try {
-      return handleScale(getCompleteResourceUrl().toString(), scaleParam);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("scale"), e);
-    }
-
+    return operation(Scope.RESOURCE, "scale", "PUT", scaleParam, Scale.class);
   }
 
   protected Status handleDeploymentRollback(DeploymentRollback deploymentRollback) {
-    try {
-      return handleDeploymentRollback(getCompleteResourceUrl().toString(), deploymentRollback);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("rollback"), ie);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("rollback"), e);
-    }
+    return operation(Scope.RESOURCE, "rollback", "POST", deploymentRollback, Status.class);
+  }
 
+  @Override
+  public <X> X operation(Scope scope, String operation, String method, Object payload, Class<X> responseType) {
+    try {
+      URL baseUrl = null;
+      switch (scope) {
+        case NAMESPACE:
+          baseUrl = getNamespacedUrl(namespace, null);
+          break;
+        case TYPE:
+          baseUrl = getNamespacedUrl();
+          break;
+        case RESOURCE:
+          baseUrl = getCompleteResourceUrl();
+          break;
+      }
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+          .uri(baseUrl + "/" + operation);
+      if (payload != null) {
+        requestBuilder.method(method, JSON, JSON_MAPPER.writeValueAsString(payload));
+      }
+      return handleResponse(requestBuilder, responseType);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType(operation), e);
+    }
   }
 
   protected T handleGet(URL resourceUrl) throws InterruptedException, IOException {

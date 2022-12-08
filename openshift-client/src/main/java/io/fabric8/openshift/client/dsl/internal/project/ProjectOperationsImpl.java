@@ -19,11 +19,10 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
+import io.fabric8.kubernetes.client.extension.ExtensibleMixedOperation;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
@@ -32,33 +31,18 @@ import io.fabric8.openshift.client.dsl.ProjectOperation;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
-
-public class ProjectOperationsImpl extends HasMetadataOperation<Project, ProjectList, Resource<Project>>
+public class ProjectOperationsImpl extends ExtensibleMixedOperation<Project, ProjectList, Resource<Project>>
     implements ProjectOperation {
+
   public static final String OPENSHIFT_IO_DESCRIPTION_ANNOTATION = "openshift.io/description";
   public static final String OPENSHIFT_IO_DISPLAY_NAME_ANNOTATION = "openshift.io/display-name";
   public static final String OPENSHIFT_IO_REQUESTER_ANNOTATION = "openshift.io/requester";
   public static final String RBAC_AUTHORIZATION_APIGROUP = "rbac.authorization.k8s.io";
   public static final String CLUSTER_ROLE = "ClusterRole";
 
-  public ProjectOperationsImpl(Client client) {
-    this(HasMetadataOperationsImpl.defaultContext(client));
-  }
-
-  public ProjectOperationsImpl(OperationContext context) {
-    super(context.withApiGroupName(PROJECT)
-        .withPlural("projects"), Project.class, ProjectList.class);
-  }
-
-  @Override
-  public ProjectOperationsImpl newInstance(OperationContext context) {
-    return new ProjectOperationsImpl(context);
-  }
-
-  @Override
-  public boolean isResourceNamespaced() {
-    return false;
+  public ProjectOperationsImpl(Client client,
+      MixedOperation<Project, ProjectList, Resource<Project>> resources) {
+    super(client, resources);
   }
 
   @Override
@@ -72,9 +56,7 @@ public class ProjectOperationsImpl extends HasMetadataOperation<Project, Project
     result.add(create(project));
 
     // Create Role Bindings
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl listOp = new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(
-        context.withItem(projectRoleBindings));
-    result.addAll(listOp.createOrReplace());
+    result.addAll(this.client.adapt(KubernetesClient.class).resourceList(projectRoleBindings).createOrReplace());
 
     return result;
   }

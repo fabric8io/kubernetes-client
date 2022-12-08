@@ -15,8 +15,6 @@
  */
 package io.fabric8.openshift.client.impl;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.StatusDetails;
@@ -32,7 +30,6 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Nameable;
-import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -96,6 +93,8 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
+import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
@@ -160,14 +159,14 @@ import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
+import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.internal.apps.DeploymentConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.authorization.RoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.core.TemplateMixedOperation;
 import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
-import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 
 import java.io.InputStream;
@@ -265,21 +264,6 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   @Override
   public OpenShiftOperatorHubAPIGroupDSL operatorHub() {
     return adapt(OpenShiftOperatorHubAPIGroupClient.class);
-  }
-
-  @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
-    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(this, is);
-  }
-
-  @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList item) {
-    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(this, item);
-  }
-
-  @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
-    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(this, s);
   }
 
   @Override
@@ -444,7 +428,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
 
   @Override
   public ProjectOperation projects() {
-    return new ProjectOperationsImpl(this);
+    return new ProjectOperationsImpl(this, this.resources(Project.class, ProjectList.class));
   }
 
   @Override
@@ -486,8 +470,8 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   }
 
   @Override
-  public MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
-    return new TemplateOperationsImpl(this);
+  public TemplateOperation templates() {
+    return new TemplateMixedOperation(this, this.resources(Template.class, TemplateList.class, TemplateResource.class));
   }
 
   @Override

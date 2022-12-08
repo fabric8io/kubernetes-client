@@ -16,13 +16,102 @@
 
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
-import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Nameable;
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
+import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
-import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.BrokerTemplateInstance;
+import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.api.model.ClusterNetwork;
+import io.fabric8.openshift.api.model.ClusterNetworkList;
+import io.fabric8.openshift.api.model.ClusterRole;
+import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBindingList;
+import io.fabric8.openshift.api.model.ClusterRoleList;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.api.model.EgressNetworkPolicy;
+import io.fabric8.openshift.api.model.EgressNetworkPolicyList;
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupList;
+import io.fabric8.openshift.api.model.HelmChartRepository;
+import io.fabric8.openshift.api.model.HelmChartRepositoryList;
+import io.fabric8.openshift.api.model.HostSubnet;
+import io.fabric8.openshift.api.model.HostSubnetList;
+import io.fabric8.openshift.api.model.Identity;
+import io.fabric8.openshift.api.model.IdentityList;
+import io.fabric8.openshift.api.model.Image;
+import io.fabric8.openshift.api.model.ImageList;
+import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamImage;
+import io.fabric8.openshift.api.model.ImageStreamImport;
+import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.openshift.api.model.ImageStreamMapping;
+import io.fabric8.openshift.api.model.ImageStreamTag;
+import io.fabric8.openshift.api.model.ImageStreamTagList;
+import io.fabric8.openshift.api.model.ImageTag;
+import io.fabric8.openshift.api.model.ImageTagList;
+import io.fabric8.openshift.api.model.LocalResourceAccessReview;
+import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
+import io.fabric8.openshift.api.model.NetNamespace;
+import io.fabric8.openshift.api.model.NetNamespaceList;
+import io.fabric8.openshift.api.model.OAuthAccessToken;
+import io.fabric8.openshift.api.model.OAuthAccessTokenList;
+import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
+import io.fabric8.openshift.api.model.OAuthClient;
+import io.fabric8.openshift.api.model.OAuthClientAuthorization;
+import io.fabric8.openshift.api.model.OAuthClientAuthorizationList;
+import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
+import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
+import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
+import io.fabric8.openshift.api.model.RangeAllocation;
+import io.fabric8.openshift.api.model.RangeAllocationList;
+import io.fabric8.openshift.api.model.ResourceAccessReview;
+import io.fabric8.openshift.api.model.ResourceAccessReviewResponse;
+import io.fabric8.openshift.api.model.Role;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingList;
+import io.fabric8.openshift.api.model.RoleBindingRestriction;
+import io.fabric8.openshift.api.model.RoleBindingRestrictionList;
+import io.fabric8.openshift.api.model.RoleList;
+import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteList;
+import io.fabric8.openshift.api.model.SecurityContextConstraints;
+import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
+import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
+import io.fabric8.openshift.api.model.SubjectAccessReview;
+import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
+import io.fabric8.openshift.api.model.SubjectRulesReview;
+import io.fabric8.openshift.api.model.TemplateInstance;
+import io.fabric8.openshift.api.model.TemplateInstanceList;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserIdentityMapping;
+import io.fabric8.openshift.api.model.UserList;
+import io.fabric8.openshift.api.model.UserOAuthAccessToken;
+import io.fabric8.openshift.api.model.UserOAuthAccessTokenList;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
@@ -35,7 +124,26 @@ import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRo
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
-import io.fabric8.openshift.client.dsl.*;
+import io.fabric8.openshift.client.dsl.BuildConfigResource;
+import io.fabric8.openshift.client.dsl.BuildResource;
+import io.fabric8.openshift.client.dsl.DeployableScalableResource;
+import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
+import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftHiveAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftStorageVersionMigratorApiGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.ProjectOperation;
+import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
+import io.fabric8.openshift.client.dsl.TemplateOperation;
 
 import java.net.URL;
 
@@ -446,9 +554,9 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
   /**
    * API entrypoint for accessing Template(template.openshift.io/v1)
    *
-   * @return {@link ParameterMixedOperation} object for Template operations
+   * @return {@link TemplateOperation} object for Template operations
    */
-  MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates();
+  TemplateOperation templates();
 
   /**
    * API entrypoint for TemplateInstance(template.openshift.io/v1)

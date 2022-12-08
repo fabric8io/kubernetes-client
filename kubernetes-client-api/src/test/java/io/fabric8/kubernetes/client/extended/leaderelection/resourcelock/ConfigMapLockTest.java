@@ -21,13 +21,11 @@ import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.Answers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -42,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -128,15 +125,13 @@ class ConfigMapLockTest {
     // When
     lock.create(kc, record);
     // Then
-    verify(configMaps.withName("name"), times(1)).create(any(ConfigMap.class));
+    verify(configMaps.resource(any(ConfigMap.class)), times(1)).create();
   }
 
   @Test
   void updateWithValidLeaderElectionRecordShouldSendPutRequest() throws Exception {
     // Given
     final Resource<ConfigMap> configMapResource = configMaps.withName("name");
-    final ReplaceDeletable<ConfigMap> replaceable = mock(ReplaceDeletable.class, Answers.RETURNS_DEEP_STUBS);
-    when(configMapResource.lockResourceVersion(any())).thenReturn(replaceable);
     final ConfigMap configMapInTheCluster = new ConfigMap();
     configMapInTheCluster.setMetadata(new ObjectMetaBuilder().withAnnotations(new HashMap<>()).build());
     when(configMapResource.get()).thenReturn(configMapInTheCluster);
@@ -144,10 +139,11 @@ class ConfigMapLockTest {
         "1337", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     record.setVersion("313373");
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
+
     // When
     lock.update(kc, record);
     // Then
-    verify(replaceable, times(1)).replace(eq(configMapInTheCluster));
+    verify(configMaps.resource(any()).lockResourceVersion("313373")).replace();
   }
 
   @Test

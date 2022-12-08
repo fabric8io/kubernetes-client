@@ -55,7 +55,7 @@ class LoadAsTemplateTest {
 
   @Test
   void shouldLoadPodAsTemplate() {
-    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml"))
+    KubernetesList list = client.templates().from(getClass().getResourceAsStream("/test-pod-create-from-load.yml"))
         .processLocally();
     assertNotNull(list);
     assertNotNull(list.getItems());

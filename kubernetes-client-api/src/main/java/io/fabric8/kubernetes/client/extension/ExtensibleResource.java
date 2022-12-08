@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
@@ -93,5 +94,15 @@ public interface ExtensibleResource<T> extends Resource<T> {
   default WritableOperation<T> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
+
+  OperationInfo forOperationType(String type);
+
+  enum Scope {
+    NAMESPACE,
+    TYPE,
+    RESOURCE
+  }
+
+  <X> X operation(Scope scope, String operation, String method, Object payload, Class<X> responseType);
 
 }

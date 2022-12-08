@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.impl.InternalExtensionAdapter;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -47,7 +46,6 @@ import io.fabric8.openshift.client.dsl.internal.authorization.RoleBindingOperati
 import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -66,13 +64,16 @@ public class OpenShiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
   }
 
   @Override
+  public void registerResources(ResourceFactory factory) {
+    factory.register(Template.class, new TemplateOperationsImpl());
+  }
+
+  @Override
   public void registerHandlers(Handlers handlers) {
     handlers.register(BuildConfig.class, BuildConfigOperationsImpl::new);
     handlers.register(Build.class, BuildOperationsImpl::new);
     handlers.register(DeploymentConfig.class, DeploymentConfigOperationsImpl::new);
     handlers.register(RoleBinding.class, RoleBindingOperationsImpl::new);
-    handlers.register(Template.class, TemplateOperationsImpl::new);
-    handlers.register(Project.class, ProjectOperationsImpl::new);
   }
 
   @Override
