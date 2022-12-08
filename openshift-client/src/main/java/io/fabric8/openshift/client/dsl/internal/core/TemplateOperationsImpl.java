@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -49,41 +49,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
 public class TemplateOperationsImpl
     extends HasMetadataOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>>
     implements TemplateResource<Template, KubernetesList>,
-    ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> {
+    MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> {
 
   private static final Logger logger = LoggerFactory.getLogger(TemplateOperationsImpl.class);
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
 
-  private final Map<String, String> parameters;
-
   public TemplateOperationsImpl(Client client) {
-    this(HasMetadataOperationsImpl.defaultContext(client), null);
+    this(HasMetadataOperationsImpl.defaultContext(client));
   }
 
-  public TemplateOperationsImpl(OperationContext context, Map<String, String> parameters) {
+  public TemplateOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(TEMPLATE)
         .withPlural("templates"), Template.class, TemplateList.class);
-    this.parameters = parameters;
   }
 
   @Override
   public TemplateOperationsImpl newInstance(OperationContext context) {
-    return new TemplateOperationsImpl(context, parameters);
-  }
-
-  public TemplateOperationsImpl newInstance(OperationContext context, Map<String, String> parameters) {
-    return new TemplateOperationsImpl(context, parameters == null ? null : new LinkedHashMap<>(parameters));
+    return new TemplateOperationsImpl(context);
   }
 
   @Override
@@ -159,13 +152,8 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  public TemplateOperationsImpl withParameters(Map<String, String> parameters) {
-    return newInstance(context, parameters);
-  }
-
-  @Override
   public KubernetesList processLocally(Map<String, String> valuesMap) {
-    Template t = withParameters(valuesMap).get();
+    Template t = get();
 
     List<Parameter> parameters = t != null ? t.getParameters() : null;
     KubernetesList list = new KubernetesListBuilder()
@@ -174,9 +162,11 @@ public class TemplateOperationsImpl
 
     try {
       String json = JSON_MAPPER.writeValueAsString(list);
+      String last = null;
+
       if (parameters != null && !parameters.isEmpty()) {
-        // lets make a few passes in case there's expressions in values
-        for (int i = 0; i < 5; i++) {
+        while (!Objects.equals(last, json)) {
+          last = json;
           for (Parameter parameter : parameters) {
             String parameterName = parameter.getName();
             String parameterValue;
@@ -216,7 +206,7 @@ public class TemplateOperationsImpl
   public TemplateResource<Template, KubernetesList> load(InputStream is) {
     String generatedName = "template-" + Utils.randomString(5);
     Template template = null;
-    Object item = Serialization.unmarshal(is, parameters);
+    Object item = Serialization.unmarshal(is);
     if (item instanceof Template) {
       template = (Template) item;
     } else if (item instanceof HasMetadata) {
@@ -255,11 +245,6 @@ public class TemplateOperationsImpl
     }
 
     return newInstance(context.withItem(template));
-  }
-
-  @Override
-  public Map<String, String> getParameters() {
-    return parameters;
   }
 
 }

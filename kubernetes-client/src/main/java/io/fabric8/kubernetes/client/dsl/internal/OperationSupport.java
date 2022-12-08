@@ -363,7 +363,7 @@ public class OperationSupport {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
-    return handleResponse(requestBuilder, type, getParameters());
+    return handleResponse(requestBuilder, type);
   }
 
   /**
@@ -477,13 +477,9 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws InterruptedException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
-    return handleResponse(requestBuilder, type, getParameters());
-  }
-
-  protected Map<String, String> getParameters() {
-    return Collections.emptyMap();
+    return handleResponse(requestBuilder, type);
   }
 
   protected <T extends HasMetadata> T handleApproveOrDeny(T csr, Class<T> type) throws IOException, InterruptedException {
@@ -540,39 +536,23 @@ public class OperationSupport {
   }
 
   /**
-   * Send an http request and handle the response.
-   *
-   * @param requestBuilder Request Builder object
-   * @param type type of resource
-   * @param <T> template argument provided
-   *
-   * @return Returns a de-serialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
-   * @throws IOException IOException
-   */
-  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws InterruptedException, IOException {
-    return handleResponse(requestBuilder, type, getParameters());
-  }
-
-  /**
-   * Send an http request and handle the response, optionally performing placeholder substitution to the response.
+   * Send an http request and handle the response
    *
    * @param requestBuilder request builder
    * @param type type of object
-   * @param parameters a hashmap containing parameters
    * @param <T> template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
    * @throws IOException IOException
    */
-  private <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters)
+  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type)
       throws IOException {
     return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<T>() {
       @Override
       public Type getType() {
         return type;
       }
-    }, parameters));
+    }));
   }
 
   /**
@@ -581,14 +561,12 @@ public class OperationSupport {
    * @param client the client
    * @param requestBuilder Request builder
    * @param type Type of object provided
-   * @param parameters A hashmap containing parameters
    * @param <T> Template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
    */
   protected <T> CompletableFuture<T> handleResponse(HttpClient client, HttpRequest.Builder requestBuilder,
-      TypeReference<T> type,
-      Map<String, String> parameters) {
+      TypeReference<T> type) {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
     CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
@@ -600,7 +578,7 @@ public class OperationSupport {
       try {
         assertResponseCode(request, response);
         if (type != null && type.getType() != null) {
-          return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type, parameters);
+          return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type);
         } else {
           return null;
         }
@@ -801,9 +779,6 @@ public class OperationSupport {
         throw e;
       }
       return null;
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

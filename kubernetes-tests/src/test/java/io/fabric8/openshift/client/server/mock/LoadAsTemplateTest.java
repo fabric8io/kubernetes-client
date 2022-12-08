@@ -22,15 +22,14 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -84,13 +83,13 @@ class LoadAsTemplateTest {
   @Test
   void shouldProcessLocallyDoubleBracedParameters() {
     // Given
-    final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
     final Map<String, String> localRequiredParameters = new HashMap<>();
     localRequiredParameters.put("USERNAME", "notTheOneInYaml");
     localRequiredParameters.put("REQUIRED", "requiredValue");
     localRequiredParameters.put("REQUIRED_BOOLEAN", "true");
+    localRequiredParameters.put("CONTAINER_PORT", "8080");
     // When
-    final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
+    final KubernetesList result = client.templates()
         .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
         .processLocally(localRequiredParameters);
     // Then
@@ -104,10 +103,8 @@ class LoadAsTemplateTest {
 
   @Test
   void shouldProcessLocallyWithDoubleBracedParametersAndParametersInYaml() {
-    // Given
-    final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
     // When
-    final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
+    final KubernetesList result = client.templates()
         .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
         .processLocally(getClass().getResourceAsStream("/parameters.yml"));
     // Then
@@ -117,8 +114,8 @@ class LoadAsTemplateTest {
         .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("false")));
   }
 
-  private static DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
-    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+  private static OpenShiftClientImpl createOpenShiftClientWithNoServer() {
+    return new OpenShiftClientImpl(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
   }
 
   //Check that the processed template is as expected

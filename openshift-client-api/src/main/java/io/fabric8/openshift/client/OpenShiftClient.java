@@ -448,7 +448,7 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
    *
    * @return {@link ParameterMixedOperation} object for Template operations
    */
-  ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates();
+  MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates();
 
   /**
    * API entrypoint for TemplateInstance(template.openshift.io/v1)

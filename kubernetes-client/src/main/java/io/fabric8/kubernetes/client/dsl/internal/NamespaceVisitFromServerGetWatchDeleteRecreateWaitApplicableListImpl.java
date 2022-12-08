@@ -33,7 +33,6 @@ import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWait
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.readiness.Readiness;
@@ -47,7 +46,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -59,7 +57,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl
-    implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
+    implements NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
     Waitable<List<HasMetadata>, HasMetadata> {
 
   private static final Logger LOGGER = LoggerFactory
@@ -86,7 +84,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     Object item = context.getItem();
 
     if (item instanceof InputStream) {
-      item = Serialization.unmarshal((InputStream) item, Collections.emptyMap());
+      item = Serialization.unmarshal((InputStream) item);
       context = context.withItem(item); // late realization of the inputstream
     }
 
@@ -172,13 +170,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
         "Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.",
         meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
     LOGGER.debug("The error stack trace:", t);
-  }
-
-  @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(
-      Map<String, String> parameters) {
-    Object item = Serialization.unmarshal((InputStream) context.getItem(), parameters);
-    return newInstance(context.withItem(item));
   }
 
   @Override

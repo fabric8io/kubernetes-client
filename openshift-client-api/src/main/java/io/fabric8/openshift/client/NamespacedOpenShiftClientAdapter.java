@@ -30,7 +30,6 @@ import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
@@ -348,7 +347,7 @@ public class NamespacedOpenShiftClientAdapter extends NamespacedKubernetesClient
   }
 
   @Override
-  public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
+  public MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
     return getClient().templates();
   }
 

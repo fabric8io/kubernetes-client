@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -213,7 +213,7 @@ class KubernetesClientImplTest {
   void loadFromInputStreamWithInvalid() throws IOException {
     final String podYaml = "NotAPod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
-      final ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = new KubernetesClientImpl()
+      final NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = new KubernetesClientImpl()
           .load(is);
       assertThatIllegalArgumentException()
           .isThrownBy(load::get)

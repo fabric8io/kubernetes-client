@@ -269,7 +269,7 @@ public class BuildConfigOperationsImpl
         public Type getType() {
           return Build.class;
         }
-      }, null));
+      }));
     } catch (Throwable e) {
       // TODO: better determine which exception this should occur on
       // otherwise we need to have the httpclient api open up to the notion

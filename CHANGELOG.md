@@ -33,6 +33,7 @@
 * Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 * Fix #4579: the implicit registration of resource and list types that happens when using the resource(class) methods has been removed. This makes the behavior of the client more predictable as that was an undocumented side-effect.  If you expect to see instances of a custom type from an untyped api call - typically KubernetesClient.load, KubernetesClient.resourceList, KubernetesClient.resource(InputStream|String), then you must either create a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource file (see above #3923), or make calls to KubernetesDeserializer.registerCustomKind - however since KubernetesDeserializer is an internal class that mechanism is not preferred.
 * Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`
+* Fix #3973: removed support for Parameterizable - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
 
 ### 6.2.0 (2022-10-20)
 

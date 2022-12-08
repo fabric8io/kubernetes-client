@@ -26,16 +26,18 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.openshift.api.model.ParameterBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.TemplateListBuilder;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.ParameterValue;
+import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -52,10 +54,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class TemplateTest {
 
-  OpenShiftMockServer server;
+  KubernetesMockServer server;
   OpenShiftClient client;
 
   @Test
@@ -118,10 +120,7 @@ class TemplateTest {
 
     server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates").andReturn(200, json).always();
 
-    Map<String, String> map = new HashMap<>();
-    map.put("PORT", "8080");
-
-    TemplateList templateList = client.templates().withParameters(map).list();
+    TemplateList templateList = client.templates().list();
     assertNotNull(templateList);
     assertEquals(1, templateList.getItems().size());
   }
@@ -217,11 +216,10 @@ class TemplateTest {
 
   @Test
   void shouldLoadTemplateWithNumberParameters() {
-    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    OpenShiftClient client = new OpenShiftClientImpl(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
     KubernetesList list = client.templates()
-        .withParameters(map)
         .load(getClass().getResourceAsStream("/template-with-number-params.yml"))
         .processLocally(map);
     assertListIsServiceWithPort8080(list);
@@ -235,7 +233,7 @@ class TemplateTest {
 
   @Test
   void shouldGetTemplateWithNumberParameters() {
-    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    OpenShiftClient client = new OpenShiftClientImpl(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Template template = client.templates().load(getClass().getResourceAsStream("/template-with-number-params.yml")).get();
     assertThat(template)
         .extracting(Template::getObjects)
@@ -272,7 +270,7 @@ class TemplateTest {
 
   @Test
   void shouldGetTemplateWithMultipleObjects() {
-    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    OpenShiftClient client = new OpenShiftClientImpl(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Template template = client.templates().load(getClass().getResourceAsStream("/template-with-multiple-objects.yml")).get();
     assertThat(template)
         .extracting(Template::getObjects)
@@ -326,8 +324,7 @@ class TemplateTest {
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
 
-    Template template = client.templates().withParameters(map).withName("tmpl1").get();
-    List<HasMetadata> list = template.getObjects();
+    KubernetesList list = client.templates().withName("tmpl1").processLocally(map);
     assertListIsServiceWithPort8080(list);
   }
 

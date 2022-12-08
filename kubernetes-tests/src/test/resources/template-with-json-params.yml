@@ -57,3 +57,6 @@ parameters:
 - description: Required boolean parameter
   name: REQUIRED_BOOLEAN
   required: true
+- description: container port parameter
+  name: CONTAINER_PORT
+  required: true

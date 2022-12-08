@@ -263,9 +263,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       return false;
     } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(forOperationType("evict"), exception);
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("evict"), interruptedException);
     }
   }
 

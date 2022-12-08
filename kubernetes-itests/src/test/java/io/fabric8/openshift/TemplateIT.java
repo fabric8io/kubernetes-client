@@ -26,7 +26,6 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -44,8 +43,6 @@ class TemplateIT {
   @Test
   void load() {
     Template template = client.templates()
-        .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
-
         .load(getClass().getResourceAsStream("/test-template.yml")).get();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());

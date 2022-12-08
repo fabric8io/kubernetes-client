@@ -75,11 +75,7 @@ public class IOHelpers {
   }
 
   public static String convertYamlToJson(String yaml) throws IOException {
-    ObjectMapper yamlReader = Serialization.yamlMapper();
-    Object obj = yamlReader.readValue(yaml, Object.class);
-
-    ObjectMapper jsonWriter = Serialization.jsonMapper();
-    return jsonWriter.writeValueAsString(obj);
+    return Serialization.asJson(Serialization.unmarshal(yaml));
   }
 
   public static String convertToJson(String jsonOrYaml) throws IOException {
