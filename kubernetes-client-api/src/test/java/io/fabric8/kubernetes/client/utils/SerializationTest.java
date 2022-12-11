@@ -72,7 +72,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SerializationTest {
@@ -253,8 +252,10 @@ class SerializationTest {
 
   @Test
   void unmarshalYamlArrayShouldThrowException() {
-    assertThatIllegalArgumentException()
+    assertThatExceptionOfType(KubernetesClientException.class)
         .isThrownBy(() -> Serialization.unmarshal("- 1\n- 2"))
+        .withMessage("Could not convert from yaml to requested type")
+        .havingCause()
         .withMessageStartingWith("Cannot parse a nested array containing non-object resource");
   }
 

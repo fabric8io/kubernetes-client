@@ -249,7 +249,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R load(InputStream is) {
-    T unmarshal = unmarshal(is, type);
+    T unmarshal = Serialization.unmarshal(is, type);
     // if you do something like client.foo().v2().load(v1 resource)
     // it will parse as v2, but have a v1 apiVersion, so we need to
     // force the apiVersion
@@ -394,7 +394,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(fetchListUrl);
       Type refinedType = listType.equals(DefaultKubernetesResourceList.class)
-          ? Serialization.jsonMapper().getTypeFactory().constructParametricType(listType, type)
+          ? Serialization.constructParametricType(listType, type)
           : listType;
       TypeReference<L> listTypeReference = new TypeReference<L>() {
         @Override
@@ -740,7 +740,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
           .uri(baseUrl + "/" + operation);
       if (payload != null) {
-        requestBuilder.method(method, JSON, JSON_MAPPER.writeValueAsString(payload));
+        requestBuilder.method(method, JSON, Serialization.asJson(payload));
       }
       return handleResponse(requestBuilder, responseType);
     } catch (IOException e) {

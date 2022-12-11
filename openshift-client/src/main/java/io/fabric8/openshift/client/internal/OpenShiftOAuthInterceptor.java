@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client.internal;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.client.Config;
@@ -46,6 +45,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -150,8 +150,8 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
       String body = response.body();
       try {
-        JsonNode jsonResponse = Serialization.jsonMapper().readTree(body);
-        String authorizationServer = jsonResponse.get("authorization_endpoint").asText();
+        Map<String, Object> jsonResponse = Serialization.unmarshal(body, Map.class);
+        String authorizationServer = String.valueOf(jsonResponse.get("authorization_endpoint"));
 
         URL authorizeQuery = new URL(authorizationServer + AUTHORIZE_QUERY);
         String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());

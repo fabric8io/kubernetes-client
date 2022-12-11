@@ -116,7 +116,7 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
     if (value == null) {
       return null;
     }
-    Map<String, Object> raw = Serialization.jsonMapper().convertValue(value, Map.class);
+    Map<String, Object> raw = Serialization.convertValue(value, Map.class);
     return fields.stream().map(f -> GenericKubernetesResource.get(raw, (Object[]) f)).toArray();
   }
 
@@ -129,7 +129,7 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
     String[] keyParts = this.keyState.keyFieldFunction.apply(key);
     applyFields(keyParts, raw, this.keyState.keyFields);
 
-    return Serialization.jsonMapper().convertValue(raw, typeClass);
+    return Serialization.convertValue(raw, typeClass);
   }
 
   private static void applyFields(Object[] values, Map<String, Object> raw, List<String[]> fields) {

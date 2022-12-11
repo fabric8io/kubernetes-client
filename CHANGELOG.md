@@ -35,7 +35,7 @@
 * Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`
 * Fix #3973: removed support for Parameterizable - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
 * Fix #3973: openShiftClient.templates().load and openShiftClient.load will no longer automatically process / create templates.  Use the method openshiftClient.templates().from to get a template from any stream.
-* Fix #3973: deprecated Serialization methods that take parameters.
+* Fix #3973: deprecated Serialization methods that take parameters and methods for the json and yaml mappers.
 
 ### 6.2.0 (2022-10-20)
 

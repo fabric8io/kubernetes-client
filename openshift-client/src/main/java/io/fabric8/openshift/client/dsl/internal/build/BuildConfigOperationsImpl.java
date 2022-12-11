@@ -25,10 +25,10 @@ import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Build;
@@ -54,7 +54,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -113,10 +112,7 @@ public class BuildConfigOperationsImpl
   public Build instantiate(BuildRequest request) {
     try {
       updateApiVersion(request);
-      URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
-      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
-          .post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsString(request)).url(instantiationUrl);
-      return handleResponse(requestBuilder, Build.class);
+      return this.operation(Scope.RESOURCE, "instantiate", "POST", request, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -133,7 +129,7 @@ public class BuildConfigOperationsImpl
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
-          .post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsBytes(trigger))
+          .post(JSON, Serialization.asJson(trigger))
           .uri(triggerUrl)
           .header("X-Github-Event", "push");
       handleResponse(requestBuilder, null);

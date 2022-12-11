@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -75,7 +77,10 @@ public class Serialization {
    * n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
    * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
    * one from the additionalProperties Map will be serialized.
+   *
+   * @deprecated
    */
+  @Deprecated
   public static ObjectMapper jsonMapper() {
     return JSON_MAPPER;
   }
@@ -92,7 +97,10 @@ public class Serialization {
    * n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
    * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
    * one from the additionalProperties Map will be serialized.
+   *
+   * @deprecated will be removed in future versions
    */
+  @Deprecated
   public static ObjectMapper yamlMapper() {
     if (YAML_MAPPER == null) {
       synchronized (Serialization.class) {
@@ -111,7 +119,10 @@ public class Serialization {
    * This is useful because in a lot of cases the YAML mapper is only need at application startup
    * when the client is created, so there is no reason to keep the very heavy (in terms of memory) mapper
    * around indefinitely.
+   *
+   * @deprecated
    */
+  @Deprecated
   public static void clearYamlMapper() {
     YAML_MAPPER = null;
   }
@@ -154,6 +165,15 @@ public class Serialization {
     } catch (JsonProcessingException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+    /*
+     * TODO: this will bypass the need for a yamlMapper
+     * Yaml yaml = yaml();
+     * try {
+     * return yaml.dump(convertValue(object, Map.class));
+     * } catch (IllegalArgumentException e) {
+     * return yaml.dump(convertValue(convertValue(object, JsonNode.class), Object.class));
+     * }
+     */
   }
 
   /**
@@ -254,13 +274,16 @@ public class Serialization {
 
       final T result;
       if (intch != '{' && intch != '[') {
-        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(),
-            new CustomYamlTagResolverWithLimit());
+        Yaml yaml = yaml();
         final Object obj = yaml.load(bis);
-        if (obj instanceof Map) {
-          result = mapper.convertValue(obj, type);
-        } else {
-          result = mapper.convertValue(new RawExtension(obj), type);
+        try {
+          if (obj instanceof Map) {
+            result = mapper.convertValue(obj, type);
+          } else {
+            result = mapper.convertValue(new RawExtension(obj), type);
+          }
+        } catch (IllegalArgumentException e) {
+          throw new KubernetesClientException("Could not convert from yaml to requested type", e);
         }
       } else {
         result = mapper.readerFor(type).readValue(bis);
@@ -269,6 +292,16 @@ public class Serialization {
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  private static Yaml yaml() {
+    LoaderOptions loaderOptions = new LoaderOptions();
+    DumperOptions dumperOptions = new DumperOptions();
+    dumperOptions.setExplicitStart(true);
+    dumperOptions.setDefaultFlowStyle(FlowStyle.BLOCK);
+    Yaml yaml = new Yaml(new SafeConstructor(loaderOptions), new Representer(dumperOptions), dumperOptions,
+        loaderOptions, new CustomYamlTagResolverWithLimit());
+    return yaml;
   }
 
   /**
@@ -451,5 +484,13 @@ public class Serialization {
       }
       super.addImplicitResolver(tag, regexp, first, limit);
     }
+  }
+
+  public static <T> T convertValue(Object value, Class<T> type) {
+    return JSON_MAPPER.convertValue(value, type);
+  }
+
+  public static Type constructParametricType(Class<?> parameterizedClass, Class<?> parameterType) {
+    return JSON_MAPPER.getTypeFactory().constructParametricType(parameterizedClass, parameterType);
   }
 }

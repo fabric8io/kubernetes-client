@@ -183,7 +183,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     // the WatchEvent deserialization is not specifically typed
     // modify the type here if needed
     if (resource != null && !baseOperation.getType().isAssignableFrom(resource.getClass())) {
-      resource = Serialization.jsonMapper().convertValue(resource, baseOperation.getType());
+      resource = Serialization.convertValue(resource, baseOperation.getType());
     }
     @SuppressWarnings("unchecked")
     final T t = (T) resource;
@@ -234,14 +234,14 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     try {
       return Serialization.unmarshal(messageSource, WatchEvent.class);
     } catch (Exception ex1) {
-      JsonNode json = Serialization.jsonMapper().readTree(messageSource);
+      JsonNode json = Serialization.unmarshal(messageSource, JsonNode.class);
       JsonNode objectJson = null;
       if (json instanceof ObjectNode && json.has("object")) {
         objectJson = ((ObjectNode) json).remove("object");
       }
 
-      WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
-      KubernetesResource object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+      WatchEvent watchEvent = Serialization.convertValue(json, WatchEvent.class);
+      KubernetesResource object = Serialization.convertValue(objectJson, baseOperation.getType());
 
       watchEvent.setObject(object);
       return watchEvent;

@@ -64,6 +64,10 @@ public class IOHelpers {
     }
   }
 
+  /**
+   * @deprecated to be removed in future versions
+   */
+  @Deprecated
   public static boolean isJSONValid(String json) {
     try {
       ObjectMapper objectMapper = Serialization.jsonMapper();
@@ -74,18 +78,15 @@ public class IOHelpers {
     return true;
   }
 
+  /**
+   * @deprecated to be removed in future versions
+   */
+  @Deprecated
   public static String convertYamlToJson(String yaml) throws IOException {
-    ObjectMapper yamlReader = Serialization.yamlMapper();
-    Object obj = yamlReader.readValue(yaml, Object.class);
-
-    ObjectMapper jsonWriter = Serialization.jsonMapper();
-    return jsonWriter.writeValueAsString(obj);
+    return Serialization.asJson(Serialization.unmarshal(yaml, Object.class));
   }
 
   public static String convertToJson(String jsonOrYaml) throws IOException {
-    if (isJSONValid(jsonOrYaml)) {
-      return jsonOrYaml;
-    }
     return convertYamlToJson(jsonOrYaml);
   }
 

@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -44,7 +43,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -53,7 +51,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -67,7 +64,6 @@ public class OperationSupport {
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
   public static final String JSON_MERGE_PATCH = "application/merge-patch+json";
 
-  protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
   private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
@@ -322,7 +318,7 @@ public class OperationSupport {
     }
 
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
+        .delete(JSON, Serialization.asJson(deleteOptions)).url(requestUrl);
 
     return handleResponse(requestBuilder, KubernetesResource.class);
   }
@@ -342,7 +338,7 @@ public class OperationSupport {
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws InterruptedException, IOException {
     resource = correctNamespace(resource);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .post(JSON, JSON_MAPPER.writeValueAsString(resource))
+        .post(JSON, Serialization.asJson(resource))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
     return handleResponse(requestBuilder, outputType);
   }
@@ -361,7 +357,7 @@ public class OperationSupport {
   protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .put(JSON, JSON_MAPPER.writeValueAsString(updated))
+        .put(JSON, Serialization.asJson(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
     return handleResponse(requestBuilder, type);
   }
@@ -451,7 +447,7 @@ public class OperationSupport {
   protected <T extends HasMetadata> T handleApproveOrDeny(T csr, Class<T> type) throws IOException, InterruptedException {
     String uri = URLUtils.join(getResourceUrl(null, csr.getMetadata().getName(), false).toString(), "approval");
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .put(JSON, JSON_MAPPER.writeValueAsString(csr)).uri(uri);
+        .put(JSON, Serialization.asJson(csr)).uri(uri);
     return handleResponse(requestBuilder, type);
   }
 
@@ -637,13 +633,13 @@ public class OperationSupport {
       try {
         String bodyString = response.bodyString();
         if (Utils.isNotNullOrEmpty(bodyString)) {
-          Status status = JSON_MAPPER.readValue(bodyString, Status.class);
+          Status status = Serialization.unmarshal(bodyString, Status.class);
           if (status.getCode() == null) {
             status = new StatusBuilder(status).withCode(statusCode).build();
           }
           return status;
         }
-      } catch (IOException e) {
+      } catch (IOException | KubernetesClientException e) {
         // ignored
       }
       if (response.message() != null) {
@@ -701,23 +697,6 @@ public class OperationSupport {
 
   public static KubernetesClientException requestException(HttpRequest request, Exception e) {
     return requestException(request, e, null);
-  }
-
-  protected static <T> T unmarshal(InputStream is) {
-    return Serialization.unmarshal(is);
-  }
-
-  protected static <T> T unmarshal(InputStream is, final Class<T> type) {
-    return Serialization.unmarshal(is, type);
-  }
-
-  protected static <T> T unmarshal(InputStream is, TypeReference<T> type) {
-    return Serialization.unmarshal(is, type);
-  }
-
-  protected static <T> Map<String, Object> getObjectValueAsMap(T object) {
-    return JSON_MAPPER.convertValue(object, new TypeReference<Map<String, Object>>() {
-    });
   }
 
   public Config getConfig() {

@@ -55,6 +55,7 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.lib.FilenameUtils;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -253,7 +254,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
       URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-          .post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
+          .post(JSON, Serialization.asJson(eviction)).url(requestUrl);
       handleResponse(requestBuilder, null);
       return true;
     } catch (KubernetesClientException e) {
