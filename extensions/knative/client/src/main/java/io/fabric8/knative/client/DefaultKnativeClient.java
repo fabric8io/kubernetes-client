@@ -241,6 +241,6 @@ public class DefaultKnativeClient extends ExtensionRootClientAdapter<DefaultKnat
 
   @Override
   public boolean isSupported() {
-    return hasApiGroup("knative.dev", true);
+    return hasApiGroup("knative.dev", false);
   }
 }

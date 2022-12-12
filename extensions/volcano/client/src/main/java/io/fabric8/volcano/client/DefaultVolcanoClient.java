@@ -75,6 +75,6 @@ public class DefaultVolcanoClient extends ExtensionRootClientAdapter<DefaultVolc
 
   @Override
   public boolean isSupported() {
-    return getClient().hasApiGroup(VolcanoExtensionAdapter.API_GROUP, true);
+    return getClient().hasApiGroup(VolcanoExtensionAdapter.API_GROUP, false);
   }
 }
