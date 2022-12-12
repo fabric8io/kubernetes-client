@@ -17,11 +17,36 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.AbstractAsyncBodyTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpAsyncBody;
+import okio.BufferedSource;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.List;
 
 @SuppressWarnings("java:S2187")
 public class OkHttpAsyncBodyTest extends AbstractAsyncBodyTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new OkHttpClientFactory();
+  }
+
+  @Test
+  void testClosedWhenExhausted() throws Exception {
+    BufferedSource source = Mockito.mock(BufferedSource.class);
+    Mockito.when(source.exhausted()).thenReturn(true);
+    OkHttpClientImpl.OkHttpAsyncBody<List<ByteBuffer>> asyncBody = new OkHttpAsyncBody<List<ByteBuffer>>(null, source,
+        Runnable::run) {
+
+      @Override
+      protected List<ByteBuffer> process(BufferedSource source) throws IOException {
+        return null;
+      }
+    };
+
+    asyncBody.consume();
+    Mockito.verify(source).close();
   }
 }
