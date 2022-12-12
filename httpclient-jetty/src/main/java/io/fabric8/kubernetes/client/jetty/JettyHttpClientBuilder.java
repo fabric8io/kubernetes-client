@@ -48,8 +48,7 @@ public class JettyHttpClientBuilder
   @Override
   public JettyHttpClient build() {
     if (client != null) {
-      return new JettyHttpClient(this, client.getJetty(), client.getJettyWs(), interceptors.values(), clientFactory,
-          this.requestConfig);
+      return new JettyHttpClient(this, client.getJetty(), client.getJettyWs());
     }
     final var sslContextFactory = new SslContextFactory.Client();
     if (sslContext != null) {
@@ -78,8 +77,7 @@ public class JettyHttpClientBuilder
         }
       });
     }
-    return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient, interceptors.values(), clientFactory,
-        requestConfig);
+    return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient);
   }
 
   private static HttpClientTransport newTransport(SslContextFactory.Client sslContextFactory, boolean preferHttp11) {

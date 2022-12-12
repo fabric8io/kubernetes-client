@@ -50,7 +50,7 @@ class JdkHttpClientBuilderImpl
   @Override
   public HttpClient build() {
     if (client != null) {
-      return new JdkHttpClientImpl(this, client.getHttpClient(), this.requestConfig);
+      return new JdkHttpClientImpl(this, client.getHttpClient());
     }
     java.net.http.HttpClient.Builder builder = clientFactory.createNewHttpClientBuilder();
     if (connectTimeout != null && !java.time.Duration.ZERO.equals(connectTimeout)) {
@@ -85,7 +85,7 @@ class JdkHttpClientBuilderImpl
           Arrays.asList(tlsVersions).stream().map(TlsVersion::javaName).toArray(String[]::new)));
     }
     clientFactory.additionalConfig(builder);
-    return new JdkHttpClientImpl(this, builder.build(), null);
+    return new JdkHttpClientImpl(this, builder.build());
   }
 
   @Override

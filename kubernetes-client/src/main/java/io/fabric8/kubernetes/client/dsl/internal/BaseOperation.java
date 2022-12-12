@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -43,6 +45,7 @@ import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
@@ -65,6 +68,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -398,7 +402,16 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(fetchListUrl);
-      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listType, getParameters());
+      Type refinedType = listType.equals(DefaultKubernetesResourceList.class)
+          ? Serialization.jsonMapper().getTypeFactory().constructParametricType(listType, type)
+          : listType;
+      TypeReference<L> listTypeReference = new TypeReference<L>() {
+        @Override
+        public Type getType() {
+          return refinedType;
+        }
+      };
+      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference, getParameters());
       return futureAnswer.thenApply(l -> {
         updateApiVersion(l);
         return l;
@@ -460,6 +473,21 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public List<StatusDetails> delete() {
+    List<StatusDetails> deleted = deleteAll();
+    waitForDelete(deleted, this.context, this);
+    return deleted;
+  }
+
+  static void waitForDelete(List<StatusDetails> deleted, OperationContext context,
+      Waitable<?, ? extends HasMetadata> waitable) {
+    if (context.getTimeout() > 0) {
+      Set<String> uids = deleted.stream().map(StatusDetails::getUid).collect(Collectors.toSet());
+      waitable.waitUntilCondition(h -> h == null || !uids.contains(h.getMetadata().getUid()), context.getTimeout(),
+          context.getTimeoutUnit());
+    }
+  }
+
+  protected List<StatusDetails> deleteAll() {
     if (Utils.isNotNullOrEmpty(name) || Utils.isNotNullOrEmpty(namespace) || !isResourceNamespaced()) {
       try {
         URL resourceURLForWriteOperation = getResourceURLForWriteOperation(getResourceUrl());
@@ -1107,6 +1135,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T serverSideApply() {
     return this.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY));
+  }
+
+  @Override
+  public ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit) {
+    return newInstance(context.withTimeout(timeout, unit));
   }
 
 }

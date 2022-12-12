@@ -20,8 +20,6 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -31,60 +29,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 class JdkWebSocketImpl implements WebSocket {
-
-  static class BuilderImpl implements Builder {
-
-    private JdkHttpClientImpl httpClientImpl;
-    private java.net.http.HttpRequest.Builder builder;
-    String subprotocol;
-
-    public BuilderImpl(JdkHttpClientImpl jdkHttpClientImpl) {
-      this(jdkHttpClientImpl, HttpRequest.newBuilder());
-    }
-
-    public BuilderImpl(JdkHttpClientImpl httpClientImpl, java.net.http.HttpRequest.Builder copy) {
-      this.httpClientImpl = httpClientImpl;
-      this.builder = copy;
-    }
-
-    @Override
-    public CompletableFuture<WebSocket> buildAsync(Listener listener) {
-      return httpClientImpl.buildAsync(this, listener);
-    }
-
-    @Override
-    public Builder header(String name, String value) {
-      builder.header(name, value);
-      return this;
-    }
-
-    @Override
-    public Builder setHeader(String k, String v) {
-      builder.setHeader(k, v);
-      return this;
-    }
-
-    @Override
-    public Builder uri(URI uri) {
-      builder.uri(uri);
-      return this;
-    }
-
-    @Override
-    public BuilderImpl subprotocol(String protocol) {
-      this.subprotocol = protocol;
-      return this;
-    }
-
-    public HttpRequest asRequest() {
-      return this.builder.build();
-    }
-
-    public BuilderImpl copy() {
-      return new BuilderImpl(httpClientImpl, builder.copy()).subprotocol(subprotocol);
-    }
-
-  }
 
   static final class ListenerAdapter implements java.net.http.WebSocket.Listener {
 
@@ -180,7 +124,7 @@ class JdkWebSocketImpl implements WebSocket {
   @Override
   public boolean sendClose(int code, String reason) {
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
-    // matches the behavior of the okhttp implementation and will ensure input closure after 1 minute 
+    // matches the behavior of the okhttp implementation and will ensure input closure after 1 minute
     cf.thenRunAsync(() -> webSocket.abort(), CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES));
     return asBoolean(cf);
   }

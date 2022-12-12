@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupBuilder;
 import io.fabric8.kubernetes.api.model.APIResource;
@@ -386,9 +384,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    */
   @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
-    return resources(Binding.class,
-        (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>() {
-        }.getType()));
+    return resources(Binding.class);
   }
 
   /**

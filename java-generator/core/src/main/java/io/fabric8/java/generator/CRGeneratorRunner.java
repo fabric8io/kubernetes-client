@@ -151,6 +151,8 @@ public class CRGeneratorRunner {
           statusGenerator != null,
           crdv.getStorage(),
           crdv.getServed(),
+          crSpec.getNames().getSingular(),
+          crSpec.getNames().getPlural(),
           config);
 
       List<GeneratorResult.ClassResult> classResults = validateAndAggregate(crGenerator, specGenerator, statusGenerator);

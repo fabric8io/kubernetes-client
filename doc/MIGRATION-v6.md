@@ -164,8 +164,7 @@ Use:
 
 ```java
 var resource = client.resource(deployment).inNamespace(session.getNamespace());
-resource.delete();
-resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+resource.withTimeout(30, TimeUnit.SECONDS).delete();
 resource.create();
 ```
 

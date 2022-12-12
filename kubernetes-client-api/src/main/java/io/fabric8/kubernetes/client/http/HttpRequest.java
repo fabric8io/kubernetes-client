@@ -33,7 +33,7 @@ public interface HttpRequest extends HttpHeaders {
 
     /**
      * Sets the target URI for this request.
-     * 
+     *
      * @param uri the URI as String.
      * @return the builder.
      */
@@ -41,7 +41,7 @@ public interface HttpRequest extends HttpHeaders {
 
     /**
      * Sets the target {@link URL} for this request.
-     * 
+     *
      * @param url the URL.
      * @return the builder.
      */
@@ -105,7 +105,7 @@ public interface HttpRequest extends HttpHeaders {
   /**
    * Return the body as a string, but only if one of the String valued {@link Builder} methods were used
    * otherwise null
-   * 
+   *
    * @return the body
    */
   String bodyString();

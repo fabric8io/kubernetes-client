@@ -73,6 +73,6 @@ public class DefaultVolumeSnapshotClient extends ExtensionRootClientAdapter<Defa
 
   @Override
   public boolean isSupported() {
-    return getClient().hasApiGroup(VolumeSnapshotExtensionAdapter.API_GROUP, true);
+    return getClient().hasApiGroup(VolumeSnapshotExtensionAdapter.API_GROUP, false);
   }
 }

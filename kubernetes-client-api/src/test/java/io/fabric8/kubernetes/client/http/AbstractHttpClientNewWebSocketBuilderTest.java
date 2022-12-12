@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.jetty;
+package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.mockwebserver.DefaultMockServer;
-import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class JettyWebSocketBuilderTest {
+public abstract class AbstractHttpClientNewWebSocketBuilderTest {
 
   private static DefaultMockServer server;
+
+  private HttpClient httpClient;
 
   @BeforeAll
   static void beforeAll() {
@@ -49,6 +49,18 @@ class JettyWebSocketBuilderTest {
     server.shutdown();
   }
 
+  @BeforeEach
+  void setUp() {
+    httpClient = getHttpClientFactory().newBuilder().build();
+  }
+
+  @AfterEach
+  void tearDown() {
+    httpClient.close();
+  }
+
+  protected abstract HttpClient.Factory getHttpClientFactory();
+
   @Test
   void buildAsyncConnectsAndUpgrades() throws Exception {
     server.expect().withPath("/websocket-test")
@@ -56,8 +68,8 @@ class JettyWebSocketBuilderTest {
         .open()
         .done()
         .always();
-    final var open = new AtomicBoolean(false);
-    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO)
+    final AtomicBoolean open = new AtomicBoolean(false);
+    httpClient.newWebSocketBuilder()
         .uri(URI.create(server.url("/websocket-test")))
         .buildAsync(new WebSocket.Listener() {
           @Override
@@ -70,13 +82,13 @@ class JettyWebSocketBuilderTest {
 
   @Test
   void buildAsyncCantUpgradeThrowsWebSocketHandshakeException() {
-    final var result = assertThrows(ExecutionException.class,
-        () -> new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO)
-            .uri(URI.create(server.url("/not-found")))
-            .buildAsync(new WebSocket.Listener() {
-            })
-            .get(10L, TimeUnit.SECONDS));
-    assertThat(result).cause().isInstanceOf(WebSocketHandshakeException.class);
+    final CompletableFuture<WebSocket> future = httpClient.newWebSocketBuilder()
+        .uri(URI.create(server.url("/not-found")))
+        .buildAsync(new WebSocket.Listener() {
+        });
+    assertThatThrownBy(() -> future.get(10L, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .hasCauseInstanceOf(WebSocketHandshakeException.class);
   }
 
   @Test
@@ -86,8 +98,8 @@ class JettyWebSocketBuilderTest {
         .open()
         .done()
         .always();
-    final var open = new AtomicBoolean(false);
-    new JettyWebSocketBuilder(new WebSocketClient(new HttpClient()), Duration.ZERO)
+    final AtomicBoolean open = new AtomicBoolean(false);
+    httpClient.newWebSocketBuilder()
         .header("A-Random-Header", "A-Random-Value")
         .subprotocol("amqp")
         .uri(URI.create(server.url("/websocket-headers-test")))

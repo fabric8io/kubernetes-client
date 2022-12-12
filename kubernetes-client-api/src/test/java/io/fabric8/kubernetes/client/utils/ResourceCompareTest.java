@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationController;
@@ -148,5 +149,11 @@ class ResourceCompareTest {
   @Test
   void testEqualsWhenBothNull() {
     assertTrue(ResourceCompare.equals(null, null));
+  }
+
+  @Test
+  void testMetadataChanged() {
+    assertFalse(ResourceCompare.metadataChanged(new ObjectMetaBuilder().withResourceVersion("1").build(),
+        new ObjectMetaBuilder().withResourceVersion("2").build()));
   }
 }

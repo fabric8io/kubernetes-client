@@ -24,37 +24,32 @@ import org.eclipse.jetty.client.api.Result;
 import org.eclipse.jetty.util.Callback;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.LongConsumer;
 
 public abstract class JettyAsyncResponseListener extends Response.Listener.Adapter implements AsyncBody {
 
   private final HttpRequest httpRequest;
-  private final CompletableFuture<HttpResponse<AsyncBody>> asyncResponse;
+  private final CompletableFuture<JettyHttpResponse<AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private final CompletableFuture<LongConsumer> demand;
+  private LongConsumer demand;
   private boolean initialConsumeCalled;
-  private Runnable initialConsume;
 
   JettyAsyncResponseListener(HttpRequest httpRequest) {
     this.httpRequest = httpRequest;
     asyncResponse = new CompletableFuture<>();
     asyncBodyDone = new CompletableFuture<>();
-    demand = new CompletableFuture<>();
   }
 
   @Override
-  public void consume() {
-    synchronized (this) {
-      if (!this.initialConsumeCalled) {
-        this.initialConsumeCalled = true;
-        if (this.initialConsume != null) {
-          this.initialConsume.run();
-          this.initialConsume = null;
-        }
-      }
+  public synchronized void consume() {
+    if (!this.initialConsumeCalled) {
+      this.initialConsumeCalled = true;
     }
-    demand.thenAccept(l -> l.accept(1));
+    if (demand != null) {
+      demand.accept(1);
+    }
   }
 
   @Override
@@ -64,7 +59,10 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
 
   @Override
   public void cancel() {
-    asyncBodyDone.cancel(false);
+    if (!asyncBodyDone.isDone()) {
+      asyncBodyDone.cancel(false);
+      asyncResponse.thenAccept(r -> r.getResponse().abort(new CancellationException()));
+    }
   }
 
   @Override
@@ -79,22 +77,27 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
 
   public CompletableFuture<HttpResponse<AsyncBody>> listen(Request request) {
     request.send(this);
-    return asyncResponse;
+    return asyncResponse.thenApply(HttpResponse.class::cast);
   }
 
   @Override
-  public void onContent(Response response, LongConsumer demand, ByteBuffer content, Callback callback) {
+  public void onBeforeContent(Response response, LongConsumer demand) {
     synchronized (this) {
-      if (!initialConsumeCalled) {
-        // defer until consume is called
-        this.initialConsume = () -> onContent(response, demand, content, callback);
+      if (!this.initialConsumeCalled) {
+        this.demand = demand;
         return;
       }
-      this.demand.complete(demand);
     }
+    demand.accept(1);
+  }
+
+  @Override
+  public void onContent(Response response, ByteBuffer content, Callback callback) {
     try {
-      onContent(content);
-      callback.succeeded();
+      if (!asyncBodyDone.isCancelled()) {
+        onContent(content);
+        callback.succeeded();
+      }
     } catch (Exception e) {
       callback.failed(e);
     }

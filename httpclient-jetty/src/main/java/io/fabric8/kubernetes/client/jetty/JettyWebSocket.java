@@ -16,13 +16,19 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
+import org.eclipse.jetty.client.HttpResponse;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
+import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
@@ -45,6 +51,14 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     backPressure = lock.newCondition();
     closed = new AtomicBoolean();
     moreMessages = true;
+  }
+
+  static WebSocketHandshakeException toHandshakeException(UpgradeException ex) {
+    return new WebSocketHandshakeException(new JettyHttpResponse<>(
+        new StandardHttpRequest.Builder().uri(ex.getRequestURI()).build(),
+        new HttpResponse(null, Collections.emptyList()).status(ex.getResponseStatusCode()),
+        null))
+            .initCause(ex);
   }
 
   @Override
@@ -110,6 +124,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   @Override
   public void onWebSocketClose(int statusCode, String reason) {
     closed.set(true);
+    backPressure();
     listener.onClose(this, statusCode, reason);
   }
 
@@ -138,7 +153,14 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     try {
       lock.lock();
       while (!moreMessages) {
-        backPressure.await();
+        // arbitrary timeout to make it clearer that messages are not being processed
+        // - likely due to streams returned off of websocket not being read
+        // the jetty thread pool won't throw an exception until we're at least 8k jobs behind
+        // hopefully this will help avoid having to get a thread dump
+        if (!backPressure.await(30, TimeUnit.SECONDS)) {
+          throw new KubernetesClientException(
+              "Jetty HttpClient thread is waiting too long for the consumption of previous websocket message");
+        }
       }
       moreMessages = false;
     } catch (InterruptedException e) {

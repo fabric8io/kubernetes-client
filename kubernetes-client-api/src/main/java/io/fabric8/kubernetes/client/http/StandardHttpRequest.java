@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,22 +25,99 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Standard representation of a request. HttpClient implementations need to handle the special fields,
+ * such as expectContinue, or content-type
+ */
 public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequest {
 
   public static final String METHOD_POST = "POST";
 
+  public interface BodyContent {
+
+  }
+
+  public static class StringBodyContent implements BodyContent {
+
+    private String content;
+
+    public StringBodyContent(String content) {
+      this.content = content;
+    }
+
+    public String getContent() {
+      return content;
+    }
+
+  }
+
+  public static class ByteArrayBodyContent implements BodyContent {
+
+    private byte[] content;
+
+    public ByteArrayBodyContent(byte[] bytes) {
+      this.content = bytes;
+    }
+
+    public byte[] getContent() {
+      return content;
+    }
+
+  }
+
+  public static class InputStreamBodyContent implements BodyContent {
+    private long length;
+    private InputStream content;
+
+    public InputStreamBodyContent(InputStream stream, long length) {
+      this.length = length;
+      this.content = stream;
+    }
+
+    public InputStream getContent() {
+      return content;
+    }
+
+    public long getLength() {
+      return length;
+    }
+
+  }
+
   private final URI uri;
   private final String method;
+  private final String contentType;
   private final String bodyString;
-  private final InputStream bodyStream;
+  private final BodyContent body;
+  private final boolean expectContinue;
 
-  public StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString,
-      InputStream bodyStream) {
+  /**
+   * Constructor that provides the public information
+   *
+   * @param headers
+   * @param uri
+   * @param method
+   * @param bodyString
+   */
+  public StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString) {
     super(headers);
     this.uri = uri;
     this.method = method;
     this.bodyString = bodyString;
-    this.bodyStream = bodyStream;
+    expectContinue = false;
+    this.body = null;
+    this.contentType = null;
+  }
+
+  StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString,
+      BodyContent body, boolean expectContinue, String contentType) {
+    super(headers);
+    this.uri = uri;
+    this.method = method;
+    this.bodyString = bodyString;
+    this.body = body;
+    this.expectContinue = expectContinue;
+    this.contentType = contentType;
   }
 
   @Override
@@ -62,25 +138,29 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     return bodyString;
   }
 
-  /**
-   * Return the body as a string, but only if one of the byte[] or InputStream valued {@link HttpRequest.Builder}
-   * methods were used otherwise null.
-   *
-   * @return the body as InputStream.
-   */
-  public InputStream bodyStream() {
-    return bodyStream;
+  public BodyContent body() {
+    return body;
   }
 
-  public Builder toBuilder() {
+  public boolean isExpectContinue() {
+    return expectContinue;
+  }
+
+  public String getContentType() {
+    return contentType;
+  }
+
+  public Builder newBuilder() {
     return new Builder(this);
   }
 
   public static final class Builder extends AbstractBasicBuilder<Builder> implements HttpRequest.Builder {
 
     private String method = "GET";
-    private InputStream bodyAsStream;
+    private BodyContent body;
     private String bodyAsString;
+    private boolean expectContinue;
+    private String contentType;
 
     public Builder() {
     }
@@ -90,13 +170,15 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
       super.setHeaders(original.headers());
       method = original.method;
       bodyAsString = original.bodyString;
-      bodyAsStream = original.bodyStream;
+      body = original.body;
+      expectContinue = original.expectContinue;
+      contentType = original.contentType;
     }
 
     @Override
     public StandardHttpRequest build() {
       return new StandardHttpRequest(
-          getHeaders(), Objects.requireNonNull(getUri()), method, bodyAsString, bodyAsStream);
+          getHeaders(), Objects.requireNonNull(getUri()), method, bodyAsString, body, expectContinue, contentType);
     }
 
     @Override
@@ -115,37 +197,32 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
 
     @Override
     public HttpRequest.Builder post(String contentType, byte[] writeValueAsBytes) {
-      return post(contentType, new ByteArrayInputStream(writeValueAsBytes), writeValueAsBytes.length);
+      method = METHOD_POST;
+      this.contentType = contentType;
+      body = new ByteArrayBodyContent(writeValueAsBytes);
+      return this;
     }
 
     @Override
     public HttpRequest.Builder post(String contentType, InputStream stream, long length) {
-      if (length >= 0) {
-        header(CONTENT_LENGTH, Long.toString(length));
-      }
       method = METHOD_POST;
-      contentType(contentType);
-      bodyAsStream = stream;
+      this.contentType = contentType;
+      body = new InputStreamBodyContent(stream, length);
       return this;
     }
 
     @Override
     public HttpRequest.Builder method(String method, String contentType, String body) {
       this.method = method;
-      contentType(contentType);
+      this.contentType = contentType;
       this.bodyAsString = body;
+      this.body = new StringBodyContent(body);
       return this;
-    }
-
-    private void contentType(String contentType) {
-      if (contentType != null) {
-        setHeader(CONTENT_TYPE, contentType);
-      }
     }
 
     @Override
     public HttpRequest.Builder expectContinue() {
-      setHeader(EXPECT, EXPECT_CONTINUE);
+      expectContinue = true;
       return this;
     }
   }

@@ -35,7 +35,7 @@ import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -62,10 +62,10 @@ public class DeploymentOperationsImpl
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
 
   public DeploymentOperationsImpl(Client client) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
-  public DeploymentOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+  public DeploymentOperationsImpl(PodOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("extensions")
         .withApiGroupVersion("v1beta1")
         .withPlural("deployments"), Deployment.class, DeploymentList.class);
@@ -77,8 +77,9 @@ public class DeploymentOperationsImpl
   }
 
   @Override
-  public DeploymentOperationsImpl newInstance(RollingOperationContext context) {
-    return new DeploymentOperationsImpl(context, this.context);
+  public DeploymentOperationsImpl newInstance(PodOperationContext context,
+      OperationContext superContext) {
+    return new DeploymentOperationsImpl(context, superContext);
   }
 
   @Override
@@ -215,8 +216,7 @@ public class DeploymentOperationsImpl
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
-        new RollingOperationContext(rollingOperationContext.getPodOperationContext(), false, 0, null),
-        context.withName(null));
+        rollingOperationContext, context.withName(null));
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
     for (ReplicaSet rs : rcList.getItems()) {

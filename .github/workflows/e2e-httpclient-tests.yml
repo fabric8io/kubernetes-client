@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.24.0,v1.23.3, v1.12.10]
+        kubernetes: [v1.24.0,v1.23.3]
         httpclient: [jdk,jetty]
     steps:
       - name: Checkout
@@ -61,7 +61,7 @@ jobs:
 
   openshift:
     name: OpenShift
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false

@@ -16,11 +16,11 @@
 
 package io.fabric8.kubernetes.jsonschema2pojo;
 
-import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JDefinedClass;
 import io.sundr.builder.annotations.BuildableReference;
 import org.jsonschema2pojo.GenerationConfig;
+
+import java.util.List;
 
 /**
  * Adds more {@link BuildableReference}s to regular annotator to minimize
@@ -33,15 +33,12 @@ public class ExtensionTypeAnnotator extends KubernetesTypeAnnotator {
   }
 
   @Override
-  protected void addBuildableTypes(JAnnotationArrayMember arrayMember) throws JClassAlreadyExistsException {
-    arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-        new JCodeModel()._class("io.fabric8.kubernetes.api.model.EnvVar"));
-    arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-        new JCodeModel()._class("io.fabric8.kubernetes.api.model.ContainerPort"));
-    arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-        new JCodeModel()._class("io.fabric8.kubernetes.api.model.Volume"));
-    arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
-        new JCodeModel()._class("io.fabric8.kubernetes.api.model.VolumeMount"));
+  protected void addBuildableTypes(JDefinedClass clazz, List<String> types) {
+    super.addBuildableTypes(clazz, types);
+    types.add("io.fabric8.kubernetes.api.model.EnvVar");
+    types.add("io.fabric8.kubernetes.api.model.ContainerPort");
+    types.add("io.fabric8.kubernetes.api.model.Volume");
+    types.add("io.fabric8.kubernetes.api.model.VolumeMount");
   }
 
 }

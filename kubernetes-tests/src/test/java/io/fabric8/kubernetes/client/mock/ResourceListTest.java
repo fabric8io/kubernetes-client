@@ -44,7 +44,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -173,8 +172,7 @@ public class ResourceListTest {
 
     ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList = client.resourceList(resourcesToUpdate)
         .inNamespace("ns1");
-    resourceList.delete();
-    resourceList.waitUntilCondition(Objects::isNull, 10, TimeUnit.SECONDS);
+    resourceList.withTimeout(10, TimeUnit.SECONDS).delete();
     resourceList.createOrReplace();
 
     assertEquals(6, server.getRequestCount());

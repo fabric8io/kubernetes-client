@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -47,6 +48,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -565,7 +567,12 @@ public class OperationSupport {
    */
   private <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters)
       throws IOException {
-    return waitForResult(handleResponse(httpClient, requestBuilder, type, parameters));
+    return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<T>() {
+      @Override
+      public Type getType() {
+        return type;
+      }
+    }, parameters));
   }
 
   /**
@@ -579,7 +586,8 @@ public class OperationSupport {
    *
    * @return Returns a de-serialized object as api server response of provided type.
    */
-  protected <T> CompletableFuture<T> handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type,
+  protected <T> CompletableFuture<T> handleResponse(HttpClient client, HttpRequest.Builder requestBuilder,
+      TypeReference<T> type,
       Map<String, String> parameters) {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
@@ -591,7 +599,7 @@ public class OperationSupport {
     return futureResponse.thenApply(response -> {
       try {
         assertResponseCode(request, response);
-        if (type != null) {
+        if (type != null && type.getType() != null) {
           return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type, parameters);
         } else {
           return null;
@@ -646,7 +654,11 @@ public class OperationSupport {
   protected void assertResponseCode(HttpRequest request, HttpResponse<?> response) {
     List<String> warnings = response.headers("Warning");
     if (warnings != null && !warnings.isEmpty()) {
-      LOG.warn("Recieved warning(s) from request at {}: {}", request.uri(), warnings);
+      if (context.fieldValidation == Validation.WARN) {
+        LOG.warn("Recieved warning(s) from request {}: {}", request.uri(), warnings);
+      } else {
+        LOG.debug("Recieved warning(s) from request {}: {}", request.uri(), warnings);
+      }
     }
     if (response.isSuccessful()) {
       return;

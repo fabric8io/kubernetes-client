@@ -23,6 +23,10 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.ReadableByteChannel;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 
 /**
  * Creates a blocking {@link ReadableByteChannel} from a {@link HttpResponse} containing an {@link AsyncBody}
@@ -35,43 +39,55 @@ public class HttpClientReadableByteChannel implements ReadableByteChannel, Async
   private Throwable failed;
   private boolean closed;
   private boolean done;
-  private AsyncBody asyncBody;
+  private CompletableFuture<AsyncBody> asyncBodyFuture = new CompletableFuture<>();
   private ByteBuffer currentBuffer;
-  private boolean consumeRequested;
+  private ReentrantLock lock = new ReentrantLock();
+  private Condition condition = lock.newCondition();
 
   @Override
-  public synchronized void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
-    this.buffers.addAll(value);
-    // could proactively consume based up some byte limit
-    this.notifyAll();
-    this.consumeRequested = false;
+  public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
+    doLockedAndSignal(() -> this.buffers.addAll(value));
   }
 
-  protected synchronized void onResponse(HttpResponse<AsyncBody> response) {
-    asyncBody = response.body();
+  protected void onResponse(HttpResponse<AsyncBody> response) {
+    AsyncBody asyncBody = response.body();
+    asyncBodyFuture.complete(asyncBody);
     asyncBody.done().whenComplete(this::onBodyDone);
     asyncBody.consume(); // pre-fetch the first results
-    this.notifyAll();
+    doLockedAndSignal(() -> null);
   }
 
-  private synchronized void onBodyDone(Void v, Throwable t) {
-    if (t != null) {
-      failed = t;
+  private void onBodyDone(Void v, Throwable t) {
+    doLockedAndSignal(() -> {
+      if (t != null) {
+        failed = t;
+      }
+      done = true;
+      return null;
+    });
+  }
+
+  <T> T doLockedAndSignal(Supplier<T> run) {
+    lock.lock();
+    try {
+      condition.signalAll();
+      return run.get();
+    } finally {
+      lock.unlock();
     }
-    done = true;
-    this.notifyAll();
   }
 
   @Override
-  public synchronized void close() {
-    if (this.closed) {
-      return;
+  public void close() {
+    if (doLockedAndSignal(() -> {
+      if (this.closed) {
+        return false;
+      }
+      this.closed = true;
+      return true;
+    })) {
+      asyncBodyFuture.thenAccept(AsyncBody::cancel);
     }
-    if (asyncBody != null) {
-      asyncBody.cancel();
-    }
-    this.closed = true;
-    this.notifyAll();
   }
 
   @Override
@@ -80,57 +96,61 @@ public class HttpClientReadableByteChannel implements ReadableByteChannel, Async
   }
 
   @Override
-  public synchronized int read(ByteBuffer arg0) throws IOException {
-    if (closed) {
-      throw new ClosedChannelException();
-    }
+  public int read(ByteBuffer arg0) throws IOException {
+    lock.lock();
+    try {
+      if (closed) {
+        throw new ClosedChannelException();
+      }
 
-    int read = 0;
+      int read = 0;
 
-    while (arg0.hasRemaining()) {
-      while (currentBuffer == null || !currentBuffer.hasRemaining()) {
-        if (buffers.isEmpty()) {
-          if (failed != null) {
-            throw new IOException("channel already closed with exception", failed);
-          }
-          if (read > 0) {
-            return read;
-          }
-          if (done) {
-            return -1;
-          }
-          if (!consumeRequested && this.asyncBody != null) {
-            consumeRequested = true;
-            this.asyncBody.consume();
-            // the consume call may actually trigger result deliver
-            // if it did, then just start the loop over or be done
-            if (!consumeRequested) {
-              continue;
+      while (arg0.hasRemaining()) {
+        while (currentBuffer == null || !currentBuffer.hasRemaining()) {
+          if (buffers.isEmpty()) {
+            if (failed != null) {
+              throw new IOException("channel already closed with exception", failed);
+            }
+            if (read > 0) {
+              return read;
             }
             if (done) {
               return -1;
             }
+            lock.unlock();
+            try {
+              // relinquish the lock to consume more
+              this.asyncBodyFuture.thenAccept(AsyncBody::consume);
+            } finally {
+              lock.lock();
+            }
+            try {
+              while (!done && buffers.isEmpty()) {
+                condition.await(); // block until more buffers are delivered
+              }
+            } catch (InterruptedException e) {
+              close();
+              Thread.currentThread().interrupt();
+              throw new ClosedByInterruptException();
+            }
           }
-          try {
-            this.wait(); // block until more buffers are delivered
-          } catch (InterruptedException e) {
-            close();
-            Thread.currentThread().interrupt();
-            throw new ClosedByInterruptException();
-          }
+
+          currentBuffer = buffers.poll();
         }
 
-        currentBuffer = buffers.poll();
+        int remaining = Math.min(arg0.remaining(), currentBuffer.remaining());
+        for (int i = 0; i < remaining; i++) {
+          arg0.put(currentBuffer.get());
+        }
+        read += remaining;
       }
 
-      int remaining = Math.min(arg0.remaining(), currentBuffer.remaining());
-      for (int i = 0; i < remaining; i++) {
-        arg0.put(currentBuffer.get());
+      return read;
+    } finally {
+      if (lock.isHeldByCurrentThread()) {
+        lock.unlock();
       }
-      read += remaining;
     }
-
-    return read;
   }
 
 }

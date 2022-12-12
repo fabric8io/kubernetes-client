@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.mockwebserver.DefaultMockServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,46 +32,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractInterceptorTest {
 
-  private static final class ConfigAwareInterceptor implements Interceptor {
-
-    private Config config;
-
-    @Override
-    public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
-      String endpoint = "intercepted-url";
-      if (config != null && config.getImpersonateUsername() != null) {
-        endpoint = config.getImpersonateUsername();
-      }
-      builder.uri(URI.create(server.url("/" + endpoint)));
-      return CompletableFuture.completedFuture(true);
-    }
-
-    @Override
-    public Interceptor withConfig(Config config) {
-      ConfigAwareInterceptor result = new ConfigAwareInterceptor();
-      result.config = config;
-      return result;
-    }
-  }
-
   private static DefaultMockServer server;
 
-  @BeforeAll
-  static void beforeAll() {
+  @BeforeEach
+  void startServer() {
     server = new DefaultMockServer(false);
     server.start();
   }
 
-  @AfterAll
-  static void afterAll() {
+  @AfterEach
+  void stopServer() {
     server.shutdown();
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
 
   @Test
-  @DisplayName("before, should add a header to the HTTP request")
-  public void beforeAddsHeaderToRequest() throws Exception {
+  @DisplayName("before (HTTP), should add a header to the HTTP request")
+  public void beforeHttpAddsHeaderToRequest() throws Exception {
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("test", new Interceptor() {
@@ -88,6 +66,79 @@ public abstract class AbstractInterceptorTest {
     // Then
     assertThat(server.getLastRequest().getHeaders().toMultimap())
         .containsEntry("test-header", Collections.singletonList("Test-Value"));
+  }
+
+  @Test
+  @DisplayName("before (HTTP), should modify the HTTP request URI")
+  public void beforeHttpModifiesRequestUri() throws Exception {
+    // Given
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.uri(URI.create(server.url("valid-url")));
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      client.sendAsync(client.newHttpRequestBuilder().uri(server.url("/invalid-url")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(1);
+    assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
+  }
+
+  @Test
+  @DisplayName("before (WS), should add a header to the HTTP request")
+  public void beforeWsAddsHeaderToRequest() throws Exception {
+    // Given
+    server.expect().withPath("/intercept-before")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.header("Test-Header", "Test-Value");
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("intercept-before")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest().getHeaders().toMultimap())
+        .containsEntry("test-header", Collections.singletonList("Test-Value"));
+  }
+
+  @Test
+  @DisplayName("before (WS), should modify the HTTP request URI")
+  public void beforeWsModifiesRequestUri() throws Exception {
+    // Given
+    server.expect().withPath("/valid-url")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.uri(URI.create(server.url("valid-url")));
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("invalid-url")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(1);
+    assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
   }
 
   @Test
@@ -112,41 +163,6 @@ public abstract class AbstractInterceptorTest {
       assertThat(result)
           .returns("This works", HttpResponse::body)
           .returns(200, HttpResponse::code);
-    }
-  }
-
-  @Test
-  @DisplayName("afterFailure (HTTP), replaces the HttpResponse produced by HttpClient.consumeLines")
-  public void afterHttpFailureReplacesResponseInConsumeLines() throws Exception {
-    // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works\n").once();
-    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .addOrReplaceInterceptor("test", new Interceptor() {
-          @Override
-          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
-            builder.uri(URI.create(server.url("/intercepted-url")));
-            return CompletableFuture.completedFuture(true);
-          }
-        });
-    final CompletableFuture<String> result = new CompletableFuture<>();
-    // When
-    try (HttpClient client = builder.build()) {
-      final HttpResponse<AsyncBody> asyncR = client.consumeLines(
-          client.newHttpRequestBuilder().uri(server.url("/not-found")).build(), (s, ab) -> {
-            result.complete(s);
-            ab.consume();
-          })
-          .get(10L, TimeUnit.SECONDS);
-      asyncR.body().consume();
-      asyncR.body().done().whenComplete((v, t) -> {
-        if (t != null) {
-          result.completeExceptionally(t);
-        } else {
-          result.complete(null);
-        }
-      });
-      // Then
-      assertThat(result.get(10L, TimeUnit.SECONDS)).isEqualTo("This works");
     }
   }
 
@@ -181,8 +197,59 @@ public abstract class AbstractInterceptorTest {
   }
 
   @Test
-  @DisplayName("interceptors should be applied in the order they were added")
-  public void interceptorsAreAppliedInOrder() throws Exception {
+  @DisplayName("afterFailure (HTTP) sees the overridden RequestConfig")
+  public void afterHttpFailureSuppliedConfig() throws Exception {
+    // Given
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
+    server.expect().withPath("/other-url").andReturn(200, "Overridden").once();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new ConfigAwareInterceptor());
+    // When
+    try (HttpClient client = builder.build()) {
+      Config config = Config.empty();
+      config.setImpersonateUsername("other-url");
+      HttpClient derivedClient = client.newBuilder().requestConfig(config).build();
+
+      final HttpResponse<String> result = derivedClient
+          .sendAsync(derivedClient.newHttpRequestBuilder().uri(server.url("/not-found")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(result)
+          .returns("Overridden", HttpResponse::body)
+          .returns(200, HttpResponse::code);
+    }
+  }
+
+  @Test
+  @DisplayName("afterFailure (WS), replaces the URL and returns true, should reconnect to valid URL")
+  public void afterWSFailureTODOReplacesResponseInSendAsync() throws Exception {
+    // Given
+    server.expect().withPath("/valid-url")
+        .andUpgradeToWebSocket()
+        .open().done().always();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+            builder.uri(URI.create(server.url("valid-url")));
+            return CompletableFuture.completedFuture(true);
+          }
+        });
+    try (HttpClient client = builder.build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("invalid-url")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(2);
+    assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
+  }
+
+  @Test
+  @DisplayName("interceptors (HTTP) should be applied in the order they were added")
+  public void interceptorsHttpAreAppliedInOrder() throws Exception {
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("first", new Interceptor() {
@@ -208,26 +275,56 @@ public abstract class AbstractInterceptorTest {
   }
 
   @Test
-  @DisplayName("afterFailure sees the overriden RequestConfig")
-  public void afterHttpFailureSuppliedConfig() throws Exception {
+  @DisplayName("interceptors (WS) should be applied in the order they were added")
+  public void interceptorWssAreAppliedInOrder() throws Exception {
     // Given
-    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
-    server.expect().withPath("/other-url").andReturn(200, "Overriden").once();
+    server.expect().withPath("/intercept-before")
+        .andUpgradeToWebSocket()
+        .open().done().always();
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .addOrReplaceInterceptor("test", new ConfigAwareInterceptor());
-    // When
+        .addOrReplaceInterceptor("first", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.header("Test-Header", "Test-Value");
+          }
+        })
+        .addOrReplaceInterceptor("second", new Interceptor() {
+          @Override
+          public void before(BasicBuilder builder, HttpHeaders headers) {
+            builder.setHeader("Test-Header", "Test-Value-Override");
+          }
+        });
     try (HttpClient client = builder.build()) {
-      Config config = Config.empty();
-      config.setImpersonateUsername("other-url");
-      HttpClient derivedClient = client.newBuilder().requestConfig(config).build();
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("intercept-before")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest().getHeaders().toMultimap())
+        .containsEntry("test-header", Collections.singletonList("Test-Value-Override"));
+  }
 
-      final HttpResponse<String> result = derivedClient
-          .sendAsync(derivedClient.newHttpRequestBuilder().uri(server.url("/not-found")).build(), String.class)
-          .get(10L, TimeUnit.SECONDS);
-      // Then
-      assertThat(result)
-          .returns("Overriden", HttpResponse::body)
-          .returns(200, HttpResponse::code);
+  private static final class ConfigAwareInterceptor implements Interceptor {
+
+    private Config config;
+
+    @Override
+    public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+      String endpoint = "intercepted-url";
+      if (config != null && config.getImpersonateUsername() != null) {
+        endpoint = config.getImpersonateUsername();
+      }
+      builder.uri(URI.create(server.url("/" + endpoint)));
+      return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    public Interceptor withConfig(Config config) {
+      ConfigAwareInterceptor result = new ConfigAwareInterceptor();
+      result.config = config;
+      return result;
     }
   }
 }

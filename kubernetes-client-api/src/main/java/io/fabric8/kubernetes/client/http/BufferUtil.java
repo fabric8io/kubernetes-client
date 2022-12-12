@@ -18,8 +18,6 @@ package io.fabric8.kubernetes.client.http;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class BufferUtil {
 
@@ -46,18 +44,17 @@ public class BufferUtil {
   }
 
   public static byte[] toArray(Collection<ByteBuffer> buffers) {
-    final List<byte[]> arrays = buffers.stream().map(BufferUtil::toArray).collect(Collectors.toList());
-    final byte[] ret = new byte[arrays.stream().mapToInt(a -> a.length).sum()];
+    final byte[] ret = new byte[buffers.stream().mapToInt(ByteBuffer::remaining).sum()];
     int offset = 0;
-    for (byte[] array : arrays) {
-      System.arraycopy(array, 0, ret, offset, array.length);
-      offset += array.length;
+    for (ByteBuffer buffer : buffers) {
+      buffer.slice().get(ret, offset, buffer.remaining());
+      offset += buffer.remaining();
     }
     return ret;
   }
 
   /**
-   * Deep copy/clone of a ByteBuffer.
+   * Copy of a ByteBuffer into a heap buffer
    *
    * @param buffer The buffer to copy.
    * @return A copy of the provided buffer.
@@ -67,8 +64,7 @@ public class BufferUtil {
       return null;
     }
     final int position = buffer.position();
-    ByteBuffer clone = buffer.isDirect() ? ByteBuffer.allocateDirect(buffer.remaining())
-        : ByteBuffer.allocate(buffer.remaining());
+    ByteBuffer clone = ByteBuffer.allocate(buffer.remaining());
     clone.put(buffer);
     clone.flip();
     buffer.position(position);

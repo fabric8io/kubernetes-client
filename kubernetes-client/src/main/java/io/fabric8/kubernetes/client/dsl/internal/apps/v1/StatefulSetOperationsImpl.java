@@ -37,7 +37,7 @@ import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
@@ -53,10 +53,10 @@ public class StatefulSetOperationsImpl
     extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
     implements TimeoutImageEditReplacePatchable<StatefulSet> {
   public StatefulSetOperationsImpl(Client client) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
-  public StatefulSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+  public StatefulSetOperationsImpl(PodOperationContext context, OperationContext superContext) {
     super(context, superContext.withApiGroupName("apps")
         .withApiGroupVersion("v1")
         .withPlural("statefulsets"), StatefulSet.class, StatefulSetList.class);
@@ -68,8 +68,9 @@ public class StatefulSetOperationsImpl
   }
 
   @Override
-  public StatefulSetOperationsImpl newInstance(RollingOperationContext context) {
-    return new StatefulSetOperationsImpl(context, this.context);
+  public StatefulSetOperationsImpl newInstance(PodOperationContext context,
+      OperationContext superContext) {
+    return new StatefulSetOperationsImpl(context, superContext);
   }
 
   @Override
@@ -114,7 +115,7 @@ public class StatefulSetOperationsImpl
     StatefulSet statefulSet = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context,
-        rollingOperationContext.getPodOperationContext(), statefulSet.getMetadata().getUid(),
+        rollingOperationContext, statefulSet.getMetadata().getUid(),
         getStatefulSetSelectorLabels(statefulSet));
   }
 

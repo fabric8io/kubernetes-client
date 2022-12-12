@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +38,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.Watcher.Action.BOOKMARK;
 import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
@@ -315,11 +318,12 @@ class WatchTest {
   }
 
   private static WatchEvent outdatedEvent() {
-    return new WatchEventBuilder().withType(Watcher.Action.ERROR.name()).withStatusObject(
-        new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
-            .withMessage(
-                "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
-            .build())
+    return new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
+        .withStatusObject(
+            new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
+                .withMessage(
+                    "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
+                .build())
         .build();
   }
 
@@ -415,6 +419,46 @@ class WatchTest {
         if (latch.getCount() == 1) {
           throw new RuntimeException();
         }
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }
+    });
+
+    // ensure that the exception does not inhibit further message processing
+    assertTrue(latch.await(10, TimeUnit.SECONDS));
+  }
+
+  @Test
+  void testHttpWatch() throws InterruptedException {
+    // Given
+
+    // trigger the usage of the http watch
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andReturn(200, null)
+        .once();
+
+    String dummyEvent = Serialization.asJson(new WatchEventBuilder().withType("MODIFIED")
+        .withObject(new PodBuilder().withNewMetadata().endMetadata().build())
+        .build()) + "\n";
+
+    // build a response that is large enough to span multiple messages
+    // there's potentially a corner case here with utf multi-byte that is unhandled
+    // if that happens we'll see an exception from the decode
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andReturn(200, Collections.nCopies(200, dummyEvent).stream().collect(Collectors.joining()))
+        .once();
+
+    CountDownLatch latch = new CountDownLatch(200);
+
+    client.pods().watch(new Watcher<Pod>() {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        latch.countDown();
       }
 
       @Override

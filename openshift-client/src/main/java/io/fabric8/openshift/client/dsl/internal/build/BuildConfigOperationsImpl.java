@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Client;
@@ -36,7 +37,6 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
-import io.fabric8.openshift.client.dsl.InputStreamable;
 import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AuthorEmailable;
@@ -52,6 +52,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -80,9 +81,6 @@ public class BuildConfigOperationsImpl
   private final String message;
   private final String asFile;
 
-  private final long timeout;
-  private final TimeUnit timeoutUnit;
-
   public BuildConfigOperationsImpl(Client client) {
     this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
@@ -100,8 +98,6 @@ public class BuildConfigOperationsImpl
     this.commit = context.getCommit();
     this.message = context.getMessage();
     this.asFile = context.getAsFile();
-    this.timeout = context.getTimeout();
-    this.timeoutUnit = context.getTimeoutUnit();
   }
 
   @Override
@@ -244,12 +240,12 @@ public class BuildConfigOperationsImpl
   }
 
   @Override
-  public InputStreamable<Build> withTimeout(long timeout, TimeUnit unit) {
-    return new BuildConfigOperationsImpl(getContext().withTimeout(timeout).withTimeoutUnit(unit), context);
+  public BuildConfigOperationsImpl withTimeout(long timeout, TimeUnit unit) {
+    return new BuildConfigOperationsImpl(getContext(), context.withTimeout(timeout, unit));
   }
 
   @Override
-  public InputStreamable<Build> withTimeoutInMillis(long timeoutInMillis) {
+  public BuildConfigOperationsImpl withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
@@ -261,14 +257,19 @@ public class BuildConfigOperationsImpl
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
       HttpClient newClient = this.httpClient.newBuilder()
-          .readTimeout(timeout, timeoutUnit)
-          .writeTimeout(timeout, timeoutUnit)
+          .readTimeout(this.context.getTimeout(), this.context.getTimeoutUnit())
+          .writeTimeout(this.context.getTimeout(), this.context.getTimeoutUnit())
           .build();
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)
           .expectContinue()
           .uri(getQueryParameters());
-      return waitForResult(handleResponse(newClient, requestBuilder, Build.class, null));
+      return waitForResult(handleResponse(newClient, requestBuilder, new TypeReference<Build>() {
+        @Override
+        public Type getType() {
+          return Build.class;
+        }
+      }, null));
     } catch (Throwable e) {
       // TODO: better determine which exception this should occur on
       // otherwise we need to have the httpclient api open up to the notion

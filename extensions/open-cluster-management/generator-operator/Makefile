@@ -20,7 +20,7 @@ all: build
 
 build: gobuild
 	pushd ../model-operator && \
-	mvn clean install -o && \
+	mvn -Pgenerate clean install -DskipTests -o && \
 	popd
 
 gobuild:

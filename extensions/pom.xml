@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.3-SNAPSHOT</version>
+    <version>6.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-extensions</artifactId>
@@ -51,7 +51,24 @@
           <configuration>
             <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.ExtensionTypeAnnotator</customAnnotator>
           </configuration>
-        </plugin> 
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>add-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>${generate.targetDirectory}</source>
+                </sources>
+              </configuration>
+            </execution>
+           </executions>
+         </plugin>
       </plugins>
     </pluginManagement>
   </build>

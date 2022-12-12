@@ -49,6 +49,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   protected Config requestConfig;
   protected C client;
   protected F clientFactory;
+  protected TrustManager[] trustManagers;
 
   protected StandardHttpClientBuilder(F clientFactory) {
     this.clientFactory = clientFactory;
@@ -97,6 +98,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   @Override
   public T sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
     this.sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+    this.trustManagers = trustManagers;
     return (T) this;
   }
 
@@ -148,6 +150,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     copy.connectTimeout = this.connectTimeout;
     copy.readTimeout = this.readTimeout;
     copy.sslContext = this.sslContext;
+    copy.trustManagers = this.trustManagers;
     copy.interceptors = new LinkedHashMap<>(this.interceptors);
     copy.proxyAddress = this.proxyAddress;
     copy.proxyAuthorization = this.proxyAuthorization;

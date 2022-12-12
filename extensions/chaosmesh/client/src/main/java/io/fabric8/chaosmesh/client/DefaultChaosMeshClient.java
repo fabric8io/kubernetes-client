@@ -136,6 +136,6 @@ public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultCh
 
   @Override
   public boolean isSupported() {
-    return hasApiGroup("chaos-mesh.org", true);
+    return hasApiGroup("chaos-mesh.org", false);
   }
 }

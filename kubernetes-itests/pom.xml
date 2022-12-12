@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.3-SNAPSHOT</version>
+    <version>6.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-itests</artifactId>
@@ -49,6 +49,11 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-client</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <type>test-jar</type>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>

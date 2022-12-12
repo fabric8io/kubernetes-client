@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.Client;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -114,6 +115,16 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
   @Override
   public ExtensibleResource<T> forceConflicts() {
     return newInstance().init(resource.forceConflicts(), client);
+  }
+
+  @Override
+  public ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit) {
+    return newInstance().init(resource.withTimeout(timeout, unit), client);
+  }
+
+  @Override
+  public ExtensibleResource<T> withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
 }

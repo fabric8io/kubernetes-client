@@ -1,35 +1,57 @@
 ## CHANGELOG
 
-### 6.3-SNAPSHOT
+### 6.4-SNAPSHOT
 
 #### Bugs
-* Fix #4590: only using a builder if there are visitors
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+* Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
+
+### 6.3.0 (2022-12-12)
+
+#### Bugs
 * Fix #4159: ensure the token refresh obeys how the Config was created
+* Fix #4447: `isSupported` doesn't check all of the applicable API Groups
+* Fix #4473: correcting backoff interval regression introduced in #4365 (6.2.0)
 * Fix #4491: added a more explicit shutdown exception for okhttp
-* Fix #4510: Fix StackOverflow on cyclic references involving collections.
+* Fix #4509: do not reuse KeyFactory instance after a failure
+* Fix #4510: Fix StackOverflow on cyclic references involving collections
 * Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
 * Fix #4535: The shell command string will now have single quotes sanitized
 * Fix #4543: (Java Generator) additionalProperties JsonAny setter method generated as setAdditionalProperty
+* Fix #4590: only using a builder if there are visitors
+* Fix #4540: treating GenericKubernetesResource and RawExtension as buildable
 * Fix #4547: preventing timing issues with leader election cancel
 * Fix #4569: fixing jdk httpclient regression with 0 timeouts
+* Fix #4581: "float" types in spec for CRD generator are supported
+* Fix #4610: inconsistent additionalPrinterColumns jsonPath
+* Fix #4641: fixed regression with missing initial watch event
 
 #### Improvements
+* Fix #4014: added support for OpenShift Build log version.
+* Fix #4201: Removed sendAsync from the individual http client implementations
 * Fix #4355: for exec, attach, upload, and copy operations the container id/name will be validated or chosen prior to the remote call.  You may also use the kubectl.kubernetes.io/default-container annotation to specify the default container.
 * Fix #4530: generalizing the Serialization logic to allow for primitive values and clarifying the type expectations.
-* Fix #4201: Removed sendAsync from the individual http client implementations
-
-#### Dependency Upgrade
+* Fix #4363: exposed ResourceCompare.metadataChanged
 
 #### New Features
 * Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
 * Fix #3896: added dsl support for server side apply
 * Fix #4582: updated [client.secrets] createOrReplace document
+* Fix #4516: added support for blocking delete operations using the withTimeout methods: op.withTimeout(1, TimeUnit.MINUTE).delete() - will wait for up to 1 minute for the resources to be fully deleted. This makes for a more concise replacement of the deletingExisting method.
 
 #### _**Note**_: Breaking changes
-* Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
-* Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
 * Fix #3923: removed KubernetesResourceMappingProvider - a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource list of resources is used instead.
+* Fix #4515: files located at the root of jars named model.properties, e.g. core.properties, have been removed
+* Fix #4579: the implicit registration of resource and list types that happens when using the resource(class) methods has been removed. This makes the behavior of the client more predictable as that was an undocumented side-effect.  If you expect to see instances of a custom type from an untyped api call - typically KubernetesClient.load, KubernetesClient.resourceList, KubernetesClient.resource(InputStream|String), then you must either create a META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource file (see above #3923), or make calls to KubernetesDeserializer.registerCustomKind - however since KubernetesDeserializer is an internal class that mechanism is not preferred.
 * Fix #4597: remove the deprecated support for `javax.validation.constraints.NotNull` in the `crd-generator`, to mark a property as `required` it needs to be annotated with `io.fabric8.generator.annotation.Required`
+* Fix #4363: deprecated existing ResourceCompare methods such as compareKubernetesResource as they are not for general use
 
 ### 6.2.0 (2022-10-20)
 
@@ -59,6 +81,7 @@
 * Fix #4384: The Java generator now supports the generation of specific annotations (min, max, pattern, etc.), as defined by #4348
 * Fix #4408: Allowing informers started via the start() method to have configurable exception / retry handling.
 * Fix #3864: Change ManagedOpenShiftClient OSGi ConfigurationPolicy to REQUIRE
+* Fix #4414: RawExtension as default fall-back type for KubernetesResource deserialization
 * Fix #4470: Added timestamps support for deployment logs and other resources.
 * Fix #4476: \[crd-generator\] Support custom `Annotations` and `Labels` to be emitted in the CRD
 

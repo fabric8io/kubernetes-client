@@ -114,6 +114,6 @@ public class DefaultServiceCatalogClient extends ExtensionRootClientAdapter<Defa
 
   @Override
   public boolean isSupported() {
-    return hasApiGroup("servicecatalog.k8s.io", true);
+    return hasApiGroup("servicecatalog.k8s.io", false);
   }
 }

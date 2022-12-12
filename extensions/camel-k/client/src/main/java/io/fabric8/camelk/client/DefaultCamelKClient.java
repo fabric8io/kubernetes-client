@@ -62,7 +62,7 @@ public class DefaultCamelKClient extends ExtensionRootClientAdapter<DefaultCamel
 
   @Override
   public boolean isSupported() {
-    return hasApiGroup("camel.apache.org", true);
+    return hasApiGroup("camel.apache.org", false);
   }
 
 }
