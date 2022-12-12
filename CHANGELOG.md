@@ -3,6 +3,7 @@
 ### 6.4-SNAPSHOT
 
 #### Bugs
+* Fix #4666: fixed okhttp calls not explicitly closing
 
 #### Improvements
 
