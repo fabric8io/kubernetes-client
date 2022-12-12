@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #4590: only using a builder if there are visitors
 * Fix #4159: ensure the token refresh obeys how the Config was created
+* Fix #4447: `isSupported` doesn't check all of the applicable API Groups
 * Fix #4491: added a more explicit shutdown exception for okhttp
 * Fix #4510: Fix StackOverflow on cyclic references involving collections.
 * Fix #4534: Java Generator CLI default handling of skipGeneratedAnnotations
