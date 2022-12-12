@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-extensions</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.3.0</version>
+    <version>6.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>chaosmesh</artifactId>
