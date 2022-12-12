@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.3-SNAPSHOT
+### 6.3.0 (2022-12-12)
 
 #### Bugs
 * Fix #4159: ensure the token refresh obeys how the Config was created
