@@ -3,7 +3,6 @@
 ### 6.4-SNAPSHOT
 
 #### Bugs
-* Fix #4666: fixed okhttp calls not explicitly closing
 
 #### Improvements
 
@@ -12,6 +11,11 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+
+### 6.3.1-SNAPSHOT
+
+#### Bugs
+* Fix #4666: fixed okhttp calls not explicitly closing
 
 ### 6.3.0 (2022-12-12)
 
