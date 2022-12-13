@@ -87,7 +87,7 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     private final CompletableFuture<Void> done = new CompletableFuture<>();
     private boolean consuming;
     private boolean requested;
-    private Executor executor;
+    private final Executor executor;
 
     OkHttpAsyncBody(AsyncBody.Consumer<T> consumer, BufferedSource source, Executor executor) {
       this.consumer = consumer;
