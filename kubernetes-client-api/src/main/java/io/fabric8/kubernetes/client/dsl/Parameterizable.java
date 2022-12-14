@@ -17,6 +17,11 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.util.Map;
 
+/**
+ * @deprecated It is no longer necessary to associate parameters prior to deserialization. Please
+ *             provide the parameters to one of the process methods instead
+ */
+@Deprecated
 public interface Parameterizable<T> {
 
   T withParameters(Map<String, String> parameters);

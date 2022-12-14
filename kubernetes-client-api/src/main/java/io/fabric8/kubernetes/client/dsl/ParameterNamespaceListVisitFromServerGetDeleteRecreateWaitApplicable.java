@@ -16,6 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+/**
+ * @deprecated It is no longer necessary to associate parameters prior to deserialization.
+ *             <p>
+ *             reference {@link NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable} instead
+ */
+@Deprecated
 public interface ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T>
     extends NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T>,
     Parameterizable<NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T>> {
