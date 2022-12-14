@@ -84,12 +84,14 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
       }
 
-      if (config.getMaxConcurrentRequests() > 0 && config.getMaxConcurrentRequestsPerHost() > 0) {
-        Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequests(config.getMaxConcurrentRequests());
-        dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
-        httpClientBuilder.dispatcher(dispatcher);
-      }
+      Dispatcher dispatcher = new Dispatcher();
+      // websockets and long running http requests count against this and eventually starve
+      // the work that can be done
+      dispatcher.setMaxRequests(Integer.MAX_VALUE);
+      // long running http requests count against this and eventually exhaust
+      // the work that can be done
+      dispatcher.setMaxRequestsPerHost(Integer.MAX_VALUE);
+      httpClientBuilder.dispatcher(dispatcher);
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
 

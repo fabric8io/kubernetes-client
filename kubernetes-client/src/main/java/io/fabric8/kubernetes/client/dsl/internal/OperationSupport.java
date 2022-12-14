@@ -60,9 +60,11 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class OperationSupport {
 
+  private static final long ADDITIONAL_REQEUST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
   private static final String FIELD_MANAGER_PARAM = "?fieldManager=";
   public static final String JSON = "application/json";
   public static final String JSON_PATCH = "application/json-patch+json";
@@ -516,7 +518,11 @@ public class OperationSupport {
    */
   protected <T> T waitForResult(CompletableFuture<T> future) throws IOException {
     try {
-      // readTimeout should be enforced
+      // since readTimeout may not be enforced in a timely manner at the httpclient, we'll
+      // enforce a higher level timeout with a small amount of padding to account for possible queuing
+      if (config.getRequestTimeout() > 0) {
+        return future.get(config.getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
+      }
       return future.get();
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
@@ -536,6 +542,9 @@ public class OperationSupport {
         throw ((KubernetesClientException) t).copyAsCause();
       }
       throw new KubernetesClientException(t.getMessage(), t);
+    } catch (TimeoutException e) {
+      future.cancel(true);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
