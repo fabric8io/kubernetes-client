@@ -97,6 +97,6 @@ class PodEvictIT {
     client.pods().resource(pod3).waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
     // can now evict
-    assertTrue(client.pods().resource(pod3).evict());
+    await().atMost(1, TimeUnit.MINUTES).until(() -> client.pods().resource(pod3).evict());
   }
 }
