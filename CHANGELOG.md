@@ -16,6 +16,7 @@
 
 #### Bugs
 * Fix #4666: fixed okhttp calls not explicitly closing
+* Fix #4677: [java-generator] Fix default encoding of enums
 
 ### 6.3.0 (2022-12-12)
 

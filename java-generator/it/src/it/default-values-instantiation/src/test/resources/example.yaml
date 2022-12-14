@@ -90,5 +90,12 @@ spec:
                   default:
                     tenOne: "tenone"
                     tenTwo: "tentwo"
+                eleven:
+                  type: string
+                  enum:
+                    - "foo"
+                    - "bar"
+                    - "baz"
+                  default: "baz"
       served: true
       storage: true
