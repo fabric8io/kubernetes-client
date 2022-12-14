@@ -168,7 +168,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       GeneratorResult gr = prop.generateJava();
 
       // For now the inner types are only for enums
-      if (!gr.getInnerClasses().isEmpty()) {
+      boolean isEnum = !gr.getInnerClasses().isEmpty();
+      if (isEnum) {
         for (GeneratorResult.ClassResult enumCR : gr.getInnerClasses()) {
           Optional<EnumDeclaration> ed = enumCR.getCompilationUnit().getEnumByName(enumCR.getName());
           if (ed.isPresent()) {
@@ -244,7 +245,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         }
 
         if (prop.getDefaultValue() != null) {
-          Expression primitiveDefault = generatePrimitiveDefaultInitializerExpression(prop);
+          Expression primitiveDefault = (isEnum) ? null : generatePrimitiveDefaultInitializerExpression(prop);
 
           if (primitiveDefault != null) {
             objField.getVariable(0).setInitializer(primitiveDefault);
