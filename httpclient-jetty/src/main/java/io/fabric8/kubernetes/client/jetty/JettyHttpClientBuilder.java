@@ -58,6 +58,9 @@ public class JettyHttpClientBuilder
       sslContextFactory.setIncludeProtocols(Stream.of(tlsVersions).map(TlsVersion::javaName).toArray(String[]::new));
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
+    // long running http requests count against this and eventually exhaust
+    // the work that can be done
+    sharedHttpClient.setMaxConnectionsPerDestination(Integer.MAX_VALUE);
     WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
     sharedWebSocketClient.setIdleTimeout(Duration.ZERO);
     if (connectTimeout != null) {
