@@ -1,14 +1,9 @@
 # Default
-*                     @manusa
-*                     @oscerd
-*                     @rohanKanojia
-*                     @shawkins
-*                     @sunix
+*                     @manusa @oscerd @rohanKanojia @shawkins @sunix
 
 # Java generator
 /java-generator/*     @andreaTP
 
 # CRD Generator
-/crd-generator/*      @andreaTP
-/crd-generator/*      @metacosm
+/crd-generator/*      @andreaTP @metacosm
 
