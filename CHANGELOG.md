@@ -3,6 +3,7 @@
 ### 6.4-SNAPSHOT
 
 #### Bugs
+* Fix #4673: fixes a regression in sharing the OpenShiftOAuthInterceptor token
 
 #### Improvements
 

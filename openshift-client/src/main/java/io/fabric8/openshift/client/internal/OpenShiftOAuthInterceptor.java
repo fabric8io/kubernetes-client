@@ -73,16 +73,17 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private final HttpClient client;
   private final Config config;
-  private final AtomicReference<String> oauthToken = new AtomicReference<>();
+  private final AtomicReference<String> oauthToken;
 
-  public OpenShiftOAuthInterceptor(HttpClient client, Config config) {
+  public OpenShiftOAuthInterceptor(HttpClient client, Config config, AtomicReference<String> oauthToken) {
     this.client = client;
     this.config = config;
+    this.oauthToken = oauthToken;
   }
 
   @Override
-  public Interceptor withConfig(Config config) {
-    return new OpenShiftOAuthInterceptor(client, config);
+  public OpenShiftOAuthInterceptor withConfig(Config config) {
+    return new OpenShiftOAuthInterceptor(client, config, oauthToken);
   }
 
   @Override
@@ -187,5 +188,9 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       return false;
     }
     return response.code() != HTTP_UNAUTHORIZED && response.code() != HTTP_FORBIDDEN;
+  }
+
+  AtomicReference<String> getOauthToken() {
+    return oauthToken;
   }
 }
