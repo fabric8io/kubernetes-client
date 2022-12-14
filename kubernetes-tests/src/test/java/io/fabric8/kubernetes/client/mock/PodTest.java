@@ -704,7 +704,7 @@ class PodTest {
 
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=0")
         .andReturn(200, notReady)
         .once();
 

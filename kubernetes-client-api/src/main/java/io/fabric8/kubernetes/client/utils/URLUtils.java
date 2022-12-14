@@ -48,7 +48,7 @@ public class URLUtils {
 
     public URL build() {
       try {
-        return new URL(this.url.toString());
+        return new URL(toString());
       } catch (MalformedURLException e) {
         throw new IllegalArgumentException(e.getMessage(), e);
       }
@@ -56,7 +56,7 @@ public class URLUtils {
 
     @Override
     public String toString() {
-      return build().toString();
+      return this.url.toString();
     }
 
   }
