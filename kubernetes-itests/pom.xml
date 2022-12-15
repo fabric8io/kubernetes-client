@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.3.1</version>
+    <version>6.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-itests</artifactId>
