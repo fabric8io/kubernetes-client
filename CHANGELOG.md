@@ -12,7 +12,7 @@
 
 #### _**Note**_: Breaking changes
 
-### 6.3.1-SNAPSHOT
+### 6.3.1 (2022-12-15)
 
 #### Bugs
 * Fix #4666: fixed okhttp calls not explicitly closing
