@@ -257,14 +257,6 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     super(config, client);
   }
 
-  public static KubernetesClientImpl fromConfig(String config) {
-    return new KubernetesClientImpl(Serialization.unmarshal(config, Config.class));
-  }
-
-  public static KubernetesClientImpl fromConfig(InputStream is) {
-    return new KubernetesClientImpl(Serialization.unmarshal(is, Config.class));
-  }
-
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
     return newInstance(createInNamespaceConfig(name, false));
@@ -307,7 +299,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    */
   @Override
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
-    return resourceListFor(is);
+    return resourceListFor(Serialization.unmarshal(is));
   }
 
   /**
@@ -344,7 +336,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    */
   @Override
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
-    return resourceListFor(s);
+    return resourceListFor(Serialization.unmarshal(s));
   }
 
   @Override

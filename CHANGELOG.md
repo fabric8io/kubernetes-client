@@ -11,8 +11,9 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
-* Fix #3972: deprecated Parameterizable and methods on Serialization accepting parameters - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.  
-* Fix #3972: WARNING: future client versions will not implicitly process templates as part of the load operation nor will the static yaml and json ObjectMappers be provided via Serialization.
+* Fix #3972: deprecated Parameterizable and methods on Serialization accepting parameters - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
+* Fix #3972: OpenShiftClient.load will no longer implicitly process templates.  Use OpenShiftClient.templates().load instead.
+* Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappersSerialization.
 
 ### 6.3.1-SNAPSHOT
 

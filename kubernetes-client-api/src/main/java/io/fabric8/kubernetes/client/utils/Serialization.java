@@ -391,6 +391,7 @@ public class Serialization {
     return splitSpecFile(specFile).stream().filter(Serialization::validate)
         .map(
             document -> (KubernetesResource) Serialization.unmarshal(new ByteArrayInputStream(document.getBytes()), parameters))
+        .filter(o -> o != null)
         .collect(Collectors.toList());
   }
 
