@@ -31,31 +31,67 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project}")
   private MavenProject project;
 
+  /**
+   * The input file or directory to be used for generating sources
+   *
+   */
   @Parameter(property = "fabric8.java-generator.source", required = true)
   File source;
 
+  /**
+   * The target folder to generate the Java sources
+   *
+   */
   @Parameter(property = "fabric8.java-generator.target", defaultValue = "${basedir}/target/generated-sources/java")
   File target;
 
+  /**
+   * Generate uppercase Enums
+   *
+   */
   @Parameter(property = "fabric8.java-generator.enum-uppercase", required = false)
   Boolean enumUppercase = null;
 
-  @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false, readonly = true)
+  /**
+   * *advanced* The prefix strategy for name mangling
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false)
   Config.Prefix prefixStrategy = null;
 
+  /**
+   * *advanced* The suffix strategy for name mangling
+   *
+   */
   @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
   Config.Suffix suffixStrategy = null;
 
-  @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false, readonly = true)
+  /**
+   * *advanced* Always inject additional properties in the generated classes
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false)
   Boolean alwaysPreserveUnknown = null;
 
+  /**
+   * Generate Extra annotation for lombok and sundrio integration
+   *
+   */
   @Parameter(property = "fabric8.java-generator.extra-annotations", required = false)
   Boolean extraAnnotations = null;
 
-  @Parameter(property = "fabric8.java-generator.code-structure", required = false, readonly = true)
+  /**
+   * *advanced* The code structure to be used when generating java sources
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.code-structure", required = false)
   protected Config.CodeStructure codeStructure = null;
 
-  @Parameter(property = "fabric8.java-generator.generated-annotations", required = false, readonly = true)
+  /**
+   * *advanced* Emit the @javax.annotation.processing.Generated annotation on the generated sources
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.generated-annotations", required = false)
   Boolean generatedAnnotations = null;
 
   @Override
