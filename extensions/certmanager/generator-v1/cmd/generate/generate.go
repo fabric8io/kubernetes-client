@@ -58,7 +58,7 @@ func main() {
 	// optional ApiGroup and ApiVersion for the go package (which is added to the generated java class)
 	packageMapping := map[string]schemagen.PackageInformation{
 		"github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1": {JavaPackage: "io.fabric8.certmanager.api.model.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
-		"github.com/cert-manager/cert-manager/pkg/apis/acme/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.acme.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
+		"github.com/cert-manager/cert-manager/pkg/apis/acme/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.acme.v1", ApiGroup: "acme.cert-manager.io", ApiVersion: "v1"},
 		"github.com/cert-manager/cert-manager/pkg/apis/meta/v1":        {JavaPackage: "io.fabric8.certmanager.api.model.meta.v1", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
 		"github.com/cert-manager/cert-manager/internal/apis/acme":      {JavaPackage: "io.fabric8.certmanager.api.model.acme.internal", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
 		"github.com/cert-manager/cert-manager/internal/apis/meta":      {JavaPackage: "io.fabric8.certmanager.api.model.meta.internal", ApiGroup: "cert-manager.io", ApiVersion: "v1"},
