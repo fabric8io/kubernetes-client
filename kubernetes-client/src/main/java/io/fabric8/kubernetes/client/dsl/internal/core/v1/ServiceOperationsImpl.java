@@ -92,13 +92,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   private String getUrlHelper(String portName) {
-    ServiceLoader<ServiceToURLProvider> urlProvider = ServiceLoader.load(ServiceToURLProvider.class,
-        Thread.currentThread().getContextClassLoader());
-    Iterator<ServiceToURLProvider> iterator = urlProvider.iterator();
-    List<ServiceToURLProvider> servicesList = new ArrayList<>();
-
-    while (iterator.hasNext()) {
-      servicesList.add(iterator.next());
+    List<ServiceToURLProvider> servicesList = getServiceToURLProviders(Thread.currentThread().getContextClassLoader());
+    if (servicesList.isEmpty()) {
+      servicesList = getServiceToURLProviders(getClass().getClassLoader());
     }
 
     // Sort all loaded implementations according to priority
@@ -112,6 +108,16 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
 
     return null;
+  }
+
+  private static List<ServiceToURLProvider> getServiceToURLProviders(ClassLoader loader) {
+    Iterator<ServiceToURLProvider> iterator = ServiceLoader.load(ServiceToURLProvider.class, loader).iterator();
+    List<ServiceToURLProvider> servicesList = new ArrayList<>();
+
+    while (iterator.hasNext()) {
+      servicesList.add(iterator.next());
+    }
+    return servicesList;
   }
 
   private Pod matchingPod() {
