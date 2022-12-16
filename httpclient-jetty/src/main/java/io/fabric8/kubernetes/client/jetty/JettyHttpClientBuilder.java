@@ -38,10 +38,13 @@ import java.util.stream.Stream;
 public class JettyHttpClientBuilder
     extends StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
 
+  private static final int MAX_CONNECTIONS = Integer.MAX_VALUE;
+
   public JettyHttpClientBuilder(JettyHttpClientFactory clientFactory) {
     super(clientFactory);
     // TODO: HTTP2 disabled, MockWebServer support is limited and requires changes
-    // Enable (preferHttp11->false) the feature after fixing MockWebServer
+    //  Enable (preferHttp11->false) the feature after fixing MockWebServer
+    //  https://github.com/fabric8io/kubernetes-client/issues/4193
     this.preferHttp11 = true;
   }
 
@@ -58,9 +61,6 @@ public class JettyHttpClientBuilder
       sslContextFactory.setIncludeProtocols(Stream.of(tlsVersions).map(TlsVersion::javaName).toArray(String[]::new));
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
-    // long running http requests count against this and eventually exhaust
-    // the work that can be done
-    sharedHttpClient.setMaxConnectionsPerDestination(Integer.MAX_VALUE);
     WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
     sharedWebSocketClient.setIdleTimeout(Duration.ZERO);
     if (connectTimeout != null) {
@@ -68,6 +68,10 @@ public class JettyHttpClientBuilder
       sharedWebSocketClient.setConnectTimeout(connectTimeout.toMillis());
     }
     sharedHttpClient.setFollowRedirects(followRedirects);
+    // long running http requests count against this and eventually exhaust
+    // the work that can be done
+    sharedHttpClient.setMaxConnectionsPerDestination(MAX_CONNECTIONS);
+    sharedWebSocketClient.getHttpClient().setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     if (proxyAddress != null) {
       sharedHttpClient.getProxyConfiguration().getProxies()
           .add(new HttpProxy(new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort()), false));
