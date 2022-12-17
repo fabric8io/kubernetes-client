@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
-@Group("cert-manager.io")
+@Group("acme.cert-manager.io")
 public class ChallengeList implements KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.acme.v1.Challenge>
 {
 
@@ -83,7 +83,7 @@ public class ChallengeList implements KubernetesResource, KubernetesResourceList
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "cert-manager.io/v1";
+    private String apiVersion = "acme.cert-manager.io/v1";
     @JsonProperty("items")
     private List<io.fabric8.certmanager.api.model.acme.v1.Challenge> items = new ArrayList<io.fabric8.certmanager.api.model.acme.v1.Challenge>();
     /**
