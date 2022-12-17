@@ -4,6 +4,8 @@
 
 #### Bugs
 
+* Fix #4668: use acme.cert-manager.io ApiGroup for Orders and Challenges
+
 #### Improvements
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
 * Fix #4633: provided inline access to all RunConfig builder methods via run().withNewRunConfig()
