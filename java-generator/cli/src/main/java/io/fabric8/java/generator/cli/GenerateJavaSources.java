@@ -23,6 +23,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import java.io.File;
+import java.util.Map;
 
 @Command(name = "java-gen", mixinStandardHelpOptions = true, helpCommand = true, versionProvider = KubernetesClientVersionProvider.class)
 public class GenerateJavaSources implements Runnable {
@@ -60,6 +61,10 @@ public class GenerateJavaSources implements Runnable {
       "--skip-generated-annotations" }, description = "Add extra lombok and sundrio annotation to the generated classes", required = false, hidden = true)
   Boolean skipGeneratedAnnotations = null;
 
+  @Option(names = { "-package-overrides",
+      "--package-overrides" }, description = "Apply the overrides to the package names", required = false)
+  Map<String, String> packageOverrides = null;
+
   @Override
   public void run() {
     final Config.Prefix pSt = (prefixStrategy != null) ? Config.Prefix.valueOf(prefixStrategy) : null;
@@ -73,7 +78,8 @@ public class GenerateJavaSources implements Runnable {
         alwaysPreserveUnkownFields,
         addExtraAnnotations,
         structure,
-        generatedAnnotations);
+        generatedAnnotations,
+        packageOverrides);
     final JavaGenerator runner = new FileJavaGenerator(config, source);
     runner.run(target);
   }

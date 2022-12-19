@@ -31,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JavaGeneratorMojo extends AbstractMojo {
@@ -114,6 +115,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.generated-annotations", required = false)
   Boolean generatedAnnotations = null;
 
+  /**
+   * Package names to be substituted
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.package-overrides", required = false)
+  Map<String, String> packageOverrides = null;
+
   @Override
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
@@ -124,6 +132,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .objectExtraAnnotations(extraAnnotations)
         .structure(codeStructure)
         .generatedAnnotations(generatedAnnotations)
+        .packageOverrides(packageOverrides)
         .build();
 
     boolean executed = false;

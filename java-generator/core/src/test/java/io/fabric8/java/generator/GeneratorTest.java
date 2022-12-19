@@ -77,6 +77,8 @@ class GeneratorTest {
     // Assert
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("t", res.getTopLevelClasses().get(0).getName());
+    assertEquals("v1alpha1",
+        res.getTopLevelClasses().get(0).getCompilationUnit().getPackageDeclaration().get().getNameAsString());
   }
 
   @Test
@@ -255,7 +257,7 @@ class GeneratorTest {
   @Test
   void testEmptyObjectWithSuffix() {
     // Arrange
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, true);
+    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, true, new HashMap<>());
     JObject obj = new JObject(
         "v1alpha1",
         "t",
@@ -382,7 +384,7 @@ class GeneratorTest {
         null,
         Boolean.FALSE,
         null);
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, false);
+    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, false, new HashMap<>());
     JObject obj2 = new JObject(
         "v1alpha1",
         "t",
@@ -458,7 +460,7 @@ class GeneratorTest {
     JEnum enu = new JEnum(
         "t",
         enumValues,
-        new Config(false, null, null, null, null, null, true),
+        new Config(false, null, null, null, null, null, true, new HashMap<>()),
         null,
         Boolean.FALSE,
         null);
@@ -578,7 +580,7 @@ class GeneratorTest {
   @Test
   void testObjectOfObjectsWithTopLevelPrefix() {
     // Arrange
-    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null, true);
+    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null, true, new HashMap<>());
     Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");
@@ -608,7 +610,7 @@ class GeneratorTest {
   @Test
   void testObjectOfObjectsWithAlwaysPrefix() {
     // Arrange
-    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null, true);
+    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null, true, new HashMap<>());
     Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newObj = new JSONSchemaProps();
     newObj.setType("object");
