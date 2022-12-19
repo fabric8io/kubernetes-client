@@ -8,6 +8,8 @@
 
 #### Dependency Upgrade
 
+* Fix #3489: Migrated zjsonpatch from io.fabric8 to com.flipkart.zjsonpatch. Bumped version to 0.4.13
+
 #### New Features
 
 #### _**Note**_: Breaking changes

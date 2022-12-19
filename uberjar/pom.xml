@@ -229,7 +229,7 @@
     </dependency>
 
     <dependency>
-      <groupId>io.fabric8</groupId>
+      <groupId>com.flipkart.zjsonpatch</groupId>
       <artifactId>zjsonpatch</artifactId>
       <version>${zjsonpatch.version}</version>
     </dependency>

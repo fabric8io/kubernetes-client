@@ -19,10 +19,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.flipkart.zjsonpatch.JsonDiff;
 import io.fabric8.kubernetes.client.server.mock.Resetable;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import io.fabric8.zjsonpatch.JsonDiff;
 
 import java.util.Map;
 import java.util.Optional;
