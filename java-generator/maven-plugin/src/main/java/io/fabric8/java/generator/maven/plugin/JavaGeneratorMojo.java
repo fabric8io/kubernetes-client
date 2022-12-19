@@ -115,17 +115,18 @@ public class JavaGeneratorMojo extends AbstractMojo {
 
   private void downloadFile(String url, String dest) {
     try {
-      URL source = new URL(url);
-      File finalDestination = Paths.get(dest, new File(source.getFile()).getName()).toFile();
+      URL s = new URL(url);
+      File finalDestination = Paths.get(dest, new File(s.getFile()).getName()).toFile();
 
       if (!finalDestination.exists()) {
         new File(dest).mkdirs();
-        ReadableByteChannel readableByteChannel = Channels.newChannel(source.openStream());
-        FileOutputStream fileOutputStream = new FileOutputStream(finalDestination);
-        fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+        ReadableByteChannel readableByteChannel = Channels.newChannel(s.openStream());
+        try (FileOutputStream fileOutputStream = new FileOutputStream(finalDestination)) {
+          fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+        }
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new IllegalStateException("Error downloading from url: " + url, e);
     }
   }
 
