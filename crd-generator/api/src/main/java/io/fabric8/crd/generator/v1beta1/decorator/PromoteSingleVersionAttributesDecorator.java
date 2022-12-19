@@ -41,7 +41,8 @@ public class PromoteSingleVersionAttributesDecorator
     super(name);
   }
 
-  private CustomResourceSubresources mergeSubresources(CustomResourceSubresources versionSub, CustomResourceSubresources topLevelSub) {
+  private CustomResourceSubresources mergeSubresources(CustomResourceSubresources versionSub,
+      CustomResourceSubresources topLevelSub) {
     if (versionSub == null) {
       return topLevelSub;
     } else if (topLevelSub == null) {
@@ -73,10 +74,10 @@ public class PromoteSingleVersionAttributesDecorator
       }
 
       return new CustomResourceSubresourcesBuilder()
-        .withAdditionalProperties(additionalProperties)
-        .withScale(scale)
-        .withStatus(status)
-        .build();
+          .withAdditionalProperties(additionalProperties)
+          .withScale(scale)
+          .withStatus(status)
+          .build();
     }
   }
 
