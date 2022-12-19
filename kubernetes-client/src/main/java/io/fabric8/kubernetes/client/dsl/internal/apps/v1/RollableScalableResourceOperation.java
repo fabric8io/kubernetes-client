@@ -169,7 +169,12 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return newInstance(rollingOperationContext.withLogWaitTimeout(logWaitTimeout), context);
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return newInstance(rollingOperationContext.withReadyWaitTimeout(timeout), context);
   }
 
   @Override

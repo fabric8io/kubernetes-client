@@ -143,7 +143,12 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new BuildOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout), context, version);
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return new BuildOperationsImpl(getContext().withReadyWaitTimeout(timeout), context, version);
   }
 
   @Override
@@ -192,12 +197,12 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
         getBuildPodLabels(build));
 
     waitForBuildPodToBecomeReady(podOps,
-        operationContext.getLogWaitTimeout() != null ? operationContext.getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+        operationContext.getReadyWaitTimeout() != null ? operationContext.getReadyWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
 
   private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
     for (PodResource podOp : podOps) {
-      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
+      PodOperationUtil.waitUntilReadyOrSucceded(podOp, podLogWaitTimeout);
     }
   }
 

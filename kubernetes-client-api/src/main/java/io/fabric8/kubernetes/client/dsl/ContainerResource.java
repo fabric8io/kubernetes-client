@@ -26,7 +26,7 @@ public interface ContainerResource
 
   /**
    * Will send the given input stream via a polling mechanism.
-   * 
+   *
    * @deprecated use redirectingInput and the resulting {@link ExecWatch#getOutput()} with
    *             InputStream#transferTo(java.io.OutputStream) on JDK 9+
    *             or
@@ -45,7 +45,7 @@ public interface ContainerResource
   /**
    * Will provide an {@link OutputStream} via {@link ExecWatch#getInput()} with the
    * given buffer size.
-   * 
+   *
    * @param bufferSize if null will use the default
    */
   TtyExecOutputErrorable redirectingInput(Integer bufferSize);
@@ -53,4 +53,13 @@ public interface ContainerResource
   CopyOrReadable file(String path);
 
   CopyOrReadable dir(String path);
+
+  /**
+   * How long to wait for the pod to be ready before performing an operation, such as
+   * getting the logs, exec, attach, copy, etc.
+   *
+   * @param timeout in milliseconds
+   */
+  @Override
+  ContainerResource withReadyWaitTimeout(Integer timeout);
 }
