@@ -28,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Paths;
 
@@ -117,10 +116,14 @@ public class JavaGeneratorMojo extends AbstractMojo {
   private void downloadFile(String url, String dest) {
     try {
       URL source = new URL(url);
-      ReadableByteChannel readableByteChannel = Channels.newChannel(source.openStream());
-      new File(dest).mkdirs();
-      FileOutputStream fileOutputStream = new FileOutputStream(Paths.get(dest, new File(source.getFile()).getName()).toFile());
-      fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+      File finalDestination = Paths.get(dest, new File(source.getFile()).getName()).toFile();
+
+      if (!finalDestination.exists()) {
+        new File(dest).mkdirs();
+        ReadableByteChannel readableByteChannel = Channels.newChannel(source.openStream());
+        FileOutputStream fileOutputStream = new FileOutputStream(finalDestination);
+        fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -129,7 +132,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Override
   public void execute() {
     if (urls != null && urls.length > 0) {
-      for (String url: urls) {
+      for (String url : urls) {
         downloadFile(url, downloadTarget.getAbsolutePath());
       }
       source = downloadTarget;
