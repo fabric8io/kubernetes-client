@@ -53,6 +53,10 @@ public class CRGeneratorRunner {
           .map(p -> p + "." + version)
           .orElse(version);
 
+      if (config.getPackageOverrides().containsKey(pkg)) {
+        pkg = config.getPackageOverrides().get(pkg);
+      }
+
       AbstractJSONSchema2Pojo specGenerator = null;
 
       String prefix = crName;
