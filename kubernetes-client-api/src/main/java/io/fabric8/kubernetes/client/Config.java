@@ -58,6 +58,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -868,7 +869,7 @@ public class Config {
   }
 
   private static String getHomeDir() {
-    return getHomeDir(Config::isDirectoryAndExists);
+    return getHomeDir(Config::isDirectoryAndExists, Config::getSystemEnvVariable);
   }
 
   private static boolean isDirectoryAndExists(String filePath) {
@@ -876,22 +877,26 @@ public class Config {
     return f.exists() && f.isDirectory();
   }
 
-  protected static String getHomeDir(Predicate<String> directoryExists) {
-    String home = System.getenv("HOME");
+  private static String getSystemEnvVariable(String envVariableName) {
+    return System.getenv(envVariableName);
+  }
+
+  protected static String getHomeDir(Predicate<String> directoryExists, UnaryOperator<String> getEnvVar) {
+    String home = getEnvVar.apply("HOME");
     if (home != null && !home.isEmpty() && directoryExists.test(home)) {
       return home;
     }
     String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
     if (osName.startsWith("win")) {
-      String homeDrive = System.getenv("HOMEDRIVE");
-      String homePath = System.getenv("HOMEPATH");
+      String homeDrive = getEnvVar.apply("HOMEDRIVE");
+      String homePath = getEnvVar.apply("HOMEPATH");
       if (homeDrive != null && !homeDrive.isEmpty() && homePath != null && !homePath.isEmpty()) {
         String homeDir = homeDrive + homePath;
         if (directoryExists.test(homeDir)) {
           return homeDir;
         }
       }
-      String userProfile = System.getenv("USERPROFILE");
+      String userProfile = getEnvVar.apply("USERPROFILE");
       if (userProfile != null && !userProfile.isEmpty() && directoryExists.test(userProfile)) {
         return userProfile;
       }
