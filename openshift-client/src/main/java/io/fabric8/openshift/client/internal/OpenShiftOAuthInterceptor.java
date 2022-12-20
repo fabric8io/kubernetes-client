@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -53,6 +54,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
+/**
+ * Controls openshift authentication. It will be based upon an oauth token that can either come from a "login" or from the
+ * config / token provider.
+ */
 public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private static final String AUTHORIZATION = "Authorization";
@@ -83,52 +88,53 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   @Override
   public OpenShiftOAuthInterceptor withConfig(Config config) {
-    return new OpenShiftOAuthInterceptor(client, config, oauthToken);
+    // only reuse the token if the username and password are the same
+    return new OpenShiftOAuthInterceptor(client, config, Objects.equals(config.getUsername(), this.config.getUsername())
+        && Objects.equals(config.getPassword(), this.config.getPassword()) ? oauthToken : new AtomicReference<>());
   }
 
   @Override
   public void before(BasicBuilder builder, HttpHeaders headers) {
-    String token = oauthToken.get();
-    // avoid overwriting basic auth token with stale bearer token
-    if (Utils.isNotNullOrEmpty(token)
-        && (headers.headers(AUTHORIZATION).isEmpty() || Utils.isNullOrEmpty(headers.headers(AUTHORIZATION).get(0)))) {
+    if (usingUsernameAndPassword()) {
+      String token = oauthToken.get();
       setAuthHeader(builder, token);
+    } else {
+      setAuthHeader(builder, config.getOauthToken());
     }
   }
 
   @Override
   public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
-    if (shouldProceed(response.request(), response)) {
+    if (shouldProceed(response.request(), response)
+        || (!usingUsernameAndPassword() && config.getOauthTokenProvider() == null)) {
       return CompletableFuture.completedFuture(false);
     }
 
-    CompletableFuture<String> tokenFuture = null;
-    if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+    if (usingUsernameAndPassword()) {
       // TODO: we could make all concurrent refresh requests return the same future
-      tokenFuture = authorize();
+      return authorize().thenApply(t -> {
+        if (t != null) {
+          oauthToken.set(t);
+        }
+
+        //If token was obtained, then retry request using the obtained token.
+        return setAuthHeader(builder, t);
+      });
     } else {
-      tokenFuture = CompletableFuture.completedFuture(Utils.getNonNullOrElse(config.getOauthToken(), oauthToken.get()));
+      return CompletableFuture.completedFuture(setAuthHeader(builder, config.getOauthToken()));
     }
-
-    return tokenFuture.thenApply(t -> {
-      if (t != null) {
-        oauthToken.set(t);
-      }
-
-      //If token was obtained, then retry request using the obtained token.
-      if (Utils.isNotNullOrEmpty(t)) {
-        setAuthHeader(builder, t);
-        return true;
-      }
-
-      return false;
-    });
   }
 
-  private void setAuthHeader(BasicBuilder builder, String token) {
+  private boolean usingUsernameAndPassword() {
+    return Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword());
+  }
+
+  private boolean setAuthHeader(BasicBuilder builder, String token) {
     if (token != null) {
       builder.setHeader(AUTHORIZATION, String.format("Bearer %s", token));
+      return true;
     }
+    return false;
   }
 
   private CompletableFuture<String> authorize() {
@@ -171,7 +177,8 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       String token = !location.isEmpty() ? location.get(0) : null;
       if (token == null || token.isEmpty()) {
         throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " "
-            + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
+            + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION
+            + "].  More than likely the username / password are not correct.");
       }
       token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
       token = token.substring(0, token.indexOf(AFTER_TOKEN));

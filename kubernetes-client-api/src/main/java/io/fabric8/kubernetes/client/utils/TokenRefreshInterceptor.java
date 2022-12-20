@@ -28,7 +28,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Interceptor for handling expired OIDC tokens.
+ * Interceptor for handling kube authentication. It will either be basic auth, or token based. This class takes responsibility
+ * for refreshing expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
 
@@ -54,9 +55,20 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   @Override
   public void before(BasicBuilder headerBuilder, HttpHeaders headers) {
+    if (isBasicAuth()) {
+      headerBuilder.header("Authorization", HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword()));
+      return;
+    }
+    if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+      headerBuilder.header("Authorization", "Bearer " + config.getOauthToken());
+    }
     if (isTimeToRefresh()) {
       refreshToken(headerBuilder);
     }
+  }
+
+  private boolean isBasicAuth() {
+    return Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword());
   }
 
   private boolean isTimeToRefresh() {
@@ -65,6 +77,9 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   @Override
   public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
+    if (isBasicAuth()) {
+      return CompletableFuture.completedFuture(false);
+    }
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       return refreshToken(headerBuilder);
     }

@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,10 +29,15 @@ class OpenShiftOAuthInterceptorTest {
   @Test
   void testTokenSharing() {
     AtomicReference<String> reference = new AtomicReference<>();
-    OpenShiftOAuthInterceptor interceptor = new OpenShiftOAuthInterceptor(null, null, reference);
+    OpenShiftOAuthInterceptor interceptor = new OpenShiftOAuthInterceptor(null, Config.empty(), reference);
     OpenShiftOAuthInterceptor other = interceptor.withConfig(Config.empty());
     assertNotSame(interceptor, other);
     assertSame(reference, other.getOauthToken());
+
+    // should not be resued if the user overrides the requestconfig
+    other = interceptor.withConfig(new ConfigBuilder().withUsername("something").build());
+    assertNotSame(interceptor, other);
+    assertNotSame(reference, other.getOauthToken());
   }
 
 }
