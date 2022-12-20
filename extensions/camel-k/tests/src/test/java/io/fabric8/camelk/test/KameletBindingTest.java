@@ -39,7 +39,7 @@ class KameletBindingTest {
     // Given + When
     KameletBinding kameletBinding = client.v1alpha1().kameletBindings()
         .load(getClass().getResourceAsStream("/test-kameletbinding.yml"))
-        .get();
+        .item();
 
     // Then
     assertThat(kameletBinding)

@@ -14,11 +14,14 @@
 * Fix #3972: deprecated Parameterizable and methods on Serialization accepting parameters - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
 * Fix #3972: OpenShiftClient.load will no longer implicitly process templates.  Use OpenShiftClient.templates().load instead.
 * Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappersSerialization.
+* Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
 
-### 6.3.1-SNAPSHOT
+### 6.3.1 (2022-12-15)
 
 #### Bugs
 * Fix #4666: fixed okhttp calls not explicitly closing
+* Fix #4673: fixes a regression in sharing the OpenShiftOAuthInterceptor token
+* Fix #4677: [java-generator] Fix default encoding of enums
 
 ### 6.3.0 (2022-12-12)
 

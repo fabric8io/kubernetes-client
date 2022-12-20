@@ -662,7 +662,7 @@ class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod).once();
 
-    HasMetadata response = client.resource(pod).fromServer().get();
+    HasMetadata response = client.resource(pod).get();
     assertEquals(pod, response);
   }
 

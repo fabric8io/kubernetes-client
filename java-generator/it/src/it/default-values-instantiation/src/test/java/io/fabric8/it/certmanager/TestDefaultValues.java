@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.cert_manager.v1.CertificateRequestSpec.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestDefaultValues {
@@ -44,6 +45,7 @@ class TestDefaultValues {
     Double eight = cr.getSpec().getEight();
     List<String> nine = cr.getSpec().getNine();
     Ten ten = cr.getSpec().getTen();
+    Eleven eleven = cr.getSpec().getEleven();
 
     // Assert
     assertEquals("one", one);
@@ -59,5 +61,6 @@ class TestDefaultValues {
     assertEquals("nine2", nine.get(1));
     assertEquals("tenone", ten.getTenOne());
     assertEquals("tentwo", ten.getTenTwo());
+    assertEquals(Eleven.BAZ, eleven);
   }
 }

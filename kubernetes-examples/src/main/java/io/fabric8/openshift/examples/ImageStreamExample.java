@@ -59,7 +59,7 @@ public class ImageStreamExample {
               .endSpec()
               .build());
       logger.info("Created ImageStream: {}/{}", project, imageStream.getMetadata().getName());
-      final ImageStream isFromServer = client.imageStreams().inNamespace(project).withName(imageStreamName).fromServer().get();
+      final ImageStream isFromServer = client.imageStreams().inNamespace(project).withName(imageStreamName).get();
       logger.info("Tags in ImageStream are:");
       logger.info(" -  {}", isFromServer.getSpec().getTags().get(0).getName());
       logger.info(" -  {}", isFromServer.getSpec().getTags().get(1).getName());

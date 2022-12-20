@@ -35,7 +35,7 @@ class ReplicationControllerIT {
   @Test
   void load() {
     ReplicationController aReplicationController = client.replicationControllers()
-        .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
+        .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).item();
 
     assertThat(aReplicationController).isNotNull();
     assertEquals("nginx", aReplicationController.getMetadata().getName());

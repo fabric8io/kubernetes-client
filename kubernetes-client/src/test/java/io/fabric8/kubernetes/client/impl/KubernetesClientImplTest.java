@@ -108,7 +108,7 @@ class KubernetesClientImplTest {
     final String crlfFile = String.join(" \r\n", fileLines);
     // When
     final List<HasMetadata> result = new KubernetesClientImpl()
-        .load(new ByteArrayInputStream(crlfFile.getBytes(StandardCharsets.UTF_8))).get();
+        .load(new ByteArrayInputStream(crlfFile.getBytes(StandardCharsets.UTF_8))).items();
     // Then
     assertThat(result)
         .hasSize(2)
@@ -159,9 +159,9 @@ class KubernetesClientImplTest {
   }
 
   @Test
-  @DisplayName("resource(String).get with HasMetadata should deserialize")
+  @DisplayName("resource(String).item with HasMetadata should deserialize")
   void resourceFromStringWithHasMetadata() {
-    assertThat(new KubernetesClientImpl().resource("apiVersion: v1\nkind: Pod").get())
+    assertThat(new KubernetesClientImpl().resource("apiVersion: v1\nkind: Pod").item())
         .isInstanceOf(Pod.class);
   }
 
@@ -175,11 +175,11 @@ class KubernetesClientImplTest {
   }
 
   @Test
-  @DisplayName("resource(InputStream).get with HasMetadata should deserialize")
+  @DisplayName("resource(InputStream).item with HasMetadata should deserialize")
   void resourceFromInputStreamWithHasMetadata() throws IOException {
     final String podYaml = "apiVersion: v1\nkind: Pod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
-      assertThat(new KubernetesClientImpl().resource(is).get())
+      assertThat(new KubernetesClientImpl().resource(is).item())
           .isInstanceOf(Pod.class);
     }
   }
@@ -197,11 +197,11 @@ class KubernetesClientImplTest {
   }
 
   @Test
-  @DisplayName("load(InputStream).get with HasMetadata should deserialize")
+  @DisplayName("load(InputStream).items with HasMetadata should deserialize")
   void loadFromInputStreamWithHasMetadata() throws IOException {
     final String podYaml = "apiVersion: v1\nkind: Pod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
-      assertThat(new KubernetesClientImpl().load(is).get())
+      assertThat(new KubernetesClientImpl().load(is).items())
           .containsExactly(new Pod());
     }
   }

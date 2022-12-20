@@ -71,7 +71,7 @@ class ServiceTest {
 
   @Test
   void testLoad() {
-    Service svc = client.services().load(getClass().getResourceAsStream("/test-service.yml")).get();
+    Service svc = client.services().load(getClass().getResourceAsStream("/test-service.yml")).item();
     assertNotNull(svc);
     assertEquals("httpbin", svc.getMetadata().getName());
   }

@@ -670,7 +670,7 @@ class PodTest {
 
   @Test
   void testLoad() {
-    Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
+    Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).item();
     assertEquals("nginx", pod.getMetadata().getName());
   }
 
@@ -896,7 +896,7 @@ class PodTest {
         .andReturn(200, serverPod)
         .once();
 
-    List<HasMetadata> resources = client.resourceList(clientPod).fromServer().get();
+    List<HasMetadata> resources = client.resourceList(clientPod).get();
 
     assertNotNull(resources);
     assertEquals(1, resources.size());

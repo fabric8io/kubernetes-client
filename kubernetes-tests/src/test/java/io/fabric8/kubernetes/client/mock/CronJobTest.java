@@ -255,12 +255,12 @@ class CronJobTest {
 
   @Test
   void testLoadFromFile() {
-    assertNotNull(client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get());
+    assertNotNull(client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).item());
   }
 
   @Test
   void testHandlersLoadFromFile() {
-    List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
+    List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).items();
 
     assertNotNull(hasMetadata);
     assertEquals(1, hasMetadata.size());

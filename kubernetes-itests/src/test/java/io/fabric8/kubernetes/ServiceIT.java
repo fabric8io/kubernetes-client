@@ -43,7 +43,7 @@ class ServiceIT {
 
   @Test
   void load() {
-    Service aService = client.services().load(getClass().getResourceAsStream("/test-service.yml")).get();
+    Service aService = client.services().load(getClass().getResourceAsStream("/test-service.yml")).item();
     assertThat(aService).isNotNull();
     assertEquals("my-service", aService.getMetadata().getName());
   }

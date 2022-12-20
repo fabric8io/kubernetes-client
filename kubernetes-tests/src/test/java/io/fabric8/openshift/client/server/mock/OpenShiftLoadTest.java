@@ -37,8 +37,10 @@ class OpenShiftLoadTest {
   void testResourceGetFromLoadWhenSingleDocumentsWithStartingDelimiter() {
 
     // when
-    List<HasMetadata> result = client.templates().load(getClass().getResourceAsStream("/test-template.yml"))
-        .processLocally(Collections.emptyMap()).getItems();
+    List<HasMetadata> result = client.templates()
+        .load(getClass().getResourceAsStream("/test-template.yml"))
+        .processLocally(Collections.emptyMap())
+        .getItems();
 
     // then
     assertNotNull(result);
@@ -53,7 +55,9 @@ class OpenShiftLoadTest {
   void testResourceGetFromLoadWhenSingleDocumentsWithoutDelimiter() {
 
     // when
-    List<HasMetadata> result = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml")).get()
+    List<HasMetadata> result = client.templates()
+        .load(getClass().getResourceAsStream("/template-with-params.yml"))
+        .item()
         .getObjects();
 
     // then

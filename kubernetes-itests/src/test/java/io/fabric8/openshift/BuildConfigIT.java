@@ -42,7 +42,7 @@ class BuildConfigIT {
   @Test
   void load() {
     BuildConfig aBuildConfig = client.buildConfigs()
-        .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
+        .load(getClass().getResourceAsStream("/test-buildconfig.yml")).item();
     assertThat(aBuildConfig).isNotNull();
     assertEquals("ruby-sample-build", aBuildConfig.getMetadata().getName());
   }

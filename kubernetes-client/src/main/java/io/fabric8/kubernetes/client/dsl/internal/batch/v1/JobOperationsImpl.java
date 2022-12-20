@@ -88,7 +88,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     Job res = accept(b -> b.getSpec().setParallelism(count));
     if (wait) {
       waitUntilJobIsScaled();
-      res = getMandatory();
+      res = getItemOrRequireFromServer();
     }
     return res;
   }

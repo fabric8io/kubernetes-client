@@ -173,6 +173,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -701,7 +702,8 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
     this.config = wrapped;
     HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
     this.httpClient = builder
-        .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, wrapped))
+        .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME,
+            new OpenShiftOAuthInterceptor(httpClient, wrapped, new AtomicReference<>()))
         .build();
     try {
       this.openShiftUrl = new URL(wrapped.getOpenShiftUrl());

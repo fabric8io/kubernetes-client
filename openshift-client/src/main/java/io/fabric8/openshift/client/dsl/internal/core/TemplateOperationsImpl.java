@@ -164,11 +164,11 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList processLocally(Map<String, String> valuesMap) {
-    Template t = get();
+    Template t = processParameters(getItemOrRequireFromServer());
 
-    List<Parameter> parameters = t != null ? t.getParameters() : null;
+    List<Parameter> parameters = t.getParameters();
     KubernetesList list = new KubernetesListBuilder()
-        .withItems(t != null && t.getObjects() != null ? t.getObjects() : Collections.<HasMetadata> emptyList())
+        .withItems(t.getObjects())
         .build();
 
     String json = Serialization.asJson(list);
@@ -210,7 +210,10 @@ public class TemplateOperationsImpl
 
   @Override
   public Template get() {
-    Template t = super.get();
+    return processParameters(super.get());
+  }
+
+  private Template processParameters(Template t) {
     if (this.parameters != null && !this.parameters.isEmpty()) {
       return Serialization.unmarshal(Utils.interpolateString(Serialization.asJson(t), this.parameters), Template.class);
     }
@@ -220,8 +223,7 @@ public class TemplateOperationsImpl
   @Override
   public TemplateResource<Template, KubernetesList> load(InputStream is) {
     Template template = null;
-    // TODO: should be items after the change in get behavior
-    List<HasMetadata> items = this.context.getClient().adapt(KubernetesClient.class).load(is).get();
+    List<HasMetadata> items = this.context.getClient().adapt(KubernetesClient.class).load(is).items();
     Object item = items;
     if (items.size() == 1) {
       item = items.get(0);

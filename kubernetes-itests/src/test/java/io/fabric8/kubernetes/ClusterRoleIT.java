@@ -62,7 +62,7 @@ class ClusterRoleIT {
   void load() {
 
     ClusterRole aClusterRole = client.rbac().clusterRoles()
-        .load(getClass().getResourceAsStream("/test-kubernetesclusterrole.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesclusterrole.yml")).item();
 
     assertNotNull(aClusterRole);
     assertEquals("ClusterRole", aClusterRole.getKind());
