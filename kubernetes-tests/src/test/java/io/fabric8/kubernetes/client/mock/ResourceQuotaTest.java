@@ -115,7 +115,7 @@ public class ResourceQuotaTest {
 
   @Test
   public void testLoadFromFile() {
-    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/test-resourcequota.yml")).get();
+    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/test-resourcequota.yml")).items();
     assertEquals(3, list.size());
     assertTrue(list.get(0) instanceof ResourceQuota);
     assertEquals("compute-quota", list.get(0).getMetadata().getName());
@@ -147,7 +147,7 @@ public class ResourceQuotaTest {
         .once();
 
     Deployment deployment = client.apps().deployments()
-        .load(getClass().getResourceAsStream("/test-resourcequota-deployment.yml")).get();
+        .load(getClass().getResourceAsStream("/test-resourcequota-deployment.yml")).item();
     server.expect().withPath("/apis/apps/v1/namespaces/myspace/deployments/deployment").andReturn(200, deployment).once();
 
     ResourceQuota resourcequota = client.resourceQuotas().inNamespace("myspace").withName("compute-quota").get();

@@ -42,7 +42,7 @@ public class ImageStreamTagExample {
               .build());
       logger.info("Created ImageStreamTag: {}", isTag.getMetadata().getName());
       int limit = 0;
-      while (client.imageStreamTags().inNamespace(project).withName(isTagName).fromServer().get() == null && limit++ < 10) {
+      while (client.imageStreamTags().inNamespace(project).withName(isTagName).get() == null && limit++ < 10) {
         TimeUnit.SECONDS.sleep(1);
       }
       logger.info("ImageStreamTags in {}:", project);

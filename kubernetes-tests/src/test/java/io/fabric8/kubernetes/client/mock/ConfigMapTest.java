@@ -88,7 +88,7 @@ class ConfigMapTest {
   @Test
   void testFromResourceWithFileConfigMap() throws InterruptedException {
     ConfigMap configMap = client.configMaps()
-        .load(getClass().getResourceAsStream("/test-application-properties-config-map.yml")).get();
+        .load(getClass().getResourceAsStream("/test-application-properties-config-map.yml")).item();
     assertEquals("cfg1", configMap.getMetadata().getName());
 
     Map<String, String> data = (Map<String, String>) configMap.getData();
@@ -105,7 +105,7 @@ class ConfigMapTest {
 
   @Test
   void testFromResourceConfigMap() throws InterruptedException {
-    ConfigMap configMap = client.configMaps().load(getClass().getResourceAsStream("/test-config-map.yml")).get();
+    ConfigMap configMap = client.configMaps().load(getClass().getResourceAsStream("/test-config-map.yml")).item();
     assertEquals("cfg1", configMap.getMetadata().getName());
 
     Map<String, String> keys = (Map<String, String>) configMap.getData();

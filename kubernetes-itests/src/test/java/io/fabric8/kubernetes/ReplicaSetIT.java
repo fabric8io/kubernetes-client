@@ -39,7 +39,7 @@ class ReplicaSetIT {
   @Test
   void load() {
     ReplicaSet replicaSet = client.apps().replicaSets()
-        .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();
+        .load(getClass().getResourceAsStream("/test-replicaset.yml")).item();
     assertThat(replicaSet).isNotNull();
     assertEquals("frontend", replicaSet.getMetadata().getName());
   }

@@ -34,13 +34,13 @@ class OpenShiftLoadTest {
   void testResourceGetFromLoadWhenSingleDocumentsWithStartingDelimiter() {
 
     // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-template.yml")).get();
+    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-template.yml")).items();
 
     // then
     assertNotNull(result);
     assertEquals(5, result.size());
     HasMetadata deploymentResource = result.get(2);
-    assertEquals("image.openshift.io/v1", deploymentResource.getApiVersion());
+    assertEquals("v1", deploymentResource.getApiVersion());
     assertEquals("ImageStream", deploymentResource.getKind());
     assertEquals("eap-app", deploymentResource.getMetadata().getName());
   }
@@ -49,7 +49,7 @@ class OpenShiftLoadTest {
   void testResourceGetFromLoadWhenSingleDocumentsWithoutDelimiter() {
 
     // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/template-with-params.yml")).get();
+    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/template-with-params.yml")).items();
 
     // then
     assertNotNull(result);

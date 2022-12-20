@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -37,7 +36,7 @@ class ClusterRoleTest {
   @Test
   void testLoadFromFile() {
     ClusterRole kubernetesClusterRole = client.rbac().clusterRoles()
-        .load(getClass().getResourceAsStream("/test-clusterrole.yml")).get();
+        .load(getClass().getResourceAsStream("/test-clusterrole.yml")).item();
 
     assertNotNull(kubernetesClusterRole);
   }
@@ -50,14 +49,10 @@ class ClusterRoleTest {
 
     assertNotNull(load);
 
-    try {
-      List<HasMetadata> hasMetadata = load.get();
+    List<HasMetadata> hasMetadata = load.items();
 
-      assertNotNull(hasMetadata);
-      assertEquals(1, hasMetadata.size());
-      assertEquals("viewer", hasMetadata.get(0).getMetadata().getName());
-    } catch (NullPointerException e) {
-      fail("No handler found for specified resource");
-    }
+    assertNotNull(hasMetadata);
+    assertEquals(1, hasMetadata.size());
+    assertEquals("viewer", hasMetadata.get(0).getMetadata().getName());
   }
 }

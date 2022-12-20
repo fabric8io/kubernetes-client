@@ -11,6 +11,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
 
 ### 6.3.1 (2022-12-15)
 

@@ -39,7 +39,7 @@ class NetworkPolicyIT {
   @Test
   void load() {
     NetworkPolicy loadedNetworkPolicy = client.network().v1().networkPolicies()
-        .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
+        .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).item();
 
     assertNotNull(loadedNetworkPolicy);
     assertEquals("networkpolicy", loadedNetworkPolicy.getMetadata().getName());

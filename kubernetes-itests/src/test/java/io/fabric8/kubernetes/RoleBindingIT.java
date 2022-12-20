@@ -62,7 +62,7 @@ class RoleBindingIT {
   void load() {
 
     RoleBinding aRoleBinding = client.rbac().roleBindings()
-        .load(getClass().getResourceAsStream("/test-kubernetesrolebinding.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesrolebinding.yml")).item();
     assertNotNull(aRoleBinding);
     assertEquals("RoleBinding", aRoleBinding.getKind());
     assertNotNull(aRoleBinding.getMetadata());

@@ -180,7 +180,7 @@ public class StatefulSetTest {
 
   @Test
   public void testDeleteLoadedResource() {
-    StatefulSet response = client.apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+    StatefulSet response = client.apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).item();
     server.expect()
         .delete()
         .withPath("/apis/apps/v1/namespaces/test/statefulsets/example")

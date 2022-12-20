@@ -50,7 +50,7 @@ public class V1ValidatingWebhookConfigurationTest {
   @Test
   public void load() {
     ValidatingWebhookConfiguration vwc = client.admissionRegistration().v1().validatingWebhookConfigurations()
-        .load(getClass().getResourceAsStream("/v1-vwc.yml")).get();
+        .load(getClass().getResourceAsStream("/v1-vwc.yml")).item();
     assertNotNull(vwc);
     assertEquals("pod-policy.example.com", vwc.getMetadata().getName());
     assertEquals(1, vwc.getWebhooks().size());

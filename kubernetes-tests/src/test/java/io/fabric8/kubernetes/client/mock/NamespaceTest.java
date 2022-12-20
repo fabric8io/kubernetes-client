@@ -145,7 +145,7 @@ public class NamespaceTest {
 
   @Test
   public void testLoadFromFile() {
-    Namespace namespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).get();
+    Namespace namespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).item();
     assertEquals("namespace-test", namespace.getMetadata().getName());
   }
 
