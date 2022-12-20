@@ -60,11 +60,6 @@ public class HttpClientUtils {
 
     @Override
     public void before(BasicBuilder builder, HttpHeaders headers) {
-      if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-        builder.header("Authorization", basicCredentials(config.getUsername(), config.getPassword()));
-      } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-        builder.header("Authorization", "Bearer " + config.getOauthToken());
-      }
       if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
         for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
           builder.header(entry.getKey(), entry.getValue());
