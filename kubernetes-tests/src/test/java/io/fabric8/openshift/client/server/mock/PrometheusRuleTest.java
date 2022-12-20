@@ -38,7 +38,7 @@ class PrometheusRuleTest {
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-prometheusrule.yml")).get();
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-prometheusrule.yml")).items();
     assertEquals(1, items.size());
     assertTrue(items.get(0) instanceof PrometheusRule);
     PrometheusRule prometheusRule = (PrometheusRule) items.get(0);

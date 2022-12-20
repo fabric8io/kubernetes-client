@@ -71,7 +71,7 @@ class PodIT {
 
   @Test
   void load() {
-    Pod aPod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
+    Pod aPod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).item();
     assertThat(aPod).isNotNull();
     assertEquals("nginx", aPod.getMetadata().getName());
   }
@@ -344,7 +344,7 @@ class PodIT {
   void listFromServer() {
     client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
     final Pod pod1 = client.pods().withName("pod-standard").get();
-    List<HasMetadata> resources = client.resourceList(pod1).fromServer().get();
+    List<HasMetadata> resources = client.resourceList(pod1).get();
 
     assertNotNull(resources);
     assertEquals(1, resources.size());

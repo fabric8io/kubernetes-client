@@ -705,7 +705,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    */
   @Override
   public RunOperations run() {
-    return new RunOperations(this, new RunConfigBuilder());
+    return new RunOperations(this, new RunConfigBuilder().build());
   }
 
   /**

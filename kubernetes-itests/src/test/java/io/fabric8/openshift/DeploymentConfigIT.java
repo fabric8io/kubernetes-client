@@ -41,7 +41,7 @@ class DeploymentConfigIT {
   @Test
   void load() {
     DeploymentConfig deploymentConfig = client.deploymentConfigs()
-        .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
+        .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).item();
     assertThat(deploymentConfig).isNotNull();
     assertEquals("frontend", deploymentConfig.getMetadata().getName());
   }

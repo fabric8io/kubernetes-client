@@ -58,6 +58,8 @@ public interface Resource<T> extends
   boolean isReady();
 
   /**
+   * Perform a {@link Gettable#get()}, but throws an exception if the server resource does not exist.
+   *
    * @return the item or throws an exception if the item doesn't exist.
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
    * @throws io.fabric8.kubernetes.client.ResourceNotFoundException if resource is absent
@@ -67,5 +69,13 @@ public interface Resource<T> extends
   ReplaceDeletable<T> lockResourceVersion();
 
   ReplaceDeletable<T> lockResourceVersion(String resourceVersion);
+
+  /**
+   * Get the item used to create the current operation context if available.
+   *
+   * @return the current item if provided via the load, resource, or resourceList method, or null if this resource was created
+   *         just from a class.
+   */
+  T item();
 
 }

@@ -165,11 +165,11 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList processLocally(Map<String, String> valuesMap) {
-    Template t = withParameters(valuesMap).get();
+    Template t = withParameters(valuesMap).getItemOrRequireFromServer();
 
-    List<Parameter> parameters = t != null ? t.getParameters() : null;
+    List<Parameter> parameters = t.getParameters();
     KubernetesList list = new KubernetesListBuilder()
-        .withItems(t != null && t.getObjects() != null ? t.getObjects() : Collections.<HasMetadata> emptyList())
+        .withItems(t.getObjects())
         .build();
 
     try {

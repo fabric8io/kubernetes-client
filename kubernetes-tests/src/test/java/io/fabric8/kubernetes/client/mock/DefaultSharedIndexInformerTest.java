@@ -55,6 +55,8 @@ import io.fabric8.kubernetes.client.mock.crd.Star;
 import io.fabric8.kubernetes.client.mock.crd.StarSpec;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.junit.jupiter.api.AfterEach;
@@ -89,7 +91,8 @@ class DefaultSharedIndexInformerTest {
           "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
       .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
-      .withStatusObject(outdatedStatus).build();
+      .withStatusObject(outdatedStatus)
+      .build();
   static final Long WATCH_EVENT_EMIT_TIME = 1L;
   static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
   static final long RESYNC_PERIOD = 5L;
@@ -120,19 +123,28 @@ class DefaultSharedIndexInformerTest {
     // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
-    server.expect().withPath("/api/v1/namespaces/test/pods")
-        .andReturn(200, getList(startResourceVersion, Pod.class)).once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
+        .andReturn(200, getList(startResourceVersion, Pod.class))
+        .once();
     server.expect()
         .withPath(
-            "/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+            "/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion
+                + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
         .andEmit(new WatchEvent(
-            new PodBuilder().withNewMetadata().withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(),
+            new PodBuilder().withNewMetadata()
+                .withName("pod1")
+                .withResourceVersion(endResourceVersion)
+                .endMetadata()
+                .build(),
             "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-        .andEmit(outdatedEvent).done().always();
+        .andEmit(outdatedEvent)
+        .done()
+        .always();
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
@@ -169,23 +181,35 @@ class DefaultSharedIndexInformerTest {
     // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
-    server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1"))
-        .andReturn(200, getList(startResourceVersion, Pod.class)).once();
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1") + "&resourceVersion="
+        .withPath(
+            "/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1") + "&resourceVersion=0")
+        .andReturn(200, getList(startResourceVersion, Pod.class))
+        .once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1")
+            + "&resourceVersion="
             + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
         .andEmit(new WatchEvent(
-            new PodBuilder().withNewMetadata().withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(),
+            new PodBuilder().withNewMetadata()
+                .withName("pod1")
+                .withResourceVersion(endResourceVersion)
+                .endMetadata()
+                .build(),
             "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-        .andEmit(outdatedEvent).done().always();
+        .andEmit(outdatedEvent)
+        .done()
+        .always();
 
     // When
-    SharedIndexInformer<Pod> podInformer = factory.inNamespace("test").withName("pod1").sharedIndexInformerFor(Pod.class,
-        RESYNC_PERIOD);
+    SharedIndexInformer<Pod> podInformer = factory.inNamespace("test")
+        .withName("pod1")
+        .sharedIndexInformerFor(Pod.class,
+            RESYNC_PERIOD);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
         new ResourceEventHandler<Pod>() {
@@ -220,18 +244,29 @@ class DefaultSharedIndexInformerTest {
     // When
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
-        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-            .withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion(endResourceVersion)
+            .endMetadata()
+            .build(), "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-        .andEmit(outdatedEvent).done().always();
+        .andEmit(outdatedEvent)
+        .done()
+        .always();
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
@@ -271,31 +306,55 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002",
         endResourceVersion = "1003";
 
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
-        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-            .withResourceVersion(midResourceVersion).endMetadata().build(), "ADDED"))
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion(midResourceVersion)
+            .endMetadata()
+            .build(), "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
         .andEmit(outdatedEvent)
-        .done().always();
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(
-            new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion)
-                .endMetadata().build())
-            .build())
+        .done()
+        .always();
+    server.expect()
+        .withPath("/api/v1/pods")
+        .andReturn(200,
+            new PodListBuilder().withNewMetadata()
+                .withResourceVersion(mid2ResourceVersion)
+                .endMetadata()
+                .withItems(
+                    new PodBuilder().withNewMetadata()
+                        .withNamespace("test")
+                        .withName("pod1")
+                        .withResourceVersion(endResourceVersion)
+                        .endMetadata()
+                        .build())
+                .build())
         .times(2);
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
-        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-            .withResourceVersion(endResourceVersion).endMetadata().build(), "MODIFIED"))
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion(endResourceVersion)
+            .endMetadata()
+            .build(), "MODIFIED"))
         .done()
         .always();
 
@@ -333,22 +392,36 @@ class DefaultSharedIndexInformerTest {
     // Given
     String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002";
 
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
-        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-            .withResourceVersion(midResourceVersion).endMetadata().build(), "ADDED"))
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion(midResourceVersion)
+            .endMetadata()
+            .build(), "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
         .andEmit(outdatedEvent)
-        .done().always();
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+        .done()
+        .always();
+    server.expect()
+        .withPath("/api/v1/pods")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(mid2ResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .times(2);
 
     // When
@@ -384,20 +457,31 @@ class DefaultSharedIndexInformerTest {
   void testHasSynced() {
     // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
-    server.expect().withPath("/api/v1/namespaces/test/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .once();
     server.expect()
         .withPath(
-            "/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+            "/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion
+                + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
-        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-            .withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion(endResourceVersion)
+            .endMetadata()
+            .build(), "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-        .andEmit(outdatedEvent).done().once();
+        .andEmit(outdatedEvent)
+        .done()
+        .once();
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 2000L);
@@ -443,7 +527,8 @@ class DefaultSharedIndexInformerTest {
 
     // When
     Future<Void> informerStartFutures = factory.startAllRegisteredInformers();
-    assertThrows(ExecutionException.class, () -> informerStartFutures.get(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS));
+    assertThrows(ExecutionException.class,
+        () -> informerStartFutures.get(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS));
   }
 
   @Test
@@ -480,8 +565,11 @@ class DefaultSharedIndexInformerTest {
   void testWithNamespaceInformer() throws InterruptedException {
     // Given
     setupMockServerExpectations(Namespace.class, null, this::getList, r -> new WatchEvent(new NamespaceBuilder()
-        .withNewMetadata().withName("ns1")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("ns1")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
 
     // When
     SharedIndexInformer<Namespace> namespaceSharedIndexInformer = factory.sharedIndexInformerFor(
@@ -501,15 +589,19 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectations(ClusterRoleBinding.class, null, this::getList,
         r -> new WatchEvent(new ClusterRoleBindingBuilder()
-            .withNewMetadata().withName("crb1")
-            .withResourceVersion(r).endMetadata().build(), "ADDED"),
+            .withNewMetadata()
+            .withName("crb1")
+            .withResourceVersion(r)
+            .endMetadata()
+            .build(), "ADDED"),
         null, null);
 
     // Given
     SharedIndexInformer<ClusterRoleBinding> clusterRoleBindingSharedIndexInformer = factory.sharedIndexInformerFor(
         ClusterRoleBinding.class, RESYNC_PERIOD);
     CountDownLatch foundExistingClusterRoleBinding = new CountDownLatch(1);
-    clusterRoleBindingSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingClusterRoleBinding, "crb1"));
+    clusterRoleBindingSharedIndexInformer
+        .addEventHandler(new TestResourceHandler<>(foundExistingClusterRoleBinding, "crb1"));
     factory.startAllRegisteredInformers();
     foundExistingClusterRoleBinding.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
@@ -522,11 +614,15 @@ class DefaultSharedIndexInformerTest {
   void testWithDeploymentInformer() throws InterruptedException {
     // Given
     setupMockServerExpectations(Deployment.class, "ns1", this::getList, r -> new WatchEvent(new DeploymentBuilder()
-        .withNewMetadata().withName("deployment1")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("deployment1")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
     // When
-    SharedIndexInformer<Deployment> deploymentSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerFor(
-        Deployment.class, RESYNC_PERIOD);
+    SharedIndexInformer<Deployment> deploymentSharedIndexInformer = factory.inNamespace("ns1")
+        .sharedIndexInformerFor(
+            Deployment.class, RESYNC_PERIOD);
     CountDownLatch foundExistingDeployment = new CountDownLatch(1);
     deploymentSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingDeployment, "deployment1"));
     factory.startAllRegisteredInformers();
@@ -541,8 +637,11 @@ class DefaultSharedIndexInformerTest {
   void testWithOperationContextArgument() throws InterruptedException {
     // Given
     setupMockServerExpectations(Pod.class, "ns1", this::getList, r -> new WatchEvent(new PodBuilder()
-        .withNewMetadata().withName("pod1")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("pod1")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.inNamespace("ns1").sharedIndexInformerFor(Pod.class, 100L);
@@ -559,7 +658,8 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("PodSet Informer should watch in all namespaces")
   void testPodSetCustomResourceInformerShouldWatchInAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectations(PodSet.class, null, this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"), null,
+    setupMockServerExpectations(PodSet.class, null, this::getList,
+        r -> new WatchEvent(getPodSet("podset1", r), "ADDED"), null,
         null);
 
     // When
@@ -579,7 +679,8 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("PodSet Informer should watch in ns1(as specified in OperationContext)")
   void testWithPodSetCustomResourceInformerShouldWatchInSpecifiedNamespace() throws InterruptedException {
     // Given
-    setupMockServerExpectations(PodSet.class, "ns1", this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"), null,
+    setupMockServerExpectations(PodSet.class, "ns1", this::getList,
+        r -> new WatchEvent(getPodSet("podset1", r), "ADDED"), null,
         null);
 
     // When
@@ -597,7 +698,8 @@ class DefaultSharedIndexInformerTest {
   @Test
   void testWithOperationContextArgumentForClusterScopedCustomResource() throws InterruptedException {
     // Given
-    setupMockServerExpectations(Star.class, null, this::getList, r -> new WatchEvent(getStar("star1", r), "ADDED"), null, null);
+    setupMockServerExpectations(Star.class, null, this::getList, r -> new WatchEvent(getStar("star1", r), "ADDED"),
+        null, null);
 
     // When
     SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerFor(Star.class, RESYNC_PERIOD);
@@ -615,8 +717,11 @@ class DefaultSharedIndexInformerTest {
   void testPodInformerWithNoOperationContextAndNoListType() throws InterruptedException {
     // Given
     setupMockServerExpectations(Pod.class, null, this::getList, r -> new WatchEvent(new PodBuilder()
-        .withNewMetadata().withName("pod1")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("pod1")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
@@ -634,8 +739,11 @@ class DefaultSharedIndexInformerTest {
   void testPodInformerOperationContextAndNoListType() throws InterruptedException {
     // Given
     setupMockServerExpectations(Pod.class, "ns1", this::getList, r -> new WatchEvent(new PodBuilder()
-        .withNewMetadata().withName("pod1")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("pod1")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.inNamespace("ns1").sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
@@ -652,7 +760,8 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer without any CRDContext, OperationContext should watch in all namespaces")
   void testCronTabCustomResourceInformerWithNoCRDContextShouldWatchInAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectations(CronTab.class, null, this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
+    setupMockServerExpectations(CronTab.class, null, this::getList,
+        r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
         null, null);
 
     // When
@@ -672,7 +781,8 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer without any CRDContext should watch in namespace provided in OperationContext")
   void testCronTabCustomResourceInformerWithNoCRDContextShouldWatchInNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectations(CronTab.class, "ns1", this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
+    setupMockServerExpectations(CronTab.class, "ns1", this::getList,
+        r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
         null, null);
 
     // When
@@ -689,9 +799,11 @@ class DefaultSharedIndexInformerTest {
 
   @Test
   @DisplayName("CronTab Informer with no OperationContext should watch in all namespaces")
-  void testCronTabCustomResourceInformerWithNoCRDContextAndListShouldWatchInAllNamespaces() throws InterruptedException {
+  void testCronTabCustomResourceInformerWithNoCRDContextAndListShouldWatchInAllNamespaces()
+      throws InterruptedException {
     // Given
-    setupMockServerExpectations(CronTab.class, null, this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
+    setupMockServerExpectations(CronTab.class, null, this::getList,
+        r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
         null, null);
 
     // When
@@ -711,7 +823,8 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer should watch in all namespaces")
   void testCronTabCustomResourceInformerShouldWatchAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectations(CronTab.class, null, this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
+    setupMockServerExpectations(CronTab.class, null, this::getList,
+        r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
         null, null);
 
     // When
@@ -729,9 +842,11 @@ class DefaultSharedIndexInformerTest {
 
   @Test
   @DisplayName("CronTab Informer with should watch in namespaces in OperationContext")
-  void testCronTabCustomResourceInformerWithShouldWatchNamespaceProvidedInOperationContext() throws InterruptedException {
+  void testCronTabCustomResourceInformerWithShouldWatchNamespaceProvidedInOperationContext()
+      throws InterruptedException {
     // Given
-    setupMockServerExpectations(CronTab.class, "ns1", this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
+    setupMockServerExpectations(CronTab.class, "ns1", this::getList,
+        r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"),
         null, null);
 
     // When
@@ -771,11 +886,17 @@ class DefaultSharedIndexInformerTest {
   void testDifferentDeploymentInformersWatchingInDifferentNamespaces() throws InterruptedException {
     // Given
     setupMockServerExpectations(Deployment.class, "ns1", this::getList, r -> new WatchEvent(new DeploymentBuilder()
-        .withNewMetadata().withName("d1")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("d1")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
     setupMockServerExpectations(Deployment.class, "ns2", this::getList, r -> new WatchEvent(new DeploymentBuilder()
-        .withNewMetadata().withName("d2")
-        .withResourceVersion(r).endMetadata().build(), "ADDED"), null, null);
+        .withNewMetadata()
+        .withName("d2")
+        .withResourceVersion(r)
+        .endMetadata()
+        .build(), "ADDED"), null, null);
     CountDownLatch ns1FoundLatch = new CountDownLatch(1);
     CountDownLatch ns2FoundLatch = new CountDownLatch(1);
 
@@ -815,9 +936,12 @@ class DefaultSharedIndexInformerTest {
         .withNamespaced(true)
         .build();
     SharedIndexInformer<GenericKubernetesResource> v1beta1CronTabSharedIndexInformer = client
-        .genericKubernetesResources(context).inNamespace("default").inform();
+        .genericKubernetesResources(context)
+        .inNamespace("default")
+        .inform();
     v1CronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(v1CronTabFound, "v1-crontab"));
-    v1beta1CronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(v1beta1CronTabFound, "v1beta1-crontab"));
+    v1beta1CronTabSharedIndexInformer
+        .addEventHandler(new TestResourceHandler<>(v1beta1CronTabFound, "v1beta1-crontab"));
     factory.startAllRegisteredInformers();
     v1CronTabFound.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
     v1beta1CronTabFound.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
@@ -833,42 +957,64 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002";
 
     // initial list
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .once();
 
     // initial watch - terminates with an exception
-    Pod mid = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(midResourceVersion)
-        .endMetadata().build();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    Pod mid = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion(midResourceVersion)
+        .endMetadata()
+        .build();
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
         .andEmit(new WatchEvent(mid, "ADDED"))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
         .andEmit(outdatedEvent)
-        .done().always();
+        .done()
+        .always();
 
     // re-list errors
-    server.expect().withPath("/api/v1/pods")
+    server.expect()
+        .withPath("/api/v1/pods")
         .andReturn(HttpURLConnection.HTTP_FORBIDDEN, new Status())
         .times(2);
 
     // re-list
-    server.expect().withPath("/api/v1/pods")
+    server.expect()
+        .withPath("/api/v1/pods")
         .andReturn(200,
-            new PodListBuilder().withNewMetadata().withResourceVersion(midResourceVersion).endMetadata().withItems(mid).build())
+            new PodListBuilder().withNewMetadata()
+                .withResourceVersion(midResourceVersion)
+                .endMetadata()
+                .withItems(mid)
+                .build())
         .once();
 
     // should pick this up after the termination
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
-        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
-            .withResourceVersion(mid2ResourceVersion).endMetadata().build(), "MODIFIED"))
-        .done().always();
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion(mid2ResourceVersion)
+            .endMetadata()
+            .build(), "MODIFIED"))
+        .done()
+        .always();
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
@@ -919,18 +1065,24 @@ class DefaultSharedIndexInformerTest {
   @Test
   void terminalExceptionWhenWatchFailsIsPropagatedToStopped() {
     String startResourceVersion = "1000";
-    server.expect().withPath("/api/v1/pods")
-        .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata()
-            .withItems(Collections.emptyList()).build())
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
         .once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
         .andEmit(new WatchEvent(new Service(), "ADDED")) // not a pod
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
         .andEmit(outdatedEvent)
-        .done().always();
+        .done()
+        .always();
     try (SharedIndexInformer<Pod> informer = client.pods().inAnyNamespace().runnableInformer(0)) {
       informer.run();
       final CompletionStage<Void> stopped = informer.stopped();
@@ -964,7 +1116,9 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
-        .genericKubernetesResources(animalContext).inAnyNamespace().runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
+        .genericKubernetesResources(animalContext)
+        .inAnyNamespace()
+        .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
     animalSharedIndexInformer.start();
@@ -984,7 +1138,9 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
-        .genericKubernetesResources(animalContext).inNamespace("ns1").runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
+        .genericKubernetesResources(animalContext)
+        .inNamespace("ns1")
+        .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
     animalSharedIndexInformer.start();
@@ -1004,7 +1160,9 @@ class DefaultSharedIndexInformerTest {
     // When
     KubernetesDeserializer.registerCustomKind("jungle.example.com/v1", "Animal", CronTab.class);
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
-        .genericKubernetesResources(animalContext).inNamespace("ns1").runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
+        .genericKubernetesResources(animalContext)
+        .inNamespace("ns1")
+        .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
     animalSharedIndexInformer.start();
@@ -1025,7 +1183,9 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
-        .genericKubernetesResources(animalContext).inNamespace("ns1").runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
+        .genericKubernetesResources(animalContext)
+        .inNamespace("ns1")
+        .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
     animalSharedIndexInformer.exceptionHandler((b, t) -> true).start();
@@ -1064,9 +1224,11 @@ class DefaultSharedIndexInformerTest {
   }
 
   private <T extends HasMetadata> void setupMockServerExpectations(Class<T> resourceClass, String namespace,
-      BiFunction<String, Class<T>, KubernetesResourceList<T>> listSupplier, Function<String, WatchEvent> watchEventSupplier,
+      BiFunction<String, Class<T>, KubernetesResourceList<T>> listSupplier,
+      Function<String, WatchEvent> watchEventSupplier,
       String labelSelector, String fieldSelector) {
-    setupMockServerExpectationsWithVersion(resourceClass, HasMetadata.getVersion(resourceClass), namespace, listSupplier,
+    setupMockServerExpectationsWithVersion(resourceClass, HasMetadata.getVersion(resourceClass), namespace,
+        listSupplier,
         watchEventSupplier, labelSelector, fieldSelector);
   }
 
@@ -1084,35 +1246,37 @@ class DefaultSharedIndexInformerTest {
       url += ("/namespaces/" + namespace);
     }
     url += ("/" + HasMetadata.getPlural(resourceClass));
-    String queryParams = "";
+    URLUtils.URLBuilder builder = new URLUtils.URLBuilder(url);
+
     if (labelSelector != null) {
-      queryParams += "labelSelector=" + labelSelector;
+      builder.addQueryParameter("labelSelector", labelSelector);
     }
     if (fieldSelector != null) {
-      queryParams += "fieldSelector=" + fieldSelector;
+      builder.addQueryParameter("fieldSelector", fieldSelector);
     }
-    String listUrl = url;
-    if (Utils.isNotNullOrEmpty(queryParams)) {
-      listUrl += "?" + queryParams;
-    }
-    server.expect().withPath(listUrl)
-        .andReturn(HttpURLConnection.HTTP_OK, listSupplier.apply(startResourceVersion, resourceClass)).once();
+    String watchUrl = builder.toString();
+    builder.addQueryParameter("resourceVersion", "0");
+    String listUrl = builder.toString();
+    server.expect()
+        .withPath(listUrl)
+        .andReturn(HttpURLConnection.HTTP_OK, listSupplier.apply(startResourceVersion, resourceClass))
+        .once();
 
-    String watchUrl = listUrl;
-    if (Utils.isNotNullOrEmpty(queryParams)) {
-      watchUrl += "&";
-    } else {
-      watchUrl += "?";
-    }
-
-    watchUrl += "resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true";
-    server.expect().withPath(watchUrl)
+    URLBuilder watchBuilder = new URLUtils.URLBuilder(watchUrl);
+    watchUrl = watchBuilder.addQueryParameter("resourceVersion", startResourceVersion)
+        .addQueryParameter("allowWatchBookmarks", "true")
+        .addQueryParameter("watch", "true")
+        .toString();
+    server.expect()
+        .withPath(watchUrl)
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
         .andEmit(watchEventSupplier.apply(endResourceVersion))
         .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-        .andEmit(outdatedEvent).done().once();
+        .andEmit(outdatedEvent)
+        .done()
+        .once();
   }
 
   private static class TestResourceHandler<T extends HasMetadata> implements ResourceEventHandler<T> {

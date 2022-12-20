@@ -90,7 +90,7 @@ class PodEvictIT {
     // cant evict because only one left
     assertFalse(client.pods().resource(pod1).evict());
     // ensure it really is still up
-    assertTrue(Readiness.getInstance().isReady(client.pods().resource(pod1).fromServer().get()));
+    assertTrue(Readiness.getInstance().isReady(client.pods().resource(pod1).get()));
 
     // create another pod to satisfy PDB
     client.pods().resource(pod3).createOrReplace();

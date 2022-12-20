@@ -43,7 +43,7 @@ class RuntimeClassTest {
     // Given
 
     // When
-    List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-runtimeclass.yml")).get();
+    List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-runtimeclass.yml")).items();
 
     // Then
     assertEquals(1, itemList.size());

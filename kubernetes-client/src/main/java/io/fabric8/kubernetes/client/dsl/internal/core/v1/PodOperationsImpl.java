@@ -325,7 +325,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
    */
   String validateOrDefaultContainerId(String name, Pod pod) {
     if (pod == null) {
-      pod = this.require();
+      pod = this.getItemOrRequireFromServer();
     }
     // spec and container null-checks are not necessary for real k8s clusters, added them to simplify some tests running in the mockserver
     if (pod.getSpec() == null || pod.getSpec().getContainers() == null || pod.getSpec().getContainers().isEmpty()) {

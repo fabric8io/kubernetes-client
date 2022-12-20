@@ -170,7 +170,7 @@ class PersistentVolumeClaimTest {
   @Test
   void testLoadFromFile() {
     PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims()
-        .load(getClass().getResourceAsStream("/test-persistentvolumeclaim.yml")).get();
+        .load(getClass().getResourceAsStream("/test-persistentvolumeclaim.yml")).item();
     assertEquals("task-pv-claim", persistentVolumeClaim.getMetadata().getName());
   }
 

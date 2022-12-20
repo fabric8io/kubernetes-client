@@ -43,7 +43,7 @@ class DeploymentIT {
 
   @Test
   void load() {
-    Deployment aDeployment = client.apps().deployments().load(getClass().getResourceAsStream("/test-deployments.yml")).get();
+    Deployment aDeployment = client.apps().deployments().load(getClass().getResourceAsStream("/test-deployments.yml")).item();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
   }
@@ -83,7 +83,7 @@ class DeploymentIT {
   @Test
   void listFromServer() {
     Deployment deployment1 = client.apps().deployments().withName("deployment-standard").get();
-    List<HasMetadata> resources = client.resourceList(deployment1).fromServer().get();
+    List<HasMetadata> resources = client.resourceList(deployment1).get();
 
     assertNotNull(resources);
     assertEquals(1, resources.size());

@@ -62,7 +62,7 @@ public class CustomResourceV1Example {
       System.out.println("Added three shows");
       shows.list().getItems()
           .forEach(s -> System.out.printf(" - %s%n", s.getSpec().name));
-      final Show theWire = shows.withName("the-wire").fromServer().get();
+      final Show theWire = shows.withName("the-wire").get();
       System.out.printf("The Wire Score is: %s%n", theWire.getSpec().score);
     }
   }

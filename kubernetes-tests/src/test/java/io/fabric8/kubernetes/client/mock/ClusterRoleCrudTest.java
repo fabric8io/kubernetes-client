@@ -154,6 +154,6 @@ class ClusterRoleCrudTest {
 
   @Test
   void testLoadFromFile() {
-    assertNotNull(client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).get());
+    assertNotNull(client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).item());
   }
 }

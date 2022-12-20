@@ -42,7 +42,7 @@ class SecurityContextConstraintsIT {
   void load() {
 
     SecurityContextConstraints loadedSCC = client.securityContextConstraints()
-        .load(getClass().getResourceAsStream("/test-scc.yml")).get();
+        .load(getClass().getResourceAsStream("/test-scc.yml")).item();
 
     assertNotNull(loadedSCC);
     assertEquals("test-scc", loadedSCC.getMetadata().getName());

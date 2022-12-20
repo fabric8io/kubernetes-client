@@ -158,7 +158,12 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private CompletableFuture<L> processList(Set<String> nextKeys, String continueVal) {
     CompletableFuture<L> futureResult = listerWatcher
         .submitList(
-            new ListOptionsBuilder().withLimit(listerWatcher.getLimit()).withContinue(continueVal)
+            new ListOptionsBuilder()
+                // start with 0 - meaning any cached version is fine for the initial listing
+                // but if we've already synced, then we have to get the latest as the version we're on
+                // is no longer valid
+                .withResourceVersion(lastSyncResourceVersion == null && continueVal == null ? "0" : null)
+                .withLimit(listerWatcher.getLimit()).withContinue(continueVal)
                 .build());
 
     return futureResult.thenCompose(result -> {

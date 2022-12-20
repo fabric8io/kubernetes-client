@@ -180,7 +180,7 @@ public class StatefulSetTest {
 
   @Test
   public void testDeleteLoadedResource() {
-    StatefulSet response = client.apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+    StatefulSet response = client.apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).item();
     server.expect()
         .delete()
         .withPath("/apis/apps/v1/namespaces/test/statefulsets/example")
@@ -250,7 +250,7 @@ public class StatefulSetTest {
 
     // list for waiting
     server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/statefulsets?fieldSelector=metadata.name%3Drepl1")
+        .withPath("/apis/apps/v1/namespaces/test/statefulsets?fieldSelector=metadata.name%3Drepl1&resourceVersion=0")
         .andReturn(200,
             new StatefulSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
         .always();
