@@ -24,20 +24,4 @@ public class OkHttpSimultaneousConnectionsTest extends AbstractSimultaneousConne
   protected HttpClient.Factory getHttpClientFactory() {
     return new OkHttpClientFactory();
   }
-
-  @Override
-  public void http1Connections() {
-    // Disabled, fails
-    // Needs a change in the max requests settings and probably in the executor too
-  }
-
-  @Override
-  public void http1WebSocketConnectionsBeforeUpgrade() {
-    // Disabled, fails
-  }
-
-  @Override
-  public void http1WebSocketConnections() {
-    // Disabled, fails
-  }
 }
