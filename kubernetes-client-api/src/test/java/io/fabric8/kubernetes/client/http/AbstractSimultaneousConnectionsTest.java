@@ -25,6 +25,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -92,6 +94,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
 
   @Test
   @DisplayName("Should be able to make 1024 simultaneous HTTP/1.x connections before processing the response")
+  @DisabledOnOs(OS.WINDOWS)
   public void http1Connections() throws Exception {
     final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
     httpServer.createContext("/http", exchange -> {
@@ -119,6 +122,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
 
   @Test
   @DisplayName("Should be able to make 1024 simultaneous HTTP connections before upgrading to WebSocket")
+  @DisabledOnOs(OS.WINDOWS)
   public void http1WebSocketConnectionsBeforeUpgrade() throws Exception {
     final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
     httpServer.createContext("/http", exchange -> {
@@ -143,6 +147,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
 
   @Test
   @DisplayName("Should be able to make 1024 simultaneous upgraded WebSocket connections")
+  @DisabledOnOs(OS.WINDOWS)
   public void http1WebSocketConnections() throws Exception {
     withHttp1();
     final Collection<okhttp3.WebSocket> serverSockets = ConcurrentHashMap.newKeySet();
