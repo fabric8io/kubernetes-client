@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
+import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -55,7 +56,7 @@ class OkHttpClientBuilderImpl
   }
 
   public OkHttpClientImpl initialBuild(okhttp3.OkHttpClient.Builder builder) {
-    // configure the properties main properites
+    // configure the main properties
     if (connectTimeout != null) {
       builder.connectTimeout(this.connectTimeout);
     }
@@ -90,6 +91,14 @@ class OkHttpClientBuilderImpl
     if (preferHttp11) {
       builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
     }
+    Dispatcher dispatcher = new Dispatcher();
+    // websockets and long running http requests count against this and eventually starve
+    // the work that can be done
+    dispatcher.setMaxRequests(Integer.MAX_VALUE);
+    // long running http requests count against this and eventually exhaust
+    // the work that can be done
+    dispatcher.setMaxRequestsPerHost(Integer.MAX_VALUE);
+    builder.dispatcher(dispatcher);
     return derivedBuild(builder);
   }
 
