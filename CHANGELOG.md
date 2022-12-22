@@ -13,6 +13,9 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #3972: deprecated Parameterizable and methods on Serialization accepting parameters - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
+* Fix #3972: OpenShiftClient.load will no longer implicitly process templates.  Use OpenShiftClient.templates().load instead.
+* Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappersSerialization.
 * Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
 * Fix #4633: client.run().withRunConfig was deprecated.  Use withNewRunConfig instead.
 * Fix #4663: Config.maxConcurrentRequests and Config.maxConcurrentRequestsPerHost will no longer be used.  Instead they will default to unlimited for all clients.  Due to the ability of the fabric8 client to start long running requests (either websocket or regular http) and how this is treated by the underlying clients you can easily exhaust these values and enter a state where the client is unresponsive without any additional information on what is occurring.

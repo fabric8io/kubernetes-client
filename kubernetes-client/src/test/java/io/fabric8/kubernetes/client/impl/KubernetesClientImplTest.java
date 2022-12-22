@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
@@ -52,7 +53,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author wangyushuai2@jd.com
@@ -117,13 +117,11 @@ class KubernetesClientImplTest {
   }
 
   @Test
-  void shouldInstantiateClientUsingYaml() {
+  void shouldInstantiateClientUsingYaml() throws Exception {
     File configYml = new File(TEST_CONFIG_YML_FILE);
     try (InputStream is = new FileInputStream(configYml)) {
-      KubernetesClient client = KubernetesClientImpl.fromConfig(is);
+      KubernetesClient client = new KubernetesClientBuilder().withConfig(is).build();
       assertEquals("http://some.url/", client.getMasterUrl().toString());
-    } catch (Exception e) {
-      fail();
     }
   }
 
@@ -131,7 +129,7 @@ class KubernetesClientImplTest {
   void shouldInstantiateClientUsingSerializeDeserialize() {
     KubernetesClientImpl original = new KubernetesClientImpl();
     String json = Serialization.asJson(original.getConfiguration());
-    KubernetesClientImpl copy = KubernetesClientImpl.fromConfig(json);
+    KubernetesClient copy = new KubernetesClientBuilder().withConfig(json).build();
 
     assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
     assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());

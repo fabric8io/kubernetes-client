@@ -411,7 +411,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           return refinedType;
         }
       };
-      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference, getParameters());
+      CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference);
       return futureAnswer.thenApply(l -> {
         updateApiVersion(l);
         return l;
