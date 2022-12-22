@@ -120,8 +120,8 @@ public class JavaGeneratorMojo extends AbstractMojo {
 
       if (!finalDestination.exists()) {
         new File(dest).mkdirs();
-        ReadableByteChannel readableByteChannel = Channels.newChannel(s.openStream());
-        try (FileOutputStream fileOutputStream = new FileOutputStream(finalDestination)) {
+        try (ReadableByteChannel readableByteChannel = Channels.newChannel(s.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(finalDestination)) {
           fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         }
       }
