@@ -24,6 +24,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Paths;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JavaGeneratorMojo extends AbstractMojo {
@@ -35,8 +41,21 @@ public class JavaGeneratorMojo extends AbstractMojo {
    * The input file or directory to be used for generating sources
    *
    */
-  @Parameter(property = "fabric8.java-generator.source", required = true)
+  @Parameter(property = "fabric8.java-generator.source")
   File source;
+
+  /**
+   * The URLs to be used to download CRDs from remote locations
+   */
+  @Parameter(property = "fabric8.java-generator.urls", required = false)
+  String[] urls;
+
+  /**
+   * The Download target folder for CRDs downloaded from remote URLs
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.download-target", defaultValue = "${basedir}/target/manifests")
+  File downloadTarget;
 
   /**
    * The target folder to generate the Java sources
@@ -94,8 +113,32 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.generated-annotations", required = false)
   Boolean generatedAnnotations = null;
 
+  private void downloadFile(String url, String dest) {
+    try {
+      URL s = new URL(url);
+      File finalDestination = Paths.get(dest, new File(s.getFile()).getName()).toFile();
+
+      if (!finalDestination.exists()) {
+        new File(dest).mkdirs();
+        try (ReadableByteChannel readableByteChannel = Channels.newChannel(s.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(finalDestination)) {
+          fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+        }
+      }
+    } catch (IOException e) {
+      throw new IllegalStateException("Error downloading from url: " + url, e);
+    }
+  }
+
   @Override
   public void execute() {
+    if (urls != null && urls.length > 0) {
+      for (String url : urls) {
+        downloadFile(url, downloadTarget.getAbsolutePath());
+      }
+      source = downloadTarget;
+    }
+
     final Config config = new Config(
         enumUppercase,
         prefixStrategy,
