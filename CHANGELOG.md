@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #4184: Add DSL support for creating ConfigMap from file
 
 #### _**Note**_: Breaking changes
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.internal;
+package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -32,11 +32,17 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.Good;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -44,6 +50,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -252,5 +260,77 @@ class KubernetesResourceUtilTest {
         "{\"auths\":{\"http://harbor.inner.com\":{\"password\":\"TestingSecret\",\"auth\":\"U2VjcmV0QWRtaW46VGVzdGluZ1NlY3JldA==\",\"username\":\"SecretAdmin\"}}}",
         header);
     assertEquals("TestSecretName", secret.getMetadata().getName());
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFile_whenFileAndCustomKeyProvided_shouldCreateConfigMapFromFileWithCustomKey()
+      throws IOException {
+    // Given
+    URL fileUrl = getClass().getResource("/configmap-from-file/game.properties");
+    assertThat(fileUrl).isNotNull();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createNewConfigMapFromDirOrFile("test-configmap", "custom-key",
+        fileUrl.getFile());
+
+    // Then
+    assertConfigMapContainsData(configMap, createExpectedEntry("custom-key", Paths.get(fileUrl.getFile())));
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFile_whenFileProvided_shouldCreateConfigMapFromFile() throws IOException {
+    // Given
+    URL fileUrl = getClass().getResource("/configmap-from-file/game.properties");
+    assertThat(fileUrl).isNotNull();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createNewConfigMapFromDirOrFile("test-configmap", null, fileUrl.getFile());
+
+    // Then
+    assertConfigMapContainsData(configMap, createExpectedEntry("game.properties", Paths.get(fileUrl.getFile())));
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFile_whenDirProvided_shouldCreateConfigMapFromDir() throws IOException {
+    // Given
+    URL fileUrl = getClass().getResource("/configmap-from-file");
+    assertThat(fileUrl).isNotNull();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createNewConfigMapFromDirOrFile("test-configmap", null, fileUrl.getFile());
+
+    // Then
+    assertConfigMapContainsData(configMap,
+        createExpectedEntry("game.properties", Paths.get(fileUrl.getFile()).resolve("game.properties")),
+        createExpectedEntry("ui.properties", Paths.get(fileUrl.getFile()).resolve("ui.properties")));
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFile_whenBinaryFileProvided_shouldCreateConfigMapFromFile() throws IOException {
+    // Given
+    URL fileUrl = getClass().getResource("/test.bin");
+    assertThat(fileUrl).isNotNull();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createNewConfigMapFromDirOrFile("test-configmap", null, fileUrl.getFile());
+
+    // Then
+    assertThat(configMap)
+        .extracting(ConfigMap::getBinaryData)
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .contains(entry("test.bin", "wA=="));
+  }
+
+  @SafeVarargs
+  private final void assertConfigMapContainsData(ConfigMap configMap, MapEntry<String, String>... mapEntries) {
+    assertThat(configMap)
+        .extracting(ConfigMap::getData)
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .contains(mapEntries);
+  }
+
+  private MapEntry<String, String> createExpectedEntry(String key, Path filePath) throws IOException {
+    String fileContent = new String(Files.readAllBytes(filePath));
+    return entry(key, fileContent);
   }
 }
