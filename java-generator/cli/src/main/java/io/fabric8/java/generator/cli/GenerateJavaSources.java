@@ -15,8 +15,9 @@
  */
 package io.fabric8.java.generator.cli;
 
-import io.fabric8.java.generator.CRGeneratorRunner;
 import io.fabric8.java.generator.Config;
+import io.fabric8.java.generator.FileJavaGenerator;
+import io.fabric8.java.generator.JavaGenerator;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -73,8 +74,8 @@ public class GenerateJavaSources implements Runnable {
         addExtraAnnotations,
         structure,
         generatedAnnotations);
-    final CRGeneratorRunner runner = new CRGeneratorRunner(config);
-    runner.run(source, target);
+    final JavaGenerator runner = new FileJavaGenerator(config, source);
+    runner.run(target);
   }
 
   public static void main(String[] args) {

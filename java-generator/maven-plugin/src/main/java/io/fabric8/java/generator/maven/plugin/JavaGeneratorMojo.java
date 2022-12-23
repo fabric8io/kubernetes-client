@@ -15,8 +15,9 @@
  */
 package io.fabric8.java.generator.maven.plugin;
 
-import io.fabric8.java.generator.CRGeneratorRunner;
 import io.fabric8.java.generator.Config;
+import io.fabric8.java.generator.FileJavaGenerator;
+import io.fabric8.java.generator.JavaGenerator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -147,8 +148,8 @@ public class JavaGeneratorMojo extends AbstractMojo {
         extraAnnotations,
         codeStructure,
         generatedAnnotations);
-    final CRGeneratorRunner runner = new CRGeneratorRunner(config);
-    runner.run(source, target);
+    final JavaGenerator runner = new FileJavaGenerator(config, source);
+    runner.run(target);
     project.addCompileSourceRoot(target.getAbsolutePath());
   }
 }

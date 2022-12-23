@@ -18,7 +18,7 @@ package io.fabric8.java.generator;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 public class Config {
   public enum CodeStructure {
