@@ -71,7 +71,7 @@ public class CRGeneratorRunner {
     try (FileInputStream fis = new FileInputStream(source)) {
       List<HasMetadata> resources = new ArrayList<>();
 
-      Object deserialized = Serialization.unmarshal(fis, Collections.emptyMap());
+      Object deserialized = Serialization.unmarshal(fis);
       if (deserialized instanceof List) {
         resources.addAll((List<HasMetadata>) deserialized);
       } else {
