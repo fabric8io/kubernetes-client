@@ -18,19 +18,19 @@ package io.fabric8.java.generator.maven.plugin;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.FileJavaGenerator;
 import io.fabric8.java.generator.JavaGenerator;
+import io.fabric8.java.generator.URLJavaGenerator;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JavaGeneratorMojo extends AbstractMojo {
@@ -114,42 +114,39 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.generated-annotations", required = false)
   Boolean generatedAnnotations = null;
 
-  private void downloadFile(String url, String dest) {
-    try {
-      URL s = new URL(url);
-      File finalDestination = Paths.get(dest, new File(s.getFile()).getName()).toFile();
+  @Override
+  public void execute() throws MojoExecutionException {
+    final Config config = Config.builder()
+        .uppercaseEnums(enumUppercase)
+        .prefixStrategy(prefixStrategy)
+        .suffixStrategy(suffixStrategy)
+        .alwaysPreserveUnknownFields(alwaysPreserveUnknown)
+        .objectExtraAnnotations(extraAnnotations)
+        .structure(codeStructure)
+        .generatedAnnotations(generatedAnnotations)
+        .build();
 
-      if (!finalDestination.exists()) {
-        new File(dest).mkdirs();
-        try (ReadableByteChannel readableByteChannel = Channels.newChannel(s.openStream());
-            FileOutputStream fileOutputStream = new FileOutputStream(finalDestination)) {
-          fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+    boolean executed = false;
+    if (urls != null && urls.length > 0) {
+      executed = true;
+      final List<URL> urlList = new ArrayList<>();
+      for (String url : urls) {
+        try {
+          urlList.add(new URL(url));
+        } catch (MalformedURLException e) {
+          throw new MojoExecutionException("URL '" + url + "' is not valid", e);
         }
       }
-    } catch (IOException e) {
-      throw new IllegalStateException("Error downloading from url: " + url, e);
+      new URLJavaGenerator(config, urlList, downloadTarget).run(target);
     }
-  }
-
-  @Override
-  public void execute() {
-    if (urls != null && urls.length > 0) {
-      for (String url : urls) {
-        downloadFile(url, downloadTarget.getAbsolutePath());
-      }
-      source = downloadTarget;
+    if (source != null) {
+      executed = true;
+      final JavaGenerator runner = new FileJavaGenerator(config, source);
+      runner.run(target);
     }
-
-    final Config config = new Config(
-        enumUppercase,
-        prefixStrategy,
-        suffixStrategy,
-        alwaysPreserveUnknown,
-        extraAnnotations,
-        codeStructure,
-        generatedAnnotations);
-    final JavaGenerator runner = new FileJavaGenerator(config, source);
-    runner.run(target);
+    if (!executed) {
+      throw new MojoExecutionException("No source or urls specified");
+    }
     project.addCompileSourceRoot(target.getAbsolutePath());
   }
 }
