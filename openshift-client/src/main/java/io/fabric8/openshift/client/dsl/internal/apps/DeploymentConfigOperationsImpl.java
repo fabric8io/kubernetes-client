@@ -232,11 +232,16 @@ public class DeploymentConfigOperationsImpl
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new DeploymentConfigOperationsImpl(rollingOperationContext.withLogWaitTimeout(logWaitTimeout), context);
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withReadyWaitTimeout(timeout), context);
   }
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
-    Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
+    Integer podLogWaitTimeout = rollingOperationContext.getReadyWaitTimeout();
     List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
         rollingOperationContext,
         deploymentConfig.getMetadata().getUid(), getDeploymentConfigPodLabels(deploymentConfig));
@@ -246,7 +251,7 @@ public class DeploymentConfigOperationsImpl
 
   private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
     for (PodResource podOp : podOps) {
-      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
+      PodOperationUtil.waitUntilReadyOrSucceded(podOp, podLogWaitTimeout);
     }
   }
 

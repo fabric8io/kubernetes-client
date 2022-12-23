@@ -33,12 +33,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -49,11 +51,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -195,11 +197,14 @@ class PodUploadTest {
     final boolean result = fileUploadMethodToTest.apply();
 
     assertThat(result).isTrue();
-    verify(builder, times(1)).uri(argThat(request -> {
-      assertThat(request).hasToString(
-          "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true");
-      return true;
-    }));
+    ArgumentCaptor<URI> captor = ArgumentCaptor.forClass(URI.class);
+    verify(builder, times(2)).uri(captor.capture());
+    assertEquals(
+        "https://openshift.com:8443/api/v1/namespaces/default/pods?fieldSelector=metadata.name%3Dpod&allowWatchBookmarks=true&watch=true",
+        captor.getAllValues().get(0).toString());
+    assertEquals(
+        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true",
+        captor.getAllValues().get(1).toString());
     verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
   }
 
@@ -224,11 +229,14 @@ class PodUploadTest {
     final boolean result = directoryUpload.apply();
 
     assertThat(result).isTrue();
-    verify(builder, times(1)).uri(argThat(request -> {
-      assertThat(request).hasToString(
-          "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%7C%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true");
-      return true;
-    }));
+    ArgumentCaptor<URI> captor = ArgumentCaptor.forClass(URI.class);
+    verify(builder, times(2)).uri(captor.capture());
+    assertEquals(
+        "https://openshift.com:8443/api/v1/namespaces/default/pods?fieldSelector=metadata.name%3Dpod&allowWatchBookmarks=true&watch=true",
+        captor.getAllValues().get(0).toString());
+    assertEquals(
+        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%7C%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true",
+        captor.getAllValues().get(1).toString());
     verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
   }
 

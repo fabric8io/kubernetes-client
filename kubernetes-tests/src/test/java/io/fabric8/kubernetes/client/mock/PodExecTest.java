@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("unused")
 @EnableKubernetesMockClient(crud = true)
@@ -72,13 +73,14 @@ class PodExecTest {
         .createOrReplace();
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods/single-container/exec?command=sleep%201&container=the-single-container")
+        .withPath(
+            "/api/v1/namespaces/test/pods/single-container/exec?command=sleep%201&container=the-single-container&stderr=true")
         .andUpgradeToWebSocket()
         .open()
         .immediately().andEmit(exitZeroEvent())
         .done()
         .always();
-    final ExecWatch result = client.pods().withName("single-container").exec("sleep 1");
+    final ExecWatch result = client.pods().withName("single-container").redirectingError().exec("sleep 1");
     assertThat(result.exitCode().get(1, TimeUnit.SECONDS)).isZero();
   }
 
@@ -100,6 +102,20 @@ class PodExecTest {
   }
 
   @Test
+  void execNoStreams() throws Exception {
+    client.pods().resource(new PodBuilder().withNewMetadata().withName("name").endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("the-first-container")
+        .endContainer()
+        .endSpec()
+        .build())
+        .createOrReplace();
+    PodResource op = client.pods().withName("name");
+    assertThrows(KubernetesClientException.class, () -> op.exec("sleep 1"));
+  }
+
+  @Test
   @DisplayName("With multiple containers, should exec in the first container")
   void withMultipleContainers() throws Exception {
     client.pods().resource(new PodBuilder().withNewMetadata().withName("multiple-containers").endMetadata()
@@ -115,13 +131,14 @@ class PodExecTest {
         .createOrReplace();
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods/multiple-containers/exec?command=sleep%201&container=the-first-container")
+        .withPath(
+            "/api/v1/namespaces/test/pods/multiple-containers/exec?command=sleep%201&container=the-first-container&stderr=true")
         .andUpgradeToWebSocket()
         .open()
         .immediately().andEmit(exitZeroEvent())
         .done()
         .always();
-    final ExecWatch result = client.pods().withName("multiple-containers").exec("sleep 1");
+    final ExecWatch result = client.pods().withName("multiple-containers").redirectingError().exec("sleep 1");
     assertThat(result.exitCode().get(1, TimeUnit.SECONDS)).isZero();
   }
 
@@ -141,13 +158,15 @@ class PodExecTest {
         .createOrReplace();
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods/multiple-containers/exec?command=sleep%201&container=the-second-container")
+        .withPath(
+            "/api/v1/namespaces/test/pods/multiple-containers/exec?command=sleep%201&container=the-second-container&stderr=true")
         .andUpgradeToWebSocket()
         .open()
         .immediately().andEmit(exitZeroEvent())
         .done()
         .always();
-    final ExecWatch result = client.pods().withName("multiple-containers").inContainer("the-second-container").exec("sleep 1");
+    final ExecWatch result = client.pods().withName("multiple-containers").inContainer("the-second-container")
+        .redirectingError().exec("sleep 1");
     assertThat(result.exitCode().get(1, TimeUnit.SECONDS)).isZero();
   }
 

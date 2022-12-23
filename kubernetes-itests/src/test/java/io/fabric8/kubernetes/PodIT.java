@@ -61,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @LoadKubernetesManifests("/pod-it.yml")
 class PodIT {
 
-  private static final int POD_READY_WAIT_IN_SECONDS = 60;
+  private static final int POD_READY_WAIT_IN_MILLIS = 60000;
 
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
@@ -103,14 +103,12 @@ class PodIT {
 
   @Test
   void log() {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-    String log = client.pods().withName("pod-standard").getLog();
+    String log = client.pods().withName("pod-standard").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).getLog();
     assertNotNull(log);
   }
 
   @Test
   void exec() throws Exception {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     final AtomicBoolean closed = new AtomicBoolean();
@@ -144,7 +142,7 @@ class PodIT {
             exitCode[0] = code;
             exitStatus.complete(status);
           }
-        }).exec("sh", "-c", "echo 'hello world!'");
+        }).withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).exec("sh", "-c", "echo 'hello world!'");
     assertThat(exitStatus.get(5, TimeUnit.SECONDS))
         .hasFieldOrPropertyWithValue("status", "Success");
     assertTrue(execLatch.await(5, TimeUnit.SECONDS));
@@ -156,10 +154,10 @@ class PodIT {
 
   @Test
   void execExitCode() throws Exception {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ExecWatch watch = client.pods().withName("pod-standard")
         .writingOutput(out)
+        .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .exec("sh", "-c", "echo 'hello world!'");
     assertEquals(0, watch.exitCode().join());
     assertNotNull("hello world!", out.toString());
@@ -167,13 +165,13 @@ class PodIT {
 
   @Test
   void execInteractiveShell() throws Exception {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ExecWatch watch = client.pods().withName("pod-standard")
         .redirectingInput()
         .redirectingOutput()
         .redirectingError()
         .withTTY()
+        .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .exec("sh", "-i");
 
     InputStreamPumper.pump(watch.getOutput(), baos::write, Executors.newSingleThreadExecutor());
@@ -193,8 +191,6 @@ class PodIT {
 
   @Test
   void attach() throws Exception {
-    client.pods().withName("pod-interactive").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-
     CountDownLatch latch = new CountDownLatch(1);
     ByteArrayOutputStream stdout = new ByteArrayOutputStream();
     AtomicBoolean closed = new AtomicBoolean();
@@ -218,6 +214,7 @@ class PodIT {
             latch.countDown();
           }
         })
+        .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .attach();
 
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
@@ -243,10 +240,11 @@ class PodIT {
 
   @Test
   void readFile() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     try (
-        ExecWatch ignore = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c",
-            "echo 'hello' > /msg");
+        ExecWatch ignore = client.pods().withName("pod-standard").writingOutput(System.out)
+            .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
+            .exec("sh", "-c",
+                "echo 'hello' > /msg");
         InputStream is = client.pods().withName("pod-standard").file("/msg").read()) {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("hello", result);
@@ -255,10 +253,11 @@ class PodIT {
 
   @Test
   void readFileEscapedParams() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     try (
-        ExecWatch watch = client.pods().withName("pod-standard").writingOutput(System.out).exec("sh", "-c",
-            "echo 'H$ll* (W&RLD}' > /msg");
+        ExecWatch watch = client.pods().withName("pod-standard").writingOutput(System.out)
+            .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
+            .exec("sh", "-c",
+                "echo 'H$ll* (W&RLD}' > /msg");
         InputStream is = client.pods().withName("pod-standard").file("/msg").read()) {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("H$ll* (W&RLD}", result);
@@ -267,7 +266,7 @@ class PodIT {
 
   @Test
   void uploadFile() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
     // Wait for resources to get ready
     final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
     Files.write(tmpFile, Collections.singletonList("I'm uploaded"));
@@ -291,7 +290,6 @@ class PodIT {
 
   @Test
   void uploadDir() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
     final String[] files = new String[] { "1", "2", "a", "b", "c" };
     final Path tmpDir = Files.createTempDirectory("uploadDir");
     for (String fileName : files) {
@@ -301,7 +299,7 @@ class PodIT {
 
     PodResource podResource = client.pods().withName("pod-standard");
 
-    podResource.dir("/tmp/uploadDir").upload(tmpDir);
+    podResource.dir("/tmp/uploadDir").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(tmpDir);
 
     for (String fileName : files) {
       try (InputStream checkIs = podResource.file("/tmp/uploadDir/" + fileName).read();
@@ -314,12 +312,10 @@ class PodIT {
 
   @Test
   void copyDir() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-
     final Path tmpDir = Files.createTempDirectory("copyFile");
 
     PodResource podResource = client.pods().withName("pod-standard");
-    podResource.dir("/etc").copy(tmpDir);
+    podResource.dir("/etc").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).copy(tmpDir);
 
     Path msg = tmpDir.resolve("/etc/hosts");
     assertTrue(Files.exists(msg));
@@ -327,12 +323,11 @@ class PodIT {
 
   @Test
   void copyFile() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
-
     final Path tmpDir = Files.createTempDirectory("copyFile");
 
     PodResource podResource = client.pods().withName("pod-standard");
-    podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt");
+    podResource.writingOutput(System.out).withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).exec("sh", "-c",
+        "echo 'hello' > /msg.txt");
     podResource.file("/msg.txt").copy(tmpDir);
 
     Path msg = tmpDir.resolve("msg.txt");
@@ -347,7 +342,7 @@ class PodIT {
 
   @Test
   void listFromServer() {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
     final Pod pod1 = client.pods().withName("pod-standard").get();
     List<HasMetadata> resources = client.resourceList(pod1).get();
 

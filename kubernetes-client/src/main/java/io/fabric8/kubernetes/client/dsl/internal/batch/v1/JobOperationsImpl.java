@@ -169,7 +169,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new JobOperationsImpl(podControllerOperationContext.withLogWaitTimeout(logWaitTimeout), context);
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return new JobOperationsImpl(podControllerOperationContext.withReadyWaitTimeout(timeout), context);
   }
 
   @Override

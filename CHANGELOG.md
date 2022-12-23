@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
 * Fix #4633: provided inline access to all RunConfig builder methods via run().withNewRunConfig()
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
 
