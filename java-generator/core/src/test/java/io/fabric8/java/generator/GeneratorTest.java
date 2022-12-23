@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -45,11 +46,8 @@ class GeneratorTest {
 
   @Test
   void testCorrectInterpolationOfPackage() {
-    // Arrange
-    CRGeneratorRunner runner = new CRGeneratorRunner(defaultConfig);
-
     // Act
-    String packageName = runner.getPackage("test.org");
+    String packageName = groupToPackage("test.org");
 
     // Assert
     assertEquals("org.test", packageName);

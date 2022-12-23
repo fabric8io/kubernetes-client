@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
+import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
 
 class ApprovalTest {
 
@@ -54,7 +55,7 @@ class ApprovalTest {
       CustomResourceDefinition crd = getCRD(crdYaml);
 
       // Act
-      List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
+      List<WritableCRCompilationUnit> writables = runner.generate(crd, groupToPackage("test.org"));
 
       // Assert
       assertThat(writables).hasSize(1);
