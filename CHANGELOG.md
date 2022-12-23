@@ -36,6 +36,7 @@
 
 #### New Features
 * Fix #4758: added support for pod ephemeral container operations
+* Fix #4184: Add DSL support for creating ConfigMap from file
 
 #### _**Note**_: Breaking changes
 

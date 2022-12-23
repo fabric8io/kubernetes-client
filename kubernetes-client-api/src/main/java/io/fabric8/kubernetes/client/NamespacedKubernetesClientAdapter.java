@@ -65,6 +65,7 @@ import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
@@ -361,7 +362,7 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   }
 
   @Override
-  public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
+  public MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps() {
     return getClient().configMaps();
   }
 
