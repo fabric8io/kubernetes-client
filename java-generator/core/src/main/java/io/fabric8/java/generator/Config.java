@@ -15,6 +15,11 @@
  */
 package io.fabric8.java.generator;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
 public class Config {
   public enum CodeStructure {
     FLAT,
@@ -48,9 +53,6 @@ public class Config {
   private Boolean objectExtraAnnotations = DEFAULT_ADD_EXTRA_ANNOTATIONS;
   private CodeStructure structure = DEFAULT_CODE_STRUCTURE;
   private Boolean generatedAnnotations = DEFAULT_ADD_GENERATED_ANNOTATIONS;
-
-  public Config() {
-  }
 
   public Config(
       Boolean uppercaseEnums,
