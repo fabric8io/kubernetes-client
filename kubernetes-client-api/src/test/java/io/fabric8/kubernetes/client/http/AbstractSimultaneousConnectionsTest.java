@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -107,16 +108,19 @@ public abstract class AbstractSimultaneousConnectionsTest {
       }
     });
     try (final HttpClient client = clientBuilder.build()) {
-      final Collection<HttpResponse<AsyncBody>> asyncResponses = ConcurrentHashMap.newKeySet();
+      final Collection<CompletableFuture<HttpResponse<AsyncBody>>> asyncResponses = ConcurrentHashMap.newKeySet();
       final HttpRequest request = client.newHttpRequestBuilder()
           .uri(String.format("http://localhost:%s/http", httpServer.getAddress().getPort()))
           .build();
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
-        client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume())
-            .whenComplete((r, e) -> asyncResponses.add(r));
+        asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
       }
       assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
-      assertThat(asyncResponses).extracting(HttpResponse::code).containsOnly(204);
+      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(10, TimeUnit.SECONDS);
+      assertThat(asyncResponses)
+          .hasSize(MAX_HTTP_1_CONNECTIONS)
+          .extracting(CompletableFuture::join)
+          .extracting(HttpResponse::code).containsOnly(204);
     }
   }
 
