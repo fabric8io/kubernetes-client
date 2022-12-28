@@ -20,14 +20,15 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.FromFileCreatableOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Answers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.time.Duration;
@@ -51,19 +52,16 @@ import static org.mockito.Mockito.when;
 class ConfigMapLockTest {
 
   private KubernetesClient kc;
-  private MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps;
-  private ConfigMapResource configMapResource;
+  private FromFileCreatableOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps;
   private ConfigMapBuilder configMapBuilder;
   private ConfigMapBuilder.MetadataNested<ConfigMapBuilder> metadata;
 
   @BeforeEach
   void setUp() {
     kc = mock(KubernetesClient.class, RETURNS_DEEP_STUBS);
-    configMaps = mock(MixedOperation.class);
-    configMapResource = mock(ConfigMapResource.class);
+    configMaps = mock(FromFileCreatableOperation.class, RETURNS_DEEP_STUBS);
     configMapBuilder = Mockito.mock(ConfigMapBuilder.class, RETURNS_DEEP_STUBS);
     metadata = mock(ConfigMapBuilder.MetadataNested.class, RETURNS_DEEP_STUBS);
-    when(configMaps.withName("name")).thenReturn(configMapResource);
     when(kc.configMaps().inNamespace(anyString())).thenReturn(configMaps);
     when(configMapBuilder.editOrNewMetadata()).thenReturn(metadata);
   }
@@ -104,7 +102,7 @@ class ConfigMapLockTest {
   void getWithExistingConfigMapShouldReturnLeaderElectionRecord() {
     // Given
     final ConfigMap cm = new ConfigMap();
-    when(configMapResource.get()).thenReturn(cm);
+    when(configMaps.withName(ArgumentMatchers.eq("name")).get()).thenReturn(cm);
     cm.setMetadata(new ObjectMetaBuilder()
         .withAnnotations(
             Collections.singletonMap("control-plane.alpha.kubernetes.io/leader",
@@ -127,7 +125,6 @@ class ConfigMapLockTest {
     final LeaderElectionRecord record = new LeaderElectionRecord(
         "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
-    when(configMapResource.get()).thenReturn(new ConfigMap());
     // When
     lock.create(kc, record);
     // Then
@@ -137,6 +134,7 @@ class ConfigMapLockTest {
   @Test
   void updateWithValidLeaderElectionRecordShouldSendPutRequest() throws Exception {
     // Given
+    final Resource<ConfigMap> configMapResource = configMaps.withName("name");
     final ReplaceDeletable<ConfigMap> replaceable = mock(ReplaceDeletable.class, Answers.RETURNS_DEEP_STUBS);
     when(configMapResource.lockResourceVersion(any())).thenReturn(replaceable);
     final ConfigMap configMapInTheCluster = new ConfigMap();

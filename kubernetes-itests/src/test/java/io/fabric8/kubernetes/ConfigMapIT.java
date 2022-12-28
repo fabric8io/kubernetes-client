@@ -25,10 +25,10 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -73,12 +73,12 @@ class ConfigMapIT {
   @Test
   void fromFile() throws IOException {
     // Given
-    URL fileUrl = getClass().getResource("/configmap-sources/buffalo.properties");
-    assertThat(fileUrl).isNotNull();
+    Path path = new File(getClass().getResource("/configmap-sources/buffalo.properties").getFile()).toPath();
 
     // When
-    ConfigMap configMap = client.configMaps().withName("buffalo-from-file")
-        .fromFile(fileUrl.getFile())
+    ConfigMap configMap = client.configMaps()
+        .fromFile("buffaloes", path)
+        .withName("buffalo-from-file")
         .create();
 
     // Then
@@ -86,19 +86,19 @@ class ConfigMapIT {
         .hasFieldOrPropertyWithValue("metadata.name", "buffalo-from-file")
         .extracting(ConfigMap::getData)
         .asInstanceOf(InstanceOfAssertFactories.MAP)
-        .containsEntry("buffalo.properties", new String(Files.readAllBytes(Paths.get(fileUrl.getFile()))));
+        .containsEntry("buffaloes", new String(Files.readAllBytes(path)));
     client.configMaps().withName("buffalo-from-file").delete();
   }
 
   @Test
   void fromDir() throws IOException {
     // Given
-    URL fileUrl = getClass().getResource("/configmap-sources");
-    assertThat(fileUrl).isNotNull();
+    Path path = new File(getClass().getResource("/configmap-sources").getFile()).toPath();
 
     // When
-    ConfigMap configMap = client.configMaps().withName("cattle")
-        .fromFile(fileUrl.getFile())
+    ConfigMap configMap = client.configMaps()
+        .fromFile(path)
+        .withName("cattle")
         .create();
 
     // Then
@@ -107,10 +107,33 @@ class ConfigMapIT {
         .extracting(ConfigMap::getData)
         .asInstanceOf(InstanceOfAssertFactories.MAP)
         .containsEntry("buffalo.properties",
-            new String(Files.readAllBytes(Paths.get(fileUrl.getFile()).resolve("buffalo.properties"))))
+            new String(Files.readAllBytes(path.resolve("buffalo.properties"))))
         .containsEntry("cow.properties",
-            new String(Files.readAllBytes(Paths.get(fileUrl.getFile()).resolve("cow.properties"))));
+            new String(Files.readAllBytes(path.resolve("cow.properties"))));
     client.configMaps().withName("cattle").delete();
+  }
+
+  @Test
+  void fromMultipleFiles() throws IOException {
+    // Given
+    Path p1 = new File(getClass().getResource("/configmap-sources/buffalo.properties").getFile()).toPath();
+    Path p2 = new File(getClass().getResource("/configmap-sources/cow.properties").getFile()).toPath();
+
+    // When
+    ConfigMap configMap = client.configMaps()
+        .fromFile("buffalo-from-file", p1)
+        .fromFile("cow-from-file", p2)
+        .withName("farm")
+        .create();
+
+    // Then
+    assertThat(configMap)
+        .hasFieldOrPropertyWithValue("metadata.name", "farm")
+        .extracting(ConfigMap::getData)
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .containsEntry("buffalo-from-file", new String(Files.readAllBytes(p1)))
+        .containsEntry("cow-from-file", new String(Files.readAllBytes(p2)));
+    client.configMaps().withName("farm").delete();
   }
 
   @Test

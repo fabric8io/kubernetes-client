@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -119,7 +118,7 @@ class NamespacedItemTest {
 
   @Test
   void testOperationNullNamespace() {
-    MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps = this.client.configMaps();
+    MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = this.client.configMaps();
     assertThrows(KubernetesClientException.class, () -> configMaps.inNamespace(null));
   }
 

@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,12 +23,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mockStatic;
@@ -44,50 +43,22 @@ class ConfigMapOperationsImplTest {
   }
 
   @Test
-  void fromFile_withBlankFilePath_shouldThrowException() {
-    // Given
-    ConfigMapResource configMapOp = configMapOperations
-        .inNamespace("default")
-        .withName("game-config");
-
-    // When
-    assertThatIllegalArgumentException()
-        .isThrownBy(() -> configMapOp.fromFile(""))
-        .withMessage("invalid file path provided");
-  }
-
-  @Test
-  void fromFile_withInvalidFilePath_shouldThrowException() {
-    // Given
-    ConfigMapResource configMapOp = configMapOperations
-        .inNamespace("default")
-        .withName("game-config");
-
-    // When
-    assertThatIllegalArgumentException()
-        .isThrownBy(() -> configMapOp.fromFile("invalid-file"))
-        .withMessage("File invalid-file doesn't exist");
-  }
-
-  @Test
-  void fromFile_withValidFilePath_shouldDelegateCallToHelpermethod() {
+  void fromFile_withValidFilePath_shouldDelegateCallToHelperMethod() {
     try (MockedStatic<KubernetesResourceUtil> kubernetesResourceUtilMockedStatic = mockStatic(KubernetesResourceUtil.class)) {
       // Given
-      ConfigMapResource configMapOp = configMapOperations
-          .inNamespace("default")
-          .withName("game-config");
-      ArgumentCaptor<String> filePathCaptor = ArgumentCaptor.forClass(String.class);
-      URL fileUrl = getClass().getResource("/test-config.yml");
-      assertThat(fileUrl).isNotNull();
+      ArgumentCaptor<Path> filePathCaptor = ArgumentCaptor.forClass(Path.class);
+      Path path = new File(getClass().getResource("/test-config.yml").getFile()).toPath();
 
       // When
-      configMapOp.fromFile(fileUrl.getFile());
+      configMapOperations.fromFile("game-config", path);
 
       // Then
       kubernetesResourceUtilMockedStatic
-          .verify(() -> KubernetesResourceUtil.createNewConfigMapFromDirOrFile(eq("game-config"), eq("test-config.yml"),
+          .verify(() -> KubernetesResourceUtil.createNewConfigMapWithEntry(eq("game-config"),
               filePathCaptor.capture()));
-      assertThat(filePathCaptor.getValue()).isEqualTo(fileUrl.getFile());
+      kubernetesResourceUtilMockedStatic
+          .verify(() -> KubernetesResourceUtil.mergeConfigMapData(any(), any()));
+      assertThat(filePathCaptor.getValue()).isEqualTo(path);
     }
   }
 
@@ -96,18 +67,13 @@ class ConfigMapOperationsImplTest {
     try (MockedStatic<KubernetesResourceUtil> kubernetesResourceUtilMockedStatic = mockStatic(KubernetesResourceUtil.class)) {
       // Given
       kubernetesResourceUtilMockedStatic
-          .when(() -> KubernetesResourceUtil.createNewConfigMapFromDirOrFile(any(), any(), any()))
+          .when(() -> KubernetesResourceUtil.createNewConfigMapWithEntry(any(), any()))
           .thenThrow(new IOException("I/O error"));
-      ConfigMapResource configMapOp = configMapOperations
-          .inNamespace("default")
-          .withName("game-config");
-      URL fileUrl = getClass().getResource("/test-config.yml");
-      assertThat(fileUrl).isNotNull();
-      String filePath = fileUrl.getFile();
+      Path path = new File(getClass().getResource("/test-config.yml").getFile()).toPath();
 
       // When + Then
       assertThatExceptionOfType(KubernetesClientException.class)
-          .isThrownBy(() -> configMapOp.fromFile(filePath))
+          .isThrownBy(() -> configMapOperations.fromFile("game-config", path))
           .withMessage("Unable to create ConfigMap game-config");
     }
   }

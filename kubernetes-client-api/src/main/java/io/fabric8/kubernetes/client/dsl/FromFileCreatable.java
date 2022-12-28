@@ -15,12 +15,27 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.nio.file.Path;
+
 public interface FromFileCreatable<T> {
   /**
-   * Create new ConfigMap from a directory or file contents.
+   * Create new resource from a directory or file contents.
+   *
+   * @param key key for Kubernetes resource's .data field
+   * @param dirOrFilePath a file or directory path
+   * @return Resource instance for operations to do with this resource
+   */
+  T fromFile(String key, Path dirOrFilePath);
+
+  /**
+   * Create new resource with data populated with entry with key matching file name
+   * and value matching file contents. If it's a directory, key value pairs would be names
+   * of files present in directory as keys and their contents as value respectively
    *
    * @param dirOrFilePath a file or directory path
    * @return Resource instance for operations to do with this resource
    */
-  T fromFile(String dirOrFilePath);
+  default T fromFile(Path dirOrFilePath) {
+    return fromFile(dirOrFilePath.toFile().getName(), dirOrFilePath);
+  }
 }
