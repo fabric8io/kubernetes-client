@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ConfigMapListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
@@ -74,7 +74,7 @@ class ConfigMapTest {
     server.expect().withPath("/api/v1/namespaces/test/configmaps").andReturn(200,
         new ConfigMapListBuilder().withItems(cm).build()).always();
 
-    MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps = client.configMaps();
+    MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = client.configMaps();
     assertTrue(configMaps.delete().size() == 1);
 
     server.expect().delete().withPath("/api/v1/namespaces/test/configmaps/cfg1").andReturn(200,
