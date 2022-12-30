@@ -686,6 +686,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
                 "github.com/openshift/hive/apis/hive/v1/HiveConfig",
 		"sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageState",
 		"sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageVersionMigration",
+                "sigs.k8s.io/gateway-api/apis/v1alpha2/GatewayClass",
+                "sigs.k8s.io/gateway-api/apis/v1beta1/GatewayClass",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath()+"/"+t.Name())
