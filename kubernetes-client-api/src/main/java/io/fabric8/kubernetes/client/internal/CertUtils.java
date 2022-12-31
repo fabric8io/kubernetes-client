@@ -61,7 +61,7 @@ public class CertUtils {
   private static final String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
   private static final String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
 
-  public static InputStream getInputStreamFromDataOrFile(String data, String file) throws IOException {
+  public static ByteArrayInputStream getInputStreamFromDataOrFile(String data, String file) throws IOException {
     if (data != null) {
       return createInputStreamFromBase64EncodedString(data);
     }
@@ -73,7 +73,7 @@ public class CertUtils {
 
   public static KeyStore createTrustStore(String caCertData, String caCertFile, String trustStoreFile,
       String trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
-    try (InputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile)) {
+    try (ByteArrayInputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile)) {
       return createTrustStore(pemInputStream, trustStoreFile, getTrustStorePassphrase(trustStorePassphrase));
     }
   }
@@ -85,7 +85,8 @@ public class CertUtils {
     return trustStorePassphrase.toCharArray();
   }
 
-  private static KeyStore createTrustStore(InputStream pemInputStream, String trustStoreFile, char[] trustStorePassphrase)
+  private static KeyStore createTrustStore(ByteArrayInputStream pemInputStream, String trustStoreFile,
+      char[] trustStorePassphrase)
       throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
 
     final String trustStoreType = System.getProperty(TRUST_STORE_TYPE_SYSTEM_PROPERTY, KeyStore.getDefaultType());
@@ -99,11 +100,19 @@ public class CertUtils {
       loadDefaultTrustStoreFile(trustStore, trustStorePassphrase);
     }
 
+    CertificateFactory certFactory = CertificateFactory.getInstance("X509");
     while (pemInputStream.available() > 0) {
-      CertificateFactory certFactory = CertificateFactory.getInstance("X509");
-      X509Certificate cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
-      String alias = cert.getSubjectX500Principal().getName() + "_" + cert.getSerialNumber().toString(16);
-      trustStore.setCertificateEntry(alias, cert);
+      try {
+        X509Certificate cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
+        String alias = cert.getSubjectX500Principal().getName() + "_" + cert.getSerialNumber().toString(16);
+        trustStore.setCertificateEntry(alias, cert);
+      } catch (CertificateException e) {
+        if (pemInputStream.available() > 0) {
+          // any remaining input means there is an actual problem with the key contents or file format
+          throw e;
+        }
+        LOG.debug("The trailing entry generated a certificate exception.  More than likely the contents end with comments.", e);
+      }
     }
     return trustStore;
   }
