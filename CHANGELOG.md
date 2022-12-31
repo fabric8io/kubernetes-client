@@ -3,6 +3,7 @@
 ### 6.4-SNAPSHOT
 
 #### Bugs
+* Fix #4650: allowing for comments at the end of certificate files
 
 #### Improvements
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
