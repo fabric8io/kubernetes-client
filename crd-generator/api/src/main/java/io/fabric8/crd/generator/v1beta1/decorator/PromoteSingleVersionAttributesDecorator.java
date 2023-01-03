@@ -21,11 +21,16 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColum
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresourceScale;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresourceStatus;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresourcesBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,13 +41,53 @@ public class PromoteSingleVersionAttributesDecorator
     super(name);
   }
 
+  private CustomResourceSubresources mergeSubresources(CustomResourceSubresources versionSub,
+      CustomResourceSubresources topLevelSub) {
+    if (versionSub == null) {
+      return topLevelSub;
+    } else if (topLevelSub == null) {
+      return versionSub;
+    } else {
+      // merge additional properties
+      Map<String, Object> additionalProperties = new HashMap<>();
+      if (versionSub.getAdditionalProperties() != null) {
+        additionalProperties.putAll(versionSub.getAdditionalProperties());
+      }
+      if (topLevelSub.getAdditionalProperties() != null) {
+        additionalProperties.putAll(topLevelSub.getAdditionalProperties());
+      }
+
+      // merge scale
+      CustomResourceSubresourceScale scale = null;
+      if (topLevelSub.getScale() != null) {
+        scale = topLevelSub.getScale();
+      } else if (versionSub.getScale() != null) {
+        scale = versionSub.getScale();
+      }
+
+      // merge status
+      CustomResourceSubresourceStatus status = null;
+      if (topLevelSub.getStatus() != null) {
+        status = topLevelSub.getStatus();
+      } else if (versionSub.getStatus() != null) {
+        status = versionSub.getStatus();
+      }
+
+      return new CustomResourceSubresourcesBuilder()
+          .withAdditionalProperties(additionalProperties)
+          .withScale(scale)
+          .withStatus(status)
+          .build();
+    }
+  }
+
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
     List<CustomResourceDefinitionVersion> versions = spec.buildVersions();
 
     if (versions.size() == 1) {
       CustomResourceDefinitionVersion version = versions.get(0);
-      spec.withSubresources(version.getSubresources())
+      spec.withSubresources(mergeSubresources(version.getSubresources(), spec.buildSubresources()))
           .withValidation(version.getSchema())
           .withAdditionalPrinterColumns(version.getAdditionalPrinterColumns());
 
@@ -70,7 +115,7 @@ public class PromoteSingleVersionAttributesDecorator
       }
 
       if (hasIdenticalSubresources) {
-        spec.withSubresources(subresources.iterator().next());
+        spec.withSubresources(mergeSubresources(subresources.iterator().next(), spec.buildSubresources()));
       }
 
       if (hasIdenticalAdditionalPrinterColumns) {
