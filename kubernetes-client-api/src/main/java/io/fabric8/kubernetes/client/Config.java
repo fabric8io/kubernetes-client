@@ -612,6 +612,12 @@ public class Config {
     return config;
   }
 
+  /**
+   * Refresh the config from file / env sources.
+   * Any values that the user have programmatically set will be lost.
+   *
+   * @return
+   */
   public Config refresh() {
     final String currentContextName = this.getCurrentContext() != null ? this.getCurrentContext().getName() : null;
     if (this.autoConfigure) {
