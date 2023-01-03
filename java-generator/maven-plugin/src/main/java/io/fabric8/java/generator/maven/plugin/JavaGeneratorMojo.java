@@ -135,9 +135,9 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .packageOverrides(packageOverrides)
         .build();
 
-    boolean executed = false;
+    List<JavaGenerator> runners = new ArrayList<>();
+
     if (urls != null && urls.length > 0) {
-      executed = true;
       final List<URL> urlList = new ArrayList<>();
       for (String url : urls) {
         try {
@@ -146,16 +146,18 @@ public class JavaGeneratorMojo extends AbstractMojo {
           throw new MojoExecutionException("URL '" + url + "' is not valid", e);
         }
       }
-      new URLJavaGenerator(config, urlList, downloadTarget).run(target);
+      runners.add(new URLJavaGenerator(config, urlList, downloadTarget));
     }
+
     if (source != null) {
-      executed = true;
-      final JavaGenerator runner = new FileJavaGenerator(config, source);
-      runner.run(target);
+      runners.add(new FileJavaGenerator(config, source));
     }
-    if (!executed) {
+
+    if (runners.isEmpty()) {
       throw new MojoExecutionException("No source or urls specified");
     }
+
+    runners.forEach(r -> r.run(target));
     project.addCompileSourceRoot(target.getAbsolutePath());
   }
 }
