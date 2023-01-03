@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
@@ -23,8 +24,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -120,7 +123,6 @@ class OpenIDConnectionUtilsTest {
     // Given
     Map<String, Object> discoveryDocument = new HashMap<>();
     discoveryDocument.put(TOKEN_ENDPOINT_PARAM, "https://oauth2.exampleapis.com/token");
-    String accessToken = "some.access.token";
     String clientId = "test-client-id";
     String refreshToken = "test-refresh-token";
     String clientSecret = "test-client-secret";
@@ -131,8 +133,10 @@ class OpenIDConnectionUtilsTest {
             "\"token_type\": \"Bearer\"}");
 
     // When
-    String newAccessToken = OpenIDConnectionUtils.getOIDCProviderTokenEndpointAndRefreshToken(mockClient,
-        discoveryDocument, clientId, refreshToken, clientSecret, accessToken, false).get();
+    String newAccessToken = String.valueOf(OpenIDConnectionUtils.refreshOidcToken(mockClient,
+        clientId, refreshToken, clientSecret,
+        OpenIDConnectionUtils.getParametersFromDiscoveryResponse(discoveryDocument, TOKEN_ENDPOINT_PARAM)).get()
+        .get(ID_TOKEN_PARAM));
 
     // Then
     assertNotNull(newAccessToken);
@@ -149,8 +153,11 @@ class OpenIDConnectionUtilsTest {
     Files.copy(getClass().getResourceAsStream("/test-kubeconfig-oidc"), Paths.get(tempFile.getPath()),
         StandardCopyOption.REPLACE_EXISTING);
 
+    Config theConfig = Config.fromKubeconfig(null, IOHelpers.readFully(new FileInputStream(tempFile), StandardCharsets.UTF_8),
+        tempFile.getAbsolutePath());
+
     // When
-    boolean isPersisted = OpenIDConnectionUtils.persistKubeConfigWithUpdatedToken(tempFile.getAbsolutePath(),
+    boolean isPersisted = OpenIDConnectionUtils.persistKubeConfigWithUpdatedToken(theConfig,
         openIdProviderResponse);
 
     // Then
@@ -176,7 +183,7 @@ class OpenIDConnectionUtilsTest {
     currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
 
     // When
-    String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthProviderConfig, null).get();
+    String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(Config.empty(), currentAuthProviderConfig, null).get();
 
     // Then
     assertEquals("id-token", token);

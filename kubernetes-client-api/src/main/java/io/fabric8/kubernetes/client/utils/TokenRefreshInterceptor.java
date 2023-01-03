@@ -95,7 +95,7 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   private CompletableFuture<String> extractNewAccessTokenFrom(Config newestConfig) {
     if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
-      return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(),
+      return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, newestConfig.getAuthProvider().getConfig(),
           factory.newBuilder());
     }
 

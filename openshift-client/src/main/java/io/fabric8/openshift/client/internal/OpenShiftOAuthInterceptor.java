@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -39,17 +40,18 @@ import io.fabric8.openshift.api.model.ResourceAccessReview;
 import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
@@ -59,6 +61,8 @@ import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
  * config / token provider.
  */
 public class OpenShiftOAuthInterceptor implements Interceptor {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(OpenShiftOAuthInterceptor.class);
 
   private static final String AUTHORIZATION = "Authorization";
   private static final String LOCATION = "Location";
@@ -78,55 +82,61 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private final HttpClient client;
   private final Config config;
-  private final AtomicReference<String> oauthToken;
 
-  public OpenShiftOAuthInterceptor(HttpClient client, Config config, AtomicReference<String> oauthToken) {
+  public OpenShiftOAuthInterceptor(HttpClient client, Config config) {
     this.client = client;
     this.config = config;
-    this.oauthToken = oauthToken;
   }
 
   @Override
   public OpenShiftOAuthInterceptor withConfig(Config config) {
-    // only reuse the token if the username and password are the same
-    return new OpenShiftOAuthInterceptor(client, config, Objects.equals(config.getUsername(), this.config.getUsername())
-        && Objects.equals(config.getPassword(), this.config.getPassword()) ? oauthToken : new AtomicReference<>());
+    return new OpenShiftOAuthInterceptor(client, config);
   }
 
   @Override
   public void before(BasicBuilder builder, HttpHeaders headers) {
-    if (usingUsernameAndPassword()) {
-      String token = oauthToken.get();
-      setAuthHeader(builder, token);
-    } else {
-      setAuthHeader(builder, config.getOauthToken());
-    }
+    setAuthHeader(builder, config.getOauthToken());
   }
 
   @Override
   public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
-    if (shouldProceed(response.request(), response)
-        || (!usingUsernameAndPassword() && config.getOauthTokenProvider() == null)) {
+    if (shouldProceed(response.request(), response)) {
       return CompletableFuture.completedFuture(false);
     }
 
-    if (usingUsernameAndPassword()) {
+    // use the original config, not the refreshed, as the username / password could be programmatically set on the Config or RequestConfig
+    if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
       // TODO: we could make all concurrent refresh requests return the same future
       return authorize().thenApply(t -> {
         if (t != null) {
-          oauthToken.set(t);
+          config.setOauthToken(t);
+          try {
+            // TODO: we may need some protection here or in the persistKubeConfigWithUpdatedAuthInfo
+            // if the user has modified the username via the requestconfig are we writing a valid value?
+            OpenIDConnectionUtils
+                .persistKubeConfigWithUpdatedAuthInfo(config, a -> {
+                  a.setToken(t);
+                });
+          } catch (IOException e) {
+            LOGGER.warn("failure while persisting new token into KUBECONFIG", e);
+          }
+          // If token was obtained, then retry request using the obtained token.
+          return setAuthHeader(builder, t);
         }
 
-        //If token was obtained, then retry request using the obtained token.
-        return setAuthHeader(builder, t);
+        return refreshFromConfig(builder);
       });
-    } else {
-      return CompletableFuture.completedFuture(setAuthHeader(builder, config.getOauthToken()));
     }
+    return CompletableFuture.completedFuture(refreshFromConfig(builder));
   }
 
-  private boolean usingUsernameAndPassword() {
-    return Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword());
+  private boolean refreshFromConfig(Builder builder) {
+    Config newestConfig = config.refresh(); // does some i/o work, but for now we'll consider this non-blocking
+    String oauthToken = newestConfig.getOauthToken();
+    if (oauthToken != null) {
+      config.setOauthToken(oauthToken);
+    }
+    return setAuthHeader(builder, oauthToken);
   }
 
   private boolean setAuthHeader(BasicBuilder builder, String token) {
@@ -197,7 +207,4 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     return response.code() != HTTP_UNAUTHORIZED && response.code() != HTTP_FORBIDDEN;
   }
 
-  AtomicReference<String> getOauthToken() {
-    return oauthToken;
-  }
 }

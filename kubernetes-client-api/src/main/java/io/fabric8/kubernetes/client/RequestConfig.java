@@ -37,7 +37,7 @@ public class RequestConfig {
 
   private String username;
   private String password;
-  private String oauthToken;
+  private volatile String oauthToken;
   private OAuthTokenProvider oauthTokenProvider;
   private String impersonateUsername;
 
