@@ -63,6 +63,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
               .afterFailure(copy, response)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
+                  // before starting another request, make sure the old one is cancelled / closed
+                  response.body().cancel();
                   return consumeBytesDirect(copy.build(), consumer);
                 }
                 return CompletableFuture.completedFuture(response);
