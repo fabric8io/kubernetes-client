@@ -161,7 +161,7 @@ class PortForwarderWebsocketListenerTest {
     verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
     assertThat(outputContent.toString()).isEmpty();
     assertThat(listener.errorOccurred()).isTrue();
-    assertThat(listener.getServerThrowables()).isEmpty();
+    assertThat(listener.getServerThrowables()).isNotEmpty();
     assertThat(in.isOpen()).isFalse();
     assertThat(out.isOpen()).isFalse();
   }
@@ -210,7 +210,8 @@ class PortForwarderWebsocketListenerTest {
       verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
       assertThat(outputContent.toString()).isEmpty();
       assertThat(listener.errorOccurred()).isTrue();
-      verify(logger).error("Received a wrong channel from the remote socket: {}", (byte) 5);
+      assertThat(listener.getServerThrowables().iterator().next().getMessage())
+          .isEqualTo("Received a wrong channel from the remote socket: 5");
     }
 
   }
