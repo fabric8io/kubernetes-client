@@ -85,6 +85,6 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
 
     @com.fasterxml.jackson.annotation.JsonAnySetter()
     public void setAdditionalProperty(String key, Object value) {
-        this.additionalProperties.put(key, value);;
+        this.additionalProperties.put(key, value);
     }
 }

@@ -223,7 +223,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   new Name(
                       "com.fasterxml.jackson.annotation.JsonPropertyDescription"),
                   new StringLiteralExpr(
-                      prop.getDescription().replace("\"", "\\\""))));
+                      StringEscapeUtils.escapeJava(prop.getDescription()))));
         }
 
         if (!prop.isNullable) {
@@ -290,7 +290,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       additionalSetter.addParameter("String", "key");
       additionalSetter.addParameter("Object", "value");
       additionalSetter
-          .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value);")));
+          .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value)")));
     }
 
     buffer.add(new GeneratorResult.ClassResult(this.className, cu));

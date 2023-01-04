@@ -66,6 +66,7 @@ class CompilationTest {
         Arguments.of("kamelet-crd.yml", 16),
         Arguments.of("jokerequests-crd.yml", 3),
         Arguments.of("cert-manager-crd.yml", 5),
+        Arguments.of("camel-integrationplatforms-crd.yaml", 192),
         Arguments.of("two-crds.yml", 6),
         Arguments.of("folder", 6));
   }
