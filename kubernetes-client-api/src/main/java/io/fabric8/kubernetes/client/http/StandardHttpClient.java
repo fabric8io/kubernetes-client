@@ -49,14 +49,14 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, Consumer<List<ByteBuffer>> consumer) {
     StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
     StandardHttpRequest.Builder copy = standardHttpRequest.newBuilder();
-    for (Interceptor interceptor : builder.interceptors.values()) {
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
       Interceptor.useConfig(builder.requestConfig).apply(interceptor).before(copy, standardHttpRequest);
       standardHttpRequest = copy.build();
     }
 
     CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(standardHttpRequest, consumer);
 
-    for (Interceptor interceptor : builder.interceptors.values()) {
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (!HttpResponse.isSuccessful(response.code())) {
           return Interceptor.useConfig(builder.requestConfig).apply(interceptor)
@@ -72,7 +72,18 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       });
     }
 
-    return cf;
+    final CompletableFuture<HttpResponse<AsyncBody>> result = new CompletableFuture<>();
+    cf.whenComplete((r, t) -> {
+      if (t != null) {
+        result.completeExceptionally(t);
+      } else {
+        // if already completed, take responsibility to proactively close
+        if (!result.complete(r)) {
+          r.body().cancel();
+        }
+      }
+    });
+    return result;
   }
 
   @Override
@@ -124,7 +135,10 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         if (r.wshse != null) {
           result.completeExceptionally(r.wshse);
         } else {
-          result.complete(r.webSocket);
+          // if already completed, take responsibility to proactively close
+          if (!result.complete(r.webSocket)) {
+            r.webSocket.sendClose(1000, null);
+          }
         }
       } else {
         // shouldn't happen

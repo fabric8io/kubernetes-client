@@ -3,6 +3,7 @@
 ### 6.4-SNAPSHOT
 
 #### Bugs
+* Fix #4729: ensuring completablefuture cancel will close / cancel the underlying resource
 
 #### Improvements
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
