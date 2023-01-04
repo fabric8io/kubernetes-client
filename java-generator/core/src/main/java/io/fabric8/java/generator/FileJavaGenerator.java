@@ -74,30 +74,36 @@ public class FileJavaGenerator implements JavaGenerator {
 
   private void runOnSingleSource(File source, File basePath) {
     try (FileInputStream fis = new FileInputStream(source)) {
-      List<HasMetadata> resources = new ArrayList<>();
+      List<Object> resources = new ArrayList<>();
 
       Object deserialized = Serialization.unmarshal(fis);
       if (deserialized instanceof List) {
-        resources.addAll((List<HasMetadata>) deserialized);
+        resources.addAll((List<Object>) deserialized);
       } else {
-        resources.add((CustomResourceDefinition) deserialized);
+        resources.add(deserialized);
       }
 
       resources.parallelStream()
           .forEach(
-              resource -> {
-                if (resource.getKind()
-                    .toLowerCase(Locale.ROOT)
-                    .equals("customresourcedefinition")) {
-                  CustomResourceDefinition crd = (CustomResourceDefinition) resource;
+              rawResource -> {
+                if (rawResource != null && rawResource instanceof HasMetadata) {
+                  final HasMetadata resource = (HasMetadata) rawResource;
 
-                  final String basePackage = groupToPackage(crd.getSpec().getGroup());
-                  List<WritableCRCompilationUnit> writables = crGeneratorRunner.generate(crd, basePackage);
+                  if (resource != null && resource.getKind()
+                      .toLowerCase(Locale.ROOT)
+                      .equals("customresourcedefinition")) {
+                    CustomResourceDefinition crd = (CustomResourceDefinition) resource;
 
-                  writables.parallelStream()
-                      .forEach(w -> w.writeAllJavaClasses(basePath, basePackage));
+                    final String basePackage = groupToPackage(crd.getSpec().getGroup());
+                    List<WritableCRCompilationUnit> writables = crGeneratorRunner.generate(crd, basePackage);
+
+                    writables.parallelStream()
+                        .forEach(w -> w.writeAllJavaClasses(basePath, basePackage));
+                  } else {
+                    LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
+                  }
                 } else {
-                  LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
+                  LOGGER.warn("Not generating nothing for unrecognized resource: {}", Serialization.asYaml(rawResource));
                 }
               });
     } catch (FileNotFoundException e) {
