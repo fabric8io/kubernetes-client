@@ -1,0 +1,3151 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
+  labels:
+    app: camel-k
+  name: integrationplatforms.camel.apache.org
+spec:
+  group: camel.apache.org
+  names:
+    categories:
+    - kamel
+    - camel
+    kind: IntegrationPlatform
+    listKind: IntegrationPlatformList
+    plural: integrationplatforms
+    shortNames:
+    - ip
+    singular: integrationplatform
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The integration platform phase
+      jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: IntegrationPlatform is the resource used to drive the Camel K
+          operator behavior. It defines the behavior of all Custom Resources (`IntegrationKit`,
+          `Integration`, `Kamelet`) in the given namespace. When the Camel K operator
+          is installed in `global` mode, you will need to specify an `IntegrationPlatform`
+          in each namespace where you want the Camel K operator to be executed
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IntegrationPlatformSpec defines the desired state of IntegrationPlatform
+            properties:
+              build:
+                description: specify how to build the Integration/IntegrationKits
+                properties:
+                  PublishStrategyOptions:
+                    additionalProperties:
+                      type: string
+                    description: Generic options that can used by each publish strategy
+                    type: object
+                  baseImage:
+                    description: a base image that can be used as base layer for all
+                      images. It can be useful if you want to provide some custom
+                      base image with further utility softwares
+                    type: string
+                  buildStrategy:
+                    description: the strategy to adopt for building an Integration
+                      base image
+                    enum:
+                    - routine
+                    - pod
+                    type: string
+                  maven:
+                    description: Maven configuration used to build the Camel/Camel-Quarkus
+                      applications
+                    properties:
+                      caSecrets:
+                        description: The Secrets name and key, containing the CA certificate(s)
+                          used to connect to remote Maven repositories. It can contain
+                          X.509 certificates, and PKCS#7 formatted certificate chains.
+                          A JKS formatted keystore is automatically created to store
+                          the CA certificate(s), and configured to be used as a trusted
+                          certificate(s) by the Maven commands. Note that the root
+                          CA certificates are also imported into the created keystore.
+                        items:
+                          description: SecretKeySelector selects a key of a Secret.
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?'
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must
+                                be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                        type: array
+                      cliOptions:
+                        description: The CLI options that are appended to the list
+                          of arguments for Maven commands, e.g., `-V,--no-transfer-progress,-Dstyle.color=never`.
+                          See https://maven.apache.org/ref/3.8.4/maven-embedder/cli.html.
+                        items:
+                          type: string
+                        type: array
+                      extension:
+                        description: The Maven build extensions. See https://maven.apache.org/guides/mini/guide-using-extensions.html.
+                        items:
+                          description: MavenArtifact defines a GAV (Group:Artifact:Version)
+                            Maven artifact
+                          properties:
+                            artifactId:
+                              description: Maven Artifact
+                              type: string
+                            groupId:
+                              description: Maven Group
+                              type: string
+                            version:
+                              description: Maven Version
+                              type: string
+                          required:
+                          - artifactId
+                          - groupId
+                          type: object
+                        type: array
+                      localRepository:
+                        description: The path of the local Maven repository.
+                        type: string
+                      properties:
+                        additionalProperties:
+                          type: string
+                        description: The Maven properties.
+                        type: object
+                      settings:
+                        description: A reference to the ConfigMap or Secret key that
+                          contains the Maven settings.
+                        properties:
+                          configMapKeyRef:
+                            description: Selects a key of a ConfigMap.
+                            properties:
+                              key:
+                                description: The key to select.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the ConfigMap or its
+                                  key must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                          secretKeyRef:
+                            description: Selects a key of a secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                        type: object
+                      settingsSecurity:
+                        description: A reference to the ConfigMap or Secret key that
+                          contains the security of the Maven settings.
+                        properties:
+                          configMapKeyRef:
+                            description: Selects a key of a ConfigMap.
+                            properties:
+                              key:
+                                description: The key to select.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the ConfigMap or its
+                                  key must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                          secretKeyRef:
+                            description: Selects a key of a secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  publishStrategy:
+                    description: the strategy to adopt for publishing an Integration
+                      base image
+                    type: string
+                  registry:
+                    description: the image registry used to push/pull Integration
+                      images
+                    properties:
+                      address:
+                        description: the URI to access
+                        type: string
+                      ca:
+                        description: the configmap which stores the Certificate Authority
+                        type: string
+                      insecure:
+                        description: if the container registry is insecure (ie, http
+                          only)
+                        type: boolean
+                      organization:
+                        description: the registry organization
+                        type: string
+                      secret:
+                        description: the secret where credentials are stored
+                        type: string
+                    type: object
+                  runtimeProvider:
+                    description: the runtime used. Likely Camel Quarkus (we used to
+                      have main runtime which has been discontinued since version
+                      1.5)
+                    type: string
+                  runtimeVersion:
+                    description: the Camel K Runtime dependency version
+                    type: string
+                  timeout:
+                    description: how much time to wait before time out the build process
+                    type: string
+                type: object
+              cluster:
+                description: what kind of cluster you're running (ie, plain Kubernetes
+                  or OpenShift)
+                type: string
+              configuration:
+                description: 'Deprecated: Use camel trait (camel.properties) to manage
+                  properties Use mount trait (mount.configs) to manage configs Use
+                  mount trait (mount.resources) to manage resources Use mount trait
+                  (mount.volumes) to manage volumes list of configuration properties
+                  to be attached to all the Integration/IntegrationKits built from
+                  this IntegrationPlatform'
+                items:
+                  description: ConfigurationSpec represents a generic configuration
+                    specification
+                  properties:
+                    type:
+                      description: 'represents the type of configuration, ie: property,
+                        configmap, secret, ...'
+                      type: string
+                    value:
+                      description: the value to assign to the configuration (syntax
+                        may vary depending on the `Type`)
+                      type: string
+                  required:
+                  - type
+                  - value
+                  type: object
+                type: array
+              kamelet:
+                description: configuration to be executed to all Kamelets controlled
+                  by this IntegrationPlatform
+                properties:
+                  repositories:
+                    description: remote repository used to retrieve Kamelet catalog
+                    items:
+                      description: IntegrationPlatformKameletRepositorySpec defines
+                        the location of the Kamelet catalog to use
+                      properties:
+                        uri:
+                          description: the remote repository in the format github:ORG/REPO/PATH_TO_KAMELETS_FOLDER
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              profile:
+                description: the profile you wish to use. It will apply certain traits
+                  which are required by the specific profile chosen. It usually relates
+                  the Cluster with the optional definition of special profiles (ie,
+                  Knative)
+                type: string
+              traits:
+                description: list of traits to be executed for all the Integration/IntegrationKits
+                  built from this IntegrationPlatform
+                properties:
+                  3scale:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  addons:
+                    additionalProperties:
+                      description: AddonTrait represents the configuration of an addon
+                        trait
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    description: The extension point with addon traits
+                    type: object
+                  affinity:
+                    description: The configuration of Affinity trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      nodeAffinityLabels:
+                        description: Defines a set of nodes the integration pod(s)
+                          are eligible to be scheduled on, based on labels on the
+                          node.
+                        items:
+                          type: string
+                        type: array
+                      podAffinity:
+                        description: Always co-locates multiple replicas of the integration
+                          in the same node (default *false*).
+                        type: boolean
+                      podAffinityLabels:
+                        description: Defines a set of pods (namely those matching
+                          the label selector, relative to the given namespace) that
+                          the integration pod(s) should be co-located with.
+                        items:
+                          type: string
+                        type: array
+                      podAntiAffinity:
+                        description: Never co-locates multiple replicas of the integration
+                          in the same node (default *false*).
+                        type: boolean
+                      podAntiAffinityLabels:
+                        description: Defines a set of pods (namely those matching
+                          the label selector, relative to the given namespace) that
+                          the integration pod(s) should not be co-located with.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  builder:
+                    description: The configuration of Builder trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      properties:
+                        description: A list of properties to be provided to the build
+                          task
+                        items:
+                          type: string
+                        type: array
+                      verbose:
+                        description: Enable verbose logging on build components that
+                          support it (e.g. Kaniko build pod).
+                        type: boolean
+                    type: object
+                  camel:
+                    description: The configuration of Camel trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      properties:
+                        description: A list of properties to be provided to the Integration
+                          runtime
+                        items:
+                          type: string
+                        type: array
+                      runtimeVersion:
+                        description: The camel-k-runtime version to use for the integration.
+                          It overrides the default version set in the Integration
+                          Platform.
+                        type: string
+                    type: object
+                  container:
+                    description: The configuration of Container trait
+                    properties:
+                      auto:
+                        description: To automatically enable the trait
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      expose:
+                        description: Can be used to enable/disable exposure via kubernetes
+                          Service.
+                        type: boolean
+                      image:
+                        description: The main container image
+                        type: string
+                      imagePullPolicy:
+                        description: 'The pull policy: Always|Never|IfNotPresent'
+                        enum:
+                        - Always
+                        - Never
+                        - IfNotPresent
+                        type: string
+                      limitCPU:
+                        description: The maximum amount of CPU required.
+                        type: string
+                      limitMemory:
+                        description: The maximum amount of memory required.
+                        type: string
+                      name:
+                        description: The main container name. It's named `integration`
+                          by default.
+                        type: string
+                      port:
+                        description: To configure a different port exposed by the
+                          container (default `8080`).
+                        type: integer
+                      portName:
+                        description: To configure a different port name for the port
+                          exposed by the container. It defaults to `http` only when
+                          the `expose` parameter is true.
+                        type: string
+                      requestCPU:
+                        description: The minimum amount of CPU required.
+                        type: string
+                      requestMemory:
+                        description: The minimum amount of memory required.
+                        type: string
+                      servicePort:
+                        description: To configure under which service port the container
+                          port is to be exposed (default `80`).
+                        type: integer
+                      servicePortName:
+                        description: To configure under which service port name the
+                          container port is to be exposed (default `http`).
+                        type: string
+                    type: object
+                  cron:
+                    description: The configuration of Cron trait
+                    properties:
+                      activeDeadlineSeconds:
+                        description: Specifies the duration in seconds, relative to
+                          the start time, that the job may be continuously active
+                          before it is considered to be failed. It defaults to 60s.
+                        format: int64
+                        type: integer
+                      auto:
+                        description: "Automatically deploy the integration as CronJob
+                          when all routes are either starting from a periodic consumer
+                          (only `cron`, `timer` and `quartz` are supported) or a passive
+                          consumer (e.g. `direct` is a passive consumer). \n It's
+                          required that all periodic consumers have the same period,
+                          and it can be expressed as cron schedule (e.g. `1m` can
+                          be expressed as `0/1 * * * *`, while `35m` or `50s` cannot)."
+                        type: boolean
+                      backoffLimit:
+                        description: Specifies the number of retries before marking
+                          the job failed. It defaults to 2.
+                        format: int32
+                        type: integer
+                      components:
+                        description: "A comma separated list of the Camel components
+                          that need to be customized in order for them to work when
+                          the schedule is triggered externally by Kubernetes. A specific
+                          customizer is activated for each specified component. E.g.
+                          for the `timer` component, the `cron-timer` customizer is
+                          activated (it's present in the `org.apache.camel.k:camel-k-cron`
+                          library). \n Supported components are currently: `cron`,
+                          `timer` and `quartz`."
+                        type: string
+                      concurrencyPolicy:
+                        description: 'Specifies how to treat concurrent executions
+                          of a Job. Valid values are: - "Allow": allows CronJobs to
+                          run concurrently; - "Forbid" (default): forbids concurrent
+                          runs, skipping next run if previous run hasn''t finished
+                          yet; - "Replace": cancels currently running job and replaces
+                          it with a new one'
+                        enum:
+                        - Allow
+                        - Forbid
+                        - Replace
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      fallback:
+                        description: Use the default Camel implementation of the `cron`
+                          endpoint (`quartz`) instead of trying to materialize the
+                          integration as Kubernetes CronJob.
+                        type: boolean
+                      schedule:
+                        description: The CronJob schedule for the whole integration.
+                          If multiple routes are declared, they must have the same
+                          schedule for this mechanism to work correctly.
+                        type: string
+                      startingDeadlineSeconds:
+                        description: Optional deadline in seconds for starting the
+                          job if it misses scheduled time for any reason.  Missed
+                          jobs executions will be counted as failed ones.
+                        format: int64
+                        type: integer
+                    type: object
+                  dependencies:
+                    description: The configuration of Dependencies trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  deployer:
+                    description: The configuration of Deployer trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      kind:
+                        description: Allows to explicitly select the desired deployment
+                          kind between `deployment`, `cron-job` or `knative-service`
+                          when creating the resources for running the integration.
+                        enum:
+                        - deployment
+                        - cron-job
+                        - knative-service
+                        type: string
+                      useSSA:
+                        description: Use server-side apply to update the owned resources
+                          (default `true`). Note that it automatically falls back
+                          to client-side patching, if SSA is not available, e.g.,
+                          on old Kubernetes clusters.
+                        type: boolean
+                    type: object
+                  deployment:
+                    description: The configuration of Deployment trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      progressDeadlineSeconds:
+                        description: The maximum time in seconds for the deployment
+                          to make progress before it is considered to be failed. It
+                          defaults to 60s.
+                        format: int32
+                        type: integer
+                      rollingUpdateMaxSurge:
+                        description: 'The maximum number of pods that can be scheduled
+                          above the desired number of pods. Value can be an absolute
+                          number (ex: 5) or a percentage of desired pods (ex: 10%).
+                          This can not be 0 if MaxUnavailable is 0. Absolute number
+                          is calculated from percentage by rounding up. Defaults to
+                          25%.'
+                        type: integer
+                      rollingUpdateMaxUnavailable:
+                        description: 'The maximum number of pods that can be unavailable
+                          during the update. Value can be an absolute number (ex:
+                          5) or a percentage of desired pods (ex: 10%). Absolute number
+                          is calculated from percentage by rounding down. This can
+                          not be 0 if MaxSurge is 0. Defaults to 25%.'
+                        type: integer
+                      strategy:
+                        description: The deployment strategy to use to replace existing
+                          pods with new ones.
+                        enum:
+                        - Recreate
+                        - RollingUpdate
+                        type: string
+                    type: object
+                  environment:
+                    description: The configuration of Environment trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      containerMeta:
+                        description: Enables injection of `NAMESPACE` and `POD_NAME`
+                          environment variables (default `true`)
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      httpProxy:
+                        description: Propagates the `HTTP_PROXY`, `HTTPS_PROXY` and
+                          `NO_PROXY` environment variables (default `true`)
+                        type: boolean
+                      vars:
+                        description: A list of environment variables to be added to
+                          the integration container. The syntax is KEY=VALUE, e.g.,
+                          `MY_VAR="my value"`. These take precedence over the previously
+                          defined environment variables.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  error-handler:
+                    description: The configuration of Error Handler trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      ref:
+                        description: The error handler ref name provided or found
+                          in application properties
+                        type: string
+                    type: object
+                  gc:
+                    description: The configuration of GC trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      discoveryCache:
+                        description: 'Discovery client cache to be used, either `disabled`,
+                          `disk` or `memory` (default `memory`). Deprecated: to be
+                          removed from trait configuration.'
+                        enum:
+                        - disabled
+                        - disk
+                        - memory
+                        type: string
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  health:
+                    description: The configuration of Health trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      livenessFailureThreshold:
+                        description: Minimum consecutive failures for the liveness
+                          probe to be considered failed after having succeeded.
+                        format: int32
+                        type: integer
+                      livenessInitialDelay:
+                        description: Number of seconds after the container has started
+                          before the liveness probe is initiated.
+                        format: int32
+                        type: integer
+                      livenessPeriod:
+                        description: How often to perform the liveness probe.
+                        format: int32
+                        type: integer
+                      livenessProbeEnabled:
+                        description: Configures the liveness probe for the integration
+                          container (default `false`).
+                        type: boolean
+                      livenessScheme:
+                        description: Scheme to use when connecting to the liveness
+                          probe (default `HTTP`).
+                        type: string
+                      livenessSuccessThreshold:
+                        description: Minimum consecutive successes for the liveness
+                          probe to be considered successful after having failed.
+                        format: int32
+                        type: integer
+                      livenessTimeout:
+                        description: Number of seconds after which the liveness probe
+                          times out.
+                        format: int32
+                        type: integer
+                      readinessFailureThreshold:
+                        description: Minimum consecutive failures for the readiness
+                          probe to be considered failed after having succeeded.
+                        format: int32
+                        type: integer
+                      readinessInitialDelay:
+                        description: Number of seconds after the container has started
+                          before the readiness probe is initiated.
+                        format: int32
+                        type: integer
+                      readinessPeriod:
+                        description: How often to perform the readiness probe.
+                        format: int32
+                        type: integer
+                      readinessProbeEnabled:
+                        description: Configures the readiness probe for the integration
+                          container (default `true`).
+                        type: boolean
+                      readinessScheme:
+                        description: Scheme to use when connecting to the readiness
+                          probe (default `HTTP`).
+                        type: string
+                      readinessSuccessThreshold:
+                        description: Minimum consecutive successes for the readiness
+                          probe to be considered successful after having failed.
+                        format: int32
+                        type: integer
+                      readinessTimeout:
+                        description: Number of seconds after which the readiness probe
+                          times out.
+                        format: int32
+                        type: integer
+                    type: object
+                  ingress:
+                    description: The configuration of Ingress trait
+                    properties:
+                      auto:
+                        description: To automatically add an ingress whenever the
+                          integration uses an HTTP endpoint consumer.
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      host:
+                        description: To configure the host exposed by the ingress.
+                        type: string
+                    type: object
+                  istio:
+                    description: The configuration of Istio trait
+                    properties:
+                      allow:
+                        description: Configures a (comma-separated) list of CIDR subnets
+                          that should not be intercepted by the Istio proxy (`10.0.0.0/8,172.16.0.0/12,192.168.0.0/16`
+                          by default).
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      inject:
+                        description: Forces the value for labels `sidecar.istio.io/inject`.
+                          By default the label is set to `true` on deployment and
+                          not set on Knative Service.
+                        type: boolean
+                    type: object
+                  jolokia:
+                    description: The configuration of Jolokia trait
+                    properties:
+                      CACert:
+                        description: The PEM encoded CA certification file path, used
+                          to verify client certificates, applicable when `protocol`
+                          is `https` and `use-ssl-client-authentication` is `true`
+                          (default `/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt`
+                          for OpenShift).
+                        type: string
+                      clientPrincipal:
+                        description: The principal(s) which must be given in a client
+                          certificate to allow access to the Jolokia endpoint, applicable
+                          when `protocol` is `https` and `use-ssl-client-authentication`
+                          is `true` (default `clientPrincipal=cn=system:master-proxy`,
+                          `cn=hawtio-online.hawtio.svc` and `cn=fuse-console.fuse.svc`
+                          for OpenShift).
+                        items:
+                          type: string
+                        type: array
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      discoveryEnabled:
+                        description: Listen for multicast requests (default `false`)
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      extendedClientCheck:
+                        description: Mandate the client certificate contains a client
+                          flag in the extended key usage section, applicable when
+                          `protocol` is `https` and `use-ssl-client-authentication`
+                          is `true` (default `true` for OpenShift).
+                        type: boolean
+                      host:
+                        description: The Host address to which the Jolokia agent should
+                          bind to. If `"\*"` or `"0.0.0.0"` is given, the servers
+                          binds to every network interface (default `"*"`).
+                        type: string
+                      options:
+                        description: A list of additional Jolokia options as defined
+                          in https://jolokia.org/reference/html/agents.html#agent-jvm-config[JVM
+                          agent configuration options]
+                        items:
+                          type: string
+                        type: array
+                      password:
+                        description: The password used for authentication, applicable
+                          when the `user` option is set.
+                        type: string
+                      port:
+                        description: The Jolokia endpoint port (default `8778`).
+                        type: integer
+                      protocol:
+                        description: The protocol to use, either `http` or `https`
+                          (default `https` for OpenShift)
+                        type: string
+                      useSSLClientAuthentication:
+                        description: Whether client certificates should be used for
+                          authentication (default `true` for OpenShift).
+                        type: boolean
+                      user:
+                        description: The user to be used for authentication
+                        type: string
+                    type: object
+                  jvm:
+                    description: The configuration of JVM trait
+                    properties:
+                      classpath:
+                        description: Additional JVM classpath (use `Linux` classpath
+                          separator)
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      debug:
+                        description: Activates remote debugging, so that a debugger
+                          can be attached to the JVM, e.g., using port-forwarding
+                        type: boolean
+                      debugAddress:
+                        description: Transport address at which to listen for the
+                          newly launched JVM (default `*:5005`)
+                        type: string
+                      debugSuspend:
+                        description: Suspends the target JVM immediately before the
+                          main class is loaded
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      options:
+                        description: A list of JVM options
+                        items:
+                          type: string
+                        type: array
+                      printCommand:
+                        description: Prints the command used the start the JVM in
+                          the container logs (default `true`)
+                        type: boolean
+                    type: object
+                  kamelets:
+                    description: The configuration of Kamelets trait
+                    properties:
+                      auto:
+                        description: Automatically inject all referenced Kamelets
+                          and their default configuration (enabled by default)
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      list:
+                        description: Comma separated list of Kamelet names to load
+                          into the current integration
+                        type: string
+                    type: object
+                  keda:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  knative:
+                    description: The configuration of Knative trait
+                    properties:
+                      auto:
+                        description: Enable automatic discovery of all trait properties.
+                        type: boolean
+                      channelSinks:
+                        description: List of channels used as destination of integration
+                          routes. Can contain simple channel names or full Camel URIs.
+                        items:
+                          type: string
+                        type: array
+                      channelSources:
+                        description: List of channels used as source of integration
+                          routes. Can contain simple channel names or full Camel URIs.
+                        items:
+                          type: string
+                        type: array
+                      config:
+                        description: Can be used to inject a Knative complete configuration
+                          in JSON format.
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      endpointSinks:
+                        description: List of endpoints used as destination of integration
+                          routes. Can contain simple endpoint names or full Camel
+                          URIs.
+                        items:
+                          type: string
+                        type: array
+                      endpointSources:
+                        description: List of channels used as source of integration
+                          routes.
+                        items:
+                          type: string
+                        type: array
+                      eventSinks:
+                        description: List of event types that the integration will
+                          produce. Can contain simple event types or full Camel URIs
+                          (to use a specific broker).
+                        items:
+                          type: string
+                        type: array
+                      eventSources:
+                        description: List of event types that the integration will
+                          be subscribed to. Can contain simple event types or full
+                          Camel URIs (to use a specific broker different from "default").
+                        items:
+                          type: string
+                        type: array
+                      filterSourceChannels:
+                        description: Enables filtering on events based on the header
+                          "ce-knativehistory". Since this header has been removed
+                          in newer versions of Knative, filtering is disabled by default.
+                        type: boolean
+                      sinkBinding:
+                        description: Allows binding the integration to a sink via
+                          a Knative SinkBinding resource. This can be used when the
+                          integration targets a single sink. It's enabled by default
+                          when the integration targets a single sink (except when
+                          the integration is owned by a Knative source).
+                        type: boolean
+                    type: object
+                  knative-service:
+                    description: The configuration of Knative Service trait
+                    properties:
+                      auto:
+                        description: "Automatically deploy the integration as Knative
+                          service when all conditions hold: \n * Integration is using
+                          the Knative profile * All routes are either starting from
+                          an HTTP based consumer or a passive consumer (e.g. `direct`
+                          is a passive consumer)"
+                        type: boolean
+                      autoscalingMetric:
+                        description: "Configures the Knative autoscaling metric property
+                          (e.g. to set `concurrency` based or `cpu` based autoscaling).
+                          \n Refer to the Knative documentation for more information."
+                        type: string
+                      autoscalingTarget:
+                        description: "Sets the allowed concurrency level or CPU percentage
+                          (depending on the autoscaling metric) for each Pod. \n Refer
+                          to the Knative documentation for more information."
+                        type: integer
+                      class:
+                        description: "Configures the Knative autoscaling class property
+                          (e.g. to set `hpa.autoscaling.knative.dev` or `kpa.autoscaling.knative.dev`
+                          autoscaling). \n Refer to the Knative documentation for
+                          more information."
+                        enum:
+                        - kpa.autoscaling.knative.dev
+                        - hpa.autoscaling.knative.dev
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      maxScale:
+                        description: "An upper bound for the number of Pods that can
+                          be running in parallel for the integration. Knative has
+                          its own cap value that depends on the installation. \n Refer
+                          to the Knative documentation for more information."
+                        type: integer
+                      minScale:
+                        description: "The minimum number of Pods that should be running
+                          at any time for the integration. It's **zero** by default,
+                          meaning that the integration is scaled down to zero when
+                          not used for a configured amount of time. \n Refer to the
+                          Knative documentation for more information."
+                        type: integer
+                      rolloutDuration:
+                        description: Enables to gradually shift traffic to the latest
+                          Revision and sets the rollout duration. It's disabled by
+                          default and must be expressed as a Golang `time.Duration`
+                          string representation, rounded to a second precision.
+                        type: string
+                      visibility:
+                        description: "Setting `cluster-local`, Knative service becomes
+                          a private service. Specifically, this option applies the
+                          `networking.knative.dev/visibility` label to Knative service.
+                          \n Refer to the Knative documentation for more information."
+                        enum:
+                        - cluster-local
+                        type: string
+                    type: object
+                  logging:
+                    description: The configuration of Logging trait
+                    properties:
+                      color:
+                        description: Colorize the log output
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      format:
+                        description: Logs message format
+                        type: string
+                      json:
+                        description: Output the logs in JSON
+                        type: boolean
+                      jsonPrettyPrint:
+                        description: Enable "pretty printing" of the JSON logs
+                        type: boolean
+                      level:
+                        description: Adjust the logging level (defaults to INFO)
+                        enum:
+                        - FATAL
+                        - WARN
+                        - INFO
+                        - DEBUG
+                        - TRACE
+                        type: string
+                    type: object
+                  master:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  mount:
+                    description: The configuration of Mount trait
+                    properties:
+                      configs:
+                        description: 'A list of configuration pointing to configmap/secret.
+                          The configuration are expected to be UTF-8 resources as
+                          they are processed by runtime Camel Context and tried to
+                          be parsed as property files. They are also made available
+                          on the classpath in order to ease their usage directly from
+                          the Route. Syntax: [configmap|secret]:name[/key], where
+                          name represents the resource name and key optionally represents
+                          the resource key to be filtered'
+                        items:
+                          type: string
+                        type: array
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      resources:
+                        description: 'A list of resources (text or binary content)
+                          pointing to configmap/secret. The resources are expected
+                          to be any resource type (text or binary content). The destination
+                          path can be either a default location or any path specified
+                          by the user. Syntax: [configmap|secret]:name[/key][@path],
+                          where name represents the resource name, key optionally
+                          represents the resource key to be filtered and path represents
+                          the destination path'
+                        items:
+                          type: string
+                        type: array
+                      volumes:
+                        description: 'A list of Persistent Volume Claims to be mounted.
+                          Syntax: [pvcname:/container/path]'
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  openapi:
+                    description: The configuration of OpenAPI trait
+                    properties:
+                      configmaps:
+                        description: The configmaps holding the spec of the OpenAPI
+                        items:
+                          type: string
+                        type: array
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  owner:
+                    description: The configuration of Owner trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      targetAnnotations:
+                        description: The set of annotations to be transferred
+                        items:
+                          type: string
+                        type: array
+                      targetLabels:
+                        description: The set of labels to be transferred
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  pdb:
+                    description: The configuration of PDB trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      maxUnavailable:
+                        description: The number of pods for the Integration that can
+                          be unavailable after an eviction. It can be either an absolute
+                          number or a percentage (default `1` if `min-available` is
+                          also not set). Only one of `max-unavailable` and `min-available`
+                          can be specified.
+                        type: string
+                      minAvailable:
+                        description: The number of pods for the Integration that must
+                          still be available after an eviction. It can be either an
+                          absolute number or a percentage. Only one of `min-available`
+                          and `max-unavailable` can be specified.
+                        type: string
+                    type: object
+                  platform:
+                    description: The configuration of Platform trait
+                    properties:
+                      auto:
+                        description: To automatically detect from the environment
+                          if a default platform can be created (it will be created
+                          on OpenShift only).
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      createDefault:
+                        description: To create a default (empty) platform when the
+                          platform is missing.
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      global:
+                        description: Indicates if the platform should be created globally
+                          in the case of global operator (default true).
+                        type: boolean
+                    type: object
+                  pod:
+                    description: The configuration of Pod trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  prometheus:
+                    description: The configuration of Prometheus trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      podMonitor:
+                        description: Whether a `PodMonitor` resource is created (default
+                          `true`).
+                        type: boolean
+                      podMonitorLabels:
+                        description: The `PodMonitor` resource labels, applicable
+                          when `pod-monitor` is `true`.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  pull-secret:
+                    description: The configuration of Pull Secret trait
+                    properties:
+                      auto:
+                        description: Automatically configures the platform registry
+                          secret on the pod if it is of type `kubernetes.io/dockerconfigjson`.
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      imagePullerDelegation:
+                        description: When using a global operator with a shared platform,
+                          this enables delegation of the `system:image-puller` cluster
+                          role on the operator namespace to the integration service
+                          account.
+                        type: boolean
+                      secretName:
+                        description: The pull secret name to set on the Pod. If left
+                          empty this is automatically taken from the `IntegrationPlatform`
+                          registry configuration.
+                        type: string
+                    type: object
+                  quarkus:
+                    description: The configuration of Quarkus trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      packageTypes:
+                        description: The Quarkus package types, either `fast-jar`
+                          or `native` (default `fast-jar`). In case both `fast-jar`
+                          and `native` are specified, two `IntegrationKit` resources
+                          are created, with the `native` kit having precedence over
+                          the `fast-jar` one once ready. The order influences the
+                          resolution of the current kit for the integration. The kit
+                          corresponding to the first package type will be assigned
+                          to the integration in case no existing kit that matches
+                          the integration exists.
+                        items:
+                          description: Quarkus package type.
+                          enum:
+                          - fast-jar
+                          - native
+                          type: string
+                        type: array
+                    type: object
+                  registry:
+                    description: The configuration of Registry trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  route:
+                    description: The configuration of Route trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      host:
+                        description: To configure the host exposed by the route.
+                        type: string
+                      tlsCACertificate:
+                        description: "The TLS CA certificate contents. \n Refer to
+                          the OpenShift route documentation for additional information."
+                        type: string
+                      tlsCACertificateSecret:
+                        description: "The secret name and key reference to the TLS
+                          CA certificate. The format is \"secret-name[/key-name]\",
+                          the value represents the secret name, if there is only one
+                          key in the secret it will be read, otherwise you can set
+                          a key name separated with a \"/\". \n Refer to the OpenShift
+                          route documentation for additional information."
+                        type: string
+                      tlsCertificate:
+                        description: "The TLS certificate contents. \n Refer to the
+                          OpenShift route documentation for additional information."
+                        type: string
+                      tlsCertificateSecret:
+                        description: "The secret name and key reference to the TLS
+                          certificate. The format is \"secret-name[/key-name]\", the
+                          value represents the secret name, if there is only one key
+                          in the secret it will be read, otherwise you can set a key
+                          name separated with a \"/\". \n Refer to the OpenShift route
+                          documentation for additional information."
+                        type: string
+                      tlsDestinationCACertificate:
+                        description: "The destination CA certificate provides the
+                          contents of the ca certificate of the final destination.
+                          \ When using reencrypt termination this file should be provided
+                          in order to have routers use it for health checks on the
+                          secure connection. If this field is not specified, the router
+                          may provide its own destination CA and perform hostname
+                          validation using the short service name (service.namespace.svc),
+                          which allows infrastructure generated certificates to automatically
+                          verify. \n Refer to the OpenShift route documentation for
+                          additional information."
+                        type: string
+                      tlsDestinationCACertificateSecret:
+                        description: "The secret name and key reference to the destination
+                          CA certificate. The format is \"secret-name[/key-name]\",
+                          the value represents the secret name, if there is only one
+                          key in the secret it will be read, otherwise you can set
+                          a key name separated with a \"/\". \n Refer to the OpenShift
+                          route documentation for additional information."
+                        type: string
+                      tlsInsecureEdgeTerminationPolicy:
+                        description: "To configure how to deal with insecure traffic,
+                          e.g. `Allow`, `Disable` or `Redirect` traffic. \n Refer
+                          to the OpenShift route documentation for additional information."
+                        enum:
+                        - None
+                        - Allow
+                        - Redirect
+                        type: string
+                      tlsKey:
+                        description: "The TLS certificate key contents. \n Refer to
+                          the OpenShift route documentation for additional information."
+                        type: string
+                      tlsKeySecret:
+                        description: "The secret name and key reference to the TLS
+                          certificate key. The format is \"secret-name[/key-name]\",
+                          the value represents the secret name, if there is only one
+                          key in the secret it will be read, otherwise you can set
+                          a key name separated with a \"/\". \n Refer to the OpenShift
+                          route documentation for additional information."
+                        type: string
+                      tlsTermination:
+                        description: "The TLS termination type, like `edge`, `passthrough`
+                          or `reencrypt`. \n Refer to the OpenShift route documentation
+                          for additional information."
+                        enum:
+                        - edge
+                        - reencrypt
+                        - passthrough
+                        type: string
+                    type: object
+                  service:
+                    description: The configuration of Service trait
+                    properties:
+                      auto:
+                        description: To automatically detect from the code if a Service
+                          needs to be created.
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      nodePort:
+                        description: 'Enable Service to be exposed as NodePort (default
+                          `false`). Deprecated: Use service type instead.'
+                        type: boolean
+                      type:
+                        description: The type of service to be used, either 'ClusterIP',
+                          'NodePort' or 'LoadBalancer'.
+                        enum:
+                        - ClusterIP
+                        - NodePort
+                        - LoadBalancer
+                        type: string
+                    type: object
+                  service-binding:
+                    description: The configuration of Service Binding trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      services:
+                        description: List of Services in the form [[apigroup/]version:]kind:[namespace/]name
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  strimzi:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  toleration:
+                    description: The configuration of Toleration trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      taints:
+                        description: The list of taints to tolerate, in the form `Key[=Value]:Effect[:Seconds]`
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  tracing:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                type: object
+            type: object
+          status:
+            description: IntegrationPlatformStatus defines the observed state of IntegrationPlatform
+            properties:
+              build:
+                description: specify how to build the Integration/IntegrationKits
+                properties:
+                  PublishStrategyOptions:
+                    additionalProperties:
+                      type: string
+                    description: Generic options that can used by each publish strategy
+                    type: object
+                  baseImage:
+                    description: a base image that can be used as base layer for all
+                      images. It can be useful if you want to provide some custom
+                      base image with further utility softwares
+                    type: string
+                  buildStrategy:
+                    description: the strategy to adopt for building an Integration
+                      base image
+                    enum:
+                    - routine
+                    - pod
+                    type: string
+                  maven:
+                    description: Maven configuration used to build the Camel/Camel-Quarkus
+                      applications
+                    properties:
+                      caSecrets:
+                        description: The Secrets name and key, containing the CA certificate(s)
+                          used to connect to remote Maven repositories. It can contain
+                          X.509 certificates, and PKCS#7 formatted certificate chains.
+                          A JKS formatted keystore is automatically created to store
+                          the CA certificate(s), and configured to be used as a trusted
+                          certificate(s) by the Maven commands. Note that the root
+                          CA certificates are also imported into the created keystore.
+                        items:
+                          description: SecretKeySelector selects a key of a Secret.
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?'
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must
+                                be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                        type: array
+                      cliOptions:
+                        description: The CLI options that are appended to the list
+                          of arguments for Maven commands, e.g., `-V,--no-transfer-progress,-Dstyle.color=never`.
+                          See https://maven.apache.org/ref/3.8.4/maven-embedder/cli.html.
+                        items:
+                          type: string
+                        type: array
+                      extension:
+                        description: The Maven build extensions. See https://maven.apache.org/guides/mini/guide-using-extensions.html.
+                        items:
+                          description: MavenArtifact defines a GAV (Group:Artifact:Version)
+                            Maven artifact
+                          properties:
+                            artifactId:
+                              description: Maven Artifact
+                              type: string
+                            groupId:
+                              description: Maven Group
+                              type: string
+                            version:
+                              description: Maven Version
+                              type: string
+                          required:
+                          - artifactId
+                          - groupId
+                          type: object
+                        type: array
+                      localRepository:
+                        description: The path of the local Maven repository.
+                        type: string
+                      properties:
+                        additionalProperties:
+                          type: string
+                        description: The Maven properties.
+                        type: object
+                      settings:
+                        description: A reference to the ConfigMap or Secret key that
+                          contains the Maven settings.
+                        properties:
+                          configMapKeyRef:
+                            description: Selects a key of a ConfigMap.
+                            properties:
+                              key:
+                                description: The key to select.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the ConfigMap or its
+                                  key must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                          secretKeyRef:
+                            description: Selects a key of a secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                        type: object
+                      settingsSecurity:
+                        description: A reference to the ConfigMap or Secret key that
+                          contains the security of the Maven settings.
+                        properties:
+                          configMapKeyRef:
+                            description: Selects a key of a ConfigMap.
+                            properties:
+                              key:
+                                description: The key to select.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the ConfigMap or its
+                                  key must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                          secretKeyRef:
+                            description: Selects a key of a secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind,
+                                  uid?'
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  publishStrategy:
+                    description: the strategy to adopt for publishing an Integration
+                      base image
+                    type: string
+                  registry:
+                    description: the image registry used to push/pull Integration
+                      images
+                    properties:
+                      address:
+                        description: the URI to access
+                        type: string
+                      ca:
+                        description: the configmap which stores the Certificate Authority
+                        type: string
+                      insecure:
+                        description: if the container registry is insecure (ie, http
+                          only)
+                        type: boolean
+                      organization:
+                        description: the registry organization
+                        type: string
+                      secret:
+                        description: the secret where credentials are stored
+                        type: string
+                    type: object
+                  runtimeProvider:
+                    description: the runtime used. Likely Camel Quarkus (we used to
+                      have main runtime which has been discontinued since version
+                      1.5)
+                    type: string
+                  runtimeVersion:
+                    description: the Camel K Runtime dependency version
+                    type: string
+                  timeout:
+                    description: how much time to wait before time out the build process
+                    type: string
+                type: object
+              cluster:
+                description: what kind of cluster you're running (ie, plain Kubernetes
+                  or OpenShift)
+                type: string
+              conditions:
+                description: which are the conditions met (particularly useful when
+                  in ERROR phase)
+                items:
+                  description: IntegrationPlatformCondition describes the state of
+                    a resource at a certain point.
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    lastUpdateTime:
+                      description: The last time this condition was updated.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human-readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of integration condition.
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              configuration:
+                description: 'Deprecated: Use camel trait (camel.properties) to manage
+                  properties Use mount trait (mount.configs) to manage configs Use
+                  mount trait (mount.resources) to manage resources Use mount trait
+                  (mount.volumes) to manage volumes list of configuration properties
+                  to be attached to all the Integration/IntegrationKits built from
+                  this IntegrationPlatform'
+                items:
+                  description: ConfigurationSpec represents a generic configuration
+                    specification
+                  properties:
+                    type:
+                      description: 'represents the type of configuration, ie: property,
+                        configmap, secret, ...'
+                      type: string
+                    value:
+                      description: the value to assign to the configuration (syntax
+                        may vary depending on the `Type`)
+                      type: string
+                  required:
+                  - type
+                  - value
+                  type: object
+                type: array
+              info:
+                additionalProperties:
+                  type: string
+                description: generic information related to the build of Camel K operator
+                  software
+                type: object
+              kamelet:
+                description: configuration to be executed to all Kamelets controlled
+                  by this IntegrationPlatform
+                properties:
+                  repositories:
+                    description: remote repository used to retrieve Kamelet catalog
+                    items:
+                      description: IntegrationPlatformKameletRepositorySpec defines
+                        the location of the Kamelet catalog to use
+                      properties:
+                        uri:
+                          description: the remote repository in the format github:ORG/REPO/PATH_TO_KAMELETS_FOLDER
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              observedGeneration:
+                description: ObservedGeneration is the most recent generation observed
+                  for this IntegrationPlatform.
+                format: int64
+                type: integer
+              phase:
+                description: defines in what phase the IntegrationPlatform is found
+                type: string
+              profile:
+                description: the profile you wish to use. It will apply certain traits
+                  which are required by the specific profile chosen. It usually relates
+                  the Cluster with the optional definition of special profiles (ie,
+                  Knative)
+                type: string
+              traits:
+                description: list of traits to be executed for all the Integration/IntegrationKits
+                  built from this IntegrationPlatform
+                properties:
+                  3scale:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  addons:
+                    additionalProperties:
+                      description: AddonTrait represents the configuration of an addon
+                        trait
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    description: The extension point with addon traits
+                    type: object
+                  affinity:
+                    description: The configuration of Affinity trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      nodeAffinityLabels:
+                        description: Defines a set of nodes the integration pod(s)
+                          are eligible to be scheduled on, based on labels on the
+                          node.
+                        items:
+                          type: string
+                        type: array
+                      podAffinity:
+                        description: Always co-locates multiple replicas of the integration
+                          in the same node (default *false*).
+                        type: boolean
+                      podAffinityLabels:
+                        description: Defines a set of pods (namely those matching
+                          the label selector, relative to the given namespace) that
+                          the integration pod(s) should be co-located with.
+                        items:
+                          type: string
+                        type: array
+                      podAntiAffinity:
+                        description: Never co-locates multiple replicas of the integration
+                          in the same node (default *false*).
+                        type: boolean
+                      podAntiAffinityLabels:
+                        description: Defines a set of pods (namely those matching
+                          the label selector, relative to the given namespace) that
+                          the integration pod(s) should not be co-located with.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  builder:
+                    description: The configuration of Builder trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      properties:
+                        description: A list of properties to be provided to the build
+                          task
+                        items:
+                          type: string
+                        type: array
+                      verbose:
+                        description: Enable verbose logging on build components that
+                          support it (e.g. Kaniko build pod).
+                        type: boolean
+                    type: object
+                  camel:
+                    description: The configuration of Camel trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      properties:
+                        description: A list of properties to be provided to the Integration
+                          runtime
+                        items:
+                          type: string
+                        type: array
+                      runtimeVersion:
+                        description: The camel-k-runtime version to use for the integration.
+                          It overrides the default version set in the Integration
+                          Platform.
+                        type: string
+                    type: object
+                  container:
+                    description: The configuration of Container trait
+                    properties:
+                      auto:
+                        description: To automatically enable the trait
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      expose:
+                        description: Can be used to enable/disable exposure via kubernetes
+                          Service.
+                        type: boolean
+                      image:
+                        description: The main container image
+                        type: string
+                      imagePullPolicy:
+                        description: 'The pull policy: Always|Never|IfNotPresent'
+                        enum:
+                        - Always
+                        - Never
+                        - IfNotPresent
+                        type: string
+                      limitCPU:
+                        description: The maximum amount of CPU required.
+                        type: string
+                      limitMemory:
+                        description: The maximum amount of memory required.
+                        type: string
+                      name:
+                        description: The main container name. It's named `integration`
+                          by default.
+                        type: string
+                      port:
+                        description: To configure a different port exposed by the
+                          container (default `8080`).
+                        type: integer
+                      portName:
+                        description: To configure a different port name for the port
+                          exposed by the container. It defaults to `http` only when
+                          the `expose` parameter is true.
+                        type: string
+                      requestCPU:
+                        description: The minimum amount of CPU required.
+                        type: string
+                      requestMemory:
+                        description: The minimum amount of memory required.
+                        type: string
+                      servicePort:
+                        description: To configure under which service port the container
+                          port is to be exposed (default `80`).
+                        type: integer
+                      servicePortName:
+                        description: To configure under which service port name the
+                          container port is to be exposed (default `http`).
+                        type: string
+                    type: object
+                  cron:
+                    description: The configuration of Cron trait
+                    properties:
+                      activeDeadlineSeconds:
+                        description: Specifies the duration in seconds, relative to
+                          the start time, that the job may be continuously active
+                          before it is considered to be failed. It defaults to 60s.
+                        format: int64
+                        type: integer
+                      auto:
+                        description: "Automatically deploy the integration as CronJob
+                          when all routes are either starting from a periodic consumer
+                          (only `cron`, `timer` and `quartz` are supported) or a passive
+                          consumer (e.g. `direct` is a passive consumer). \n It's
+                          required that all periodic consumers have the same period,
+                          and it can be expressed as cron schedule (e.g. `1m` can
+                          be expressed as `0/1 * * * *`, while `35m` or `50s` cannot)."
+                        type: boolean
+                      backoffLimit:
+                        description: Specifies the number of retries before marking
+                          the job failed. It defaults to 2.
+                        format: int32
+                        type: integer
+                      components:
+                        description: "A comma separated list of the Camel components
+                          that need to be customized in order for them to work when
+                          the schedule is triggered externally by Kubernetes. A specific
+                          customizer is activated for each specified component. E.g.
+                          for the `timer` component, the `cron-timer` customizer is
+                          activated (it's present in the `org.apache.camel.k:camel-k-cron`
+                          library). \n Supported components are currently: `cron`,
+                          `timer` and `quartz`."
+                        type: string
+                      concurrencyPolicy:
+                        description: 'Specifies how to treat concurrent executions
+                          of a Job. Valid values are: - "Allow": allows CronJobs to
+                          run concurrently; - "Forbid" (default): forbids concurrent
+                          runs, skipping next run if previous run hasn''t finished
+                          yet; - "Replace": cancels currently running job and replaces
+                          it with a new one'
+                        enum:
+                        - Allow
+                        - Forbid
+                        - Replace
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      fallback:
+                        description: Use the default Camel implementation of the `cron`
+                          endpoint (`quartz`) instead of trying to materialize the
+                          integration as Kubernetes CronJob.
+                        type: boolean
+                      schedule:
+                        description: The CronJob schedule for the whole integration.
+                          If multiple routes are declared, they must have the same
+                          schedule for this mechanism to work correctly.
+                        type: string
+                      startingDeadlineSeconds:
+                        description: Optional deadline in seconds for starting the
+                          job if it misses scheduled time for any reason.  Missed
+                          jobs executions will be counted as failed ones.
+                        format: int64
+                        type: integer
+                    type: object
+                  dependencies:
+                    description: The configuration of Dependencies trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  deployer:
+                    description: The configuration of Deployer trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      kind:
+                        description: Allows to explicitly select the desired deployment
+                          kind between `deployment`, `cron-job` or `knative-service`
+                          when creating the resources for running the integration.
+                        enum:
+                        - deployment
+                        - cron-job
+                        - knative-service
+                        type: string
+                      useSSA:
+                        description: Use server-side apply to update the owned resources
+                          (default `true`). Note that it automatically falls back
+                          to client-side patching, if SSA is not available, e.g.,
+                          on old Kubernetes clusters.
+                        type: boolean
+                    type: object
+                  deployment:
+                    description: The configuration of Deployment trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      progressDeadlineSeconds:
+                        description: The maximum time in seconds for the deployment
+                          to make progress before it is considered to be failed. It
+                          defaults to 60s.
+                        format: int32
+                        type: integer
+                      rollingUpdateMaxSurge:
+                        description: 'The maximum number of pods that can be scheduled
+                          above the desired number of pods. Value can be an absolute
+                          number (ex: 5) or a percentage of desired pods (ex: 10%).
+                          This can not be 0 if MaxUnavailable is 0. Absolute number
+                          is calculated from percentage by rounding up. Defaults to
+                          25%.'
+                        type: integer
+                      rollingUpdateMaxUnavailable:
+                        description: 'The maximum number of pods that can be unavailable
+                          during the update. Value can be an absolute number (ex:
+                          5) or a percentage of desired pods (ex: 10%). Absolute number
+                          is calculated from percentage by rounding down. This can
+                          not be 0 if MaxSurge is 0. Defaults to 25%.'
+                        type: integer
+                      strategy:
+                        description: The deployment strategy to use to replace existing
+                          pods with new ones.
+                        enum:
+                        - Recreate
+                        - RollingUpdate
+                        type: string
+                    type: object
+                  environment:
+                    description: The configuration of Environment trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      containerMeta:
+                        description: Enables injection of `NAMESPACE` and `POD_NAME`
+                          environment variables (default `true`)
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      httpProxy:
+                        description: Propagates the `HTTP_PROXY`, `HTTPS_PROXY` and
+                          `NO_PROXY` environment variables (default `true`)
+                        type: boolean
+                      vars:
+                        description: A list of environment variables to be added to
+                          the integration container. The syntax is KEY=VALUE, e.g.,
+                          `MY_VAR="my value"`. These take precedence over the previously
+                          defined environment variables.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  error-handler:
+                    description: The configuration of Error Handler trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      ref:
+                        description: The error handler ref name provided or found
+                          in application properties
+                        type: string
+                    type: object
+                  gc:
+                    description: The configuration of GC trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      discoveryCache:
+                        description: 'Discovery client cache to be used, either `disabled`,
+                          `disk` or `memory` (default `memory`). Deprecated: to be
+                          removed from trait configuration.'
+                        enum:
+                        - disabled
+                        - disk
+                        - memory
+                        type: string
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  health:
+                    description: The configuration of Health trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      livenessFailureThreshold:
+                        description: Minimum consecutive failures for the liveness
+                          probe to be considered failed after having succeeded.
+                        format: int32
+                        type: integer
+                      livenessInitialDelay:
+                        description: Number of seconds after the container has started
+                          before the liveness probe is initiated.
+                        format: int32
+                        type: integer
+                      livenessPeriod:
+                        description: How often to perform the liveness probe.
+                        format: int32
+                        type: integer
+                      livenessProbeEnabled:
+                        description: Configures the liveness probe for the integration
+                          container (default `false`).
+                        type: boolean
+                      livenessScheme:
+                        description: Scheme to use when connecting to the liveness
+                          probe (default `HTTP`).
+                        type: string
+                      livenessSuccessThreshold:
+                        description: Minimum consecutive successes for the liveness
+                          probe to be considered successful after having failed.
+                        format: int32
+                        type: integer
+                      livenessTimeout:
+                        description: Number of seconds after which the liveness probe
+                          times out.
+                        format: int32
+                        type: integer
+                      readinessFailureThreshold:
+                        description: Minimum consecutive failures for the readiness
+                          probe to be considered failed after having succeeded.
+                        format: int32
+                        type: integer
+                      readinessInitialDelay:
+                        description: Number of seconds after the container has started
+                          before the readiness probe is initiated.
+                        format: int32
+                        type: integer
+                      readinessPeriod:
+                        description: How often to perform the readiness probe.
+                        format: int32
+                        type: integer
+                      readinessProbeEnabled:
+                        description: Configures the readiness probe for the integration
+                          container (default `true`).
+                        type: boolean
+                      readinessScheme:
+                        description: Scheme to use when connecting to the readiness
+                          probe (default `HTTP`).
+                        type: string
+                      readinessSuccessThreshold:
+                        description: Minimum consecutive successes for the readiness
+                          probe to be considered successful after having failed.
+                        format: int32
+                        type: integer
+                      readinessTimeout:
+                        description: Number of seconds after which the readiness probe
+                          times out.
+                        format: int32
+                        type: integer
+                    type: object
+                  ingress:
+                    description: The configuration of Ingress trait
+                    properties:
+                      auto:
+                        description: To automatically add an ingress whenever the
+                          integration uses an HTTP endpoint consumer.
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      host:
+                        description: To configure the host exposed by the ingress.
+                        type: string
+                    type: object
+                  istio:
+                    description: The configuration of Istio trait
+                    properties:
+                      allow:
+                        description: Configures a (comma-separated) list of CIDR subnets
+                          that should not be intercepted by the Istio proxy (`10.0.0.0/8,172.16.0.0/12,192.168.0.0/16`
+                          by default).
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      inject:
+                        description: Forces the value for labels `sidecar.istio.io/inject`.
+                          By default the label is set to `true` on deployment and
+                          not set on Knative Service.
+                        type: boolean
+                    type: object
+                  jolokia:
+                    description: The configuration of Jolokia trait
+                    properties:
+                      CACert:
+                        description: The PEM encoded CA certification file path, used
+                          to verify client certificates, applicable when `protocol`
+                          is `https` and `use-ssl-client-authentication` is `true`
+                          (default `/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt`
+                          for OpenShift).
+                        type: string
+                      clientPrincipal:
+                        description: The principal(s) which must be given in a client
+                          certificate to allow access to the Jolokia endpoint, applicable
+                          when `protocol` is `https` and `use-ssl-client-authentication`
+                          is `true` (default `clientPrincipal=cn=system:master-proxy`,
+                          `cn=hawtio-online.hawtio.svc` and `cn=fuse-console.fuse.svc`
+                          for OpenShift).
+                        items:
+                          type: string
+                        type: array
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      discoveryEnabled:
+                        description: Listen for multicast requests (default `false`)
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      extendedClientCheck:
+                        description: Mandate the client certificate contains a client
+                          flag in the extended key usage section, applicable when
+                          `protocol` is `https` and `use-ssl-client-authentication`
+                          is `true` (default `true` for OpenShift).
+                        type: boolean
+                      host:
+                        description: The Host address to which the Jolokia agent should
+                          bind to. If `"\*"` or `"0.0.0.0"` is given, the servers
+                          binds to every network interface (default `"*"`).
+                        type: string
+                      options:
+                        description: A list of additional Jolokia options as defined
+                          in https://jolokia.org/reference/html/agents.html#agent-jvm-config[JVM
+                          agent configuration options]
+                        items:
+                          type: string
+                        type: array
+                      password:
+                        description: The password used for authentication, applicable
+                          when the `user` option is set.
+                        type: string
+                      port:
+                        description: The Jolokia endpoint port (default `8778`).
+                        type: integer
+                      protocol:
+                        description: The protocol to use, either `http` or `https`
+                          (default `https` for OpenShift)
+                        type: string
+                      useSSLClientAuthentication:
+                        description: Whether client certificates should be used for
+                          authentication (default `true` for OpenShift).
+                        type: boolean
+                      user:
+                        description: The user to be used for authentication
+                        type: string
+                    type: object
+                  jvm:
+                    description: The configuration of JVM trait
+                    properties:
+                      classpath:
+                        description: Additional JVM classpath (use `Linux` classpath
+                          separator)
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      debug:
+                        description: Activates remote debugging, so that a debugger
+                          can be attached to the JVM, e.g., using port-forwarding
+                        type: boolean
+                      debugAddress:
+                        description: Transport address at which to listen for the
+                          newly launched JVM (default `*:5005`)
+                        type: string
+                      debugSuspend:
+                        description: Suspends the target JVM immediately before the
+                          main class is loaded
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      options:
+                        description: A list of JVM options
+                        items:
+                          type: string
+                        type: array
+                      printCommand:
+                        description: Prints the command used the start the JVM in
+                          the container logs (default `true`)
+                        type: boolean
+                    type: object
+                  kamelets:
+                    description: The configuration of Kamelets trait
+                    properties:
+                      auto:
+                        description: Automatically inject all referenced Kamelets
+                          and their default configuration (enabled by default)
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      list:
+                        description: Comma separated list of Kamelet names to load
+                          into the current integration
+                        type: string
+                    type: object
+                  keda:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  knative:
+                    description: The configuration of Knative trait
+                    properties:
+                      auto:
+                        description: Enable automatic discovery of all trait properties.
+                        type: boolean
+                      channelSinks:
+                        description: List of channels used as destination of integration
+                          routes. Can contain simple channel names or full Camel URIs.
+                        items:
+                          type: string
+                        type: array
+                      channelSources:
+                        description: List of channels used as source of integration
+                          routes. Can contain simple channel names or full Camel URIs.
+                        items:
+                          type: string
+                        type: array
+                      config:
+                        description: Can be used to inject a Knative complete configuration
+                          in JSON format.
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      endpointSinks:
+                        description: List of endpoints used as destination of integration
+                          routes. Can contain simple endpoint names or full Camel
+                          URIs.
+                        items:
+                          type: string
+                        type: array
+                      endpointSources:
+                        description: List of channels used as source of integration
+                          routes.
+                        items:
+                          type: string
+                        type: array
+                      eventSinks:
+                        description: List of event types that the integration will
+                          produce. Can contain simple event types or full Camel URIs
+                          (to use a specific broker).
+                        items:
+                          type: string
+                        type: array
+                      eventSources:
+                        description: List of event types that the integration will
+                          be subscribed to. Can contain simple event types or full
+                          Camel URIs (to use a specific broker different from "default").
+                        items:
+                          type: string
+                        type: array
+                      filterSourceChannels:
+                        description: Enables filtering on events based on the header
+                          "ce-knativehistory". Since this header has been removed
+                          in newer versions of Knative, filtering is disabled by default.
+                        type: boolean
+                      sinkBinding:
+                        description: Allows binding the integration to a sink via
+                          a Knative SinkBinding resource. This can be used when the
+                          integration targets a single sink. It's enabled by default
+                          when the integration targets a single sink (except when
+                          the integration is owned by a Knative source).
+                        type: boolean
+                    type: object
+                  knative-service:
+                    description: The configuration of Knative Service trait
+                    properties:
+                      auto:
+                        description: "Automatically deploy the integration as Knative
+                          service when all conditions hold: \n * Integration is using
+                          the Knative profile * All routes are either starting from
+                          an HTTP based consumer or a passive consumer (e.g. `direct`
+                          is a passive consumer)"
+                        type: boolean
+                      autoscalingMetric:
+                        description: "Configures the Knative autoscaling metric property
+                          (e.g. to set `concurrency` based or `cpu` based autoscaling).
+                          \n Refer to the Knative documentation for more information."
+                        type: string
+                      autoscalingTarget:
+                        description: "Sets the allowed concurrency level or CPU percentage
+                          (depending on the autoscaling metric) for each Pod. \n Refer
+                          to the Knative documentation for more information."
+                        type: integer
+                      class:
+                        description: "Configures the Knative autoscaling class property
+                          (e.g. to set `hpa.autoscaling.knative.dev` or `kpa.autoscaling.knative.dev`
+                          autoscaling). \n Refer to the Knative documentation for
+                          more information."
+                        enum:
+                        - kpa.autoscaling.knative.dev
+                        - hpa.autoscaling.knative.dev
+                        type: string
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      maxScale:
+                        description: "An upper bound for the number of Pods that can
+                          be running in parallel for the integration. Knative has
+                          its own cap value that depends on the installation. \n Refer
+                          to the Knative documentation for more information."
+                        type: integer
+                      minScale:
+                        description: "The minimum number of Pods that should be running
+                          at any time for the integration. It's **zero** by default,
+                          meaning that the integration is scaled down to zero when
+                          not used for a configured amount of time. \n Refer to the
+                          Knative documentation for more information."
+                        type: integer
+                      rolloutDuration:
+                        description: Enables to gradually shift traffic to the latest
+                          Revision and sets the rollout duration. It's disabled by
+                          default and must be expressed as a Golang `time.Duration`
+                          string representation, rounded to a second precision.
+                        type: string
+                      visibility:
+                        description: "Setting `cluster-local`, Knative service becomes
+                          a private service. Specifically, this option applies the
+                          `networking.knative.dev/visibility` label to Knative service.
+                          \n Refer to the Knative documentation for more information."
+                        enum:
+                        - cluster-local
+                        type: string
+                    type: object
+                  logging:
+                    description: The configuration of Logging trait
+                    properties:
+                      color:
+                        description: Colorize the log output
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      format:
+                        description: Logs message format
+                        type: string
+                      json:
+                        description: Output the logs in JSON
+                        type: boolean
+                      jsonPrettyPrint:
+                        description: Enable "pretty printing" of the JSON logs
+                        type: boolean
+                      level:
+                        description: Adjust the logging level (defaults to INFO)
+                        enum:
+                        - FATAL
+                        - WARN
+                        - INFO
+                        - DEBUG
+                        - TRACE
+                        type: string
+                    type: object
+                  master:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  mount:
+                    description: The configuration of Mount trait
+                    properties:
+                      configs:
+                        description: 'A list of configuration pointing to configmap/secret.
+                          The configuration are expected to be UTF-8 resources as
+                          they are processed by runtime Camel Context and tried to
+                          be parsed as property files. They are also made available
+                          on the classpath in order to ease their usage directly from
+                          the Route. Syntax: [configmap|secret]:name[/key], where
+                          name represents the resource name and key optionally represents
+                          the resource key to be filtered'
+                        items:
+                          type: string
+                        type: array
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      resources:
+                        description: 'A list of resources (text or binary content)
+                          pointing to configmap/secret. The resources are expected
+                          to be any resource type (text or binary content). The destination
+                          path can be either a default location or any path specified
+                          by the user. Syntax: [configmap|secret]:name[/key][@path],
+                          where name represents the resource name, key optionally
+                          represents the resource key to be filtered and path represents
+                          the destination path'
+                        items:
+                          type: string
+                        type: array
+                      volumes:
+                        description: 'A list of Persistent Volume Claims to be mounted.
+                          Syntax: [pvcname:/container/path]'
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  openapi:
+                    description: The configuration of OpenAPI trait
+                    properties:
+                      configmaps:
+                        description: The configmaps holding the spec of the OpenAPI
+                        items:
+                          type: string
+                        type: array
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  owner:
+                    description: The configuration of Owner trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      targetAnnotations:
+                        description: The set of annotations to be transferred
+                        items:
+                          type: string
+                        type: array
+                      targetLabels:
+                        description: The set of labels to be transferred
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  pdb:
+                    description: The configuration of PDB trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      maxUnavailable:
+                        description: The number of pods for the Integration that can
+                          be unavailable after an eviction. It can be either an absolute
+                          number or a percentage (default `1` if `min-available` is
+                          also not set). Only one of `max-unavailable` and `min-available`
+                          can be specified.
+                        type: string
+                      minAvailable:
+                        description: The number of pods for the Integration that must
+                          still be available after an eviction. It can be either an
+                          absolute number or a percentage. Only one of `min-available`
+                          and `max-unavailable` can be specified.
+                        type: string
+                    type: object
+                  platform:
+                    description: The configuration of Platform trait
+                    properties:
+                      auto:
+                        description: To automatically detect from the environment
+                          if a default platform can be created (it will be created
+                          on OpenShift only).
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      createDefault:
+                        description: To create a default (empty) platform when the
+                          platform is missing.
+                        type: boolean
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      global:
+                        description: Indicates if the platform should be created globally
+                          in the case of global operator (default true).
+                        type: boolean
+                    type: object
+                  pod:
+                    description: The configuration of Pod trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  prometheus:
+                    description: The configuration of Prometheus trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      podMonitor:
+                        description: Whether a `PodMonitor` resource is created (default
+                          `true`).
+                        type: boolean
+                      podMonitorLabels:
+                        description: The `PodMonitor` resource labels, applicable
+                          when `pod-monitor` is `true`.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  pull-secret:
+                    description: The configuration of Pull Secret trait
+                    properties:
+                      auto:
+                        description: Automatically configures the platform registry
+                          secret on the pod if it is of type `kubernetes.io/dockerconfigjson`.
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      imagePullerDelegation:
+                        description: When using a global operator with a shared platform,
+                          this enables delegation of the `system:image-puller` cluster
+                          role on the operator namespace to the integration service
+                          account.
+                        type: boolean
+                      secretName:
+                        description: The pull secret name to set on the Pod. If left
+                          empty this is automatically taken from the `IntegrationPlatform`
+                          registry configuration.
+                        type: string
+                    type: object
+                  quarkus:
+                    description: The configuration of Quarkus trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      packageTypes:
+                        description: The Quarkus package types, either `fast-jar`
+                          or `native` (default `fast-jar`). In case both `fast-jar`
+                          and `native` are specified, two `IntegrationKit` resources
+                          are created, with the `native` kit having precedence over
+                          the `fast-jar` one once ready. The order influences the
+                          resolution of the current kit for the integration. The kit
+                          corresponding to the first package type will be assigned
+                          to the integration in case no existing kit that matches
+                          the integration exists.
+                        items:
+                          description: Quarkus package type.
+                          enum:
+                          - fast-jar
+                          - native
+                          type: string
+                        type: array
+                    type: object
+                  registry:
+                    description: The configuration of Registry trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                    type: object
+                  route:
+                    description: The configuration of Route trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      host:
+                        description: To configure the host exposed by the route.
+                        type: string
+                      tlsCACertificate:
+                        description: "The TLS CA certificate contents. \n Refer to
+                          the OpenShift route documentation for additional information."
+                        type: string
+                      tlsCACertificateSecret:
+                        description: "The secret name and key reference to the TLS
+                          CA certificate. The format is \"secret-name[/key-name]\",
+                          the value represents the secret name, if there is only one
+                          key in the secret it will be read, otherwise you can set
+                          a key name separated with a \"/\". \n Refer to the OpenShift
+                          route documentation for additional information."
+                        type: string
+                      tlsCertificate:
+                        description: "The TLS certificate contents. \n Refer to the
+                          OpenShift route documentation for additional information."
+                        type: string
+                      tlsCertificateSecret:
+                        description: "The secret name and key reference to the TLS
+                          certificate. The format is \"secret-name[/key-name]\", the
+                          value represents the secret name, if there is only one key
+                          in the secret it will be read, otherwise you can set a key
+                          name separated with a \"/\". \n Refer to the OpenShift route
+                          documentation for additional information."
+                        type: string
+                      tlsDestinationCACertificate:
+                        description: "The destination CA certificate provides the
+                          contents of the ca certificate of the final destination.
+                          \ When using reencrypt termination this file should be provided
+                          in order to have routers use it for health checks on the
+                          secure connection. If this field is not specified, the router
+                          may provide its own destination CA and perform hostname
+                          validation using the short service name (service.namespace.svc),
+                          which allows infrastructure generated certificates to automatically
+                          verify. \n Refer to the OpenShift route documentation for
+                          additional information."
+                        type: string
+                      tlsDestinationCACertificateSecret:
+                        description: "The secret name and key reference to the destination
+                          CA certificate. The format is \"secret-name[/key-name]\",
+                          the value represents the secret name, if there is only one
+                          key in the secret it will be read, otherwise you can set
+                          a key name separated with a \"/\". \n Refer to the OpenShift
+                          route documentation for additional information."
+                        type: string
+                      tlsInsecureEdgeTerminationPolicy:
+                        description: "To configure how to deal with insecure traffic,
+                          e.g. `Allow`, `Disable` or `Redirect` traffic. \n Refer
+                          to the OpenShift route documentation for additional information."
+                        enum:
+                        - None
+                        - Allow
+                        - Redirect
+                        type: string
+                      tlsKey:
+                        description: "The TLS certificate key contents. \n Refer to
+                          the OpenShift route documentation for additional information."
+                        type: string
+                      tlsKeySecret:
+                        description: "The secret name and key reference to the TLS
+                          certificate key. The format is \"secret-name[/key-name]\",
+                          the value represents the secret name, if there is only one
+                          key in the secret it will be read, otherwise you can set
+                          a key name separated with a \"/\". \n Refer to the OpenShift
+                          route documentation for additional information."
+                        type: string
+                      tlsTermination:
+                        description: "The TLS termination type, like `edge`, `passthrough`
+                          or `reencrypt`. \n Refer to the OpenShift route documentation
+                          for additional information."
+                        enum:
+                        - edge
+                        - reencrypt
+                        - passthrough
+                        type: string
+                    type: object
+                  service:
+                    description: The configuration of Service trait
+                    properties:
+                      auto:
+                        description: To automatically detect from the code if a Service
+                          needs to be created.
+                        type: boolean
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      nodePort:
+                        description: 'Enable Service to be exposed as NodePort (default
+                          `false`). Deprecated: Use service type instead.'
+                        type: boolean
+                      type:
+                        description: The type of service to be used, either 'ClusterIP',
+                          'NodePort' or 'LoadBalancer'.
+                        enum:
+                        - ClusterIP
+                        - NodePort
+                        - LoadBalancer
+                        type: string
+                    type: object
+                  service-binding:
+                    description: The configuration of Service Binding trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      services:
+                        description: List of Services in the form [[apigroup/]version:]kind:[namespace/]name
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  strimzi:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                  toleration:
+                    description: The configuration of Toleration trait
+                    properties:
+                      configuration:
+                        description: 'Legacy trait configuration parameters. Deprecated:
+                          for backward compatibility.'
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      enabled:
+                        description: Can be used to enable or disable a trait. All
+                          traits share this common property.
+                        type: boolean
+                      taints:
+                        description: The list of taints to tolerate, in the form `Key[=Value]:Effect[:Seconds]`
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  tracing:
+                    description: 'Deprecated: for backward compatibility.'
+                    properties:
+                      configuration:
+                        description: TraitConfiguration parameters configuration
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - configuration
+                    type: object
+                type: object
+              version:
+                description: the Camel K operator version controlling this IntegrationPlatform
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

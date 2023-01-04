@@ -61,7 +61,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     if (ret.isEmpty()) {
       return "_EMPTY";
     } else {
-      return ret.replaceAll("[\\s/]", "_");
+      return ret.replaceAll("[\\s|\\./]", "_");
     }
   }
 
