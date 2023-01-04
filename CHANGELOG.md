@@ -10,6 +10,7 @@
 * Fix #4654: Fix GatewayClass to not implement Namespaced interface
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
 * Fix #4694: [java-generator] Option to override the package name of the generated code.
+* Fix #4720: interceptors close any response body if the response is not a 2xx response.
 
 #### Dependency Upgrade
 
