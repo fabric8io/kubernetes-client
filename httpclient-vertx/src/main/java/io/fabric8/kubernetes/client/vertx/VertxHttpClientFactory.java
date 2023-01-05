@@ -2,6 +2,7 @@ package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
@@ -16,12 +17,14 @@ import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.RequestOptions;
+import io.vertx.core.http.UpgradeRejectedException;
 import io.vertx.core.http.WebSocketConnectOptions;
 import io.vertx.core.net.KeyCertOptions;
 import io.vertx.core.net.ProxyOptions;
@@ -32,10 +35,7 @@ import io.vertx.ext.web.client.WebClientOptions;
 import javax.net.ssl.X509KeyManager;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -163,9 +163,38 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
             ret.init();
             return new WebSocketResponse(ret, null);
           }).otherwise(t -> {
-            if (t instanceof WebSocketHandshakeException) {
-              WebSocketHandshakeException handshake = (WebSocketHandshakeException)t;
-              // TODO: create WebSocketHandshakeException when appropriate
+            if (t instanceof UpgradeRejectedException) {
+              UpgradeRejectedException handshake = (UpgradeRejectedException)t;
+              return new WebSocketResponse(null, new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(new HttpResponse<String>() {
+                @Override
+                public int code() {
+                  return handshake.getStatus();
+                }
+                @Override
+                public String body() {
+                  return handshake.getBody().toString();
+                }
+                @Override
+                public HttpRequest request() {
+                  throw new UnsupportedOperationException();
+                }
+                @Override
+                public Optional<HttpResponse<?>> previousResponse() {
+                  return Optional.empty();
+                }
+                @Override
+                public List<String> headers(String s) {
+                  return handshake.getHeaders().getAll(s);
+                }
+                @Override
+                public Map<String, List<String>> headers() {
+                  Map<String, List<String>> headers = new LinkedHashMap<>();
+                  handshake.getHeaders().names().forEach(name -> {
+                    headers.put(name, handshake.getHeaders().getAll(name));
+                  });
+                  return headers;
+                }
+              }));
             }
             return new WebSocketResponse(null, null);
           });
