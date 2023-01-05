@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import com.sun.net.httpserver.HttpServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.WebSocketListener;
@@ -51,6 +52,7 @@ import java.util.stream.IntStream;
 import javax.net.ServerSocketFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class AbstractSimultaneousConnectionsTest {
 
@@ -62,6 +64,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
   private RegisteredServerSocketFactory serverSocketFactory;
   private MockWebServer mockWebServer;
   private ExecutorService httpExecutor;
+  private ExecutorService responseService;
   private HttpServer httpServer;
 
   private HttpClient.Builder clientBuilder;
@@ -72,6 +75,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
     mockWebServer = new MockWebServer();
     mockWebServer.setServerSocketFactory(serverSocketFactory);
     httpExecutor = Executors.newCachedThreadPool();
+    responseService = Executors.newFixedThreadPool(4);
     httpServer = HttpServer.create(new InetSocketAddress(0), 0);
     httpServer.setExecutor(httpExecutor);
     httpServer.start();
@@ -84,6 +88,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
     mockWebServer.shutdown();
     httpServer.stop(0);
     httpExecutor.shutdownNow();
+    responseService.shutdownNow();
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
@@ -97,16 +102,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
   @DisplayName("Should be able to make 1024 simultaneous HTTP/1.x connections before processing the response")
   @DisabledOnOs(OS.WINDOWS)
   public void http1Connections() throws Exception {
-    final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
-    httpServer.createContext("/http", exchange -> {
-      activeConnections.countDown();
-      try {
-        activeConnections.await(20, TimeUnit.SECONDS);
-        exchange.sendResponseHeaders(204, -1);
-      } catch (Exception ignore) {
-        // NO OP
-      }
-    });
+    final CountDownLatch activeConnections = delayedResponseWithCode(MAX_HTTP_1_CONNECTIONS, 204);
     try (final HttpClient client = clientBuilder.build()) {
       final Collection<CompletableFuture<HttpResponse<AsyncBody>>> asyncResponses = ConcurrentHashMap.newKeySet();
       final HttpRequest request = client.newHttpRequestBuilder()
@@ -115,7 +111,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
         asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
       }
-      assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
+      awaitLatch(activeConnections);
       CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(10, TimeUnit.SECONDS);
       assertThat(asyncResponses)
           .hasSize(MAX_HTTP_1_CONNECTIONS)
@@ -128,25 +124,55 @@ public abstract class AbstractSimultaneousConnectionsTest {
   @DisplayName("Should be able to make 1024 simultaneous HTTP connections before upgrading to WebSocket")
   @DisabledOnOs(OS.WINDOWS)
   public void http1WebSocketConnectionsBeforeUpgrade() throws Exception {
-    final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
-    httpServer.createContext("/http", exchange -> {
-      activeConnections.countDown();
-      try {
-        activeConnections.await(20, TimeUnit.SECONDS);
-        exchange.sendResponseHeaders(500, -1);
-      } catch (Exception ignore) {
-        // NO OP
-      }
-    });
+    final CountDownLatch activeConnections = delayedResponseWithCode(MAX_HTTP_1_CONNECTIONS, 500);
     try (final HttpClient client = clientBuilder.build()) {
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
-        client.newWebSocketBuilder()
-            .uri(URI.create(String.format("http://localhost:%s/http", httpServer.getAddress().getPort())))
-            .buildAsync(new WebSocket.Listener() {
+        newWebSocket(client, URI.create(String.format("http://localhost:%s/http", httpServer.getAddress().getPort())),
+            new WebSocket.Listener() {
             });
       }
-      assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
+      awaitLatch(activeConnections);
     }
+  }
+
+  private CountDownLatch delayedResponseWithCode(int connections, int code) {
+    final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
+    CompletableFuture<Void> finished = new CompletableFuture<>();
+    httpServer.createContext("/http", exchange -> {
+      activeConnections.countDown();
+      if (activeConnections.getCount() == 0) {
+        finished.complete(null);
+      }
+      finished.thenRunAsync(() -> {
+        try {
+          exchange.sendResponseHeaders(code, -1);
+        } catch (IOException ignore) {
+
+        }
+      }, responseService);
+    });
+    return activeConnections;
+  }
+
+  /**
+   * Create a new websocket that will retry on a server error
+   *
+   * @param client
+   * @param uri
+   * @param listener
+   */
+  private void newWebSocket(final HttpClient client, URI uri, WebSocket.Listener listener) {
+    client.newWebSocketBuilder()
+        .uri(uri)
+        .buildAsync(listener).whenComplete((w, t) -> {
+          if (t != null) {
+            // if the server side exception occurs after context, but before the response is sent
+            // we can end up creating connections even after the activeConnections reaches 0, but the tests
+            // don't seem to care about that situation
+            Utils.schedule(Runnable::run, () -> newWebSocket(client, uri, listener), (long) (Math.random() * 20),
+                TimeUnit.MILLISECONDS);
+          }
+        });
   }
 
   @Test
@@ -155,7 +181,6 @@ public abstract class AbstractSimultaneousConnectionsTest {
   public void http1WebSocketConnections() throws Exception {
     withHttp1();
     final Collection<okhttp3.WebSocket> serverSockets = ConcurrentHashMap.newKeySet();
-    final Collection<WebSocket> clientSockets = ConcurrentHashMap.newKeySet();
     final CountDownLatch latch = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
     final MockResponse response = new MockResponse()
         .withWebSocketUpgrade(new WebSocketListener() {
@@ -168,19 +193,16 @@ public abstract class AbstractSimultaneousConnectionsTest {
     IntStream.range(0, MAX_HTTP_1_CONNECTIONS).forEach(i -> mockWebServer.enqueue(response));
     try (final HttpClient client = clientBuilder.build()) {
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
-        client.newWebSocketBuilder()
-            .uri(mockWebServer.url("/").uri())
-            .buildAsync(new WebSocket.Listener() {
+        newWebSocket(client, mockWebServer.url("/").uri(), new WebSocket.Listener() {
 
-              @Override
-              public void onMessage(WebSocket webSocket, String text) {
-                latch.countDown();
-                webSocket.request();
-              }
-            })
-            .whenComplete((ws, t) -> clientSockets.add(ws));
+          @Override
+          public void onMessage(WebSocket webSocket, String text) {
+            latch.countDown();
+            webSocket.request();
+          }
+        });
       }
-      assertThat(latch.await(20L, TimeUnit.SECONDS)).isTrue();
+      awaitLatch(latch);
       assertThat(serverSockets.size())
           .isEqualTo(MAX_HTTP_1_CONNECTIONS)
           .isLessThanOrEqualTo((int) serverSocketFactory.activeConnections());
@@ -188,6 +210,25 @@ public abstract class AbstractSimultaneousConnectionsTest {
       for (okhttp3.WebSocket socket : serverSockets) {
         socket.close(1000, "done");
       }
+    }
+  }
+
+  private void awaitLatch(final CountDownLatch latch) throws InterruptedException {
+    long count = latch.getCount();
+    int iterations = 10;
+    int wait = 6;
+    for (int i = 0; i < iterations; i++) {
+      if (latch.await(wait, TimeUnit.SECONDS)) {
+        return;
+      }
+      if (i == iterations - 1) {
+        fail(String.format("Failed to finish after %s seconds", iterations * wait));
+      }
+      long nextCount = latch.getCount();
+      if (nextCount == count) {
+        fail("Processing not proceeding, count stuck at " + nextCount);
+      }
+      count = nextCount;
     }
   }
 
@@ -199,6 +240,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
       return connections.stream().filter(Socket::isConnected).filter(s -> !s.isClosed()).count();
     }
 
+    @Override
     public final void close() {
       for (Socket socket : connections) {
         try {
