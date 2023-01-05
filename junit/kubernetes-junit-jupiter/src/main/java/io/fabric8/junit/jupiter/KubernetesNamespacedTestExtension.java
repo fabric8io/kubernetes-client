@@ -29,15 +29,18 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
-public class KubernetesNamespacedTestExtension implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
+public class KubernetesNamespacedTestExtension
+    implements HasKubernetesClient, BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
+
+  @Override
+  public ExtensionContext.Namespace getNamespace() {
+    return ExtensionContext.Namespace.create(KubernetesNamespacedTestExtension.class);
+  }
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
@@ -68,20 +71,6 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
     final KubernetesClient client = getClient(context);
     client.resource(getNamespace(context)).withGracePeriod(0L).delete();
     client.close();
-  }
-
-  static KubernetesClient getClient(ExtensionContext context) {
-    final KubernetesClient client = getStore(context).get(KubernetesClient.class, KubernetesClient.class);
-    if (client == null) {
-      throw new IllegalStateException("No KubernetesClient found");
-    }
-    return client;
-  }
-
-  private static ExtensionContext.Store getStore(ExtensionContext context) {
-    ExtensionContext.Namespace namespace = ExtensionContext.Namespace.create(KubernetesNamespacedTestExtension.class,
-        context.getRequiredTestClass());
-    return context.getRoot().getStore(namespace);
   }
 
   /**
@@ -120,31 +109,11 @@ public class KubernetesNamespacedTestExtension implements BeforeAllCallback, Bef
     return namespace;
   }
 
-  private static Namespace getNamespace(ExtensionContext context) {
+  private Namespace getNamespace(ExtensionContext context) {
     final Namespace namespace = getStore(context).get(Namespace.class, Namespace.class);
     if (namespace == null) {
       throw new IllegalStateException("No Kubernetes Namespace found");
     }
     return namespace;
-  }
-
-  private static Field[] extractFields(ExtensionContext context, Class<?> clazz, Predicate<Field>... predicates) {
-    final Class<?> testClass = context.getTestClass().orElse(null);
-    if (testClass != null) {
-      Stream<Field> fieldStream = Arrays.stream(testClass.getDeclaredFields())
-          .filter(f -> clazz.isAssignableFrom(f.getType()));
-      for (Predicate<Field> p : predicates) {
-        fieldStream = fieldStream.filter(p);
-      }
-      return fieldStream.toArray(Field[]::new);
-    }
-    return new Field[0];
-  }
-
-  private static void setFieldValue(Field field, Object entity, Object value) throws IllegalAccessException {
-    final boolean isAccessible = field.isAccessible();
-    field.setAccessible(true);
-    field.set(entity, value);
-    field.setAccessible(isAccessible);
   }
 }
