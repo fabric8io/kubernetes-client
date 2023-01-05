@@ -20,12 +20,7 @@ import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpVersion;
-import io.vertx.core.http.RequestOptions;
-import io.vertx.core.http.UpgradeRejectedException;
-import io.vertx.core.http.WebSocketConnectOptions;
+import io.vertx.core.http.*;
 import io.vertx.core.net.KeyCertOptions;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.core.net.ProxyType;
@@ -75,8 +70,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
       }
 
       if (this.proxyAddress != null) {
-        // TODO separate username and password
-        options.setProxyOptions(new ProxyOptions().setHost(this.proxyAddress.getHostName()).setPort(this.proxyAddress.getPort()).setType(ProxyType.HTTP).setUsername(proxyAuthorization));
+        ProxyOptions proxyOptions = new ProxyOptions()
+          .setHost(this.proxyAddress.getHostName())
+          .setPort(this.proxyAddress.getPort())
+          .setType(ProxyType.HTTP);
+        options.setProxyOptions(proxyOptions);
       }
 
       if (tlsVersions != null && tlsVersions.length > 0) {
@@ -113,7 +111,7 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
       }
 
       // track derived clients to clean up properly
-      VertxHttpClient result = new VertxHttpClient(this, options);
+      VertxHttpClient result = new VertxHttpClient(this, options, proxyAddress != null ? proxyAuthorization : null);
       if (this.client != null) {
         this.client.derivedClients.add(result);
       }
@@ -131,10 +129,12 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
     private List<VertxHttpClient> derivedClients = Collections.synchronizedList(new ArrayList<>());
     final private HttpClient client;
+    private final String proxyAuthorization;
 
-    private VertxHttpClient(VertxHttpClientBuilder vertxHttpClientBuilder, WebClientOptions options) {
+    private VertxHttpClient(VertxHttpClientBuilder vertxHttpClientBuilder, WebClientOptions options, String proxyAuthorization) {
       super(vertxHttpClientBuilder);
       this.client = vertx.createHttpClient(options);
+      this.proxyAuthorization = proxyAuthorization;
     }
 
     @Override
@@ -210,6 +210,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
       request.headers().forEach((k, l) -> l.forEach(v -> options.addHeader(k, v)));
       options.setAbsoluteURI(request.uri().toString());
       options.setMethod(HttpMethod.valueOf(request.method()));
+
+      // Proxy authorization is handled manually since the proxyAuthorization value is the actual header
+      if (proxyAuthorization != null) {
+        options.putHeader(HttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
+      }
 
       Optional.ofNullable(request.getContentType()).ifPresent(s -> options.putHeader(io.vertx.core.http.HttpHeaders.CONTENT_TYPE, s));
 
