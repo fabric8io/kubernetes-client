@@ -27,12 +27,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 public class LoadKubernetesManifestsExtension implements HasKubernetesClient, BeforeAllCallback, AfterAllCallback {
 
   @Override
-  public ExtensionContext.Namespace getNamespace() {
-    // Share context with KubernetesNamespacedTestExtension to be able to consume the client
-    return ExtensionContext.Namespace.create(KubernetesNamespacedTestExtension.class);
-  }
-
-  @Override
   public void beforeAll(ExtensionContext context) {
     final LoadKubernetesManifests annotation = context.getRequiredTestClass()
         .getAnnotation(LoadKubernetesManifests.class);

@@ -31,8 +31,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Enables and configures the {@link KubernetesNamespacedTestExtension} extension.
  *
  * <p>
- * Creates a namespace and configures a {@link KubernetesClient} instance that will
+ * Creates a {@link KubernetesClient} instance that will
  * be automatically injected into tests.
+ *
+ * <p>
+ * Optionally, creates a Namespace for the tests and configures the client to use it. The Namespace
+ * is deleted after the test suite execution.
  *
  * <pre>{@code
  * &#64;KubernetesTest
@@ -46,4 +50,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @ExtendWith(KubernetesNamespacedTestExtension.class)
 public @interface KubernetesTest {
+  /**
+   * Create an ephemeral Namespace for the test.
+   */
+  boolean createEphemeralNamespace() default true;
 }

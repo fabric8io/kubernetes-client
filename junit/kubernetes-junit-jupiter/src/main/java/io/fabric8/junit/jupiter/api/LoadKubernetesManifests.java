@@ -36,7 +36,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@ExtendWith({ KubernetesNamespacedTestExtension.class, LoadKubernetesManifestsExtension.class })
+@ExtendWith(KubernetesNamespacedTestExtension.class)
+@ExtendWith(LoadKubernetesManifestsExtension.class)
 public @interface LoadKubernetesManifests {
 
   String[] value();
