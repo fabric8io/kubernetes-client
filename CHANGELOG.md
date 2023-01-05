@@ -12,6 +12,7 @@
 * Fix #4694: [java-generator] Option to override the package name of the generated code.
 * Fix #4720: interceptors close any response body if the response is not a 2xx response.
 * Fix #4734: @KubernetesTest annotation can be used in base test classes
+* Fix #4734: @KubernetesTest creates an ephemeral Namespace optionally (can opt-out)
 
 #### Dependency Upgrade
 

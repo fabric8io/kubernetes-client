@@ -15,6 +15,7 @@
  */
 package io.fabric8.junit.jupiter;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -38,21 +39,19 @@ public class KubernetesNamespacedTestExtension
     implements HasKubernetesClient, BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
 
   @Override
-  public ExtensionContext.Namespace getNamespace() {
-    return ExtensionContext.Namespace.create(KubernetesNamespacedTestExtension.class);
-  }
-
-  @Override
   public void beforeAll(ExtensionContext context) throws Exception {
     final KubernetesClient client = new KubernetesClientBuilder().build();
-    getStore(context).put(Namespace.class, initNamespace(client));
-    getStore(context).put(KubernetesClient.class,
-        client.adapt(NamespacedKubernetesClient.class).inNamespace(getNamespace(context).getMetadata().getName()));
+    getStore(context).put(KubernetesClient.class, client);
+    if (shouldCreateNamespace(context)) {
+      getStore(context).put(Namespace.class, initNamespace(client));
+      getStore(context).put(KubernetesClient.class,
+          client.adapt(NamespacedKubernetesClient.class).inNamespace(getKubernetesNamespace(context).getMetadata().getName()));
+    }
     for (Field field : extractFields(context, KubernetesClient.class, f -> Modifier.isStatic(f.getModifiers()))) {
       setFieldValue(field, null, getClient(context).adapt((Class<Client>) field.getType()));
     }
     for (Field field : extractFields(context, Namespace.class, f -> Modifier.isStatic(f.getModifiers()))) {
-      setFieldValue(field, null, getNamespace(context));
+      setFieldValue(field, null, getKubernetesNamespace(context));
     }
   }
 
@@ -62,14 +61,19 @@ public class KubernetesNamespacedTestExtension
       setFieldValue(field, context.getRequiredTestInstance(), getClient(context).adapt((Class<Client>) field.getType()));
     }
     for (Field field : extractFields(context, Namespace.class, f -> !Modifier.isStatic(f.getModifiers()))) {
-      setFieldValue(field, context.getRequiredTestInstance(), getNamespace(context));
+      setFieldValue(field, context.getRequiredTestInstance(), getKubernetesNamespace(context));
     }
   }
 
   @Override
   public void afterAll(ExtensionContext context) {
     final KubernetesClient client = getClient(context);
-    client.resource(getNamespace(context)).withGracePeriod(0L).delete();
+    if (shouldCreateNamespace(context)) {
+      client.resource(getKubernetesNamespace(context)).withGracePeriod(0L).delete();
+    }
+    // Note that the ThreadPoolExecutor in OkHttp's RealConnectionPool is shared amongst all the OkHttp client
+    // instances. This means that closing one OkHttp client instance effectively closes all the others.
+    // In order to be able to use this safely, we should transition to one of the other HttpClient implementations
     client.close();
   }
 
@@ -109,7 +113,12 @@ public class KubernetesNamespacedTestExtension
     return namespace;
   }
 
-  private Namespace getNamespace(ExtensionContext context) {
+  private boolean shouldCreateNamespace(ExtensionContext context) {
+    final KubernetesTest annotation = findAnnotation(context.getRequiredTestClass(), KubernetesTest.class);
+    return annotation == null || annotation.createEphemeralNamespace();
+  }
+
+  private Namespace getKubernetesNamespace(ExtensionContext context) {
     final Namespace namespace = getStore(context).get(Namespace.class, Namespace.class);
     if (namespace == null) {
       throw new IllegalStateException("No Kubernetes Namespace found");

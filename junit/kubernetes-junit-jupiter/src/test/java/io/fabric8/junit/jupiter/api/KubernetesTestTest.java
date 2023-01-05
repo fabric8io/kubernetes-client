@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@KubernetesTest
+@KubernetesTest(createEphemeralNamespace = false)
 // Due to the way the extensions interact with the test, this test class can't be parameterized
 class KubernetesTestTest {
 

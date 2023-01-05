@@ -17,7 +17,7 @@ package io.fabric8.junit.jupiter.api;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 
-@KubernetesTest
+@KubernetesTest(createEphemeralNamespace = false)
 public class KubernetesTestWithSuperClass {
 
   static KubernetesClient staticSuperClient;

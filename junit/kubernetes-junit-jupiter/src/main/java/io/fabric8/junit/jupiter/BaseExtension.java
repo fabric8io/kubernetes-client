@@ -17,6 +17,7 @@ package io.fabric8.junit.jupiter;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,10 +29,12 @@ import java.util.stream.Stream;
 
 public interface BaseExtension {
 
-  ExtensionContext.Namespace getNamespace();
+  default ExtensionContext.Namespace getNamespace(ExtensionContext context) {
+    return ExtensionContext.Namespace.create(context.getRequiredTestClass());
+  }
 
   default ExtensionContext.Store getStore(ExtensionContext context) {
-    return context.getRoot().getStore(getNamespace());
+    return context.getRoot().getStore(getNamespace(context));
   }
 
   default Field[] extractFields(ExtensionContext context, Class<?> clazz, Predicate<Field>... predicates) {
@@ -62,6 +65,17 @@ public interface BaseExtension {
     field.setAccessible(true);
     field.set(entity, value);
     field.setAccessible(isAccessible);
+  }
+
+  default <T extends Annotation> T findAnnotation(Class<?> clazz, Class<T> annotation) {
+    if (clazz != null) {
+      if (clazz.isAnnotationPresent(annotation)) {
+        return clazz.getAnnotation(annotation);
+      } else if (clazz.getSuperclass() != null) {
+        return findAnnotation(clazz.getSuperclass(), annotation);
+      }
+    }
+    return null;
   }
 
 }
