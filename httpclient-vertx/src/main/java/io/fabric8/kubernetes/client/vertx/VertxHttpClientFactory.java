@@ -210,29 +210,8 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
       request.headers().forEach((k, l) -> l.forEach(v -> options.addHeader(k, v)));
       options.setAbsoluteURI(request.uri().toString());
       options.setMethod(HttpMethod.valueOf(request.method()));
-      Buffer bodyBuffer = null;
 
       Optional.ofNullable(request.getContentType()).ifPresent(s -> options.putHeader(io.vertx.core.http.HttpHeaders.CONTENT_TYPE, s));
-
-      BodyContent body = request.body();
-      if (body != null) {
-        if (body instanceof StringBodyContent) {
-          bodyBuffer = Buffer.buffer(((StringBodyContent) body).getContent());
-        } else if (body instanceof ByteArrayBodyContent) {
-          bodyBuffer = Buffer.buffer(((ByteArrayBodyContent) body).getContent());
-        } else if (body instanceof InputStreamBodyContent) {
-          InputStreamBodyContent bodyContent = (InputStreamBodyContent) body;
-
-          // The client calling logic supports two calls here, the user passing in an arbitrary inputstream
-          // or a file - we could split off the file handling
-
-          // TODO the inputstream seems problematic - seems like it needs converted into a ReadStream
-
-          throw new UnsupportedOperationException();
-        } else {
-          throw new AssertionError("Unsupported body content");
-        }
-      }
 
       if (request.isExpectContinue()) {
         // TODO: determine if this is enforced by the client
@@ -240,7 +219,7 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
         options.putHeader(io.vertx.core.http.HttpHeaders.EXPECT, io.vertx.core.http.HttpHeaders.CONTINUE);
       }
 
-      return new VertxHttpRequest(options, bodyBuffer).consumeBytes(this.client, consumer);
+      return new VertxHttpRequest(vertx, options, request.body()).consumeBytes(this.client, consumer);
     }
 
     @Override
