@@ -1,8 +1,10 @@
 
 package io.fabric8.kubernetes.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -23,6 +25,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "claims",
     "limits",
     "requests"
 })
@@ -37,6 +40,9 @@ import lombok.experimental.Accessors;
 public class ResourceRequirements implements KubernetesResource
 {
 
+    @JsonProperty("claims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ResourceClaim> claims = new ArrayList<ResourceClaim>();
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, io.fabric8.kubernetes.api.model.Quantity> limits = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
@@ -55,13 +61,25 @@ public class ResourceRequirements implements KubernetesResource
 
     /**
      * 
+     * @param claims
      * @param requests
      * @param limits
      */
-    public ResourceRequirements(Map<String, io.fabric8.kubernetes.api.model.Quantity> limits, Map<String, io.fabric8.kubernetes.api.model.Quantity> requests) {
+    public ResourceRequirements(List<ResourceClaim> claims, Map<String, io.fabric8.kubernetes.api.model.Quantity> limits, Map<String, io.fabric8.kubernetes.api.model.Quantity> requests) {
         super();
+        this.claims = claims;
         this.limits = limits;
         this.requests = requests;
+    }
+
+    @JsonProperty("claims")
+    public List<ResourceClaim> getClaims() {
+        return claims;
+    }
+
+    @JsonProperty("claims")
+    public void setClaims(List<ResourceClaim> claims) {
+        this.claims = claims;
     }
 
     @JsonProperty("limits")

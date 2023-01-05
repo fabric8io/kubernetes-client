@@ -330,6 +330,11 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-resource</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-clusterautoscaling</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -1217,6 +1222,7 @@
                   <include>io.fabric8:kubernetes-model-policy*</include>
                   <include>io.fabric8:kubernetes-model-scheduling*</include>
                   <include>io.fabric8:kubernetes-model-storageclass*</include>
+                  <include>io.fabric8:kubernetes-model-resource*</include>
                   <include>io.fabric8:openshift-model*</include>
                 </includes>
               </dependencies>

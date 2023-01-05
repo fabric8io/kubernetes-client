@@ -1,0 +1,16 @@
+{
+  "apiVersion": "resource.k8s.io/v1alpha1",
+  "kind": "ResourceClaim",
+  "metadata": {
+    "name": "test-resourceclaim"
+  },
+  "spec": {
+    "allocationMode": "Immediate",
+    "parametersRef": {
+      "apiGroup": "apiGroupValue",
+      "kind": "kindValue",
+      "name": "nameValue"
+    },
+    "resourceClassName": "resource-class-name-value"
+  }
+}

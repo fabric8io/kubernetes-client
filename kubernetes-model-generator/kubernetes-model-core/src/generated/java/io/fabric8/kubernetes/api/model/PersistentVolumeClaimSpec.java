@@ -50,7 +50,7 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
     @JsonProperty("dataSource")
     private TypedLocalObjectReference dataSource;
     @JsonProperty("dataSourceRef")
-    private TypedLocalObjectReference dataSourceRef;
+    private TypedObjectReference dataSourceRef;
     @JsonProperty("resources")
     private ResourceRequirements resources;
     @JsonProperty("selector")
@@ -82,7 +82,7 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
      * @param dataSource
      * @param volumeMode
      */
-    public PersistentVolumeClaimSpec(List<String> accessModes, TypedLocalObjectReference dataSource, TypedLocalObjectReference dataSourceRef, ResourceRequirements resources, LabelSelector selector, String storageClassName, String volumeMode, String volumeName) {
+    public PersistentVolumeClaimSpec(List<String> accessModes, TypedLocalObjectReference dataSource, TypedObjectReference dataSourceRef, ResourceRequirements resources, LabelSelector selector, String storageClassName, String volumeMode, String volumeName) {
         super();
         this.accessModes = accessModes;
         this.dataSource = dataSource;
@@ -115,12 +115,12 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
     }
 
     @JsonProperty("dataSourceRef")
-    public TypedLocalObjectReference getDataSourceRef() {
+    public TypedObjectReference getDataSourceRef() {
         return dataSourceRef;
     }
 
     @JsonProperty("dataSourceRef")
-    public void setDataSourceRef(TypedLocalObjectReference dataSourceRef) {
+    public void setDataSourceRef(TypedObjectReference dataSourceRef) {
         this.dataSourceRef = dataSourceRef;
     }
 

@@ -59,6 +59,7 @@
     <bundle>mvn:io.fabric8/kubernetes-model-policy/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-scheduling/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-storageclass/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-resource/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-httpclient-okhttp/${project.version}/jar/bundle</bundle>
     <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>

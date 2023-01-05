@@ -2368,30 +2368,6 @@
       "additionalProperties": true
     },
     "machinepool": {
-      "properties": {
-        "bootVolume": {
-          "$ref": "#/definitions/os_installer_ibmcloud_v1_BootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.BootVolume"
-        },
-        "dedicatedHosts": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_installer_ibmcloud_v1_DedicatedHost",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.DedicatedHost"
-          }
-        },
-        "type": {
-          "type": "string"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        }
-      },
       "additionalProperties": true
     },
     "machinepoolplatform": {
@@ -2648,34 +2624,16 @@
     },
     "platform": {
       "properties": {
-        "affinityGroups": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_installer_ovirt_v1_AffinityGroup",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.AffinityGroup"
-          }
-        },
-        "api_vip": {
+        "URI": {
           "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_libvirt_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool"
         },
-        "ingress_vip": {
-          "type": "string"
-        },
-        "ovirt_cluster_id": {
-          "type": "string"
-        },
-        "ovirt_network_name": {
-          "type": "string"
-        },
-        "ovirt_storage_domain_id": {
-          "type": "string"
-        },
-        "vnicProfileID": {
-          "type": "string"
+        "network": {
+          "$ref": "#/definitions/os_installer_libvirt_v1_Network",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.Network"
         }
       },
       "additionalProperties": true
