@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.impl;
 
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1AdmissionRegistrationAPIGroupDSL;
+import io.fabric8.kubernetes.client.V1Alpha1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1beta1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
@@ -31,6 +32,11 @@ public class AdmissionRegistrationAPIGroupClient extends ClientAdapter<Admission
   @Override
   public V1beta1AdmissionRegistrationAPIGroupDSL v1beta1() {
     return adapt(V1beta1AdmissionRegistrationAPIGroupClient.class);
+  }
+
+  @Override
+  public V1Alpha1AdmissionRegistrationAPIGroupDSL v1alpha1() {
+    return adapt(V1Alpha1AdmissionRegistrationAPIGroupClient.class);
   }
 
   @Override

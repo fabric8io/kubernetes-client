@@ -52,6 +52,7 @@
     <module>kubernetes-model-node</module>
     <module>kubernetes-model-metrics</module>
     <module>kubernetes-model-policy</module>
+    <module>kubernetes-model-resource</module>
     <module>kubernetes-model-scheduling</module>
     <module>kubernetes-model-storageclass</module>
     <module>openshift-model</module>

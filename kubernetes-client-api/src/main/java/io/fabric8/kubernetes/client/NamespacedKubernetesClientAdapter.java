@@ -60,11 +60,13 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
@@ -165,6 +167,11 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return getClient().discovery();
+  }
+
+  @Override
+  public DynamicResourceAllocationAPIGroupDSL dynamicResourceAllocation() {
+    return getClient().dynamicResourceAllocation();
   }
 
   @Override
@@ -366,6 +373,11 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   @Override
   public AuthorizationAPIGroupDSL authorization() {
     return getClient().authorization();
+  }
+
+  @Override
+  public AuthenticationAPIGroupDSL authentication() {
+    return getClient().authentication();
   }
 
   @Override

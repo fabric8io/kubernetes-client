@@ -1,0 +1,37 @@
+{
+  "apiVersion": "resource.k8s.io/v1alpha1",
+  "driverName": "driverNameValue",
+  "kind": "ResourceClass",
+  "metadata": {
+    "name": "example-rc"
+  },
+  "parametersRef": {
+    "apiGroup": "apiGroupValue",
+    "kind": "kindValue",
+    "name": "nameValue"
+  },
+  "suitableNodes": {
+    "nodeSelectorTerms": [
+      {
+        "matchExpressions": [
+          {
+            "key": "environment",
+            "operator": "In",
+            "values": [
+              "dev"
+            ]
+          }
+        ],
+        "matchFields": [
+          {
+            "key": "metadata.name",
+            "operator": "In",
+            "values": [
+              "backend"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

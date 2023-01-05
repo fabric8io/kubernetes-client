@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.admissionregistration.v1beta1;
+package io.fabric8.kubernetes.api.model.flowcontrol.v1beta3;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -35,11 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "apiGroups",
-    "apiVersions",
-    "operations",
-    "resources",
-    "scope"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,23 +53,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class RuleWithOperations implements KubernetesResource
+public class PriorityLevelConfigurationReference implements KubernetesResource
 {
 
-    @JsonProperty("apiGroups")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiGroups = new ArrayList<String>();
-    @JsonProperty("apiVersions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVersions = new ArrayList<String>();
-    @JsonProperty("operations")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> operations = new ArrayList<String>();
-    @JsonProperty("resources")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> resources = new ArrayList<String>();
-    @JsonProperty("scope")
-    private String scope;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -83,74 +65,26 @@ public class RuleWithOperations implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public RuleWithOperations() {
+    public PriorityLevelConfigurationReference() {
     }
 
     /**
      * 
-     * @param operations
-     * @param apiVersions
-     * @param scope
-     * @param resources
-     * @param apiGroups
+     * @param name
      */
-    public RuleWithOperations(List<String> apiGroups, List<String> apiVersions, List<String> operations, List<String> resources, String scope) {
+    public PriorityLevelConfigurationReference(String name) {
         super();
-        this.apiGroups = apiGroups;
-        this.apiVersions = apiVersions;
-        this.operations = operations;
-        this.resources = resources;
-        this.scope = scope;
+        this.name = name;
     }
 
-    @JsonProperty("apiGroups")
-    public List<String> getApiGroups() {
-        return apiGroups;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("apiGroups")
-    public void setApiGroups(List<String> apiGroups) {
-        this.apiGroups = apiGroups;
-    }
-
-    @JsonProperty("apiVersions")
-    public List<String> getApiVersions() {
-        return apiVersions;
-    }
-
-    @JsonProperty("apiVersions")
-    public void setApiVersions(List<String> apiVersions) {
-        this.apiVersions = apiVersions;
-    }
-
-    @JsonProperty("operations")
-    public List<String> getOperations() {
-        return operations;
-    }
-
-    @JsonProperty("operations")
-    public void setOperations(List<String> operations) {
-        this.operations = operations;
-    }
-
-    @JsonProperty("resources")
-    public List<String> getResources() {
-        return resources;
-    }
-
-    @JsonProperty("resources")
-    public void setResources(List<String> resources) {
-        this.resources = resources;
-    }
-
-    @JsonProperty("scope")
-    public String getScope() {
-        return scope;
-    }
-
-    @JsonProperty("scope")
-    public void setScope(String scope) {
-        this.scope = scope;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter

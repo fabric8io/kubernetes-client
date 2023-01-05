@@ -15,6 +15,7 @@
 * Fix #4795: don't print warning message when service account token property is unset
 
 #### Dependency Upgrade
+* Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0
 
 #### New Features
 
