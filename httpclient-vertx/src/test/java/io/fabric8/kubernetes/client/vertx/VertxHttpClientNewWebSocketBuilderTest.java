@@ -24,4 +24,5 @@ public class VertxHttpClientNewWebSocketBuilderTest extends AbstractHttpClientNe
   protected HttpClient.Factory getHttpClientFactory() {
     return new VertxHttpClientFactory();
   }
+
 }
