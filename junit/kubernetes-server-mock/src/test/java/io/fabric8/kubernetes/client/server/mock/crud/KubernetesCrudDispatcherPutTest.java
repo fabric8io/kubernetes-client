@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
@@ -180,6 +181,34 @@ class KubernetesCrudDispatcherPutTest {
         .hasFieldOrPropertyWithValue("metadata.resourceVersion", "1")
         .hasFieldOrPropertyWithValue("metadata.generation", 1L)
         .hasFieldOrPropertyWithValue("data.change", "me");
+  }
+
+  @Test
+  @DisplayName("replace, with an old resource version, should return conflict")
+  void replaceWithOldResourceVersion() throws Exception {
+    final HttpClient httpClient = client.getHttpClient();
+    // Given
+    final ConfigMap original = client.resources(ConfigMap.class).resource(
+        new ConfigMapBuilder().withNewMetadata().withName("name").endMetadata()
+            .addToData("key", "value").addToData("change", "me").build())
+        .create();
+    final ConfigMap replacementV1 = new ConfigMapBuilder(original).addToData("key", "value2").build();
+
+    client.resources(ConfigMap.class).resource(replacementV1).replace();
+
+    final ConfigMap replacementV2 = new ConfigMapBuilder(original).addToData("key", "value3").build();
+
+    // When
+    ReplaceDeletable<ConfigMap> operation = client.resources(ConfigMap.class).resource(replacementV2)
+        .lockResourceVersion(original.getMetadata().getResourceVersion());
+    KubernetesClientException e = assertThrows(KubernetesClientException.class,
+        operation::replace);
+
+    // Then
+    assertThat(e)
+        .returns(409, KubernetesClientException::getCode)
+        .extracting(KubernetesClientException::getMessage).asString()
+        .contains("the object has been modified");
   }
 
   @Test

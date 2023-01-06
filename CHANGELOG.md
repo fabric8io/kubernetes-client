@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 
 #### Dependency Upgrade
 

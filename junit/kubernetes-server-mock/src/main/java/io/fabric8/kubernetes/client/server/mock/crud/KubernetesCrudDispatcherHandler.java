@@ -24,10 +24,13 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import java.net.HttpURLConnection;
+
 import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
 import static io.fabric8.kubernetes.client.server.mock.KubernetesAttributesExtractor.NAME;
 import static io.fabric8.kubernetes.client.server.mock.KubernetesAttributesExtractor.NAMESPACE;
 import static io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudPersistence.METADATA;
+import static io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudPersistence.RESOURCE_VERSION;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 
 @FunctionalInterface
@@ -67,6 +70,23 @@ public interface KubernetesCrudDispatcherHandler {
             HTTP_BAD_REQUEST,
             updatedResource.path(KIND).asText());
       }
+    }
+  }
+
+  default void validateResourceVersion(JsonNode currentResource, JsonNode updatedResource)
+      throws KubernetesCrudDispatcherException {
+    String currentVersion = currentResource.path(METADATA).path(RESOURCE_VERSION).asText();
+    String updateBasedOnVersion = updatedResource.path(METADATA).path(RESOURCE_VERSION).asText();
+    if (!updateBasedOnVersion.isEmpty()
+        && !currentVersion.equals(updateBasedOnVersion)) {
+      String kind = updatedResource.path(KIND).asText();
+      String name = updatedResource.path(METADATA).path(NAME).asText();
+      throw new KubernetesCrudDispatcherException(
+          String.format("Operation cannot be fulfilled on %s \"%s\": the object has been modified; " +
+              "please apply your changes to the latest version and try again",
+              kind, name),
+          HttpURLConnection.HTTP_CONFLICT, kind);
+
     }
   }
 
