@@ -63,6 +63,7 @@ public class PatchHandler implements KubernetesCrudDispatcherHandler {
       fullPatch = persistence.merge(currentResource, requestBody);
     }
     validatePath(query, fullPatch);
+    validateResourceVersion(currentResource, fullPatch);
 
     final JsonNode updatedResource;
     if (isStatusPath(path)) {

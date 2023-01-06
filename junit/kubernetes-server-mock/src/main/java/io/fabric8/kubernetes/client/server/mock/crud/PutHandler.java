@@ -57,6 +57,8 @@ public class PutHandler implements KubernetesCrudDispatcherHandler {
       }
     }
     validatePath(attributes, updatedResource);
+    validateResourceVersion(currentResource, updatedResource);
+
     persistence.preserveMetadata(currentResource, updatedResource);
     if (!isStatusPath(path)) {
       persistence.touchGeneration(currentResource, updatedResource);
