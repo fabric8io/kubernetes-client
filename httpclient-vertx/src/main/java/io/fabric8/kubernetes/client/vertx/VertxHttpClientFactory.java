@@ -16,15 +16,16 @@ import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.IdentityCipherSuiteFilter;
+import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
-import io.vertx.core.net.KeyCertOptions;
-import io.vertx.core.net.ProxyOptions;
-import io.vertx.core.net.ProxyType;
-import io.vertx.core.net.TrustOptions;
+import io.vertx.core.net.*;
+import io.vertx.core.spi.tls.SslContextFactory;
 import io.vertx.ext.web.client.WebClientOptions;
 
 import javax.net.ssl.X509KeyManager;
@@ -87,7 +88,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
       if (this.sslContext != null) {
         options.setSsl(true);
-        /*options.setSslEngineOptions(new JdkSSLEngineOptions() {
+        options.setSslEngineOptions(new JdkSSLEngineOptions() {
+          @Override
+          public JdkSSLEngineOptions copy() {
+            return this;
+          }
           @Override
           public SslContextFactory sslContextFactory() {
             return () -> new JdkSslContext(
@@ -100,14 +105,7 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
               null,
               false);
           }
-        });*/
-        // TODO validate how ssl is configured
-        if (this.trustManagers != null) {
-          options.setTrustOptions(TrustOptions.wrap(trustManagers[0]));
-        }
-        if (this.keyManagers != null) {
-          options.setKeyCertOptions(KeyCertOptions.wrap((X509KeyManager) keyManagers[0]));
-        }
+        });
       }
 
       // track derived clients to clean up properly
