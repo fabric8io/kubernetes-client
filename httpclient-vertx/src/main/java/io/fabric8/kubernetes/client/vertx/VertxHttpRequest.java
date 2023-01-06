@@ -78,6 +78,8 @@ class VertxHttpRequest implements HttpRequest {
 
         @Override
         public void cancel() {
+          resp.handler(null);
+          resp.endHandler(null);
           resp.request().reset();
           done.cancel(false);
         }
