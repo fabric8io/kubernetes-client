@@ -37,7 +37,7 @@ class CronJobIT {
 
   @Test
   void load() {
-    CronJob aCronJob = client.batch().v1beta1().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
+    CronJob aCronJob = client.batch().v1beta1().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).item();
     assertNotNull(aCronJob);
     assertEquals("hello", aCronJob.getMetadata().getName());
   }

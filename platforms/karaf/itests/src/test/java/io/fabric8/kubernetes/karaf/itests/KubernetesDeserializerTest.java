@@ -52,7 +52,7 @@ public class KubernetesDeserializerTest extends TestBase {
   public void canDeserializeModelsFromDifferentKubernetesModules() {
     // When
     final List<HasMetadata> result = kubernetesClient.load(
-        KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_test.yaml")).get();
+        KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_test.yaml")).items();
     // Then
     assertEquals(22, result.size());
     assertResourceTypes(result);
@@ -62,7 +62,7 @@ public class KubernetesDeserializerTest extends TestBase {
   public void canDeserializeModelsFromDifferentOpenShiftModules() {
     // When
     final List<HasMetadata> result = openShiftClient.load(
-        KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_openshift_test.yaml")).get();
+        KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_openshift_test.yaml")).items();
     // Then
     assertEquals(8, result.size());
     assertResourceTypes(result);

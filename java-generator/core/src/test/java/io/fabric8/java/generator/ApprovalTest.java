@@ -26,10 +26,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
+import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
 
 class ApprovalTest {
 
@@ -37,7 +39,7 @@ class ApprovalTest {
     return Stream.of(
         Arguments.of("testCrontabCrd", "crontab-crd.yml", "CronTab", "CrontabJavaCr", new Config()),
         Arguments.of("testCrontabExtraAnnotationsCrd", "crontab-crd.yml", "CronTab", "CrontabJavaExtraAnnotationsCr",
-            new Config(null, null, null, null, Boolean.TRUE, null, true)),
+            new Config(null, null, null, null, Boolean.TRUE, null, true, new HashMap<>())),
         Arguments.of("testKeycloakCrd", "keycloak-crd.yml", "Keycloak", "KeycloakJavaCr", new Config()),
         Arguments.of("testJokeCrd", "jokerequests-crd.yml", "JokeRequest", "JokeRequestJavaCr", new Config()),
         Arguments.of("testAkkaMicroservicesCrd", "akka-microservices-crd.yml", "AkkaMicroservice", "AkkaMicroserviceJavaCr",
@@ -54,7 +56,7 @@ class ApprovalTest {
       CustomResourceDefinition crd = getCRD(crdYaml);
 
       // Act
-      List<WritableCRCompilationUnit> writables = runner.generate(crd, runner.getPackage("test.org"));
+      List<WritableCRCompilationUnit> writables = runner.generate(crd, groupToPackage("test.org"));
 
       // Assert
       assertThat(writables).hasSize(1);

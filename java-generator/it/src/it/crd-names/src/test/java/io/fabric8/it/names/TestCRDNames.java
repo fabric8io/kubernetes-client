@@ -15,7 +15,7 @@
  */
 package io.fabric8.it.names;
 
-import io.amq.broker.v1beta1.ActiveMQArtemis;
+import com.fabric8.test.ActiveMQArtemis;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

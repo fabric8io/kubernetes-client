@@ -69,9 +69,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.7.1
+        uses: manusa/actions-setup-minikube@v2.7.2
         with:
-          minikube version: v1.25.1
+          minikube version: v1.28.0
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
@@ -100,9 +100,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.7.1
+        uses: manusa/actions-setup-minikube@v2.7.2
         with:
-          minikube version: v1.25.1
+          minikube version: v1.28.0
           kubernetes version: v1.12.10
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'

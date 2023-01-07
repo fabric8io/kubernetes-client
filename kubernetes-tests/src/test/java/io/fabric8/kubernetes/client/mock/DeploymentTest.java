@@ -380,7 +380,7 @@ class DeploymentTest {
         .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
         .andReturn(200, serverDeployment).once();
 
-    List<HasMetadata> resources = client.resourceList(clientDeployment).fromServer().get();
+    List<HasMetadata> resources = client.resourceList(clientDeployment).get();
 
     assertNotNull(resources);
     assertEquals(1, resources.size());

@@ -84,7 +84,7 @@ public class DeploymentConfigOperationsImpl
 
   @Override
   public DeploymentConfig deployLatest(boolean wait) {
-    Long currentVersion = getMandatory().getStatus().getLatestVersion();
+    Long currentVersion = getItemOrRequireFromServer().getStatus().getLatestVersion();
     if (currentVersion == null) {
       currentVersion = 1L;
     }
@@ -92,7 +92,7 @@ public class DeploymentConfigOperationsImpl
     DeploymentConfig deployment = accept(d -> d.getStatus().setLatestVersion(latestVersion));
     if (wait) {
       waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
-      deployment = getMandatory();
+      deployment = getItemOrRequireFromServer();
     }
     return deployment;
   }
@@ -107,7 +107,7 @@ public class DeploymentConfigOperationsImpl
     DeploymentConfig deployment = accept(d -> d.getSpec().setReplicas(count));
     if (wait) {
       waitUntilDeploymentConfigIsScaled(count);
-      deployment = getMandatory();
+      deployment = getItemOrRequireFromServer();
     }
     return deployment;
   }
@@ -211,7 +211,7 @@ public class DeploymentConfigOperationsImpl
   public LogWatch watchLog(OutputStream out) {
     try {
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
-      waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
+      waitUntilDeploymentConfigPodBecomesReady(get());
       URL url = getResourceLogUrl(true);
       final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
       return callback.callAndWait(this.httpClient, url);
@@ -232,11 +232,16 @@ public class DeploymentConfigOperationsImpl
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new DeploymentConfigOperationsImpl(rollingOperationContext.withLogWaitTimeout(logWaitTimeout), context);
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withReadyWaitTimeout(timeout), context);
   }
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
-    Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
+    Integer podLogWaitTimeout = rollingOperationContext.getReadyWaitTimeout();
     List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
         rollingOperationContext,
         deploymentConfig.getMetadata().getUid(), getDeploymentConfigPodLabels(deploymentConfig));
@@ -246,7 +251,7 @@ public class DeploymentConfigOperationsImpl
 
   private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
     for (PodResource podOp : podOps) {
-      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
+      PodOperationUtil.waitUntilReadyOrSucceded(podOp, podLogWaitTimeout);
     }
   }
 

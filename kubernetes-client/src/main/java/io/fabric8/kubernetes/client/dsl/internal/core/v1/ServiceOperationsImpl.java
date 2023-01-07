@@ -83,28 +83,24 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public String getURL(String portName) {
-    String clusterIP = getMandatory().getSpec().getClusterIP();
+    String clusterIP = getItemOrRequireFromServer().getSpec().getClusterIP();
     if ("None".equals(clusterIP)) {
-      throw new IllegalStateException("Service: " + getMandatory().getMetadata().getName() + " in namespace "
+      throw new IllegalStateException("Service: " + getItemOrRequireFromServer().getMetadata().getName() + " in namespace "
           + namespace + " is head-less. Search for endpoints instead");
     }
     return getUrlHelper(portName);
   }
 
   private String getUrlHelper(String portName) {
-    ServiceLoader<ServiceToURLProvider> urlProvider = ServiceLoader.load(ServiceToURLProvider.class,
-        Thread.currentThread().getContextClassLoader());
-    Iterator<ServiceToURLProvider> iterator = urlProvider.iterator();
-    List<ServiceToURLProvider> servicesList = new ArrayList<>();
-
-    while (iterator.hasNext()) {
-      servicesList.add(iterator.next());
+    List<ServiceToURLProvider> servicesList = getServiceToURLProviders(Thread.currentThread().getContextClassLoader());
+    if (servicesList.isEmpty()) {
+      servicesList = getServiceToURLProviders(getClass().getClassLoader());
     }
 
     // Sort all loaded implementations according to priority
     Collections.sort(servicesList, new ServiceToUrlSortComparator());
     for (ServiceToURLProvider serviceToURLProvider : servicesList) {
-      String url = serviceToURLProvider.getURL(getMandatory(), portName, namespace,
+      String url = serviceToURLProvider.getURL(getItemOrRequireFromServer(), portName, namespace,
           context.getClient().adapt(KubernetesClient.class));
       if (url != null && URLUtils.isValidURL(url)) {
         return url;
@@ -112,6 +108,16 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
 
     return null;
+  }
+
+  private static List<ServiceToURLProvider> getServiceToURLProviders(ClassLoader loader) {
+    Iterator<ServiceToURLProvider> iterator = ServiceLoader.load(ServiceToURLProvider.class, loader).iterator();
+    List<ServiceToURLProvider> servicesList = new ArrayList<>();
+
+    while (iterator.hasNext()) {
+      servicesList.add(iterator.next());
+    }
+    return servicesList;
   }
 
   private Pod matchingPod() {

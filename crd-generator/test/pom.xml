@@ -22,7 +22,7 @@
   <parent>
     <artifactId>crd-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.3-SNAPSHOT</version>
+    <version>6.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,7 +30,7 @@
   <name>Fabric8 :: CRD generator :: Tests</name>
 
   <properties>
-    <keycloak-version>19.0.3</keycloak-version>
+    <keycloak-version>20.0.2</keycloak-version>
   </properties>
 
   <dependencies>

@@ -458,8 +458,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_sigs_gatewayapi_v1alpha2_GatewayClassList": {
@@ -2051,8 +2050,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_sigs_gatewayapi_v1beta1_GatewayClassList": {

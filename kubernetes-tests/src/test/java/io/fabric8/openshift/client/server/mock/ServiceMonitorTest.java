@@ -38,7 +38,7 @@ class ServiceMonitorTest {
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-servicemonitor.yml")).get();
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-servicemonitor.yml")).items();
     assertEquals(1, items.size());
     assertTrue(items.get(0) instanceof ServiceMonitor);
     ServiceMonitor serviceMonitor = (ServiceMonitor) items.get(0);

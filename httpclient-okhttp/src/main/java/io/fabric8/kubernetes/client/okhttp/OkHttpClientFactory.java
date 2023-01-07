@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
@@ -82,13 +81,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
       if (config.getWebsocketPingInterval() > 0) {
         httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
-      }
-
-      if (config.getMaxConcurrentRequests() > 0 && config.getMaxConcurrentRequestsPerHost() > 0) {
-        Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequests(config.getMaxConcurrentRequests());
-        dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
-        httpClientBuilder.dispatcher(dispatcher);
       }
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);

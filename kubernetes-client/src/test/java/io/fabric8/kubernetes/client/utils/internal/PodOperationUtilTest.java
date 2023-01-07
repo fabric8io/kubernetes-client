@@ -80,7 +80,7 @@ class PodOperationUtilTest {
   void testGetGenericPodOperations() {
     // When
     PodOperationsImpl podOperations = PodOperationUtil.getGenericPodOperations(operationContext,
-        new PodOperationContext().withPrettyOutput(false).withLogWaitTimeout(5).withContainerId("container1"));
+        new PodOperationContext().withPrettyOutput(false).withReadyWaitTimeout(5).withContainerId("container1"));
 
     // Then
     assertThat(podOperations).isNotNull();
@@ -91,7 +91,7 @@ class PodOperationUtilTest {
   @Test
   void testWaitUntilReadyBeforeFetchingLogs() {
     // When
-    PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOperations, 5);
+    PodOperationUtil.waitUntilReadyOrSucceded(podOperations, 5);
     // Then
     verify(podOperations, times(1)).waitUntilCondition(any(), eq(5L), eq(TimeUnit.SECONDS));
   }

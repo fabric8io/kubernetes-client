@@ -24,16 +24,17 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimestampBytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.client.dsl.BuildResource;
-import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,69 +51,37 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
     BuildResource {
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
-  private final boolean withTerminatedStatus;
-  private final boolean withTimestamps;
-  private final String sinceTimestamp;
-  private final Integer sinceSeconds;
-  private final Integer withTailingLines;
-  private final boolean withPrettyOutput;
-  private final String version;
-  private final Integer limitBytes;
+  private Integer version;
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
-  private Integer podLogWaitTimeout;
-  private final BuildOperationContext buildOperationContext;
+  private final PodOperationContext operationContext;
 
   public BuildOperationsImpl(Client client) {
-    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(client), null);
   }
 
-  public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {
+  public BuildOperationsImpl(PodOperationContext context, OperationContext superContext, Integer version) {
     super(superContext.withApiGroupName(BUILD)
         .withPlural("builds"), Build.class, BuildList.class);
-    this.buildOperationContext = context;
-    this.withTerminatedStatus = context.isTerminatedStatus();
-    this.withTimestamps = context.isTimestamps();
-    this.sinceTimestamp = context.getSinceTimestamp();
-    this.sinceSeconds = context.getSinceSeconds();
-    this.withTailingLines = context.getTailingLines();
-    this.withPrettyOutput = context.isPrettyOutput();
-    this.version = context.getVersion();
-    this.limitBytes = context.getLimitBytes();
+    this.operationContext = context;
+    this.context = superContext;
+    this.version = version;
   }
 
   @Override
   public BuildOperationsImpl newInstance(OperationContext context) {
-    return new BuildOperationsImpl(buildOperationContext, context);
+    return new BuildOperationsImpl(operationContext, context, version);
   }
 
-  BuildOperationContext getContext() {
-    return buildOperationContext;
+  PodOperationContext getContext() {
+    return operationContext;
   }
 
   protected String getLogParameters() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("log?pretty=").append(withPrettyOutput);
-    if (version != null && !version.isEmpty()) {
-      sb.append("&version=").append(version);
+    String params = operationContext.getLogParameters();
+    if (version != null) {
+      params += ("&version=" + version);
     }
-    if (withTerminatedStatus) {
-      sb.append("&previous=true");
-    }
-    if (sinceSeconds != null) {
-      sb.append("&sinceSeconds=").append(sinceSeconds);
-    } else if (sinceTimestamp != null) {
-      sb.append("&sinceTime=").append(sinceTimestamp);
-    }
-    if (withTailingLines != null) {
-      sb.append("&tailLines=").append(withTailingLines);
-    }
-    if (limitBytes != null) {
-      sb.append("&limitBytes=").append(limitBytes);
-    }
-    if (withTimestamps) {
-      sb.append("&timestamps=true");
-    }
-    return sb.toString();
+    return params;
   }
 
   protected <T> T doGetLog(Class<T> type) {
@@ -131,7 +100,7 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
 
   @Override
   public String getLog(boolean isPretty) {
-    return new BuildOperationsImpl(getContext().withPrettyOutput(isPretty), context).getLog();
+    return new BuildOperationsImpl(getContext().withPrettyOutput(isPretty), context, version).getLog();
   }
 
   /**
@@ -163,7 +132,7 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   public LogWatch watchLog(OutputStream out) {
     try {
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
-      waitUntilBuildPodBecomesReady(fromServer().get());
+      waitUntilBuildPodBecomesReady(get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
       final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
       return callback.callAndWait(this.httpClient, url);
@@ -174,57 +143,66 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    BuildOperationsImpl result = newInstance(context);
-    result.podLogWaitTimeout = logWaitTimeout;
-    return result;
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return new BuildOperationsImpl(getContext().withReadyWaitTimeout(timeout), context, version);
   }
 
   @Override
   public Loggable withPrettyOutput() {
-    return new BuildOperationsImpl(getContext().withPrettyOutput(true), context);
+    return new BuildOperationsImpl(getContext().withPrettyOutput(true), context, version);
   }
 
   @Override
   public PrettyLoggable tailingLines(int tailingLines) {
-    return new BuildOperationsImpl(getContext().withTailingLines(tailingLines), context);
+    return new BuildOperationsImpl(getContext().withTailingLines(tailingLines), context, version);
   }
 
   @Override
   public TimeTailPrettyLoggable terminated() {
-    return new BuildOperationsImpl(getContext().withTerminatedStatus(true), context);
+    return new BuildOperationsImpl(getContext().withTerminatedStatus(true), context, version);
   }
 
   @Override
   public TailPrettyLoggable sinceTime(String sinceTimestamp) {
-    return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp), context);
+    return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp), context, version);
   }
 
   @Override
   public TailPrettyLoggable sinceSeconds(int sinceSeconds) {
-    return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds), context);
+    return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds), context, version);
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable limitBytes(int limitBytes) {
-    return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes), context);
+    return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes), context, version);
+  }
+
+  @Override
+  public TimestampBytesLimitTerminateTimeTailPrettyLoggable withVersion(Integer version) {
+    return new BuildOperationsImpl(getContext(), context, version);
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
-    return new BuildOperationsImpl(getContext().withTimestamps(true), context);
+    return new BuildOperationsImpl(getContext().withTimestamps(true), context, version);
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {
     List<PodResource> podOps = PodOperationUtil.getPodOperationsForController(context,
-        buildOperationContext.getPodOperationContext(), build.getMetadata().getUid(),
+        operationContext, build.getMetadata().getUid(),
         getBuildPodLabels(build));
 
-    waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+    waitForBuildPodToBecomeReady(podOps,
+        operationContext.getReadyWaitTimeout() != null ? operationContext.getReadyWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
 
   private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
     for (PodResource podOp : podOps) {
-      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
+      PodOperationUtil.waitUntilReadyOrSucceded(podOp, podLogWaitTimeout);
     }
   }
 

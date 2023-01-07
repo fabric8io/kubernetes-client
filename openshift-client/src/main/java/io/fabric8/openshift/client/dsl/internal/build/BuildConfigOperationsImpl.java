@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Client;
@@ -51,6 +52,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -262,7 +264,12 @@ public class BuildConfigOperationsImpl
           .post("application/octet-stream", inputStream, contentLength)
           .expectContinue()
           .uri(getQueryParameters());
-      return waitForResult(handleResponse(newClient, requestBuilder, Build.class, null));
+      return waitForResult(handleResponse(newClient, requestBuilder, new TypeReference<Build>() {
+        @Override
+        public Type getType() {
+          return Build.class;
+        }
+      }));
     } catch (Throwable e) {
       // TODO: better determine which exception this should occur on
       // otherwise we need to have the httpclient api open up to the notion

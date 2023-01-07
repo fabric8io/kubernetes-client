@@ -53,7 +53,7 @@ class CustomResourceCrudTest {
         .apiextensions().v1()
         .customResourceDefinitions()
         .load(getClass().getResourceAsStream("/crontab-crd.yml"))
-        .get();
+        .item();
     client.apiextensions().v1().customResourceDefinitions().create(cronTabCrd);
   }
 

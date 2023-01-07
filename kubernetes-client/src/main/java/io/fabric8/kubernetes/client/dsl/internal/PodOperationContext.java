@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import lombok.AllArgsConstructor;
@@ -58,7 +59,7 @@ public class PodOperationContext {
   private String sinceTimestamp;
   private Integer sinceSeconds;
   private Integer tailingLines;
-  private Integer logWaitTimeout;
+  private Integer readyWaitTimeout;
   private boolean prettyOutput;
   private ExecListener execListener;
   private Integer limitBytes;
@@ -125,8 +126,8 @@ public class PodOperationContext {
     return this.toBuilder().dir(dir).build();
   }
 
-  public PodOperationContext withLogWaitTimeout(Integer logWaitTimeout) {
-    return this.toBuilder().logWaitTimeout(logWaitTimeout).build();
+  public PodOperationContext withReadyWaitTimeout(Integer logWaitTimeout) {
+    return this.toBuilder().readyWaitTimeout(logWaitTimeout).build();
   }
 
   public String getLogParameters() {
@@ -163,15 +164,22 @@ public class PodOperationContext {
     if (tty) {
       httpUrlBuilder.addQueryParameter("tty", "true");
     }
+    boolean usingStream = false;
     if (in != null || redirectingIn) {
       httpUrlBuilder.addQueryParameter("stdin", "true");
+      usingStream = true;
     }
     boolean debug = ExecWebSocketListener.LOGGER.isDebugEnabled();
     if (output != null || debug) {
       httpUrlBuilder.addQueryParameter("stdout", "true");
+      usingStream = true;
     }
     if (error != null || terminateOnError || debug) {
       httpUrlBuilder.addQueryParameter("stderr", "true");
+      usingStream = true;
+    }
+    if (!usingStream) {
+      throw new KubernetesClientException("Pod operation is not valid unless an in, out, or error stream is used.");
     }
   }
 

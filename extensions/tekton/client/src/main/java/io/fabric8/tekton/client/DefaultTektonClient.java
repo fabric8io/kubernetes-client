@@ -62,7 +62,7 @@ public class DefaultTektonClient extends ExtensionRootClientAdapter<DefaultTekto
 
   @Override
   public boolean isSupported() {
-    return hasApiGroup("tekton.dev", true);
+    return hasApiGroup("tekton.dev", false);
   }
 
 }

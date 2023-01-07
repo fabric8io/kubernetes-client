@@ -20,5 +20,11 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 
 public interface FromServerGettable<T> extends Gettable<T> {
 
+  /**
+   * @deprecated {@link #get()} will always return the latest resource from the server, there is no
+   *             need to call fromServer.
+   */
+  @Deprecated
   Gettable<T> fromServer();
+
 }

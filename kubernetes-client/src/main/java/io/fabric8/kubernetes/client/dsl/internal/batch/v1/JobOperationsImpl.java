@@ -88,7 +88,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     Job res = accept(b -> b.getSpec().setParallelism(count));
     if (wait) {
       waitUntilJobIsScaled();
-      res = getMandatory();
+      res = getItemOrRequireFromServer();
     }
     return res;
   }
@@ -169,7 +169,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new JobOperationsImpl(podControllerOperationContext.withLogWaitTimeout(logWaitTimeout), context);
+    return withReadyWaitTimeout(logWaitTimeout);
+  }
+
+  @Override
+  public Loggable withReadyWaitTimeout(Integer timeout) {
+    return new JobOperationsImpl(podControllerOperationContext.withReadyWaitTimeout(timeout), context);
   }
 
   @Override

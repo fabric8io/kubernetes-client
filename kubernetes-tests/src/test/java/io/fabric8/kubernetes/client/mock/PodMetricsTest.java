@@ -72,7 +72,7 @@ class PodMetricsTest {
   @Test
   void testInform() {
     // Given
-    server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods").andReturn(HTTP_OK,
+    server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods?resourceVersion=0").andReturn(HTTP_OK,
         new PodMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods?allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()

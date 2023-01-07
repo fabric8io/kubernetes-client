@@ -35,7 +35,6 @@ import org.yaml.snakeyaml.resolver.Resolver;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -180,17 +179,13 @@ public class Serialization {
    * @param parameters A {@link Map} with parameters for placeholder substitution.
    * @param <T> The target type.
    * @return returns returns de-serialized object
+   *
+   * @deprecated please directly apply {@link Utils#interpolateString(String, Map)} instead of passing parameters here
    */
+  @Deprecated
   @SuppressWarnings("unchecked")
   public static <T> T unmarshal(InputStream is, Map<String, String> parameters) {
-    String specFile = readSpecFileFromInputStream(is);
-    if (containsMultipleDocuments(specFile)) {
-      return (T) getKubernetesResourceList(parameters, specFile);
-    } else if (specFile.contains(DOCUMENT_DELIMITER)) {
-      specFile = specFile.replaceAll("^---([ \\t].*?)?\\r?\\n", "");
-      specFile = specFile.replaceAll("\\n---([ \\t].*?)?\\r?\\n?$", "\n");
-    }
-    return unmarshal(new ByteArrayInputStream(specFile.getBytes()), JSON_MAPPER, parameters);
+    return unmarshal(is, JSON_MAPPER, parameters);
   }
 
   /**
@@ -217,9 +212,27 @@ public class Serialization {
    * @param parameters A {@link Map} with parameters for placeholder substitution.
    * @param <T> The target type.
    * @return returns de-serialized object
+   *
+   * @deprecated please directly apply {@link Utils#interpolateString(String, Map)} instead of passing parameters here
    */
+  @Deprecated
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
-    return unmarshal(is, mapper, new TypeReference<T>() {
+    // it's not well documented which Serialization methods are aware of input that can contain
+    // multiple docs
+    String specFile;
+    try {
+      specFile = IOHelpers.readFully(is);
+    } catch (IOException e1) {
+      throw new RuntimeException("Could not read stream");
+    }
+    if (containsMultipleDocuments(specFile)) {
+      return (T) getKubernetesResourceList(Collections.emptyMap(), specFile);
+    } else if (specFile.contains(DOCUMENT_DELIMITER)) {
+      specFile = specFile.replaceAll("^---([ \\t].*?)?\\r?\\n", "");
+      specFile = specFile.replaceAll("\\n---([ \\t].*?)?\\r?\\n?$", "\n");
+    }
+
+    return unmarshal(new ByteArrayInputStream(specFile.getBytes(StandardCharsets.UTF_8)), mapper, new TypeReference<T>() {
       @Override
       public Type getType() {
         return KubernetesResource.class;
@@ -228,9 +241,8 @@ public class Serialization {
   }
 
   private static <T> T unmarshal(InputStream is, ObjectMapper mapper, TypeReference<T> type, Map<String, String> parameters) {
-    try (
-        InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters)
-            : is;
+    try (InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters)
+        : is;
         BufferedInputStream bis = new BufferedInputStream(wrapped)) {
       bis.mark(-1);
       int intch;
@@ -296,7 +308,10 @@ public class Serialization {
    * @param parameters A hashmap containing parameters
    *
    * @return returns de-serialized object
+   *
+   * @deprecated please directly apply {@link Utils#interpolateString(String, Map)} instead of passing parameters here
    */
+  @Deprecated
   public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) {
     try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))) {
       return unmarshal(is, new TypeReference<T>() {
@@ -330,7 +345,10 @@ public class Serialization {
    * @param parameters A {@link Map} with parameters for placeholder substitution.
    * @param <T> Template argument denoting type
    * @return returns de-serialized object
+   *
+   * @deprecated please directly apply {@link Utils#interpolateString(String, Map)} instead of passing parameters here
    */
+  @Deprecated
   public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) {
     return unmarshal(is, new TypeReference<T>() {
       @Override
@@ -361,7 +379,10 @@ public class Serialization {
    * @param <T> Template argument denoting type
    *
    * @return returns de-serialized object
+   *
+   * @deprecated please directly apply {@link Utils#interpolateString(String, Map)} instead of passing parameters here
    */
+  @Deprecated
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {
     return unmarshal(is, JSON_MAPPER, type, parameters);
   }
@@ -370,6 +391,7 @@ public class Serialization {
     return splitSpecFile(specFile).stream().filter(Serialization::validate)
         .map(
             document -> (KubernetesResource) Serialization.unmarshal(new ByteArrayInputStream(document.getBytes()), parameters))
+        .filter(o -> o != null)
         .collect(Collectors.toList());
   }
 
@@ -399,20 +421,6 @@ public class Serialization {
   private static boolean validate(String document) {
     Matcher keyValueMatcher = Pattern.compile("(\\S+):\\s(\\S*)(?:\\b(?!:)|$)").matcher(document);
     return !document.isEmpty() && keyValueMatcher.find();
-  }
-
-  private static String readSpecFileFromInputStream(InputStream inputStream) {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    byte[] buffer = new byte[1024];
-    int length;
-    try {
-      while ((length = inputStream.read(buffer)) != -1) {
-        outputStream.write(buffer, 0, length);
-      }
-      return outputStream.toString();
-    } catch (IOException e) {
-      throw new RuntimeException("Unable to read InputStream." + e);
-    }
   }
 
   /**

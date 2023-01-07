@@ -21,8 +21,6 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SerializationSingleDocumentUnmarshalTest {
@@ -36,8 +34,7 @@ class SerializationSingleDocumentUnmarshalTest {
   void unmarshalWithSingleDocumentWithDocumentDelimiterShouldReturnKubernetesResource(String arg) {
     // When
     final KubernetesResource result = Serialization.unmarshal(
-        SerializationTest.class.getResourceAsStream(String.format("/serialization/%s", arg)),
-        Collections.emptyMap());
+        SerializationTest.class.getResourceAsStream(String.format("/serialization/%s", arg)));
     // Then
     assertThat(result)
         .asInstanceOf(InstanceOfAssertFactories.type(Service.class))

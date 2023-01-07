@@ -38,7 +38,7 @@ class EndpointSliceTest {
   void load() {
     // Given + When
     EndpointSlice es = client.discovery().v1beta1().endpointSlices().load(getClass().getResourceAsStream("/endpointslice.yml"))
-        .get();
+        .item();
 
     // Than
     assertThat(es).isNotNull();

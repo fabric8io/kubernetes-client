@@ -38,7 +38,7 @@ class V1beta2FlowSchemaTest {
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/v1beta2-flowschema.yml")).get();
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/v1beta2-flowschema.yml")).items();
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(FlowSchema.class)

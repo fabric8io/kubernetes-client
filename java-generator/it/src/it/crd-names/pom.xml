@@ -71,6 +71,9 @@
         <configuration>
           <source>src/test/resources/artemis-crd.yml</source>
           <generatedAnnotations>false</generatedAnnotations>
+          <packageOverrides>
+            <io.amq.broker.v1beta1>com.fabric8.test</io.amq.broker.v1beta1>
+          </packageOverrides>
         </configuration>
       </plugin>
       <plugin>

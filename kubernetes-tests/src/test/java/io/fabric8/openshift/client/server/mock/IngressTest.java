@@ -36,7 +36,7 @@ class IngressTest {
   @Test
   void load() {
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-openshift-config-ingress.yml"))
-        .get();
+        .items();
     assertThat(items).isNotNull().hasSize(1);
     assertThat(items.get(0)).isInstanceOf(Ingress.class);
   }

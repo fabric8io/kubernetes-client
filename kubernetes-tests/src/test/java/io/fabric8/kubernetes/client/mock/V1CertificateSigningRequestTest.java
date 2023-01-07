@@ -44,7 +44,7 @@ class V1CertificateSigningRequestTest {
   @Test
   void testLoad() {
     // When
-    List<HasMetadata> resources = client.load(getClass().getResourceAsStream("/test-v1-csr.yml")).get();
+    List<HasMetadata> resources = client.load(getClass().getResourceAsStream("/test-v1-csr.yml")).items();
 
     // Then
     assertThat(resources).hasSize(1);

@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>6.3-SNAPSHOT</version>
+  <version>6.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -80,13 +80,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.93.1</sundrio.version>
+    <sundrio.version>0.93.2</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.14.1</jackson.version>
-    <jetty.version>11.0.12</jetty.version>
+    <jetty.version>11.0.13</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.6</maven-core.version>
     <maven-plugin-annotations.version>3.7.0</maven-plugin-annotations.version>
@@ -100,7 +100,7 @@
     <assertj.core.version>3.23.1</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>18.5.0</approvaltests.version>
-    <mockito.version>4.9.0</mockito.version>
+    <mockito.version>4.11.0</mockito.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <generex.version>1.0.2</generex.version>
@@ -138,14 +138,14 @@
     <maven.dependency.plugin.version>3.4.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
-    <maven.invoker.plugin.version>3.3.0</maven.invoker.plugin.version>
+    <maven.invoker.plugin.version>3.4.0</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.7.0</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
     <jandex.version>2.4.3.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.28.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.29.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -174,7 +174,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2022-10-20T07:38:05Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2022-12-15T17:52:55Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
 
     <jsonschema2pojo.targetPackage>io.fabric8.kubernetes.api.model</jsonschema2pojo.targetPackage>

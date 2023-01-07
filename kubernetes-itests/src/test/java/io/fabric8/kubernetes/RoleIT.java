@@ -65,7 +65,7 @@ class RoleIT {
   void load() {
 
     Role aRole = client.rbac().roles()
-        .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).item();
 
     assertNotNull(aRole);
     assertEquals("Role", aRole.getKind());
