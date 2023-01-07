@@ -3,7 +3,6 @@ package io.fabric8.kubernetes.client.vertx;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.mockwebserver.DefaultMockServer;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -17,8 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
@@ -67,7 +64,7 @@ public class HttpBodyStreamTest {
         }
         last.set(val);
       });
-      req.handler(chunk ->  {
+      req.handler(chunk -> {
         bytesReceived.addAndGet(chunk.length());
       });
       req.endHandler(v -> {
@@ -101,6 +98,7 @@ public class HttpBodyStreamTest {
 
     HttpRequest request = client.newHttpRequestBuilder().uri("http://localhost:8080").post("text/plain", new InputStream() {
       int bytesSent = 0;
+
       @Override
       public int read() throws IOException {
         if (bytesSent++ < 10_000) {

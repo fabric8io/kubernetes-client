@@ -7,28 +7,19 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
-import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
-import io.fabric8.kubernetes.client.http.StandardHttpRequest.ByteArrayBodyContent;
-import io.fabric8.kubernetes.client.http.StandardHttpRequest.InputStreamBodyContent;
-import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
 import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
-import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.IdentityCipherSuiteFilter;
 import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Future;
-import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
 import io.vertx.core.net.*;
 import io.vertx.core.spi.tls.SslContextFactory;
 import io.vertx.ext.web.client.WebClientOptions;
-
-import javax.net.ssl.X509KeyManager;
 
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -44,7 +35,8 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
     this.vertx = Vertx.vertx();
   }
 
-  private final class VertxHttpClientBuilder extends StandardHttpClientBuilder<VertxHttpClient, VertxHttpClientFactory, VertxHttpClientBuilder> {
+  private final class VertxHttpClientBuilder
+      extends StandardHttpClientBuilder<VertxHttpClient, VertxHttpClientFactory, VertxHttpClientBuilder> {
 
     protected VertxHttpClientBuilder(VertxHttpClientFactory clientFactory) {
       super(clientFactory);
@@ -59,11 +51,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
       options.setIdleTimeoutUnit(TimeUnit.SECONDS);
 
       if (this.connectTimeout != null) {
-        options.setConnectTimeout((int)this.connectTimeout.toMillis());
+        options.setConnectTimeout((int) this.connectTimeout.toMillis());
       }
 
       if (this.writeTimeout != null) {
-        options.setWriteIdleTimeout((int)this.writeTimeout.getSeconds());
+        options.setWriteIdleTimeout((int) this.writeTimeout.getSeconds());
       }
 
       if (this.followRedirects) {
@@ -72,9 +64,9 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
       if (this.proxyAddress != null) {
         ProxyOptions proxyOptions = new ProxyOptions()
-          .setHost(this.proxyAddress.getHostName())
-          .setPort(this.proxyAddress.getPort())
-          .setType(ProxyType.HTTP);
+            .setHost(this.proxyAddress.getHostName())
+            .setPort(this.proxyAddress.getPort())
+            .setType(ProxyType.HTTP);
         options.setProxyOptions(proxyOptions);
       }
 
@@ -93,17 +85,18 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
           public JdkSSLEngineOptions copy() {
             return this;
           }
+
           @Override
           public SslContextFactory sslContextFactory() {
             return () -> new JdkSslContext(
-              sslContext,
-              true,
-              null,
-              IdentityCipherSuiteFilter.INSTANCE,
-              ApplicationProtocolConfig.DISABLED,
-              io.netty.handler.ssl.ClientAuth.NONE,
-              null,
-              false);
+                sslContext,
+                true,
+                null,
+                IdentityCipherSuiteFilter.INSTANCE,
+                ApplicationProtocolConfig.DISABLED,
+                io.netty.handler.ssl.ClientAuth.NONE,
+                null,
+                false);
           }
         });
       }
@@ -129,7 +122,8 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
     final private HttpClient client;
     private final String proxyAuthorization;
 
-    private VertxHttpClient(VertxHttpClientBuilder vertxHttpClientBuilder, WebClientOptions options, String proxyAuthorization) {
+    private VertxHttpClient(VertxHttpClientBuilder vertxHttpClientBuilder, WebClientOptions options,
+        String proxyAuthorization) {
       super(vertxHttpClientBuilder);
       this.client = vertx.createHttpClient(options);
       this.proxyAuthorization = proxyAuthorization;
@@ -151,7 +145,7 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
       StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
 
       request.headers().entrySet().stream()
-      .forEach(e -> e.getValue().stream().forEach(v -> options.addHeader(e.getKey(), v)));
+          .forEach(e -> e.getValue().stream().forEach(v -> options.addHeader(e.getKey(), v)));
       options.setAbsoluteURI(request.uri().toString());
 
       Future<WebSocketResponse> map = client
@@ -162,37 +156,43 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
             return new WebSocketResponse(ret, null);
           }).otherwise(t -> {
             if (t instanceof UpgradeRejectedException) {
-              UpgradeRejectedException handshake = (UpgradeRejectedException)t;
-              return new WebSocketResponse(null, new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(new HttpResponse<String>() {
-                @Override
-                public int code() {
-                  return handshake.getStatus();
-                }
-                @Override
-                public String body() {
-                  return handshake.getBody().toString();
-                }
-                @Override
-                public HttpRequest request() {
-                  throw new UnsupportedOperationException();
-                }
-                @Override
-                public Optional<HttpResponse<?>> previousResponse() {
-                  return Optional.empty();
-                }
-                @Override
-                public List<String> headers(String s) {
-                  return handshake.getHeaders().getAll(s);
-                }
-                @Override
-                public Map<String, List<String>> headers() {
-                  Map<String, List<String>> headers = new LinkedHashMap<>();
-                  handshake.getHeaders().names().forEach(name -> {
-                    headers.put(name, handshake.getHeaders().getAll(name));
-                  });
-                  return headers;
-                }
-              }));
+              UpgradeRejectedException handshake = (UpgradeRejectedException) t;
+              return new WebSocketResponse(null,
+                  new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(new HttpResponse<String>() {
+                    @Override
+                    public int code() {
+                      return handshake.getStatus();
+                    }
+
+                    @Override
+                    public String body() {
+                      return handshake.getBody().toString();
+                    }
+
+                    @Override
+                    public HttpRequest request() {
+                      throw new UnsupportedOperationException();
+                    }
+
+                    @Override
+                    public Optional<HttpResponse<?>> previousResponse() {
+                      return Optional.empty();
+                    }
+
+                    @Override
+                    public List<String> headers(String s) {
+                      return handshake.getHeaders().getAll(s);
+                    }
+
+                    @Override
+                    public Map<String, List<String>> headers() {
+                      Map<String, List<String>> headers = new LinkedHashMap<>();
+                      handshake.getHeaders().names().forEach(name -> {
+                        headers.put(name, handshake.getHeaders().getAll(name));
+                      });
+                      return headers;
+                    }
+                  }));
             }
             return new WebSocketResponse(null, null);
           });
@@ -214,7 +214,8 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
         options.putHeader(HttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
       }
 
-      Optional.ofNullable(request.getContentType()).ifPresent(s -> options.putHeader(io.vertx.core.http.HttpHeaders.CONTENT_TYPE, s));
+      Optional.ofNullable(request.getContentType())
+          .ifPresent(s -> options.putHeader(io.vertx.core.http.HttpHeaders.CONTENT_TYPE, s));
 
       if (request.isExpectContinue()) {
         // TODO: determine if this is enforced by the client

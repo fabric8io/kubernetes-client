@@ -8,23 +8,17 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.StreamResetException;
 import io.vertx.core.net.SelfSignedCertificate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.net.ssl.KeyManager;
+import java.util.concurrent.TimeUnit;
+
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class SslTest {
 
@@ -41,14 +35,14 @@ public class SslTest {
     server = vertx.createHttpServer(new HttpServerOptions()
         .setSsl(true)
         .setKeyCertOptions(cert.keyCertOptions()))
-      .requestHandler(req -> {
-      Handler<HttpServerRequest> handler = requestHandler;
-      if (handler != null) {
-        handler.handle(req);
-      } else {
-        req.response().setStatusCode(404).end();
-      }
-    });
+        .requestHandler(req -> {
+          Handler<HttpServerRequest> handler = requestHandler;
+          if (handler != null) {
+            handler.handle(req);
+          } else {
+            req.response().setStatusCode(404).end();
+          }
+        });
     server.listen(8443).toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
     TrustManagerFactory tmf = cert.trustOptions().getTrustManagerFactory(vertx);
     trustManagers = tmf.getTrustManagers();

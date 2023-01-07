@@ -78,7 +78,8 @@ class InputStreamReadStream implements ReadStream<Buffer> {
       if (amount == -1) {
         p.complete();
       } else {
-        p.complete(Buffer.buffer(VertxByteBufAllocator.DEFAULT.heapBuffer(amount, Integer.MAX_VALUE).writeBytes(bytes, 0, amount)));
+        p.complete(
+            Buffer.buffer(VertxByteBufAllocator.DEFAULT.heapBuffer(amount, Integer.MAX_VALUE).writeBytes(bytes, 0, amount)));
       }
     });
     fut.onComplete(ar -> {
