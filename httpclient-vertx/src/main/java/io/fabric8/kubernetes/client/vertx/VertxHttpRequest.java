@@ -56,7 +56,8 @@ class VertxHttpRequest implements HttpRequest {
     return options.getHeaders().getAll(key);
   }
 
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpClient client, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpClient client,
+      AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     Function<HttpClientResponse, HttpResponse<AsyncBody>> responseHandler = resp -> {
       resp.pause();
       AsyncBody result = new AsyncBody() {
