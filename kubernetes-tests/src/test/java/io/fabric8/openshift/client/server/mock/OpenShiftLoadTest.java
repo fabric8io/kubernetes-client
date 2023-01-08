@@ -16,31 +16,37 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class OpenShiftLoadTest {
 
-  OpenShiftMockServer server;
+  KubernetesMockServer server;
   OpenShiftClient client;
 
   @Test
   void testResourceGetFromLoadWhenSingleDocumentsWithStartingDelimiter() {
 
     // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-template.yml")).get();
+    List<HasMetadata> result = client.templates()
+        .load(getClass().getResourceAsStream("/test-template.yml"))
+        .processLocally(Collections.emptyMap())
+        .getItems();
 
     // then
     assertNotNull(result);
     assertEquals(5, result.size());
     HasMetadata deploymentResource = result.get(2);
-    assertEquals("image.openshift.io/v1", deploymentResource.getApiVersion());
+    assertEquals("v1", deploymentResource.getApiVersion());
     assertEquals("ImageStream", deploymentResource.getKind());
     assertEquals("eap-app", deploymentResource.getMetadata().getName());
   }
@@ -49,7 +55,10 @@ class OpenShiftLoadTest {
   void testResourceGetFromLoadWhenSingleDocumentsWithoutDelimiter() {
 
     // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/template-with-params.yml")).get();
+    List<HasMetadata> result = client.templates()
+        .load(getClass().getResourceAsStream("/template-with-params.yml"))
+        .item()
+        .getObjects();
 
     // then
     assertNotNull(result);

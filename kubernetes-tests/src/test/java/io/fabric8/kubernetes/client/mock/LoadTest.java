@@ -39,7 +39,7 @@ class LoadTest {
     // given
 
     // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/multiple-document-template.yml")).get();
+    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/multiple-document-template.yml")).items();
 
     // then
     assertNotNull(result);
@@ -52,7 +52,7 @@ class LoadTest {
 
   @Test
   void testNetworkPolicyLoad() {
-    List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
+    List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-networkpolicy.yml")).items();
 
     assertEquals(1, itemList.size());
     NetworkPolicy ingress = (NetworkPolicy) itemList.get(0);

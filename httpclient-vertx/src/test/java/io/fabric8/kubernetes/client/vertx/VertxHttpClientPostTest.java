@@ -24,4 +24,5 @@ public class VertxHttpClientPostTest extends AbstractHttpPostTest {
   protected HttpClient.Factory getHttpClientFactory() {
     return new VertxHttpClientFactory();
   }
+
 }

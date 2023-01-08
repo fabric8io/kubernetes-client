@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Client;
@@ -85,15 +84,15 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   List<HasMetadata> getItems() {
     Object item = context.getItem();
 
-    if (item instanceof InputStream) {
-      item = Serialization.unmarshal((InputStream) item, Collections.emptyMap());
-      context = context.withItem(item); // late realization of the inputstream
-    }
-
     return asHasMetadata(item).stream()
         .map(meta -> acceptVisitors(meta,
             Collections.emptyList(), this.context))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<HasMetadata> items() {
+    return getItems();
   }
 
   @Override
@@ -122,7 +121,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     if (operations.isEmpty()) {
       return Collections.emptyList();
     }
-    List<HasMetadata> items = operations.stream().map(Resource::get).collect(Collectors.toList());
+    List<HasMetadata> items = operations.stream().map(Resource::item).collect(Collectors.toList());
     final List<CompletableFuture<List<HasMetadata>>> futures = new ArrayList<>(items.size());
     for (final Resource<HasMetadata> impl : operations) {
       CompletableFuture<List<HasMetadata>> futureCondition = impl.informOnCondition(l -> {
@@ -223,7 +222,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public Gettable<List<HasMetadata>> fromServer() {
-    return newInstance(context.withReloadingFromServer(true));
+    return this;
   }
 
   @Override
@@ -250,17 +249,13 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   protected List<HasMetadata> asHasMetadata(Object item) {
     List<HasMetadata> result = new ArrayList<>();
-    if (item instanceof KubernetesList) {
-      result.addAll(((KubernetesList) item).getItems());
-    } else if (item instanceof KubernetesResourceList) {
+    if (item instanceof KubernetesResourceList) {
       result.addAll(((KubernetesResourceList) item).getItems());
     } else if (item instanceof HasMetadata) {
       result.add((HasMetadata) item);
-    } else if (item instanceof String) {
-      return asHasMetadata(Serialization.unmarshal((String) item));
     } else if (item instanceof Collection) {
       for (Object o : (Collection) item) {
-        if (o instanceof HasMetadata) {
+        if (o != null) {
           result.add((HasMetadata) o);
         }
       }

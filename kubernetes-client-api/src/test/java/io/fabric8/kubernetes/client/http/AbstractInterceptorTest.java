@@ -25,7 +25,9 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -194,6 +196,43 @@ public abstract class AbstractInterceptorTest {
       // Then
       assertThat(result.get()).isEqualTo("This works");
     }
+  }
+
+  @Test
+  @DisplayName("afterFailure (HTTP), previous consumed response bodies are closed")
+  public void afterHttpFailurePreviousResponsesAreClosed() throws Exception {
+    // Given
+    server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
+    final Set<HttpResponse<?>> interceptedResponses = ConcurrentHashMap.newKeySet();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("invalid-url", new Interceptor() {
+          @Override
+          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+            builder.uri(URI.create(server.url("/still-not-found")));
+            interceptedResponses.add(response);
+            return CompletableFuture.completedFuture(true);
+          }
+        })
+        .addOrReplaceInterceptor("valid-url", new Interceptor() {
+          @Override
+          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+            builder.uri(URI.create(server.url("/intercepted-url")));
+            interceptedResponses.add(response);
+            return CompletableFuture.completedFuture(true);
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      client.consumeBytes(
+          client.newHttpRequestBuilder().uri(server.url("/not-found")).build(),
+          (s, ab) -> ab.consume())
+          .get(10, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(interceptedResponses)
+        .hasSize(2)
+        .extracting(r -> ((AsyncBody) r.body()).done().isDone())
+        .containsOnly(true, true);
   }
 
   @Test

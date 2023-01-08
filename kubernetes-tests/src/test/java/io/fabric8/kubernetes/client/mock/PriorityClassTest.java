@@ -155,6 +155,6 @@ public class PriorityClassTest {
   @Test
   void testLoadFromFile() {
     assertNotNull(
-        client.scheduling().v1beta1().priorityClasses().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
+        client.scheduling().v1beta1().priorityClasses().load(getClass().getResourceAsStream("/test-priorityclass.yml")).item());
   }
 }

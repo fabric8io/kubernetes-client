@@ -32,7 +32,7 @@ class NamespaceIT {
   @Test
   void testCrud() {
     // Load
-    Namespace namespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).get();
+    Namespace namespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).item();
     assertThat(namespace).isNotNull();
     assertEquals("fabric8-test", namespace.getMetadata().getName());
 

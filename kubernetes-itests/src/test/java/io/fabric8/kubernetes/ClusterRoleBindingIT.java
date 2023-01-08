@@ -58,7 +58,7 @@ class ClusterRoleBindingIT {
   void load() {
 
     ClusterRoleBinding aClusterRoleBinding = client.rbac().clusterRoleBindings()
-        .load(getClass().getResourceAsStream("/test-kubernetesclusterrolebinding.yml")).get();
+        .load(getClass().getResourceAsStream("/test-kubernetesclusterrolebinding.yml")).item();
     assertNotNull(aClusterRoleBinding);
     assertEquals("ClusterRoleBinding", aClusterRoleBinding.getKind());
     assertNotNull(aClusterRoleBinding.getMetadata());

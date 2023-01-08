@@ -43,7 +43,7 @@ class SecretIT {
 
   @Test
   void load() {
-    Secret aSecret = client.secrets().load(getClass().getResourceAsStream("/test-secret.yml")).get();
+    Secret aSecret = client.secrets().load(getClass().getResourceAsStream("/test-secret.yml")).item();
     assertThat(aSecret).isNotNull();
     assertEquals("my-secret", aSecret.getMetadata().getName());
   }

@@ -25,24 +25,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class OkHttpClientFactoryTest {
 
   @Test
-  void shouldRespectMaxRequests() {
+  void shouldNotRespectMaxRequests() {
     OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(new ConfigBuilder().build()).build();
 
-    assertEquals(64, client.getOkHttpClient().dispatcher().getMaxRequests());
+    assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequests());
 
     Config config = new ConfigBuilder()
         .withMaxConcurrentRequests(120)
         .build();
 
     client = new OkHttpClientFactory().newBuilder(config).build();
-    assertEquals(120, client.getOkHttpClient().dispatcher().getMaxRequests());
+    assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequests());
   }
 
   @Test
-  void shouldRespectMaxRequestsPerHost() {
+  void shouldNotRespectMaxRequestsPerHost() {
     OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(new ConfigBuilder().build()).build();
 
-    assertEquals(5, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
+    assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
 
     Config config = new ConfigBuilder()
         .withMaxConcurrentRequestsPerHost(20)
@@ -50,7 +50,7 @@ class OkHttpClientFactoryTest {
 
     client = new OkHttpClientFactory().newBuilder(config).build();
 
-    assertEquals(20, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
+    assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
   }
 
 }

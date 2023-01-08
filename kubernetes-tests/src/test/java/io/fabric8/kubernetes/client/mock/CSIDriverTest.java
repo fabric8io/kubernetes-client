@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableKubernetesMockClient
@@ -37,7 +38,7 @@ class CSIDriverTest {
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-csidriver.yml")).get();
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-csidriver.yml")).items();
     assertThat(items).isNotNull();
     assertThat(items.get(0))
         .isInstanceOf(CSIDriver.class)

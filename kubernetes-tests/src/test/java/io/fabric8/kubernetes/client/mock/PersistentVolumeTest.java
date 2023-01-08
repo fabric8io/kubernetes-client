@@ -118,7 +118,7 @@ public class PersistentVolumeTest {
   @Test
   public void testLoadFromFile() {
     PersistentVolume persistentVolume = client.persistentVolumes()
-        .load(getClass().getResourceAsStream("/test-persistentvolume.yml")).get();
+        .load(getClass().getResourceAsStream("/test-persistentvolume.yml")).item();
     assertEquals("pv-test", persistentVolume.getMetadata().getName());
   }
 

@@ -3,12 +3,17 @@ package io.fabric8.kubernetes.client.vertx;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
+import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.RequestOptions;
+import io.vertx.core.streams.ReadStream;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -21,10 +26,12 @@ import java.util.function.Function;
 
 class VertxHttpRequest implements HttpRequest {
 
+  final Vertx vertx;
   private final RequestOptions options;
-  private final Buffer body;
+  private final StandardHttpRequest.BodyContent body;
 
-  public VertxHttpRequest(RequestOptions options, Buffer body) {
+  public VertxHttpRequest(Vertx vertx, RequestOptions options, StandardHttpRequest.BodyContent body) {
+    this.vertx = vertx;
     this.options = options;
     this.body = body;
   }
@@ -49,7 +56,8 @@ class VertxHttpRequest implements HttpRequest {
     return options.getHeaders().getAll(key);
   }
 
-  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpClient client, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
+  public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpClient client,
+      AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     Function<HttpClientResponse, HttpResponse<AsyncBody>> responseHandler = resp -> {
       resp.pause();
       AsyncBody result = new AsyncBody() {
@@ -67,6 +75,8 @@ class VertxHttpRequest implements HttpRequest {
 
         @Override
         public void cancel() {
+          resp.handler(null);
+          resp.endHandler(null);
           resp.request().reset();
           done.cancel(false);
         }
@@ -115,10 +125,27 @@ class VertxHttpRequest implements HttpRequest {
       };
     };
     return client.request(options).compose(request -> {
+      Future<HttpClientResponse> fut;
       if (body != null) {
-        return request.send(body).map(responseHandler);
+        if (body instanceof StandardHttpRequest.StringBodyContent) {
+          Buffer buffer = Buffer.buffer(((StandardHttpRequest.StringBodyContent) body).getContent());
+          fut = request.send(buffer);
+        } else if (body instanceof StandardHttpRequest.ByteArrayBodyContent) {
+          Buffer buffer = Buffer.buffer(((StandardHttpRequest.ByteArrayBodyContent) body).getContent());
+          fut = request.send(buffer);
+        } else if (body instanceof StandardHttpRequest.InputStreamBodyContent) {
+          StandardHttpRequest.InputStreamBodyContent bodyContent = (StandardHttpRequest.InputStreamBodyContent) body;
+          InputStream is = bodyContent.getContent();
+
+          ReadStream<Buffer> stream = new InputStreamReadStream(this, is, request);
+          fut = request.send(stream);
+        } else {
+          fut = Future.failedFuture("Unsupported body content");
+        }
+      } else {
+        fut = request.send();
       }
-      return request.send().map(responseHandler);
+      return fut.map(responseHandler);
     }).toCompletionStage().toCompletableFuture();
   }
 
@@ -133,4 +160,5 @@ class VertxHttpRequest implements HttpRequest {
     multiMap.names().stream().forEach(k -> headers.put(k, multiMap.getAll(k)));
     return headers;
   }
+
 }

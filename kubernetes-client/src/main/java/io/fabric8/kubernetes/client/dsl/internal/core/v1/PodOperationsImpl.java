@@ -92,7 +92,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     implements PodResource, CopyOrReadable {
 
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
-  private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
+  private static final Integer DEFAULT_POD_READY_WAIT_TIMEOUT = 5;
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
   public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
 
@@ -172,8 +172,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public LogWatch watchLog(OutputStream out) {
     checkForPiped(out);
     try {
-      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(this,
-          getContext().getLogWaitTimeout() != null ? getContext().getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+      PodOperationUtil.waitUntilReadyOrSucceded(this,
+          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getContext().getLogParameters() + "&follow=true"));
       final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
@@ -184,8 +184,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
+  public PodOperationsImpl withReadyWaitTimeout(Integer logWaitTimeout) {
+    return new PodOperationsImpl(getContext().withReadyWaitTimeout(logWaitTimeout), context);
+  }
+
+  @Override
   public Loggable withLogWaitTimeout(Integer logWaitTimeout) {
-    return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout), context);
+    return withReadyWaitTimeout(logWaitTimeout);
   }
 
   @Override
@@ -263,9 +268,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       return false;
     } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(forOperationType("evict"), exception);
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("evict"), interruptedException);
     }
   }
 
@@ -280,6 +282,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
     try {
       URL url = getURL("exec", actualCommands);
+
       return setupConnectionToPod(url.toURI());
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("exec"), e);
@@ -290,6 +293,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public ExecWatch attach() {
     try {
       URL url = getURL("attach", null);
+
       return setupConnectionToPod(url.toURI());
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("attach"), e);
@@ -297,6 +301,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private URL getURL(String operation, String[] commands) throws MalformedURLException {
+    Pod fromServer = PodOperationUtil.waitUntilReadyOrSucceded(this,
+        getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
+
     String url = URLUtils.join(getResourceUrl().toString(), operation);
     URLBuilder httpUrlBuilder = new URLBuilder(url);
     if (commands != null) {
@@ -305,7 +312,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       }
     }
     PodOperationContext contextToUse = getContext();
-    contextToUse = contextToUse.withContainerId(validateOrDefaultContainerId(contextToUse.getContainerId()));
+    contextToUse = contextToUse.withContainerId(validateOrDefaultContainerId(contextToUse.getContainerId(), fromServer));
     contextToUse.addQueryParameters(httpUrlBuilder);
     return httpUrlBuilder.build();
   }
@@ -313,8 +320,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   /**
    * If not specified, choose an appropriate default container id
    */
-  String validateOrDefaultContainerId(String name) {
-    Pod pod = this.require();
+  String validateOrDefaultContainerId(String name, Pod pod) {
+    if (pod == null) {
+      pod = this.getItemOrRequireFromServer();
+    }
     // spec and container null-checks are not necessary for real k8s clusters, added them to simplify some tests running in the mockserver
     if (pod.getSpec() == null || pod.getSpec().getContainers() == null || pod.getSpec().getContainers().isEmpty()) {
       throw new KubernetesClientException("Pod has no containers!");

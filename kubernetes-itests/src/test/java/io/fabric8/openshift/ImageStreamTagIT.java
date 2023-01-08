@@ -39,7 +39,7 @@ class ImageStreamTagIT {
   @Test
   void load() {
     ImageStreamTag loadedIST = client.imageStreamTags()
-        .load(getClass().getResourceAsStream("/test-ist.yml")).get();
+        .load(getClass().getResourceAsStream("/test-ist.yml")).item();
 
     assertNotNull(loadedIST);
     assertEquals("bar1:1.0.12", loadedIST.getMetadata().getName());

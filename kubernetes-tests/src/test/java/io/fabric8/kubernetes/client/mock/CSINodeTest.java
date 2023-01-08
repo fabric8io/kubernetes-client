@@ -38,7 +38,7 @@ class CSINodeTest {
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-csinode.yml")).get();
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-csinode.yml")).items();
     assertThat(items).isNotNull();
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(CSINode.class)

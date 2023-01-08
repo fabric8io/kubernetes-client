@@ -742,7 +742,7 @@ client.batch().jobs().inNamespace("default").create(job);
 ```
 - Create or Replace an existing `Job`:
 ```
-Job job = client.batch().jobs().inNamespace("default").createOrReplace(job);
+Job job = client.batch().v1().jobs().inNamespace("default").resource(job).createOrReplace();
 ```
 - List `Job` in some namespace:
 ```

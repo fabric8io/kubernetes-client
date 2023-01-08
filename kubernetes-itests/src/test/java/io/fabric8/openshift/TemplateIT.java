@@ -46,7 +46,7 @@ class TemplateIT {
     Template template = client.templates()
         .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
 
-        .load(getClass().getResourceAsStream("/test-template.yml")).get();
+        .load(getClass().getResourceAsStream("/test-template.yml")).item();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());
   }

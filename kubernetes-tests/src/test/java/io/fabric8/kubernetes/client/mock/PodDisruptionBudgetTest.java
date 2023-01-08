@@ -162,6 +162,6 @@ public class PodDisruptionBudgetTest {
 
   @Test
   public void testLoadFromFile() {
-    assertNotNull(client.policy().podDisruptionBudget().load(getClass().getResourceAsStream("/test-pdb.yml")).get());
+    assertNotNull(client.policy().podDisruptionBudget().load(getClass().getResourceAsStream("/test-pdb.yml")).item());
   }
 }

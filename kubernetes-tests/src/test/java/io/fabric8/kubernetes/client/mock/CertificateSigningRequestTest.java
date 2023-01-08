@@ -44,7 +44,7 @@ class CertificateSigningRequestTest {
     // Given
 
     // When
-    List<HasMetadata> resources = client.load(getClass().getResourceAsStream("/test-csr.yml")).get();
+    List<HasMetadata> resources = client.load(getClass().getResourceAsStream("/test-csr.yml")).items();
 
     // Then
     assertEquals(1, resources.size());

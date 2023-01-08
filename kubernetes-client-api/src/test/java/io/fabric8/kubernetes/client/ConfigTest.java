@@ -25,6 +25,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
 public class ConfigTest {
 
@@ -665,6 +667,93 @@ public class ConfigTest {
       return "/usr/java/jdk-14.0.1/bin" + File.pathSeparator +
           commandFolder.getAbsolutePath() + File.pathSeparator +
           "/opt/apache-maven/bin";
+    }
+  }
+
+  @Test
+  void getHomeDir_shouldUseHomedriveHomepathOnWindows_WhenHomeEnvVariableIsNotSet() {
+    String osNamePropToRestore = System.getProperty("os.name");
+    try {
+
+      System.setProperty("os.name", "Windows");
+
+      Map<String, String> envVars = new HashMap<String, String>();
+      envVars.put("HOMEDRIVE", "C:\\Users\\");
+      envVars.put("HOMEPATH", "user");
+      envVars.put("USERPROFILE", "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\");
+
+      assertEquals("C:\\Users\\user", Config.getHomeDir(f -> true, envVars::get));
+
+    } finally {
+      System.setProperty("os.name", osNamePropToRestore);
+    }
+  }
+
+  @Test
+  void getHomeDir_shouldUseUserprofileOnWindows_WhenHomeHomedriveHomepathEnvVariablesAreNotSet() {
+    String osNamePropToRestore = System.getProperty("os.name");
+    try {
+
+      System.setProperty("os.name", "Windows");
+
+      Map<String, String> envVars = new HashMap<String, String>();
+      envVars.put("USERPROFILE", "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\");
+
+      assertEquals("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\",
+          Config.getHomeDir(f -> true, envVars::get));
+
+    } finally {
+      System.setProperty("os.name", osNamePropToRestore);
+    }
+  }
+
+  @Test
+  void getHomeDir_shouldUseHomeEnvVariableOnWindows_WhenHomeEnvVariableIsSet() {
+    String osNamePropToRestore = System.getProperty("os.name");
+    try {
+
+      System.setProperty("os.name", "Windows");
+
+      Map<String, String> envVars = new HashMap<String, String>();
+      envVars.put("HOMEDRIVE", "C:\\Users\\");
+      envVars.put("HOMEPATH", "user");
+      envVars.put("HOME", "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\");
+
+      assertEquals("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\",
+          Config.getHomeDir(f -> true, envVars::get));
+
+    } finally {
+      System.setProperty("os.name", osNamePropToRestore);
+    }
+  }
+
+  @Test
+  @EnabledOnOs({ WINDOWS })
+  void getHomeDir_shouldUseHomeEnvVariable_WhenEnabledOnWindows_WhenHomeEnvVariableIsSet() {
+
+    Map<String, String> envVars = new HashMap<String, String>();
+    envVars.put("HOMEDRIVE", "C:\\Users\\");
+    envVars.put("HOMEPATH", "user");
+    envVars.put("HOME", "C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\");
+
+    assertEquals("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\",
+        Config.getHomeDir(f -> true, envVars::get));
+
+  }
+
+  @Test
+  void getHomeDir_shouldReturnUserHomeProp_WhenHomeEnvVariablesAreNotSet() {
+    String userHomePropToRestore = System.getProperty("user.home");
+    try {
+
+      System.setProperty("user.home", "/home/user");
+
+      Map<String, String> emptyEnvVars = Collections.emptyMap();
+
+      assertEquals("/home/user", Config.getHomeDir(f -> true, emptyEnvVars::get));
+
+    } finally {
+      System.setProperty("user.home", userHomePropToRestore);
     }
   }
 }
