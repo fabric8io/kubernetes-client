@@ -114,6 +114,10 @@ public abstract class AbstractSimultaneousConnectionsTest {
           .build();
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
         asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
+        // Throttle connection creation to keep cool with the server otherwise it might reset connections
+        while (activeConnections.getCount() - (MAX_HTTP_1_CONNECTIONS - it) > 10) {
+          Thread.sleep(1);
+        }
       }
       assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
       CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(10, TimeUnit.SECONDS);
@@ -144,6 +148,10 @@ public abstract class AbstractSimultaneousConnectionsTest {
             .uri(URI.create(String.format("http://localhost:%s/http", httpServer.getAddress().getPort())))
             .buildAsync(new WebSocket.Listener() {
             });
+        // Throttle connection creation to keep cool with the server otherwise it might reset connections
+        while (activeConnections.getCount() - (MAX_HTTP_1_CONNECTIONS - it) > 10) {
+          Thread.sleep(1);
+        }
       }
       assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
     }
@@ -179,6 +187,10 @@ public abstract class AbstractSimultaneousConnectionsTest {
               }
             })
             .whenComplete((ws, t) -> clientSockets.add(ws));
+        // Throttle connection creation to keep cool with the server otherwise it might reset connections
+        while ((it) - serverSockets.size() > 10) {
+          Thread.sleep(1);
+        }
       }
       assertThat(latch.await(20L, TimeUnit.SECONDS)).isTrue();
       assertThat(serverSockets.size())

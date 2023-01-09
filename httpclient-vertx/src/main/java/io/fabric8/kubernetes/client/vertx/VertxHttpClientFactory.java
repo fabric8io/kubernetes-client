@@ -76,6 +76,9 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
       WebClientOptions options = new WebClientOptions();
 
+      options.setMaxPoolSize(1024);
+      options.setMaxWebSockets(1024);
+
       options.setIdleTimeoutUnit(TimeUnit.SECONDS);
 
       if (this.connectTimeout != null) {
