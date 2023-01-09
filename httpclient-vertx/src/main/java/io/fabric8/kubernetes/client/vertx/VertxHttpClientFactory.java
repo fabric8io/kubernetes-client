@@ -30,7 +30,6 @@ import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.IdentityCipherSuiteFilter;
 import io.netty.handler.ssl.JdkSslContext;
-import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpHeaders;
@@ -177,16 +176,18 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
           .forEach(e -> e.getValue().stream().forEach(v -> options.addHeader(e.getKey(), v)));
       options.setAbsoluteURI(request.uri().toString());
 
-      Future<WebSocketResponse> map = client
+      CompletableFuture<WebSocketResponse> response = new CompletableFuture<WebSocketResponse>();
+
+      client
           .webSocket(options)
-          .map(ws -> {
+          .onSuccess(ws -> {
             VertxWebSocket ret = new VertxWebSocket(ws, listener);
             ret.init();
-            return new WebSocketResponse(ret, null);
-          }).otherwise(t -> {
+            response.complete(new WebSocketResponse(ret, null));
+          }).onFailure(t -> {
             if (t instanceof UpgradeRejectedException) {
               UpgradeRejectedException handshake = (UpgradeRejectedException) t;
-              return new WebSocketResponse(null,
+              response.complete(new WebSocketResponse(null,
                   new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(new HttpResponse<String>() {
                     @Override
                     public int code() {
@@ -221,11 +222,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
                       });
                       return headers;
                     }
-                  }));
+                  })));
             }
-            return new WebSocketResponse(null, null);
+            response.completeExceptionally(t);
           });
-      return map.toCompletionStage().toCompletableFuture();
+      return response;
     }
 
     @Override
