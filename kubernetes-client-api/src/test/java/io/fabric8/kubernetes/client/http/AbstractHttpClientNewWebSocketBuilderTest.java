@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.entry;
 
 public abstract class AbstractHttpClientNewWebSocketBuilderTest {
 
@@ -93,27 +94,29 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
 
   @Test
   void buildAsyncIncludesRequiredHeadersAndPropagatesConfigured() throws Exception {
-    server.expect().withPath("/websocket-headers-test")
-        .andUpgradeToWebSocket()
-        .open()
-        .done()
-        .always();
+    server.expect().withPath("/websocket-headers-test").andReturn(200, "hello").once();
     final AtomicBoolean open = new AtomicBoolean(false);
-    httpClient.newWebSocketBuilder()
-        .header("A-Random-Header", "A-Random-Value")
-        .subprotocol("amqp")
-        .uri(URI.create(server.url("/websocket-headers-test")))
-        .buildAsync(new WebSocket.Listener() {
-          @Override
-          public void onOpen(WebSocket webSocket) {
-            open.set(true);
-          }
-        }).get(10L, TimeUnit.SECONDS);
-    assertThat(open).isTrue();
+    try {
+      httpClient.newWebSocketBuilder()
+          .header("A-Random-Header", "A-Random-Value")
+          .subprotocol("amqp")
+          .uri(URI.create(server.url("/websocket-headers-test")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onOpen(WebSocket webSocket) {
+              open.set(true);
+            }
+          }).get(10L, TimeUnit.SECONDS);
+    } catch (ExecutionException e) {
+      WebSocketHandshakeException wshe = (WebSocketHandshakeException) e.getCause();
+      assertThat(wshe.getResponse().code()).isEqualTo(200);
+    }
+    assertThat(open).isFalse();
     assertThat(server.getLastRequest().getHeaders().toMultimap())
         .containsEntry("a-random-header", Collections.singletonList("A-Random-Value"))
         .containsEntry("sec-websocket-protocol", Collections.singletonList("amqp"))
-        .containsEntry("connection", Collections.singletonList("Upgrade"))
+        .containsAnyOf(entry("connection", Collections.singletonList("Upgrade")),
+            entry("connection", Collections.singletonList("upgrade")))
         .containsEntry("upgrade", Collections.singletonList("websocket"))
         .containsEntry("sec-websocket-version", Collections.singletonList("13"))
         .containsKey("sec-websocket-key");
