@@ -19,7 +19,6 @@ import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
@@ -35,8 +34,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class KubernetesNamespacedTestExtension
-    implements HasKubernetesClient, BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
+public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallback, BeforeEachCallback, AfterAllCallback {
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
@@ -47,9 +45,6 @@ public class KubernetesNamespacedTestExtension
       getStore(context).put(KubernetesClient.class,
           client.adapt(NamespacedKubernetesClient.class).inNamespace(getKubernetesNamespace(context).getMetadata().getName()));
     }
-    for (Field field : extractFields(context, KubernetesClient.class, f -> Modifier.isStatic(f.getModifiers()))) {
-      setFieldValue(field, null, getClient(context).adapt((Class<Client>) field.getType()));
-    }
     for (Field field : extractFields(context, Namespace.class, f -> Modifier.isStatic(f.getModifiers()))) {
       setFieldValue(field, null, getKubernetesNamespace(context));
     }
@@ -57,9 +52,6 @@ public class KubernetesNamespacedTestExtension
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    for (Field field : extractFields(context, KubernetesClient.class, f -> !Modifier.isStatic(f.getModifiers()))) {
-      setFieldValue(field, context.getRequiredTestInstance(), getClient(context).adapt((Class<Client>) field.getType()));
-    }
     for (Field field : extractFields(context, Namespace.class, f -> !Modifier.isStatic(f.getModifiers()))) {
       setFieldValue(field, context.getRequiredTestInstance(), getKubernetesNamespace(context));
     }
