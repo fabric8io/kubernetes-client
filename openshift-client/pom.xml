@@ -100,6 +100,14 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
+    
+     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -110,7 +118,6 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
 

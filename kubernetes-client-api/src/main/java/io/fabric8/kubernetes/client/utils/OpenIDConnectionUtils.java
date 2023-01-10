@@ -87,8 +87,8 @@ public class OpenIDConnectionUtils {
     String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
     String idpCert = currentAuthProviderConfig.get(IDP_CERT_DATA);
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
-      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, accessToken, idpCert,
-          clientBuilder).thenApply(map -> {
+      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, idpCert, clientBuilder)
+          .thenApply(map -> {
             Object token = map.get(ID_TOKEN_PARAM);
             if (token == null) {
               LOGGER.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
@@ -307,8 +307,7 @@ public class OpenIDConnectionUtils {
   }
 
   private static CompletableFuture<Map<String, Object>> getOIDCProviderTokenEndpointAndRefreshToken(String issuer,
-      String clientId, String refreshToken, String clientSecret, String accessToken, String idpCert,
-      HttpClient.Builder clientBuilder) {
+      String clientId, String refreshToken, String clientSecret, String idpCert, HttpClient.Builder clientBuilder) {
     HttpClient newClient = getDefaultHttpClientWithPemCert(idpCert, clientBuilder);
     CompletableFuture<Map<String, Object>> result = getOIDCDiscoveryDocumentAsMap(newClient, issuer)
         .thenCompose(wellKnownOpenIdConfiguration -> {

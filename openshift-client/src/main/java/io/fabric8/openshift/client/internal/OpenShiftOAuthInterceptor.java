@@ -113,10 +113,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
           try {
             // TODO: we may need some protection here or in the persistKubeConfigWithUpdatedAuthInfo
             // if the user has modified the username via the requestconfig are we writing a valid value?
-            OpenIDConnectionUtils
-                .persistKubeConfigWithUpdatedAuthInfo(config, a -> {
-                  a.setToken(t);
-                });
+            OpenIDConnectionUtils.persistKubeConfigWithUpdatedAuthInfo(config, a -> a.setToken(t));
           } catch (IOException e) {
             LOGGER.warn("failure while persisting new token into KUBECONFIG", e);
           }
