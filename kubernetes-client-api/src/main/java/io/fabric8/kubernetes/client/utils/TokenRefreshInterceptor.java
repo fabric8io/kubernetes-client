@@ -33,6 +33,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public class TokenRefreshInterceptor implements Interceptor {
 
+  public static final String AUTHORIZATION = "Authorization";
+
   public static final String NAME = "TOKEN";
 
   private final Config config;
@@ -56,11 +58,11 @@ public class TokenRefreshInterceptor implements Interceptor {
   @Override
   public void before(BasicBuilder headerBuilder, HttpHeaders headers) {
     if (isBasicAuth()) {
-      headerBuilder.header("Authorization", HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword()));
+      headerBuilder.header(AUTHORIZATION, HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword()));
       return;
     }
     if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-      headerBuilder.header("Authorization", "Bearer " + config.getOauthToken());
+      headerBuilder.header(AUTHORIZATION, "Bearer " + config.getOauthToken());
     }
     if (isTimeToRefresh()) {
       refreshToken(headerBuilder);
@@ -104,7 +106,7 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder, Config existConfig) {
     if (Utils.isNotNullOrEmpty(newAccessToken)) {
-      headerBuilder.setHeader("Authorization", "Bearer " + newAccessToken);
+      headerBuilder.setHeader(AUTHORIZATION, "Bearer " + newAccessToken);
       existConfig.setOauthToken(newAccessToken);
 
       updateLatestRefreshTimestamp();
