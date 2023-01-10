@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -93,32 +94,71 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
   }
 
   @Test
-  void buildAsyncIncludesRequiredHeadersAndPropagatesConfigured() throws Exception {
-    server.expect().withPath("/websocket-headers-test").andReturn(200, "hello").once();
-    final AtomicBoolean open = new AtomicBoolean(false);
-    try {
-      httpClient.newWebSocketBuilder()
-          .header("A-Random-Header", "A-Random-Value")
-          .subprotocol("amqp")
-          .uri(URI.create(server.url("/websocket-headers-test")))
-          .buildAsync(new WebSocket.Listener() {
-            @Override
-            public void onOpen(WebSocket webSocket) {
-              open.set(true);
-            }
-          }).get(10L, TimeUnit.SECONDS);
-    } catch (ExecutionException e) {
-      WebSocketHandshakeException wshe = (WebSocketHandshakeException) e.getCause();
-      assertThat(wshe.getResponse().code()).isEqualTo(200);
-    }
-    assertThat(open).isFalse();
+  void buildAsyncIncludesRequiredHeaders() throws Exception {
+    server.expect().withPath("/websocket-headers-test")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    httpClient.newWebSocketBuilder()
+        .uri(URI.create(server.url("/websocket-headers-test")))
+        .buildAsync(new WebSocket.Listener() {
+        }).get(10L, TimeUnit.SECONDS);
     assertThat(server.getLastRequest().getHeaders().toMultimap())
-        .containsEntry("a-random-header", Collections.singletonList("A-Random-Value"))
-        .containsEntry("sec-websocket-protocol", Collections.singletonList("amqp"))
-        .containsAnyOf(entry("connection", Collections.singletonList("Upgrade")),
-            entry("connection", Collections.singletonList("upgrade")))
         .containsEntry("upgrade", Collections.singletonList("websocket"))
         .containsEntry("sec-websocket-version", Collections.singletonList("13"))
-        .containsKey("sec-websocket-key");
+        .containsKey("sec-websocket-key")
+        .containsAnyOf(entry("connection", Collections.singletonList("Upgrade")),
+            entry("connection", Collections.singletonList("upgrade")));
+  }
+
+  @Test
+  void buildAsyncPropagatesConfiguredHeaders() throws Exception {
+    server.expect().withPath("/websocket-headers-test")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    httpClient.newWebSocketBuilder()
+        .header("A-Random-Header", "A-Random-Value")
+        .uri(URI.create(server.url("/websocket-headers-test")))
+        .buildAsync(new WebSocket.Listener() {
+        }).get(10L, TimeUnit.SECONDS);
+    assertThat(server.getLastRequest().getHeaders().toMultimap())
+        .containsEntry("a-random-header", Collections.singletonList("A-Random-Value"));
+  }
+
+  @Test
+  void buildAsyncIncludesSubprotocolHeader() throws Exception {
+    server.expect().withPath("/websocket-headers-test")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    httpClient.newWebSocketBuilder()
+        .subprotocol("amqp")
+        .uri(URI.create(server.url("/websocket-headers-test")))
+        .buildAsync(new WebSocket.Listener() {
+        })
+        .handle((w, t) -> null /* ignore handshake errors (Vert.x) - only interested in headers */)
+        .get(10L, TimeUnit.SECONDS);
+    assertThat(server.getLastRequest().getHeaders().toMultimap())
+        .containsEntry("sec-websocket-protocol", Collections.singletonList("amqp"));
+  }
+
+  @Test
+  void buildAsyncPreservesHandshakeExceptionWhenUpgradeFails() {
+    server.expect().withPath("/not-a-websocket").andReturn(200, "not a websocket").always();
+    final CompletableFuture<WebSocket> ws = httpClient.newWebSocketBuilder()
+        .uri(URI.create(server.url("/not-a-websocket")))
+        .buildAsync(new WebSocket.Listener() {
+        });
+    assertThatThrownBy(() -> ws.get(10L, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .asInstanceOf(InstanceOfAssertFactories.type(WebSocketHandshakeException.class))
+        .extracting(WebSocketHandshakeException::getResponse)
+        .extracting(HttpResponse::code)
+        .isEqualTo(200);
   }
 }
