@@ -26,7 +26,9 @@ public interface Waitable<T, P> {
    * Wait for the given condition to be true.
    * <p>
    * The processing of events will be in the IO thread, blocking operations should be avoided.
-   * 
+   * <p>
+   * If nothing exists, the condition will be tested with a null value.
+   *
    * @param condition
    * @param amount
    * @param timeUnit
