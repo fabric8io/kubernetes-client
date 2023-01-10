@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * Must be used in conjunction with {@link KubernetesNamespacedTestExtension} to be able to consume a KubernetesClient
+ * Must be used in conjunction with {@link KubernetesExtension} to be able to consume a KubernetesClient
  */
 public class LoadKubernetesManifestsExtension implements HasKubernetesClient, BeforeAllCallback, AfterAllCallback {
 
