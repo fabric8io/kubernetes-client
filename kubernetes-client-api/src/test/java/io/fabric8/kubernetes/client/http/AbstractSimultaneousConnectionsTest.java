@@ -48,8 +48,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 
 import javax.net.ServerSocketFactory;
@@ -104,9 +105,9 @@ public abstract class AbstractSimultaneousConnectionsTest {
   @DisplayName("Should be able to make 2048 simultaneous HTTP/1.x connections before processing the response")
   @DisabledOnOs(OS.WINDOWS)
   public void http1Connections() throws Exception {
-    final CyclicBarrier barrier = new CyclicBarrier(2);
-    httpServer.createContext("/http",
-        new DelayedResponseHandler(MAX_HTTP_1_CONNECTIONS, barrier, exchange -> exchange.sendResponseHeaders(204, -1)));
+    final DelayedResponseHandler handler = new DelayedResponseHandler(MAX_HTTP_1_CONNECTIONS,
+        exchange -> exchange.sendResponseHeaders(204, -1));
+    httpServer.createContext("/http", handler);
     try (final HttpClient client = clientBuilder.build()) {
       final Collection<CompletableFuture<HttpResponse<AsyncBody>>> asyncResponses = ConcurrentHashMap.newKeySet();
       final HttpRequest request = client.newHttpRequestBuilder()
@@ -114,9 +115,9 @@ public abstract class AbstractSimultaneousConnectionsTest {
           .build();
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
         asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
-        barrier.await(1, TimeUnit.SECONDS);
+        handler.acquirePermit();
       }
-      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(20, TimeUnit.SECONDS);
+      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(60, TimeUnit.SECONDS);
       assertThat(asyncResponses)
           .hasSize(MAX_HTTP_1_CONNECTIONS)
           .extracting(CompletableFuture::join)
@@ -128,8 +129,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
   @DisplayName("Should be able to make 1024 simultaneous HTTP connections before upgrading to WebSocket")
   @DisabledOnOs(OS.WINDOWS)
   public void http1WebSocketConnectionsBeforeUpgrade() throws Exception {
-    final CyclicBarrier barrier = new CyclicBarrier(2);
-    final DelayedResponseHandler handler = new DelayedResponseHandler(MAX_HTTP_1_WS_CONNECTIONS, barrier,
+    final DelayedResponseHandler handler = new DelayedResponseHandler(MAX_HTTP_1_WS_CONNECTIONS,
         exchange -> exchange.sendResponseHeaders(404, -1));
     httpServer.createContext("/http", handler);
     try (final HttpClient client = clientBuilder.build()) {
@@ -138,10 +138,10 @@ public abstract class AbstractSimultaneousConnectionsTest {
             .uri(URI.create(String.format("http://localhost:%s/http", httpServer.getAddress().getPort())))
             .buildAsync(new WebSocket.Listener() {
             });
-        barrier.await(1, TimeUnit.SECONDS);
+        handler.acquirePermit();
       }
     }
-    assertThat(handler.connectionCount).hasValue(MAX_HTTP_1_WS_CONNECTIONS);
+    assertThat(handler.connectionCount.get(60, TimeUnit.SECONDS)).isEqualTo(MAX_HTTP_1_WS_CONNECTIONS);
   }
 
   @Test
@@ -181,7 +181,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
             });
         cyclicBarrier.await(1, TimeUnit.SECONDS);
       }
-      assertThat(latch.await(20L, TimeUnit.SECONDS)).isTrue();
+      assertThat(latch.await(60L, TimeUnit.SECONDS)).isTrue();
       assertThat(serverSockets.size())
           .isEqualTo(MAX_HTTP_1_WS_CONNECTIONS)
           .isLessThanOrEqualTo((int) serverSocketFactory.activeConnections());
@@ -197,18 +197,18 @@ public abstract class AbstractSimultaneousConnectionsTest {
   private static class DelayedResponseHandler implements HttpHandler {
 
     private final int requestCount;
-    private final CyclicBarrier barrier;
+    private final Semaphore semaphore;
     private final Set<HttpExchange> exchanges;
-    private final AtomicInteger connectionCount;
-    private final CompletableFuture<Void> done;
+    private final CompletableFuture<Integer> connectionCount;
+    private final ExecutorService executorService;
 
-    private DelayedResponseHandler(int requestCount, CyclicBarrier barrier, HttpHandler handler) {
+    private DelayedResponseHandler(int requestCount, HttpHandler handler) {
       this.requestCount = requestCount;
-      this.barrier = barrier;
+      this.semaphore = new Semaphore(1);
       exchanges = ConcurrentHashMap.newKeySet();
-      connectionCount = new AtomicInteger(0);
-      done = new CompletableFuture<>();
-      done.thenRunAsync(() -> {
+      connectionCount = new CompletableFuture<>();
+      executorService = Executors.newFixedThreadPool(1);
+      connectionCount.thenRunAsync(() -> {
         for (HttpExchange exchange : exchanges) {
           try {
             handler.handle(exchange);
@@ -216,22 +216,25 @@ public abstract class AbstractSimultaneousConnectionsTest {
             // NO OP
           }
         }
-      });
+      }, executorService)
+          .whenComplete((unused, throwable) -> executorService.shutdownNow());
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-      connectionCount.incrementAndGet();
-      try {
-        barrier.await(1, TimeUnit.SECONDS);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
       exchanges.add(exchange);
+      semaphore.release();
       if (exchanges.size() == requestCount) {
-        done.complete(null);
+        connectionCount.complete(requestCount);
       }
 
+    }
+
+    public final void acquirePermit() throws InterruptedException, TimeoutException {
+      if (!semaphore.tryAcquire(1, TimeUnit.SECONDS)) {
+        throw new TimeoutException("Could not acquire semaphore");
+      }
+      ;
     }
   }
 
