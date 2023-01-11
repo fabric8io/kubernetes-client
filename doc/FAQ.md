@@ -102,3 +102,20 @@ Once added KubernetesClient declarative services would be exposed automatically 
   @BeanInject
   private KubernetesClient kubernetesClient
 ```
+
+### Why am I getting Exception when using `*` in NO_PROXY ?
+
+Starting Fabric8 Kubernetes Client v6.1.0, we've change NO_PROXY matching as simple as possible and not support any meta characters. It honors the [GNU WGet Spec](https://www.gnu.org/software/wget/manual/html_node/Proxies.html).
+
+So instead of providing NO_PROXY like this:
+
+(Unsupported) :x:
+```java
+NO_PROXY: localhost,127.0.0.1,*.google.com, *.github.com
+```
+we should provide it like this:
+
+(Supported) :heavy_check_mark:
+```java
+NO_PROXY: localhost,127.0.0.1,.google.com,.github.com
+```

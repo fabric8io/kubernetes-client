@@ -186,6 +186,7 @@ fix #4373: NO_PROXY should allow URIs with hyphens ("circleci-internal-outer-bui
   - `io.fabric8.chaosmesh.v1alpha1.AwsChaos` => `io.fabric8.chaosmesh.v1alpha1.AWSChaos`
   - `io.fabric8.chaosmesh.v1alpha1.IoChaos` => `io.fabric8.chaosmesh.v1alpha1.IOChaos`
   - `io.fabric8.chaosmesh.v1alpha1.PodIoChaos` => `io.fabric8.chaosmesh.v1alpha1.PodIOChaos`
+* Fix #4247: Proxy matching no longer supports having wildcard characters in `NO_PROXY`. The behavior has been changed to match [GNU WGet Spec](https://www.gnu.org/software/wget/manual/html_node/Proxies.html)
 
 ### 5.12.3 (2022-07-27)
 
