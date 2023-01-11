@@ -112,7 +112,7 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
     <lombok.version>1.18.26</lombok.version>
-    <snakeyaml.version>1.33</snakeyaml.version>
+    <snakeyaml.version>2.5</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.22</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -683,8 +683,8 @@
       </dependency>
 
       <dependency>
-        <groupId>org.yaml</groupId>
-        <artifactId>snakeyaml</artifactId>
+        <groupId>org.snakeyaml</groupId>
+        <artifactId>snakeyaml-engine</artifactId>
         <version>${snakeyaml.version}</version>
       </dependency>
 
