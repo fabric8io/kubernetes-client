@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import okhttp3.Protocol;
 import okhttp3.Response;
@@ -43,9 +45,11 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import javax.net.ServerSocketFactory;
@@ -57,7 +61,8 @@ public abstract class AbstractSimultaneousConnectionsTest {
   // TODO:
   //  Should match whatever spec we decide on to guarantee that these simultaneous connections can be handled
   //  by any HttpClient implementation
-  private static final int MAX_HTTP_1_CONNECTIONS = 1024; // Should be able to at least make 1024
+  private static final int MAX_HTTP_1_CONNECTIONS = 2048; // Should be able to at least make 2048
+  private static final int MAX_HTTP_1_WS_CONNECTIONS = 1024; // Should be able to at least make 1024
 
   private RegisteredServerSocketFactory serverSocketFactory;
   private MockWebServer mockWebServer;
@@ -75,7 +80,9 @@ public abstract class AbstractSimultaneousConnectionsTest {
     httpServer = HttpServer.create(new InetSocketAddress(0), 0);
     httpServer.setExecutor(httpExecutor);
     httpServer.start();
-    clientBuilder = getHttpClientFactory().newBuilder();
+    clientBuilder = getHttpClientFactory().newBuilder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS);
   }
 
   @AfterEach
@@ -94,19 +101,12 @@ public abstract class AbstractSimultaneousConnectionsTest {
   }
 
   @Test
-  @DisplayName("Should be able to make 1024 simultaneous HTTP/1.x connections before processing the response")
+  @DisplayName("Should be able to make 2048 simultaneous HTTP/1.x connections before processing the response")
   @DisabledOnOs(OS.WINDOWS)
   public void http1Connections() throws Exception {
-    final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
-    httpServer.createContext("/http", exchange -> {
-      activeConnections.countDown();
-      try {
-        activeConnections.await(20, TimeUnit.SECONDS);
-        exchange.sendResponseHeaders(204, -1);
-      } catch (Exception ignore) {
-        // NO OP
-      }
-    });
+    final CyclicBarrier barrier = new CyclicBarrier(2);
+    httpServer.createContext("/http",
+        new DelayedResponseHandler(MAX_HTTP_1_CONNECTIONS, barrier, exchange -> exchange.sendResponseHeaders(204, -1)));
     try (final HttpClient client = clientBuilder.build()) {
       final Collection<CompletableFuture<HttpResponse<AsyncBody>>> asyncResponses = ConcurrentHashMap.newKeySet();
       final HttpRequest request = client.newHttpRequestBuilder()
@@ -114,9 +114,9 @@ public abstract class AbstractSimultaneousConnectionsTest {
           .build();
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
         asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
+        barrier.await(1, TimeUnit.SECONDS);
       }
-      assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
-      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(10, TimeUnit.SECONDS);
+      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(20, TimeUnit.SECONDS);
       assertThat(asyncResponses)
           .hasSize(MAX_HTTP_1_CONNECTIONS)
           .extracting(CompletableFuture::join)
@@ -128,25 +128,20 @@ public abstract class AbstractSimultaneousConnectionsTest {
   @DisplayName("Should be able to make 1024 simultaneous HTTP connections before upgrading to WebSocket")
   @DisabledOnOs(OS.WINDOWS)
   public void http1WebSocketConnectionsBeforeUpgrade() throws Exception {
-    final CountDownLatch activeConnections = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
-    httpServer.createContext("/http", exchange -> {
-      activeConnections.countDown();
-      try {
-        activeConnections.await(20, TimeUnit.SECONDS);
-        exchange.sendResponseHeaders(500, -1);
-      } catch (Exception ignore) {
-        // NO OP
-      }
-    });
+    final CyclicBarrier barrier = new CyclicBarrier(2);
+    final DelayedResponseHandler handler = new DelayedResponseHandler(MAX_HTTP_1_WS_CONNECTIONS, barrier,
+        exchange -> exchange.sendResponseHeaders(404, -1));
+    httpServer.createContext("/http", handler);
     try (final HttpClient client = clientBuilder.build()) {
-      for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
+      for (int it = 0; it < MAX_HTTP_1_WS_CONNECTIONS; it++) {
         client.newWebSocketBuilder()
             .uri(URI.create(String.format("http://localhost:%s/http", httpServer.getAddress().getPort())))
             .buildAsync(new WebSocket.Listener() {
             });
+        barrier.await(1, TimeUnit.SECONDS);
       }
-      assertThat(activeConnections.await(20, TimeUnit.SECONDS)).isTrue();
     }
+    assertThat(handler.connectionCount).hasValue(MAX_HTTP_1_WS_CONNECTIONS);
   }
 
   @Test
@@ -156,38 +151,87 @@ public abstract class AbstractSimultaneousConnectionsTest {
     withHttp1();
     final Collection<okhttp3.WebSocket> serverSockets = ConcurrentHashMap.newKeySet();
     final Collection<WebSocket> clientSockets = ConcurrentHashMap.newKeySet();
-    final CountDownLatch latch = new CountDownLatch(MAX_HTTP_1_CONNECTIONS);
+    final CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
+    final CountDownLatch latch = new CountDownLatch(MAX_HTTP_1_WS_CONNECTIONS);
     final MockResponse response = new MockResponse()
         .withWebSocketUpgrade(new WebSocketListener() {
           @Override
           public void onOpen(okhttp3.WebSocket webSocket, Response response) {
+            try {
+              cyclicBarrier.await(1, TimeUnit.SECONDS);
+            } catch (Exception ignore) {
+            }
             serverSockets.add(webSocket);
             webSocket.send("go on");
           }
         });
-    IntStream.range(0, MAX_HTTP_1_CONNECTIONS).forEach(i -> mockWebServer.enqueue(response));
+    IntStream.range(0, MAX_HTTP_1_WS_CONNECTIONS).forEach(i -> mockWebServer.enqueue(response));
     try (final HttpClient client = clientBuilder.build()) {
-      for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
+      for (int it = 0; it < MAX_HTTP_1_WS_CONNECTIONS; it++) {
         client.newWebSocketBuilder()
             .uri(mockWebServer.url("/").uri())
             .buildAsync(new WebSocket.Listener() {
 
               @Override
               public void onMessage(WebSocket webSocket, String text) {
+                clientSockets.add(webSocket);
                 latch.countDown();
                 webSocket.request();
               }
-            })
-            .whenComplete((ws, t) -> clientSockets.add(ws));
+            });
+        cyclicBarrier.await(1, TimeUnit.SECONDS);
       }
       assertThat(latch.await(20L, TimeUnit.SECONDS)).isTrue();
       assertThat(serverSockets.size())
-          .isEqualTo(MAX_HTTP_1_CONNECTIONS)
+          .isEqualTo(MAX_HTTP_1_WS_CONNECTIONS)
           .isLessThanOrEqualTo((int) serverSocketFactory.activeConnections());
+      //      assertThat(clientSockets)
+      //          .hasSize(MAX_HTTP_1_WS_CONNECTIONS);
     } finally {
       for (okhttp3.WebSocket socket : serverSockets) {
         socket.close(1000, "done");
       }
+    }
+  }
+
+  private static class DelayedResponseHandler implements HttpHandler {
+
+    private final int requestCount;
+    private final CyclicBarrier barrier;
+    private final Set<HttpExchange> exchanges;
+    private final AtomicInteger connectionCount;
+    private final CompletableFuture<Void> done;
+
+    private DelayedResponseHandler(int requestCount, CyclicBarrier barrier, HttpHandler handler) {
+      this.requestCount = requestCount;
+      this.barrier = barrier;
+      exchanges = ConcurrentHashMap.newKeySet();
+      connectionCount = new AtomicInteger(0);
+      done = new CompletableFuture<>();
+      done.thenRunAsync(() -> {
+        for (HttpExchange exchange : exchanges) {
+          try {
+            handler.handle(exchange);
+          } catch (IOException ignore) {
+            // NO OP
+          }
+        }
+      });
+    }
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+      connectionCount.incrementAndGet();
+      try {
+        barrier.await(1, TimeUnit.SECONDS);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+      exchanges.add(exchange);
+      if (exchanges.size() == requestCount) {
+        done.complete(null);
+      }
+
     }
   }
 
