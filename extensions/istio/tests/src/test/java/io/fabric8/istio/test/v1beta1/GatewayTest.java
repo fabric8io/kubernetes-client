@@ -28,7 +28,8 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
@@ -142,8 +143,7 @@ class GatewayTest {
         .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(gateway);
-    Yaml parser = new Yaml();
-    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = loadYaml(output);
 
     assertEquals("Gateway", reloaded.get("kind"));
 
@@ -185,5 +185,10 @@ class GatewayTest {
 
     final Map<String, String> tls = server.get("tls");
     assertEquals("TLSV1_2", tls.get("minProtocolVersion"));
+  }
+
+  private Map<String, Object> loadYaml(String output) {
+    Load parser = new Load(LoadSettings.builder().build());
+    return (Map<String, Object>) parser.loadFromString(output);
   }
 }

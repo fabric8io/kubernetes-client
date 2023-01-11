@@ -37,7 +37,8 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -185,8 +186,7 @@ spec:
 
     final String output = Serialization.yamlMapper().writeValueAsString(virtualService);
 
-    Yaml parser = new Yaml();
-    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = loadYaml(output);
 
     assertEquals("VirtualService", reloaded.get("kind"));
 
@@ -267,8 +267,7 @@ spec:
         .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(resource);
-    Yaml parser = new Yaml();
-    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = loadYaml(output);
 
     assertEquals("VirtualService", reloaded.get("kind"));
 
@@ -352,8 +351,7 @@ spec:
         .build();
 
     final String output = Serialization.yamlMapper().writeValueAsString(resource);
-    Yaml parser = new Yaml();
-    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = loadYaml(output);
 
     assertEquals("VirtualService", reloaded.get("kind"));
 
@@ -465,5 +463,10 @@ spec:
     final VirtualService virtualService = Serialization.yamlMapper().readValue(inputStream, VirtualService.class);
 
     assertFalse(virtualService.getSpec().getHttp().get(0).getCorsPolicy().getAllowCredentials());
+  }
+
+  private Map<String, Object> loadYaml(String output) {
+    Load parser = new Load(LoadSettings.builder().build());
+    return (Map<String, Object>) parser.loadFromString(output);
   }
 }
