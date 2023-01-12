@@ -17,9 +17,11 @@ package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.EphemeralContainer;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.EvictionBuilder;
 import io.fabric8.kubernetes.client.Client;
@@ -28,6 +30,7 @@ import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
+import io.fabric8.kubernetes.client.dsl.EphemeralContainersResource;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
@@ -89,7 +92,7 @@ import java.util.concurrent.TimeUnit;
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource>
-    implements PodResource, CopyOrReadable {
+    implements PodResource, EphemeralContainersResource, CopyOrReadable {
 
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
   private static final Integer DEFAULT_POD_READY_WAIT_TIMEOUT = 5;
@@ -276,6 +279,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
+  public EphemeralContainersResource ephemeralContainers() {
+    return new PodOperationsImpl(getContext(), context.withSubresource("ephemeralcontainers"));
+  }
+
+  @Override
   public PodOperationsImpl inContainer(
       String containerId) {
     return new PodOperationsImpl(getContext().withContainerId(containerId), context);
@@ -328,30 +336,44 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     if (pod == null) {
       pod = this.getItemOrRequireFromServer();
     }
+
     // spec and container null-checks are not necessary for real k8s clusters, added them to simplify some tests running in the mockserver
-    if (pod.getSpec() == null || pod.getSpec().getContainers() == null || pod.getSpec().getContainers().isEmpty()) {
-      throw new KubernetesClientException("Pod has no containers!");
+    PodSpec spec = pod.getSpec();
+    if (spec == null) {
+      spec = new PodSpec();
     }
-    final List<Container> containers = pod.getSpec().getContainers();
+
     if (name == null) {
+      List<Container> containers = spec.getContainers();
+      if (containers == null || containers.isEmpty()) {
+        throw new KubernetesClientException("Pod has no containers!");
+      }
+
       name = pod.getMetadata().getAnnotations().get(DEFAULT_CONTAINER_ANNOTATION_NAME);
       if (name != null && !hasContainer(containers, name)) {
         LOG.warn("Default container {} from annotation not found in pod {}", name, pod.getMetadata().getName());
         name = null;
       }
+
       if (name == null) {
         name = containers.get(0).getName();
         LOG.debug("using first container {} in pod {}", name, pod.getMetadata().getName());
       }
-    } else if (!hasContainer(containers, name)) {
+    } else if (!hasContainer(spec.getContainers(), name) && !hasContainer(spec.getInitContainers(), name)
+        && !hasEphemeralContainer(spec.getEphemeralContainers(), name)) {
       throw new KubernetesClientException(
           String.format("container %s not found in pod %s", name, pod.getMetadata().getName()));
     }
+
     return name;
   }
 
   private boolean hasContainer(List<Container> containers, String toFind) {
-    return containers.stream().map(Container::getName).anyMatch(s -> s.equals(toFind));
+    return containers != null && containers.stream().map(Container::getName).anyMatch(s -> s.equals(toFind));
+  }
+
+  private boolean hasEphemeralContainer(List<EphemeralContainer> containers, String toFind) {
+    return containers != null && containers.stream().map(EphemeralContainer::getName).anyMatch(s -> s.equals(toFind));
   }
 
   private ExecWebSocketListener setupConnectionToPod(URI uri) {

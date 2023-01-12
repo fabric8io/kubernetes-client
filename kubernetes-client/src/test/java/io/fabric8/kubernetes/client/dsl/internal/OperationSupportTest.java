@@ -31,6 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.stream.Stream;
 
@@ -126,4 +127,47 @@ class OperationSupportTest {
     assertThat(result)
         .hasMessageContaining("Failure executing: GET at: https://example.com. Message: Custom message Bad Request.");
   }
+
+  @Test
+  void getResourceURL() throws MalformedURLException {
+    assertThat(operationSupport.getResourceUrl()).hasToString("https://kubernetes.default.svc/api/v1");
+
+    OperationSupport pods = new OperationSupport(operationSupport.context.withPlural("pods"));
+    assertThat(pods.getResourceUrl().toString()).hasToString("https://kubernetes.default.svc/api/v1/pods");
+
+    pods = new OperationSupport(pods.context.withName("pod-1"));
+    assertThat(pods.getResourceUrl()).hasToString("https://kubernetes.default.svc/api/v1/pods/pod-1");
+
+    pods = new OperationSupport(pods.context.withSubresource("ephemeralcontainers"));
+    assertThat(pods.getResourceUrl())
+        .hasToString("https://kubernetes.default.svc/api/v1/pods/pod-1/ephemeralcontainers");
+
+    pods = new OperationSupport(pods.context.withNamespace("default"));
+    assertThat(pods.getResourceUrl())
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/ephemeralcontainers");
+
+    OperationSupport subresourceWithoutName = new OperationSupport(
+        operationSupport.context.withPlural("Pods").withSubresource("pod-1"));
+    assertThrows(KubernetesClientException.class, () -> subresourceWithoutName.getResourceUrl());
+  }
+
+  @Test
+  void getResourceURLStatus() throws MalformedURLException {
+    OperationSupport pods = new OperationSupport(operationSupport.context.withPlural("pods"));
+    assertThat(pods.getResourceUrl("default", "pod-1", true))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/status");
+    assertThat(pods.getResourceUrl("default", "pod-1", false))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1");
+
+    OperationSupport podsSubresource = new OperationSupport(pods.context.withSubresource("ephemeralcontainers"));
+    assertThat(podsSubresource.getResourceUrl("default", "pod-1", true))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/status");
+    assertThat(podsSubresource.getResourceUrl("default", "pod-1", false))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/ephemeralcontainers");
+
+    assertThrows(KubernetesClientException.class, () -> {
+      operationSupport.getResourceUrl("default", null, true);
+    }, "status requires name");
+  }
+
 }
