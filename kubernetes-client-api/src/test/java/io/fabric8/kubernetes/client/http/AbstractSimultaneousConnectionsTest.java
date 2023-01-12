@@ -48,9 +48,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 
 import javax.net.ServerSocketFactory;
@@ -115,7 +113,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
           .build();
       for (int it = 0; it < MAX_HTTP_1_CONNECTIONS; it++) {
         asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
-        handler.acquirePermit();
+        handler.await();
       }
       CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(60, TimeUnit.SECONDS);
       assertThat(asyncResponses)
@@ -138,7 +136,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
             .uri(URI.create(String.format("http://localhost:%s/http", httpServer.getAddress().getPort())))
             .buildAsync(new WebSocket.Listener() {
             });
-        handler.acquirePermit();
+        handler.await();
       }
     }
     assertThat(handler.connectionCount.get(60, TimeUnit.SECONDS)).isEqualTo(MAX_HTTP_1_WS_CONNECTIONS);
@@ -197,14 +195,14 @@ public abstract class AbstractSimultaneousConnectionsTest {
   private static class DelayedResponseHandler implements HttpHandler {
 
     private final int requestCount;
-    private final Semaphore semaphore;
+    private final CyclicBarrier barrier;
     private final Set<HttpExchange> exchanges;
     private final CompletableFuture<Integer> connectionCount;
     private final ExecutorService executorService;
 
     private DelayedResponseHandler(int requestCount, HttpHandler handler) {
       this.requestCount = requestCount;
-      this.semaphore = new Semaphore(1);
+      this.barrier = new CyclicBarrier(2);
       exchanges = ConcurrentHashMap.newKeySet();
       connectionCount = new CompletableFuture<>();
       executorService = Executors.newFixedThreadPool(1);
@@ -223,16 +221,18 @@ public abstract class AbstractSimultaneousConnectionsTest {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
       exchanges.add(exchange);
-      semaphore.release();
+      await();
       if (exchanges.size() == requestCount) {
         connectionCount.complete(requestCount);
       }
 
     }
 
-    public final void acquirePermit() throws InterruptedException, TimeoutException {
-      if (!semaphore.tryAcquire(1, TimeUnit.SECONDS)) {
-        throw new TimeoutException("Could not acquire semaphore");
+    public final void await() {
+      try {
+        barrier.await(1, TimeUnit.SECONDS);
+      } catch (Exception ex) {
+        throw new RuntimeException("Failed to await the barrier");
       }
       ;
     }
