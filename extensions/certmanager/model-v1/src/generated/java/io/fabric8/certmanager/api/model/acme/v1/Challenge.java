@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
-@Group("cert-manager.io")
+@Group("acme.cert-manager.io")
 public class Challenge implements HasMetadata, Namespaced
 {
 
@@ -80,7 +80,7 @@ public class Challenge implements HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "cert-manager.io/v1";
+    private String apiVersion = "acme.cert-manager.io/v1";
     /**
      * 
      * (Required)

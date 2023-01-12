@@ -15,8 +15,9 @@
  */
 package io.fabric8.junit.jupiter.api;
 
-import io.fabric8.junit.jupiter.KubernetesNamespacedTestExtension;
+import io.fabric8.junit.jupiter.KubernetesExtension;
 import io.fabric8.junit.jupiter.LoadKubernetesManifestsExtension;
+import io.fabric8.junit.jupiter.NamespaceExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
@@ -36,7 +37,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@ExtendWith({ KubernetesNamespacedTestExtension.class, LoadKubernetesManifestsExtension.class })
+@ExtendWith(NamespaceExtension.class)
+@ExtendWith(KubernetesExtension.class)
+@ExtendWith(LoadKubernetesManifestsExtension.class)
 public @interface LoadKubernetesManifests {
 
   String[] value();

@@ -159,7 +159,7 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     private T body;
     private Class<T> type;
 
-    public OkHttpResponseImpl(Response response, T body) throws IOException {
+    public OkHttpResponseImpl(Response response, T body) {
       this.response = response;
       this.body = body;
     }

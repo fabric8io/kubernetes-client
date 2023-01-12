@@ -21,9 +21,10 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import static io.fabric8.junit.jupiter.KubernetesNamespacedTestExtension.getClient;
-
-public class LoadKubernetesManifestsExtension implements BeforeAllCallback, AfterAllCallback {
+/**
+ * Must be used in conjunction with {@link KubernetesExtension} to be able to consume a KubernetesClient
+ */
+public class LoadKubernetesManifestsExtension implements HasKubernetesClient, BeforeAllCallback, AfterAllCallback {
 
   @Override
   public void beforeAll(ExtensionContext context) {

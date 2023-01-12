@@ -15,7 +15,8 @@
  */
 package io.fabric8.junit.jupiter.api;
 
-import io.fabric8.junit.jupiter.KubernetesNamespacedTestExtension;
+import io.fabric8.junit.jupiter.KubernetesExtension;
+import io.fabric8.junit.jupiter.NamespaceExtension;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -28,11 +29,15 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Enables and configures the {@link KubernetesNamespacedTestExtension} extension.
+ * Enables and configures the {@link KubernetesExtension} extension.
  *
  * <p>
- * Creates a namespace and configures a {@link KubernetesClient} instance that will
+ * Creates a {@link KubernetesClient} instance that will
  * be automatically injected into tests.
+ *
+ * <p>
+ * Optionally, creates a Namespace for the tests and configures the client to use it. The Namespace
+ * is deleted after the test suite execution.
  *
  * <pre>{@code
  * &#64;KubernetesTest
@@ -44,6 +49,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@ExtendWith(KubernetesNamespacedTestExtension.class)
+@ExtendWith(NamespaceExtension.class)
+@ExtendWith(KubernetesExtension.class)
 public @interface KubernetesTest {
+  /**
+   * Create an ephemeral Namespace for the test.
+   */
+  boolean createEphemeralNamespace() default true;
 }

@@ -4,6 +4,9 @@
 
 #### Bugs
 * Fix #4729: ensuring completablefuture cancel will close / cancel the underlying resource
+* Fix #4249 #4726: prevent the over-logging of errors after the websocket has been closed
+* Fix #4650: allowing for comments at the end of certificate files
+* Fix #4668: use acme.cert-manager.io ApiGroup for Orders and Challenges
 
 #### Improvements
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
@@ -11,6 +14,9 @@
 * Fix #4654: Fix GatewayClass to not implement Namespaced interface
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
 * Fix #4694: [java-generator] Option to override the package name of the generated code.
+* Fix #4720: interceptors close any response body if the response is not a 2xx response.
+* Fix #4734: @KubernetesTest annotation can be used in base test classes
+* Fix #4734: @KubernetesTest creates an ephemeral Namespace optionally (can opt-out)
 
 #### Dependency Upgrade
 

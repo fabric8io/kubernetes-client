@@ -201,7 +201,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         if (closed.get()) {
           LOGGER.debug("Stream write failed after close", t);
         } else {
-          // This could happen if the user simply closes their stream prior to completion 
+          // This could happen if the user simply closes their stream prior to completion
           LOGGER.warn("Stream write failed", t);
         }
       }
@@ -211,7 +211,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   @Override
   public void close() {
     // simply sends a close, which will shut down the output
-    // it's expected that the server will respond with a close, but if not the input will be shutdown implicitly 
+    // it's expected that the server will respond with a close, but if not the input will be shutdown implicitly
     closeWebSocketOnce(1000, "Closing...");
   }
 
@@ -280,18 +280,22 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       status.setMessage(t.getMessage());
       cleanUpOnce();
     } finally {
-      try {
-        if (listener != null) {
-          ExecListener.Response execResponse = null;
-          if (response != null) {
-            execResponse = new SimpleResponse(response);
+      if (exitCode.isDone()) {
+        LOGGER.debug("Exec failure after done", t);
+      } else {
+        try {
+          if (listener != null) {
+            ExecListener.Response execResponse = null;
+            if (response != null) {
+              execResponse = new SimpleResponse(response);
+            }
+            listener.onFailure(t, execResponse);
+          } else {
+            LOGGER.error("Exec Failure", t);
           }
-          listener.onFailure(t, execResponse);
-        } else {
-          LOGGER.error("Exec Failure", t);
+        } finally {
+          exitCode.completeExceptionally(t);
         }
-      } finally {
-        exitCode.completeExceptionally(t);
       }
     }
   }
