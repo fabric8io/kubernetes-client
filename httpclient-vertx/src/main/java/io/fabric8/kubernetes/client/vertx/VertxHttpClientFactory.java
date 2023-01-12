@@ -57,6 +57,8 @@ import java.util.stream.Stream;
 
 public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http.HttpClient.Factory {
 
+  private static final int MAX_CONNECTIONS = 8192;
+
   private Vertx vertx;
 
   public VertxHttpClientFactory() {
@@ -76,6 +78,8 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
       WebClientOptions options = new WebClientOptions();
 
+      options.setMaxPoolSize(MAX_CONNECTIONS);
+      options.setMaxWebSockets(MAX_CONNECTIONS);
       options.setIdleTimeoutUnit(TimeUnit.SECONDS);
 
       if (this.connectTimeout != null) {
