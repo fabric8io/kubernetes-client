@@ -27,6 +27,7 @@
 * Fix #4804: Update CertManager Model to v1.11.0
 
 #### New Features
+* Fix #4758: added support for pod ephemeral container operations
 
 #### _**Note**_: Breaking changes
 

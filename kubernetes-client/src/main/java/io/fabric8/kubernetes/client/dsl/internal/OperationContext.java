@@ -49,6 +49,7 @@ public class OperationContext {
   protected String namespace;
   protected boolean defaultNamespace = true;
   protected String name;
+  protected String subresource;
   protected boolean dryRun;
   protected FieldValidateable.Validation fieldValidation;
   protected String fieldManager;
@@ -75,14 +76,15 @@ public class OperationContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.client, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
+    this(other.client, other.plural, other.namespace, other.name, other.subresource, other.apiGroupName, other.apiGroupVersion,
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
         other.forceConflicts, other.timeout, other.timeoutUnit);
   }
 
-  public OperationContext(Client client, String plural, String namespace, String name,
+  @SuppressWarnings("java:S107")
+  public OperationContext(Client client, String plural, String namespace, String name, String subresource,
       String apiGroupName, String apiGroupVersion, Object item, Map<String, String> labels,
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion,
@@ -94,6 +96,7 @@ public class OperationContext {
     this.plural = plural;
     setNamespace(namespace, defaultNamespace);
     this.name = name;
+    this.subresource = subresource;
     setApiGroupName(apiGroupName);
     setApiGroupVersion(apiGroupVersion);
     setLabels(labels);
@@ -189,6 +192,10 @@ public class OperationContext {
 
   public String getName() {
     return name;
+  }
+
+  public String getSubresource() {
+    return subresource;
   }
 
   public String getApiGroupName() {
@@ -346,6 +353,15 @@ public class OperationContext {
     }
     final OperationContext context = new OperationContext(this);
     context.name = name;
+    return context;
+  }
+
+  public OperationContext withSubresource(String subresource) {
+    if (Objects.equals(this.subresource, subresource)) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.subresource = subresource;
     return context;
   }
 

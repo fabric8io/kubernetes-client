@@ -22,6 +22,7 @@ public interface PodResource extends Resource<Pod>,
     Loggable,
     Containerable<String, ContainerResource>,
     ContainerResource,
+    EphemeralContainersResource,
     PortForwardable {
 
   /**
@@ -40,4 +41,12 @@ public interface PodResource extends Resource<Pod>,
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs, including if the Pod is not found.
    */
   boolean evict(Eviction eviction);
+
+  /**
+   * Manage ephemeral containers for a pod.
+   *
+   * @return ephemeral containers resource operations
+   */
+  EphemeralContainersResource ephemeralContainers();
+
 }
