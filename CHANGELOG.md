@@ -3,6 +3,7 @@
 ### 6.4-SNAPSHOT
 
 #### Bugs
+* Fix #4729: ensuring completablefuture cancel will close / cancel the underlying resource
 * Fix #4249 #4726: prevent the over-logging of errors after the websocket has been closed
 * Fix #4650: allowing for comments at the end of certificate files
 * Fix #4668: use acme.cert-manager.io ApiGroup for Orders and Challenges
