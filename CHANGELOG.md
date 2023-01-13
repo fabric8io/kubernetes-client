@@ -5,8 +5,8 @@
 #### Bugs
 * Fix #4249 #4726: prevent the over-logging of errors after the websocket has been closed
 * Fix #4650: allowing for comments at the end of certificate files
-
 * Fix #4668: use acme.cert-manager.io ApiGroup for Orders and Challenges
+* Fix #4735: StandardHttpClient sends Expect 100-continue header value
 
 #### Improvements
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.

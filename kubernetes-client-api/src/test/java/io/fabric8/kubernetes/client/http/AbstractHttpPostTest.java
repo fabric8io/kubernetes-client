@@ -125,4 +125,23 @@ public abstract class AbstractHttpPostTest {
         .extracting(rr -> rr.getHeader("Content-Type")).asString()
         .startsWith("application/x-www-form-urlencoded");
   }
+
+  @Test
+  public void expectContinue() throws Exception {
+    // When
+    try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      client
+          .sendAsync(client.newHttpRequestBuilder()
+              .post(Collections.emptyMap())
+              .uri(server.url("/post-expect-continue"))
+              .expectContinue()
+              .build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest())
+        .returns("POST", RecordedRequest::getMethod)
+        .extracting(rr -> rr.getHeader("Expect")).asString()
+        .isEqualTo("100-continue");
+  }
 }
