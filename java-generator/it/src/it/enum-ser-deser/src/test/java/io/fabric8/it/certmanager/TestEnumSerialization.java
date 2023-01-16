@@ -41,11 +41,12 @@ class TestEnumSerialization {
     List<CertificateRequestSpec.Usages> usagesList = sample.getSpec().getUsages();
 
     // Assert
-    assertEquals(4, usagesList.size());
-    assertEquals(CertificateRequestSpec.Usages.SIGNING, usagesList.get(0));
-    assertEquals(CertificateRequestSpec.Usages.DIGITAL_SIGNATURE, usagesList.get(1));
-    assertEquals(CertificateRequestSpec.Usages.SERVER_AUTH, usagesList.get(2));
-    assertEquals(CertificateRequestSpec.Usages.S_MIME, usagesList.get(3));
+    assertEquals(5, usagesList.size());
+    assertEquals(CertificateRequestSpec.Usages._EMPTY, usagesList.get(0));
+    assertEquals(CertificateRequestSpec.Usages.SIGNING, usagesList.get(1));
+    assertEquals(CertificateRequestSpec.Usages.DIGITAL_SIGNATURE, usagesList.get(2));
+    assertEquals(CertificateRequestSpec.Usages.SERVER_AUTH, usagesList.get(3));
+    assertEquals(CertificateRequestSpec.Usages.S_MIME, usagesList.get(4));
   }
 
   @Test
