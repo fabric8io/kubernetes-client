@@ -25,7 +25,10 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -80,6 +83,33 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
           }
         }).get(10L, TimeUnit.SECONDS);
     assertThat(open).isTrue();
+  }
+
+  @Test
+  void buildAsyncReceivesMultipleMessages() throws Exception {
+    server.expect().withPath("/websocket-multiple-message")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(10L)
+        .andEmit("First")
+        .waitFor(10L)
+        .andEmit("Second")
+        .done()
+        .always();
+    final CountDownLatch latch = new CountDownLatch(2);
+    final Set<String> messages = ConcurrentHashMap.newKeySet();
+    final WebSocket ws = httpClient.newWebSocketBuilder()
+        .uri(URI.create(server.url("/websocket-multiple-message")))
+        .buildAsync(new WebSocket.Listener() {
+          @Override
+          public void onMessage(WebSocket webSocket, String text) {
+            messages.add(text);
+            webSocket.request();
+            latch.countDown();
+          }
+        }).get(10L, TimeUnit.SECONDS);
+    assertThat(latch.await(60, TimeUnit.SECONDS)).isTrue();
+    assertThat(messages).containsExactlyInAnyOrder("First", "Second");
   }
 
   @Test

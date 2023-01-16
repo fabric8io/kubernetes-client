@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class VertxWebSocket implements WebSocket {
 
-  private io.vertx.core.http.WebSocket ws;
+  private final io.vertx.core.http.WebSocket ws;
   private final AtomicInteger pending = new AtomicInteger();
   private final Listener listener;
 
@@ -37,12 +37,12 @@ class VertxWebSocket implements WebSocket {
 
   void init() {
     ws.binaryMessageHandler(msg -> {
-      listener.onMessage(this, msg.getByteBuf().nioBuffer());
       ws.pause();
+      listener.onMessage(this, msg.getByteBuf().nioBuffer());
     });
     ws.textMessageHandler(msg -> {
-      listener.onMessage(this, msg);
       ws.pause();
+      listener.onMessage(this, msg);
     });
     ws.closeHandler(v -> listener.onClose(this, ws.closeStatusCode(), ws.closeReason()));
     ws.exceptionHandler(err -> listener.onError(this, err));
