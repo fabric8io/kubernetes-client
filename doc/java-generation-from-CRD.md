@@ -55,45 +55,90 @@ Provide a `source` referencing a file or a folder containing your CRDs definitio
 The full list of options of the CLI is (output of `--help`):
 
 ```
-Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase] -s=<source>
+Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
+                [-dt=<downloadTarget>] [-s=<source>]
                 [-suffix-strategy=<suffixStrategy>] -t=<target>
+                [-package-overrides=<String=String>]... [-u=<urls>]...
       -add-extra-annotations, --add-extra-annotations
                           Add extra lombok and sundrio annotation to the
                             generated classes
+      -dt, --download-target=<downloadTarget>
+                          The folder to be used as a target for the downloaded
+                            crds
       -enum-uppercase, --enum-uppercase
                           Uppercase the enum values
   -h, --help              Show this help message and exit.
+      -package-overrides, --package-overrides=<String=String>
+                          Apply the overrides to the package names
   -s, --source=<source>   The source(file or folder) with the
                             CustomResourceDefinition(s) to use
       -suffix-strategy, --suffix-strategy=<suffixStrategy>
                           The suffix strategy to be used
   -t, --target=<target>   The folder to write the generated sources
+  -u, --urls=<urls>       The source urls with the CustomResourceDefinition(s)
+                            to use
   -V, --version           Print version information and exit.
 ```
 
 And the corresponding configurations of the Maven plugin are (output of `mvn help:describe -DgroupId=io.fabric8 -DartifactId=java-generator-maven-plugin -Dversion=<version> -Ddetail`):
 
 ```
+    alwaysPreserveUnknown
+      User property: fabric8.java-generator.always-preserve-unknown
+      *advanced* Always inject additional properties in the generated classes
+
+    codeStructure
+      User property: fabric8.java-generator.code-structure
+      *advanced* The code structure to be used when generating java sources
+
+    downloadTarget (Default: ${basedir}/target/manifests)
+      User property: fabric8.java-generator.download-target
+      The Download target folder for CRDs downloaded from remote URLs
+
     enumUppercase
       User property: fabric8.java-generator.enum-uppercase
+      Generate uppercase Enums
 
     extraAnnotations
       User property: fabric8.java-generator.extra-annotations
+      Generate Extra annotation for lombok and sundrio integration
+
+    generatedAnnotations
+      User property: fabric8.java-generator.generated-annotations
+      *advanced* Emit the @javax.annotation.processing.Generated annotation on
+      the generated sources
+
+    packageOverrides
+      User property: fabric8.java-generator.package-overrides
+      Package names to be substituted
+
+    prefixStrategy
+      User property: fabric8.java-generator.prefix-strategy
+      *advanced* The prefix strategy for name mangling
+
+    project (Default: ${project})
+      (no description available)
 
     source
-      Required: true
       User property: fabric8.java-generator.source
+      The input file or directory to be used for generating sources
 
     suffixStrategy
       User property: fabric8.java-generator.suffix-strategy
+      *advanced* The suffix strategy for name mangling
 
     target (Default: ${basedir}/target/generated-sources/java)
       User property: fabric8.java-generator.target
+      The target folder to generate the Java sources
+
+    urls
+      User property: fabric8.java-generator.urls
+      The URLs to be used to download CRDs from remote locations
 ```
 
 ## Compiling the generated code
 
-The generated code depends on a few dependencies to succesfully compile:
+The generated code depends on a few dependencies to successfully compile:
 
 ```xml
 <dependency>
