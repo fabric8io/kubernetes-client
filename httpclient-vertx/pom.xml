@@ -33,6 +33,10 @@
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
     </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.client.http.HttpClient$Factory
+    </osgi.provide-capability>
     <osgi.import>
       !android.util*,
       *,
@@ -66,11 +70,6 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcpkix-jdk15on</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
