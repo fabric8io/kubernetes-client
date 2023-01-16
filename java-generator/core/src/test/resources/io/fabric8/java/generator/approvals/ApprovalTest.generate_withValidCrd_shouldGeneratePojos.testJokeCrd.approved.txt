@@ -38,6 +38,11 @@ public class JokeRequestSpec implements io.fabric8.kubernetes.api.model.Kubernet
         Category(java.lang.String value) {
             this.value = value;
         }
+
+        @com.fasterxml.jackson.annotation.JsonValue()
+        public java.lang.String getValue() {
+            return value;
+        }
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("category")
@@ -71,6 +76,11 @@ public class JokeRequestSpec implements io.fabric8.kubernetes.api.model.Kubernet
 
         Excluded(java.lang.String value) {
             this.value = value;
+        }
+
+        @com.fasterxml.jackson.annotation.JsonValue()
+        public java.lang.String getValue() {
+            return value;
         }
     }
 
@@ -144,6 +154,11 @@ public class JokeRequestStatus implements io.fabric8.kubernetes.api.model.Kubern
 
         State(java.lang.String value) {
             this.value = value;
+        }
+
+        @com.fasterxml.jackson.annotation.JsonValue()
+        public java.lang.String getValue() {
+            return value;
         }
     }
 
