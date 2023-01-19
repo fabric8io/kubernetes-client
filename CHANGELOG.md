@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.5-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.4.0 (2023-01-19)
 
 #### Bugs
@@ -21,8 +33,6 @@
 * Fix #4720: interceptors close any response body if the response is not a 2xx response.
 * Fix #4734: @KubernetesTest annotation can be used in base test classes
 * Fix #4734: @KubernetesTest creates an ephemeral Namespace optionally (can opt-out)
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #2764: Vert.x HttpClient implementation
