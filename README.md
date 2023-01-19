@@ -404,6 +404,7 @@ class ExampleTest {
 ### Kubernetes Compatibility Matrix:
 |                          | K8s 1.25.3 | K8s 1.24.7 | K8s 1.23.13 | K8s 1.22.1 | K8s 1.21.1 | K8s 1.20.2 | K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 |
 |--------------------------|------------|------------|-------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|
+| kubernetes-client 6.4.0  | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
 | kubernetes-client 6.3.1  | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
 | kubernetes-client 6.3.0  | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
 | kubernetes-client 6.2.0  | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
@@ -486,11 +487,6 @@ class ExampleTest {
 | kubernetes-client 4.1.0  |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
 | kubernetes-client 4.0.0  |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
 | kubernetes-client 3.2.0  |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
-| kubernetes-client 3.1.12 |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
-| kubernetes-client 3.0.11 |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
-| kubernetes-client 3.0.10 |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
-| kubernetes-client 3.0.3  |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -         |
-| kubernetes-client 1.3.92 |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -         |
 
 
 ### OpenShift Compatibility Matrix:
@@ -498,6 +494,7 @@ class ExampleTest {
 
 |                         | OCP 4.9.8 | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 | OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
 |-------------------------|-----------|------------|-----------|-----------|------------|------------|-----------|-----------|-----------|
+| openshift-client 6.4.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 6.3.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 6.3.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 6.2.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
@@ -579,11 +576,6 @@ class ExampleTest {
 | openshift-client 4.1.0  | -         | -          | -         | -         | -          | ✓          | ✓         | ✓         | -         |
 | openshift-client 4.0.0  | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
 | openshift-client 3.2.0  | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
-| openshift-client 3.1.12 | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
-| openshift-client 3.0.11 | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
-| openshift-client 3.0.10 | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
-| openshift-client 3.0.3  | -         | -          | -         | -         | -          | -          | -         | ✓         | -         |
-| openshift-client 1.3.92 | -         | -          | -         | -         | -          | -          | -         | -         | +         |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0

@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.4-SNAPSHOT
+### 6.4.0 (2023-01-19)
 
 #### Bugs
 * Fix #4249: prevent the over-logging of errors after the websocket has been closed
