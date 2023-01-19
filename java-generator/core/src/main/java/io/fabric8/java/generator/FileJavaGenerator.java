@@ -61,7 +61,7 @@ public class FileJavaGenerator implements JavaGenerator {
       try (Stream<Path> walk = Files.walk(source.toPath(), FileVisitOption.FOLLOW_LINKS)) {
         walk
             .map(Path::toFile)
-            .filter(f -> !f.getAbsolutePath().equals(source.getAbsolutePath()))
+            .filter(f -> !f.getAbsolutePath().equals(source.getAbsolutePath()) && f.isFile())
             .forEach(f -> runOnSingleSource(f, outputDirectory));
       } catch (IOException e) {
         throw new JavaGeneratorException(
