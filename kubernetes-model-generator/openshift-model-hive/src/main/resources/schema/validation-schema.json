@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "hive",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
@@ -11855,19 +11855,19 @@
     },
     "machinepool": {
       "properties": {
-        "coresPerSocket": {
-          "type": "integer"
-        },
-        "cpus": {
-          "type": "integer"
-        },
-        "memoryMB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
         "osDisk": {
-          "$ref": "#/definitions/os_hive_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk"
+          "$ref": "#/definitions/os_hive_azure_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.OSDisk"
+        },
+        "type": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -12478,15 +12478,7 @@
     "osdisk": {
       "properties": {
         "diskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "diskType": {
-          "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_hive_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.EncryptionKeyReference"
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -12607,9 +12599,18 @@
     },
     "platform": {
       "properties": {
-        "libvirtSSHPrivateKeySecretRef": {
+        "baseDomainResourceGroupName": {
+          "type": "string"
+        },
+        "cloudName": {
+          "type": "string"
+        },
+        "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "region": {
+          "type": "string"
         }
       },
       "additionalProperties": true

@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "monitoring",
   "definitions": {
     "k8s_io_apiextensions_apiserver_pkg_apis_apiextensions_v1_JSON": {

@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "installer",
   "definitions": {
     "k8s_io_apimachinery_pkg_runtime_RawExtension": {
@@ -2368,6 +2368,37 @@
       "additionalProperties": true
     },
     "machinepool": {
+      "properties": {
+        "affinityGroupsNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoPinningPolicy": {
+          "type": "string"
+        },
+        "cpu": {
+          "$ref": "#/definitions/os_installer_ovirt_v1_CPU",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.CPU"
+        },
+        "hugepages": {
+          "type": "integer"
+        },
+        "instanceTypeID": {
+          "type": "string"
+        },
+        "memoryMB": {
+          "type": "integer"
+        },
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_ovirt_v1_Disk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.Disk"
+        },
+        "vmType": {
+          "type": "string"
+        }
+      },
       "additionalProperties": true
     },
     "machinepoolplatform": {
@@ -2589,9 +2620,6 @@
       "properties": {
         "diskSizeGB": {
           "type": "integer"
-        },
-        "diskType": {
-          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2624,16 +2652,35 @@
     },
     "platform": {
       "properties": {
-        "URI": {
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_alibabacloud_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool"
+        },
+        "privateZoneID": {
           "type": "string"
         },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_libvirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool"
+        "region": {
+          "type": "string"
         },
-        "network": {
-          "$ref": "#/definitions/os_installer_libvirt_v1_Network",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.Network"
+        "resourceGroupID": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "vpcID": {
+          "type": "string"
+        },
+        "vswitchIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true

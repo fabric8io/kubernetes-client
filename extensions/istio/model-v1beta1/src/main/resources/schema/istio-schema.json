@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/istio/IstioSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "istio_io_api_analysis_v1alpha1_AnalysisMessageBase": {
       "type": "object",

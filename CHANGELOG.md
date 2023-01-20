@@ -3,6 +3,7 @@
 ### 6.5-SNAPSHOT
 
 #### Bugs
+* Fix #4784: json-schema draft-05 is a (404). Updating to draft-07 (`http://json-schema.org/draft-07/schema#`)
 * Fix #4791: handle the `NullPointerException` in `Thread.currentThread().getContextClassLoader()`
 * Fix #4832: NO_PROXY can match cidr with bit suffix <10
 * Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
