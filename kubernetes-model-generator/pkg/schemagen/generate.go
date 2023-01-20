@@ -268,7 +268,7 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 
 	s := JSONSchema{
 		ID:     "http://fabric8.io/fabric8/v2/" + t.Name() + "#",
-		Schema: "http://json-schema.org/draft-05/schema#",
+		Schema: "http://json-schema.org/draft-07/schema#",
 		Module: moduleName,
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",

@@ -67,7 +67,7 @@ spec:
                   type: object
                 definition:
                   description: JSONSchemaProps is a JSON-Schema following Specification
-                    Draft 4 (http://json-schema.org/).
+                    Draft 7 (http://json-schema.org/).
                   properties:
                     $schema:
                       description: JSONSchemaURL represents a schema url.
@@ -274,7 +274,7 @@ spec:
                         type: string
                       schema:
                         description: JSONSchemaProps is a JSON-Schema following Specification
-                          Draft 4 (http://json-schema.org/).
+                          Draft 7 (http://json-schema.org/).
                         properties:
                           $schema:
                             description: JSONSchemaURL represents a schema url.

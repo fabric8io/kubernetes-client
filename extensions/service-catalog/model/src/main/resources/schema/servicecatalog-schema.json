@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/knative/ServiceCatalogSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform": {
       "type": "object",
