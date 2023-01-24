@@ -323,7 +323,10 @@ class KubernetesCrudDispatcherPatchTest {
   class ResourceVersion {
 
     @Test
-    @DisplayName("JSON patch, with different resource version, should patch the resource")
+    @DisplayName("JSON patch, with different resource version, should patch the resource ---->" +
+        "Invalid Client behavior which removes the resource version from the list of operations")
+    // TODO: This test should be converted to differentResourceVersionConflict if we address
+    //       the inconsistent behavior of the client
     void differentResourceVersionOk() {
       // Given
       final ConfigMap initialCm = client.resource(new ConfigMapBuilder()
@@ -343,6 +346,27 @@ class KubernetesCrudDispatcherPatchTest {
           .extracting("metadata.resourceVersion")
           .isNotNull()
           .isNotEqualTo(initialCm.getMetadata().getResourceVersion());
+    }
+
+    @Test
+    @DisplayName("JSON patch, with different resource version, should throw conflict exception")
+    void differentResourceVersionConflict() {
+      // Given
+      client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-different-resource-version-conflict").endMetadata()
+          .addToData("key", "value")
+          .build())
+          .create();
+      final Resource<ConfigMap> resourceOperation = client.configMaps()
+          .withName("json-different-resource-version-conflict");
+      final PatchContext json = PatchContext.of(PatchType.JSON);
+      // When + Then
+      assertThatThrownBy(() -> resourceOperation.patch(json,
+          "[{\"op\": \"replace\", \"path\":\"/metadata/resourceVersion\", \"value\":\"diff\"}]"))
+              .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
+              .hasFieldOrPropertyWithValue("code", 409)
+              .extracting(KubernetesClientException::getMessage).asString()
+              .contains("the object has been modified;");
     }
 
     @Test
