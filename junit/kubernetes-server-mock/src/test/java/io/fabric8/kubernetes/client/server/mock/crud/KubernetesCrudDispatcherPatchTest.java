@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.server.mock.crud;
 
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -31,15 +33,18 @@ import io.fabric8.kubernetes.client.server.mock.crud.crd.Owl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import okhttp3.mockwebserver.MockWebServer;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.function.UnaryOperator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KubernetesCrudDispatcherPatchTest {
@@ -312,4 +317,80 @@ class KubernetesCrudDispatcherPatchTest {
         .hasFieldOrPropertyWithValue("spec.species", "Barn owl")
         .hasFieldOrPropertyWithValue("status.notes", "updated");
   }
+
+  @Nested
+  @DisplayName("Resource version validation")
+  class ResourceVersion {
+
+    @Test
+    @DisplayName("JSON patch, with different resource version, should patch the resource")
+    void differentResourceVersionOk() {
+      // Given
+      final ConfigMap initialCm = client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-different-resource-version").endMetadata()
+          .addToData("key", "value")
+          .build())
+          .create();
+      // When
+      final ConfigMap patchedCm = client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-different-resource-version").withResourceVersion("different").endMetadata()
+          .addToData("key", "changed")
+          .build())
+          .patch();
+      // Then
+      assertThat(patchedCm)
+          .hasFieldOrPropertyWithValue("metadata.name", "json-different-resource-version")
+          .extracting("metadata.resourceVersion")
+          .isNotNull()
+          .isNotEqualTo(initialCm.getMetadata().getResourceVersion());
+    }
+
+    @Test
+    @DisplayName("JSON Merge patch, with different resource version, should throw conflict exception")
+    void mergeDifferentResourceVersionConflict() {
+      // Given
+      client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-different-resource-version-merge").endMetadata()
+          .addToData("key", "value")
+          .build())
+          .create();
+      final Resource<ConfigMap> resourceOperation = client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-different-resource-version-merge").withResourceVersion("different").endMetadata()
+          .addToData("key", "changed")
+          .build());
+      final PatchContext jsonMerge = PatchContext.of(PatchType.JSON_MERGE);
+      // When + Then
+      assertThatThrownBy(() -> resourceOperation.patch(jsonMerge))
+          .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
+          .hasFieldOrPropertyWithValue("code", 409)
+          .extracting(KubernetesClientException::getMessage).asString()
+          .contains("the object has been modified;");
+    }
+
+    @Test
+    @DisplayName("JSON Merge patch, with same resource version, should patch the resource")
+    void mergeSameResourceVersionOk() {
+      // Given
+      final ConfigMap initialCm = client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-same-resource-version-merge").endMetadata()
+          .addToData("key", "value")
+          .build())
+          .create();
+      // When
+      final ConfigMap patchedCm = client.resource(new ConfigMapBuilder()
+          .withNewMetadata().withName("json-same-resource-version-merge")
+          .withResourceVersion(initialCm.getMetadata().getResourceVersion()).endMetadata()
+          .addToData("key", "changed")
+          .build())
+          .patch(PatchContext.of(PatchType.JSON_MERGE));
+      // Then
+      assertThat(patchedCm)
+          .hasFieldOrPropertyWithValue("metadata.name", "json-same-resource-version-merge")
+          .hasFieldOrPropertyWithValue("data.key", "changed")
+          .extracting("metadata.resourceVersion")
+          .isNotNull()
+          .isNotEqualTo(initialCm.getMetadata().getResourceVersion());
+    }
+  }
+
 }
