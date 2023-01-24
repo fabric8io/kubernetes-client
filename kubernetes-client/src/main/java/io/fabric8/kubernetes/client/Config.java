@@ -234,7 +234,7 @@ public class Config {
    */
   @Deprecated
   public Config() {
-    this(!Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false));
+    this(false);
   }
 
   private Config(Boolean autoConfigure) {
