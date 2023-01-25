@@ -30,9 +30,9 @@ import java.time.temporal.ChronoUnit;
  * Interceptor for handling expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
-
   public static final String NAME = "TOKEN";
 
+  public static final String TOKEN_REFRESH_DISABLED = "kubernetes.TokenRefreshInterceptor.disabled";
   private final Config config;
   private HttpClient.Factory factory;
 

@@ -143,7 +143,11 @@ public class HttpClientUtils {
     // Impersonator Interceptor
     interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor
-    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
+    String shouldDisableTokenRefreshInterceptor = Utils.getSystemPropertyOrEnvVar(TokenRefreshInterceptor.TOKEN_REFRESH_DISABLED, "true");
+    // disable tokenRefresh by default - TeamCity k8s plugin does it in its own way. See
+    if (!Boolean.parseBoolean(shouldDisableTokenRefreshInterceptor)){
+      interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
+    }
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
