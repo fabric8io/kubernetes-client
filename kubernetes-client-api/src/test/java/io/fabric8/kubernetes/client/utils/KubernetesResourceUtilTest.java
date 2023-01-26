@@ -50,7 +50,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.mergeConfigMapData;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.entry;
@@ -326,84 +325,6 @@ class KubernetesResourceUtilTest {
         .extracting(ConfigMap::getBinaryData)
         .asInstanceOf(InstanceOfAssertFactories.MAP)
         .contains(entry("test.bin", "wA=="));
-  }
-
-  @Test
-  void mergeConfigMapData_whenOneConfigMapNull_thenReturnNonNullConfigMap() {
-    // Given
-    ConfigMap cm = new ConfigMapBuilder()
-        .addToData("one", "1")
-        .build();
-
-    // When
-    ConfigMap result1 = mergeConfigMapData(cm, null);
-    ConfigMap result2 = mergeConfigMapData(null, cm);
-
-    // Then
-    assertThat(result1).isEqualTo(cm);
-    assertThat(result2).isEqualTo(cm);
-  }
-
-  @Test
-  void mergeConfigMapData_whenOneConfigMapNullData_thenReturnNonNullConfigMap() {
-    // Given
-    ConfigMap cm1 = new ConfigMapBuilder()
-        .addToData("one", "1")
-        .build();
-    ConfigMap cm2 = new ConfigMapBuilder().withData(null).build();
-
-    // When
-    ConfigMap result1 = mergeConfigMapData(cm1, cm2);
-    ConfigMap result2 = mergeConfigMapData(cm2, cm1);
-
-    // Then
-    assertThat(result1)
-        .hasFieldOrPropertyWithValue("data.one", "1")
-        .isEqualTo(result2);
-  }
-
-  @Test
-  void mergeConfigMapData_whenBothConfigMapNullData_thenReturnConfigMapWithEmptyData() {
-    // Given
-    ConfigMap cm1 = new ConfigMapBuilder().withData(null).build();
-    ConfigMap cm2 = new ConfigMapBuilder().withData(null).build();
-
-    // When
-    ConfigMap result = mergeConfigMapData(cm1, cm2);
-
-    // Then
-    assertThat(result)
-        .extracting(ConfigMap::getData)
-        .isNotNull();
-  }
-
-  @Test
-  void mergeConfigMapData_whenBothConfigMapsNonNullData_thenMergeConfigMaps() {
-    // Given
-    ConfigMap cm1 = new ConfigMapBuilder()
-        .addToData("e1", "v1")
-        .addToData("e2", "v2")
-        .addToData("e3", "v3")
-        .build();
-    ConfigMap cm2 = new ConfigMapBuilder()
-        .addToData("color.good", "blue")
-        .addToData("color.bad", "yellow")
-        .addToBinaryData("bin1", "fu+/vWIK")
-        .build();
-
-    // When
-    ConfigMap result = mergeConfigMapData(cm1, cm2);
-
-    // Then
-    assertThat(result)
-        .satisfies(r -> assertThat(r.getData())
-            .containsEntry("e1", "v1")
-            .containsEntry("e2", "v2")
-            .containsEntry("e3", "v3")
-            .containsEntry("color.good", "blue")
-            .containsEntry("color.bad", "yellow"))
-        .satisfies(r -> assertThat(r.getBinaryData())
-            .containsEntry("bin1", "fu+/vWIK"));
   }
 
   @SafeVarargs

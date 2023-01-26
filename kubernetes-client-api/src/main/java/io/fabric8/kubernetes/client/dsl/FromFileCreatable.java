@@ -19,7 +19,7 @@ import java.nio.file.Path;
 
 public interface FromFileCreatable<T> {
   /**
-   * Create new resource from a directory or file contents.
+   * Create or update an entry from a directory or file contents.
    *
    * @param key key for Kubernetes resource's .data field
    * @param dirOrFilePath a file or directory path
@@ -28,7 +28,7 @@ public interface FromFileCreatable<T> {
   T fromFile(String key, Path dirOrFilePath);
 
   /**
-   * Create new resource with data populated with entry with key matching file name
+   * Create or update an entry with data populated with entry with key matching file name
    * and value matching file contents. If it's a directory, key value pairs would be names
    * of files present in directory as keys and their contents as value respectively
    *

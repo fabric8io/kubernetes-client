@@ -16,25 +16,21 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
-import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.FromFileCreatableOperation;
-import io.fabric8.kubernetes.client.dsl.FromFileCreatableResource;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.createNewConfigMapWithEntry;
-import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.mergeConfigMapData;
-
-public class ConfigMapOperationsImpl extends HasMetadataOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>>
-    implements FromFileCreatableResource<ConfigMap>, FromFileCreatableOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> {
+public class ConfigMapOperationsImpl extends HasMetadataOperation<ConfigMap, ConfigMapList, ConfigMapResource>
+    implements ConfigMapResource {
 
   public ConfigMapOperationsImpl(Client client) {
     this(HasMetadataOperationsImpl.defaultContext(client));
@@ -50,35 +46,26 @@ public class ConfigMapOperationsImpl extends HasMetadataOperation<ConfigMap, Con
   }
 
   @Override
-  public FromFileCreatableResource<ConfigMap> fromFile(String key, Path dirOrFilePath) {
+  public ConfigMapResource fromFile(String key, Path dirOrFilePath) {
     return new ConfigMapOperationsImpl(context.withItem(createNewOrMergeWithExistingConfigMap(key, dirOrFilePath)));
-  }
-
-  @Override
-  public ConfigMapOperationsImpl withName(String name) {
-    ConfigMap item = getItem();
-    if (item != null) {
-      if (item.getMetadata() != null) {
-        item.getMetadata().setName(name);
-      } else {
-        item.setMetadata(new ObjectMetaBuilder().withName(name).build());
-      }
-    }
-    return new ConfigMapOperationsImpl(context.withName(name).withItem(item));
   }
 
   private ConfigMap createNewOrMergeWithExistingConfigMap(String key, Path dirOrFilePath) {
     try {
       ConfigMap item = getItem();
-      ConfigMap tempConfigMap = createNewConfigMapWithEntry(key, dirOrFilePath);
-
-      ConfigMap mergedConfigMap = mergeConfigMapData(item, tempConfigMap);
-      if (item != null) {
-        mergedConfigMap.setMetadata(item.getMetadata());
+      if (item == null) {
+        item = get();
       }
-      return mergedConfigMap;
+      ConfigMapBuilder builder = null;
+      if (item == null) {
+        builder = new ConfigMapBuilder().withNewMetadata().withName(getName()).endMetadata();
+      } else {
+        builder = new ConfigMapBuilder(item);
+      }
+      KubernetesResourceUtil.addEntriesFromDirOrFileToConfigMap(builder, key, dirOrFilePath);
+      return builder.build();
     } catch (IOException ioException) {
-      throw new KubernetesClientException("Unable to create ConfigMap " + key, ioException);
+      throw new KubernetesClientException("Unable to create ConfigMap entry " + key, ioException);
     }
   }
 }

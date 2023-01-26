@@ -15,13 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-/**
- * Interface for operations supporting creation from file.
- *
- * @param <T> resource type
- * @param <L> resource list type
- * @param <R> resource operation for resource type
- */
-public interface FromFileCreatableOperation<T, L, R extends Resource<T>> extends MixedOperation<T, L, R>,
-    FromFileCreatable<FromFileCreatableResource<T>> {
+import io.fabric8.kubernetes.api.model.ConfigMap;
+
+public interface ConfigMapResource extends Resource<ConfigMap>,
+    FromFileCreatable<ConfigMapResource> {
 }

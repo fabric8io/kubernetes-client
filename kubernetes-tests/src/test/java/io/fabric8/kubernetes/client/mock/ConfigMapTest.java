@@ -20,15 +20,21 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ConfigMapListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,15 +51,17 @@ class ConfigMapTest {
     data.put("foo", "bar");
     data.put("cheese", "gouda");
 
-    server.expect().withPath("/api/v1/namespaces/test/configmaps").andReturn(200,
-        new ConfigMapListBuilder().withItems(
-            new ConfigMapBuilder()
-                .withNewMetadata()
-                .withName("cfg1")
-                .endMetadata()
-                .addToData(data)
+    server.expect()
+        .withPath("/api/v1/namespaces/test/configmaps")
+        .andReturn(200,
+            new ConfigMapListBuilder().withItems(
+                new ConfigMapBuilder()
+                    .withNewMetadata()
+                    .withName("cfg1")
+                    .endMetadata()
+                    .addToData(data)
+                    .build())
                 .build())
-            .build())
         .once();
 
     ConfigMapList cfgList = client.configMaps().list();
@@ -71,14 +79,21 @@ class ConfigMapTest {
         .endMetadata()
         .build();
 
-    server.expect().withPath("/api/v1/namespaces/test/configmaps").andReturn(200,
-        new ConfigMapListBuilder().withItems(cm).build()).always();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/configmaps")
+        .andReturn(200,
+            new ConfigMapListBuilder().withItems(cm).build())
+        .always();
 
-    MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = client.configMaps();
+    MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps = client.configMaps();
     assertTrue(configMaps.delete().size() == 1);
 
-    server.expect().delete().withPath("/api/v1/namespaces/test/configmaps/cfg1").andReturn(200,
-        cm).times(1);
+    server.expect()
+        .delete()
+        .withPath("/api/v1/namespaces/test/configmaps/cfg1")
+        .andReturn(200,
+            cm)
+        .times(1);
 
     assertEquals(1, configMaps.withName("cfg1").delete().size());
 
@@ -88,7 +103,8 @@ class ConfigMapTest {
   @Test
   void testFromResourceWithFileConfigMap() throws InterruptedException {
     ConfigMap configMap = client.configMaps()
-        .load(getClass().getResourceAsStream("/test-application-properties-config-map.yml")).item();
+        .load(getClass().getResourceAsStream("/test-application-properties-config-map.yml"))
+        .item();
     assertEquals("cfg1", configMap.getMetadata().getName());
 
     Map<String, String> data = (Map<String, String>) configMap.getData();
@@ -111,6 +127,43 @@ class ConfigMapTest {
     Map<String, String> keys = (Map<String, String>) configMap.getData();
     assertEquals("gouda", keys.get("cheese"));
     assertEquals("bar", keys.get("foo"));
+  }
+
+  @Test
+  void fromFile_withValidFilePath_shouldDelegateCallToHelperMethod() {
+    // Given
+    Path path = new File(getClass().getResource("/test-config-map.yml").getFile()).toPath();
+
+    // When
+    ConfigMap map = client.configMaps().withName("x").fromFile("game-config", path).item();
+
+    // Then
+  }
+
+  @Test
+  void fromFile_withValidFilePath_shouldModifyItem() {
+    // Given
+    Path path = new File(getClass().getResource("/test-config-map.yml").getFile()).toPath();
+
+    // When
+    ConfigMap configMap = client.configMaps()
+        .resource(
+            new ConfigMapBuilder().withNewMetadata().withName("x").endMetadata().addToData("some", "value").build())
+        .fromFile("game-config", path)
+        .item();
+
+    assertEquals(new HashSet<>(Arrays.asList("some", "game-config")), configMap.getData().keySet());
+  }
+
+  @Test
+  void fromFile_whenConfigMapCreationFailed_shouldThrowException() {
+    // Given
+    Path path = new File("does-not-exist.yml").toPath();
+
+    // When + Then
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> client.configMaps().withName("x").fromFile("game-config", path))
+        .withMessage("Unable to create ConfigMap game-config");
   }
 
 }

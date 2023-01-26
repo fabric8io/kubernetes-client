@@ -55,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class KubernetesResourceUtil {
@@ -397,7 +396,7 @@ public class KubernetesResourceUtil {
    * Check whether a Kubernetes resource is Ready or not. Applicable only to
    * Deployment, ReplicaSet, Pod, ReplicationController, Endpoints, Node and
    * StatefulSet
-   * 
+   *
    * @param item item which needs to be checked
    * @return boolean value indicating it's status
    */
@@ -407,7 +406,7 @@ public class KubernetesResourceUtil {
 
   /**
    * Calculates age of a kubernetes resource
-   * 
+   *
    * @param kubernetesResource
    * @return a positive duration indicating age of the kubernetes resource
    */
@@ -507,44 +506,6 @@ public class KubernetesResourceUtil {
     return configMapBuilder.build();
   }
 
-  /**
-   * Merge ConfigMap data of two ConfigMaps
-   *
-   * @param cm1 first ConfigMap
-   * @param cm2 cm2 Configmap which would be modified
-   * @return ConfigMap containing data of both ConfigMaps
-   */
-  public static ConfigMap mergeConfigMapData(final ConfigMap cm1, final ConfigMap cm2) {
-    ConfigMapBuilder resultConfigMapBuilder = new ConfigMapBuilder();
-    if (cm1 != null || cm2 != null) {
-      if (cm1 == null) {
-        return cm2;
-      } else if (cm2 == null) {
-        return cm1;
-      } else {
-        Map<String, String> mergedData = mergeMaps(cm1.getData(), cm2.getData());
-        Map<String, String> mergedBinaryData = mergeMaps(cm1.getBinaryData(), cm2.getBinaryData());
-        resultConfigMapBuilder.withData(mergedData);
-        resultConfigMapBuilder.withBinaryData(mergedBinaryData);
-      }
-    }
-    return resultConfigMapBuilder.build();
-  }
-
-  private static Map<String, String> mergeMaps(Map<String, String> m1, Map<String, String> m2) {
-    if (m1 == null && m2 == null) {
-      return Collections.emptyMap();
-    } else if (m1 == null) {
-      return m2;
-    } else if (m2 == null) {
-      return m1;
-    } else {
-      return Stream.of(m1, m2)
-          .flatMap(m -> m.entrySet().stream())
-          .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-  }
-
   private static Map.Entry<String, String> createConfigMapEntry(final String key, final Path file) throws IOException {
     final byte[] bytes = Files.readAllBytes(file);
     if (isFileWithBinaryContent(file)) {
@@ -598,7 +559,7 @@ public class KubernetesResourceUtil {
     }
   }
 
-  private static void addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
+  public static void addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
       final Path dirOrFilePath) throws IOException {
     if (Files.isDirectory(dirOrFilePath, LinkOption.NOFOLLOW_LINKS)) {
       addEntriesFromDirectoryToConfigMap(configMapBuilder, dirOrFilePath);

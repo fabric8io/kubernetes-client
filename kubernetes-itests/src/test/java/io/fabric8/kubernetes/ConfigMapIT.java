@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,8 +78,8 @@ class ConfigMapIT {
 
     // When
     ConfigMap configMap = client.configMaps()
-        .fromFile("buffaloes", path)
         .withName("buffalo-from-file")
+        .fromFile("buffaloes", path)
         .create();
 
     // Then
@@ -97,8 +98,8 @@ class ConfigMapIT {
 
     // When
     ConfigMap configMap = client.configMaps()
-        .fromFile(path)
         .withName("cattle")
+        .fromFile(path)
         .create();
 
     // Then
@@ -121,9 +122,9 @@ class ConfigMapIT {
 
     // When
     ConfigMap configMap = client.configMaps()
+        .withName("farm")
         .fromFile("buffalo-from-file", p1)
         .fromFile("cow-from-file", p2)
-        .withName("farm")
         .create();
 
     // Then
