@@ -72,13 +72,13 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public void stop() {
-    stopFuture.complete(null);
     startFuture.completeExceptionally(new KubernetesClientException("informer manually stopped before starting"));
     Future<?> future = reconnectFuture;
     if (future != null) {
       future.cancel(true);
     }
     stopWatcher();
+    stopFuture.complete(null);
   }
 
   private synchronized void stopWatcher() {
@@ -220,6 +220,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
     @Override
     public void eventReceived(Action action, T resource) {
+      if (stopFuture.isDone()) {
+        return;
+      }
       if (action == null) {
         throw new KubernetesClientException("Unrecognized event for " + Reflector.this);
       }

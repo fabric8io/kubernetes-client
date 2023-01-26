@@ -3,6 +3,7 @@
 ### 6.5-SNAPSHOT
 
 #### Bugs
+* Fix #4794: improving the semantics of manually calling informer stop
 
 #### Improvements
 * Fix #4800: [java-generator] Reflect the `scope` field when implementing the `Namespaced` interface

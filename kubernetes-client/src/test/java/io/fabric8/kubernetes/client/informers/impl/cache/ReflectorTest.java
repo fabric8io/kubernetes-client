@@ -17,10 +17,12 @@
 package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,7 @@ import java.util.concurrent.CompletionException;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
 
 class ReflectorTest {
 
@@ -41,7 +44,8 @@ class ReflectorTest {
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, Mockito.mock(SyncableStore.class)) {
+    SyncableStore<Pod> mockStore = Mockito.mock(SyncableStore.class);
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
       @Override
       protected void reconnect() {
         // do nothing
@@ -74,7 +78,16 @@ class ReflectorTest {
     assertTrue(future.isDone());
     assertTrue(!future.isCompletedExceptionally());
 
+    reflector.getStopFuture().whenComplete((t, v) -> {
+      // try to process an event once stopped
+      reflector.getWatcher().eventReceived(Action.ADDED,
+          new PodBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build());
+    });
+
     reflector.stop();
+
+    // verify no event processing after stopped
+    Mockito.verify(mockStore, times(0)).add(Mockito.any());
 
     assertFalse(reflector.isWatching());
     assertTrue(reflector.isStopped());

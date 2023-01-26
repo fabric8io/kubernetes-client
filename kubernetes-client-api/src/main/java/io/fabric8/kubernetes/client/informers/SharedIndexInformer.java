@@ -99,6 +99,9 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
 
   /**
    * Stops the shared informer. The informer cannot be started again.
+   * <p>
+   * Once this call completes the informer will stop processing events, but the underlying watch closure may not yet be
+   * completed
    */
   void stop();
 
@@ -184,7 +187,8 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   SharedIndexInformer<T> exceptionHandler(ExceptionHandler handler);
 
   /**
-   * Return a {@link CompletionStage} that will allow notification of the informer stopping.
+   * Return a {@link CompletionStage} that will allow notification of the informer stopping. This will be completed after
+   * event processing has stopped.
    * <p>
    * If {@link #stop()} is called, the CompletionStage will complete normally.
    * <p>
