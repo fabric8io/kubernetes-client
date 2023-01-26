@@ -537,8 +537,6 @@ public class Config {
     LOGGER.debug("Trying to configure client from service account...");
     String masterHost = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_HOST_PROPERTY, (String) null);
     String masterPort = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_PORT_PROPERTY, (String) null);
-    String saTokenPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY,
-        KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
     String caCertPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY,
         KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
 
@@ -555,20 +553,44 @@ public class Config {
       } else {
         LOGGER.debug("Did not find service account ca cert at: [{}}].", caCertPath);
       }
-      try {
-        String serviceTokenCandidate = new String(Files.readAllBytes(new File(saTokenPath).toPath()));
-        LOGGER.debug("Found service account token at: [{}].", saTokenPath);
-        config.setOauthToken(serviceTokenCandidate);
-        String txt = "Configured service account doesn't have access. Service account may have been revoked.";
-        config.getErrorMessages().put(401, "Unauthorized! " + txt);
-        config.getErrorMessages().put(403, "Forbidden!" + txt);
-        return true;
-      } catch (IOException e) {
-        // No service account token available...
-        LOGGER.warn("Error reading service account token from: [{}]. Ignoring.", saTokenPath);
+
+      File saTokenPathFile = findServiceAccountTokenFile();
+      if (saTokenPathFile != null) {
+        String saTokenPathLocation = saTokenPathFile.getAbsolutePath();
+        try {
+          String serviceTokenCandidate = new String(Files.readAllBytes(saTokenPathFile.toPath()));
+          LOGGER.debug("Found service account token at: [{}].", saTokenPathLocation);
+          config.setOauthToken(serviceTokenCandidate);
+          String txt = "Configured service account doesn't have access. Service account may have been revoked.";
+          config.getErrorMessages().put(401, "Unauthorized! " + txt);
+          config.getErrorMessages().put(403, "Forbidden!" + txt);
+          return true;
+        } catch (IOException e) {
+          // No service account token available...
+          LOGGER.warn("Error reading service account token from: [{}]. Ignoring.", saTokenPathLocation);
+        }
       }
     }
     return false;
+  }
+
+  private static File findServiceAccountTokenFile() {
+    File saTokenPathFile;
+    String saTokenPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY);
+    if (saTokenPath != null) {
+      // if user has set the service account token system property, we use it.
+      saTokenPathFile = new File(saTokenPath);
+    } else {
+      // otherwise, let's try the default location iif the location exists.
+      saTokenPathFile = new File(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
+      if (!saTokenPathFile.exists()) {
+        saTokenPathFile = null;
+        LOGGER.debug("Could not find the service account token at the default location: [{}]. Ignoring.",
+            KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
+      }
+    }
+
+    return saTokenPathFile;
   }
 
   private static String joinHostPort(String host, String port) {
