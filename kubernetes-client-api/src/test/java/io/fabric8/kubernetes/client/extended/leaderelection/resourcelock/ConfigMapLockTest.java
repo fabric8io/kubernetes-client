@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.FromFileCreatableOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.AfterEach;
@@ -52,14 +52,14 @@ import static org.mockito.Mockito.when;
 class ConfigMapLockTest {
 
   private KubernetesClient kc;
-  private MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps;
+  private FromFileCreatableOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps;
   private ConfigMapBuilder configMapBuilder;
   private ConfigMapBuilder.MetadataNested<ConfigMapBuilder> metadata;
 
   @BeforeEach
   void setUp() {
     kc = mock(KubernetesClient.class, RETURNS_DEEP_STUBS);
-    configMaps = mock(MixedOperation.class, RETURNS_DEEP_STUBS);
+    configMaps = mock(FromFileCreatableOperation.class, RETURNS_DEEP_STUBS);
     configMapBuilder = Mockito.mock(ConfigMapBuilder.class, RETURNS_DEEP_STUBS);
     metadata = mock(ConfigMapBuilder.MetadataNested.class, RETURNS_DEEP_STUBS);
     when(kc.configMaps().inNamespace(anyString())).thenReturn(configMaps);

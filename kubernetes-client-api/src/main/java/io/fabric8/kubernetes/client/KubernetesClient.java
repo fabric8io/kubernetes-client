@@ -68,6 +68,7 @@ import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.FromFileCreatableOperation;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -448,9 +449,9 @@ public interface KubernetesClient extends Client {
   /**
    * API entrypoint for ConfigMap related operations. ConfigMap (core/v1)
    *
-   * @return MixedOperation object for ConfigMap related operations.
+   * @return FromFileCreatableOperation object for ConfigMap related operations.
    */
-  MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps();
+  FromFileCreatableOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps();
 
   /**
    * API entrypoint for LimitRange related operations. LimitRange (core/v1)

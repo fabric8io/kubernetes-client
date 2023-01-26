@@ -68,6 +68,7 @@ import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.FromFileCreatableOperation;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
@@ -354,7 +355,7 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
   }
 
   @Override
-  public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
+  public FromFileCreatableOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
     return getClient().configMaps();
   }
 

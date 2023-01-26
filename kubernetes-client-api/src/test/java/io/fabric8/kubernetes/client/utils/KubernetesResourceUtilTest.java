@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.internal;
+package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -32,11 +32,17 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.Good;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -44,6 +50,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.mergeConfigMapData;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -252,5 +262,160 @@ class KubernetesResourceUtilTest {
         "{\"auths\":{\"http://harbor.inner.com\":{\"password\":\"TestingSecret\",\"auth\":\"U2VjcmV0QWRtaW46VGVzdGluZ1NlY3JldA==\",\"username\":\"SecretAdmin\"}}}",
         header);
     assertEquals("TestSecretName", secret.getMetadata().getName());
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenInvalidFileProvided_shouldThrowException() {
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", Paths.get("")))
+        .withMessage("invalid file path provided ");
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenFileProvided_shouldCreateConfigMapFromFile() throws IOException {
+    // Given
+    Path path = new File(getClass().getResource("/configmap-from-file/game-config/game.properties").getFile()).toPath();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", path);
+
+    // Then
+    assertConfigMapContainsData(configMap, createExpectedEntry("game.properties", path));
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenDirProvided_shouldCreateConfigMapFromDir() throws IOException {
+    // Given
+    Path filePath = new File(getClass().getResource("/configmap-from-file/game-config").getFile()).toPath();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", filePath);
+
+    // Then
+    assertConfigMapContainsData(configMap,
+        createExpectedEntry("game.properties", filePath.resolve("game.properties")),
+        createExpectedEntry("ui.properties", filePath.resolve("ui.properties")));
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenMultipleDirsProvided_shouldCreateConfigMapFromDirs() throws IOException {
+    // Given
+    Path dir1Path = new File(getClass().getResource("/configmap-from-file/game-config").getFile()).toPath();
+    Path dir2Path = new File(getClass().getResource("/configmap-from-file/test-config").getFile()).toPath();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", dir1Path, dir2Path);
+
+    // Then
+    assertConfigMapContainsData(configMap,
+        createExpectedEntry("game.properties", dir1Path.resolve("game.properties")),
+        createExpectedEntry("ui.properties", dir1Path.resolve("ui.properties")),
+        createExpectedEntry("test.properties", dir2Path.resolve("test.properties")));
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenBinaryFileProvided_shouldCreateConfigMapFromFile() throws IOException {
+    // Given
+    Path path = new File(getClass().getResource("/test.bin").getFile()).toPath();
+
+    // When
+    ConfigMap configMap = KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", path);
+
+    // Then
+    assertThat(configMap)
+        .extracting(ConfigMap::getBinaryData)
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .contains(entry("test.bin", "wA=="));
+  }
+
+  @Test
+  void mergeConfigMapData_whenOneConfigMapNull_thenReturnNonNullConfigMap() {
+    // Given
+    ConfigMap cm = new ConfigMapBuilder()
+        .addToData("one", "1")
+        .build();
+
+    // When
+    ConfigMap result1 = mergeConfigMapData(cm, null);
+    ConfigMap result2 = mergeConfigMapData(null, cm);
+
+    // Then
+    assertThat(result1).isEqualTo(cm);
+    assertThat(result2).isEqualTo(cm);
+  }
+
+  @Test
+  void mergeConfigMapData_whenOneConfigMapNullData_thenReturnNonNullConfigMap() {
+    // Given
+    ConfigMap cm1 = new ConfigMapBuilder()
+        .addToData("one", "1")
+        .build();
+    ConfigMap cm2 = new ConfigMapBuilder().withData(null).build();
+
+    // When
+    ConfigMap result1 = mergeConfigMapData(cm1, cm2);
+    ConfigMap result2 = mergeConfigMapData(cm2, cm1);
+
+    // Then
+    assertThat(result1)
+        .hasFieldOrPropertyWithValue("data.one", "1")
+        .isEqualTo(result2);
+  }
+
+  @Test
+  void mergeConfigMapData_whenBothConfigMapNullData_thenReturnConfigMapWithEmptyData() {
+    // Given
+    ConfigMap cm1 = new ConfigMapBuilder().withData(null).build();
+    ConfigMap cm2 = new ConfigMapBuilder().withData(null).build();
+
+    // When
+    ConfigMap result = mergeConfigMapData(cm1, cm2);
+
+    // Then
+    assertThat(result)
+        .extracting(ConfigMap::getData)
+        .isNotNull();
+  }
+
+  @Test
+  void mergeConfigMapData_whenBothConfigMapsNonNullData_thenMergeConfigMaps() {
+    // Given
+    ConfigMap cm1 = new ConfigMapBuilder()
+        .addToData("e1", "v1")
+        .addToData("e2", "v2")
+        .addToData("e3", "v3")
+        .build();
+    ConfigMap cm2 = new ConfigMapBuilder()
+        .addToData("color.good", "blue")
+        .addToData("color.bad", "yellow")
+        .addToBinaryData("bin1", "fu+/vWIK")
+        .build();
+
+    // When
+    ConfigMap result = mergeConfigMapData(cm1, cm2);
+
+    // Then
+    assertThat(result)
+        .satisfies(r -> assertThat(r.getData())
+            .containsEntry("e1", "v1")
+            .containsEntry("e2", "v2")
+            .containsEntry("e3", "v3")
+            .containsEntry("color.good", "blue")
+            .containsEntry("color.bad", "yellow"))
+        .satisfies(r -> assertThat(r.getBinaryData())
+            .containsEntry("bin1", "fu+/vWIK"));
+  }
+
+  @SafeVarargs
+  private final void assertConfigMapContainsData(ConfigMap configMap, MapEntry<String, String>... mapEntries) {
+    assertThat(configMap)
+        .extracting(ConfigMap::getData)
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .contains(mapEntries);
+  }
+
+  private MapEntry<String, String> createExpectedEntry(String key, Path filePath) throws IOException {
+    String fileContent = new String(Files.readAllBytes(filePath));
+    return entry(key, fileContent);
   }
 }
