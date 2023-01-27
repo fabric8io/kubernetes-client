@@ -13,6 +13,7 @@
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
 
 #### Improvements
+* Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
 * Fix #4747: migrate to SnakeYAML Engine
 * Fix #4853: adding a wait on the pod for log operations
 * Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface

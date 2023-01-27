@@ -52,6 +52,11 @@ public class PostHandler implements KubernetesCrudDispatcherHandler {
       throw new KubernetesCrudDispatcherException(String.format("%s '%s' already exists",
           resource.getKind(), resource.getMetadata().getName()), HttpURLConnection.HTTP_CONFLICT, resource.getKind());
     }
+    if (resource.isMarkedForDeletion()) {
+      // Since the resource is newly created, a deletionTimestamp was most likely set accidentally.
+      resource.getMetadata().setDeletionTimestamp(null);
+    }
+
     initMetadata(resource, path);
     if (persistence.isStatusSubresourceEnabledForResource(path)) {
       resource.getAdditionalProperties().remove(STATUS);
