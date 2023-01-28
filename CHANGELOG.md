@@ -14,11 +14,6 @@
 
 #### _**Note**_: Breaking changes
 
-### 6.4.1-SNAPSHOT
-
-#### Improvements
-* Fix #4644: generate crds in parallel and optimize code
-
 ### 6.4.0 (2023-01-19)
 
 #### Bugs
