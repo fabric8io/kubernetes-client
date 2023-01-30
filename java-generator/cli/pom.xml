@@ -30,7 +30,7 @@
   <name>Fabric8 :: Java generator :: CLI</name>
 
   <properties>
-    <picocli.version>4.7.0</picocli.version>
+    <picocli.version>4.7.1</picocli.version>
   </properties>
 
   <dependencies>
