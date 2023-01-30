@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -33,6 +35,8 @@ import java.util.Objects;
  * @see <a href=
  *      "https://github.com/kubernetes/client-go/blob/1aa326d7304eba6aedc8c89daad615cc7499d1f7/tools/leaderelection/resourcelock/interface.go">leaderelection/resourcelock/interface.go</a>
  */
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class LeaderElectionRecord {
 
   private final String holderIdentity;

@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #4794: improving the semantics of manually calling informer stop
+* Fix #4798: fix leader election release on cancel
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
 
 #### Improvements

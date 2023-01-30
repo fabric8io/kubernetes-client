@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -46,12 +47,13 @@ public class LeaderElectionExamples {
   private static final String NAME = "leaders-of-the-future";
 
   public static final class SingleThreadExample {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
       final String lockIdentity = UUID.randomUUID().toString();
       try (KubernetesClient kc = new KubernetesClientBuilder().build()) {
-        kc.leaderElector()
+        LeaderElector leader = kc.leaderElector()
             .withConfig(
                 new LeaderElectionConfigBuilder()
+                    .withReleaseOnCancel()
                     .withName("Sample Leader Election configuration")
                     .withLeaseDuration(Duration.ofSeconds(15L))
                     .withLock(new LeaseLock(NAMESPACE, NAME, lockIdentity))
@@ -62,7 +64,11 @@ public class LeaderElectionExamples {
                         () -> System.out.println("STOPPED LEADERSHIP"),
                         newLeader -> System.out.printf("New leader elected %s%n", newLeader)))
                     .build())
-            .build().run();
+            .build();
+        CompletableFuture<?> f = leader.start();
+        Thread.sleep(10000);
+        f.cancel(true);
+        Thread.sleep(5000);
       }
     }
   }
@@ -184,7 +190,7 @@ public class LeaderElectionExamples {
                   .withLeaderCallbacks(new LeaderCallbacks(
                       () -> System.out.printf("\r%1$s: I just became leader!!!%n", id),
                       () -> {
-                        leaderReference.set(null);
+                        leaderReference.compareAndSet(id, null);
                         System.out.printf("\r%1$s: I just lost my leadership :(%n", id);
                       },
                       leaderReference::set))
