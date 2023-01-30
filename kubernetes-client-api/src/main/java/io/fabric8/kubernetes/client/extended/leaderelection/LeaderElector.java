@@ -118,6 +118,11 @@ public class LeaderElector {
       return; // not leading
     }
     try {
+      // update current from latest
+      current = leaderElectionConfig.getLock().get(kubernetesClient);
+      if (current == null || !isLeader(current)) {
+        return; // lost leadership already
+      }
       if (leaderElectionConfig.isReleaseOnCancel()) {
         release(current);
       }

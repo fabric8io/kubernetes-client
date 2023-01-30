@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
@@ -119,7 +120,12 @@ class LeaderElectorTest {
     final Lock mockedLock = lec.getLock();
     when(lec.isReleaseOnCancel()).thenReturn(true);
     doAnswer(invocation -> {
-      activeLer.set(invocation.getArgument(1, LeaderElectionRecord.class));
+      LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
+      if (!activeLer.get().getVersion().equals(leaderRecord.getVersion())) {
+        throw new KubernetesClientException("Wrong");
+      }
+      activeLer.set(leaderRecord.toBuilder()
+          .version(String.valueOf(Integer.parseInt(String.valueOf(leaderRecord.getVersion())) + 1)).build());
       signal.countDown();
       return null;
     }).when(mockedLock).update(any(), any());
@@ -133,6 +139,7 @@ class LeaderElectorTest {
     // Then
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
     assertEquals(0, activeLer.get().getLeaderTransitions());
+    assertEquals("3", activeLer.get().getVersion());
 
     // create a new elector, they are no good after a single use
     leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
@@ -284,7 +291,8 @@ class LeaderElectorTest {
     when(mockedLock.identity()).thenReturn("1337");
     when(mockedLock.get(any())).thenReturn(null).thenAnswer(invocation -> activeLer.get());
     doAnswer(invocation -> {
-      activeLer.set(invocation.getArgument(1, LeaderElectionRecord.class));
+      LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
+      activeLer.set(leaderRecord.toBuilder().version("1").build());
       return null;
     }).when(mockedLock).create(any(), any());
     return lec;
