@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 6.4.1 (2023-01-31)
+
+#### Bugs
+* Fix #4795: don't print warning message when service account token property is unset
+
 ### 6.4.0 (2023-01-19)
 
 #### Bugs
@@ -18,11 +23,10 @@
 * Fix #4654: Fix GatewayClass to not implement Namespaced interface
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
 * Fix #4694: [java-generator] Option to override the package name of the generated code.
+* Fix #4698: changes were made to improve authentication logic.  If a username and password are specified and you are using a base KuberentesClient, then that will always be used as a basic auth header value.  If a username and password are specified and you are using an OpenShiftClient, then a token will still be used if present, but upon an auth failure the username and password will be used to obtain a fresh token.  If a new token is obtained it will be saved in the kubeconfig if one were used to create the Config.
 * Fix #4720: interceptors close any response body if the response is not a 2xx response.
 * Fix #4734: @KubernetesTest annotation can be used in base test classes
 * Fix #4734: @KubernetesTest creates an ephemeral Namespace optionally (can opt-out)
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #2764: Vert.x HttpClient implementation
@@ -30,7 +34,7 @@
 #### _**Note**_: Breaking changes
 * Fix #3972: deprecated Parameterizable and methods on Serialization accepting parameters - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
 * Fix #3972: OpenShiftClient.load will no longer implicitly process templates.  Use OpenShiftClient.templates().load instead.
-* Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappersSerialization.
+* Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappers on Serialization.
 * Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
 * Fix #4633: client.run().withRunConfig was deprecated.  Use withNewRunConfig instead.
 * Fix #4663: Config.maxConcurrentRequests and Config.maxConcurrentRequestsPerHost will no longer be used.  Instead they will default to unlimited for all clients.  Due to the ability of the fabric8 client to start long running requests (either websocket or regular http) and how this is treated by the underlying clients you can easily exhaust these values and enter a state where the client is unresponsive without any additional information on what is occurring.
