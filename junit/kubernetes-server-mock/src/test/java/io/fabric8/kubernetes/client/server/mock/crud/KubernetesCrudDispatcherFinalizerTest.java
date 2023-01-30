@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class KubernetesCrudDispatcherFinalizerTest {
+class KubernetesCrudDispatcherFinalizerTest {
 
   private KubernetesMockServer server;
   private KubernetesClient client;
@@ -66,16 +67,43 @@ public class KubernetesCrudDispatcherFinalizerTest {
   @Test
   @DisplayName("create resource with a deletionTimestamp, resource is created and the timestamp is not persisted")
   void createResourceWithDeletionTimestamp() {
-    // Given
+    // Given:
     final Owl owl = new Owl();
     owl.setMetadata(
         new ObjectMetaBuilder().withName("owl-with-deletion-timestamp").withDeletionTimestamp("2020-10-22T21:30:34Z").build());
     client.resources(Owl.class).resource(owl).create();
 
+    // When the created owl is retrieved:
     final Owl result = client.resources(Owl.class).resource(owl).get();
 
+    // Then the owl is not marked for deletion:
     assertNotNull(result);
     assertFalse(result.isMarkedForDeletion());
+  }
+
+  @Test
+  @DisplayName("when deleting a resource with a deletionTimestamp twice, then the deletionTimestamp doesn't change.")
+  void deleteResourceWithFinalizerTwiceSameDeletionTimestamp() {
+    // Given:
+    final Owl initialOwl = createOwlWithFinalizer("owl-with-finalizer");
+
+    // When deleting the owl with a finalizer for the first time:
+    client.resources(Owl.class).resource(initialOwl).delete();
+
+    // Then the owl has a valid deletion timestamp.
+    Owl owl1 = client.resources(Owl.class).resource(initialOwl).get();
+    assertNotNull(owl1);
+    String deletionTimestamp1 = owl1.getMetadata().getDeletionTimestamp();
+    assertNotNull(deletionTimestamp1);
+    assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE_TIME.parse(deletionTimestamp1));
+
+    // When the owl is deleted a second time:
+    client.resources(Owl.class).resource(owl1).delete();
+
+    // Then the deletion timestamp stays the same.
+    Owl owl2 = client.resources(Owl.class).resource(initialOwl).get();
+    String deletionTimestamp2 = owl2.getMetadata().getDeletionTimestamp();
+    assertEquals(deletionTimestamp1, deletionTimestamp2);
   }
 
   @Test
@@ -92,7 +120,7 @@ public class KubernetesCrudDispatcherFinalizerTest {
     assertNotNull(owlThatShouldBeMarkedForDeletion);
     assertTrue(owlThatShouldBeMarkedForDeletion.isMarkedForDeletion());
 
-    // When all finalizers are removed:
+    // When all finalizers are removed by a PUT operation:
     owlThatShouldBeMarkedForDeletion.getMetadata().setFinalizers(null);
     client.resources(Owl.class).resource(owlThatShouldBeMarkedForDeletion).replace();
 
@@ -115,7 +143,7 @@ public class KubernetesCrudDispatcherFinalizerTest {
     assertNotNull(owlThatShouldBeMarkedForDeletion);
     assertTrue(owlThatShouldBeMarkedForDeletion.isMarkedForDeletion());
 
-    // When all finalizers are removed:
+    // When all finalizers are removed by a PATCH operation:
     owlThatShouldBeMarkedForDeletion.getMetadata().setFinalizers(null);
     client.resources(Owl.class).resource(owlThatShouldBeMarkedForDeletion).patch();
 
