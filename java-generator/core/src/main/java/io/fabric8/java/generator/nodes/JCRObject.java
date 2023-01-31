@@ -33,6 +33,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
   private final String className;
   private final String group;
   private final String version;
+  private final String scope;
   private final String specClassName;
   private final String statusClassName;
   private final boolean withSpec;
@@ -48,6 +49,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
       String type,
       String group,
       String version,
+      String scope,
       String specClassName,
       String statusClassName,
       boolean withSpec,
@@ -64,6 +66,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     this.className = type;
     this.group = group;
     this.version = version;
+    this.scope = scope;
     this.specClassName = specClassName;
     this.statusClassName = statusClassName;
     this.withSpec = withSpec;
@@ -131,7 +134,10 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
         .setTypeArguments(spec, status);
 
     clz.addExtendedType(crType);
-    clz.addImplementedType("io.fabric8.kubernetes.api.model.Namespaced");
+
+    if (scope.equals("Namespaced")) {
+      clz.addImplementedType("io.fabric8.kubernetes.api.model.Namespaced");
+    }
 
     if (config.isGeneratedAnnotations()) {
       clz.addAnnotation(GENERATED_ANNOTATION);

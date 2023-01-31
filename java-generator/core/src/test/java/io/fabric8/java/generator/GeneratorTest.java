@@ -61,6 +61,7 @@ class GeneratorTest {
         "t",
         "g",
         "v",
+        "Namespaced",
         "Spec",
         "Status",
         true,
@@ -82,6 +83,59 @@ class GeneratorTest {
   }
 
   @Test
+  void testNamespacedCR() {
+    // Arrange
+    JCRObject cro = new JCRObject(
+        null,
+        "t",
+        "g",
+        "v",
+        "Namespaced",
+        "Spec",
+        "Status",
+        true,
+        true,
+        true,
+        true,
+        "t",
+        "ts",
+        defaultConfig);
+
+    // Act
+    GeneratorResult res = cro.generateJava();
+
+    // Assert
+    assertEquals("io.fabric8.kubernetes.api.model.Namespaced", res.getTopLevelClasses().get(0).getCompilationUnit()
+        .getClassByName("t").get().getImplementedTypes().get(0).getNameWithScope());
+  }
+
+  @Test
+  void testClusterScopeCR() {
+    // Arrange
+    JCRObject cro = new JCRObject(
+        null,
+        "t",
+        "g",
+        "v",
+        "Cluster",
+        "Spec",
+        "Status",
+        true,
+        true,
+        true,
+        true,
+        "t",
+        "ts",
+        defaultConfig);
+
+    // Act
+    GeneratorResult res = cro.generateJava();
+
+    // Assert
+    assertTrue(res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("t").get().getImplementedTypes().isEmpty());
+  }
+
+  @Test
   void testCRWithoutNamespace() {
     // Arrange
     JCRObject cro = new JCRObject(
@@ -89,6 +143,7 @@ class GeneratorTest {
         "t",
         "g",
         "v",
+        "Namespaced",
         "Spec",
         "Status",
         true,

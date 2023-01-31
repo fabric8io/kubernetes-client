@@ -44,6 +44,7 @@ public class CRGeneratorRunner {
     CustomResourceDefinitionSpec crSpec = crd.getSpec();
     String crName = crSpec.getNames().getKind();
     String group = crSpec.getGroup();
+    String scope = crSpec.getScope();
 
     List<WritableCRCompilationUnit> writableCUs = new ArrayList<>(crSpec.getVersions().size());
     for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
@@ -84,6 +85,7 @@ public class CRGeneratorRunner {
           crName,
           group,
           version,
+          scope,
           prefix + "Spec",
           prefix + "Status",
           specGenerator != null,
