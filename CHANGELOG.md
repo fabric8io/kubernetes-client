@@ -4,6 +4,8 @@
 
 #### Bugs
 * Fix #4795: don't print warning message when service account token property is unset
+* Fix #4809: VertxHttpClientBuilder is public
+* Fix #4811: HttpClient.Factory instances can be prioritized
 
 ### 6.4.0 (2023-01-19)
 
