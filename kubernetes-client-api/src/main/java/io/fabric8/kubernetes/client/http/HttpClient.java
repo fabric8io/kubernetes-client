@@ -58,6 +58,15 @@ public interface HttpClient extends AutoCloseable {
       return false;
     }
 
+    /**
+     * The priority of the implementation. The higher the priority the more likely it will be used.
+     * 
+     * @return the priority.
+     */
+    default int priority() {
+      return 0;
+    }
+
   }
 
   interface DerivedClientBuilder {
