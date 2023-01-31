@@ -57,12 +57,12 @@ public class URLJavaGenerator implements JavaGenerator {
       throw new JavaGeneratorException(
           "Download directory is required");
     }
+    if (!downloadDirectory.exists() && !downloadDirectory.mkdirs()) {
+      throw new JavaGeneratorException("Unable to create download directory " + downloadDirectory.getAbsolutePath());
+    }
     if (!downloadDirectory.isDirectory()) {
       throw new JavaGeneratorException(
           "Download directory " + downloadDirectory.getAbsolutePath() + " is not a valid directory");
-    }
-    if (!downloadDirectory.exists() && !downloadDirectory.mkdirs()) {
-      throw new JavaGeneratorException("Unable to create download directory " + downloadDirectory.getAbsolutePath());
     }
     LOGGER.info("Downloading CRDs from URLs: {}", urls);
     urls.forEach(this::downloadCRD);
