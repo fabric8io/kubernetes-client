@@ -17,7 +17,10 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.Interceptor;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,17 +30,28 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 class HttpClientUtilsTest {
 
@@ -180,6 +194,102 @@ class HttpClientUtilsTest {
       URL url = HttpClientUtils.getProxyUrl(config);
       // Then
       assertThat(url).isNull();
+    }
+  }
+
+  @Nested
+  @DisplayName("getHttpClientFactory")
+  class GetHttpClientFactory {
+
+    private List<HttpClient.Factory> factories;
+    @SuppressWarnings("rawtypes")
+    private MockedStatic<ServiceLoader> mockedStaticServiceLoader;
+
+    @BeforeEach
+    void setUp() {
+      // n.b. Since ServiceLoader is mocked for this test, it's not possible to use AssertJ assertions.
+      factories = new ArrayList<>();
+      mockedStaticServiceLoader = mockStatic(ServiceLoader.class);
+      @SuppressWarnings("unchecked")
+      final ServiceLoader<HttpClient.Factory> mockServiceLoader = mock(ServiceLoader.class);
+      when(mockServiceLoader.iterator()).thenAnswer(i -> new ArrayList<>(factories).iterator());
+      when(ServiceLoader.load(eq(HttpClient.Factory.class), any())).thenReturn(mockServiceLoader);
+      mockedStaticServiceLoader.when(() -> ServiceLoader.load(eq(HttpClient.Factory.class)))
+          .thenReturn(mockServiceLoader);
+    }
+
+    @AfterEach
+    void tearDown() {
+      factories.clear();
+      mockedStaticServiceLoader.close();
+    }
+
+    @Test
+    @DisplayName("With no implementations, should throw exception")
+    void withNoImplementations() {
+      final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+          HttpClientUtils::getHttpClientFactory);
+      assertEquals(
+          "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar",
+          result.getMessage());
+    }
+
+    @Test
+    @DisplayName("With default implementation, should return default")
+    void withDefault() {
+      factories.add(new DefaultHttpClientFactory());
+      assertEquals(DefaultHttpClientFactory.class, HttpClientUtils.getHttpClientFactory().getClass());
+    }
+
+    @Test
+    @DisplayName("With default and other implementation, should return other")
+    void withDefaultAndOther() {
+      factories.add(new OtherHttpClientFactory());
+      factories.add(new DefaultHttpClientFactory());
+      assertEquals(OtherHttpClientFactory.class, HttpClientUtils.getHttpClientFactory().getClass());
+    }
+
+    @Test
+    @DisplayName("With default and other implementation, should return Priority")
+    void withDefaultAndPriorityAndOther() {
+      factories.add(new OtherHttpClientFactory());
+      factories.add(new PriorityHttpClientFactory());
+      factories.add(new DefaultHttpClientFactory());
+      assertEquals(PriorityHttpClientFactory.class, HttpClientUtils.getHttpClientFactory().getClass());
+    }
+
+    private final class DefaultHttpClientFactory implements HttpClient.Factory {
+
+      @Override
+      public HttpClient.Builder newBuilder() {
+        return null;
+      }
+
+      @Override
+      public boolean isDefault() {
+        return true;
+      }
+    }
+
+    private final class OtherHttpClientFactory implements HttpClient.Factory {
+
+      @Override
+      public HttpClient.Builder newBuilder() {
+        return null;
+      }
+    }
+
+    private final class PriorityHttpClientFactory implements HttpClient.Factory {
+
+      @Override
+      public HttpClient.Builder newBuilder() {
+        return null;
+      }
+
+      @Override
+      public int priority() {
+        return Integer.MAX_VALUE;
+      }
     }
   }
 }
