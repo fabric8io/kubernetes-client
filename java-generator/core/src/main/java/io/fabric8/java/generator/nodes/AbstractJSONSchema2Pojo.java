@@ -131,7 +131,16 @@ public abstract class AbstractJSONSchema2Pojo {
       index = sanitized.indexOf('-');
     }
 
+    sanitized = sanitized.replace('.', '_');
+    sanitized = sanitized.replace(' ', '_');
+    sanitized = sanitized.replace('\'', '_');
+    sanitized = sanitized.replace('\"', '_');
+
     return sanitized;
+  }
+
+  public static String escapeQuotes(String str) {
+    return str.replace("\"", "\\\"").replace("\'", "\\\'");
   }
 
   public static AbstractJSONSchema2Pojo fromJsonSchema(
