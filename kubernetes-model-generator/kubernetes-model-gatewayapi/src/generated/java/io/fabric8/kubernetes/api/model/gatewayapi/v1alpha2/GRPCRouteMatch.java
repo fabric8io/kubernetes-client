@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,9 +35,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "name",
-    "type",
-    "value"
+    "headers",
+    "method"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,15 +56,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPQueryParamMatch implements KubernetesResource
+public class GRPCRouteMatch implements KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("type")
-    private String type;
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GRPCHeaderMatch> headers = new ArrayList<GRPCHeaderMatch>();
+    @JsonProperty("method")
+    private GRPCMethodMatch method;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -71,50 +71,38 @@ public class HTTPQueryParamMatch implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPQueryParamMatch() {
+    public GRPCRouteMatch() {
     }
 
     /**
      * 
-     * @param name
-     * @param type
-     * @param value
+     * @param headers
+     * @param method
      */
-    public HTTPQueryParamMatch(String name, String type, String value) {
+    public GRPCRouteMatch(List<GRPCHeaderMatch> headers, GRPCMethodMatch method) {
         super();
-        this.name = name;
-        this.type = type;
-        this.value = value;
+        this.headers = headers;
+        this.method = method;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("headers")
+    public List<GRPCHeaderMatch> getHeaders() {
+        return headers;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("headers")
+    public void setHeaders(List<GRPCHeaderMatch> headers) {
+        this.headers = headers;
     }
 
-    @JsonProperty("type")
-    public String getType() {
-        return type;
+    @JsonProperty("method")
+    public GRPCMethodMatch getMethod() {
+        return method;
     }
 
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
-    }
-
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonProperty("method")
+    public void setMethod(GRPCMethodMatch method) {
+        this.method = method;
     }
 
     @JsonAnyGetter

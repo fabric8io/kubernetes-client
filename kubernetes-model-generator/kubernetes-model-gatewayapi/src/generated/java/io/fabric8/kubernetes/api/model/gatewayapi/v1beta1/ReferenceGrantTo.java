@@ -1,10 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -36,9 +33,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "certificateRefs",
-    "mode",
-    "options"
+    "group",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,77 +54,75 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class GatewayTLSConfig implements KubernetesResource
+public class ReferenceGrantTo implements KubernetesResource
 {
 
-    @JsonProperty("certificateRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretObjectReference> certificateRefs = new ArrayList<SecretObjectReference>();
-    @JsonProperty("mode")
-    private java.lang.String mode;
-    @JsonProperty("options")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> options = new LinkedHashMap<String, String>();
+    @JsonProperty("group")
+    private String group;
+    @JsonProperty("kind")
+    private String kind;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public GatewayTLSConfig() {
+    public ReferenceGrantTo() {
     }
 
     /**
      * 
-     * @param mode
-     * @param options
-     * @param certificateRefs
+     * @param kind
+     * @param name
+     * @param group
      */
-    public GatewayTLSConfig(List<SecretObjectReference> certificateRefs, java.lang.String mode, Map<String, String> options) {
+    public ReferenceGrantTo(String group, String kind, String name) {
         super();
-        this.certificateRefs = certificateRefs;
-        this.mode = mode;
-        this.options = options;
+        this.group = group;
+        this.kind = kind;
+        this.name = name;
     }
 
-    @JsonProperty("certificateRefs")
-    public List<SecretObjectReference> getCertificateRefs() {
-        return certificateRefs;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    @JsonProperty("certificateRefs")
-    public void setCertificateRefs(List<SecretObjectReference> certificateRefs) {
-        this.certificateRefs = certificateRefs;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    @JsonProperty("mode")
-    public java.lang.String getMode() {
-        return mode;
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
-        this.mode = mode;
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
-    @JsonProperty("options")
-    public Map<String, String> getOptions() {
-        return options;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("options")
-    public void setOptions(Map<String, String> options) {
-        this.options = options;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

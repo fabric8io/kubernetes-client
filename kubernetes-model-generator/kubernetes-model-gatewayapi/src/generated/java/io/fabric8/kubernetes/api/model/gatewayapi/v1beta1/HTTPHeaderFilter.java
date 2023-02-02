@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,8 +35,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "name",
-    "value"
+    "add",
+    "remove",
+    "set"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,13 +57,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPHeader implements KubernetesResource
+public class HTTPHeaderFilter implements KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("add")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<HTTPHeader> add = new ArrayList<HTTPHeader>();
+    @JsonProperty("remove")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> remove = new ArrayList<String>();
+    @JsonProperty("set")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<HTTPHeader> set = new ArrayList<HTTPHeader>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -68,38 +76,50 @@ public class HTTPHeader implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPHeader() {
+    public HTTPHeaderFilter() {
     }
 
     /**
      * 
-     * @param name
-     * @param value
+     * @param add
+     * @param set
+     * @param remove
      */
-    public HTTPHeader(String name, String value) {
+    public HTTPHeaderFilter(List<HTTPHeader> add, List<String> remove, List<HTTPHeader> set) {
         super();
-        this.name = name;
-        this.value = value;
+        this.add = add;
+        this.remove = remove;
+        this.set = set;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("add")
+    public List<HTTPHeader> getAdd() {
+        return add;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("add")
+    public void setAdd(List<HTTPHeader> add) {
+        this.add = add;
     }
 
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
+    @JsonProperty("remove")
+    public List<String> getRemove() {
+        return remove;
     }
 
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonProperty("remove")
+    public void setRemove(List<String> remove) {
+        this.remove = remove;
+    }
+
+    @JsonProperty("set")
+    public List<HTTPHeader> getSet() {
+        return set;
+    }
+
+    @JsonProperty("set")
+    public void setSet(List<HTTPHeader> set) {
+        this.set = set;
     }
 
     @JsonAnyGetter

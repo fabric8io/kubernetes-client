@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "requestHeaderModifier",
     "requestMirror",
     "requestRedirect",
+    "responseHeaderModifier",
     "type",
     "urlRewrite"
 })
@@ -63,11 +64,13 @@ public class HTTPRouteFilter implements KubernetesResource
     @JsonProperty("extensionRef")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef;
     @JsonProperty("requestHeaderModifier")
-    private HTTPRequestHeaderFilter requestHeaderModifier;
+    private HTTPHeaderFilter requestHeaderModifier;
     @JsonProperty("requestMirror")
     private HTTPRequestMirrorFilter requestMirror;
     @JsonProperty("requestRedirect")
     private HTTPRequestRedirectFilter requestRedirect;
+    @JsonProperty("responseHeaderModifier")
+    private HTTPHeaderFilter responseHeaderModifier;
     @JsonProperty("type")
     private String type;
     @JsonProperty("urlRewrite")
@@ -87,16 +90,18 @@ public class HTTPRouteFilter implements KubernetesResource
      * @param requestMirror
      * @param requestRedirect
      * @param requestHeaderModifier
+     * @param responseHeaderModifier
      * @param type
      * @param urlRewrite
      * @param extensionRef
      */
-    public HTTPRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef, HTTPRequestHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPRequestRedirectFilter requestRedirect, String type, HTTPURLRewriteFilter urlRewrite) {
+    public HTTPRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPRequestRedirectFilter requestRedirect, HTTPHeaderFilter responseHeaderModifier, String type, HTTPURLRewriteFilter urlRewrite) {
         super();
         this.extensionRef = extensionRef;
         this.requestHeaderModifier = requestHeaderModifier;
         this.requestMirror = requestMirror;
         this.requestRedirect = requestRedirect;
+        this.responseHeaderModifier = responseHeaderModifier;
         this.type = type;
         this.urlRewrite = urlRewrite;
     }
@@ -112,12 +117,12 @@ public class HTTPRouteFilter implements KubernetesResource
     }
 
     @JsonProperty("requestHeaderModifier")
-    public HTTPRequestHeaderFilter getRequestHeaderModifier() {
+    public HTTPHeaderFilter getRequestHeaderModifier() {
         return requestHeaderModifier;
     }
 
     @JsonProperty("requestHeaderModifier")
-    public void setRequestHeaderModifier(HTTPRequestHeaderFilter requestHeaderModifier) {
+    public void setRequestHeaderModifier(HTTPHeaderFilter requestHeaderModifier) {
         this.requestHeaderModifier = requestHeaderModifier;
     }
 
@@ -139,6 +144,16 @@ public class HTTPRouteFilter implements KubernetesResource
     @JsonProperty("requestRedirect")
     public void setRequestRedirect(HTTPRequestRedirectFilter requestRedirect) {
         this.requestRedirect = requestRedirect;
+    }
+
+    @JsonProperty("responseHeaderModifier")
+    public HTTPHeaderFilter getResponseHeaderModifier() {
+        return responseHeaderModifier;
+    }
+
+    @JsonProperty("responseHeaderModifier")
+    public void setResponseHeaderModifier(HTTPHeaderFilter responseHeaderModifier) {
+        this.responseHeaderModifier = responseHeaderModifier;
     }
 
     @JsonProperty("type")

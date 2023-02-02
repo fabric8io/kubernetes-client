@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +34,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "group",
-    "name",
-    "namespace",
-    "port",
-    "weight"
+    "namespace"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,26 +54,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class BackendRef implements KubernetesResource
+public class ReferenceGrantFrom implements KubernetesResource
 {
 
     @JsonProperty("group")
     private String group;
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
-    private String kind = "BackendRef";
-    @JsonProperty("name")
-    private String name;
+    private String kind;
     @JsonProperty("namespace")
     private String namespace;
-    @JsonProperty("port")
-    private Integer port;
-    @JsonProperty("weight")
-    private Integer weight;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -84,26 +70,20 @@ public class BackendRef implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public BackendRef() {
+    public ReferenceGrantFrom() {
     }
 
     /**
      * 
-     * @param port
      * @param kind
-     * @param name
      * @param namespace
-     * @param weight
      * @param group
      */
-    public BackendRef(String group, String kind, String name, String namespace, Integer port, Integer weight) {
+    public ReferenceGrantFrom(String group, String kind, String namespace) {
         super();
         this.group = group;
         this.kind = kind;
-        this.name = name;
         this.namespace = namespace;
-        this.port = port;
-        this.weight = weight;
     }
 
     @JsonProperty("group")
@@ -116,34 +96,14 @@ public class BackendRef implements KubernetesResource
         this.group = group;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
-    }
-
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
     }
 
     @JsonProperty("namespace")
@@ -154,26 +114,6 @@ public class BackendRef implements KubernetesResource
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
-    }
-
-    @JsonProperty("port")
-    public Integer getPort() {
-        return port;
-    }
-
-    @JsonProperty("port")
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    @JsonProperty("weight")
-    public Integer getWeight() {
-        return weight;
-    }
-
-    @JsonProperty("weight")
-    public void setWeight(Integer weight) {
-        this.weight = weight;
     }
 
     @JsonAnyGetter

@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -35,9 +33,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "add",
-    "remove",
-    "set"
+    "group",
+    "name",
+    "namespace",
+    "port",
+    "weight"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,18 +57,26 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPRequestHeaderFilter implements KubernetesResource
+public class BackendRef implements KubernetesResource
 {
 
-    @JsonProperty("add")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeader> add = new ArrayList<HTTPHeader>();
-    @JsonProperty("remove")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> remove = new ArrayList<String>();
-    @JsonProperty("set")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeader> set = new ArrayList<HTTPHeader>();
+    @JsonProperty("group")
+    private String group;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "BackendRef";
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
+    @JsonProperty("port")
+    private Integer port;
+    @JsonProperty("weight")
+    private Integer weight;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -76,50 +84,96 @@ public class HTTPRequestHeaderFilter implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRequestHeaderFilter() {
+    public BackendRef() {
     }
 
     /**
      * 
-     * @param add
-     * @param set
-     * @param remove
+     * @param port
+     * @param kind
+     * @param name
+     * @param namespace
+     * @param weight
+     * @param group
      */
-    public HTTPRequestHeaderFilter(List<HTTPHeader> add, List<String> remove, List<HTTPHeader> set) {
+    public BackendRef(String group, String kind, String name, String namespace, Integer port, Integer weight) {
         super();
-        this.add = add;
-        this.remove = remove;
-        this.set = set;
+        this.group = group;
+        this.kind = kind;
+        this.name = name;
+        this.namespace = namespace;
+        this.port = port;
+        this.weight = weight;
     }
 
-    @JsonProperty("add")
-    public List<HTTPHeader> getAdd() {
-        return add;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    @JsonProperty("add")
-    public void setAdd(List<HTTPHeader> add) {
-        this.add = add;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    @JsonProperty("remove")
-    public List<String> getRemove() {
-        return remove;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("remove")
-    public void setRemove(List<String> remove) {
-        this.remove = remove;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
-    @JsonProperty("set")
-    public List<HTTPHeader> getSet() {
-        return set;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("set")
-    public void setSet(List<HTTPHeader> set) {
-        this.set = set;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    @JsonProperty("weight")
+    public Integer getWeight() {
+        return weight;
+    }
+
+    @JsonProperty("weight")
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 
     @JsonAnyGetter

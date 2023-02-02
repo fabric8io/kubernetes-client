@@ -19,10 +19,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicy;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicyList;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteList;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRouteList;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute;
@@ -42,6 +40,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "GRPCRoute",
+    "GRPCRouteList",
     "Gateway",
     "GatewayClass",
     "GatewayClassList",
@@ -50,8 +50,6 @@ import lombok.experimental.Accessors;
     "HTTPRouteList",
     "ReferenceGrant",
     "ReferenceGrantList",
-    "ReferencePolicy",
-    "ReferencePolicyList",
     "TCPRoute",
     "TCPRouteList",
     "TLSRoute",
@@ -63,7 +61,9 @@ import lombok.experimental.Accessors;
     "V1Beta1GatewayClassList",
     "V1Beta1GatewayList",
     "V1Beta1HTTPRoute",
-    "V1Beta1HTTPRouteList"
+    "V1Beta1HTTPRouteList",
+    "V1Beta1ReferenceGrant",
+    "V1Beta1ReferenceGrantList"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +85,10 @@ import lombok.experimental.Accessors;
 })
 public class KubeSchema {
 
+    @JsonProperty("GRPCRoute")
+    private GRPCRoute gRPCRoute;
+    @JsonProperty("GRPCRouteList")
+    private GRPCRouteList gRPCRouteList;
     @JsonProperty("Gateway")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway gateway;
     @JsonProperty("GatewayClass")
@@ -98,13 +102,9 @@ public class KubeSchema {
     @JsonProperty("HTTPRouteList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteList hTTPRouteList;
     @JsonProperty("ReferenceGrant")
-    private ReferenceGrant referenceGrant;
+    private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant referenceGrant;
     @JsonProperty("ReferenceGrantList")
-    private ReferenceGrantList referenceGrantList;
-    @JsonProperty("ReferencePolicy")
-    private ReferencePolicy referencePolicy;
-    @JsonProperty("ReferencePolicyList")
-    private ReferencePolicyList referencePolicyList;
+    private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList referenceGrantList;
     @JsonProperty("TCPRoute")
     private TCPRoute tCPRoute;
     @JsonProperty("TCPRouteList")
@@ -129,6 +129,10 @@ public class KubeSchema {
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute v1Beta1HTTPRoute;
     @JsonProperty("V1Beta1HTTPRouteList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList v1Beta1HTTPRouteList;
+    @JsonProperty("V1Beta1ReferenceGrant")
+    private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant v1Beta1ReferenceGrant;
+    @JsonProperty("V1Beta1ReferenceGrantList")
+    private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -143,29 +147,33 @@ public class KubeSchema {
      * 
      * @param gatewayClassList
      * @param v1Beta1HTTPRoute
+     * @param gRPCRoute
+     * @param v1Beta1ReferenceGrantList
      * @param uDPRoute
      * @param v1Beta1Gateway
-     * @param referencePolicy
      * @param v1Beta1GatewayClassList
      * @param gatewayList
      * @param tLSRouteList
      * @param tCPRoute
      * @param v1Beta1HTTPRouteList
      * @param hTTPRouteList
+     * @param v1Beta1ReferenceGrant
+     * @param gRPCRouteList
      * @param tLSRoute
      * @param v1Beta1GatewayClass
      * @param uDPRouteList
      * @param hTTPRoute
      * @param referenceGrantList
      * @param gatewayClass
-     * @param referencePolicyList
      * @param v1Beta1GatewayList
      * @param referenceGrant
      * @param gateway
      * @param tCPRouteList
      */
-    public KubeSchema(io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway gateway, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass gatewayClass, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassList gatewayClassList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayList gatewayList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute hTTPRoute, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteList hTTPRouteList, ReferenceGrant referenceGrant, ReferenceGrantList referenceGrantList, ReferencePolicy referencePolicy, ReferencePolicyList referencePolicyList, TCPRoute tCPRoute, TCPRouteList tCPRouteList, TLSRoute tLSRoute, TLSRouteList tLSRouteList, UDPRoute uDPRoute, UDPRouteList uDPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway v1Beta1Gateway, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass v1Beta1GatewayClass, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClassList v1Beta1GatewayClassList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayList v1Beta1GatewayList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute v1Beta1HTTPRoute, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList v1Beta1HTTPRouteList) {
+    public KubeSchema(GRPCRoute gRPCRoute, GRPCRouteList gRPCRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway gateway, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass gatewayClass, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassList gatewayClassList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayList gatewayList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute hTTPRoute, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteList hTTPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant referenceGrant, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList referenceGrantList, TCPRoute tCPRoute, TCPRouteList tCPRouteList, TLSRoute tLSRoute, TLSRouteList tLSRouteList, UDPRoute uDPRoute, UDPRouteList uDPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway v1Beta1Gateway, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass v1Beta1GatewayClass, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClassList v1Beta1GatewayClassList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayList v1Beta1GatewayList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute v1Beta1HTTPRoute, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList v1Beta1HTTPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant v1Beta1ReferenceGrant, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList) {
         super();
+        this.gRPCRoute = gRPCRoute;
+        this.gRPCRouteList = gRPCRouteList;
         this.gateway = gateway;
         this.gatewayClass = gatewayClass;
         this.gatewayClassList = gatewayClassList;
@@ -174,8 +182,6 @@ public class KubeSchema {
         this.hTTPRouteList = hTTPRouteList;
         this.referenceGrant = referenceGrant;
         this.referenceGrantList = referenceGrantList;
-        this.referencePolicy = referencePolicy;
-        this.referencePolicyList = referencePolicyList;
         this.tCPRoute = tCPRoute;
         this.tCPRouteList = tCPRouteList;
         this.tLSRoute = tLSRoute;
@@ -188,6 +194,28 @@ public class KubeSchema {
         this.v1Beta1GatewayList = v1Beta1GatewayList;
         this.v1Beta1HTTPRoute = v1Beta1HTTPRoute;
         this.v1Beta1HTTPRouteList = v1Beta1HTTPRouteList;
+        this.v1Beta1ReferenceGrant = v1Beta1ReferenceGrant;
+        this.v1Beta1ReferenceGrantList = v1Beta1ReferenceGrantList;
+    }
+
+    @JsonProperty("GRPCRoute")
+    public GRPCRoute getGRPCRoute() {
+        return gRPCRoute;
+    }
+
+    @JsonProperty("GRPCRoute")
+    public void setGRPCRoute(GRPCRoute gRPCRoute) {
+        this.gRPCRoute = gRPCRoute;
+    }
+
+    @JsonProperty("GRPCRouteList")
+    public GRPCRouteList getGRPCRouteList() {
+        return gRPCRouteList;
+    }
+
+    @JsonProperty("GRPCRouteList")
+    public void setGRPCRouteList(GRPCRouteList gRPCRouteList) {
+        this.gRPCRouteList = gRPCRouteList;
     }
 
     @JsonProperty("Gateway")
@@ -251,43 +279,23 @@ public class KubeSchema {
     }
 
     @JsonProperty("ReferenceGrant")
-    public ReferenceGrant getReferenceGrant() {
+    public io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant getReferenceGrant() {
         return referenceGrant;
     }
 
     @JsonProperty("ReferenceGrant")
-    public void setReferenceGrant(ReferenceGrant referenceGrant) {
+    public void setReferenceGrant(io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant referenceGrant) {
         this.referenceGrant = referenceGrant;
     }
 
     @JsonProperty("ReferenceGrantList")
-    public ReferenceGrantList getReferenceGrantList() {
+    public io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList getReferenceGrantList() {
         return referenceGrantList;
     }
 
     @JsonProperty("ReferenceGrantList")
-    public void setReferenceGrantList(ReferenceGrantList referenceGrantList) {
+    public void setReferenceGrantList(io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList referenceGrantList) {
         this.referenceGrantList = referenceGrantList;
-    }
-
-    @JsonProperty("ReferencePolicy")
-    public ReferencePolicy getReferencePolicy() {
-        return referencePolicy;
-    }
-
-    @JsonProperty("ReferencePolicy")
-    public void setReferencePolicy(ReferencePolicy referencePolicy) {
-        this.referencePolicy = referencePolicy;
-    }
-
-    @JsonProperty("ReferencePolicyList")
-    public ReferencePolicyList getReferencePolicyList() {
-        return referencePolicyList;
-    }
-
-    @JsonProperty("ReferencePolicyList")
-    public void setReferencePolicyList(ReferencePolicyList referencePolicyList) {
-        this.referencePolicyList = referencePolicyList;
     }
 
     @JsonProperty("TCPRoute")
@@ -408,6 +416,26 @@ public class KubeSchema {
     @JsonProperty("V1Beta1HTTPRouteList")
     public void setV1Beta1HTTPRouteList(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList v1Beta1HTTPRouteList) {
         this.v1Beta1HTTPRouteList = v1Beta1HTTPRouteList;
+    }
+
+    @JsonProperty("V1Beta1ReferenceGrant")
+    public io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant getV1Beta1ReferenceGrant() {
+        return v1Beta1ReferenceGrant;
+    }
+
+    @JsonProperty("V1Beta1ReferenceGrant")
+    public void setV1Beta1ReferenceGrant(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant v1Beta1ReferenceGrant) {
+        this.v1Beta1ReferenceGrant = v1Beta1ReferenceGrant;
+    }
+
+    @JsonProperty("V1Beta1ReferenceGrantList")
+    public io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList getV1Beta1ReferenceGrantList() {
+        return v1Beta1ReferenceGrantList;
+    }
+
+    @JsonProperty("V1Beta1ReferenceGrantList")
+    public void setV1Beta1ReferenceGrantList(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList) {
+        this.v1Beta1ReferenceGrantList = v1Beta1ReferenceGrantList;
     }
 
     @JsonAnyGetter

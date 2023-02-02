@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,17 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
@@ -33,9 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "group",
-    "name",
-    "namespace"
+    "spec"
 })
 @ToString
 @EqualsAndHashCode
@@ -45,7 +47,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -55,17 +57,32 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class SecretObjectReference implements KubernetesResource
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1beta1")
+@Group("gateway.networking.k8s.io")
+public class ReferenceGrant implements HasMetadata, Namespaced
 {
 
-    @JsonProperty("group")
-    private String group;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "gateway.networking.k8s.io/v1beta1";
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("namespace")
-    private String namespace;
+    private String kind = "ReferenceGrant";
+    @JsonProperty("metadata")
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    @JsonProperty("spec")
+    private ReferenceGrantSpec spec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -73,62 +90,82 @@ public class SecretObjectReference implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public SecretObjectReference() {
+    public ReferenceGrant() {
     }
 
     /**
      * 
+     * @param metadata
+     * @param apiVersion
      * @param kind
-     * @param name
-     * @param namespace
-     * @param group
+     * @param spec
      */
-    public SecretObjectReference(String group, String kind, String name, String namespace) {
+    public ReferenceGrant(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ReferenceGrantSpec spec) {
         super();
-        this.group = group;
+        this.apiVersion = apiVersion;
         this.kind = kind;
-        this.name = name;
-        this.namespace = namespace;
+        this.metadata = metadata;
+        this.spec = spec;
     }
 
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("metadata")
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+        return metadata;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("metadata")
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+        this.metadata = metadata;
     }
 
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
+    @JsonProperty("spec")
+    public ReferenceGrantSpec getSpec() {
+        return spec;
     }
 
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    @JsonProperty("spec")
+    public void setSpec(ReferenceGrantSpec spec) {
+        this.spec = spec;
     }
 
     @JsonAnyGetter

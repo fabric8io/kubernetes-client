@@ -14,6 +14,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -32,8 +33,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "group",
-    "name"
+    "name",
+    "type",
+    "value"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,18 +52,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class LocalObjectReference implements KubernetesResource
+public class GRPCHeaderMatch implements KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("value")
+    private String value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -69,40 +71,20 @@ public class LocalObjectReference implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public LocalObjectReference() {
+    public GRPCHeaderMatch() {
     }
 
     /**
      * 
-     * @param kind
      * @param name
-     * @param group
+     * @param type
+     * @param value
      */
-    public LocalObjectReference(String group, String kind, String name) {
+    public GRPCHeaderMatch(String name, String type, String value) {
         super();
-        this.group = group;
-        this.kind = kind;
         this.name = name;
-    }
-
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
-    }
-
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+        this.type = type;
+        this.value = value;
     }
 
     @JsonProperty("name")
@@ -113,6 +95,26 @@ public class LocalObjectReference implements KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @JsonProperty("value")
+    public String getValue() {
+        return value;
+    }
+
+    @JsonProperty("value")
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @JsonAnyGetter

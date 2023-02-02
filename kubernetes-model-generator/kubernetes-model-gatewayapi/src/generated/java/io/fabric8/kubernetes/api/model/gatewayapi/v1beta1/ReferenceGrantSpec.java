@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,9 +35,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "hostnames",
-    "parentRefs",
-    "rules"
+    "from",
+    "to"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,18 +56,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPRouteSpec implements KubernetesResource
+public class ReferenceGrantSpec implements KubernetesResource
 {
 
-    @JsonProperty("hostnames")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hostnames = new ArrayList<String>();
-    @JsonProperty("parentRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
-    @JsonProperty("rules")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteRule> rules = new ArrayList<HTTPRouteRule>();
+    @JsonProperty("from")
+    private List<ReferenceGrantFrom> from = new ArrayList<ReferenceGrantFrom>();
+    @JsonProperty("to")
+    private List<ReferenceGrantTo> to = new ArrayList<ReferenceGrantTo>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -76,50 +70,38 @@ public class HTTPRouteSpec implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRouteSpec() {
+    public ReferenceGrantSpec() {
     }
 
     /**
      * 
-     * @param parentRefs
-     * @param hostnames
-     * @param rules
+     * @param from
+     * @param to
      */
-    public HTTPRouteSpec(List<String> hostnames, List<ParentReference> parentRefs, List<HTTPRouteRule> rules) {
+    public ReferenceGrantSpec(List<ReferenceGrantFrom> from, List<ReferenceGrantTo> to) {
         super();
-        this.hostnames = hostnames;
-        this.parentRefs = parentRefs;
-        this.rules = rules;
+        this.from = from;
+        this.to = to;
     }
 
-    @JsonProperty("hostnames")
-    public List<String> getHostnames() {
-        return hostnames;
+    @JsonProperty("from")
+    public List<ReferenceGrantFrom> getFrom() {
+        return from;
     }
 
-    @JsonProperty("hostnames")
-    public void setHostnames(List<String> hostnames) {
-        this.hostnames = hostnames;
+    @JsonProperty("from")
+    public void setFrom(List<ReferenceGrantFrom> from) {
+        this.from = from;
     }
 
-    @JsonProperty("parentRefs")
-    public List<ParentReference> getParentRefs() {
-        return parentRefs;
+    @JsonProperty("to")
+    public List<ReferenceGrantTo> getTo() {
+        return to;
     }
 
-    @JsonProperty("parentRefs")
-    public void setParentRefs(List<ParentReference> parentRefs) {
-        this.parentRefs = parentRefs;
-    }
-
-    @JsonProperty("rules")
-    public List<HTTPRouteRule> getRules() {
-        return rules;
-    }
-
-    @JsonProperty("rules")
-    public void setRules(List<HTTPRouteRule> rules) {
-        this.rules = rules;
+    @JsonProperty("to")
+    public void setTo(List<ReferenceGrantTo> to) {
+        this.to = to;
     }
 
     @JsonAnyGetter
