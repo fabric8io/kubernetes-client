@@ -111,7 +111,7 @@ class AbstractWatchManagerTest {
   void nextReconnectInterval() throws MalformedURLException {
     // Given
     final WatchManager<HasMetadata> awm = new WatchManager<>(
-        null, mock(ListOptions.class), 0, 10, 5);
+        null, mock(ListOptions.class), 0, 10);
     // When-Then
     assertThat(awm.nextReconnectInterval()).isEqualTo(10);
     assertThat(awm.nextReconnectInterval()).isEqualTo(20);
@@ -161,7 +161,7 @@ class AbstractWatchManagerTest {
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     CompletableFuture<Void> done = new CompletableFuture<Void>();
     final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
-        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0) {
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
 
       boolean first = true;
 
@@ -217,7 +217,7 @@ class AbstractWatchManagerTest {
   private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher)
       throws MalformedURLException {
     return new WatchManager<>(
-        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0);
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0);
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
@@ -242,9 +242,9 @@ class AbstractWatchManagerTest {
 
     private final AtomicInteger closeCount = new AtomicInteger(0);
 
-    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval,
-        int maxIntervalExponent) throws MalformedURLException {
-      super(watcher, Mockito.mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
+        throws MalformedURLException {
+      super(watcher, Mockito.mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval,
           () -> null);
     }
 

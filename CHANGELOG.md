@@ -17,6 +17,7 @@
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 * Fix #4644: generate CRDs in parallel and optimize code
 * Fix #4795: don't print warning message when service account token property is unset
+* Fix #4788: moved retry logic into the standard client so that it applies to all requests, including websockets
 
 #### Dependency Upgrade
 * Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0

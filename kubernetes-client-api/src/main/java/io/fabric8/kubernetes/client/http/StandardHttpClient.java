@@ -16,18 +16,30 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient {
+
+  private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
 
   protected StandardHttpClientBuilder<C, F, T> builder;
 
@@ -50,15 +62,27 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   @Override
   public <V> CompletableFuture<HttpResponse<V>> sendAsync(HttpRequest request, Class<V> type) {
     CompletableFuture<HttpResponse<V>> upstream = HttpResponse.SupportedResponses.from(type).sendAsync(request, this);
-    return withUpstreamCancellation(upstream, b -> {
-      if (b instanceof Closeable) {
-        Utils.closeQuietly((Closeable) b);
+    final CompletableFuture<HttpResponse<V>> result = new CompletableFuture<>();
+    upstream.whenComplete(completeOrCancel(r -> {
+      if (r.body() instanceof Closeable) {
+        Utils.closeQuietly((Closeable) r.body());
       }
-    });
+    }, result));
+    return result;
   }
 
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, Consumer<List<ByteBuffer>> consumer) {
+    CompletableFuture<HttpResponse<AsyncBody>> result = new CompletableFuture<>();
+
+    retryWithExponentialBackoff(result, () -> consumeBytesOnce(request, consumer), request.uri(), r -> r.code(),
+        r -> r.body().cancel(),
+        null);
+    return result;
+  }
+
+  private CompletableFuture<HttpResponse<AsyncBody>> consumeBytesOnce(HttpRequest request,
+      Consumer<List<ByteBuffer>> consumer) {
     StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
     StandardHttpRequest.Builder copy = standardHttpRequest.newBuilder();
     for (Interceptor interceptor : builder.getInterceptors().values()) {
@@ -85,24 +109,69 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         return CompletableFuture.completedFuture(response);
       });
     }
-
-    return withUpstreamCancellation(cf, AsyncBody::cancel);
+    return cf;
   }
 
-  static <V> CompletableFuture<HttpResponse<V>> withUpstreamCancellation(CompletableFuture<HttpResponse<V>> cf,
-      java.util.function.Consumer<V> cancel) {
-    final CompletableFuture<HttpResponse<V>> result = new CompletableFuture<>();
-    cf.whenComplete((r, t) -> {
+  private static <V> BiConsumer<? super V, ? super Throwable> completeOrCancel(java.util.function.Consumer<V> cancel,
+      final CompletableFuture<V> result) {
+    return (r, t) -> {
       if (t != null) {
         result.completeExceptionally(t);
       } else {
-        // if already completed, take responsibility to proactively close
         if (!result.complete(r)) {
-          cancel.accept(r.body());
+          cancel.accept(r);
         }
       }
-    });
-    return result;
+    };
+  }
+
+  /**
+   * Will retry the action if needed based upon the retry settings. A calculator will be created on the first
+   * call and passed to subsequent retries to keep track of the attempts.
+   */
+  protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
+      Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
+      java.util.function.Consumer<V> cancel, ExponentialBackoffIntervalCalculator retryIntervalCalculator) {
+
+    if (retryIntervalCalculator == null) {
+      Config requestConfig = this.builder.getRequestConfig();
+      int requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
+      int requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+      if (requestConfig != null) {
+        requestRetryBackoffInterval = requestConfig.getRequestRetryBackoffInterval();
+        requestRetryBackoffLimit = requestConfig.getRequestRetryBackoffLimit();
+      }
+      retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, requestRetryBackoffLimit);
+    }
+
+    final ExponentialBackoffIntervalCalculator backoff = retryIntervalCalculator;
+    action.get()
+        .whenComplete((response, throwable) -> {
+          if (backoff.shouldRetry() && !result.isDone()) {
+            long retryInterval = backoff.nextReconnectInterval();
+            boolean retry = false;
+            if (response != null) {
+              Integer code = codeExtractor.apply(response);
+              if (code != null && code >= 500) {
+                LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+                    uri, code, retryInterval);
+                retry = true;
+              }
+            } else if (throwable instanceof IOException) {
+              LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
+                  uri, retryInterval), throwable);
+              retry = true;
+            }
+            if (retry) {
+              Utils.schedule(Runnable::run,
+                  () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, backoff),
+                  retryInterval,
+                  TimeUnit.MILLISECONDS);
+              return;
+            }
+          }
+          completeOrCancel(cancel, result).accept(response, throwable);
+        });
   }
 
   @Override
@@ -119,6 +188,29 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   final CompletableFuture<WebSocket> buildWebSocket(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
 
+    CompletableFuture<WebSocketResponse> intermediate = new CompletableFuture<>();
+
+    retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
+        standardWebSocketBuilder.asHttpRequest().uri(),
+        r -> Optional.ofNullable(r.wshse).map(WebSocketHandshakeException::getResponse).map(HttpResponse::code).orElse(null),
+        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)),
+        null);
+
+    CompletableFuture<WebSocket> result = new CompletableFuture<>();
+
+    // map to a websocket
+    intermediate.whenComplete((r, t) -> {
+      if (t != null) {
+        result.completeExceptionally(t);
+      } else {
+        completeOrCancel(w -> w.sendClose(1000, null), result).accept(r.webSocket, r.wshse);
+      }
+    });
+    return result;
+  }
+
+  private CompletableFuture<WebSocketResponse> buildWebSocketOnce(StandardWebSocketBuilder standardWebSocketBuilder,
+      Listener listener) {
     final StandardWebSocketBuilder copy = standardWebSocketBuilder.newBuilder();
     builder.getInterceptors().values().stream().map(Interceptor.useConfig(builder.requestConfig))
         .forEach(i -> i.before(copy, copy.asHttpRequest()));
@@ -138,32 +230,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         return CompletableFuture.completedFuture(response);
       });
     }
-
-    final CompletableFuture<WebSocket> result = new CompletableFuture<>();
-    // map back to the expected convention with the future completed by the response exception
-    cf.whenComplete(onWebSocketComplete(result));
-    return result;
-
-  }
-
-  private static BiConsumer<WebSocketResponse, Throwable> onWebSocketComplete(CompletableFuture<WebSocket> result) {
-    return (r, t) -> {
-      if (t != null) {
-        result.completeExceptionally(t);
-      } else if (r != null) {
-        if (r.wshse != null) {
-          result.completeExceptionally(r.wshse);
-        } else {
-          // if already completed, take responsibility to proactively close
-          if (!result.complete(r.webSocket)) {
-            r.webSocket.sendClose(1000, null);
-          }
-        }
-      } else {
-        // shouldn't happen
-        result.complete(null);
-      }
-    };
+    return cf;
   }
 
 }
