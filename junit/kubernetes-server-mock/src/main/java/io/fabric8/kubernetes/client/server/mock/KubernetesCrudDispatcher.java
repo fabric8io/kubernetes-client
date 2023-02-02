@@ -181,7 +181,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   public MockResponse handleDelete(String path) {
     return handle(path, (p, pathAttributes, oldAttributes) -> {
       String jsonStringOfResource = map.get(oldAttributes);
-      // TODO: The serialization and deserialization is most likely an unnecessary overhead.
+      /* Potential performance improvement: The resource is unmarshalled and marshalled in other places (e.g., when creating a WatchEvent later).
+           This could be avoided by storing the unmarshalled object (instead of a String) in the map. */
       final GenericKubernetesResource resource = Serialization.unmarshal(jsonStringOfResource, GenericKubernetesResource.class);
       if (resource.getFinalizers().isEmpty()) {
         // No finalizers left, actually remove the resource.
