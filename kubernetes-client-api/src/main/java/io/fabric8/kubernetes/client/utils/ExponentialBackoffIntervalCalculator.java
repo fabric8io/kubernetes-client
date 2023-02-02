@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.internal;
+package io.fabric8.kubernetes.client.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +24,20 @@ public class ExponentialBackoffIntervalCalculator {
 
   private static final Logger logger = LoggerFactory.getLogger(ExponentialBackoffIntervalCalculator.class);
 
+  private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
+
+  public static final int UNLIMITED_RETRIES = -1;
+
   private final int initialInterval;
-  private final int maxRetryIntervalExponent;
+  // we were using the same default in multiple places, so it has been moved here for now
+  // other calculators express this as max wait
+  private final int maxRetryIntervalExponent = MAX_RETRY_INTERVAL_EXPONENT;
+  private final int maxRetries;
   final AtomicInteger currentReconnectAttempt = new AtomicInteger();
 
-  public ExponentialBackoffIntervalCalculator(int initialInterval, int maxRetryIntervalExponent) {
+  public ExponentialBackoffIntervalCalculator(int initialInterval, int maxRetries) {
     this.initialInterval = initialInterval;
-    this.maxRetryIntervalExponent = maxRetryIntervalExponent;
+    this.maxRetries = maxRetries;
   }
 
   public long getInterval(int retryIndex) {
@@ -54,6 +61,10 @@ public class ExponentialBackoffIntervalCalculator {
 
   public int getCurrentReconnectAttempt() {
     return currentReconnectAttempt.get();
+  }
+
+  public boolean shouldRetry() {
+    return maxRetries < 0 || currentReconnectAttempt.get() < maxRetries;
   }
 
 }

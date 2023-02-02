@@ -29,9 +29,9 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,10 +68,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   AbstractWatchManager(
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
-      int reconnectInterval, int maxIntervalExponent, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
+      int reconnectInterval, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
-    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
+    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, reconnectLimit);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.forceClosed = new AtomicBoolean();
     this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
