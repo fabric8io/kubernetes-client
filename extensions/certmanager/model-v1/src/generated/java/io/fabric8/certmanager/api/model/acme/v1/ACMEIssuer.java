@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "caBundle",
     "disableAccountKeyGeneration",
     "email",
     "enableDurationFeature",
@@ -75,6 +76,9 @@ import lombok.experimental.Accessors;
 public class ACMEIssuer implements KubernetesResource
 {
 
+    @JsonProperty("caBundle")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String caBundle;
     @JsonProperty("disableAccountKeyGeneration")
     private Boolean disableAccountKeyGeneration;
     @JsonProperty("email")
@@ -109,6 +113,7 @@ public class ACMEIssuer implements KubernetesResource
      * @param disableAccountKeyGeneration
      * @param privateKeySecretRef
      * @param server
+     * @param caBundle
      * @param skipTLSVerify
      * @param enableDurationFeature
      * @param externalAccountBinding
@@ -116,8 +121,9 @@ public class ACMEIssuer implements KubernetesResource
      * @param email
      * @param solvers
      */
-    public ACMEIssuer(Boolean disableAccountKeyGeneration, String email, Boolean enableDurationFeature, ACMEExternalAccountBinding externalAccountBinding, String preferredChain, SecretKeySelector privateKeySecretRef, String server, Boolean skipTLSVerify, List<ACMEChallengeSolver> solvers) {
+    public ACMEIssuer(String caBundle, Boolean disableAccountKeyGeneration, String email, Boolean enableDurationFeature, ACMEExternalAccountBinding externalAccountBinding, String preferredChain, SecretKeySelector privateKeySecretRef, String server, Boolean skipTLSVerify, List<ACMEChallengeSolver> solvers) {
         super();
+        this.caBundle = caBundle;
         this.disableAccountKeyGeneration = disableAccountKeyGeneration;
         this.email = email;
         this.enableDurationFeature = enableDurationFeature;
@@ -127,6 +133,16 @@ public class ACMEIssuer implements KubernetesResource
         this.server = server;
         this.skipTLSVerify = skipTLSVerify;
         this.solvers = solvers;
+    }
+
+    @JsonProperty("caBundle")
+    public String getCaBundle() {
+        return caBundle;
+    }
+
+    @JsonProperty("caBundle")
+    public void setCaBundle(String caBundle) {
+        this.caBundle = caBundle;
     }
 
     @JsonProperty("disableAccountKeyGeneration")
