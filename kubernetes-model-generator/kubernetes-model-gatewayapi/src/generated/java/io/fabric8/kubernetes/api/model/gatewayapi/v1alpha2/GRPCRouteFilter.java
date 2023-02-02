@@ -14,12 +14,13 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestMirrorFilter;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -33,8 +34,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "type",
-    "value"
+    "extensionRef",
+    "requestHeaderModifier",
+    "requestMirror",
+    "responseHeaderModifier",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -51,16 +55,22 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPPathMatch implements KubernetesResource
+public class GRPCRouteFilter implements KubernetesResource
 {
 
+    @JsonProperty("extensionRef")
+    private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef;
+    @JsonProperty("requestHeaderModifier")
+    private HTTPHeaderFilter requestHeaderModifier;
+    @JsonProperty("requestMirror")
+    private HTTPRequestMirrorFilter requestMirror;
+    @JsonProperty("responseHeaderModifier")
+    private HTTPHeaderFilter responseHeaderModifier;
     @JsonProperty("type")
     private String type;
-    @JsonProperty("value")
-    private String value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -68,18 +78,64 @@ public class HTTPPathMatch implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPPathMatch() {
+    public GRPCRouteFilter() {
     }
 
     /**
      * 
+     * @param requestMirror
+     * @param requestHeaderModifier
+     * @param responseHeaderModifier
      * @param type
-     * @param value
+     * @param extensionRef
      */
-    public HTTPPathMatch(String type, String value) {
+    public GRPCRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPHeaderFilter responseHeaderModifier, String type) {
         super();
+        this.extensionRef = extensionRef;
+        this.requestHeaderModifier = requestHeaderModifier;
+        this.requestMirror = requestMirror;
+        this.responseHeaderModifier = responseHeaderModifier;
         this.type = type;
-        this.value = value;
+    }
+
+    @JsonProperty("extensionRef")
+    public io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference getExtensionRef() {
+        return extensionRef;
+    }
+
+    @JsonProperty("extensionRef")
+    public void setExtensionRef(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef) {
+        this.extensionRef = extensionRef;
+    }
+
+    @JsonProperty("requestHeaderModifier")
+    public HTTPHeaderFilter getRequestHeaderModifier() {
+        return requestHeaderModifier;
+    }
+
+    @JsonProperty("requestHeaderModifier")
+    public void setRequestHeaderModifier(HTTPHeaderFilter requestHeaderModifier) {
+        this.requestHeaderModifier = requestHeaderModifier;
+    }
+
+    @JsonProperty("requestMirror")
+    public HTTPRequestMirrorFilter getRequestMirror() {
+        return requestMirror;
+    }
+
+    @JsonProperty("requestMirror")
+    public void setRequestMirror(HTTPRequestMirrorFilter requestMirror) {
+        this.requestMirror = requestMirror;
+    }
+
+    @JsonProperty("responseHeaderModifier")
+    public HTTPHeaderFilter getResponseHeaderModifier() {
+        return responseHeaderModifier;
+    }
+
+    @JsonProperty("responseHeaderModifier")
+    public void setResponseHeaderModifier(HTTPHeaderFilter responseHeaderModifier) {
+        this.responseHeaderModifier = responseHeaderModifier;
     }
 
     @JsonProperty("type")
@@ -90,16 +146,6 @@ public class HTTPPathMatch implements KubernetesResource
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
-    }
-
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
-    }
-
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
     }
 
     @JsonAnyGetter

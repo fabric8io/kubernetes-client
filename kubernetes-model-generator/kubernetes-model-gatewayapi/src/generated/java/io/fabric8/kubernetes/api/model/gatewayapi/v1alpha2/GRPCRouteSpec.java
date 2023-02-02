@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -35,10 +36,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "headers",
-    "method",
-    "path",
-    "queryParams"
+    "hostnames",
+    "parentRefs",
+    "rules"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,19 +58,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPRouteMatch implements KubernetesResource
+public class GRPCRouteSpec implements KubernetesResource
 {
 
-    @JsonProperty("headers")
+    @JsonProperty("hostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeaderMatch> headers = new ArrayList<HTTPHeaderMatch>();
-    @JsonProperty("method")
-    private String method;
-    @JsonProperty("path")
-    private HTTPPathMatch path;
-    @JsonProperty("queryParams")
+    private List<String> hostnames = new ArrayList<String>();
+    @JsonProperty("parentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPQueryParamMatch> queryParams = new ArrayList<HTTPQueryParamMatch>();
+    private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
+    @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GRPCRouteRule> rules = new ArrayList<GRPCRouteRule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -78,62 +77,50 @@ public class HTTPRouteMatch implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRouteMatch() {
+    public GRPCRouteSpec() {
     }
 
     /**
      * 
-     * @param headers
-     * @param path
-     * @param method
-     * @param queryParams
+     * @param parentRefs
+     * @param hostnames
+     * @param rules
      */
-    public HTTPRouteMatch(List<HTTPHeaderMatch> headers, String method, HTTPPathMatch path, List<HTTPQueryParamMatch> queryParams) {
+    public GRPCRouteSpec(List<String> hostnames, List<ParentReference> parentRefs, List<GRPCRouteRule> rules) {
         super();
-        this.headers = headers;
-        this.method = method;
-        this.path = path;
-        this.queryParams = queryParams;
+        this.hostnames = hostnames;
+        this.parentRefs = parentRefs;
+        this.rules = rules;
     }
 
-    @JsonProperty("headers")
-    public List<HTTPHeaderMatch> getHeaders() {
-        return headers;
+    @JsonProperty("hostnames")
+    public List<String> getHostnames() {
+        return hostnames;
     }
 
-    @JsonProperty("headers")
-    public void setHeaders(List<HTTPHeaderMatch> headers) {
-        this.headers = headers;
+    @JsonProperty("hostnames")
+    public void setHostnames(List<String> hostnames) {
+        this.hostnames = hostnames;
     }
 
-    @JsonProperty("method")
-    public String getMethod() {
-        return method;
+    @JsonProperty("parentRefs")
+    public List<ParentReference> getParentRefs() {
+        return parentRefs;
     }
 
-    @JsonProperty("method")
-    public void setMethod(String method) {
-        this.method = method;
+    @JsonProperty("parentRefs")
+    public void setParentRefs(List<ParentReference> parentRefs) {
+        this.parentRefs = parentRefs;
     }
 
-    @JsonProperty("path")
-    public HTTPPathMatch getPath() {
-        return path;
+    @JsonProperty("rules")
+    public List<GRPCRouteRule> getRules() {
+        return rules;
     }
 
-    @JsonProperty("path")
-    public void setPath(HTTPPathMatch path) {
-        this.path = path;
-    }
-
-    @JsonProperty("queryParams")
-    public List<HTTPQueryParamMatch> getQueryParams() {
-        return queryParams;
-    }
-
-    @JsonProperty("queryParams")
-    public void setQueryParams(List<HTTPQueryParamMatch> queryParams) {
-        this.queryParams = queryParams;
+    @JsonProperty("rules")
+    public void setRules(List<GRPCRouteRule> rules) {
+        this.rules = rules;
     }
 
     @JsonAnyGetter

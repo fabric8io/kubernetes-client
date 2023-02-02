@@ -1,9 +1,7 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -35,9 +33,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "addresses",
-    "gatewayClassName",
-    "listeners"
+    "method",
+    "service",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,16 +55,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class GatewaySpec implements KubernetesResource
+public class GRPCMethodMatch implements KubernetesResource
 {
 
-    @JsonProperty("addresses")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GatewayAddress> addresses = new ArrayList<GatewayAddress>();
-    @JsonProperty("gatewayClassName")
-    private String gatewayClassName;
-    @JsonProperty("listeners")
-    private List<Listener> listeners = new ArrayList<Listener>();
+    @JsonProperty("method")
+    private String method;
+    @JsonProperty("service")
+    private String service;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -74,50 +71,50 @@ public class GatewaySpec implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public GatewaySpec() {
+    public GRPCMethodMatch() {
     }
 
     /**
      * 
-     * @param addresses
-     * @param listeners
-     * @param gatewayClassName
+     * @param method
+     * @param service
+     * @param type
      */
-    public GatewaySpec(List<GatewayAddress> addresses, String gatewayClassName, List<Listener> listeners) {
+    public GRPCMethodMatch(String method, String service, String type) {
         super();
-        this.addresses = addresses;
-        this.gatewayClassName = gatewayClassName;
-        this.listeners = listeners;
+        this.method = method;
+        this.service = service;
+        this.type = type;
     }
 
-    @JsonProperty("addresses")
-    public List<GatewayAddress> getAddresses() {
-        return addresses;
+    @JsonProperty("method")
+    public String getMethod() {
+        return method;
     }
 
-    @JsonProperty("addresses")
-    public void setAddresses(List<GatewayAddress> addresses) {
-        this.addresses = addresses;
+    @JsonProperty("method")
+    public void setMethod(String method) {
+        this.method = method;
     }
 
-    @JsonProperty("gatewayClassName")
-    public String getGatewayClassName() {
-        return gatewayClassName;
+    @JsonProperty("service")
+    public String getService() {
+        return service;
     }
 
-    @JsonProperty("gatewayClassName")
-    public void setGatewayClassName(String gatewayClassName) {
-        this.gatewayClassName = gatewayClassName;
+    @JsonProperty("service")
+    public void setService(String service) {
+        this.service = service;
     }
 
-    @JsonProperty("listeners")
-    public List<Listener> getListeners() {
-        return listeners;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("listeners")
-    public void setListeners(List<Listener> listeners) {
-        this.listeners = listeners;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonAnyGetter

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -36,10 +35,12 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "attachedRoutes",
-    "conditions",
+    "filters",
+    "group",
     "name",
-    "supportedKinds"
+    "namespace",
+    "port",
+    "weight"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,17 +60,29 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class ListenerStatus implements KubernetesResource
+public class GRPCBackendRef implements KubernetesResource
 {
 
-    @JsonProperty("attachedRoutes")
-    private Integer attachedRoutes;
-    @JsonProperty("conditions")
-    private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GRPCRouteFilter> filters = new ArrayList<GRPCRouteFilter>();
+    @JsonProperty("group")
+    private String group;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "GRPCBackendRef";
     @JsonProperty("name")
     private String name;
-    @JsonProperty("supportedKinds")
-    private List<RouteGroupKind> supportedKinds = new ArrayList<RouteGroupKind>();
+    @JsonProperty("namespace")
+    private String namespace;
+    @JsonProperty("port")
+    private Integer port;
+    @JsonProperty("weight")
+    private Integer weight;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -77,42 +90,68 @@ public class ListenerStatus implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public ListenerStatus() {
+    public GRPCBackendRef() {
     }
 
     /**
      * 
-     * @param supportedKinds
-     * @param attachedRoutes
+     * @param port
+     * @param kind
      * @param name
-     * @param conditions
+     * @param namespace
+     * @param weight
+     * @param filters
+     * @param group
      */
-    public ListenerStatus(Integer attachedRoutes, List<Condition> conditions, String name, List<RouteGroupKind> supportedKinds) {
+    public GRPCBackendRef(List<GRPCRouteFilter> filters, String group, String kind, String name, String namespace, Integer port, Integer weight) {
         super();
-        this.attachedRoutes = attachedRoutes;
-        this.conditions = conditions;
+        this.filters = filters;
+        this.group = group;
+        this.kind = kind;
         this.name = name;
-        this.supportedKinds = supportedKinds;
+        this.namespace = namespace;
+        this.port = port;
+        this.weight = weight;
     }
 
-    @JsonProperty("attachedRoutes")
-    public Integer getAttachedRoutes() {
-        return attachedRoutes;
+    @JsonProperty("filters")
+    public List<GRPCRouteFilter> getFilters() {
+        return filters;
     }
 
-    @JsonProperty("attachedRoutes")
-    public void setAttachedRoutes(Integer attachedRoutes) {
-        this.attachedRoutes = attachedRoutes;
+    @JsonProperty("filters")
+    public void setFilters(List<GRPCRouteFilter> filters) {
+        this.filters = filters;
     }
 
-    @JsonProperty("conditions")
-    public List<Condition> getConditions() {
-        return conditions;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     @JsonProperty("name")
@@ -125,14 +164,34 @@ public class ListenerStatus implements KubernetesResource
         this.name = name;
     }
 
-    @JsonProperty("supportedKinds")
-    public List<RouteGroupKind> getSupportedKinds() {
-        return supportedKinds;
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
     }
 
-    @JsonProperty("supportedKinds")
-    public void setSupportedKinds(List<RouteGroupKind> supportedKinds) {
-        this.supportedKinds = supportedKinds;
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    @JsonProperty("weight")
+    public Integer getWeight() {
+        return weight;
+    }
+
+    @JsonProperty("weight")
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 
     @JsonAnyGetter

@@ -285,62 +285,23 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_sigs_gatewayapi_v1alpha2_AllowedRoutes": {
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCBackendRef": {
       "type": "object",
       "properties": {
-        "kinds": {
+        "filters": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteGroupKind",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteGroupKind"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteFilter",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteFilter"
           }
         },
-        "namespaces": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteNamespaces",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteNamespaces"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.AllowedRoutes",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_BackendObjectReference": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendObjectReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_BackendRef": {
-      "type": "object",
-      "properties": {
         "group": {
           "type": "string"
         },
         "kind": {
           "type": "string",
-          "default": "BackendRef",
+          "default": "GRPCBackendRef",
           "required": true
         },
         "name": {
@@ -357,25 +318,245 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef",
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCBackendRef",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_sigs_gatewayapi_v1alpha2_CommonRouteSpec": {
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCHeaderMatch": {
       "type": "object",
       "properties": {
-        "parentRefs": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCHeaderMatch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCMethodMatch": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCMethodMatch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRoute": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "gateway.networking.k8s.io/v1alpha2",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "GRPCRoute",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteFilter": {
+      "type": "object",
+      "properties": {
+        "extensionRef": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference"
+        },
+        "requestHeaderModifier": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
+        },
+        "requestMirror": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestMirrorFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestMirrorFilter"
+        },
+        "responseHeaderModifier": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteFilter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "gateway.networking.k8s.io/v1alpha2",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRoute",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "GRPCRouteList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute\u003e"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteMatch": {
+      "type": "object",
+      "properties": {
+        "headers": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCHeaderMatch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCHeaderMatch"
+          }
+        },
+        "method": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCMethodMatch",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCMethodMatch"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteMatch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteRule": {
+      "type": "object",
+      "properties": {
+        "backendRefs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCBackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCBackendRef"
+          }
+        },
+        "filters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteFilter",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteFilter"
+          }
+        },
+        "matches": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteMatch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteMatch"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.CommonRouteSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteSpec": {
+      "type": "object",
+      "properties": {
+        "hostnames": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentRefs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteRule"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteStatus": {
+      "type": "object",
+      "properties": {
+        "parents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -398,12 +579,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewaySpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewaySpec"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewaySpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewaySpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayStatus"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayStatus"
         }
       },
       "additionalProperties": true,
@@ -411,22 +592,6 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_GatewayAddress": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayAddress",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_sigs_gatewayapi_v1alpha2_GatewayClass": {
@@ -447,12 +612,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayClassSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassSpec"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayClassSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClassSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayClassStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassStatus"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayClassStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClassStatus"
         }
       },
       "additionalProperties": true,
@@ -493,44 +658,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass\u003e"
       ]
     },
-    "kubernetes_sigs_gatewayapi_v1alpha2_GatewayClassSpec": {
-      "type": "object",
-      "properties": {
-        "controllerName": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "parametersRef": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParametersReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParametersReference"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_GatewayClassStatus": {
-      "type": "object",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_sigs_gatewayapi_v1alpha2_GatewayList": {
       "type": "object",
       "properties": {
@@ -563,296 +690,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway\u003e"
       ]
     },
-    "kubernetes_sigs_gatewayapi_v1alpha2_GatewaySpec": {
-      "type": "object",
-      "properties": {
-        "addresses": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayAddress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayAddress"
-          }
-        },
-        "gatewayClassName": {
-          "type": "string"
-        },
-        "listeners": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_Listener",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Listener"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewaySpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_GatewayStatus": {
-      "type": "object",
-      "properties": {
-        "addresses": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayAddress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayAddress"
-          }
-        },
-        "conditions": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
-          }
-        },
-        "listeners": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ListenerStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ListenerStatus"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_GatewayTLSConfig": {
-      "type": "object",
-      "properties": {
-        "certificateRefs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_SecretObjectReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.SecretObjectReference"
-          }
-        },
-        "mode": {
-          "type": "string"
-        },
-        "options": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayTLSConfig",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPBackendRef": {
-      "type": "object",
-      "properties": {
-        "filters": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteFilter",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteFilter"
-          }
-        },
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string",
-          "default": "HTTPBackendRef",
-          "required": true
-        },
-        "name": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer"
-        },
-        "weight": {
-          "type": "integer"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPBackendRef",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPHeader": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPHeader",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPHeaderMatch": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPHeaderMatch",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathMatch": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathMatch",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathModifier": {
-      "type": "object",
-      "properties": {
-        "replaceFullPath": {
-          "type": "string"
-        },
-        "replacePrefixMatch": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathModifier",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPQueryParamMatch": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPQueryParamMatch",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRequestHeaderFilter": {
-      "type": "object",
-      "properties": {
-        "add": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPHeader",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPHeader"
-          }
-        },
-        "remove": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "set": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPHeader",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPHeader"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRequestHeaderFilter",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRequestMirrorFilter": {
-      "type": "object",
-      "properties": {
-        "backendRef": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendObjectReference"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRequestMirrorFilter",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRequestRedirectFilter": {
-      "type": "object",
-      "properties": {
-        "hostname": {
-          "type": "string"
-        },
-        "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathModifier",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathModifier"
-        },
-        "port": {
-          "type": "integer"
-        },
-        "scheme": {
-          "type": "string"
-        },
-        "statusCode": {
-          "type": "integer"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRequestRedirectFilter",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRoute": {
       "type": "object",
       "properties": {
@@ -871,12 +708,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteSpec"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRouteSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteStatus"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRouteStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteStatus"
         }
       },
       "additionalProperties": true,
@@ -884,39 +721,6 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteFilter": {
-      "type": "object",
-      "properties": {
-        "extensionRef": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_LocalObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.LocalObjectReference"
-        },
-        "requestHeaderModifier": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRequestHeaderFilter",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRequestHeaderFilter"
-        },
-        "requestMirror": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRequestMirrorFilter",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRequestMirrorFilter"
-        },
-        "requestRedirect": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRequestRedirectFilter",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRequestRedirectFilter"
-        },
-        "type": {
-          "type": "string"
-        },
-        "urlRewrite": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPURLRewriteFilter",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPURLRewriteFilter"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteFilter",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteList": {
@@ -951,269 +755,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute\u003e"
       ]
     },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteMatch": {
-      "type": "object",
-      "properties": {
-        "headers": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPHeaderMatch",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPHeaderMatch"
-          }
-        },
-        "method": {
-          "type": "string"
-        },
-        "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathMatch",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathMatch"
-        },
-        "queryParams": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPQueryParamMatch",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPQueryParamMatch"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteMatch",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteRule": {
-      "type": "object",
-      "properties": {
-        "backendRefs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPBackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPBackendRef"
-          }
-        },
-        "filters": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteFilter",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteFilter"
-          }
-        },
-        "matches": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteMatch",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteMatch"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteRule",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteSpec": {
-      "type": "object",
-      "properties": {
-        "hostnames": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "parentRefs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
-          }
-        },
-        "rules": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteRule",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteRule"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteStatus": {
-      "type": "object",
-      "properties": {
-        "parents": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_HTTPURLRewriteFilter": {
-      "type": "object",
-      "properties": {
-        "hostname": {
-          "type": "string"
-        },
-        "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathModifier",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathModifier"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPURLRewriteFilter",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_Listener": {
-      "type": "object",
-      "properties": {
-        "allowedRoutes": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_AllowedRoutes",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.AllowedRoutes"
-        },
-        "hostname": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer"
-        },
-        "protocol": {
-          "type": "string"
-        },
-        "tls": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayTLSConfig",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayTLSConfig"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Listener",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ListenerStatus": {
-      "type": "object",
-      "properties": {
-        "attachedRoutes": {
-          "type": "integer"
-        },
-        "conditions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
-          }
-        },
-        "name": {
-          "type": "string"
-        },
-        "supportedKinds": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteGroupKind",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteGroupKind"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ListenerStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_LocalObjectReference": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.LocalObjectReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ParametersReference": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParametersReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ParentReference": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer"
-        },
-        "sectionName": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrant": {
       "type": "object",
       "properties": {
@@ -1232,8 +773,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantSpec"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantSpec"
         }
       },
       "additionalProperties": true,
@@ -1241,25 +782,6 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantFrom": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantFrom",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantList": {
@@ -1292,207 +814,6 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant\u003e"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantSpec": {
-      "type": "object",
-      "properties": {
-        "from": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantFrom",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantFrom"
-          }
-        },
-        "to": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantTo",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantTo"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantTo": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantTo",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ReferencePolicy": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "default": "ReferencePolicy",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantSpec"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicy",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_ReferencePolicyList": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferencePolicy",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicy"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "default": "ReferencePolicyList",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicyList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicy\u003e"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_RouteGroupKind": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteGroupKind",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_RouteNamespaces": {
-      "type": "object",
-      "properties": {
-        "from": {
-          "type": "string"
-        },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteNamespaces",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus": {
-      "type": "object",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
-          }
-        },
-        "controllerName": {
-          "type": "string"
-        },
-        "parentRef": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_RouteStatus": {
-      "type": "object",
-      "properties": {
-        "parents": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1alpha2_SecretObjectReference": {
-      "type": "object",
-      "properties": {
-        "group": {
-          "type": "string"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.SecretObjectReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_sigs_gatewayapi_v1alpha2_TCPRoute": {
@@ -1567,8 +888,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendRef"
           }
         }
       },
@@ -1585,8 +906,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "rules": {
@@ -1609,8 +930,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },
@@ -1692,8 +1013,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendRef"
           }
         }
       },
@@ -1717,8 +1038,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "rules": {
@@ -1741,8 +1062,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },
@@ -1824,8 +1145,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendRef"
           }
         }
       },
@@ -1842,8 +1163,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "rules": {
@@ -1866,8 +1187,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },
@@ -2299,6 +1620,39 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter": {
+      "type": "object",
+      "properties": {
+        "add": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
+          }
+        },
+        "remove": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "set": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderMatch": {
       "type": "object",
       "properties": {
@@ -2368,39 +1722,6 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPQueryParamMatch",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestHeaderFilter": {
-      "type": "object",
-      "properties": {
-        "add": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
-          }
-        },
-        "remove": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "set": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestHeaderFilter",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2486,8 +1807,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference"
         },
         "requestHeaderModifier": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestHeaderFilter",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestHeaderFilter"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
         },
         "requestMirror": {
           "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestMirrorFilter",
@@ -2496,6 +1817,10 @@
         "requestRedirect": {
           "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestRedirectFilter",
           "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestRedirectFilter"
+        },
+        "responseHeaderModifier": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
         },
         "type": {
           "type": "string"
@@ -2806,6 +2131,129 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrant": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "gateway.networking.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ReferenceGrant",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantFrom": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantFrom",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "gateway.networking.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrant",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ReferenceGrantList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant\u003e"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantSpec": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantFrom",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantFrom"
+          }
+        },
+        "to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantTo",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantTo"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantTo": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantTo",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_sigs_gatewayapi_v1beta1_RouteGroupKind": {
       "type": "object",
       "properties": {
@@ -2906,6 +2354,14 @@
   },
   "type": "object",
   "properties": {
+    "GRPCRoute": {
+      "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRoute",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute"
+    },
+    "GRPCRouteList": {
+      "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteList"
+    },
     "Gateway": {
       "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_Gateway",
       "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway"
@@ -2937,14 +2393,6 @@
     "ReferenceGrantList": {
       "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList"
-    },
-    "ReferencePolicy": {
-      "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferencePolicy",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicy"
-    },
-    "ReferencePolicyList": {
-      "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferencePolicyList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicyList"
     },
     "TCPRoute": {
       "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_TCPRoute",
@@ -2993,6 +2441,14 @@
     "V1Beta1HTTPRouteList": {
       "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRouteList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList"
+    },
+    "V1Beta1ReferenceGrant": {
+      "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrant",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant"
+    },
+    "V1Beta1ReferenceGrantList": {
+      "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList"
     }
   },
   "additionalProperties": true,
@@ -3065,8 +2521,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         }
       },
@@ -3169,14 +2625,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1beta1",
+          "default": "gateway.networking.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass"
           }
         },
         "kind": {
@@ -3251,8 +2707,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GatewayAddress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayAddress"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayAddress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayAddress"
           }
         },
         "gatewayClassName": {
@@ -3261,8 +2717,8 @@
         "listeners": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_Listener",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Listener"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_Listener",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Listener"
           }
         }
       },
@@ -3303,8 +2759,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_SecretObjectReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.SecretObjectReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_SecretObjectReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.SecretObjectReference"
           }
         },
         "mode": {
@@ -3316,6 +2772,230 @@
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcbackendref": {
+      "properties": {
+        "filters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteFilter",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteFilter"
+          }
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "GRPCBackendRef",
+          "required": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "weight": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcheadermatch": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcmethodmatch": {
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcroute": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "gateway.networking.k8s.io/v1alpha2",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "GRPCRoute",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcroutefilter": {
+      "properties": {
+        "extensionRef": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference"
+        },
+        "requestHeaderModifier": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
+        },
+        "requestMirror": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestMirrorFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestMirrorFilter"
+        },
+        "responseHeaderModifier": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcroutelist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "gateway.networking.k8s.io/v1alpha2",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRoute",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "GRPCRouteList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcroutematch": {
+      "properties": {
+        "headers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCHeaderMatch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCHeaderMatch"
+          }
+        },
+        "method": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCMethodMatch",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCMethodMatch"
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcrouterule": {
+      "properties": {
+        "backendRefs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCBackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCBackendRef"
+          }
+        },
+        "filters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteFilter",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteFilter"
+          }
+        },
+        "matches": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteMatch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteMatch"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcroutespec": {
+      "properties": {
+        "hostnames": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentRefs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_GRPCRouteRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteRule"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "grpcroutestatus": {
+      "properties": {
+        "parents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
+          }
         }
       },
       "additionalProperties": true
@@ -3360,6 +3040,34 @@
         },
         "value": {
           "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "httpheaderfilter": {
+      "properties": {
+        "add": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
+          }
+        },
+        "remove": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "set": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
+          }
         }
       },
       "additionalProperties": true
@@ -3417,39 +3125,11 @@
       },
       "additionalProperties": true
     },
-    "httprequestheaderfilter": {
-      "properties": {
-        "add": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
-          }
-        },
-        "remove": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "set": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeader",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeader"
-          }
-        }
-      },
-      "additionalProperties": true
-    },
     "httprequestmirrorfilter": {
       "properties": {
         "backendRef": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendObjectReference"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendObjectReference"
         }
       },
       "additionalProperties": true
@@ -3460,8 +3140,8 @@
           "type": "string"
         },
         "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathModifier",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathModifier"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPPathModifier",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPPathModifier"
         },
         "port": {
           "type": "integer"
@@ -3492,12 +3172,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteSpec"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRouteSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRouteStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteStatus"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRouteStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteStatus"
         }
       },
       "additionalProperties": true
@@ -3509,8 +3189,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference"
         },
         "requestHeaderModifier": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestHeaderFilter",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestHeaderFilter"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
         },
         "requestMirror": {
           "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestMirrorFilter",
@@ -3519,6 +3199,10 @@
         "requestRedirect": {
           "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRequestRedirectFilter",
           "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestRedirectFilter"
+        },
+        "responseHeaderModifier": {
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderFilter",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter"
         },
         "type": {
           "type": "string"
@@ -3534,14 +3218,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1beta1",
+          "default": "gateway.networking.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPRoute",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRoute",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute"
           }
         },
         "kind": {
@@ -3562,23 +3246,23 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPHeaderMatch",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPHeaderMatch"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPHeaderMatch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderMatch"
           }
         },
         "method": {
           "type": "string"
         },
         "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathMatch",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathMatch"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPPathMatch",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPPathMatch"
         },
         "queryParams": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPQueryParamMatch",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPQueryParamMatch"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPQueryParamMatch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPQueryParamMatch"
           }
         }
       },
@@ -3646,8 +3330,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },
@@ -3659,8 +3343,8 @@
           "type": "string"
         },
         "path": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPPathModifier",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPPathModifier"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_HTTPPathModifier",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPPathModifier"
         }
       },
       "additionalProperties": true
@@ -3971,8 +3655,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantSpec"
+          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantSpec"
         }
       },
       "additionalProperties": true
@@ -4022,15 +3706,15 @@
         "from": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantFrom",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantFrom"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantFrom",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantFrom"
           }
         },
         "to": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantTo",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantTo"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrantTo",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantTo"
           }
         }
       },
@@ -4046,55 +3730,6 @@
         },
         "name": {
           "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "referencepolicy": {
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "default": "ReferencePolicy",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrantSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantSpec"
-        }
-      },
-      "additionalProperties": true
-    },
-    "referencepolicylist": {
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferencePolicy",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferencePolicy"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "default": "ReferencePolicyList",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true
@@ -4230,8 +3865,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendRef"
           }
         }
       },
@@ -4243,8 +3878,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "rules": {
@@ -4262,8 +3897,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },
@@ -4336,8 +3971,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendRef"
           }
         }
       },
@@ -4356,8 +3991,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "rules": {
@@ -4375,8 +4010,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },
@@ -4452,8 +4087,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_BackendRef",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendRef"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_BackendRef",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.BackendRef"
           }
         }
       },
@@ -4465,8 +4100,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ParentReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ParentReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "rules": {
@@ -4484,8 +4119,8 @@
         "parents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_RouteParentStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.RouteParentStatus"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_RouteParentStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus"
           }
         }
       },

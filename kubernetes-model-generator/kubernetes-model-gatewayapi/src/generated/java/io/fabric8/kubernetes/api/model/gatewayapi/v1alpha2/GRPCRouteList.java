@@ -15,15 +15,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,9 +41,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "backendRefs",
-    "filters",
-    "matches"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,18 +61,32 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPRouteRule implements KubernetesResource
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1alpha2")
+@Group("gateway.networking.k8s.io")
+public class GRPCRouteList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute>
 {
 
-    @JsonProperty("backendRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPBackendRef> backendRefs = new ArrayList<HTTPBackendRef>();
-    @JsonProperty("filters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteFilter> filters = new ArrayList<HTTPRouteFilter>();
-    @JsonProperty("matches")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteMatch> matches = new ArrayList<HTTPRouteMatch>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
+    @JsonProperty("items")
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "GRPCRouteList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -76,50 +94,82 @@ public class HTTPRouteRule implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRouteRule() {
+    public GRPCRouteList() {
     }
 
     /**
      * 
-     * @param backendRefs
-     * @param filters
-     * @param matches
+     * @param metadata
+     * @param apiVersion
+     * @param kind
+     * @param items
      */
-    public HTTPRouteRule(List<HTTPBackendRef> backendRefs, List<HTTPRouteFilter> filters, List<HTTPRouteMatch> matches) {
+    public GRPCRouteList(String apiVersion, List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute> items, String kind, ListMeta metadata) {
         super();
-        this.backendRefs = backendRefs;
-        this.filters = filters;
-        this.matches = matches;
+        this.apiVersion = apiVersion;
+        this.items = items;
+        this.kind = kind;
+        this.metadata = metadata;
     }
 
-    @JsonProperty("backendRefs")
-    public List<HTTPBackendRef> getBackendRefs() {
-        return backendRefs;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("backendRefs")
-    public void setBackendRefs(List<HTTPBackendRef> backendRefs) {
-        this.backendRefs = backendRefs;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("filters")
-    public List<HTTPRouteFilter> getFilters() {
-        return filters;
+    @JsonProperty("items")
+    public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute> getItems() {
+        return items;
     }
 
-    @JsonProperty("filters")
-    public void setFilters(List<HTTPRouteFilter> filters) {
-        this.filters = filters;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute> items) {
+        this.items = items;
     }
 
-    @JsonProperty("matches")
-    public List<HTTPRouteMatch> getMatches() {
-        return matches;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("matches")
-    public void setMatches(List<HTTPRouteMatch> matches) {
-        this.matches = matches;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    @JsonProperty("metadata")
+    public ListMeta getMetadata() {
+        return metadata;
+    }
+
+    @JsonProperty("metadata")
+    public void setMetadata(ListMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonAnyGetter

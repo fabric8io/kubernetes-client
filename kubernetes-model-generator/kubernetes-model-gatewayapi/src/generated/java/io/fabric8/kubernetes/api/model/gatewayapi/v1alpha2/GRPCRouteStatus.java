@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -20,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.RouteParentStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -33,8 +36,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "hostname",
-    "path"
+    "parents"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,13 +56,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class HTTPURLRewriteFilter implements KubernetesResource
+public class GRPCRouteStatus implements KubernetesResource
 {
 
-    @JsonProperty("hostname")
-    private String hostname;
-    @JsonProperty("path")
-    private HTTPPathModifier path;
+    @JsonProperty("parents")
+    private List<RouteParentStatus> parents = new ArrayList<RouteParentStatus>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -68,38 +68,26 @@ public class HTTPURLRewriteFilter implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public HTTPURLRewriteFilter() {
+    public GRPCRouteStatus() {
     }
 
     /**
      * 
-     * @param path
-     * @param hostname
+     * @param parents
      */
-    public HTTPURLRewriteFilter(String hostname, HTTPPathModifier path) {
+    public GRPCRouteStatus(List<RouteParentStatus> parents) {
         super();
-        this.hostname = hostname;
-        this.path = path;
+        this.parents = parents;
     }
 
-    @JsonProperty("hostname")
-    public String getHostname() {
-        return hostname;
+    @JsonProperty("parents")
+    public List<RouteParentStatus> getParents() {
+        return parents;
     }
 
-    @JsonProperty("hostname")
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
-
-    @JsonProperty("path")
-    public HTTPPathModifier getPath() {
-        return path;
-    }
-
-    @JsonProperty("path")
-    public void setPath(HTTPPathModifier path) {
-        this.path = path;
+    @JsonProperty("parents")
+    public void setParents(List<RouteParentStatus> parents) {
+        this.parents = parents;
     }
 
     @JsonAnyGetter

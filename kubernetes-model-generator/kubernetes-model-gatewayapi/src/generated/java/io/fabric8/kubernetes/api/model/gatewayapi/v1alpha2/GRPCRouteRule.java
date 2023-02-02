@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,8 +35,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "group",
-    "name"
+    "backendRefs",
+    "filters",
+    "matches"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,15 +57,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class ReferenceGrantTo implements KubernetesResource
+public class GRPCRouteRule implements KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("backendRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GRPCBackendRef> backendRefs = new ArrayList<GRPCBackendRef>();
+    @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GRPCRouteFilter> filters = new ArrayList<GRPCRouteFilter>();
+    @JsonProperty("matches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GRPCRouteMatch> matches = new ArrayList<GRPCRouteMatch>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -70,50 +76,50 @@ public class ReferenceGrantTo implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public ReferenceGrantTo() {
+    public GRPCRouteRule() {
     }
 
     /**
      * 
-     * @param kind
-     * @param name
-     * @param group
+     * @param backendRefs
+     * @param filters
+     * @param matches
      */
-    public ReferenceGrantTo(String group, String kind, String name) {
+    public GRPCRouteRule(List<GRPCBackendRef> backendRefs, List<GRPCRouteFilter> filters, List<GRPCRouteMatch> matches) {
         super();
-        this.group = group;
-        this.kind = kind;
-        this.name = name;
+        this.backendRefs = backendRefs;
+        this.filters = filters;
+        this.matches = matches;
     }
 
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("backendRefs")
+    public List<GRPCBackendRef> getBackendRefs() {
+        return backendRefs;
     }
 
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    @JsonProperty("backendRefs")
+    public void setBackendRefs(List<GRPCBackendRef> backendRefs) {
+        this.backendRefs = backendRefs;
     }
 
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("filters")
+    public List<GRPCRouteFilter> getFilters() {
+        return filters;
     }
 
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("filters")
+    public void setFilters(List<GRPCRouteFilter> filters) {
+        this.filters = filters;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("matches")
+    public List<GRPCRouteMatch> getMatches() {
+        return matches;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("matches")
+    public void setMatches(List<GRPCRouteMatch> matches) {
+        this.matches = matches;
     }
 
     @JsonAnyGetter
