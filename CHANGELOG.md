@@ -16,6 +16,8 @@
 
 #### Dependency Upgrade
 * Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0
+* Fix #4804: Update Kubernetes Model GatewayApi to v0.6.0
+* Fix #4804: Update CertManager Model to v1.11.0
 
 #### New Features
 
