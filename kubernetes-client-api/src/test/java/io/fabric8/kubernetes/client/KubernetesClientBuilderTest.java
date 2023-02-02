@@ -21,6 +21,9 @@ import io.fabric8.kubernetes.client.http.HttpClient.Factory;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class KubernetesClientBuilderTest {
 
   @Test
@@ -34,4 +37,22 @@ class KubernetesClientBuilderTest {
     Mockito.verify(mockBuilder).proxyAuthorization("something");
   }
 
+  /**
+   * This test is only to check null returned by Thread.currentThread().getContextClassLoader would be handled properly.
+   * For this unit test, since io.fabric8.kubernetes.client.impl.KubernetesClientImpl is not loaded in the class path,
+   * ClassNotFoundException will be thrown.
+   */
+  @Test
+  void testNullContextClassLoader() {
+    ClassLoader currContextClassLoader = Thread.currentThread().getContextClassLoader();
+    try {
+      Thread.currentThread().setContextClassLoader(null);
+      Exception e = assertThrows(KubernetesClientException.class, KubernetesClientBuilder::new);
+      Throwable t = e.getCause();
+      assertEquals(ClassNotFoundException.class, t.getClass());
+      assertEquals("io.fabric8.kubernetes.client.impl.KubernetesClientImpl", t.getMessage());
+    } finally {
+      Thread.currentThread().setContextClassLoader(currContextClassLoader);
+    }
+  }
 }
