@@ -146,6 +146,9 @@ public class JavaGeneratorMojo extends AbstractMojo {
           throw new MojoExecutionException("URL '" + url + "' is not valid", e);
         }
       }
+      if (!downloadTarget.isDirectory()) {
+        downloadTarget.mkdirs();
+      }
       runners.add(new URLJavaGenerator(config, urlList, downloadTarget));
     }
 
