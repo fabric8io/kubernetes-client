@@ -6,6 +6,7 @@
 * Fix #4794: improving the semantics of manually calling informer stop
 * Fix #4798: fix leader election release on cancel
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
+* Fix #4818: [java-generator] Escape `*/` in generated JavaDocs
 
 #### Improvements
 * Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
