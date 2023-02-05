@@ -129,7 +129,9 @@ class HttpClientUtilsTest {
           arguments("192.168.1.110", new String[] { "http://192.168.1.110" }),
           arguments("192.168.1.110", new String[] { "https://192.168.1.110" }),
           arguments("192.168.1.110", new String[] { "192.168.1.0/24" }),
-          arguments("192.168.1.110", new String[] { "http://192.168.1.0/24" }));
+          arguments("192.168.1.110", new String[] { "http://192.168.1.0/24" }),
+          arguments("192.168.1.110", new String[] { "192.0.0.0/8" }),
+          arguments("192.168.1.110", new String[] { "http://192.0.0.0/8" }));
     }
 
     @DisplayName("With httpProxy and noProxy not matching master url, should return proxy url")
@@ -158,7 +160,8 @@ class HttpClientUtilsTest {
           arguments("192.168.1.110", new String[] { "http://192.168.1.111" }),
           arguments("192.168.1.110", new String[] { "https://192.168.1.111" }),
           arguments("192.168.1.110", new String[] { "192.168.10.0/24" }),
-          arguments("192.168.1.110", new String[] { "http://192.168.1.0/32" }));
+          arguments("192.168.1.110", new String[] { "http://192.168.1.0/32" }),
+          arguments("192.168.1.110", new String[] { "http://192.168.1.0/33" }));
     }
 
     @DisplayName("With httpProxy and invalid noProxy should throw Exception")
