@@ -282,7 +282,7 @@ class PodIT {
   private void assertUploaded(String podName, final Path tmpFile, String filename) throws IOException {
     PodResource podResource = client.pods().withName(podName);
 
-    podResource.file(filename).upload(tmpFile);
+    assertTrue(podResource.file(filename).upload(tmpFile));
 
     try (InputStream checkIs = podResource.file(filename).read();
         BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
