@@ -146,9 +146,9 @@ public class Utils {
   }
 
   /**
-   * Wait until an other thread signals the completion of a task.
+   * Wait until another thread signals the completion of a task.
    * If an exception is passed, it will be propagated to the caller.
-   * 
+   *
    * @param future The communication channel.
    * @param amount The amount of time to wait. If less than 0, wait indefinitely
    * @param timeUnit The time unit.
@@ -188,7 +188,7 @@ public class Utils {
 
   /**
    * Closes and flushes the specified {@link Closeable} items.
-   * 
+   *
    * @param closeables An {@link Iterable} of {@link Closeable} items.
    */
   public static void closeQuietly(Iterable<? extends Closeable> closeables) {
@@ -210,7 +210,7 @@ public class Utils {
 
   /**
    * Closes and flushes the specified {@link Closeable} items.
-   * 
+   *
    * @param closeables An array of {@link Closeable} items.
    */
   public static void closeQuietly(Closeable... closeables) {
@@ -495,7 +495,7 @@ public class Utils {
    * Schedule a repeated task to run in the given {@link Executor} - which should run the task in a different thread as to not
    * hold the scheduling thread.
    * <p>
-   * 
+   *
    * @param nextDelay provides the relative next delay - that is the values are applied cumulatively to the initial start
    *        time. Supplying a fixed value produces a fixed rate.
    */
