@@ -260,24 +260,15 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onError(WebSocket webSocket, Throwable t) {
-
-    //If we already called onClosed() or onFailed() before, we need to abort.
-    if (!closed.compareAndSet(false, true)) {
-      //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
-      if (LOGGER.isWarnEnabled()) {
-        LOGGER.warn("Received [{}], with message:[{}] after ExecWebSocketListener is closed, Ignoring.",
-            t.getClass().getCanonicalName(), t.getMessage());
-      }
-      return;
-    }
-
     HttpResponse<?> response = null;
+
     try {
       if (t instanceof WebSocketHandshakeException) {
         response = ((WebSocketHandshakeException) t).getResponse();
       }
       Status status = OperationSupport.createStatus(response);
       status.setMessage(t.getMessage());
+      t = new KubernetesClientException(status);
       cleanUpOnce();
     } finally {
       if (exitCode.isDone()) {
