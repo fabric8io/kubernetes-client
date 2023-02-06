@@ -31,6 +31,9 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +68,9 @@ class PodIT {
 
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
+  @TempDir
+  Path tempDir;
+
   KubernetesClient client;
 
   Namespace namespace;
@@ -72,8 +78,10 @@ class PodIT {
   @Test
   void load() {
     Pod aPod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).item();
-    assertThat(aPod).isNotNull();
-    assertEquals("nginx", aPod.getMetadata().getName());
+    assertThat(aPod)
+        .isNotNull()
+        .extracting("metadata.name")
+        .isEqualTo("nginx");
   }
 
   @Test
@@ -85,8 +93,10 @@ class PodIT {
   @Test
   void list() {
     PodList podList = client.pods().list();
-    assertThat(podList).isNotNull();
-    assertTrue(podList.getItems().size() >= 1);
+    assertThat(podList)
+        .isNotNull()
+        .extracting(PodList::getItems)
+        .asList().hasSizeGreaterThanOrEqualTo(1);
   }
 
   @Test
@@ -98,7 +108,7 @@ class PodIT {
 
   @Test
   void delete() {
-    assertTrue(client.pods().withName("pod-delete").delete().size() == 1);
+    assertEquals(1, client.pods().withName("pod-delete").delete().size());
   }
 
   @Test
@@ -153,14 +163,14 @@ class PodIT {
   }
 
   @Test
-  void execExitCode() throws Exception {
+  void execExitCode() {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ExecWatch watch = client.pods().withName("pod-standard")
         .writingOutput(out)
         .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .exec("sh", "-c", "echo 'hello world!'");
     assertEquals(0, watch.exitCode().join());
-    assertNotNull("hello world!", out.toString());
+    assertThat(out.toString()).startsWith("hello world!");
   }
 
   @Test
@@ -179,9 +189,8 @@ class PodIT {
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
 
-    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
-      return new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root");
-    });
+    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+        .until(() -> new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root"));
 
     watch.close();
 
@@ -264,24 +273,23 @@ class PodIT {
     }
   }
 
-  @Test
-  void uploadFile() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
-    // Wait for resources to get ready
-    final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
-    Files.write(tmpFile, Collections.singletonList("I'm uploaded"));
-
-    assertUploaded("pod-standard", tmpFile, "/tmp/toBeUploaded");
-    assertUploaded("pod-standard", tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");
-    assertUploaded("pod-standard", tmpFile, "/tmp/002'special");
-  }
-
-  private void assertUploaded(String podName, final Path tmpFile, String filename) throws IOException {
-    PodResource podResource = client.pods().withName(podName);
-
-    podResource.file(filename).upload(tmpFile);
-
-    try (InputStream checkIs = podResource.file(filename).read();
+  @ParameterizedTest
+  @ValueSource(strings = {
+      "/tmp/toBeUploaded",
+      "/tmp/001_special_!@#\\$^&(.mp4",
+      "/tmp/002'special"
+  })
+  void uploadFile(String uploadPath) throws IOException {
+    // Given
+    final Path tempFile = Files.write(tempDir.resolve("file.toBeUploaded"),
+        Collections.singletonList("I'm uploaded"));
+    final PodResource podResource = client.pods().withName("pod-standard");
+    podResource.waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
+    // When
+    final boolean uploadResult = podResource.file(uploadPath).upload(tempFile);
+    // Then
+    assertThat(uploadResult).isTrue();
+    try (InputStream checkIs = podResource.file(uploadPath).read();
         BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
       assertEquals("I'm uploaded", result);
