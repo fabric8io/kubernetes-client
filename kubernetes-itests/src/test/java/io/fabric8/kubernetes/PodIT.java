@@ -72,8 +72,10 @@ class PodIT {
   @Test
   void load() {
     Pod aPod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).item();
-    assertThat(aPod).isNotNull();
-    assertEquals("nginx", aPod.getMetadata().getName());
+    assertThat(aPod)
+        .isNotNull()
+        .extracting("metadata.name")
+        .isEqualTo("nginx");
   }
 
   @Test
@@ -85,8 +87,10 @@ class PodIT {
   @Test
   void list() {
     PodList podList = client.pods().list();
-    assertThat(podList).isNotNull();
-    assertTrue(podList.getItems().size() >= 1);
+    assertThat(podList)
+        .isNotNull()
+        .extracting(PodList::getItems)
+        .asList().hasSizeGreaterThanOrEqualTo(1);
   }
 
   @Test
@@ -98,7 +102,7 @@ class PodIT {
 
   @Test
   void delete() {
-    assertTrue(client.pods().withName("pod-delete").delete().size() == 1);
+    assertEquals(1, client.pods().withName("pod-delete").delete().size());
   }
 
   @Test
@@ -153,14 +157,14 @@ class PodIT {
   }
 
   @Test
-  void execExitCode() throws Exception {
+  void execExitCode() {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ExecWatch watch = client.pods().withName("pod-standard")
         .writingOutput(out)
         .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .exec("sh", "-c", "echo 'hello world!'");
     assertEquals(0, watch.exitCode().join());
-    assertNotNull("hello world!", out.toString());
+    assertThat(out.toString()).startsWith("hello world!");
   }
 
   @Test
@@ -179,9 +183,8 @@ class PodIT {
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
 
-    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
-      return new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root");
-    });
+    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+        .until(() -> new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root"));
 
     watch.close();
 
