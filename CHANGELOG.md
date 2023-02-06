@@ -18,6 +18,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #4708: The signature of the Interceptor methods changed to pass the full HttpRequest, rather than just the headers, and explicitly pass request tags - in particular the RequestConfig.  To simplify authentication concerns the following fields have been removed from RequestConfig: username, password, oauthToken, and oauthTokenProvider.  Not all HttpClient implementation support setting the connectionTimeout at a request level, thus it was removed from the RequestConfig as well.
 
 ### 6.4.1 (2023-01-31)
 

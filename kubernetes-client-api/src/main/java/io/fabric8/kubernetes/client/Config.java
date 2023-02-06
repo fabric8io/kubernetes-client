@@ -175,6 +175,14 @@ public class Config {
   private String keyStoreFile;
   private String keyStorePassphrase;
   private AuthProviderConfig authProvider;
+  private String username;
+  private String password;
+  private volatile String oauthToken;
+  private OAuthTokenProvider oauthTokenProvider;
+  private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
+  private int connectionTimeout = 10 * 1000;
+  private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
+  private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
 
   private RequestConfig requestConfig = new RequestConfig();
 
@@ -184,12 +192,8 @@ public class Config {
   /**
    * fields not used but needed for builder generation.
    */
-  private String username;
-  private String password;
-  private String oauthToken;
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
-  private int connectionTimeout = 10 * 1000;
   private int uploadConnectionTimeout = DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
   private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
   private int requestRetryBackoffLimit;
@@ -199,11 +203,7 @@ public class Config {
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
-  private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
-  private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
-  private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
   private String impersonateUsername;
-  private OAuthTokenProvider oauthTokenProvider;
 
   /**
    * @deprecated use impersonateGroups instead
@@ -363,11 +363,16 @@ public class Config {
     this.clientKeyData = clientKeyData;
     this.clientKeyAlgo = clientKeyAlgo;
     this.clientKeyPassphrase = clientKeyPassphrase;
+    this.username = username;
+    this.password = password;
+    this.oauthToken = oauthToken;
+    this.websocketPingInterval = websocketPingInterval;
+    this.connectionTimeout = connectionTimeout;
 
-    this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval,
-        connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout,
-        websocketPingInterval, oauthTokenProvider,
-        requestRetryBackoffLimit, requestRetryBackoffInterval, uploadConnectionTimeout, uploadRequestTimeout);
+    this.requestConfig = new RequestConfig(watchReconnectLimit, watchReconnectInterval,
+        rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout,
+        requestRetryBackoffLimit, requestRetryBackoffInterval, uploadConnectionTimeout,
+        uploadRequestTimeout);
     this.requestConfig.setImpersonateUsername(impersonateUsername);
     this.requestConfig.setImpersonateGroups(impersonateGroups);
     this.requestConfig.setImpersonateExtras(impersonateExtras);
@@ -969,29 +974,32 @@ public class Config {
 
   @JsonProperty("oauthToken")
   public String getOauthToken() {
-    return getRequestConfig().getOauthToken();
+    if (this.oauthTokenProvider != null) {
+      return this.oauthTokenProvider.getToken();
+    }
+    return oauthToken;
   }
 
   public void setOauthToken(String oauthToken) {
-    this.requestConfig.setOauthToken(oauthToken);
+    this.oauthToken = oauthToken;
   }
 
   @JsonProperty("password")
   public String getPassword() {
-    return getRequestConfig().getPassword();
+    return password;
   }
 
   public void setPassword(String password) {
-    this.requestConfig.setPassword(password);
+    this.password = password;
   }
 
   @JsonProperty("username")
   public String getUsername() {
-    return getRequestConfig().getUsername();
+    return username;
   }
 
   public void setUsername(String username) {
-    this.requestConfig.setUsername(username);
+    this.username = username;
   }
 
   @JsonProperty("impersonateUsername")
@@ -1164,11 +1172,11 @@ public class Config {
 
   @JsonProperty("connectionTimeout")
   public int getConnectionTimeout() {
-    return getRequestConfig().getConnectionTimeout();
+    return connectionTimeout;
   }
 
   public void setConnectionTimeout(int connectionTimeout) {
-    this.requestConfig.setConnectionTimeout(connectionTimeout);
+    this.connectionTimeout = connectionTimeout;
   }
 
   @JsonProperty("uploadConnectionTimeout")
@@ -1326,11 +1334,11 @@ public class Config {
 
   @JsonProperty("websocketPingInterval")
   public long getWebsocketPingInterval() {
-    return getRequestConfig().getWebsocketPingInterval();
+    return websocketPingInterval;
   }
 
   public void setWebsocketPingInterval(long websocketPingInterval) {
-    this.requestConfig.setWebsocketPingInterval(websocketPingInterval);
+    this.websocketPingInterval = websocketPingInterval;
   }
 
   public int getMaxConcurrentRequests() {
@@ -1371,10 +1379,6 @@ public class Config {
     return this.requestConfig;
   }
 
-  public static void setRequestConfig(Config config, RequestConfig requestConfig) {
-    config.requestConfig = requestConfig;
-  }
-
   public void setTrustStorePassphrase(String trustStorePassphrase) {
     this.trustStorePassphrase = trustStorePassphrase;
   }
@@ -1413,11 +1417,11 @@ public class Config {
 
   @JsonIgnore
   public OAuthTokenProvider getOauthTokenProvider() {
-    return this.getRequestConfig().getOauthTokenProvider();
+    return this.oauthTokenProvider;
   }
 
   public void setOauthTokenProvider(OAuthTokenProvider oauthTokenProvider) {
-    this.requestConfig.setOauthTokenProvider(oauthTokenProvider);
+    this.oauthTokenProvider = oauthTokenProvider;
   }
 
   @JsonProperty("customHeaders")

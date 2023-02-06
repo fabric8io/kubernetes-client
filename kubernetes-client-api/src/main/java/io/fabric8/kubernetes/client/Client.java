@@ -164,8 +164,8 @@ public interface Client extends Closeable {
 
   /**
    * Creates a new client based upon the current except with a different
-   * {@link RequestConfig}. This client will use independent resources,
-   * and should be closed appropriately
+   * {@link RequestConfig}. It uses the same resources as the current client, thus
+   * closing it will close the original client.
    *
    * @param requestConfig
    * @return a new client

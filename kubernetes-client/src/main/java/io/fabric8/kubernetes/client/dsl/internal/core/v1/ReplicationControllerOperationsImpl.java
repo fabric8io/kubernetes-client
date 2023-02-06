@@ -79,7 +79,7 @@ public class ReplicationControllerOperationsImpl extends
   public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout,
       TimeUnit rollingTimeUnit) {
     return new ReplicationControllerRollingUpdater(context.getClient(), namespace, rollingTimeUnit.toMillis(rollingTimeout),
-        config.getLoggingInterval());
+        getRequestConfig().getLoggingInterval());
   }
 
   @Override

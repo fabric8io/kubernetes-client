@@ -30,15 +30,10 @@ import static io.fabric8.kubernetes.client.Config.DEFAULT_ROLLING_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_REQUEST_TIMEOUT;
-import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_PING_INTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_TIMEOUT;
 
 public class RequestConfig {
 
-  private String username;
-  private String password;
-  private volatile String oauthToken;
-  private OAuthTokenProvider oauthTokenProvider;
   private String impersonateUsername;
 
   private String[] impersonateGroups = new String[0];
@@ -46,7 +41,6 @@ public class RequestConfig {
   private Map<String, List<String>> impersonateExtras = new HashMap<>();
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
-  private int connectionTimeout = 10 * 1000;
   private int uploadConnectionTimeout = DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
   private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
   private int requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
@@ -56,81 +50,25 @@ public class RequestConfig {
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
-  private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
 
   RequestConfig() {
   }
 
-  /**
-   * For backward compatibility
-   * Use RequestConfigBuilder instead
-   *
-   * @param username user name
-   * @param password password
-   * @param oauthToken oauthToken
-   * @param watchReconnectLimit watch reconnect limit
-   * @param watchReconnectInterval watch reconnect interval
-   * @param connectionTimeout connection timeout
-   * @param rollingTimeout rolling timeout
-   * @param requestTimeout request timeout
-   * @param scaleTimeout scale timeout
-   * @param loggingInterval logging interval
-   * @param websocketTimeout web socket timeout
-   * @param maxConcurrentRequestsPerHost max concurrent requests per host
-   */
-  @Deprecated
-  public RequestConfig(String username, String password, String oauthToken,
-      int watchReconnectLimit, int watchReconnectInterval,
-      int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
-      long websocketTimeout, long websocketPingInterval,
-      int maxConcurrentRequests, int maxConcurrentRequestsPerHost) {
-    this(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout,
-        requestTimeout, scaleTimeout, loggingInterval,
-        websocketTimeout, websocketPingInterval, null,
-        DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
-        DEFAULT_UPLOAD_CONNECTION_TIMEOUT, DEFAULT_UPLOAD_REQUEST_TIMEOUT);
-  }
-
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public RequestConfig(String username, String password, String oauthToken,
-      int watchReconnectLimit, int watchReconnectInterval,
-      int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
-      long websocketTimeout, long websocketPingInterval,
-      OAuthTokenProvider oauthTokenProvider,
-      int requestRetryBackoffLimit, int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout) {
-    this.username = username;
-    this.oauthToken = oauthToken;
-    this.password = password;
+  public RequestConfig(int watchReconnectLimit, int watchReconnectInterval, long rollingTimeout, int requestTimeout,
+      long scaleTimeout, int loggingInterval, long websocketTimeout, int requestRetryBackoffLimit,
+      int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout) {
     this.watchReconnectLimit = watchReconnectLimit;
     this.watchReconnectInterval = watchReconnectInterval;
-    this.connectionTimeout = connectionTimeout;
     this.rollingTimeout = rollingTimeout;
     this.requestTimeout = requestTimeout;
     this.scaleTimeout = scaleTimeout;
     this.websocketTimeout = websocketTimeout;
     this.loggingInterval = loggingInterval;
-    this.websocketPingInterval = websocketPingInterval;
-    this.oauthTokenProvider = oauthTokenProvider;
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
     this.uploadConnectionTimeout = uploadConnectionTimeout;
     this.uploadRequestTimeout = uploadRequestTimeout;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public int getWatchReconnectInterval() {
@@ -139,25 +77,6 @@ public class RequestConfig {
 
   public void setWatchReconnectInterval(int watchReconnectInterval) {
     this.watchReconnectInterval = watchReconnectInterval;
-  }
-
-  public String getOauthToken() {
-    if (oauthTokenProvider != null) {
-      return oauthTokenProvider.getToken();
-    }
-    return oauthToken;
-  }
-
-  public void setOauthToken(String oauthToken) {
-    this.oauthToken = oauthToken;
-  }
-
-  public OAuthTokenProvider getOauthTokenProvider() {
-    return oauthTokenProvider;
-  }
-
-  public void setOauthTokenProvider(OAuthTokenProvider oauthTokenProvider) {
-    this.oauthTokenProvider = oauthTokenProvider;
   }
 
   public int getWatchReconnectLimit() {
@@ -190,14 +109,6 @@ public class RequestConfig {
 
   public void setRequestRetryBackoffInterval(int requestRetryBackoffInterval) {
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
-  }
-
-  public int getConnectionTimeout() {
-    return connectionTimeout;
-  }
-
-  public void setConnectionTimeout(int connectionTimeout) {
-    this.connectionTimeout = connectionTimeout;
   }
 
   public int getUploadConnectionTimeout() {
@@ -246,14 +157,6 @@ public class RequestConfig {
 
   public void setWebsocketTimeout(long websocketTimeout) {
     this.websocketTimeout = websocketTimeout;
-  }
-
-  public long getWebsocketPingInterval() {
-    return websocketPingInterval;
-  }
-
-  public void setWebsocketPingInterval(long websocketPingInterval) {
-    this.websocketPingInterval = websocketPingInterval;
   }
 
   public void setImpersonateUsername(String impersonateUsername) {

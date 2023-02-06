@@ -30,6 +30,8 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
@@ -109,13 +111,8 @@ public class OperationSupport {
       this.apiGroupVersion = "v1";
     }
 
-    if (ctx.getConfig() != null) {
-      requestRetryBackoffInterval = ctx.getConfig().getRequestRetryBackoffInterval();
-      this.requestRetryBackoffLimit = ctx.getConfig().getRequestRetryBackoffLimit();
-    } else {
-      requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-      this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
-    }
+    requestRetryBackoffInterval = getRequestConfig().getRequestRetryBackoffInterval();
+    this.requestRetryBackoffLimit = getRequestConfig().getRequestRetryBackoffLimit();
   }
 
   public String getAPIGroupName() {
@@ -764,6 +761,18 @@ public class OperationSupport {
 
   public Config getConfig() {
     return config;
+  }
+
+  public OperationContext getOperationContext() {
+    return context;
+  }
+
+  public RequestConfig getRequestConfig() {
+    RequestConfig result = context.getRequestConfig();
+    if (result == null && config != null) {
+      return config.getRequestConfig();
+    }
+    return new RequestConfigBuilder().build();
   }
 
   private String getContentTypeFromPatchContextOrDefault(PatchContext patchContext) {

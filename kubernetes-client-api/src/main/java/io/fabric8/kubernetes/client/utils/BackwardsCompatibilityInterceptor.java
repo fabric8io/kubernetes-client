@@ -157,7 +157,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   @Override
-  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response, RequestTags tags) {
     ResourceKey target = findNewTarget(builder, response);
     if (target == null) {
       return CompletableFuture.completedFuture(false);
@@ -210,7 +210,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   @Override
-  public CompletableFuture<Boolean> afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response, RequestTags tags) {
     return CompletableFuture.completedFuture(findNewTarget(basicBuilder, response) != null);
   }
 

@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
@@ -54,12 +54,7 @@ public class HttpClientUtils {
     }
 
     @Override
-    public Interceptor withConfig(Config config) {
-      return new HeaderInterceptor(config);
-    }
-
-    @Override
-    public void before(BasicBuilder builder, HttpHeaders headers) {
+    public void before(BasicBuilder builder, HttpRequest request, RequestTags tags) {
       if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
         for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
           builder.header(entry.getKey(), entry.getValue());
@@ -110,7 +105,7 @@ public class HttpClientUtils {
     // Header Interceptor
     interceptors.put(HEADER_INTERCEPTOR, new HeaderInterceptor(config));
     // Impersonator Interceptor
-    interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config));
+    interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config.getRequestConfig()));
     // Token Refresh Interceptor
     interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory, Instant.now()));
     // Backwards Compatibility Interceptor

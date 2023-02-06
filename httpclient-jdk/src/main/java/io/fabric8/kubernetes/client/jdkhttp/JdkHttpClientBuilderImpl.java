@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
@@ -71,7 +71,7 @@ class JdkHttpClientBuilderImpl
       this.interceptors.put("PROXY-AUTH", new Interceptor() {
 
         @Override
-        public void before(BasicBuilder builder, HttpHeaders headers) {
+        public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
           builder.setHeader("Proxy-Authorization", proxyAuthorization);
         }
 

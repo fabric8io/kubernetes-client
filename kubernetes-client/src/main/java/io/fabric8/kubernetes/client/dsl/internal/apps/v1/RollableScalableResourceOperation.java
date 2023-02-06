@@ -124,12 +124,12 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
         Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
             currentReplicas, desiredReplicas, t.getKind(), t.getMetadata().getName(), namespace);
         return false;
-      }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+      }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
     } catch (KubernetesClientTimeoutException e) {
       throw new KubernetesClientException(
           String.format("%s/%s pod(s) ready for %s: %s in namespace: %s  after waiting for %s seconds so giving up",
               replicasRef.get(), count, getType().getSimpleName(), name, namespace,
-              TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout())),
+              TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout())),
           e);
     }
   }

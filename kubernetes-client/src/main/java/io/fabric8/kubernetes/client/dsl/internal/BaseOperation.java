@@ -630,9 +630,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           this,
           optionsToUse,
           watcherToggle,
-          config.getWatchReconnectInterval(),
-          config.getWatchReconnectLimit(),
-          config.getWebsocketTimeout());
+          getRequestConfig().getWatchReconnectInterval(),
+          getRequestConfig().getWatchReconnectLimit(),
+          getRequestConfig().getWebsocketTimeout());
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
     }
@@ -661,8 +661,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
                   this,
                   optionsToUse,
                   watcher,
-                  config.getWatchReconnectInterval(),
-                  config.getWatchReconnectLimit());
+                  getRequestConfig().getWatchReconnectInterval(),
+                  getRequestConfig().getWatchReconnectLimit());
             } catch (MalformedURLException e) {
               throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
             }

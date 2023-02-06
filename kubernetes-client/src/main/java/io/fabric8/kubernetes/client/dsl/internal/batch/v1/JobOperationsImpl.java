@@ -111,7 +111,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
       LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
           job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
       return false;
-    }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+    }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
   }
 
   @Override

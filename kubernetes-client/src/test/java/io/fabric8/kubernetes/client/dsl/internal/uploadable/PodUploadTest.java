@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodConditionBuilder;
+import io.fabric8.kubernetes.api.model.WatchEventBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
@@ -67,6 +69,7 @@ class PodUploadTest {
   private HttpClient mockClient;
   private WebSocket mockWebSocket;
   private PodOperationsImpl operation;
+  private Pod item;
 
   @FunctionalInterface
   public interface PodUploadTester<R> {
@@ -87,10 +90,12 @@ class PodUploadTest {
     when(config.getNamespace()).thenReturn("default");
     when(client.getConfiguration()).thenReturn(config);
     when(client.getHttpClient()).thenReturn(mockClient);
-    final Pod item = new PodBuilder()
+    item = new PodBuilder()
         .withNewMetadata().withName("pod").endMetadata()
         .withNewSpec().addNewContainer().withName("container").endContainer().endSpec()
+        .withNewStatus().withConditions(new PodConditionBuilder().withType("Ready").withStatus("True").build()).endStatus()
         .build();
+
     this.operation = (PodOperationsImpl) new PodOperationsImpl(
         new PodOperationContext(), new OperationContext().withClient(client)).resource(item);
     when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class)))
@@ -181,10 +186,14 @@ class PodUploadTest {
     operation = operation.file("/mock/dir/file");
     WebSocket.Builder builder = mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
     when(builder.buildAsync(any())).thenAnswer(newWebSocket -> {
-      final ExecWebSocketListener wsl = newWebSocket.getArgument(0, ExecWebSocketListener.class);
+      final WebSocket.Listener wsl = newWebSocket.getArgument(0, WebSocket.Listener.class);
       // Set ready status
       wsl.onOpen(mockWebSocket);
-      wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] { (byte) 0 }));
+      if (wsl instanceof ExecWebSocketListener) {
+        wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] { (byte) 0 }));
+      } else {
+        wsl.onMessage(mockWebSocket, Serialization.asJson(new WatchEventBuilder().withType("ADDED").withObject(item).build()));
+      }
       // Set complete status
       Mockito.doAnswer(close -> {
         wsl.onClose(mockWebSocket, close.getArgument(0), close.getArgument(1));
@@ -213,10 +222,14 @@ class PodUploadTest {
     this.operation = operation.dir("/mock/dir");
     WebSocket.Builder builder = mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
     when(builder.buildAsync(any())).thenAnswer(newWebSocket -> {
-      final ExecWebSocketListener wsl = newWebSocket.getArgument(0, ExecWebSocketListener.class);
+      final WebSocket.Listener wsl = newWebSocket.getArgument(0, WebSocket.Listener.class);
       // Set ready status
       wsl.onOpen(mockWebSocket);
-      wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] { (byte) 0 }));
+      if (wsl instanceof ExecWebSocketListener) {
+        wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] { (byte) 0 }));
+      } else {
+        wsl.onMessage(mockWebSocket, Serialization.asJson(new WatchEventBuilder().withType("ADDED").withObject(item).build()));
+      }
       // Set complete status
       Mockito.doAnswer(close -> {
         wsl.onClose(mockWebSocket, close.getArgument(0), close.getArgument(1));

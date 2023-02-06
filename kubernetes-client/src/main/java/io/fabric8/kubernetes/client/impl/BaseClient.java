@@ -84,15 +84,18 @@ public abstract class BaseClient implements Client {
 
   private OperationContext operationContext;
 
-  BaseClient(Config config, BaseClient baseClient) {
-    this.config = config;
-    this.httpClient = baseClient.httpClient.newBuilder().requestConfig(config).build();
+  BaseClient(BaseClient baseClient) {
+    this.config = baseClient.config;
+    this.httpClient = baseClient.httpClient;
     this.adapters = baseClient.adapters;
     this.handlers = baseClient.handlers;
     this.matchingGroupPredicate = baseClient.matchingGroupPredicate;
     this.executorSupplier = baseClient.executorSupplier;
     this.executor = baseClient.executor;
     setDerivedFields();
+    if (baseClient.operationContext != null) {
+      operationContext(baseClient.operationContext);
+    }
   }
 
   BaseClient(final HttpClient httpClient, Config config, ExecutorSupplier executorSupplier) {
@@ -319,19 +322,25 @@ public abstract class BaseClient implements Client {
 
   public BaseClient operationContext(OperationContext operationContext) {
     this.operationContext = operationContext;
+    this.namespace = operationContext.getNamespace();
     return this;
   }
 
   /**
-   * Create a new instance with the given config. All other client resources will be shared.
+   * Create a shallow copy with all shared resources.
    *
-   * @param config
    * @return
    */
-  abstract BaseClient newInstance(Config config);
+  abstract BaseClient copy();
 
-  public Client newClient(OperationContext newContext) {
-    return newInstance(config).operationContext(newContext);
+  public <C extends Client> C newClient(OperationContext newContext, Class<C> clazz) {
+    BaseClient copy = copy();
+    // set the ReqeustConfig if different
+    if (newContext.getRequestConfig() != null && newContext.getConfig().getRequestConfig() != newContext.getRequestConfig()) {
+      copy.httpClient = copy.httpClient.newBuilder().tag(newContext.getRequestConfig()).build();
+    }
+    newContext = newContext.withClient(copy);
+    return copy.operationContext(newContext).adapt(clazz);
   }
 
   public Executor getExecutor() {

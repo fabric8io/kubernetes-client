@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
+import io.fabric8.kubernetes.client.http.Interceptor.RequestTags;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.utils.Utils;
 
@@ -27,7 +28,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
-    implements HttpClient {
+    implements HttpClient, RequestTags {
 
   protected StandardHttpClientBuilder<C, F, T> builder;
 
@@ -62,7 +63,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
     StandardHttpRequest.Builder copy = standardHttpRequest.newBuilder();
     for (Interceptor interceptor : builder.getInterceptors().values()) {
-      Interceptor.useConfig(builder.requestConfig).apply(interceptor).before(copy, standardHttpRequest);
+      interceptor.before(copy, standardHttpRequest, this);
       standardHttpRequest = copy.build();
     }
 
@@ -71,8 +72,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (!HttpResponse.isSuccessful(response.code())) {
-          return Interceptor.useConfig(builder.requestConfig).apply(interceptor)
-              .afterFailure(copy, response)
+          return interceptor.afterFailure(copy, response, this)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
                   // before starting another request, make sure the old one is cancelled / closed
@@ -120,20 +120,18 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       Listener listener) {
 
     final StandardWebSocketBuilder copy = standardWebSocketBuilder.newBuilder();
-    builder.getInterceptors().values().stream().map(Interceptor.useConfig(builder.requestConfig))
-        .forEach(i -> i.before(copy, copy.asHttpRequest()));
+    builder.getInterceptors().values().stream().forEach(i -> i.before(copy, copy.asHttpRequest(), this));
 
     CompletableFuture<WebSocketResponse> cf = buildWebSocketDirect(copy, listener);
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null) {
-          return Interceptor.useConfig(builder.requestConfig).apply(interceptor)
-              .afterFailure(copy, response.wshse.getResponse()).thenCompose(b -> {
-                if (Boolean.TRUE.equals(b)) {
-                  return this.buildWebSocketDirect(copy, listener);
-                }
-                return CompletableFuture.completedFuture(response);
-              });
+          return interceptor.afterFailure(copy, response.wshse.getResponse(), this).thenCompose(b -> {
+            if (Boolean.TRUE.equals(b)) {
+              return this.buildWebSocketDirect(copy, listener);
+            }
+            return CompletableFuture.completedFuture(response);
+          });
         }
         return CompletableFuture.completedFuture(response);
       });
@@ -164,6 +162,11 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         result.complete(null);
       }
     };
+  }
+
+  @Override
+  public <V> V getTag(Class<V> type) {
+    return type.cast(builder.tags.get(type));
   }
 
 }
