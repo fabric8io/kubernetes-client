@@ -17,13 +17,16 @@
 package io.fabric8.kubernetes.client.vertx;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
+
+import static io.vertx.core.spi.resolver.ResolverProvider.DISABLE_DNS_RESOLVER_PROP_NAME;
 
 public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http.HttpClient.Factory {
 
-  private Vertx vertx;
+  private final Vertx vertx;
 
   public VertxHttpClientFactory() {
-    this.vertx = Vertx.vertx();
+    this.vertx = createVertxInstance();
   }
 
   @Override
@@ -31,4 +34,24 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
     return new VertxHttpClientBuilder<>(this, vertx);
   }
 
+  private static synchronized Vertx createVertxInstance() {
+    // We must disable the async DNS resolver as it can cause issues when resolving the Vault instance.
+    // This is done using the DISABLE_DNS_RESOLVER_PROP_NAME system property.
+    // The DNS resolver used by vert.x is configured during the (synchronous) initialization.
+    // So, we just need to disable the async resolver around the Vert.x instance creation.
+    final String originalValue = System.getProperty(DISABLE_DNS_RESOLVER_PROP_NAME);
+    Vertx vertx;
+    try {
+      System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, "true");
+      vertx = Vertx.vertx(new VertxOptions());
+    } finally {
+      // Restore the original value
+      if (originalValue == null) {
+        System.clearProperty(DISABLE_DNS_RESOLVER_PROP_NAME);
+      } else {
+        System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, originalValue);
+      }
+    }
+    return vertx;
+  }
 }
