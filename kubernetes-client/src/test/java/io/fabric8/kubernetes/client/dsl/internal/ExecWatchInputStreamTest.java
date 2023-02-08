@@ -44,9 +44,17 @@ public class ExecWatchInputStreamTest {
   void testNormalExit() throws IOException {
     AtomicInteger count = new AtomicInteger();
     ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement());
-    is.onExit(1, null);
+    is.onExit(0, null);
     assertEquals(-1, is.read());
     assertEquals(0, count.get());
+  }
+
+  @Test
+  void testNonZeroExit() throws IOException {
+    AtomicInteger count = new AtomicInteger();
+    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement());
+    is.onExit(1, null);
+    assertThrows(IOException.class, () -> is.read());
   }
 
   @Test

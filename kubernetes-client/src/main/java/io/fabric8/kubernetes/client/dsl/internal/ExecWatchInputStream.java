@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -49,6 +51,8 @@ public class ExecWatchInputStream extends InputStream {
       complete = true;
       if (t != null) {
         failed = t;
+      } else if (exitCode != null && exitCode != 0) {
+        failed = new KubernetesClientException("process exited with a non-zero exit code: " + exitCode);
       }
       buffers.notifyAll();
     }
