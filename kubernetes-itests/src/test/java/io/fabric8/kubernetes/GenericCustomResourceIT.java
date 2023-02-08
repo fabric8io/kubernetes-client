@@ -59,8 +59,9 @@ class GenericCustomResourceIT {
     client.apiextensions().v1().customResourceDefinitions()
         .withName("animals.jungle.example.com")
         .waitUntilCondition(
-            c -> c.getStatus() != null && c.getStatus().getConditions() != null && c.getStatus().getConditions().stream()
-                .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
+            c -> c != null && c.getStatus() != null && c.getStatus().getConditions() != null
+                && c.getStatus().getConditions().stream()
+                    .anyMatch(crdc -> crdc.getType().equals("Established") && crdc.getStatus().equals("True")),
             10L, TimeUnit.SECONDS);
     final CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
         .withName("animals.jungle.example.com")
