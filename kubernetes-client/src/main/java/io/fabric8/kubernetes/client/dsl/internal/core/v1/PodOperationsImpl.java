@@ -58,7 +58,6 @@ import io.fabric8.kubernetes.client.lib.FilenameUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.Base64;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -429,7 +428,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private String[] readFileCommand(String source) {
-    return new String[] { "sh", "-c", String.format("cat %s | base64", shellQuote(source)) };
+    return new String[] { "sh", "-c", String.format("cat %s", shellQuote(source)) };
   }
 
   private InputStream readFile(String source) {
@@ -455,25 +454,19 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
 
     try (OutputStream out = new BufferedOutputStream(new FileOutputStream(destination))) {
-      readTo(new Base64.OutputStream(out, Base64.DECODE), readFileCommand(source)).get();
+      readTo(out, readFileCommand(source)).get();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
 
   public InputStream readTar(String source) {
-    return read("sh", "-c", "tar -cf - " + shellQuote(source) + "|" + "base64");
+    return read("sh", "-c", "tar -cf - " + shellQuote(source));
   }
 
   private InputStream read(String... command) {
     ExecWatch watch = redirectingOutput().exec(command);
-    return new Base64.InputStream(watch.getOutput(), Base64.DECODE) {
-      @Override
-      public void close() throws IOException {
-        watch.close();
-        super.close();
-      }
-    };
+    return watch.getOutput();
   }
 
   private Future<?> readTo(OutputStream out, String... cmd) {

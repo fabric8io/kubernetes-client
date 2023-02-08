@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
@@ -56,9 +57,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LoadKubernetesManifests("/pod-it.yml")
@@ -297,6 +300,26 @@ class PodIT {
   }
 
   @Test
+  void uploadBinaryFile() throws IOException {
+    // Given
+    byte[] bytes = new byte[16385];
+    for (int i = 0; i < bytes.length; i++) {
+      bytes[i] = (byte) i;
+    }
+    final Path tempFile = Files.write(tempDir.resolve("file.toBeUploaded"), bytes);
+    final PodResource podResource = client.pods().withName("pod-standard");
+    // When
+    final boolean uploadResult = podResource.file("/tmp/binfile").upload(tempFile);
+    // Then
+    assertThat(uploadResult).isTrue();
+    try (InputStream checkIs = podResource.file("/tmp/binfile").read();) {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      InputStreamPumper.transferTo(checkIs, baos::write);
+      assertArrayEquals(bytes, baos.toByteArray());
+    }
+  }
+
+  @Test
   void uploadDir() throws IOException {
     final String[] files = new String[] { "1", "2", "a", "b", "c" };
     final Path tmpDir = Files.createTempDirectory("uploadDir");
@@ -345,6 +368,25 @@ class PodIT {
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
       assertEquals("hello", result);
+    }
+  }
+
+  @Test
+  void readFileMissingException() throws IOException {
+    PodResource podResource = client.pods().withName("pod-standard");
+    try (InputStream is = podResource.file("does not exist").read()) {
+      assertThrows(IOException.class, () -> is.read());
+    }
+  }
+
+  @Test
+  void readDirMissingException() throws IOException {
+    PodResource podResource = client.pods().withName("pod-standard");
+    try (InputStream is = podResource.dir("/nodir").read()) {
+      // this is a little odd, but tar sends some data to stdOut
+      // before deciding to error out, so we have to do more than a
+      // single read - this seems like a usability issue...
+      assertThrows(IOException.class, () -> IOHelpers.readFully(is));
     }
   }
 

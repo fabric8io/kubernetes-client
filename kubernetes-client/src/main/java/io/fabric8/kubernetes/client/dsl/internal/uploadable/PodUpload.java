@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.Base64;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
@@ -84,9 +83,7 @@ public class PodUpload {
     String command = createExecCommandForUpload(operation.getContext().getFile());
 
     return upload(operation, command, os -> {
-      try (final Base64.InputStream b64In = new Base64.InputStream(inputStream, Base64.ENCODE)) {
-        InputStreamPumper.transferTo(b64In, os::write);
-      }
+      InputStreamPumper.transferTo(inputStream, os::write);
     });
   }
 
@@ -101,11 +98,10 @@ public class PodUpload {
       throws IOException {
 
     final String command = String.format(
-        "mkdir -p %1$s && base64 -d - | tar -C %1$s -xzf -", shellQuote(operation.getContext().getDir()));
+        "mkdir -p %1$s && tar -C %1$s -xzf -", shellQuote(operation.getContext().getDir()));
 
     return upload(operation, command, os -> {
-      try (final Base64.OutputStream b64Out = new Base64.OutputStream(os, Base64.ENCODE);
-          final GZIPOutputStream gzip = new GZIPOutputStream(b64Out);
+      try (final GZIPOutputStream gzip = new GZIPOutputStream(os);
           final TarArchiveOutputStream tar = new TarArchiveOutputStream(gzip)) {
         tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
         for (File file : pathToUpload.toFile().listFiles()) {
@@ -136,7 +132,7 @@ public class PodUpload {
     String directoryTrimmedFromFilePath = file.substring(0, file.lastIndexOf('/'));
     final String directory = directoryTrimmedFromFilePath.isEmpty() ? "/" : directoryTrimmedFromFilePath;
     return String.format(
-        "mkdir -p %s && base64 -d - > %s", shellQuote(directory), shellQuote(file));
+        "mkdir -p %s && cat - > %s", shellQuote(directory), shellQuote(file));
   }
 
 }
