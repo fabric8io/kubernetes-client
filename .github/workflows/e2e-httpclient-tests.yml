@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.24.0,v1.23.3]
+        kubernetes: [v1.25.0,v1.24.0]
         httpclient: [jdk,jetty,vertx]
     steps:
       - name: Checkout
