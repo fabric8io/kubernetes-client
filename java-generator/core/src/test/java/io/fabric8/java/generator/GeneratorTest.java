@@ -452,6 +452,7 @@ class GeneratorTest {
         null,
         Boolean.FALSE,
         null);
+    String generatedAnnotationName = AbstractJSONSchema2Pojo.newGeneratedAnnotation().getNameAsString();
 
     // Act
     GeneratorResult res1 = obj1.generateJava();
@@ -459,10 +460,10 @@ class GeneratorTest {
 
     // Assert
     Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
-    assertTrue(clz1.get().getAnnotationByName(AbstractJSONSchema2Pojo.GENERATED_ANNOTATION.getNameAsString()).isPresent());
+    assertTrue(clz1.get().getAnnotationByName(generatedAnnotationName).isPresent());
 
     Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
-    assertFalse(clz2.get().getAnnotationByName(AbstractJSONSchema2Pojo.GENERATED_ANNOTATION.getNameAsString()).isPresent());
+    assertFalse(clz2.get().getAnnotationByName(generatedAnnotationName).isPresent());
   }
 
   @Test

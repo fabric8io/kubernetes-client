@@ -150,7 +150,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                 "using = com.fasterxml.jackson.databind.JsonDeserializer.None.class")));
 
     if (config.isGeneratedAnnotations()) {
-      clz.addAnnotation(GENERATED_ANNOTATION);
+      clz.addAnnotation(newGeneratedAnnotation());
     }
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);

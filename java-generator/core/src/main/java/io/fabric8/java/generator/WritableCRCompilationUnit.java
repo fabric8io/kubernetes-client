@@ -34,16 +34,18 @@ public class WritableCRCompilationUnit {
   private static final Logger LOGGER = LoggerFactory.getLogger(WritableCRCompilationUnit.class);
 
   private final List<GeneratorResult.ClassResult> classResults;
+  private final String basePackage;
 
-  WritableCRCompilationUnit(List<GeneratorResult.ClassResult> classResults) {
+  WritableCRCompilationUnit(List<GeneratorResult.ClassResult> classResults, String basePackage) {
     this.classResults = classResults;
+    this.basePackage = basePackage;
   }
 
   public List<GeneratorResult.ClassResult> getClassResults() {
     return classResults;
   }
 
-  public void writeAllJavaClasses(File basePath, String basePackage) {
+  public void writeAllJavaClasses(File basePath) {
     try {
       createFolders(basePackage, basePath);
       for (GeneratorResult.ClassResult cr : this.classResults) {
