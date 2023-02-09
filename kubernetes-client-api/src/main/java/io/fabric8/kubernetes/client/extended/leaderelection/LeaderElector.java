@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
-import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,7 +143,7 @@ public class LeaderElector {
       newLeaderElectionRecord.setVersion(current.getVersion());
 
       leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
-    } catch (LockException | KubernetesClientException e) {
+    } catch (KubernetesClientException e) {
       final String lockDescription = leaderElectionConfig.getLock().describe();
       LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
     }
@@ -159,7 +158,7 @@ public class LeaderElector {
           completion.complete(null);
         }
         LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
-      } catch (LockException | KubernetesClientException exception) {
+      } catch (KubernetesClientException exception) {
         LOGGER.error("Exception occurred while acquiring lock '{}'", lockDescription, exception);
       }
     }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
@@ -183,13 +182,13 @@ public class LeaderElector {
           // renewal failed, exit
           completion.complete(null);
         }
-      } catch (LockException | KubernetesClientException exception) {
+      } catch (KubernetesClientException exception) {
         LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
       }
     }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
 
-  synchronized boolean tryAcquireOrRenew() throws LockException {
+  synchronized boolean tryAcquireOrRenew() {
     if (stopped) {
       return false;
     }
