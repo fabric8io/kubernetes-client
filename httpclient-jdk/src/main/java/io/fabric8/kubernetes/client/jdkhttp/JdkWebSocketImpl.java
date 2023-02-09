@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.jdkhttp;
 
+import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.WebSocket;
 
 import java.io.ByteArrayOutputStream;
@@ -101,6 +102,7 @@ class JdkWebSocketImpl implements WebSocket {
 
   @Override
   public boolean send(ByteBuffer buffer) {
+    buffer = BufferUtil.copy(buffer);
     final int size = buffer.remaining();
     queueSize.addAndGet(size);
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendBinary(buffer, true);

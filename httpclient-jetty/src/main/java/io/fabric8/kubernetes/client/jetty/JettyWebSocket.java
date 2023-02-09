@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
@@ -66,6 +67,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     if (closed.get() || !webSocketSession.isOpen()) {
       return false;
     }
+    buffer = BufferUtil.copy(buffer);
     final int size = buffer.remaining();
     sendQueue.addAndGet(size);
     webSocketSession.getRemote().sendBytes(buffer, new WriteCallback() {

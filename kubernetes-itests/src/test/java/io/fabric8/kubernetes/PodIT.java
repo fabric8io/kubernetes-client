@@ -276,7 +276,7 @@ class PodIT {
     }
   }
 
-  @ParameterizedTest
+  @ParameterizedTest(name = "upload, with valid file to ''{0}'', should create file with contents")
   @ValueSource(strings = {
       "/tmp/toBeUploaded",
       "/tmp/001_special_!@#\\$^&(.mp4",

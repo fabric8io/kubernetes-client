@@ -3,6 +3,7 @@
 ### 6.5-SNAPSHOT
 
 #### Bugs
+* Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
 * Fix #4794: improving the semantics of manually calling informer stop
 * Fix #4798: fix leader election release on cancel
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
@@ -11,6 +12,7 @@
 
 #### Improvements
 * Fix #4747: migrate to SnakeYAML Engine
+* Fix #4853: adding a wait on the pod for log operations
 * Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 * Fix #4644: generate CRDs in parallel and optimize code

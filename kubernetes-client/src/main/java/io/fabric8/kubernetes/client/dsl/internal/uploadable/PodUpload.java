@@ -82,9 +82,7 @@ public class PodUpload {
       throws IOException {
     String command = createExecCommandForUpload(operation.getContext().getFile());
 
-    return upload(operation, command, os -> {
-      InputStreamPumper.transferTo(inputStream, os::write);
-    });
+    return upload(operation, command, os -> InputStreamPumper.transferTo(inputStream, os::write));
   }
 
   private static boolean uploadFile(PodOperationsImpl operation, Path pathToUpload)

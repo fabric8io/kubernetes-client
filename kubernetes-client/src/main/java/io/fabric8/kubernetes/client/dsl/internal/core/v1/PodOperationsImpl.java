@@ -120,6 +120,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   protected <T> T doGetLog(Class<T> type) {
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), podOperationContext.getLogParameters()));
+
+      PodOperationUtil.waitUntilReadyOrSucceded(this,
+          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
+
       return handleRawGet(url, type);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), ioException);
