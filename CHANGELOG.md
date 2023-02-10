@@ -21,6 +21,7 @@
 #### Improvements
 * Fix #4675: adding a fully client side timeout for informer watches
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
+* Fix #4638: adding a way to set the full object meta on a leadership election lock, this can be used to set owner references
 * Fix #4644: generate CRDs in parallel and optimize code
 * Fix #4659: added a generic support(apiversion, kind) method in addition to the class based check
 * Fix #4724: Private configuration classes cause trouble with Java native (reflection)

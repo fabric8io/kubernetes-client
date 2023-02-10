@@ -186,7 +186,7 @@ public class LeaderElectionExamples {
                   .withLeaderCallbacks(new LeaderCallbacks(
                       () -> System.out.printf("\r%1$s: I just became leader!!!%n", id),
                       () -> {
-                        leaderReference.updateAndGet(s -> id.equals(s)?null:s);
+                        leaderReference.updateAndGet(s -> id.equals(s) ? null : s);
                         System.out.printf("\r%1$s: I just lost my leadership :(%n", id);
                       },
                       leaderReference::set))
