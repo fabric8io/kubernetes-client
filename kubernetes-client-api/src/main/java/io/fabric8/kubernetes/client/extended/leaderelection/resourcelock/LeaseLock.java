@@ -35,9 +35,8 @@ public class LeaseLock extends ResourceLock<Lease> {
   }
 
   @Override
-  protected Lease toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta, Lease current) {
-    LeaseBuilder builder = Optional.ofNullable(current).map(LeaseBuilder::new).orElse(new LeaseBuilder());
-    return builder.withMetadata(meta)
+  protected Lease toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta) {
+    return new LeaseBuilder().withMetadata(meta)
         .withNewSpec()
         .withHolderIdentity(leaderElectionRecord.getHolderIdentity())
         .withLeaseDurationSeconds((int) leaderElectionRecord.getLeaseDuration().get(ChronoUnit.SECONDS))
@@ -50,16 +49,12 @@ public class LeaseLock extends ResourceLock<Lease> {
 
   @Override
   protected LeaderElectionRecord toRecord(Lease resource) {
-    return Optional.ofNullable(resource.getSpec()).map(spec -> {
-      final LeaderElectionRecord ret = new LeaderElectionRecord(
-          spec.getHolderIdentity(),
-          Duration.ofSeconds(spec.getLeaseDurationSeconds()),
-          spec.getAcquireTime(),
-          spec.getRenewTime(),
-          Optional.ofNullable(spec.getLeaseTransitions()).orElse(0));
-      ret.setVersion(resource.getMetadata().getResourceVersion());
-      return ret;
-    }).orElse(null);
+    return Optional.ofNullable(resource.getSpec()).map(spec -> new LeaderElectionRecord(
+        spec.getHolderIdentity(),
+        Duration.ofSeconds(spec.getLeaseDurationSeconds()),
+        spec.getAcquireTime(),
+        spec.getRenewTime(),
+        Optional.ofNullable(spec.getLeaseTransitions()).orElse(0))).orElse(null);
   }
 
 }

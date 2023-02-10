@@ -51,8 +51,11 @@ public class LeaderElectionTest {
   @Test
   public void singleLeaderConfigMapLockCreateTest() throws Exception {
     // Given
-    server.expect().post().withPath("/api/v1/namespaces/namespace/configmaps")
-        .andReturn(200, null).once();
+    server.expect()
+        .post()
+        .withPath("/api/v1/namespaces/namespace/configmaps")
+        .andReturn(200, null)
+        .once();
     // When - Then
     testAndAssertSingleLeader("lead-config-map",
         new ConfigMapLock("namespace", "name", "lead-config-map"));
@@ -61,7 +64,9 @@ public class LeaderElectionTest {
   @Test
   public void singleLeaderConfigMapLockUpdateTest() throws Exception {
     // Given
-    server.expect().get().withPath("/api/v1/namespaces/namespace/configmaps/name")
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/namespace/configmaps/name")
         .andReturn(200, new ConfigMapBuilder()
             .withNewMetadata()
             .withResourceVersion("1")
@@ -71,8 +76,11 @@ public class LeaderElectionTest {
             .endMetadata()
             .build())
         .always();
-    server.expect().put().withPath("/api/v1/namespaces/namespace/configmaps/name")
-        .andReturn(200, null).once();
+    server.expect()
+        .patch()
+        .withPath("/api/v1/namespaces/namespace/configmaps/name")
+        .andReturn(200, null)
+        .once();
     // When - Then
     testAndAssertSingleLeader("lead-config-map",
         new ConfigMapLock("namespace", "name", "lead-config-map"));
@@ -81,8 +89,11 @@ public class LeaderElectionTest {
   @Test
   public void singleLeaderLeaseLockCreateTest() throws Exception {
     // Given
-    server.expect().post().withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases")
-        .andReturn(200, null).once();
+    server.expect()
+        .post()
+        .withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases")
+        .andReturn(200, null)
+        .once();
     // When - Then
     testAndAssertSingleLeader("lead-lease",
         new LeaseLock("namespace", "name", "lead-lease"));
@@ -91,9 +102,13 @@ public class LeaderElectionTest {
   @Test
   public void singleLeaderLeaseLockUpdateTest() throws Exception {
     // Given
-    server.expect().get().withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
+    server.expect()
+        .get()
+        .withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
         .andReturn(200, new LeaseBuilder()
-            .withNewMetadata().withResourceVersion("1").endMetadata()
+            .withNewMetadata()
+            .withResourceVersion("1")
+            .endMetadata()
             .withNewSpec()
             .withHolderIdentity("not-lead-lease")
             .withLeaseDurationSeconds(1)
@@ -103,8 +118,11 @@ public class LeaderElectionTest {
             .endSpec()
             .build())
         .always();
-    server.expect().put().withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
-        .andReturn(200, null).once();
+    server.expect()
+        .patch()
+        .withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
+        .andReturn(200, null)
+        .once();
     // When - Then
     testAndAssertSingleLeader("lead-lease",
         new LeaseLock("namespace", "name", "lead-lease"));
@@ -130,7 +148,8 @@ public class LeaderElectionTest {
                     stoppedLeading::countDown,
                     newLeaderRecord::set))
                 .build())
-            .build().run()));
+            .build()
+            .run()));
     // Then
     assertTrue(leaderLatch.await(10, TimeUnit.SECONDS));
     assertEquals(id, newLeaderRecord.get());
