@@ -123,7 +123,6 @@ public class FileJavaGenerator implements JavaGenerator {
     int size = wCUs.size();
     CompletableFuture<Void>[] futures = new CompletableFuture[size];
 
-    int i = 0;
     for (int i = 0; i < size; i++) {
       WritableCRCompilationUnit w = wCUs.get(i);
       futures[i] = CompletableFuture.runAsync(() -> w.writeAllJavaClasses(basePath));
