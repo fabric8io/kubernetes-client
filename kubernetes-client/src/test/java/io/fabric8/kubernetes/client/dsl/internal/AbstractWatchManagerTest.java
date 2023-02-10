@@ -244,7 +244,7 @@ class AbstractWatchManagerTest {
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
         throws MalformedURLException {
-      super(watcher, Mockito.mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval,
+      super(watcher, mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval,
           () -> null);
     }
 

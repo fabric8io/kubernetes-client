@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
@@ -75,9 +74,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, Consumer<List<ByteBuffer>> consumer) {
     CompletableFuture<HttpResponse<AsyncBody>> result = new CompletableFuture<>();
 
-    retryWithExponentialBackoff(result, () -> consumeBytesOnce(request, consumer), request.uri(), r -> r.code(),
-        r -> r.body().cancel(),
-        null);
+    retryWithExponentialBackoff(result, () -> consumeBytesOnce(request, consumer), request.uri(), HttpResponse::code,
+        r -> r.body().cancel());
     return result;
   }
 
@@ -126,29 +124,16 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   }
 
   /**
-   * Will retry the action if needed based upon the retry settings. A calculator will be created on the first
-   * call and passed to subsequent retries to keep track of the attempts.
+   * Will retry the action if needed based upon the retry settings provided by the ExponentialBackoffIntervalCalculator.
    */
   protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
       Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
       java.util.function.Consumer<V> cancel, ExponentialBackoffIntervalCalculator retryIntervalCalculator) {
 
-    if (retryIntervalCalculator == null) {
-      Config requestConfig = this.builder.getRequestConfig();
-      int requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-      int requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
-      if (requestConfig != null) {
-        requestRetryBackoffInterval = requestConfig.getRequestRetryBackoffInterval();
-        requestRetryBackoffLimit = requestConfig.getRequestRetryBackoffLimit();
-      }
-      retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, requestRetryBackoffLimit);
-    }
-
-    final ExponentialBackoffIntervalCalculator backoff = retryIntervalCalculator;
     action.get()
         .whenComplete((response, throwable) -> {
-          if (backoff.shouldRetry() && !result.isDone()) {
-            long retryInterval = backoff.nextReconnectInterval();
+          if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
+            long retryInterval = retryIntervalCalculator.nextReconnectInterval();
             boolean retry = false;
             if (response != null) {
               Integer code = codeExtractor.apply(response);
@@ -164,7 +149,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
             }
             if (retry) {
               Utils.schedule(Runnable::run,
-                  () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, backoff),
+                  () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, retryIntervalCalculator),
                   retryInterval,
                   TimeUnit.MILLISECONDS);
               return;
@@ -172,6 +157,13 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
           }
           completeOrCancel(cancel, result).accept(response, throwable);
         });
+  }
+
+  protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
+      Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
+      java.util.function.Consumer<V> cancel) {
+    retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel,
+        ExponentialBackoffIntervalCalculator.from(builder.getRequestConfig()));
   }
 
   @Override
@@ -193,8 +185,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
         standardWebSocketBuilder.asHttpRequest().uri(),
         r -> Optional.ofNullable(r.wshse).map(WebSocketHandshakeException::getResponse).map(HttpResponse::code).orElse(null),
-        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)),
-        null);
+        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)));
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
