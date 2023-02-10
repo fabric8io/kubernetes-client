@@ -27,8 +27,6 @@ import io.fabric8.java.generator.Config;
 
 import java.util.Collections;
 
-import static com.github.javaparser.StaticJavaParser.parseName;
-
 public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
   private final String pkg;
