@@ -50,17 +50,12 @@ public class ConfigMapLock extends ResourceLock<ConfigMap> {
             return null;
           }
         })
-        .map(record -> {
-          record.setVersion(resource.getMetadata().getResourceVersion());
-          return record;
-        })
         .orElse(null);
   }
 
   @Override
-  protected ConfigMap toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta, ConfigMap current) {
-    ConfigMapBuilder builder = Optional.ofNullable(current).map(ConfigMapBuilder::new).orElse(new ConfigMapBuilder());
-    return builder.withMetadata(meta).editMetadata()
+  protected ConfigMap toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta) {
+    return new ConfigMapBuilder().withMetadata(meta).editMetadata()
         .addToAnnotations(LEADER_ELECTION_RECORD_ANNOTATION_KEY, Serialization.asJson(leaderElectionRecord))
         .endMetadata()
         .build();

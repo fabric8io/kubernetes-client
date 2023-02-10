@@ -20,7 +20,10 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,7 +43,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
 
   @Override
   public LeaderElectionRecord get(KubernetesClient client) {
-    return getResource(client).map(this::toRecord).orElse(null);
+    return getResource(client).map(this::toRecordInternal).orElse(null);
   }
 
   private Optional<T> getResource(KubernetesClient client) {
@@ -49,14 +52,13 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
 
   @Override
   public void create(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
-    client.resource(toResource(leaderElectionRecord, getObjectMeta(null), null)).create();
+    client.resource(toResource(leaderElectionRecord, getObjectMeta(leaderElectionRecord.getVersion()))).create();
   }
 
   @Override
   public void update(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
-    // this should be an edit, but we've disabled the ability for it to have optimistic locking
-    client.resource(getResource(client).map(r -> toResource(leaderElectionRecord, getObjectMeta(r), r))
-        .orElseThrow(() -> new NullPointerException())).lockResourceVersion().replace();
+    client.resource(toResource(leaderElectionRecord, getObjectMeta(leaderElectionRecord.getVersion())))
+        .patch(PatchContext.of(PatchType.STRATEGIC_MERGE));
   }
 
   /**
@@ -67,14 +69,18 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
    * @param current may be null
    * @return
    */
-  protected abstract T toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta, T current);
+  protected abstract T toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta);
+
+  protected LeaderElectionRecord toRecordInternal(T resource) {
+    LeaderElectionRecord result = toRecord(resource);
+    result.setVersion(resource.getMetadata().getResourceVersion());
+    return result;
+  }
 
   protected abstract LeaderElectionRecord toRecord(T resource);
 
-  protected ObjectMeta getObjectMeta(T current) {
-    ObjectMetaBuilder builder = Optional.ofNullable(current).map(HasMetadata::getMetadata).map(ObjectMetaBuilder::new)
-        .orElse(new ObjectMetaBuilder());
-    return builder.withNamespace(namespace).withName(name).build();
+  protected ObjectMeta getObjectMeta(Serializable version) {
+    return new ObjectMetaBuilder().withNamespace(namespace).withName(name).withResourceVersion((String) version).build();
   }
 
   /**
