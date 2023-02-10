@@ -33,6 +33,10 @@ public class ConfigMapLock extends ResourceLock<ConfigMap> {
     super(configMapNamespace, configMapName, identity);
   }
 
+  public ConfigMapLock(ObjectMeta meta, String identity) {
+    super(meta, identity);
+  }
+
   @Override
   protected Class<ConfigMap> getKind() {
     return ConfigMap.class;

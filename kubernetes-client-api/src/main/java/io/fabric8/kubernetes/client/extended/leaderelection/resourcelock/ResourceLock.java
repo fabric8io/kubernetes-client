@@ -29,13 +29,17 @@ import java.util.Optional;
 
 public abstract class ResourceLock<T extends HasMetadata> implements Lock {
 
-  private final String namespace;
-  private final String name;
+  private final ObjectMeta meta;
   private final String identity;
 
   public ResourceLock(String namespace, String name, String identity) {
-    this.namespace = Objects.requireNonNull(namespace, "namespace is required");
-    this.name = Objects.requireNonNull(name, "name is required");
+    this(new ObjectMetaBuilder().withNamespace(namespace).withName(name).build(), identity);
+  }
+
+  public ResourceLock(ObjectMeta meta, String identity) {
+    this.meta = meta;
+    Objects.requireNonNull(meta.getNamespace(), "namespace is required");
+    Objects.requireNonNull(meta.getName(), "name is required");
     this.identity = Objects.requireNonNull(identity, "identity is required");
   }
 
@@ -47,7 +51,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
   }
 
   private Optional<T> getResource(KubernetesClient client) {
-    return Optional.ofNullable(client.resources(getKind()).inNamespace(namespace).withName(name).get());
+    return Optional.ofNullable(client.resources(getKind()).inNamespace(meta.getNamespace()).withName(meta.getName()).get());
   }
 
   @Override
@@ -66,7 +70,6 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
    *
    * @param leaderElectionRecord
    * @param meta not null
-   * @param current may be null
    * @return
    */
   protected abstract T toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta);
@@ -80,7 +83,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
   protected abstract LeaderElectionRecord toRecord(T resource);
 
   protected ObjectMeta getObjectMeta(Serializable version) {
-    return new ObjectMetaBuilder().withNamespace(namespace).withName(name).withResourceVersion((String) version).build();
+    return new ObjectMetaBuilder(meta).withResourceVersion((String) version).build();
   }
 
   /**
@@ -96,7 +99,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
    */
   @Override
   public String describe() {
-    return String.format("%sLock: %s - %s (%s)", getKind().getSimpleName(), namespace, name, identity);
+    return String.format("%sLock: %s - %s (%s)", getKind().getSimpleName(), meta.getNamespace(), meta.getName(), identity);
   }
 
 }
