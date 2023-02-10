@@ -22,11 +22,10 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.informers.ExceptionHandler;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +58,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.store = store;
     this.watcher = new ReflectorWatcher();
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(listerWatcher.getWatchReconnectInterval(),
-        WatchConnectionManager.BACKOFF_MAX_EXPONENT);
+        ExponentialBackoffIntervalCalculator.UNLIMITED_RETRIES);
   }
 
   public CompletableFuture<Void> start() {

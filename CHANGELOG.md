@@ -3,17 +3,28 @@
 ### 6.5-SNAPSHOT
 
 #### Bugs
+* Fix #4791: handle the `NullPointerException` in `Thread.currentThread().getContextClassLoader()`
+* Fix #4832: NO_PROXY can match cidr with bit suffix <10
+* Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
 * Fix #4794: improving the semantics of manually calling informer stop
 * Fix #4798: fix leader election release on cancel
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
+* Fix #4818: [java-generator] Escape `*/` in generated JavaDocs
+* Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
 
 #### Improvements
+* Fix #4747: migrate to SnakeYAML Engine
+* Fix #4853: adding a wait on the pod for log operations
 * Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 * Fix #4644: generate CRDs in parallel and optimize code
 * Fix #4795: don't print warning message when service account token property is unset
+* Fix #4788: moved retry logic into the standard client so that it applies to all requests, including websockets
 
 #### Dependency Upgrade
+* Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0
+* Fix #4804: Update Kubernetes Model GatewayApi to v0.6.0
+* Fix #4804: Update CertManager Model to v1.11.0
 
 #### New Features
 

@@ -24,7 +24,8 @@
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson.bundle.version}</bundle>
-    <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
+    <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.snakeyaml/snakeyaml-engine/${snakeyaml.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.generex/${generex.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.automaton/${automaton.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.conscrypt-openjdk/${conscrypt-openjdk-uber.bundle.version}</bundle>
@@ -59,6 +60,7 @@
     <bundle>mvn:io.fabric8/kubernetes-model-policy/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-scheduling/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-storageclass/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-resource/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-httpclient-okhttp/${project.version}/jar/bundle</bundle>
     <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>

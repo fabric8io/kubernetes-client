@@ -140,7 +140,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     }
 
     if (config.isGeneratedAnnotations()) {
-      clz.addAnnotation(GENERATED_ANNOTATION);
+      clz.addAnnotation(newGeneratedAnnotation());
     }
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);

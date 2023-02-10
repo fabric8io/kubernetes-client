@@ -121,6 +121,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   protected <T> T doGetLog(Class<T> type) {
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), podOperationContext.getLogParameters()));
+
+      PodOperationUtil.waitUntilReadyOrSucceded(this,
+          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
+
       return handleRawGet(url, type);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), ioException);
@@ -429,7 +433,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private String[] readFileCommand(String source) {
-    return new String[] { "sh", "-c", String.format("cat %s | base64", shellQuote(source)) };
+    return new String[] { "sh", "-c", String.format("base64 %s", shellQuote(source)) };
   }
 
   private InputStream readFile(String source) {

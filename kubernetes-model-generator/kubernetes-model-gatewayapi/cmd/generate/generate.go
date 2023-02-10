@@ -41,20 +41,22 @@ type Schema struct {
   HTTPRouteList                            v1alpha2gwapi.HTTPRouteList
   ReferenceGrant                           v1alpha2gwapi.ReferenceGrant
   ReferenceGrantList                       v1alpha2gwapi.ReferenceGrantList
-  ReferencePolicy                          v1alpha2gwapi.ReferencePolicy
-  ReferencePolicyList                      v1alpha2gwapi.ReferencePolicyList
   TCPRoute                                 v1alpha2gwapi.TCPRoute
   TCPRouteList                             v1alpha2gwapi.TCPRouteList
   TLSRoute                                 v1alpha2gwapi.TLSRoute
   TLSRouteList                             v1alpha2gwapi.TLSRouteList
   UDPRoute                                 v1alpha2gwapi.UDPRoute
   UDPRouteList                             v1alpha2gwapi.UDPRouteList
+  GRPCRoute                                v1alpha2gwapi.GRPCRoute
+  GRPCRouteList                            v1alpha2gwapi.GRPCRouteList
   V1Beta1Gateway                           v1beta1gwapi.Gateway
   V1Beta1GatewayList                       v1beta1gwapi.GatewayList
   V1Beta1GatewayClass                      v1beta1gwapi.GatewayClass
   V1Beta1GatewayClassList                  v1beta1gwapi.GatewayClassList
   V1Beta1HTTPRoute                         v1beta1gwapi.HTTPRoute
   V1Beta1HTTPRouteList                     v1beta1gwapi.HTTPRouteList
+  V1Beta1ReferenceGrant                    v1beta1gwapi.ReferenceGrant
+  V1Beta1ReferenceGrantList                v1beta1gwapi.ReferenceGrantList
 }
 
 func main() {

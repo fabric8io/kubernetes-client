@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "auth",
     "caBundle",
+    "caBundleSecretRef",
     "namespace",
     "path",
     "server"
@@ -73,6 +75,8 @@ public class VaultIssuer implements KubernetesResource
     @JsonProperty("caBundle")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String caBundle;
+    @JsonProperty("caBundleSecretRef")
+    private SecretKeySelector caBundleSecretRef;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("path")
@@ -96,11 +100,13 @@ public class VaultIssuer implements KubernetesResource
      * @param caBundle
      * @param auth
      * @param namespace
+     * @param caBundleSecretRef
      */
-    public VaultIssuer(VaultAuth auth, String caBundle, String namespace, String path, String server) {
+    public VaultIssuer(VaultAuth auth, String caBundle, SecretKeySelector caBundleSecretRef, String namespace, String path, String server) {
         super();
         this.auth = auth;
         this.caBundle = caBundle;
+        this.caBundleSecretRef = caBundleSecretRef;
         this.namespace = namespace;
         this.path = path;
         this.server = server;
@@ -124,6 +130,16 @@ public class VaultIssuer implements KubernetesResource
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
         this.caBundle = caBundle;
+    }
+
+    @JsonProperty("caBundleSecretRef")
+    public SecretKeySelector getCaBundleSecretRef() {
+        return caBundleSecretRef;
+    }
+
+    @JsonProperty("caBundleSecretRef")
+    public void setCaBundleSecretRef(SecretKeySelector caBundleSecretRef) {
+        this.caBundleSecretRef = caBundleSecretRef;
     }
 
     @JsonProperty("namespace")

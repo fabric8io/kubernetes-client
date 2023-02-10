@@ -49,13 +49,6 @@
 
     <dependency>
       <groupId>io.sundr</groupId>
-      <artifactId>sundr-adapter-reflect</artifactId>
-      <version>${sundrio.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
       <version>${sundrio.version}</version>
       <scope>compile</scope>

@@ -1257,6 +1257,9 @@
         "certificate-authority-data": {
           "type": "string"
         },
+        "disable-compression": {
+          "type": "boolean"
+        },
         "extensions": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1872,6 +1875,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.CinderVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_ClaimSource": {
+      "type": "object",
+      "properties": {
+        "resourceClaimName": {
+          "type": "string"
+        },
+        "resourceClaimTemplateName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ClaimSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -4555,8 +4574,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
         "dataSourceRef": {
-          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+          "$ref": "#/definitions/kubernetes_core_TypedObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedObjectReference"
         },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
@@ -5268,6 +5287,36 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_PodResourceClaim": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/kubernetes_core_ClaimSource",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ClaimSource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PodResourceClaim",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_PodSchedulingGate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PodSchedulingGate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_PodSecurityContext": {
       "type": "object",
       "properties": {
@@ -5441,6 +5490,14 @@
             "existingJavaType": "io.fabric8.kubernetes.api.model.PodReadinessGate"
           }
         },
+        "resourceClaims": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PodResourceClaim",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodResourceClaim"
+          }
+        },
         "restartPolicy": {
           "type": "string"
         },
@@ -5449,6 +5506,14 @@
         },
         "schedulerName": {
           "type": "string"
+        },
+        "schedulingGates": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PodSchedulingGate",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodSchedulingGate"
+          }
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_PodSecurityContext",
@@ -6060,6 +6125,19 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_ResourceClaim": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ResourceClaim",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_ResourceFieldSelector": {
       "type": "object",
       "properties": {
@@ -6203,6 +6281,14 @@
     "kubernetes_core_ResourceRequirements": {
       "type": "object",
       "properties": {
+        "claims": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ResourceClaim",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceClaim"
+          }
+        },
         "limits": {
           "type": "object",
           "additionalProperties": {
@@ -7161,6 +7247,28 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_TypedObjectReference": {
+      "type": "object",
+      "properties": {
+        "apiGroup": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.TypedObjectReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]

@@ -42,7 +42,6 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +75,6 @@ public class OperationSupport {
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
-  private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
 
   protected OperationContext context;
   protected final HttpClient httpClient;
@@ -87,8 +85,6 @@ public class OperationSupport {
   protected String apiGroupName;
   protected String apiGroupVersion;
   protected boolean dryRun;
-  private final int requestRetryBackoffLimit;
-  private final int requestRetryBackoffInterval;
 
   public OperationSupport(Client client) {
     this(new OperationContext().withClient(client));
@@ -110,9 +106,6 @@ public class OperationSupport {
     } else {
       this.apiGroupVersion = "v1";
     }
-
-    requestRetryBackoffInterval = getRequestConfig().getRequestRetryBackoffInterval();
-    this.requestRetryBackoffLimit = getRequestConfig().getRequestRetryBackoffLimit();
   }
 
   public String getAPIGroupName() {
@@ -574,12 +567,8 @@ public class OperationSupport {
       TypeReference<T> type) {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
-    CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
-    retryWithExponentialBackoff(futureResponse,
-        new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, MAX_RETRY_INTERVAL_EXPONENT),
-        Utils.getNonNullOrElse(client, httpClient), request);
 
-    return futureResponse.thenApply(response -> {
+    return client.sendAsync(request, byte[].class).thenApply(response -> {
       try {
         assertResponseCode(request, response);
         if (type != null && type.getType() != null) {
@@ -593,39 +582,6 @@ public class OperationSupport {
         throw requestException(request, e);
       }
     });
-  }
-
-  protected void retryWithExponentialBackoff(CompletableFuture<HttpResponse<byte[]>> result,
-      ExponentialBackoffIntervalCalculator retryIntervalCalculator,
-      HttpClient client, HttpRequest request) {
-    client.sendAsync(request, byte[].class)
-        .whenComplete((response, throwable) -> {
-          int retries = retryIntervalCalculator.getCurrentReconnectAttempt();
-          if (retries < requestRetryBackoffLimit) {
-            long retryInterval = retryIntervalCalculator.nextReconnectInterval();
-            boolean retry = false;
-            if (response != null && response.code() >= 500) {
-              LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                  request.uri(), response.code(), retryInterval);
-              retry = true;
-            } else if (throwable instanceof IOException) {
-              LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-                  request.uri(), retryInterval), throwable);
-              retry = true;
-            }
-            if (retry) {
-              Utils.schedule(context.getExecutor(),
-                  () -> retryWithExponentialBackoff(result, retryIntervalCalculator, client, request), retryInterval,
-                  TimeUnit.MILLISECONDS);
-              return;
-            }
-          }
-          if (throwable != null) {
-            result.completeExceptionally(throwable);
-          } else {
-            result.complete(response);
-          }
-        });
   }
 
   /**

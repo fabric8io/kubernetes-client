@@ -103,7 +103,8 @@ public interface WebSocket {
   }
 
   /**
-   * Send some data
+   * Send some data. The buffer will be copied if needed by
+   * the implementation to allow for modifications after this call.
    *
    * @return true if the message was successfully enqueued.
    */

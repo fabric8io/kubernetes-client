@@ -1004,6 +1004,9 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "unhealthyPodEvictionPolicy": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1259,6 +1262,9 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "unhealthyPodEvictionPolicy": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2416,6 +2422,9 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "unhealthyPodEvictionPolicy": {
+          "type": "string"
         }
       },
       "additionalProperties": true

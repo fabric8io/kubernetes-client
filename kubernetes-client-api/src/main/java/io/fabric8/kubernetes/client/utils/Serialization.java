@@ -26,12 +26,8 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-import org.yaml.snakeyaml.nodes.Tag;
-import org.yaml.snakeyaml.representer.Representer;
-import org.yaml.snakeyaml.resolver.Resolver;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -253,9 +249,8 @@ public class Serialization {
 
       final T result;
       if (intch != '{' && intch != '[') {
-        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(),
-            new CustomYamlTagResolverWithLimit());
-        final Object obj = yaml.load(bis);
+        final Load yaml = new Load(LoadSettings.builder().build());
+        final Object obj = yaml.loadFromInputStream(bis);
         if (obj instanceof Map) {
           result = mapper.convertValue(obj, type);
         } else {
@@ -437,19 +432,6 @@ public class Serialization {
           JSON_MAPPER.writeValueAsString(resource), resource.getClass());
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
-    }
-  }
-
-  private static class CustomYamlTagResolverWithLimit extends Resolver {
-    @Override
-    public void addImplicitResolver(Tag tag, Pattern regexp, String first, int limit) {
-      if (tag == Tag.TIMESTAMP)
-        return;
-      if (tag.equals(Tag.BOOL)) {
-        regexp = Pattern.compile("^(?:true|True|TRUE|false|False|FALSE)$");
-        first = "tTfF";
-      }
-      super.addImplicitResolver(tag, regexp, first, limit);
     }
   }
 }

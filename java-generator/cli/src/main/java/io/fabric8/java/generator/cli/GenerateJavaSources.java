@@ -75,7 +75,7 @@ public class GenerateJavaSources implements Runnable {
   String codeStructure = null;
 
   @Option(names = { "-skip-generated-annotations",
-      "--skip-generated-annotations" }, description = "Add extra lombok and sundrio annotation to the generated classes", required = false, hidden = true)
+      "--skip-generated-annotations" }, description = "Skip emitting the @javax.annotation.processing.Generated annotation on the generated sources", required = false, hidden = true)
   Boolean skipGeneratedAnnotations = null;
 
   @Option(names = { "-package-overrides",
@@ -87,7 +87,7 @@ public class GenerateJavaSources implements Runnable {
     final Config.Prefix pSt = (prefixStrategy != null) ? Config.Prefix.valueOf(prefixStrategy) : null;
     final Config.Suffix sSt = (suffixStrategy != null) ? Config.Suffix.valueOf(suffixStrategy) : null;
     final Config.CodeStructure structure = (codeStructure != null) ? Config.CodeStructure.valueOf(codeStructure) : null;
-    final Boolean generatedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : null;
+    final Boolean noGeneratedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : false;
     final Config config = new Config(
         uppercaseEnum,
         pSt,
@@ -95,7 +95,7 @@ public class GenerateJavaSources implements Runnable {
         alwaysPreserveUnkownFields,
         addExtraAnnotations,
         structure,
-        generatedAnnotations,
+        !noGeneratedAnnotations,
         packageOverrides);
 
     List<JavaGenerator> runners = new ArrayList<>();

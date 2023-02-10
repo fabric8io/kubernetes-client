@@ -61,7 +61,7 @@ public class FileJavaGenerator implements JavaGenerator {
       try (Stream<Path> walk = Files.walk(source.toPath(), FileVisitOption.FOLLOW_LINKS)) {
         walk
             .map(Path::toFile)
-            .filter(f -> !f.getAbsolutePath().equals(source.getAbsolutePath()))
+            .filter(f -> !f.getAbsolutePath().equals(source.getAbsolutePath()) && f.isFile())
             .forEach(f -> runOnSingleSource(f, outputDirectory));
       } catch (IOException e) {
         throw new JavaGeneratorException(
@@ -95,10 +95,9 @@ public class FileJavaGenerator implements JavaGenerator {
                     CustomResourceDefinition crd = (CustomResourceDefinition) resource;
 
                     final String basePackage = groupToPackage(crd.getSpec().getGroup());
-                    List<WritableCRCompilationUnit> writables = crGeneratorRunner.generate(crd, basePackage);
 
-                    writables.parallelStream()
-                        .forEach(w -> w.writeAllJavaClasses(basePath, basePackage));
+                    crGeneratorRunner.generate(crd, basePackage).parallelStream()
+                        .forEach(w -> w.writeAllJavaClasses(basePath));
                   } else {
                     LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
                   }

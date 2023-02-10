@@ -1,0 +1,13 @@
+{
+  "apiVersion": "resource.k8s.io/v1alpha1",
+  "kind": "PodScheduling",
+  "metadata": {
+    "name": "test-podscheduling"
+  },
+  "spec": {
+    "potentialNodes": [
+      "potential-nodes-value"
+    ],
+    "selectedNode": "selected-node-value"
+  }
+}

@@ -15,50 +15,32 @@
  */
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
-import io.fabric8.kubernetes.client.http.HttpClient.Factory;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class StandardHttpClientTest {
 
-  private static final class TestableStandardHttpClient
-      extends StandardHttpClient<HttpClient, Factory, StandardHttpClientBuilder<HttpClient, Factory, ?>> {
-    CompletableFuture<WebSocketResponse> wsFuture;
-    CompletableFuture<HttpResponse<AsyncBody>> respFuture;
+  private TestStandardHttpClient client;
 
-    private TestableStandardHttpClient() {
-      super(Mockito.mock(StandardHttpClientBuilder.class));
-    }
-
-    @Override
-    public void close() {
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public CompletableFuture<WebSocketResponse> buildWebSocketDirect(StandardWebSocketBuilder standardWebSocketBuilder,
-        Listener listener) {
-      this.wsFuture = new CompletableFuture<>();
-      return wsFuture;
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
-        Consumer<List<ByteBuffer>> consumer) {
-      this.respFuture = new CompletableFuture<>();
-      return respFuture;
-    }
+  @BeforeEach
+  void setup() {
+    client = new TestStandardHttpClientFactory().newBuilder().build();
   }
-
-  private TestableStandardHttpClient client = new TestableStandardHttpClient();
 
   @Test
   void webSocketFutureCancel() {
@@ -66,11 +48,11 @@ class StandardHttpClientTest {
         .buildAsync(new Listener() {
         });
 
-    WebSocket ws = Mockito.mock(WebSocket.class);
+    WebSocket ws = mock(WebSocket.class);
 
     // cancel the future before the websocket response
     future.cancel(true);
-    client.wsFuture.complete(new WebSocketResponse(ws, null));
+    client.getWsFutures().get(0).complete(new WebSocketResponse(ws, null));
 
     // ensure that the ws has been closed
     Mockito.verify(ws).sendClose(1000, null);
@@ -78,36 +60,125 @@ class StandardHttpClientTest {
 
   @Test
   void consumeBytesFutureCancel() {
-    HttpResponse<AsyncBody> asyncResp = Mockito.mock(HttpResponse.class, Mockito.RETURNS_DEEP_STUBS);
-    Mockito.when(asyncResp.body()).thenReturn(Mockito.mock(AsyncBody.class));
+    final HttpResponse<AsyncBody> asyncResp = new TestHttpResponse<AsyncBody>().withBody(mock(AsyncBody.class));
 
-    CompletableFuture<?> consumeFuture = client.consumeBytes(client.newHttpRequestBuilder().uri("http://localhost").build(),
-        new Consumer<List<ByteBuffer>>() {
-          @Override
-          public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
 
-          }
         });
 
     // cancel the future before the response
     consumeFuture.cancel(true);
-    client.respFuture.complete(asyncResp);
+    client.getRespFutures().get(0).complete(asyncResp);
     Mockito.verify(asyncResp.body()).cancel();
   }
 
   @Test
   void sendAsyncFutureCancel() {
-    HttpResponse<AsyncBody> asyncResp = Mockito.mock(HttpResponse.class, Mockito.RETURNS_DEEP_STUBS);
-    Mockito.when(asyncResp.body()).thenReturn(Mockito.mock(AsyncBody.class));
-    Mockito.when(asyncResp.body().done()).thenReturn(new CompletableFuture<>());
+    final HttpResponse<AsyncBody> asyncResp = new TestHttpResponse<AsyncBody>().withBody(mock(AsyncBody.class));
+    when(asyncResp.body().done()).thenReturn(new CompletableFuture<>());
 
     CompletableFuture<?> sendAsyncFuture = client.sendAsync(client.newHttpRequestBuilder().uri("http://localhost").build(),
         InputStream.class);
 
     // cancel the future before the response
     sendAsyncFuture.cancel(true);
-    client.respFuture.complete(asyncResp);
+    client.getRespFutures().get(0).complete(asyncResp);
     Mockito.verify(asyncResp.body()).cancel();
+  }
+
+  @Test
+  void testNoHttpRetryWithDefaultConfig() throws InterruptedException {
+    CompletableFuture<?> sendAsyncFuture = client.sendAsync(client.newHttpRequestBuilder().uri("http://localhost").build(),
+        InputStream.class);
+
+    client.getRespFutures().get(0).completeExceptionally(new IOException());
+
+    try {
+      sendAsyncFuture.get();
+      fail();
+    } catch (ExecutionException e) {
+      assertTrue(e.getCause() instanceof IOException);
+    }
+  }
+
+  @Test
+  void testHttpRetryWithMoreFailuresThanRetries() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+
+        });
+
+    long start = System.currentTimeMillis();
+    client.getRespFutures().get(0).completeExceptionally(new IOException());
+    client.getRespFutures().add(client.getRespFutures().get(0));
+    client.getRespFutures().add(client.getRespFutures().get(0));
+    client.getRespFutures().add(CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(500)));
+
+    // should ultimately error with the final 500
+    assertEquals(500, consumeFuture.get().code());
+    long stop = System.currentTimeMillis();
+
+    // should take longer than the delay
+    assertTrue(stop - start >= 350); //50+100+200
+
+    // only 4 requests issued
+    assertEquals(4, client.getRespFutures().size());
+  }
+
+  @Test
+  void testHttpRetryWithLessFailuresThanRetries() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    final HttpResponse<AsyncBody> error = new TestHttpResponse<AsyncBody>().withCode(500);
+    client.getRespFutures().add(CompletableFuture.completedFuture(error));
+    client.getRespFutures().add(CompletableFuture.completedFuture(error));
+    client.getRespFutures().add(CompletableFuture.completedFuture(error));
+    client.getRespFutures().add(CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(200)));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    // should ultimately succeed with the final 200
+    assertEquals(200, consumeFuture.get().code());
+
+    // only 4 requests issued
+    assertEquals(4, client.getRespFutures().size());
+  }
+
+  @Test
+  void testWebSocketWithLessFailuresThanRetries() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    WebSocket ws = mock(WebSocket.class);
+
+    CompletableFuture<WebSocket> future = client.newWebSocketBuilder().uri(URI.create("ws://localhost"))
+        .buildAsync(new Listener() {
+        });
+
+    client.getWsFutures().get(0)
+        .completeExceptionally(new WebSocketHandshakeException(new TestHttpResponse<AsyncBody>().withCode(500)));
+    client.getWsFutures().add(client.getWsFutures().get(0));
+    client.getWsFutures().add(CompletableFuture.completedFuture((new WebSocketResponse(ws, null))));
+
+    future.get();
+
+    assertEquals(3, client.getWsFutures().size());
   }
 
 }

@@ -232,11 +232,11 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     }
 
     /**
-     * Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images
+     * Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images &#042;&#047;
      */
     @com.fasterxml.jackson.annotation.JsonProperty("image")
     @io.fabric8.generator.annotation.Required()
-    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images */")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private String image;
 

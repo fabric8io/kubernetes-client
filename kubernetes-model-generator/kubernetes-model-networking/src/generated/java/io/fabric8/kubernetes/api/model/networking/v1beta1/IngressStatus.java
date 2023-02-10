@@ -14,7 +14,6 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LoadBalancerStatus;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -58,7 +57,7 @@ public class IngressStatus implements KubernetesResource
 {
 
     @JsonProperty("loadBalancer")
-    private LoadBalancerStatus loadBalancer;
+    private IngressLoadBalancerStatus loadBalancer;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -73,18 +72,18 @@ public class IngressStatus implements KubernetesResource
      * 
      * @param loadBalancer
      */
-    public IngressStatus(LoadBalancerStatus loadBalancer) {
+    public IngressStatus(IngressLoadBalancerStatus loadBalancer) {
         super();
         this.loadBalancer = loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public LoadBalancerStatus getLoadBalancer() {
+    public IngressLoadBalancerStatus getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(LoadBalancerStatus loadBalancer) {
+    public void setLoadBalancer(IngressLoadBalancerStatus loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 

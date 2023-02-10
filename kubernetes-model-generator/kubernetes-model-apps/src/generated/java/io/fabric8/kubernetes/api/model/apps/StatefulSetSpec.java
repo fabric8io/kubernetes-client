@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "minReadySeconds",
+    "ordinals",
     "persistentVolumeClaimRetentionPolicy",
     "podManagementPolicy",
     "replicas",
@@ -66,6 +67,8 @@ public class StatefulSetSpec implements KubernetesResource
 
     @JsonProperty("minReadySeconds")
     private Integer minReadySeconds;
+    @JsonProperty("ordinals")
+    private StatefulSetOrdinals ordinals;
     @JsonProperty("persistentVolumeClaimRetentionPolicy")
     private StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy;
     @JsonProperty("podManagementPolicy")
@@ -101,6 +104,7 @@ public class StatefulSetSpec implements KubernetesResource
      * @param podManagementPolicy
      * @param updateStrategy
      * @param replicas
+     * @param ordinals
      * @param persistentVolumeClaimRetentionPolicy
      * @param revisionHistoryLimit
      * @param selector
@@ -108,9 +112,10 @@ public class StatefulSetSpec implements KubernetesResource
      * @param serviceName
      * @param volumeClaimTemplates
      */
-    public StatefulSetSpec(Integer minReadySeconds, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, Integer replicas, Integer revisionHistoryLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceName, io.fabric8.kubernetes.api.model.PodTemplateSpec template, StatefulSetUpdateStrategy updateStrategy, List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates) {
+    public StatefulSetSpec(Integer minReadySeconds, StatefulSetOrdinals ordinals, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, Integer replicas, Integer revisionHistoryLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceName, io.fabric8.kubernetes.api.model.PodTemplateSpec template, StatefulSetUpdateStrategy updateStrategy, List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates) {
         super();
         this.minReadySeconds = minReadySeconds;
+        this.ordinals = ordinals;
         this.persistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
         this.podManagementPolicy = podManagementPolicy;
         this.replicas = replicas;
@@ -130,6 +135,16 @@ public class StatefulSetSpec implements KubernetesResource
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
+    }
+
+    @JsonProperty("ordinals")
+    public StatefulSetOrdinals getOrdinals() {
+        return ordinals;
+    }
+
+    @JsonProperty("ordinals")
+    public void setOrdinals(StatefulSetOrdinals ordinals) {
+        this.ordinals = ordinals;
     }
 
     @JsonProperty("persistentVolumeClaimRetentionPolicy")

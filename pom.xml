@@ -90,7 +90,7 @@
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.7</maven-core.version>
     <maven-plugin-annotations.version>3.7.1</maven-plugin-annotations.version>
-    <vertx.version>4.3.7</vertx.version>
+    <vertx.version>4.3.8</vertx.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -111,8 +111,9 @@
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <slf4j.version>1.7.36</slf4j.version>
-    <lombok.version>1.18.24</lombok.version>
-    <snakeyaml.version>1.33</snakeyaml.version>
+    <lombok.version>1.18.26</lombok.version>
+    <snakeyaml.version>2.6</snakeyaml.version>
+    <snakeyaml.bundle.version>1.33</snakeyaml.bundle.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.22</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -132,7 +133,7 @@
     <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.2.1</maven.enforcer.plugin.version>
-    <maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
+    <maven.deploy.plugin.version>3.1.0</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.5.0</maven.dependency.plugin.version>
@@ -326,6 +327,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-node</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-resource</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -678,8 +684,8 @@
       </dependency>
 
       <dependency>
-        <groupId>org.yaml</groupId>
-        <artifactId>snakeyaml</artifactId>
+        <groupId>org.snakeyaml</groupId>
+        <artifactId>snakeyaml-engine</artifactId>
         <version>${snakeyaml.version}</version>
       </dependency>
 
@@ -1217,6 +1223,7 @@
                   <include>io.fabric8:kubernetes-model-policy*</include>
                   <include>io.fabric8:kubernetes-model-scheduling*</include>
                   <include>io.fabric8:kubernetes-model-storageclass*</include>
+                  <include>io.fabric8:kubernetes-model-resource*</include>
                   <include>io.fabric8:openshift-model*</include>
                 </includes>
               </dependencies>

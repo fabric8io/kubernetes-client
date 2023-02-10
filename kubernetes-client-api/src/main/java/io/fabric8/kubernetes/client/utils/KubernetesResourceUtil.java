@@ -413,10 +413,10 @@ public class KubernetesResourceUtil {
   private static Class<?> loadRelated(Class<?> type, String suffix, Class<?> defaultClass) {
     try {
       return Thread.currentThread().getContextClassLoader().loadClass(type.getName() + suffix);
-    } catch (ClassNotFoundException | ClassCastException e) {
+    } catch (ClassNotFoundException | ClassCastException | NullPointerException e) {
       try {
         return type.getClassLoader().loadClass(type.getName() + suffix);
-      } catch (ClassNotFoundException | ClassCastException ex) {
+      } catch (ClassNotFoundException | ClassCastException | NullPointerException ex) {
         return defaultClass;
       }
     }
