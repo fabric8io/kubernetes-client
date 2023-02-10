@@ -29,6 +29,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -99,6 +100,9 @@ public class LeaderElector {
           }
         });
       } else {
+        if (!(t instanceof CancellationException)) {
+          LOGGER.error("Exception during leader election", t);
+        }
         // there's a possibility that we'll obtain the lock, but get cancelled
         // before completing the future
         stopLeading();

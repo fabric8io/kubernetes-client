@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
-import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.awaitility.Awaitility;
@@ -69,7 +68,7 @@ class LeaderElectorTest {
     doNothing().doAnswer(invocation -> {
       // Sleep so that RENEW DEADLINE is reached
       Thread.sleep(renewDeadlineMillis * 2);
-      throw new LockException("");
+      throw new KubernetesClientException("");
     }).when(mockedLock).update(any(), any());
     // When
     CompletableFuture<?> future = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get())
@@ -92,7 +91,7 @@ class LeaderElectorTest {
     final CountDownLatch signal = new CountDownLatch(1);
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     final Lock mockedLock = lec.getLock();
-    doNothing().doThrow(new LockException("Exception won't affect execution")).doNothing().doAnswer(invocation -> {
+    doNothing().doThrow(new KubernetesClientException("Exception won't affect execution")).doNothing().doAnswer(invocation -> {
       // Force dedicated thread to gracefully end after a couple of updates
       signal.countDown();
       return null;
