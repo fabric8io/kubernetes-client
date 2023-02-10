@@ -16,6 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -25,6 +26,8 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 
 import java.util.Collections;
+
+import static com.github.javaparser.StaticJavaParser.parseName;
 
 public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
@@ -86,7 +89,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
   public GeneratorResult generateJava() {
     CompilationUnit cu = new CompilationUnit();
     if (!pkg.isEmpty()) {
-      cu.setPackageDeclaration(pkg);
+      cu.setPackageDeclaration(new PackageDeclaration(new Name(pkg)));
     }
     ClassOrInterfaceDeclaration clz = cu.addClass(className);
 

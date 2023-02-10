@@ -49,15 +49,14 @@ public class WritableCRCompilationUnit {
     try {
       createFolders(basePackage, basePath);
       for (GeneratorResult.ClassResult cr : this.classResults) {
-        String pkg = cr.getCompilationUnit()
-            .getPackageDeclaration()
+        String pkg = cr.getPackageDeclaration()
             .map(NodeWithName::getNameAsString)
             .orElse(null);
         File path = createFolders(pkg, basePath);
 
         writeToFile(
             path.toPath().resolve(cr.getName() + ".java").toFile(),
-            cr.getCompilationUnit().toString());
+            cr.getJavaSource());
       }
     } catch (Exception e) {
       throw new JavaGeneratorException(e);

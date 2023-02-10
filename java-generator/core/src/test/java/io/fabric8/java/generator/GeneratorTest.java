@@ -79,7 +79,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("t", res.getTopLevelClasses().get(0).getName());
     assertEquals("v1alpha1",
-        res.getTopLevelClasses().get(0).getCompilationUnit().getPackageDeclaration().get().getNameAsString());
+        res.getTopLevelClasses().get(0).getPackageDeclaration().get().getNameAsString());
   }
 
   @Test
@@ -105,7 +105,7 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertEquals("io.fabric8.kubernetes.api.model.Namespaced", res.getTopLevelClasses().get(0).getCompilationUnit()
+    assertEquals("io.fabric8.kubernetes.api.model.Namespaced", res.getTopLevelClasses().get(0)
         .getClassByName("t").get().getImplementedTypes().get(0).getNameWithScope());
   }
 
@@ -132,7 +132,7 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertTrue(res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("t").get().getImplementedTypes().isEmpty());
+    assertTrue(res.getTopLevelClasses().get(0).getClassByName("t").get().getImplementedTypes().isEmpty());
   }
 
   @Test
@@ -388,7 +388,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("T", res.getTopLevelClasses().get(0).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clz.isPresent());
     assertEquals(1, clz.get().getFields().size());
     assertTrue(clz.get().getFieldByName("o1").isPresent());
@@ -420,7 +420,7 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clz.get().getFieldByName("o1").get().getAnnotationByName("Required").isPresent());
   }
 
@@ -459,10 +459,10 @@ class GeneratorTest {
     GeneratorResult res2 = obj2.generateJava();
 
     // Assert
-    Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clz1.get().getAnnotationByName(generatedAnnotationName).isPresent());
 
-    Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getClassByName("T");
     assertFalse(clz2.get().getAnnotationByName(generatedAnnotationName).isPresent());
   }
 
@@ -493,7 +493,7 @@ class GeneratorTest {
     assertEquals(1, res.getInnerClasses().size());
     assertEquals("T", res.getInnerClasses().get(0).getName());
 
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getCompilationUnit().getEnumByName("T");
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
     assertTrue(en.isPresent());
     assertEquals(3, en.get().getEntries().size());
     assertEquals("FOO", en.get().getEntries().get(0).getName().asString());
@@ -529,7 +529,7 @@ class GeneratorTest {
     assertEquals(1, res.getInnerClasses().size());
     assertEquals("T", res.getInnerClasses().get(0).getName());
 
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getCompilationUnit().getEnumByName("T");
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
     assertTrue(en.isPresent());
     assertEquals(3, en.get().getEntries().size());
     assertEquals("foo", en.get().getEntries().get(0).getName().asString());
@@ -625,11 +625,11 @@ class GeneratorTest {
     assertEquals("O1", res.getTopLevelClasses().get(0).getName());
     assertEquals("T", res.getTopLevelClasses().get(1).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(1).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(1).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(1, clzT.get().getFields().size());
     assertTrue(clzT.get().getFieldByName("o1").isPresent());
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
   }
 
@@ -716,7 +716,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("T", res.getTopLevelClasses().get(0).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertTrue(clzT.get().getFieldByName("additionalProperties").isPresent());
   }
@@ -749,7 +749,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("T", res.getTopLevelClasses().get(0).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertTrue(clzT.get().getFieldByName("description").isPresent());
   }
@@ -779,7 +779,7 @@ class GeneratorTest {
     assertEquals("O2", res.getTopLevelClasses().get(1).getName());
     assertEquals("T", res.getTopLevelClasses().get(2).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(2, clzT.get().getFields().size());
     Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
@@ -803,7 +803,7 @@ class GeneratorTest {
     actualNullableAnnotation = (SingleMemberAnnotationExpr) nullableJacksonBasedAnnotation.get();
     assertEquals("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP", actualNullableAnnotation.getMemberValue().toString());
 
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
   }
 
@@ -837,7 +837,7 @@ class GeneratorTest {
     assertEquals("O2", res.getTopLevelClasses().get(4).getName());
     assertEquals("T", res.getTopLevelClasses().get(5).getName());
 
-    CompilationUnit cuT = res.getTopLevelClasses().get(5).getCompilationUnit();
+    GeneratorResult.ClassResult cuT = res.getTopLevelClasses().get(5);
     Optional<ClassOrInterfaceDeclaration> clzT = cuT.getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(2, clzT.get().getFields().size());
@@ -845,11 +845,11 @@ class GeneratorTest {
     assertEquals("v1alpha1", cuT.getPackageDeclaration().get().getNameAsString());
     assertEquals(
         "v1alpha1.t.O1", clzT.get().getFieldByName("o1").get().getElementType().toString());
-    CompilationUnit cuO1 = res.getTopLevelClasses().get(0).getCompilationUnit();
+    GeneratorResult.ClassResult cuO1 = res.getTopLevelClasses().get(0);
     Optional<ClassOrInterfaceDeclaration> clzO1 = cuO1.getClassByName("O1");
     assertTrue(clzO1.isPresent());
     assertEquals("v1alpha1.t", cuO1.getPackageDeclaration().get().getNameAsString());
-    CompilationUnit cuO2 = res.getTopLevelClasses().get(4).getCompilationUnit();
+    GeneratorResult.ClassResult cuO2 = res.getTopLevelClasses().get(4);
     Optional<ClassOrInterfaceDeclaration> clzO2 = cuO2.getClassByName("O2");
     assertTrue(clzO2.isPresent());
     assertTrue(clzO2.get().getFieldByName("o1").isPresent());
@@ -888,7 +888,7 @@ class GeneratorTest {
     assertEquals("O2", res.getTopLevelClasses().get(1).getName());
     assertEquals("T", res.getTopLevelClasses().get(2).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(2, clzT.get().getFields().size());
 
@@ -908,10 +908,10 @@ class GeneratorTest {
     initializer = variableDeclarator.getInitializer();
     assertFalse(initializer.isPresent());
 
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
 
-    Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getCompilationUnit().getClassByName("O2");
+    Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getClassByName("O2");
     assertTrue(clzO2.isPresent());
   }
 }
