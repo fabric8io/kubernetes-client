@@ -120,11 +120,13 @@ public class FileJavaGenerator implements JavaGenerator {
   }
 
   private void writeCRCompilationUnits(File basePath, List<WritableCRCompilationUnit> wCUs) {
-    CompletableFuture<Void>[] futures = new CompletableFuture[wCUs.size()];
+    int size = wCUs.size();
+    CompletableFuture<Void>[] futures = new CompletableFuture[size];
 
     int i = 0;
-    for (WritableCRCompilationUnit w : wCUs) {
-      futures[i++] = CompletableFuture.runAsync(() -> w.writeAllJavaClasses(basePath));
+    for (int i = 0; i < size; i++) {
+      WritableCRCompilationUnit w = wCUs.get(i);
+      futures[i] = CompletableFuture.runAsync(() -> w.writeAllJavaClasses(basePath));
     }
 
     for (int j = 0; j < futures.length; j++) {
