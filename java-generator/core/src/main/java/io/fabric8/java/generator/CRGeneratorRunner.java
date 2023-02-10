@@ -98,7 +98,7 @@ public class CRGeneratorRunner {
 
       List<GeneratorResult.ClassResult> classResults = validateAndAggregate(crGenerator, specGenerator, statusGenerator);
 
-      writableCUs.add(new WritableCRCompilationUnit(classResults));
+      writableCUs.add(new WritableCRCompilationUnit(classResults, basePackageName));
     }
 
     return writableCUs;

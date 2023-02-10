@@ -95,10 +95,9 @@ public class FileJavaGenerator implements JavaGenerator {
                     CustomResourceDefinition crd = (CustomResourceDefinition) resource;
 
                     final String basePackage = groupToPackage(crd.getSpec().getGroup());
-                    List<WritableCRCompilationUnit> writables = crGeneratorRunner.generate(crd, basePackage);
 
-                    writables.parallelStream()
-                        .forEach(w -> w.writeAllJavaClasses(basePath, basePackage));
+                    crGeneratorRunner.generate(crd, basePackage).parallelStream()
+                        .forEach(w -> w.writeAllJavaClasses(basePath));
                   } else {
                     LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
                   }

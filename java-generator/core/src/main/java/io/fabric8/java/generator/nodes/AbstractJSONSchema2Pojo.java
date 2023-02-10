@@ -42,9 +42,11 @@ public abstract class AbstractJSONSchema2Pojo {
   static final String OBJECT_CRD_TYPE = "object";
   static final String ARRAY_CRD_TYPE = "array";
 
-  public static final AnnotationExpr GENERATED_ANNOTATION = new SingleMemberAnnotationExpr(
-      new Name("javax.annotation.processing.Generated"),
-      new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
+  public static final AnnotationExpr newGeneratedAnnotation() {
+    return new SingleMemberAnnotationExpr(
+        new Name("javax.annotation.processing.Generated"),
+        new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
+  }
 
   protected final String description;
   protected final Config config;
