@@ -69,6 +69,11 @@ public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Clien
   }
 
   @Override
+  public boolean supports(String apiVersion, String kind) {
+    return client.supports(apiVersion, kind);
+  }
+
+  @Override
   public boolean hasApiGroup(String apiGroup, boolean exact) {
     return client.hasApiGroup(apiGroup, exact);
   }

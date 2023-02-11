@@ -18,6 +18,7 @@
 #### Improvements
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
 * Fix #4644: generate CRDs in parallel and optimize code
+* Fix #4659: added a generic support(apiversion, kind) method in addition to the class based check
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 * Fix #4747: migrate to SnakeYAML Engine
 * Fix #4788: moved retry logic into the standard client so that it applies to all requests, including websockets
@@ -38,6 +39,7 @@
 * Fix #4758: added support for pod ephemeral container operations
 
 #### _**Note**_: Breaking changes
+* Fix #4659: The SupportTestingClient interface has been deprecated.  Please use one of the supports methods or getApiGroup to determine what is available on the api server.
 
 ### 6.4.1 (2023-01-31)
 
