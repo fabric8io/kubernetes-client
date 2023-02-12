@@ -124,6 +124,11 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     return sb.toString();
   }
 
+  public static ClassOrInterfaceType toClassOrInterfaceType( String className ) {
+    String withoutDollars = className.replace("$", "."); // nested class in Java cannot be used in casts
+    return withoutDollars.indexOf('<') >= 0 ? StaticJavaParser.parseClassOrInterfaceType(withoutDollars) : new ClassOrInterfaceType(null, withoutDollars);
+  }
+
   @Override
   public GeneratorResult generateJava() {
     CompilationUnit cu = new CompilationUnit();
@@ -156,8 +161,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       addExtraAnnotations(clz);
     }
 
-    clz.addImplementedType("io.fabric8.kubernetes.api.model.KubernetesResource");
-
+    clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource"));
+    
     List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
 
     List<String> sortedKeys = this.fields.keySet().stream().sorted().collect(Collectors.toList());
