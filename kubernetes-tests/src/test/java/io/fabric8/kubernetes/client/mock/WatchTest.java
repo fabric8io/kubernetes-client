@@ -372,12 +372,13 @@ class WatchTest {
   }
 
   @Test
-  void testErrorResponse() throws InterruptedException {
+  void testErrorResponse() {
     // Given
+    client.getConfiguration().setRequestRetryBackoffLimit(0);
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
         .andReturn(503, "may not be a status")
-        .once();
+        .times(2);
 
     client.pods().watch(new Watcher<Pod>() {
 
