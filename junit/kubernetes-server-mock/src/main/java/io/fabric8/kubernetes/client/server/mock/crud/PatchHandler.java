@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client.server.mock.crud;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.flipkart.zjsonpatch.JsonPatch;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import io.fabric8.zjsonpatch.JsonPatch;
 import okhttp3.MediaType;
 import okhttp3.mockwebserver.MockResponse;
 

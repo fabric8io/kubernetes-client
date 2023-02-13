@@ -26,6 +26,8 @@
 * Fix #4804: Update Kubernetes Model GatewayApi to v0.6.0
 * Fix #4804: Update CertManager Model to v1.11.0
 
+* Fix #3489: Migrated zjsonpatch from io.fabric8 to com.flipkart.zjsonpatch. Bumped version to 0.4.13
+
 #### New Features
 * Fix #4758: added support for pod ephemeral container operations
 
