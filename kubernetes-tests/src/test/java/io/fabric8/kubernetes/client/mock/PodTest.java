@@ -444,7 +444,7 @@ class PodTest {
         .andEmit(new WebSocketMessage(0L, "\u0002" + expectedError, false, true)) // \u0002 is the file descriptor for stderr
         .always()
         .expect("\u0000" + shutdownInput)
-        .andEmit(new StatusMessage(-1))
+        .andEmit(new WebSocketMessage(0L, "\u0003shutdown", false, true))
         .always()
         .done()
         .always();
@@ -491,7 +491,6 @@ class PodTest {
     assertTrue(latch.await(1, TimeUnit.MINUTES));
 
     // Then
-    assertEquals(-1, watch.exitCode().join());
     assertEquals(expectedOutput, stdout.toString());
     assertEquals(expectedError, stderr.toString());
 

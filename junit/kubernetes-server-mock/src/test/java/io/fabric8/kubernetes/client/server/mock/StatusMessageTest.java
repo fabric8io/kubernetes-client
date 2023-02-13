@@ -16,18 +16,23 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StatusMessageTest {
 
   @Test
-  void exitCode() {
+  void successExitCode() {
     assertEquals("\u0003{\"apiVersion\":\"v1\",\"kind\":\"Status\",\"code\":0,\"status\":\"Success\"}",
         new StatusMessage(0).getBody());
-    assertEquals("\u0003{\"apiVersion\":\"v1\",\"kind\":\"Status\",\"code\":1,\"status\":\"Failure\"}",
-        new StatusMessage(1).getBody());
-    assertEquals("\u0003{\"apiVersion\":\"v1\",\"kind\":\"Status\",\"code\":-1,\"status\":\"Failure\"}",
-        new StatusMessage(-1).getBody());
+  }
+
+  @ParameterizedTest(name = "exitCode, with code = ''{0}'', should create valid HTTP body")
+  @ValueSource(ints = { 1, -1 })
+  void exitCode(int exitCode) {
+    assertEquals("\u0003{\"apiVersion\":\"v1\",\"kind\":\"Status\",\"code\":" + exitCode + ",\"status\":\"Failure\"}",
+        new StatusMessage(exitCode).getBody());
   }
 }
