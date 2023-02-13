@@ -128,7 +128,7 @@ public class FileJavaGenerator implements JavaGenerator {
       futures[i] = CompletableFuture.runAsync(() -> w.writeAllJavaClasses(basePath));
     }
 
-    for (int j = 0; j < futures.length; j++) {
+    for (int j = 0; j < size; j++) {
       futures[j].join();
     }
   }
