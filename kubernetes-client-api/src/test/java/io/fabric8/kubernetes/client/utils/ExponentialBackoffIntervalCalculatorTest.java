@@ -60,11 +60,24 @@ class ExponentialBackoffIntervalCalculatorTest {
   }
 
   @Test
-  @DisplayName("shouldRetry, from null config, should use default values returns false (always)")
-  void shouldRetryFromNullConfig() {
+  @DisplayName("shouldRetry, from null config within limit, should use default values returns true")
+  void shouldRetryFromNullConfigReturnsFalse() {
     // Given
     final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(null);
-    // When-Then
+    // When
+    IntStream.range(0, 9).forEach(i -> calculator.nextReconnectInterval());
+    // Then
+    assertThat(calculator.shouldRetry()).isTrue();
+  }
+
+  @Test
+  @DisplayName("shouldRetry, from null config outside limit, should use default values returns false")
+  void shouldRetryFromNullConfigReturnsTrue() {
+    // Given
+    final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(null);
+    // When
+    IntStream.range(0, 10).forEach(i -> calculator.nextReconnectInterval());
+    // Then
     assertThat(calculator.shouldRetry()).isFalse();
   }
 

@@ -144,7 +144,7 @@ public class Config {
   public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS = 64;
   public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST = 5;
 
-  public static final Integer DEFAULT_REQUEST_RETRY_BACKOFFLIMIT = 0;
+  public static final Integer DEFAULT_REQUEST_RETRY_BACKOFFLIMIT = 10;
   public static final Integer DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL = 100;
 
   public static final int DEFAULT_UPLOAD_CONNECTION_TIMEOUT = 10 * 1000;
