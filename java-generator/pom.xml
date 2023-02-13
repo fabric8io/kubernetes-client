@@ -35,6 +35,7 @@
     <module>cli</module>
     <module>maven-plugin</module>
     <module>it</module>
+    <module>benchmark</module>
   </modules>
 
 </project>
