@@ -32,13 +32,13 @@ class ExponentialBackoffIntervalCalculatorTest {
     // Given
     final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(null);
     // When-Then
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(1000);
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(2000);
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(4000);
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(8000);
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(16000);
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(32000);
-    assertThat(calculator.nextReconnectInterval()).isEqualTo(32000);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(100);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(200);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(400);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(800);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(1600);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(3200);
+    assertThat(calculator.nextReconnectInterval()).isEqualTo(3200);
   }
 
   @Test

@@ -24,6 +24,7 @@
 * Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
 * Fix #4853: adding a wait on the pod for log operations
 * Fix #4848: Vert.x async DNS resolver is disabled
+* Fix #4863: default HttpClient retry logic to 100ms interval
 * Fix #4865: (java-generator) performance improvements
 
 #### Dependency Upgrade
