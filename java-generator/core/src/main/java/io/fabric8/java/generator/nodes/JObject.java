@@ -158,7 +158,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       addExtraAnnotations(clz);
     }
 
-    clz.addImplementedType( new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource") );
+    clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource"));
 
     List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
 
@@ -193,7 +193,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                 new StringLiteralExpr(originalFieldName)));
 
         if (isRequired) {
-          objField.addAnnotation( "io.fabric8.generator.annotation.Required");
+          objField.addAnnotation("io.fabric8.generator.annotation.Required");
         }
         if (prop.getMaximum() != null) {
           objField.addAnnotation(
@@ -243,7 +243,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
               new SingleMemberAnnotationExpr(
                   new Name("com.fasterxml.jackson.annotation.JsonSetter"),
                   new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SET")));
-          objField.addAnnotation(new NormalAnnotationExpr(new Name("io.fabric8.generator.annotation.Nullable"), new NodeList<>()));
+          objField
+              .addAnnotation(new NormalAnnotationExpr(new Name("io.fabric8.generator.annotation.Nullable"), new NodeList<>()));
         }
 
         if (prop.getDefaultValue() != null) {
@@ -282,13 +283,17 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   .setType(mapType)
                   .setInitializer("new java.util.HashMap<>()")));
 
-      objField.addAnnotation(new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonIgnore"), new NodeList<>()));
+      objField
+          .addAnnotation(new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonIgnore"), new NodeList<>()));
 
-      objField.createGetter().addAnnotation(new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnyGetter"), new NodeList<>()));
-      objField.createSetter().addAnnotation(new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnySetter"), new NodeList<>()));
+      objField.createGetter().addAnnotation(
+          new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnyGetter"), new NodeList<>()));
+      objField.createSetter().addAnnotation(
+          new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnySetter"), new NodeList<>()));
 
       MethodDeclaration additionalSetter = clz.addMethod("setAdditionalProperty", Modifier.Keyword.PUBLIC);
-      additionalSetter.addAnnotation(new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnySetter"), new NodeList<>()));
+      additionalSetter.addAnnotation(
+          new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnySetter"), new NodeList<>()));
       additionalSetter.addParameter(new ClassOrInterfaceType(null, "java.lang.String"), "key");
       additionalSetter.addParameter(new ClassOrInterfaceType(null, "java.lang.Object"), "value");
       additionalSetter
@@ -323,8 +328,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     }
   }
 
-  static ClassOrInterfaceType toClassOrInterfaceType( String className ) {
+  static ClassOrInterfaceType toClassOrInterfaceType(String className) {
     String withoutDollars = className.replace("$", "."); // nested class in Java cannot be used in casts
-    return withoutDollars.indexOf('<') >= 0 ? StaticJavaParser.parseClassOrInterfaceType(withoutDollars) : new ClassOrInterfaceType(null, withoutDollars);
+    return withoutDollars.indexOf('<') >= 0 ? StaticJavaParser.parseClassOrInterfaceType(withoutDollars)
+        : new ClassOrInterfaceType(null, withoutDollars);
   }
 }

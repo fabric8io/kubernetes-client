@@ -116,7 +116,7 @@ public class FileJavaGenerator implements JavaGenerator {
               }
               return Stream.empty();
             })
-      .collect(Collectors.toList());
+        .collect(Collectors.toList());
   }
 
   private void writeCRCompilationUnits(File basePath, List<WritableCRCompilationUnit> wCUs) {
