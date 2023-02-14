@@ -145,16 +145,6 @@ public class StatefulSetOperationsImpl
   }
 
   @Override
-  public StatefulSet pause() {
-    throw new KubernetesClientException("not supported");
-  }
-
-  @Override
-  public StatefulSet resume() {
-    throw new KubernetesClientException("not supported");
-  }
-
-  @Override
   public StatefulSet restart() {
     return RollingUpdater.restart(this);
   }
