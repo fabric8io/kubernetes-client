@@ -16,27 +16,45 @@
 package io.fabric8.java.generator.nodes;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GeneratorResult {
 
   public static class ClassResult {
     private final String name;
     private final CompilationUnit cu;
+    private final String javaSource;
+
+    public ClassResult(String name, CompilationUnit cu) {
+      this.name = name;
+      this.cu = cu;
+      this.javaSource = cu.toString();
+    }
 
     public String getName() {
       return name;
     }
 
-    public CompilationUnit getCompilationUnit() {
-      return cu;
+    public String getJavaSource() {
+      return javaSource;
     }
 
-    public ClassResult(String name, CompilationUnit cu) {
-      this.name = name;
-      this.cu = cu;
+    public Optional<PackageDeclaration> getPackageDeclaration() {
+      return cu.getPackageDeclaration();
+    }
+
+    public Optional<EnumDeclaration> getEnumByName(String enumName) {
+      return cu.getEnumByName(enumName);
+    }
+
+    public Optional<ClassOrInterfaceDeclaration> getClassByName(String className) {
+      return cu.getClassByName(className);
     }
   }
 
