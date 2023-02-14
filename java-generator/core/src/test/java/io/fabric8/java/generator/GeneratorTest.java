@@ -791,7 +791,8 @@ class GeneratorTest {
     assertInstanceOf(SingleMemberAnnotationExpr.class, nullableJacksonBasedAnnotation.get());
     SingleMemberAnnotationExpr actualNullableAnnotation = (SingleMemberAnnotationExpr) nullableJacksonBasedAnnotation.get();
     assertEquals("nulls = com.fasterxml.jackson.annotation.Nulls.SET", actualNullableAnnotation.getMemberValue().toString());
-    Optional<AnnotationExpr> nullableFabric8BasedAnnotation = actualO1Field.getAnnotationByName("Nullable");
+    Optional<AnnotationExpr> nullableFabric8BasedAnnotation = actualO1Field
+        .getAnnotationByName("io.fabric8.generator.annotation.Nullable");
     assertTrue(nullableFabric8BasedAnnotation.isPresent());
 
     Optional<FieldDeclaration> o2Field = clzT.get().getFieldByName("o2");
