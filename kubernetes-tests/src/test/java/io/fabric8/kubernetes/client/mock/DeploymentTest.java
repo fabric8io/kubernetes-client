@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -47,7 +46,6 @@ import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -64,17 +62,31 @@ class DeploymentTest {
 
   @Test
   void testList() {
-    server.expect().withPath("/apis/apps/v1/namespaces/test/deployments").andReturn(200, new DeploymentListBuilder().build())
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/deployments")
+        .andReturn(200, new DeploymentListBuilder().build())
         .once();
-    server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments").andReturn(200, new DeploymentListBuilder()
-        .addNewItem().and()
-        .addNewItem().and().build()).once();
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments")
+        .andReturn(200, new DeploymentListBuilder()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .build())
+        .once();
 
-    server.expect().withPath("/apis/apps/v1/deployments").andReturn(200, new DeploymentListBuilder()
-        .addNewItem().and()
-        .addNewItem().and()
-        .addNewItem()
-        .and().build()).once();
+    server.expect()
+        .withPath("/apis/apps/v1/deployments")
+        .andReturn(200, new DeploymentListBuilder()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .build())
+        .once();
 
     DeploymentList deploymentList = client.apps().deployments().list();
     assertNotNull(deploymentList);
@@ -94,17 +106,23 @@ class DeploymentTest {
     server.expect()
         .withPath("/apis/apps/v1/namespaces/test/deployments?labelSelector="
             + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3"))
-        .andReturn(200, new DeploymentListBuilder().build()).always();
+        .andReturn(200, new DeploymentListBuilder().build())
+        .always();
     server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/deployments?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
+        .withPath(
+            "/apis/apps/v1/namespaces/test/deployments?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2"))
         .andReturn(200, new DeploymentListBuilder()
-            .addNewItem().and()
-            .addNewItem().and()
-            .addNewItem().and()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
+            .addNewItem()
+            .and()
             .build())
         .once();
 
-    DeploymentList deploymentList = client.apps().deployments()
+    DeploymentList deploymentList = client.apps()
+        .deployments()
         .withLabel("key1", "value1")
         .withLabel("key2", "value2")
         .withLabel("key3", "value3")
@@ -113,7 +131,8 @@ class DeploymentTest {
     assertNotNull(deploymentList);
     assertEquals(0, deploymentList.getItems().size());
 
-    deploymentList = client.apps().deployments()
+    deploymentList = client.apps()
+        .deployments()
         .withLabel("key1", "value1")
         .withLabel("key2", "value2")
         .list();
@@ -124,10 +143,14 @@ class DeploymentTest {
 
   @Test
   void testGet() {
-    server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
-        .andReturn(200, new DeploymentBuilder().build()).once();
-    server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
-        .andReturn(200, new DeploymentBuilder().build()).once();
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
+        .andReturn(200, new DeploymentBuilder().build())
+        .once();
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
+        .andReturn(200, new DeploymentBuilder().build())
+        .once();
 
     Deployment deployment = client.apps().deployments().withName("deployment1").get();
     assertNotNull(deployment);
@@ -196,17 +219,26 @@ class DeploymentTest {
         .endStatus()
         .build();
 
-    server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
-    server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
-        .andReturn(200, new DeploymentBuilder(deployment1).editSpec().withReplicas(0).endSpec().build()).times(5);
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
+        .andReturn(200, deployment1)
+        .once();
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
+        .andReturn(200, new DeploymentBuilder(deployment1).editSpec().withReplicas(0).endSpec().build())
+        .times(5);
 
-    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets?labelSelector=key1%3Dvalue1")
-        .andReturn(200, new ReplicaSetListBuilder().addToItems(replicaSet1).build()).once();
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/replicasets?labelSelector=key1%3Dvalue1")
+        .andReturn(200, new ReplicaSetListBuilder().addToItems(replicaSet1).build())
+        .once();
     server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/rs1").andReturn(200, replicaSet1).once();
 
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
-    server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
-        .andReturn(200, new DeploymentBuilder(deployment2).editSpec().withReplicas(0).endSpec().build()).times(5);
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
+        .andReturn(200, new DeploymentBuilder(deployment2).editSpec().withReplicas(0).endSpec().build())
+        .times(5);
 
     boolean deleted = client.apps().deployments().withName("deployment1").delete().size() == 1;
     assertTrue(deleted);
@@ -250,15 +282,21 @@ class DeploymentTest {
         .endStatus()
         .build();
 
-    Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any")
+    Deployment deployment3 = new DeploymentBuilder().withNewMetadata()
+        .withName("deployment3")
+        .withNamespace("any")
         .endMetadata()
         .withNewSpec()
         .withReplicas(1)
         .endSpec()
         .build();
 
-    server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
-    server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
+        .andReturn(200, deployment1)
+        .once();
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
         .andReturn(200, new DeploymentBuilder(deployment1)
             .editStatus()
             .withReplicas(0)
@@ -268,7 +306,8 @@ class DeploymentTest {
         .times(5);
 
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
-    server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2")
         .andReturn(200, new DeploymentBuilder(deployment2)
             .editStatus()
             .withReplicas(0)
@@ -286,24 +325,31 @@ class DeploymentTest {
 
   @Test
   void testDeleteWithNamespaceMismatch() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test")
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+        .withName("deployment1")
+        .withNamespace("test")
         .endMetadata()
         .withNewSpec()
         .withReplicas(1)
         .endSpec()
         .build();
     NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp = client.apps()
-        .deployments().inNamespace("test1");
+        .deployments()
+        .inNamespace("test1");
 
     assertTrue(deployOp.delete(deployment1).isEmpty());
   }
 
   @Test
   void testCreateWithNameMismatch() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and()
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+        .withName("deployment1")
+        .withNamespace("test")
+        .and()
         .build();
     RollableScalableResource<Deployment> deployOp = client
-        .apps().deployments()
+        .apps()
+        .deployments()
         .inNamespace("test1")
         .withName("mydeployment1");
     assertThrows(KubernetesClientException.class, () -> deployOp.create(deployment1));
@@ -330,7 +376,9 @@ class DeploymentTest {
         .endStrategy()
         .withMinReadySeconds(5)
         .withNewTemplate()
-        .withNewMetadata().withLabels(Collections.singletonMap("service", "http-server")).endMetadata()
+        .withNewMetadata()
+        .withLabels(Collections.singletonMap("service", "http-server"))
+        .endMetadata()
         .withNewSpec()
         .addToContainers(new ContainerBuilder()
             .withName("nginx")
@@ -343,16 +391,17 @@ class DeploymentTest {
         .endSpec()
         .build();
 
-    server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment1").andReturn(200, deployment).always();
-    server.expect().withPath("/api/v1/namespaces/ns1/pods?labelSelector=service%3Dhttp-server")
-        .andReturn(200, new KubernetesListBuilder().build()).once();
-    server.expect().post().withPath("/apis/apps/v1/namespaces/ns1/deployments").andReturn(201, deployment).times(2);
+    server.expect()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment1")
+        .andReturn(200, deployment)
+        .always();
 
-    client.apps().deployments().inNamespace("ns1")
+    client.apps()
+        .deployments()
+        .inNamespace("ns1")
         .withName("deployment1")
         .rolling()
-        .withTimeout(5, TimeUnit.MINUTES)
-        .updateImage("");
+        .edit(d -> new DeploymentBuilder(d).editSpec().withReplicas(2).endSpec().build());
   }
 
   @Test
@@ -378,7 +427,8 @@ class DeploymentTest {
 
     server.expect()
         .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
-        .andReturn(200, serverDeployment).once();
+        .andReturn(200, serverDeployment)
+        .once();
 
     List<HasMetadata> resources = client.resourceList(clientDeployment).get();
 
@@ -400,14 +450,19 @@ class DeploymentTest {
   @Test
   void testScaleGet() {
     Scale scaleObj = new ScaleBuilder()
-        .withNewMetadata().addToLabels("foo", "bar").endMetadata()
-        .withNewSpec().withReplicas(Integer.parseInt("2")).endSpec()
+        .withNewMetadata()
+        .addToLabels("foo", "bar")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(Integer.parseInt("2"))
+        .endSpec()
         .build();
 
     server.expect()
         .get()
         .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1/scale")
-        .andReturn(200, scaleObj).once();
+        .andReturn(200, scaleObj)
+        .once();
 
     Scale scaleResponse = client.apps().deployments().inNamespace("test").withName("deployment1").scale();
     assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
@@ -416,14 +471,19 @@ class DeploymentTest {
   @Test
   void testScaleUpdate() {
     Scale scaleObj = new ScaleBuilder()
-        .withNewMetadata().addToLabels("foo", "bar").endMetadata()
-        .withNewSpec().withReplicas(Integer.parseInt("2")).endSpec()
+        .withNewMetadata()
+        .addToLabels("foo", "bar")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(Integer.parseInt("2"))
+        .endSpec()
         .build();
 
     server.expect()
         .put()
         .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1/scale")
-        .andReturn(200, scaleObj).once();
+        .andReturn(200, scaleObj)
+        .once();
 
     Scale scaleResponse = client.apps().deployments().inNamespace("test").withName("deployment1").scale(scaleObj);
     assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
@@ -431,14 +491,18 @@ class DeploymentTest {
 
   @Test
   void testCreate() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test")
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+        .withName("deployment1")
+        .withNamespace("test")
         .endMetadata()
         .withNewSpec()
         .withReplicas(1)
         .endSpec()
         .build();
 
-    server.expect().post().withPath("/apis/apps/v1/namespaces/test/deployments")
+    server.expect()
+        .post()
+        .withPath("/apis/apps/v1/namespaces/test/deployments")
         .andReturn(200, deployment1)
         .once();
 
@@ -452,19 +516,34 @@ class DeploymentTest {
   void testRolloutUpdateSingleImage() throws InterruptedException {
     // Given
     String imageToUpdate = "nginx:latest";
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
-    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .times(3);
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
         .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder()
-            .editSpec().editTemplate().editSpec().editContainer(0)
+            .editSpec()
+            .editTemplate()
+            .editSpec()
+            .editContainer(0)
             .withImage(imageToUpdate)
-            .endContainer().endSpec().endTemplate().endSpec()
+            .endContainer()
+            .endSpec()
+            .endTemplate()
+            .endSpec()
             .build())
         .once();
 
     // When
-    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
-        .rolling().updateImage(imageToUpdate);
+    Deployment deployment = client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("deploy1")
+        .rolling()
+        .updateImage(imageToUpdate);
 
     // Then
     assertNotNull(deployment);
@@ -479,19 +558,34 @@ class DeploymentTest {
   void testRolloutUpdateImage() throws InterruptedException {
     // Given
     Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
-    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .times(3);
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
         .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder()
-            .editSpec().editTemplate().editSpec().editContainer(0)
+            .editSpec()
+            .editTemplate()
+            .editSpec()
+            .editContainer(0)
             .withImage(containerToImageMap.get("nginx"))
-            .endContainer().endSpec().endTemplate().endSpec()
+            .endContainer()
+            .endSpec()
+            .endTemplate()
+            .endSpec()
             .build())
         .once();
 
     // When
-    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
-        .rolling().updateImage(containerToImageMap);
+    Deployment deployment = client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("deploy1")
+        .rolling()
+        .updateImage(containerToImageMap);
 
     // Then
     assertNotNull(deployment);
@@ -506,14 +600,24 @@ class DeploymentTest {
   @DisplayName("Should pause resource")
   void testRolloutPause() throws InterruptedException {
     // Given
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
-    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .times(3);
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .once();
 
     // When
-    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
-        .rolling().pause();
+    Deployment deployment = client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("deploy1")
+        .rolling()
+        .pause();
 
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -525,14 +629,24 @@ class DeploymentTest {
   @DisplayName("Should resume rollout")
   void testRolloutResume() throws InterruptedException {
     // Given
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
-    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .times(3);
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .once();
 
     // When
-    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
-        .rolling().resume();
+    Deployment deployment = client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("deploy1")
+        .rolling()
+        .resume();
 
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -545,14 +659,24 @@ class DeploymentTest {
   @DisplayName("Should restart rollout")
   void testRolloutRestart() throws InterruptedException {
     // Given
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
-    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .times(3);
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .once();
 
     // When
-    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
-        .rolling().restart();
+    Deployment deployment = client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("deploy1")
+        .rolling()
+        .restart();
 
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -572,7 +696,9 @@ class DeploymentTest {
         .endMetadata()
         .withNewSpec()
         .withReplicas(0)
-        .withNewSelector().addToMatchLabels("app", "nginx").endSelector()
+        .withNewSelector()
+        .addToMatchLabels("app", "nginx")
+        .endSelector()
         .withNewTemplate()
         .withNewMetadata()
         .addToAnnotations("kubectl.kubernetes.io/restartedAt", "2020-06-08T11:52:50.022")
@@ -583,7 +709,9 @@ class DeploymentTest {
         .addNewContainer()
         .withName("nginx")
         .withImage("nginx:perl")
-        .addNewPort().withContainerPort(80).endPort()
+        .addNewPort()
+        .withContainerPort(80)
+        .endPort()
         .endContainer()
         .endSpec()
         .endTemplate()
@@ -596,7 +724,9 @@ class DeploymentTest {
         .endMetadata()
         .withNewSpec()
         .withReplicas(1)
-        .withNewSelector().addToMatchLabels("app", "nginx").endSelector()
+        .withNewSelector()
+        .addToMatchLabels("app", "nginx")
+        .endSelector()
         .withNewTemplate()
         .withNewMetadata()
         .addToAnnotations("kubectl.kubernetes.io/restartedAt", "2020-06-08T11:52:50.022")
@@ -607,25 +737,39 @@ class DeploymentTest {
         .addNewContainer()
         .withName("nginx")
         .withImage("nginx:1.19")
-        .addNewPort().withContainerPort(80).endPort()
+        .addNewPort()
+        .withContainerPort(80)
+        .endPort()
         .endContainer()
         .endSpec()
         .endTemplate()
         .endSpec()
         .build();
 
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
         .andReturn(HttpURLConnection.HTTP_OK,
             new ReplicaSetListBuilder().withItems(replicaSetRevision1, replicaSetRevision2).build())
         .once();
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
-    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .times(3);
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+        .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
+        .once();
 
     // When
-    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
-        .rolling().undo();
+    Deployment deployment = client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("deploy1")
+        .rolling()
+        .undo();
 
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
@@ -642,20 +786,30 @@ class DeploymentTest {
         Collections.singletonMap("app", "nginx"), "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4");
     Pod deployPod = createMockPod("1", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4", "deploy1-hk9nf",
         Collections.singletonMap("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4"));
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
         .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
         .always();
 
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
         .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSet).build())
         .once();
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/deploy1-hk9nf")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets/deploy1-hk9nf")
         .andReturn(HttpURLConnection.HTTP_OK, replicaSet)
         .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
         .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(deployPod).build())
         .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false")
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false")
         .andReturn(HttpURLConnection.HTTP_OK, "hello")
         .once();
 
@@ -671,29 +825,41 @@ class DeploymentTest {
   void testDeploymentGetLogMultiContainer() {
     // Given
     ReplicaSet replicaSet = createMockReplicaSet("deploy-multi1", "93b8b619-731a-435a-bcb0-4b0c19f07f2f",
-        "multi-container-deploy-5dfdf5ddfc", Collections.singletonMap("app", "nginx"), "f9ed6d37-9256-44aa-93b0-4af70e046348");
+        "multi-container-deploy-5dfdf5ddfc", Collections.singletonMap("app", "nginx"),
+        "f9ed6d37-9256-44aa-93b0-4af70e046348");
     Pod deployPod = createMockPod("multi-container-deploy-5dfdf5ddfc", "f9ed6d37-9256-44aa-93b0-4af70e046348",
         "multi-container-deploy-5dfdf5ddfc-r6q4j",
         Collections.singletonMap("controller-uid", "f9ed6d37-9256-44aa-93b0-4af70e046348"));
 
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy-multi1")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy-multi1")
         .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().editMetadata()
             .withName("deploy-multi1")
             .withUid("93b8b619-731a-435a-bcb0-4b0c19f07f2f")
-            .endMetadata().build())
+            .endMetadata()
+            .build())
         .always();
 
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
         .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSet).build())
         .once();
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/multi-container-deploy-5dfdf5ddfc")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets/multi-container-deploy-5dfdf5ddfc")
         .andReturn(HttpURLConnection.HTTP_OK, replicaSet)
         .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
         .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(deployPod).build())
         .once();
-    server.expect().get()
-        .withPath("/api/v1/namespaces/ns1/pods/multi-container-deploy-5dfdf5ddfc-r6q4j/log?pretty=false&container=container1")
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/ns1/pods/multi-container-deploy-5dfdf5ddfc-r6q4j/log?pretty=false&container=container1")
         .andReturn(HttpURLConnection.HTTP_OK, "hello")
         .once();
 
@@ -713,20 +879,30 @@ class DeploymentTest {
         Collections.singletonMap("app", "nginx"), "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4");
     Pod deployPod = createMockPod("1", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4", "deploy1-hk9nf",
         Collections.singletonMap("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4"));
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
         .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
         .always();
 
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
         .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSet).build())
         .once();
-    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/deploy1-hk9nf")
+    server.expect()
+        .get()
+        .withPath("/apis/apps/v1/namespaces/ns1/replicasets/deploy1-hk9nf")
         .andReturn(HttpURLConnection.HTTP_OK, replicaSet)
         .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
         .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(deployPod).build())
         .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false&timestamps=true")
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false&timestamps=true")
         .andReturn(HttpURLConnection.HTTP_OK, "hello")
         .once();
 
@@ -752,12 +928,16 @@ class DeploymentTest {
         .addToMatchLabels("app", "nginx")
         .endSelector()
         .withNewTemplate()
-        .withNewMetadata().addToLabels("app", "nginx").endMetadata()
+        .withNewMetadata()
+        .addToLabels("app", "nginx")
+        .endMetadata()
         .withNewSpec()
         .addNewContainer()
         .withName("nginx")
         .withImage("nginx:1.7.9")
-        .addNewPort().withContainerPort(80).endPort()
+        .addNewPort()
+        .withContainerPort(80)
+        .endPort()
         .endContainer()
         .endSpec()
         .endTemplate()
@@ -799,7 +979,8 @@ class DeploymentTest {
             .withName(replicaSetName)
             .withUid(replicaSetUid)
             .build())
-        .withName(name).addToLabels(labels)
+        .withName(name)
+        .addToLabels(labels)
         .endMetadata()
         .build();
   }

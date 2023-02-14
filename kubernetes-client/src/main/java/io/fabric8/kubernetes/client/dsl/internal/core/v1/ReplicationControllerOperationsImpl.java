@@ -143,26 +143,6 @@ public class ReplicationControllerOperationsImpl extends
     return PodOperationUtil.watchLog(doGetLog(), out);
   }
 
-  @Override
-  public ReplicationController pause() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" pausing is not supported");
-  }
-
-  @Override
-  public ReplicationController resume() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" resuming is not supported");
-  }
-
-  @Override
-  public ReplicationController restart() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" restarting is not supported");
-  }
-
-  @Override
-  public ReplicationController undo() {
-    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() + "\"");
-  }
-
   static Map<String, String> getReplicationControllerPodLabels(ReplicationController replicationController) {
     Map<String, String> labels = new HashMap<>();
     if (replicationController != null && replicationController.getSpec() != null

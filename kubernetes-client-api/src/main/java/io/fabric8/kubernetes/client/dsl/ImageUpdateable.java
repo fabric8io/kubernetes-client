@@ -13,15 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import java.util.Map;
 
-public interface RollableScalableResource<T> extends ScalableResource<T>, ImageUpdateable<T> {
+public interface ImageUpdateable<T> {
 
-  TimeoutImageEditReplacePatchable<T> rolling();
+  /**
+   * Update existing container image(s) of resources
+   *
+   * @param containerToImageMap Map with keys as container name and value as image
+   * @return updated resource
+   */
+  T updateImage(Map<String, String> containerToImageMap);
 
-  Status rollback(DeploymentRollback deploymentRollback);
+  /**
+   * Update existing container image of single container resource
+   *
+   * @param image image to be updated
+   * @return updated resource
+   */
+  T updateImage(String image);
 
 }

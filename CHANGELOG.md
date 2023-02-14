@@ -41,6 +41,7 @@
 
 #### _**Note**_: Breaking changes
 * Fix #4659: The SupportTestingClient interface has been deprecated.  Please use one of the supports methods or getApiGroup to determine what is available on the api server.
+* Fix #4825: removed or deprecated/moved methods that are unrelated to the rolling timeout from ImageEditReplacePatchable.  Deprecated rollout methods for timeout and edit - future versions will not support
 
 ### 6.4.1 (2023-01-31)
 
