@@ -15,14 +15,15 @@
 
 #### Improvements
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
-* Fix #4747: migrate to SnakeYAML Engine
-* Fix #4853: adding a wait on the pod for log operations
-* Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
-* Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 * Fix #4644: generate CRDs in parallel and optimize code
-* Fix #4795: don't print warning message when service account token property is unset
+* Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
+* Fix #4747: migrate to SnakeYAML Engine
 * Fix #4788: moved retry logic into the standard client so that it applies to all requests, including websockets
+* Fix #4795: don't print warning message when service account token property is unset
+* Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
+* Fix #4853: adding a wait on the pod for log operations
 * Fix #4848: Vert.x async DNS resolver is disabled
+* Fix #4865: (java-generator) performance improvements
 
 #### Dependency Upgrade
 * Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0
