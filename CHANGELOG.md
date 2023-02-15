@@ -15,6 +15,7 @@
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
 
 #### Improvements
+* Fix #4675: adding a fully client side timeout for informer watches
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
 * Fix #4644: generate CRDs in parallel and optimize code
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.

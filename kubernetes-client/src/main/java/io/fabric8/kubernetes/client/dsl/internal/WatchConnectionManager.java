@@ -77,10 +77,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
-  protected void closeRequest() {
-    if (this.listener != null) {
-      this.listener.close();
-    }
+  protected void closeCurrentRequest() {
     Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> {
       this.websocketFuture = null;
       theFuture.whenComplete((w, t) -> {
@@ -96,8 +93,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
-  protected void start(URL url, Map<String, String> headers) {
-    this.listener = new WatcherWebSocketListener<>(this);
+  protected void start(URL url, Map<String, String> headers, WatchRequestState state) {
+    this.listener = new WatcherWebSocketListener<>(this, state);
     Builder builder = client.newWebSocketBuilder();
     headers.forEach(builder::header);
     builder.uri(URI.create(url.toString()));

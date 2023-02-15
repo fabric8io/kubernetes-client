@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.LongSupplier;
 
 public class LeaderElector {
 
@@ -257,7 +257,7 @@ public class LeaderElector {
    * @param delaySupplier to schedule the run of the provided consumer
    * @return the future to be completed
    */
-  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, Supplier<Long> delaySupplier,
+  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, LongSupplier delaySupplier,
       Executor executor) {
     CompletableFuture<Void> completion = new CompletableFuture<>();
     Utils.scheduleWithVariableRate(completion, executor, () -> consumer.accept(completion), 0,

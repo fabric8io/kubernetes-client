@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager;
 import io.fabric8.kubernetes.client.informers.ExceptionHandler;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
@@ -35,23 +36,29 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.LongSupplier;
 
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
 
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
+
+  private static long MIN_TIMEOUT = TimeUnit.MINUTES.toSeconds(5);
 
   private volatile String lastSyncResourceVersion;
   private final ListerWatcher<T, L> listerWatcher;
   private final SyncableStore<T> store;
   private final ReflectorWatcher watcher;
   private volatile boolean watching;
-  private volatile CompletableFuture<Watch> watchFuture;
+  private volatile CompletableFuture<AbstractWatchManager<T>> watchFuture;
   private volatile CompletableFuture<?> reconnectFuture;
   private final CompletableFuture<Void> startFuture = new CompletableFuture<>();
   private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   //default behavior - retry if started and it's not a watcherexception
   private volatile ExceptionHandler handler = (b, t) -> b && !(t instanceof WatcherException);
+  private long minTimeout = MIN_TIMEOUT;
+
+  private CompletableFuture<Void> timeoutFuture;
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.listerWatcher = listerWatcher;
@@ -83,13 +90,15 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private synchronized void stopWatcher() {
     Optional.ofNullable(watchFuture).ifPresent(theFuture -> {
       watchFuture = null;
-      theFuture.cancel(true);
       theFuture.whenComplete((w, t) -> {
         if (w != null) {
           stopWatch(w);
         }
       });
     });
+    if (timeoutFuture != null) {
+      timeoutFuture.cancel(true);
+    }
   }
 
   /**
@@ -185,18 +194,36 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     watchStopped(); // proactively report as stopped
   }
 
-  private synchronized CompletableFuture<Watch> startWatcher(final String latestResourceVersion) {
+  private synchronized CompletableFuture<? extends Watch> startWatcher(final String latestResourceVersion) {
     if (isStopped()) {
       return CompletableFuture.completedFuture(null);
     }
     log.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
     // there's no need to stop the old watch, that will happen automatically when this call completes
-    watchFuture = listerWatcher.submitWatch(
+    CompletableFuture<AbstractWatchManager<T>> future = listerWatcher.submitWatch(
         new ListOptionsBuilder().withResourceVersion(latestResourceVersion)
-            .withTimeoutSeconds(null)
+            // this would match the behavior of the go client, but requires changing a lot of mock expectations
+            // so instead we'll terminate below and set a fail-safe here
+            // .withTimeoutSeconds((long) ((Math.random() + 1) * minTimeout))
+            .withTimeoutSeconds(minTimeout * 2)
             .build(),
         watcher);
+
+    // the alternative to this is to localize the logic in the AbstractWatchManager, however since
+    // we only need it for informers, it seems fine here
+    LongSupplier timeout = () -> (long) ((Math.random() + 1) * minTimeout);
+    if (timeoutFuture != null) {
+      timeoutFuture.cancel(true);
+    }
+    timeoutFuture = new CompletableFuture<>();
+    Utils.scheduleWithVariableRate(timeoutFuture, Runnable::run,
+        () -> future.thenAccept(AbstractWatchManager::closeRequest), timeout.getAsLong(), timeout, TimeUnit.SECONDS);
+    watchFuture = future;
     return watchFuture;
+  }
+
+  public void setMinTimeout(long minTimeout) {
+    this.minTimeout = minTimeout;
   }
 
   private synchronized void watchStopped() {
@@ -219,9 +246,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
     @Override
     public void eventReceived(Action action, T resource) {
-      if (stopFuture.isDone()) {
-        return;
-      }
+      // always process what we receive as the watch manager will have already
+      // processed the resourceVersion update
       if (action == null) {
         throw new KubernetesClientException("Unrecognized event for " + Reflector.this);
       }

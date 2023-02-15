@@ -56,6 +56,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -501,7 +502,7 @@ public class Utils {
    */
   public static void scheduleWithVariableRate(CompletableFuture<?> completion, Executor executor, Runnable command,
       long initialDelay,
-      Supplier<Long> nextDelay, TimeUnit unit) {
+      LongSupplier nextDelay, TimeUnit unit) {
     AtomicReference<ScheduledFuture<?>> currentScheduledFuture = new AtomicReference<>();
     AtomicLong next = new AtomicLong(unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS) + Math.max(0, initialDelay));
     schedule(() -> CompletableFuture.runAsync(command, executor), initialDelay, unit, completion, nextDelay, next,
@@ -511,7 +512,7 @@ public class Utils {
   }
 
   private static void schedule(Supplier<CompletableFuture<?>> runner, long delay, TimeUnit unit,
-      CompletableFuture<?> completion, Supplier<Long> nextDelay, AtomicLong next,
+      CompletableFuture<?> completion, LongSupplier nextDelay, AtomicLong next,
       AtomicReference<ScheduledFuture<?>> currentScheduledFuture) {
     currentScheduledFuture.set(SHARED_SCHEDULER.schedule(() -> {
       if (completion.isDone()) {
@@ -522,7 +523,7 @@ public class Utils {
         if (t != null) {
           completion.completeExceptionally(t);
         } else if (!completion.isDone()) {
-          schedule(runner, next.addAndGet(nextDelay.get()) - unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS),
+          schedule(runner, next.addAndGet(nextDelay.getAsLong()) - unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS),
               unit, completion, nextDelay, next, currentScheduledFuture);
         }
       });
