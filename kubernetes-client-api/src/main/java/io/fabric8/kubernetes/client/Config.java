@@ -858,7 +858,7 @@ public class Config {
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  private static final class ExecCredential {
+  public static final class ExecCredential {
     public String kind;
     public String apiVersion;
     public ExecCredentialSpec spec;
@@ -866,11 +866,11 @@ public class Config {
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  private static final class ExecCredentialSpec {
+  public static final class ExecCredentialSpec {
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  private static final class ExecCredentialStatus {
+  public static final class ExecCredentialStatus {
     public String token;
     // TODO clientCertificateData, clientKeyData, expirationTimestamp
   }
