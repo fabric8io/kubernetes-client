@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
+import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClient;
@@ -51,6 +52,7 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
 
@@ -86,7 +88,9 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
 
         @Override
         public void onNext(List<ByteBuffer> item) {
-          bodySubscriber.onNext(item);
+          // there doesn't seem to be a guarantee that the buffer won't be modified by the caller
+          // after passing it in, so we'll create a copy
+          bodySubscriber.onNext(item.stream().map(BufferUtil::copy).collect(Collectors.toList()));
         }
 
         @Override
