@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -83,6 +84,17 @@ public class ExecWatchInputStreamTest {
 
     is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
     readFuture.join();
+  }
+
+  @Test
+  void testCompleteInlineWithRequestMore() throws IOException {
+    AtomicReference<ExecWatchInputStream> is = new AtomicReference<>();
+    ExecWatchInputStream execWatchInputStream = new ExecWatchInputStream(() -> is.get().onExit(0, null));
+    is.set(execWatchInputStream);
+    // the first consume is implicit
+    execWatchInputStream.consume(Collections.singletonList(ByteBuffer.allocate(1)));
+    is.get().read();
+    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> execWatchInputStream.read() == -1);
   }
 
 }
