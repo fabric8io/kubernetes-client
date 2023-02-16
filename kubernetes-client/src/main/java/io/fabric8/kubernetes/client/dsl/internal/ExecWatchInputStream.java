@@ -86,7 +86,7 @@ public class ExecWatchInputStream extends InputStream {
 
         currentBuffer = buffers.poll();
 
-        if (currentBuffer == null) {
+        if (currentBuffer == null && !complete) {
           try {
             buffers.wait();
           } catch (InterruptedException e) {

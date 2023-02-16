@@ -13,6 +13,7 @@
 * Fix #4818: [java-generator] Escape `*/` in generated JavaDocs
 * Fix #4823: (java-generator) handle special characters in field names
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
+* Fix #4885: addresses a potential hang in the jdk client with exec stream reading
 
 #### Improvements
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
