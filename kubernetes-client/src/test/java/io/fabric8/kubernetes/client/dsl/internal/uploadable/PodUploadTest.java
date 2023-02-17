@@ -83,6 +83,7 @@ class PodUploadTest {
     BaseClient client = mock(BaseClient.class, Mockito.RETURNS_SELF);
     Mockito.when(client.adapt(BaseClient.class).getExecutor()).thenReturn(CommonThreadPool.get());
     Config config = mock(Config.class, Mockito.RETURNS_DEEP_STUBS);
+    when(config.getRequestConfig().getUploadRequestTimeout()).thenReturn(10);
     when(config.getMasterUrl()).thenReturn("https://openshift.com:8443");
     when(config.getNamespace()).thenReturn("default");
     when(client.getConfiguration()).thenReturn(config);

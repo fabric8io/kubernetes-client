@@ -197,15 +197,17 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
   }
 
   private void closeForwarder() {
-    alive.set(false);
-    if (in != null) {
-      Utils.closeQuietly(in);
-    }
-    if (out != null && out != in) {
-      Utils.closeQuietly(out);
-    }
-    pumperService.shutdownNow();
-    serialExecutor.shutdownNow();
+    serialExecutor.execute(() -> {
+      alive.set(false);
+      if (in != null) {
+        Utils.closeQuietly(in);
+      }
+      if (out != null && out != in) {
+        Utils.closeQuietly(out);
+      }
+      pumperService.shutdownNow();
+      serialExecutor.shutdownNow();
+    });
   }
 
   private static void pipe(ReadableByteChannel in, WebSocket webSocket, BooleanSupplier isAlive)

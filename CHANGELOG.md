@@ -14,6 +14,7 @@
 * Fix #4823: (java-generator) handle special characters in field names
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
 * Fix #4885: addresses a potential hang in the jdk client with exec stream reading
+* Fix #4891: address vertx not completely reading exec streams
 
 #### Improvements
 * Fix #4675: adding a fully client side timeout for informer watches

@@ -182,9 +182,13 @@ public class PortForwarderWebsocket implements PortForwarder {
     });
 
     return new PortForward() {
+      private final AtomicBoolean closed = new AtomicBoolean();
+
       @Override
       public void close() {
-        socket.cancel(true);
+        if (!closed.compareAndSet(false, true)) {
+          return;
+        }
         socket.whenComplete((w, t) -> {
           if (w != null) {
             listener.closeBothWays(w, 1001, "User closing");
