@@ -150,7 +150,7 @@ class PodUploadTest {
     // When
     String result = PodUpload.createExecCommandForUpload("/cp.log");
     // Then
-    assertThat(result).isEqualTo("mkdir -p '/' && base64 -d - > '/cp.log'");
+    assertThat(result).isEqualTo("mkdir -p '/' && cat - > '/cp.log'");
   }
 
   @Test
@@ -158,7 +158,7 @@ class PodUploadTest {
     // When
     String result = PodUpload.createExecCommandForUpload("/tmp/foo/cp.log");
     // Then
-    assertThat(result).isEqualTo("mkdir -p '/tmp/foo' && base64 -d - > '/tmp/foo/cp.log'");
+    assertThat(result).isEqualTo("mkdir -p '/tmp/foo' && cat - > '/tmp/foo/cp.log'");
   }
 
   @Test
@@ -166,7 +166,7 @@ class PodUploadTest {
     // When
     String result = PodUpload.createExecCommandForUpload("/tmp/fo'o/cp.log");
     // Then
-    assertThat(result).isEqualTo("mkdir -p '/tmp/fo\'\\'\'o' && base64 -d - > '/tmp/fo\'\\'\'o/cp.log'");
+    assertThat(result).isEqualTo("mkdir -p '/tmp/fo\'\\'\'o' && cat - > '/tmp/fo\'\\'\'o/cp.log'");
   }
 
   @Test
@@ -174,7 +174,7 @@ class PodUploadTest {
     // When
     String result = PodUpload.createExecCommandForUpload("/tmp/f'o'o/c'p.log");
     // Then
-    assertThat(result).isEqualTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o' && base64 -d - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log'");
+    assertThat(result).isEqualTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o' && cat - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log'");
   }
 
   void uploadFileAndVerify(PodUploadTester<Boolean> fileUploadMethodToTest) throws IOException, InterruptedException {
@@ -203,7 +203,7 @@ class PodUploadTest {
         "https://openshift.com:8443/api/v1/namespaces/default/pods?fieldSelector=metadata.name%3Dpod&allowWatchBookmarks=true&watch=true",
         captor.getAllValues().get(0).toString());
     assertEquals(
-        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true",
+        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20cat%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true",
         captor.getAllValues().get(1).toString());
     verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
   }
@@ -235,7 +235,7 @@ class PodUploadTest {
         "https://openshift.com:8443/api/v1/namespaces/default/pods?fieldSelector=metadata.name%3Dpod&allowWatchBookmarks=true&watch=true",
         captor.getAllValues().get(0).toString());
     assertEquals(
-        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20base64%20-d%20-%20%7C%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true",
+        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true",
         captor.getAllValues().get(1).toString());
     verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
   }
