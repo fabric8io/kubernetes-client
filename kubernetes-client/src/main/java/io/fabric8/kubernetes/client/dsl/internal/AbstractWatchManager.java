@@ -106,7 +106,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
    * attempt to reconnect
    */
   public void closeRequest() {
-    Optional.ofNullable(latestRequestState).ifPresent(s -> s.closed.set(true));
+    Optional.ofNullable(latestRequestState).ifPresent(state -> state.closed.set(true));
     closeCurrentRequest();
   }
 
