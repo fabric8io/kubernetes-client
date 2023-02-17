@@ -155,7 +155,6 @@ class OkHttpWebSocketImpl implements WebSocket {
 
       @Override
       public void onClosing(okhttp3.WebSocket webSocket, int code, String reason) {
-        awaitMoreRequest();
         listener.onClose(new OkHttpWebSocketImpl(webSocket, this::request), code, reason);
       }
 

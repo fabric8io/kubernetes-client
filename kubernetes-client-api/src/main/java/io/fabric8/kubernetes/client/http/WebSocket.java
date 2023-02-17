@@ -33,7 +33,7 @@ public interface WebSocket {
 
     /**
      * Called once the full text message has been built. {@link WebSocket#request()} must
-     * be called to receive more messages or onClose.
+     * be called to receive more messages.
      */
     default void onMessage(WebSocket webSocket, String text) {
       webSocket.request();
@@ -41,7 +41,7 @@ public interface WebSocket {
 
     /**
      * Called once the full binary message has been built. {@link WebSocket#request()} must
-     * be called to receive more messages or onClose.
+     * be called to receive more messages.
      */
     default void onMessage(WebSocket webSocket, ByteBuffer bytes) {
       webSocket.request();
@@ -49,7 +49,8 @@ public interface WebSocket {
 
     /**
      * Called when the remote input closes. It's a terminal event, calls to {@link WebSocket#request()}
-     * do nothing after this.
+     * do nothing after this. Some {@link HttpClient} implementations will require {@link WebSocket#request()}
+     * to be called to calling onClose.
      */
     default void onClose(WebSocket webSocket, int code, String reason) {
     }
