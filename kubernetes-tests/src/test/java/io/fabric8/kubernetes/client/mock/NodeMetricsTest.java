@@ -57,7 +57,7 @@ class NodeMetricsTest {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/nodes?resourceVersion=0").andReturn(HTTP_OK,
         new NodeMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
-    server.expect().withPath("/apis/metrics.k8s.io/v1beta1/nodes?allowWatchBookmarks=true&watch=true")
+    server.expect().withPath("/apis/metrics.k8s.io/v1beta1/nodes?timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .done()

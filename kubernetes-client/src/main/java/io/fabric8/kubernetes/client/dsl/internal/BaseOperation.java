@@ -614,13 +614,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Watch watch(ListOptions options, final Watcher<T> watcher) {
-    CompletableFuture<Watch> startedFuture = submitWatch(options, watcher);
+    CompletableFuture<? extends Watch> startedFuture = submitWatch(options, watcher);
     Utils.waitUntilReadyOrFail(startedFuture, -1, TimeUnit.SECONDS);
     return startedFuture.join();
   }
 
   @Override
-  public CompletableFuture<Watch> submitWatch(ListOptions options, final Watcher<T> watcher) {
+  public CompletableFuture<AbstractWatchManager<T>> submitWatch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     ListOptions optionsToUse = defaultListOptions(options, true);
     WatchConnectionManager<T, L> watch;

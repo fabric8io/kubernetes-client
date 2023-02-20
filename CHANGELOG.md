@@ -16,6 +16,7 @@
 * Fix #4885: addresses a potential hang in the jdk client with exec stream reading
 
 #### Improvements
+* Fix #4675: adding a fully client side timeout for informer watches
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
 * Fix #4644: generate CRDs in parallel and optimize code
 * Fix #4659: added a generic support(apiversion, kind) method in addition to the class based check
