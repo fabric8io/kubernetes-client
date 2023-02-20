@@ -65,7 +65,6 @@ public class PatchUtils {
       m.remove("creationTimestamp");
       m.remove("deletionTimestamp");
       m.remove("generation");
-      m.remove("resourceVersion");
       m.remove("selfLink");
       m.remove("uid");
     });

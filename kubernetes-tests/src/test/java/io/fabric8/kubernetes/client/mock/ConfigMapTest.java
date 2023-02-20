@@ -24,8 +24,10 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,15 +47,17 @@ class ConfigMapTest {
     data.put("foo", "bar");
     data.put("cheese", "gouda");
 
-    server.expect().withPath("/api/v1/namespaces/test/configmaps").andReturn(200,
-        new ConfigMapListBuilder().withItems(
-            new ConfigMapBuilder()
-                .withNewMetadata()
-                .withName("cfg1")
-                .endMetadata()
-                .addToData(data)
+    server.expect()
+        .withPath("/api/v1/namespaces/test/configmaps")
+        .andReturn(200,
+            new ConfigMapListBuilder().withItems(
+                new ConfigMapBuilder()
+                    .withNewMetadata()
+                    .withName("cfg1")
+                    .endMetadata()
+                    .addToData(data)
+                    .build())
                 .build())
-            .build())
         .once();
 
     ConfigMapList cfgList = client.configMaps().list();
@@ -71,14 +75,21 @@ class ConfigMapTest {
         .endMetadata()
         .build();
 
-    server.expect().withPath("/api/v1/namespaces/test/configmaps").andReturn(200,
-        new ConfigMapListBuilder().withItems(cm).build()).always();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/configmaps")
+        .andReturn(200,
+            new ConfigMapListBuilder().withItems(cm).build())
+        .always();
 
     MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = client.configMaps();
     assertTrue(configMaps.delete().size() == 1);
 
-    server.expect().delete().withPath("/api/v1/namespaces/test/configmaps/cfg1").andReturn(200,
-        cm).times(1);
+    server.expect()
+        .delete()
+        .withPath("/api/v1/namespaces/test/configmaps/cfg1")
+        .andReturn(200,
+            cm)
+        .times(1);
 
     assertEquals(1, configMaps.withName("cfg1").delete().size());
 
@@ -88,7 +99,8 @@ class ConfigMapTest {
   @Test
   void testFromResourceWithFileConfigMap() throws InterruptedException {
     ConfigMap configMap = client.configMaps()
-        .load(getClass().getResourceAsStream("/test-application-properties-config-map.yml")).item();
+        .load(getClass().getResourceAsStream("/test-application-properties-config-map.yml"))
+        .item();
     assertEquals("cfg1", configMap.getMetadata().getName());
 
     Map<String, String> data = (Map<String, String>) configMap.getData();
@@ -111,6 +123,42 @@ class ConfigMapTest {
     Map<String, String> keys = (Map<String, String>) configMap.getData();
     assertEquals("gouda", keys.get("cheese"));
     assertEquals("bar", keys.get("foo"));
+  }
+
+  @Test
+  void testJsonPatchResourceVersionViaEdit() throws IOException, InterruptedException {
+    server.expect()
+        .withPath("/api/v1/namespaces/ns1/configmaps/foo")
+        .andReturn(200,
+            new ConfigMapBuilder()
+                .withNewMetadata()
+                .withName("foo")
+                .withResourceVersion("x")
+                .endMetadata()
+                .build())
+        .once();
+
+    server.expect()
+        .patch()
+        .withPath("/api/v1/namespaces/ns1/configmaps/foo")
+        .andReturn(200,
+            new ConfigMapBuilder()
+                .withNewMetadata()
+                .withName("foo")
+                .withResourceVersion("x")
+                .endMetadata()
+                .build())
+        .once();
+
+    client.configMaps()
+        .inNamespace("ns1")
+        .withName("foo")
+        .edit(p -> new ConfigMapBuilder(p).editMetadata().addToAnnotations("some", "value").endMetadata().build());
+
+    String patch = IOHelpers.readFully(server.getLastRequest().getBody().inputStream());
+    assertEquals(
+        "[{\"op\":\"add\",\"path\":\"/metadata/annotations\",\"value\":{\"some\":\"value\"}},{\"op\":\"add\",\"path\":\"/metadata/resourceVersion\",\"value\":\"x\"}]",
+        patch);
   }
 
 }

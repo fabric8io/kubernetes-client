@@ -50,7 +50,8 @@ class CustomResourceCrudTest {
   void setUp() {
     KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
     cronTabCrd = client
-        .apiextensions().v1()
+        .apiextensions()
+        .v1()
         .customResourceDefinitions()
         .load(getClass().getResourceAsStream("/crontab-crd.yml"))
         .item();
@@ -133,7 +134,8 @@ class CustomResourceCrudTest {
     cronTab.setStatus(status);
 
     NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
-        .resources(CronTab.class).inNamespace("test-ns");
+        .resources(CronTab.class)
+        .inNamespace("test-ns");
 
     CronTab result = cronTabClient.create(cronTab);
 
@@ -164,12 +166,14 @@ class CustomResourceCrudTest {
     assertNotNull(result.getStatus());
 
     labels.put("another", "label");
+    cronTab.getMetadata().setResourceVersion(null);
     result = cronTabClient.withName(cronTab.getMetadata().getName()).patch(cronTab);
 
     // should retain the existing
     assertNotNull(result.getStatus());
     // should have accumulated all labels
-    assertEquals(new HashSet<String>(Arrays.asList("app", "other", "another")), result.getMetadata().getLabels().keySet());
+    assertEquals(new HashSet<String>(Arrays.asList("app", "other", "another")),
+        result.getMetadata().getLabels().keySet());
 
     assertEquals(originalUid, result.getMetadata().getUid());
   }
@@ -182,7 +186,8 @@ class CustomResourceCrudTest {
     cronTab.setStatus(status);
 
     NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
-        .resources(CronTab.class).inNamespace("test-ns");
+        .resources(CronTab.class)
+        .inNamespace("test-ns");
 
     CronTab result = cronTabClient.create(cronTab);
 
@@ -200,7 +205,8 @@ class CustomResourceCrudTest {
     CronTab cronTab = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
 
     NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
-        .resources(CronTab.class).inNamespace("test-ns");
+        .resources(CronTab.class)
+        .inNamespace("test-ns");
 
     CronTab result = cronTabClient.resource(cronTab).create();
 

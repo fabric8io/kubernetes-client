@@ -49,6 +49,11 @@
 * Fix #4659: The SupportTestingClient interface has been deprecated.  Please use one of the supports methods or getApiGroup to determine what is available on the api server.
 * Fix #4825: removed or deprecated/moved methods that are unrelated to the rolling timeout from ImageEditReplacePatchable.  Deprecated rollout methods for timeout and edit - future versions will not support
 * Fix #4826: removed RequestConfig upload connection and rolling timeouts.  Both were no longer used with no plans to re-introduce their usage.
+* Fix #4861: several breaking changes related to resourceVersion handling and the replace operation:
+  - replace is deprecated, you should use update instead.  If you set the resourceVersion to null it will not be optimistically locked
+  - json patch methods using an item for the diff generation such as edit or patch will no longer omit the resourceVersion in the patch.  If you want the patch to be unlocked, then set the resourceVersion to null on the item to be patched.
+  - createOrReplace is deprecated, you should use server side apply instead.
+  - internal logic to mimic an apply that modify an item prior to a json patch is deprecated - you should instead build the item to be patched off of base version, such as with the edit method.
 
 ### 6.4.1 (2023-01-31)
 
