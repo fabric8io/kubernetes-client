@@ -42,6 +42,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
   private static final String REPLACE_OPERATION = "replace";
+  private static final String UPDATE_OPERATION = "update";
 
   public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
@@ -101,6 +102,36 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
    */
   protected T modifyItemForReplaceOrPatch(Supplier<T> current, T item) {
     return item;
+  }
+
+  @Override
+  public T update() {
+    return this.update(getItem(), false);
+  }
+
+  @Override
+  public T updateStatus() {
+    return this.update(getItem(), true);
+  }
+
+  protected T update(T item, boolean status) {
+    String existingResourceVersion = KubernetesResourceUtil.getResourceVersion(item);
+    try {
+      if (existingResourceVersion == null) {
+        T got = requireFromServer();
+        String resourceVersion = KubernetesResourceUtil.getResourceVersion(got);
+        item = clone(item);
+        item.getMetadata().setResourceVersion(resourceVersion);
+      }
+      return handleUpdate(item, status);
+    } catch (KubernetesClientException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType(UPDATE_OPERATION), e);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType(UPDATE_OPERATION), e);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType(UPDATE_OPERATION), e);
+    }
   }
 
   /**
@@ -171,16 +202,9 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
    * be fetched from the server.
    */
   protected T patch(PatchContext context, T base, T item, boolean status) {
-    if (context == null || context.getPatchType() == PatchType.JSON) {
+    if ((context == null || context.getPatchType() == PatchType.JSON) && base == null) {
       if (base == null) {
         base = requireFromServer();
-      }
-      if (base.getMetadata() != null) {
-        // prevent the resourceVersion from being modified in the patch
-        if (item.getMetadata() == null) {
-          item.setMetadata(new ObjectMeta());
-        }
-        item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());
       }
       final T current = base;
       try {

@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
@@ -325,27 +326,24 @@ class KubernetesCrudDispatcherPatchTest {
     @Test
     @DisplayName("JSON patch, with different resource version, should patch the resource ---->" +
         "Invalid Client behavior which removes the resource version from the list of operations")
-    // TODO: This test should be converted to differentResourceVersionConflict if we address
-    //       the inconsistent behavior of the client
-    void differentResourceVersionOk() {
+    void differentResourceVersionConflictEdit() {
       // Given
-      final ConfigMap initialCm = client.resource(new ConfigMapBuilder()
+      client.resource(new ConfigMapBuilder()
           .withNewMetadata().withName("json-different-resource-version").endMetadata()
           .addToData("key", "value")
           .build())
           .create();
       // When
-      final ConfigMap patchedCm = client.resource(new ConfigMapBuilder()
+      final NamespaceableResource<ConfigMap> patchedCmOp = client.resource(new ConfigMapBuilder()
           .withNewMetadata().withName("json-different-resource-version").withResourceVersion("different").endMetadata()
           .addToData("key", "changed")
-          .build())
-          .patch();
+          .build());
       // Then
-      assertThat(patchedCm)
-          .hasFieldOrPropertyWithValue("metadata.name", "json-different-resource-version")
-          .extracting("metadata.resourceVersion")
-          .isNotNull()
-          .isNotEqualTo(initialCm.getMetadata().getResourceVersion());
+      assertThatThrownBy(() -> patchedCmOp.patch())
+          .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
+          .hasFieldOrPropertyWithValue("code", 409)
+          .extracting(KubernetesClientException::getMessage).asString()
+          .contains("the object has been modified;");
     }
 
     @Test

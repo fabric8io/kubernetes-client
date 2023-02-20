@@ -1103,7 +1103,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T updateStatus(T item) {
-    return resource(item).lockResourceVersion().replaceStatus();
+    return resource(item).updateStatus();
   }
 
   @Override
@@ -1138,6 +1138,16 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit) {
     return newInstance(context.withTimeout(timeout, unit));
+  }
+
+  @Override
+  public T updateStatus() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T update() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
 }

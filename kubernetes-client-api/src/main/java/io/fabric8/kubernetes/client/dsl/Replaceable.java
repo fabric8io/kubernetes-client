@@ -30,14 +30,38 @@ public interface Replaceable<T> {
    * the latest resourceVersion from the server.
    *
    * @return returns deserialized version of api server response
+   *
+   * @deprecated use {@link #update()} instead
    */
+  @Deprecated
   T replace();
 
   /**
    * Similar to {@link Replaceable#replace()}, but only affects the status subresource
    *
    * @return returns deserialized version of api server response
+   *
+   * @deprecated use {@link #updateStatus()} instead
    */
+  @Deprecated
   T replaceStatus();
+
+  /**
+   * Similar to {@link Replaceable#update()}, but only affects the status subresource
+   *
+   * @return returns deserialized version of api server response
+   */
+  T updateStatus();
+
+  /**
+   * Update the server's state with the given item (PUT).
+   * <p>
+   * If the resourceVersion is on the resource, the update will be performed with optimistic locking, and may
+   * result in a conflict (409 error). If no resourceVersion is on the resource, the latest resourceVersion will
+   * be obtained from the server prior to the update call - which may still be a conflict in a rare circumstance.
+   *
+   * @return returns deserialized version of api server response
+   */
+  T update();
 
 }

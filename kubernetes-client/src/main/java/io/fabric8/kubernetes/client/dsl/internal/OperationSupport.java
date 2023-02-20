@@ -390,6 +390,13 @@ public class OperationSupport {
       throws InterruptedException, IOException {
     String patchForUpdate;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
+      if (current instanceof HasMetadata) {
+        ObjectMeta meta = ((HasMetadata) current).getMetadata();
+        if (meta != null) {
+          // include the resourceVersion in the patch if it's specified on the updated
+          meta.setResourceVersion(null);
+        }
+      }
       // we can't omit status unless this is not a status operation and we know this has a status subresource
       patchForUpdate = PatchUtils.jsonDiff(current, updated, false);
       if (patchContext == null) {
