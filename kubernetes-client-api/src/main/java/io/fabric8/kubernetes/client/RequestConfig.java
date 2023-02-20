@@ -26,9 +26,7 @@ import java.util.Map;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
-import static io.fabric8.kubernetes.client.Config.DEFAULT_ROLLING_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
-import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_REQUEST_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_TIMEOUT;
 
@@ -41,12 +39,10 @@ public class RequestConfig {
   private Map<String, List<String>> impersonateExtras = new HashMap<>();
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
-  private int uploadConnectionTimeout = DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
   private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
   private int requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
   private int requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
   private int requestTimeout = 10 * 1000;
-  private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
@@ -55,19 +51,17 @@ public class RequestConfig {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public RequestConfig(int watchReconnectLimit, int watchReconnectInterval, long rollingTimeout, int requestTimeout,
+  public RequestConfig(int watchReconnectLimit, int watchReconnectInterval, int requestTimeout,
       long scaleTimeout, int loggingInterval, long websocketTimeout, int requestRetryBackoffLimit,
-      int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout) {
+      int requestRetryBackoffInterval, int uploadRequestTimeout) {
     this.watchReconnectLimit = watchReconnectLimit;
     this.watchReconnectInterval = watchReconnectInterval;
-    this.rollingTimeout = rollingTimeout;
     this.requestTimeout = requestTimeout;
     this.scaleTimeout = scaleTimeout;
     this.websocketTimeout = websocketTimeout;
     this.loggingInterval = loggingInterval;
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
-    this.uploadConnectionTimeout = uploadConnectionTimeout;
     this.uploadRequestTimeout = uploadRequestTimeout;
   }
 
@@ -111,28 +105,12 @@ public class RequestConfig {
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
   }
 
-  public int getUploadConnectionTimeout() {
-    return uploadConnectionTimeout;
-  }
-
-  public void setUploadConnectionTimeout(int uploadConnectionTimeout) {
-    this.uploadConnectionTimeout = uploadConnectionTimeout;
-  }
-
   public int getUploadRequestTimeout() {
     return uploadRequestTimeout;
   }
 
   public void setUploadRequestTimeout(int uploadRequestTimeout) {
     this.uploadRequestTimeout = uploadRequestTimeout;
-  }
-
-  public long getRollingTimeout() {
-    return rollingTimeout;
-  }
-
-  public void setRollingTimeout(long rollingTimeout) {
-    this.rollingTimeout = rollingTimeout;
   }
 
   public long getScaleTimeout() {

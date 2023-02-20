@@ -517,8 +517,8 @@ public class OperationSupport {
     try {
       // since readTimeout may not be enforced in a timely manner at the httpclient, we'll
       // enforce a higher level timeout with a small amount of padding to account for possible queuing
-      if (config.getRequestTimeout() > 0) {
-        return future.get(config.getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
+      if (getRequestConfig().getRequestTimeout() > 0) {
+        return future.get(getRequestConfig().getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
       }
       return future.get();
     } catch (InterruptedException e) {
