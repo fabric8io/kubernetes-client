@@ -193,6 +193,36 @@ deleteLatch.await(10, TimeUnit.MINUTES)
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
     }
 ```
+- Add ephemeral container to a `Pod`
+```java
+PodResource resource = client.pods().withName("pod1");
+resource.ephemeralContainers()
+  .edit(p -> new PodBuilder(p)
+    .editSpec()
+    .addNewEphemeralContainer()
+    .withName("debugger")
+    .withImage("busybox")
+    .withCommand("sleep", "36000")
+    .endEphemeralContainer()
+    .endSpec()
+    .build());
+
+resource.waitUntilCondition(p -> {
+  return p.getStatus()
+      .getEphemeralContainerStatuses()
+      .stream()
+      .filter(s -> s.getName().equals("debugger"))
+      .anyMatch(s -> s.getState().getRunning() != null);
+  }, 2, TimeUnit.MINUTES);
+
+ByteArrayOutputStream out = new ByteArrayOutputStream();
+try (ExecWatch watch = resource.inContainer("debugger")
+  .writingOutput(out)
+  .exec("sh", "-c", "echo 'hello world!'")) {
+  assertEquals(0, watch.exitCode().join());
+  assertEquals("hello world!\n", out.toString());
+}
+```
 - Using Kubernetes Client from within a `Pod`
 When trying to access Kubernetes API from within a `Pod` authentication is done a bit differently as compared to when being done on your system. If you checkout [documentation](https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/#accessing-the-api-from-a-pod). Client authenticates by reading `ServiceAccount` from `/var/run/secrets/kubernetes.io/serviceaccount/` and reads environment variables like `KUBERNETES_SERVICE_HOST` and `KUBERNETES_SERVICE_PORT` for apiServer URL. You don't have to worry about all this when using Fabric8 Kubernetes Client. You can simply use it like this and client will take care of everything:
 ```

@@ -72,26 +72,6 @@ public class ReplicaSetOperationsImpl
   }
 
   @Override
-  public ReplicaSet pause() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" pausing is not supported");
-  }
-
-  @Override
-  public ReplicaSet resume() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" resuming is not supported");
-  }
-
-  @Override
-  public ReplicaSet restart() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" restarting is not supported");
-  }
-
-  @Override
-  public ReplicaSet undo() {
-    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() + "\"");
-  }
-
-  @Override
   public ReplicaSet withReplicas(int count) {
     return accept(r -> r.getSpec().setReplicas(count));
   }

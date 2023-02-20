@@ -1,7 +1,7 @@
 module github.com/fabric8io/kubernetes-client/extensions/open-cluster-management/generator
 
 require (
-	github.com/emicklei/go-restful v2.11.1+incompatible // indirect
+	github.com/emicklei/go-restful v2.16.0+incompatible // indirect
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/onsi/gomega v1.15.0 // indirect

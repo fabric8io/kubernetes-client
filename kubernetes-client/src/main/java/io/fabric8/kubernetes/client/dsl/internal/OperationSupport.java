@@ -82,6 +82,7 @@ public class OperationSupport {
   protected final String resourceT;
   protected String namespace;
   protected String name;
+  protected String subresource;
   protected String apiGroupName;
   protected String apiGroupVersion;
   protected boolean dryRun;
@@ -97,6 +98,7 @@ public class OperationSupport {
     this.resourceT = ctx.getPlural();
     this.namespace = ctx.getNamespace();
     this.name = ctx.getName();
+    this.subresource = ctx.getSubresource();
     this.apiGroupName = ctx.getApiGroupName();
     this.dryRun = ctx.getDryRun();
     if (Utils.isNotNullOrEmpty(ctx.getApiGroupVersion())) {
@@ -164,35 +166,44 @@ public class OperationSupport {
       parts.add("namespaces");
       parts.add(namespace);
     }
-    parts.add(type);
+
+    if (Utils.isNotNullOrEmpty(type)) {
+      parts.add(type);
+    }
   }
 
   public URL getNamespacedUrl() throws MalformedURLException {
     return getNamespacedUrl(getNamespace());
   }
 
-  public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
-    return getResourceUrl(namespace, name, false);
+  public URL getResourceUrl(String namespace, String name, String... subresources) throws MalformedURLException {
+    String subresourcePath = URLUtils.pathJoin(subresources);
+    if (name == null) {
+      if (Utils.isNotNullOrEmpty(subresourcePath)) {
+        throw new KubernetesClientException("name not specified for an operation requiring one.");
+      }
+
+      return getNamespacedUrl(namespace);
+    }
+
+    String path = name;
+    if (Utils.isNotNullOrEmpty(subresourcePath)) {
+      path = URLUtils.pathJoin(path, subresourcePath);
+    }
+
+    return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), path));
   }
 
   public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
-    if (name == null) {
-      if (status) {
-        throw new KubernetesClientException("name not specified for an operation requiring one.");
-      }
-      return getNamespacedUrl(namespace);
-    }
     if (status) {
-      return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name, "status"));
+      return getResourceUrl(namespace, name, "status");
     }
-    return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name));
+
+    return getResourceUrl(namespace, name, subresource);
   }
 
   public URL getResourceUrl() throws MalformedURLException {
-    if (name == null) {
-      return getNamespacedUrl();
-    }
-    return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
+    return getResourceUrl(namespace, name, subresource);
   }
 
   public URL getResourceURLForWriteOperation(URL resourceURL) throws MalformedURLException {

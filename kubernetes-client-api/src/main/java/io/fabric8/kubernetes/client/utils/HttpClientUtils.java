@@ -167,6 +167,8 @@ public class HttpClientUtils {
   public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
     builder.followAllRedirects();
 
+    builder.requestConfig(config);
+
     if (config.getConnectionTimeout() > 0) {
       builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
     }

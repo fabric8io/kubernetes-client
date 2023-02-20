@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/OpenClusterManagement#Apps",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel": {
       "type": "object",

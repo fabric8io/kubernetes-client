@@ -31,7 +31,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +45,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private volatile InputStream output;
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
-  private volatile Optional<AsyncBody> asyncBody = Optional.empty();
+  private final CompletableFuture<AsyncBody> asyncBody = new CompletableFuture<>();
   private final SerialExecutor serialExecutor;
 
   public LogWatchCallback(OutputStream out, Executor executor) {
@@ -66,7 +65,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     if (!closed.compareAndSet(false, true)) {
       return;
     }
-    asyncBody.ifPresent(AsyncBody::cancel);
+    asyncBody.thenAccept(AsyncBody::cancel);
     serialExecutor.shutdownNow();
   }
 
@@ -109,15 +108,15 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
           onFailure(e);
         }
         if (a != null) {
-          asyncBody = Optional.of(a.body());
+          asyncBody.complete(a.body());
           a.body().consume();
-          a.body().done().whenComplete((v, t) -> {
+          a.body().done().whenComplete((v, t) -> CompletableFuture.runAsync(() -> {
             if (t != null) {
               onFailure(t);
             } else {
               cleanUp();
             }
-          });
+          }, serialExecutor));
         }
       });
     }

@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/jetstack/CertManagerSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization": {
       "type": "object",

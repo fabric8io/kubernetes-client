@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "certificates",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
@@ -1302,14 +1302,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "certificates.k8s.io/v1beta1",
+          "default": "certificates.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest"
+            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest"
           }
         },
         "kind": {
@@ -1377,8 +1377,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition"
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition"
           }
         }
       },

@@ -196,14 +196,21 @@ public abstract class BaseClient implements Client {
     if (Utils.isNullOrEmpty(typeApiVersion) || Utils.isNullOrEmpty(typeKind)) {
       return false;
     }
-    final APIResourceList apiResources = getApiResources(ApiVersionUtil.joinApiGroupAndVersion(
-        HasMetadata.getGroup(type), HasMetadata.getVersion(type)));
+    return supports(ApiVersionUtil.joinApiGroupAndVersion(
+        HasMetadata.getGroup(type), HasMetadata.getVersion(type)), typeKind);
+  }
+
+  @Override
+  public boolean supports(String apiVersion, String kind) {
+    Utils.checkNotNull(kind, "kind cannot be null");
+    Utils.checkNotNull(apiVersion, "apiVersion cannot be null");
+    final APIResourceList apiResources = getApiResources(apiVersion);
     if (apiResources == null) {
       return false;
     }
     return apiResources.getResources()
         .stream()
-        .anyMatch(r -> typeKind.equals(r.getKind()));
+        .anyMatch(r -> kind.equals(r.getKind()));
   }
 
   @Override

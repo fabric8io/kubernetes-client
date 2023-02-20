@@ -40,6 +40,7 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
+import io.fabric8.kubernetes.client.server.mock.StatusMessage;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
@@ -487,7 +488,7 @@ class PodTest {
     watch.getInput().write(shutdownInput.getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
 
-    latch.await(1, TimeUnit.MINUTES);
+    assertTrue(latch.await(1, TimeUnit.MINUTES));
 
     // Then
     assertEquals(expectedOutput, stdout.toString());
@@ -711,7 +712,7 @@ class PodTest {
     server.expect()
         .get()
         .withPath(
-            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
+            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(50)
@@ -911,6 +912,169 @@ class PodTest {
     assertEquals(1, fromServerPod.getStatus().getConditions().size());
     assertEquals("Ready", fromServerPod.getStatus().getConditions().get(0).getType());
     assertEquals("True", fromServerPod.getStatus().getConditions().get(0).getStatus());
+  }
+
+  @Test
+  void testPatchEphemeralContainer() {
+    PodBuilder podBuilder = new PodBuilder()
+        .withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("default")
+        .endContainer()
+        .endSpec();
+
+    Pod patchedResponse = podBuilder.editSpec()
+        .addNewEphemeralContainer()
+        .withName("debug")
+        .endEphemeralContainer()
+        .endSpec()
+        .withNewStatus()
+        .addNewEphemeralContainerStatus()
+        .withName("debug")
+        .endEphemeralContainerStatus()
+        .endStatus()
+        .build();
+
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, podBuilder.build()).once();
+    server.expect().patch().withPath("/api/v1/namespaces/test/pods/pod1/ephemeralcontainers").andReturn(201, patchedResponse)
+        .once();
+
+    Pod patched = client.pods().withName("pod1")
+        .ephemeralContainers()
+        .edit(pod -> new PodBuilder(pod)
+            .editSpec()
+            .addNewEphemeralContainer()
+            .withName("debug")
+            .endEphemeralContainer()
+            .endSpec()
+            .build());
+
+    assertEquals(patchedResponse, patched);
+  }
+
+  @Test
+  void testExecEphemeralContainer() throws InterruptedException {
+    PodBuilder podBuilder = new PodBuilder()
+        .withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .endMetadata()
+        .withNewSpec()
+        .addNewContainer()
+        .withName("default")
+        .endContainer()
+        .addNewEphemeralContainer()
+        .withName("debug")
+        .endEphemeralContainer()
+        .endSpec();
+
+    String expectedOutput = "file1 file2";
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&container=debug&stdout=true")
+        .andUpgradeToWebSocket()
+        .open(new OutputStreamMessage(expectedOutput))
+        .done()
+        .always();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1")
+        .andReturn(200, podBuilder.build())
+        .once();
+
+    final CountDownLatch execLatch = new CountDownLatch(1);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ExecWatch watch = client.pods()
+        .withName("pod1")
+        .inContainer("debug")
+        .writingOutput(baos)
+        .usingListener(createCountDownLatchListener(execLatch))
+        .exec("ls");
+
+    execLatch.await(10, TimeUnit.MINUTES);
+    assertNotNull(watch);
+    assertEquals(expectedOutput, baos.toString());
+    watch.close();
+  }
+
+  @Test
+  void testAttachEphemeralContainer() throws InterruptedException, IOException {
+    // Given
+    String validInput = "input";
+    String expectedOutput = "output";
+
+    String invalidInput = "invalid";
+    String expectedError = "error";
+
+    String shutdownInput = "shutdown";
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1/attach?container=debug&stdin=true&stdout=true&stderr=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("\u0000" + validInput) // \u0000 is the file descriptor for stdin
+        .andEmit(new WebSocketMessage(0L, "\u0001" + expectedOutput, false, true)) // \u0001 is the file descriptor for stdout
+        .always()
+        .expect("\u0000" + invalidInput)
+        .andEmit(new WebSocketMessage(0L, "\u0002" + expectedError, false, true)) // \u0002 is the file descriptor for stderr
+        .always()
+        .expect("\u0000" + shutdownInput)
+        .andEmit(new StatusMessage(-1))
+        .always()
+        .done()
+        .always();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1")
+        .andReturn(200,
+            new PodBuilder().withNewMetadata()
+                .addToAnnotations(PodOperationsImpl.DEFAULT_CONTAINER_ANNOTATION_NAME, "default")
+                .endMetadata()
+                .withNewSpec()
+                .addNewContainer()
+                .withName("first")
+                .endContainer()
+                .addNewContainer()
+                .withName("default")
+                .endContainer()
+                .addNewEphemeralContainer()
+                .withName("debug")
+                .endEphemeralContainer()
+                .endSpec()
+                .build())
+        .once();
+
+    ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+    ByteArrayOutputStream stderr = new ByteArrayOutputStream();
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    // When
+    ExecWatch watch = client.pods()
+        .withName("pod1")
+        .inContainer("debug")
+        .redirectingInput()
+        .writingOutput(stdout)
+        .writingError(stderr)
+        .usingListener(createCountDownLatchListener(latch))
+        .attach();
+
+    watch.getInput().write(validInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+    watch.getInput().write(invalidInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+    watch.getInput().write(shutdownInput.getBytes(StandardCharsets.UTF_8));
+    watch.getInput().flush();
+
+    // Then
+    assertTrue(latch.await(1, TimeUnit.MINUTES));
+    assertEquals(-1, watch.exitCode().join());
+    assertEquals(expectedOutput, stdout.toString());
+    assertEquals(expectedError, stderr.toString());
+
+    watch.close();
   }
 
   private static String portForwardEncode(boolean dataChannel, String str) {

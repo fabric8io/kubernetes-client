@@ -24,7 +24,10 @@ import io.fabric8.kubernetes.client.Client;
  * Moving forward only clients with special support needs, such as
  * the openshift client should implement this interface. For those classes,
  * this interface can be part of the public contract.
+ *
+ * @deprecated will be removed in future versions
  */
+@Deprecated
 public interface SupportTestingClient extends Client {
 
   /**
@@ -34,7 +37,10 @@ public interface SupportTestingClient extends Client {
    * {@link Client#hasApiGroup(String, boolean)} to be compatible with mock support
    *
    * @return true if supported
+   *
+   * @deprecated use {@link Client#supports(Class)} or {@link Client#supports(String, String)} instead
    */
+  @Deprecated
   boolean isSupported();
 
 }

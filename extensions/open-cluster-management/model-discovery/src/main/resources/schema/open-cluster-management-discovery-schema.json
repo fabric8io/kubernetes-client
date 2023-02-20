@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/OpenClusterManagement#Discovery",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster": {
       "type": "object",

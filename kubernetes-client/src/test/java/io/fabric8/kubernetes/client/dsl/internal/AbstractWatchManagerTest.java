@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -148,7 +149,7 @@ class AbstractWatchManagerTest {
     awm.baseOperation.context = Mockito.mock(OperationContext.class);
     Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
 
-    awm.scheduleReconnect();
+    awm.scheduleReconnect(new WatchRequestState());
     // When
     awm.cancelReconnect();
     // Then
@@ -170,7 +171,7 @@ class AbstractWatchManagerTest {
         if (first) {
           first = false;
           // simulate failing before the call to startWatch finishes
-          ForkJoinPool.commonPool().execute(this::scheduleReconnect);
+          ForkJoinPool.commonPool().execute(() -> scheduleReconnect(new WatchRequestState()));
           try {
             Thread.sleep(100);
           } catch (InterruptedException e) {
@@ -249,11 +250,12 @@ class AbstractWatchManagerTest {
     }
 
     @Override
-    protected void start(URL url, Map<String, String> headers) {
+    protected void start(URL url, Map<String, String> headers, WatchRequestState state) {
+
     }
 
     @Override
-    protected void closeRequest() {
+    public void closeCurrentRequest() {
       closeCount.addAndGet(1);
     }
 

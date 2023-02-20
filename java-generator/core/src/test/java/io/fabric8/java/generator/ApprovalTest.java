@@ -81,6 +81,6 @@ class ApprovalTest {
 
   private String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
     GeneratorResult.ClassResult cr = classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
-    return cr.getCompilationUnit().toString();
+    return cr.getJavaSource();
   }
 }

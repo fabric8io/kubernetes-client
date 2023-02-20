@@ -32,6 +32,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
@@ -83,32 +85,51 @@ public class FileJavaGenerator implements JavaGenerator {
         resources.add(deserialized);
       }
 
-      resources.parallelStream()
-          .forEach(
-              rawResource -> {
-                if (rawResource != null && rawResource instanceof HasMetadata) {
-                  final HasMetadata resource = (HasMetadata) rawResource;
+      writeCRCompilationUnits(basePath, generateWritableCRCompilationUnits(resources));
 
-                  if (resource != null && resource.getKind()
-                      .toLowerCase(Locale.ROOT)
-                      .equals("customresourcedefinition")) {
-                    CustomResourceDefinition crd = (CustomResourceDefinition) resource;
-
-                    final String basePackage = groupToPackage(crd.getSpec().getGroup());
-
-                    crGeneratorRunner.generate(crd, basePackage).parallelStream()
-                        .forEach(w -> w.writeAllJavaClasses(basePath));
-                  } else {
-                    LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
-                  }
-                } else {
-                  LOGGER.warn("Not generating nothing for unrecognized resource: {}", Serialization.asYaml(rawResource));
-                }
-              });
     } catch (FileNotFoundException e) {
       throw new JavaGeneratorException("File " + source.getAbsolutePath() + " not found", e);
     } catch (IOException e) {
       throw new JavaGeneratorException("Exception reading " + source.getAbsolutePath(), e);
+    }
+  }
+
+  private List<WritableCRCompilationUnit> generateWritableCRCompilationUnits(List<Object> resources) {
+    return resources.parallelStream()
+        .flatMap(
+            rawResource -> {
+              if (rawResource != null && rawResource instanceof HasMetadata) {
+                final HasMetadata resource = (HasMetadata) rawResource;
+
+                if (resource != null && resource.getKind()
+                    .toLowerCase(Locale.ROOT)
+                    .equals("customresourcedefinition")) {
+                  CustomResourceDefinition crd = (CustomResourceDefinition) resource;
+
+                  final String basePackage = groupToPackage(crd.getSpec().getGroup());
+                  return crGeneratorRunner.generate(crd, basePackage).stream();
+                } else {
+                  LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
+                }
+              } else {
+                LOGGER.warn("Not generating nothing for unrecognized resource: {}", Serialization.asYaml(rawResource));
+              }
+              return Stream.empty();
+            })
+        .collect(Collectors.toList());
+  }
+
+  private void writeCRCompilationUnits(File basePath, List<WritableCRCompilationUnit> wCUs) {
+    int size = wCUs.size();
+    CompletableFuture<Void>[] futures = new CompletableFuture[size];
+
+    for (int i = 0; i < size; i++) {
+      WritableCRCompilationUnit w = wCUs.get(i);
+      futures[i] = CompletableFuture.runAsync(() -> w.writeAllJavaClasses(basePath));
+    }
+
+    for (int j = 0; j < size; j++) {
+      futures[j].join();
     }
   }
 }

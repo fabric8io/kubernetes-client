@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "scheduling",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
@@ -1516,14 +1516,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "scheduling.k8s.io/v1",
+          "default": "scheduling.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_scheduling_v1_PriorityClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass"
+            "$ref": "#/definitions/kubernetes_scheduling_v1beta1_PriorityClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass"
           }
         },
         "kind": {

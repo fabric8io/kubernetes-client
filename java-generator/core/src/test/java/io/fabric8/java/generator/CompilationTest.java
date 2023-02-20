@@ -57,6 +57,7 @@ class CompilationTest {
 
   private static Stream<Arguments> compilationTestData() {
     return Stream.of(
+        Arguments.of("dummy-crd.yml", 2),
         Arguments.of("crontab-crd.yml", 3),
         Arguments.of("keycloak-crd.yml", 50),
         Arguments.of("akka-microservices-crd.yml", 28),

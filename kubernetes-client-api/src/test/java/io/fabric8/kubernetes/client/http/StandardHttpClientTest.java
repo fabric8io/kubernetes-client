@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -89,14 +91,15 @@ class StandardHttpClientTest {
   }
 
   @Test
-  void testNoHttpRetryWithDefaultConfig() throws InterruptedException {
+  void test10RetriesWithDefaultConfig() throws Exception {
     CompletableFuture<?> sendAsyncFuture = client.sendAsync(client.newHttpRequestBuilder().uri("http://localhost").build(),
         InputStream.class);
 
     client.getRespFutures().get(0).completeExceptionally(new IOException());
+    IntStream.range(1, 11).forEach(i -> client.getRespFutures().add(client.getRespFutures().get(0)));
 
     try {
-      sendAsyncFuture.get();
+      sendAsyncFuture.get(30, TimeUnit.SECONDS);
       fail();
     } catch (ExecutionException e) {
       assertTrue(e.getCause() instanceof IOException);

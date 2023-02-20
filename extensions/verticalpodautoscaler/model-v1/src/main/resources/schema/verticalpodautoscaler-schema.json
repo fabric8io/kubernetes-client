@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/autoscaler/VerticalPodAutoscalerSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy": {
       "type": "object",

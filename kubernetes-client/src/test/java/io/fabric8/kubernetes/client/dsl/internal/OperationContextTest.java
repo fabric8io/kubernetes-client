@@ -64,6 +64,7 @@ class OperationContextTest {
     // When
     operationContext = operationContext.withNamespace("operation-namespace")
         .withName("operand-name")
+        .withSubresource("subresource")
         .withClient(client)
         .withApiGroupName("batch")
         .withApiGroupVersion("v1")
@@ -84,6 +85,7 @@ class OperationContextTest {
     assertNotNull(operationContext);
     assertEquals("operation-namespace", operationContext.getNamespace());
     assertEquals("operand-name", operationContext.getName());
+    assertEquals("subresource", operationContext.getSubresource());
     assertEquals("batch", operationContext.getApiGroupName());
     assertEquals("v1", operationContext.getApiGroupVersion());
     assertEquals("jobs", operationContext.getPlural());

@@ -126,11 +126,11 @@
     <maven.bundle.plugin.version>5.1.8</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.3.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M8</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M9</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
     <maven.release.plugin.version>3.0.0-M7</maven.release.plugin.version>
-    <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.5.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.2.1</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.0</maven.deploy.plugin.version>
@@ -146,7 +146,7 @@
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
-    <spotless-maven-plugin.version>2.30.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.33.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
