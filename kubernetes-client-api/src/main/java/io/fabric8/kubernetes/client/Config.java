@@ -813,12 +813,25 @@ public class Config {
     }
     List<String> argv = new ArrayList<>(Utils.getCommandPlatformPrefix());
     command = getCommandWithFullyQualifiedPath(command, systemPathValue);
+
+    command = shellQuote(command);
+
     List<String> args = exec.getArgs();
     if (args != null && !args.isEmpty()) {
-      command += " " + String.join(" ", args);
+      command += " " + args
+          .stream()
+          .map(Config::shellQuote)
+          .collect(Collectors.joining(" "));
     }
     argv.add(command);
     return argv;
+  }
+
+  private static String shellQuote(String value) {
+    if (value.contains(" ") || value.contains("\"") || value.contains("'")) {
+      return "\"" + value.replace("\"", "\\\"") + "\"";
+    }
+    return value;
   }
 
   protected static String getCommandWithFullyQualifiedPath(String command, String pathValue) {
