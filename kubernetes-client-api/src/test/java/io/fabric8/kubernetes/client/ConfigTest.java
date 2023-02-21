@@ -57,6 +57,8 @@ public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_EXEC_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec"));
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
+  private static final String TEST_TOKEN_GENERATOR_FILE_WITH_SPACES = Utils
+      .filePath(ConfigTest.class.getResource("/token-generator with spaces"));
 
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
@@ -65,6 +67,18 @@ public class ConfigTest {
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-null-args"));
   private static final String TEST_KUBECONFIG_EXEC_FILE_WIN_NULL_ARGS = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-null-args"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES_WIN = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-with-spaces-windows"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-with-spaces"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES_WIN = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-args-with-spaces-windows"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-args-with-spaces"));
 
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
@@ -484,6 +498,44 @@ public class ConfigTest {
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
       assertEquals("HELLO", config.getOauthToken());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
+  void should_accept_client_authentication_commands_args_with_spaces() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES_WIN);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE_WITH_SPACES),
+            PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertEquals("HELLO W O R L D", config.getOauthToken());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
+  void should_accept_client_authentication_commands_with_spaces() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES_WIN);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE_WITH_SPACES),
+            PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertEquals("HELLO WORLD", config.getOauthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
