@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -49,8 +50,8 @@ public class GenericKubernetesResourceExample {
 
       String namespace = "default";
       CustomResourceDefinition prometheousRuleCrd = client.apiextensions().v1beta1().customResourceDefinitions()
-          .load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
-      client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(prometheousRuleCrd);
+          .load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).item();
+      client.apiextensions().v1beta1().customResourceDefinitions().resource(prometheousRuleCrd).createOrReplace();
       logger.info("Successfully created Prometheous custom resource definition");
 
       // Creating Custom Resources Now:
@@ -76,7 +77,7 @@ public class GenericKubernetesResourceExample {
       // Watching custom resources now
       logger.info("Watching custom resources now");
       final CountDownLatch closeLatch = new CountDownLatch(1);
-      resourcesInNamespace.watch(new Watcher<GenericKubernetesResource>() {
+      Watch watch = resourcesInNamespace.watch(new Watcher<GenericKubernetesResource>() {
         @Override
         public void eventReceived(Action action, GenericKubernetesResource resource) {
           logger.info("{}: {}", action, resource);
@@ -92,6 +93,7 @@ public class GenericKubernetesResourceExample {
         }
       });
       closeLatch.await(10, TimeUnit.MINUTES);
+      watch.close();
 
       // Cleanup
       logger.info("Deleting custom resources...");

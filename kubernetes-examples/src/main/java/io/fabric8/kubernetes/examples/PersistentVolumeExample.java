@@ -64,7 +64,7 @@ public class PersistentVolumeExample {
           .endSpec()
           .build();
 
-      client.persistentVolumes().create(pv);
+      client.persistentVolumes().resource(pv).create();
       logger.info("Successfully created Persistent Volume object");
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);

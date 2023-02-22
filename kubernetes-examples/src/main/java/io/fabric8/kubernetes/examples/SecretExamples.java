@@ -57,7 +57,7 @@ public class SecretExamples {
           .withImmutable(false)
           .addToData(data)
           .build();
-      Secret secretCreated = client.secrets().inNamespace(namespace).create(secret);
+      Secret secretCreated = client.secrets().inNamespace(namespace).resource(secret).create();
       logger.info("Newly created Secret details:\n{}", secretCreated);
 
       logger.info("Updated list of existent Secret:");

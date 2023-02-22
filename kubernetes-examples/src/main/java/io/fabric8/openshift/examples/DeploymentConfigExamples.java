@@ -54,9 +54,9 @@ public class DeploymentConfigExamples {
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
 
-      client.serviceAccounts().inNamespace(project).createOrReplace(fabric8);
+      client.serviceAccounts().inNamespace(project).resource(fabric8).createOrReplace();
 
-      log("Created deployment", client.deploymentConfigs().inNamespace(project).createOrReplace(new DeploymentConfigBuilder()
+      log("Created deployment", client.deploymentConfigs().inNamespace(project).resource(new DeploymentConfigBuilder()
           .withNewMetadata()
           .withName(IMAGE)
           .endMetadata()
@@ -81,7 +81,7 @@ public class DeploymentConfigExamples {
           .endSpec()
           .endTemplate()
           .endSpec()
-          .build()));
+          .build()).createOrReplace());
 
       client.deploymentConfigs().inNamespace(project).withName(IMAGE).scale(2, true);
       log("Created pods:", client.pods().inNamespace(project).list().getItems());

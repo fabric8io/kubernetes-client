@@ -29,9 +29,9 @@ public class LoadAndCreateDeployment {
       // Load Deployment YAML Manifest into Java object
       Deployment deploy1 = k8s.apps().deployments()
           .load(LoadAndCreateDeployment.class.getResourceAsStream("/test-deploy.yaml"))
-          .get();
+          .item();
       // Apply it to Kubernetes Cluster
-      k8s.apps().deployments().inNamespace("default").create(deploy1);
+      k8s.apps().deployments().inNamespace("default").resource(deploy1).create();
     }
   }
 }

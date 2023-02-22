@@ -29,8 +29,8 @@ public class CertificateSigningRequestCreateYamlEquivalent {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
 
       CertificateSigningRequest csr = client.certificates().v1().certificateSigningRequests()
-          .load(CertificateSigningRequestCreateYamlEquivalent.class.getResourceAsStream("/test-csr-v1.yml")).get();
-      client.certificates().v1().certificateSigningRequests().create(csr);
+          .load(CertificateSigningRequestCreateYamlEquivalent.class.getResourceAsStream("/test-csr-v1.yml")).item();
+      client.certificates().v1().certificateSigningRequests().resource(csr).create();
     }
   }
 }

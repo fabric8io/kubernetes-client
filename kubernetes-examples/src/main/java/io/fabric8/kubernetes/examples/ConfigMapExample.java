@@ -49,10 +49,12 @@ public class ConfigMapExample {
       }
 
       String name = "cheese";
-      Resource<ConfigMap> configMapResource = client.configMaps().inNamespace(namespace).withName(name);
+      Resource<ConfigMap> configMapResource = client.configMaps().inNamespace(namespace)
+          .resource(new ConfigMapBuilder().withNewMetadata().withName(name)
+              .endMetadata().addToData("foo", "" + new Date()).addToData("bar", "beer")
+              .build());
 
-      ConfigMap configMap = configMapResource.createOrReplace(new ConfigMapBuilder().withNewMetadata().withName(name)
-          .endMetadata().addToData("foo", "" + new Date()).addToData("bar", "beer").build());
+      ConfigMap configMap = configMapResource.createOrReplace();
 
       logger.info("Upserted ConfigMap at {} data {}", configMap.getMetadata().getSelfLink(), configMap.getData());
 

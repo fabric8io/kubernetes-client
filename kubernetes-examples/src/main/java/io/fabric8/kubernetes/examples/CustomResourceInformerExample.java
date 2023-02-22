@@ -89,9 +89,10 @@ public class CustomResourceInformerExample {
             .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
       }
 
-      client.resources(Dummy.class).createOrReplace(toCreate);
+      client.resources(Dummy.class).resource(toCreate).createOrReplace();
       // Wait for some time now
       TimeUnit.MINUTES.sleep(5);
+      podInformer.close();
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       logger.warn("interrupted: {}", interruptedException.getMessage());

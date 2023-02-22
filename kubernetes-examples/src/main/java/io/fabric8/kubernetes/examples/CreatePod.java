@@ -62,7 +62,7 @@ public class CreatePod {
         namespace = client.getNamespace();
       }
 
-      List<HasMetadata> resources = client.load(new FileInputStream(fileName)).get();
+      List<HasMetadata> resources = client.load(new FileInputStream(fileName)).items();
       if (resources.isEmpty()) {
         logger.error("No resources loaded from file: {}", fileName);
         return;
@@ -72,7 +72,7 @@ public class CreatePod {
         Pod pod = (Pod) resource;
         logger.info("Creating pod in namespace {}", namespace);
         NonNamespaceOperation<Pod, PodList, PodResource> pods = client.pods().inNamespace(namespace);
-        Pod result = pods.create(pod);
+        Pod result = pods.resource(pod).create();
         logger.info("Created pod {}", result.getMetadata().getName());
       } else {
         logger.error("Loaded resource is not a Pod! {}", resource);

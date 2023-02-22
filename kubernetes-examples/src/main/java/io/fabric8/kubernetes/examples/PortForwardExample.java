@@ -44,9 +44,9 @@ public class PortForwardExample {
       String namespace = "default";
       logger.info("Using namespace: {}", namespace);
       Pod pod = client.pods().inNamespace(namespace)
-          .load(PortForwardExample.class.getResourceAsStream("/portforward-example-pod.yml")).get();
+          .load(PortForwardExample.class.getResourceAsStream("/portforward-example-pod.yml")).item();
       final String podName = pod.getMetadata().getName();
-      client.pods().inNamespace(namespace).create(pod);
+      client.pods().inNamespace(namespace).resource(pod).create();
       logger.info("Pod {} created", podName);
 
       int containerPort = pod.getSpec().getContainers().get(0).getPorts().get(0).getContainerPort();

@@ -52,7 +52,8 @@ public class NetworkPolicyExample {
           .v1()
           .networkPolicies()
           .inNamespace(namespace)
-          .createOrReplace(networkPolicy);
+          .resource(networkPolicy)
+          .createOrReplace();
       logger.info("NetworkPolicy {}/{} created via builders", namespace, networkPolicy.getMetadata().getName());
 
       // crate policy using YAML resource

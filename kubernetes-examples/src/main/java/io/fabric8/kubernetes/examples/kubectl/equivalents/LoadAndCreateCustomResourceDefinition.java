@@ -30,9 +30,9 @@ public class LoadAndCreateCustomResourceDefinition {
       CustomResourceDefinition crd = k8s.apiextensions().v1()
           .customResourceDefinitions()
           .load(LoadAndCreateCustomResourceDefinition.class.getResourceAsStream("/test-crd.yaml"))
-          .get();
+          .item();
 
-      k8s.apiextensions().v1().customResourceDefinitions().create(crd);
+      k8s.apiextensions().v1().customResourceDefinitions().resource(crd).create();
     }
   }
 }

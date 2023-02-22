@@ -35,6 +35,7 @@
 * Fix #4863: default HttpClient retry logic to 100ms interval
 * Fix #4863: default HttpClient retry logic to 10 attempts
 * Fix #4865: (java-generator) performance improvements
+* Fix #4873: Update all samples in `kubernetes-examples/` module to use up to date code
 
 #### Dependency Upgrade
 * Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0

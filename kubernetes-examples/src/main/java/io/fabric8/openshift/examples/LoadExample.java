@@ -17,6 +17,7 @@ package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -44,27 +45,31 @@ public class LoadExample {
     try (KubernetesClient kubernetesClient = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
-      final List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).get();
+      final List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).items();
       logger.info("Found in file: {} items.", list.size());
       list.stream().map(LoadExample::display).forEach(logger::info);
 
       //noinspection Convert2Lambda
-      final List<HasMetadata> visitedList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
+      final List<HasMetadata> items = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).items();
+      KubernetesListBuilder kubernetesListBuilder = new KubernetesListBuilder();
+      kubernetesListBuilder.addAllToItems(items);
+      kubernetesListBuilder
           .accept(new Visitor<ObjectMetaBuilder>() {
             @Override
             public void visit(ObjectMetaBuilder item) {
               item.addToLabels("visitorkey", "visitorvalue");
             }
-          }).get();
+          });
+      List<HasMetadata> visitedList = kubernetesListBuilder.buildItems();
       logger.info("Visited: {} items.", visitedList.size());
       visitedList.stream().map(LoadExample::display).forEach(logger::info);
 
-      final List<HasMetadata> fromServerList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
-          .get();
+      final List<HasMetadata> fromServerList = client.load(LoadExample.class.getResourceAsStream(LOADED_RESOURCE))
+          .items();
       logger.info("Found on server: {} items.", fromServerList.size());
       fromServerList.stream().map(LoadExample::display).forEach(logger::info);
 
-      final List<HasMetadata> appliedList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
+      final List<HasMetadata> appliedList = client.load(LoadExample.class.getResourceAsStream(LOADED_RESOURCE))
           .createOrReplace();
       logger.info("Applied: {} items.", appliedList.size());
       appliedList.stream().map(LoadExample::display).forEach(logger::info);

@@ -38,11 +38,11 @@ public class DeploymentExamples {
       // Create a namespace for all our stuff
       Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata()
           .build();
-      logger.info("Created namespace: {}", client.namespaces().createOrReplace(ns));
+      logger.info("Created namespace: {}", client.namespaces().resource(ns).createOrReplace());
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
 
-      client.serviceAccounts().inNamespace(NAMESPACE).createOrReplace(fabric8);
+      client.serviceAccounts().inNamespace(NAMESPACE).resource(fabric8).createOrReplace();
       try {
         Deployment deployment = new DeploymentBuilder()
             .withNewMetadata()
@@ -70,7 +70,7 @@ public class DeploymentExamples {
             .endSpec()
             .build();
 
-        deployment = client.apps().deployments().inNamespace(NAMESPACE).create(deployment);
+        deployment = client.apps().deployments().inNamespace(NAMESPACE).resource(deployment).create();
         logger.info("Created deployment: {}", deployment);
 
         logger.info("Scaling up: {}", deployment.getMetadata().getName());

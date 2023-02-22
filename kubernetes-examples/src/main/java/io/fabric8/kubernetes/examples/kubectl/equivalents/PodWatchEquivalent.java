@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public class PodWatchEquivalent {
     // Latch for Watch termination
     final CountDownLatch isWatchClosed = new CountDownLatch(1);
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
-      k8s.pods().inNamespace(namespace).watch(new Watcher<Pod>() {
+      Watch watch = k8s.pods().inNamespace(namespace).watch(new Watcher<Pod>() {
         @Override
         public void eventReceived(Action action, Pod pod) {
           logger.info("{} {}", action.name(), pod.getMetadata().getName());
@@ -66,6 +67,7 @@ public class PodWatchEquivalent {
 
       // Wait till watch gets closed
       isWatchClosed.await();
+      watch.close();
     } catch (InterruptedException interruptedException) {
       logger.warn("Interrupted while waiting for the watch to close: {}", interruptedException.getMessage());
       Thread.currentThread().interrupt();
