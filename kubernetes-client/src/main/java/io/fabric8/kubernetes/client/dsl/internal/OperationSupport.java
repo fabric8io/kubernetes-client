@@ -737,9 +737,9 @@ public class OperationSupport {
   public RequestConfig getRequestConfig() {
     RequestConfig result = context.getRequestConfig();
     if (result == null && config != null) {
-      return config.getRequestConfig();
+      result = config.getRequestConfig();
     }
-    return new RequestConfigBuilder().build();
+    return new RequestConfigBuilder(result).build();
   }
 
   private String getContentTypeFromPatchContextOrDefault(PatchContext patchContext) {

@@ -412,10 +412,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
       };
       CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference);
-      return futureAnswer.thenApply(l -> {
-        updateApiVersion(l);
-        return l;
-      });
+      return futureAnswer.thenApply(updateApiVersion());
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -832,14 +829,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   /**
    * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
-   *
-   * @param list Kubernetes resource list
    */
-  protected void updateApiVersion(KubernetesResourceList<T> list) {
-    String version = apiVersion;
-    if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
-      list.getItems().forEach(this::updateApiVersion);
-    }
+  protected UnaryOperator<L> updateApiVersion() {
+    return list -> {
+      String version = apiVersion;
+      if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
+        list.getItems().forEach(this::updateApiVersion);
+      }
+      return list;
+    };
   }
 
   /**

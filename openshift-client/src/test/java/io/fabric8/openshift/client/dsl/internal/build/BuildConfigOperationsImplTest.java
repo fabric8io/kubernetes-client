@@ -21,59 +21,83 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.impl.BaseClient;
-import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class BuildConfigOperationsImplTest {
-  @Mock
-  HttpClient httpClient;
 
-  @Mock
-  OpenShiftConfig config;
+  private Client client;
+  private HttpClient httpClient;
 
   @BeforeEach
   public void setUp() {
-    this.httpClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    httpClient = mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
 
-    HttpRequest response = Mockito.mock(HttpRequest.class, Mockito.CALLS_REAL_METHODS);
+    HttpRequest response = mock(HttpRequest.class, Mockito.CALLS_REAL_METHODS);
     when(response.method()).thenReturn("POST");
     when(response.uri()).thenReturn(URI.create("https://localhost:8443/"));
 
-    when(this.httpClient.newBuilder()
+    when(httpClient.newBuilder()
         .readTimeout(anyLong(), any())
         .writeTimeout(anyLong(), any())
         .build()).thenReturn(httpClient);
-    when(this.httpClient.newHttpRequestBuilder()
+    when(httpClient.newHttpRequestBuilder()
         .post(any(), any(), anyLong())
         .header(any(), any())
         .uri(any(String.class))
         .build()).thenReturn(response);
 
-    this.config = new OpenShiftConfigBuilder().withMasterUrl("https://localhost:8443/").build();
+    client = mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(client.getHttpClient()).thenReturn(httpClient);
+    Mockito.when(client.getConfiguration())
+        .thenReturn(new OpenShiftConfigBuilder().withMasterUrl("https://localhost:8443/").build());
   }
 
   @Test
-  void testWriteToThrowsExceptionShouldAddEvents() throws IOException {
+  void requestTimeoutDefaultsToZero() {
+    assertThat(new BuildConfigOperationsImpl(client).getOperationContext().getRequestConfig().getRequestTimeout())
+        .isZero();
+  }
+
+  @Test
+  void withTimeoutOverridesRequestTimeout() {
+    final BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client)
+        .withTimeout(1337, TimeUnit.MILLISECONDS);
+    assertThat(buildConfigOperations.getOperationContext().getRequestConfig().getRequestTimeout())
+        .isEqualTo(1337);
+  }
+
+  @Test
+  void withTimeoutInMillisOverridesRequestTimeout() {
+    final BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client)
+        .withTimeoutInMillis(1337);
+    assertThat(buildConfigOperations.getOperationContext().getRequestConfig().getRequestTimeout())
+        .isEqualTo(1337);
+  }
+
+  @Test
+  void testWriteToThrowsExceptionShouldAddEvents() {
     // Given
     String eventMessage = "FailedScheduling demo-1-7zkjd.1619493da51f6b6f some error";
 
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(mockClient()) {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(client) {
       @Override
       protected String getRecentEvents() {
         return eventMessage;
@@ -94,16 +118,16 @@ class BuildConfigOperationsImplTest {
   }
 
   @Test
-  void testWriteShouldCompleteSuccessfully() throws IOException {
+  void testWriteShouldCompleteSuccessfully() {
     // Given
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(mockClient()) {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(client) {
       @Override
       protected String getRecentEvents() {
         throw new AssertionError();
       };
     };
 
-    HttpResponse<byte[]> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+    HttpResponse<byte[]> response = mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
     when(response.code()).thenReturn(200);
     when(response.body()).thenReturn(new byte[0]);
 
@@ -111,12 +135,5 @@ class BuildConfigOperationsImplTest {
     impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0);
 
     Mockito.verify(response, Mockito.times(1)).body();
-  }
-
-  private Client mockClient() {
-    BaseClient result = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
-    Mockito.when(result.getHttpClient()).thenReturn(httpClient);
-    Mockito.when(result.getConfiguration()).thenReturn(config);
-    return result;
   }
 }

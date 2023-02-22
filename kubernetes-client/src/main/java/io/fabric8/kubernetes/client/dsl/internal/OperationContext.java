@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -117,7 +118,7 @@ public class OperationContext {
     this.forceConflicts = forceConflicts;
     this.timeout = timeout;
     this.timeoutUnit = timeoutUnit;
-    this.requestConfig = requestConfig;
+    this.requestConfig = requestConfig == null ? null : new RequestConfigBuilder(requestConfig).build();
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
