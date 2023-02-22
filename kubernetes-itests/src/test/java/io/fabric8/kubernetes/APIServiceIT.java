@@ -22,8 +22,12 @@ import io.fabric8.kubernetes.api.model.APIServiceBuilder;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.awaitility.Awaitility;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,6 +36,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class APIServiceIT {
 
   KubernetesClient client;
+
+  @BeforeEach
+  void ensureExists() {
+    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+        .until(() -> client.apiServices().withName("v1.tests.example.com").get() != null);
+  }
 
   @Test
   void get() {
