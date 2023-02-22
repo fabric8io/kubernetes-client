@@ -77,11 +77,16 @@ public class SerialExecutor implements Executor {
     }
   }
 
+  /**
+   * Shutdown the executor without executing any more tasks.
+   * <p>
+   * The the current task will be interrupting if it is not the thread that initiated the shutdown.
+   */
   public void shutdownNow() {
     this.shutdown = true;
     tasks.clear();
     synchronized (threadLock) {
-      if (thread != null) {
+      if (thread != null && thread != Thread.currentThread()) {
         thread.interrupt();
       }
     }

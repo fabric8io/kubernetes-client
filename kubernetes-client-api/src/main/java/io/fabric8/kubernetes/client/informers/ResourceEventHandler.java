@@ -28,6 +28,8 @@ public interface ResourceEventHandler<T> {
 
   /**
    * Called after an empty list is retrieved on start or after an HTTP GONE when the {@link Store} is empty
+   * <p>
+   * Should not be implemented with long-running logic as that may lead to memory issues.
    */
   default void onNothing() {
 
@@ -35,6 +37,8 @@ public interface ResourceEventHandler<T> {
 
   /**
    * Called when an object is added.
+   * <p>
+   * Should not be implemented with long-running logic as that may lead to memory issues.
    *
    * @param obj object
    */
@@ -46,6 +50,8 @@ public interface ResourceEventHandler<T> {
    * were combined together, so you can't use this to see every single
    * change. It is also called when a sync happens - oldObj will be
    * the same as newObj.
+   * <p>
+   * Should not be implemented with long-running logic as that may lead to memory issues.
    *
    * @param oldObj old object
    * @param newObj new object
@@ -57,6 +63,8 @@ public interface ResourceEventHandler<T> {
    * it would get an object of the DeletedFinalStateUnknown. This can
    * happen if the watch is closed and misses the delete event and
    * we don't notice the deletion until the subsequent re-list.
+   * <p>
+   * Should not be implemented with long-running logic as that may lead to memory issues.
    *
    * @param obj object to delete
    * @param deletedFinalStateUnknown get final state of item if it is known or not.

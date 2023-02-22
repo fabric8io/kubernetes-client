@@ -26,6 +26,7 @@ import java.util.Map;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_REQUEST_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_TIMEOUT;
@@ -42,7 +43,7 @@ public class RequestConfig {
   private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
   private int requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
   private int requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-  private int requestTimeout = 10 * 1000;
+  private int requestTimeout = DEFAULT_REQUEST_TIMEOUT;
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;

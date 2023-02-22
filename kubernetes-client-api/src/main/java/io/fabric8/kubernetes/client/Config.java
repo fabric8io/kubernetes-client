@@ -134,6 +134,7 @@ public class Config {
 
   public static final String DEFAULT_MASTER_URL = "https://kubernetes.default.svc";
   public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
+  public static final int DEFAULT_REQUEST_TIMEOUT = 10 * 1000;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
   public static final Long DEFAULT_WEBSOCKET_TIMEOUT = 5 * 1000L;
   public static final Long DEFAULT_WEBSOCKET_PING_INTERVAL = 30 * 1000L;
@@ -193,7 +194,7 @@ public class Config {
   private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
   private int requestRetryBackoffLimit;
   private int requestRetryBackoffInterval;
-  private int requestTimeout = 10 * 1000;
+  private int requestTimeout = DEFAULT_REQUEST_TIMEOUT;
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;

@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,42 @@ import java.util.function.Supplier;
 import static java.net.HttpURLConnection.HTTP_GONE;
 
 public abstract class AbstractWatchManager<T extends HasMetadata> implements Watch {
+
+  private static final class SerialWatcher<T> implements Watcher<T> {
+    private final Watcher<T> watcher;
+    SerialExecutor serialExecutor;
+
+    private SerialWatcher(Watcher<T> watcher, SerialExecutor serialExecutor) {
+      this.watcher = watcher;
+      this.serialExecutor = serialExecutor;
+    }
+
+    @Override
+    public void eventReceived(Action action, T resource) {
+      serialExecutor.execute(() -> watcher.eventReceived(action, resource));
+    }
+
+    @Override
+    public void onClose(WatcherException cause) {
+      serialExecutor.execute(() -> {
+        watcher.onClose(cause);
+        serialExecutor.shutdownNow();
+      });
+    }
+
+    @Override
+    public void onClose() {
+      serialExecutor.execute(() -> {
+        watcher.onClose();
+        serialExecutor.shutdownNow();
+      });
+    }
+
+    @Override
+    public boolean reconnecting() {
+      return watcher.reconnecting();
+    }
+  }
 
   public static class WatchRequestState {
 
@@ -79,7 +116,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   AbstractWatchManager(
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
       int reconnectInterval, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
-    this.watcher = watcher;
+    // prevent the callbacks from happening in the httpclient thread
+    this.watcher = new SerialWatcher<>(watcher, new SerialExecutor(baseOperation.getOperationContext().getExecutor()));
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, reconnectLimit);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
