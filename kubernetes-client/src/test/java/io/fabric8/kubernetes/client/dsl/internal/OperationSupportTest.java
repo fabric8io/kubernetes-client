@@ -19,7 +19,9 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
@@ -50,7 +52,10 @@ class OperationSupportTest {
   @BeforeEach
   void setUp() {
     final OperationContext context = new OperationContext().withClient(mock(Client.class, RETURNS_DEEP_STUBS));
-    when(context.getClient().getConfiguration()).thenReturn(Config.empty());
+    final Config globalConfig = new ConfigBuilder(Config.empty())
+        .withRequestTimeout(313373)
+        .build();
+    when(context.getClient().getConfiguration()).thenReturn(globalConfig);
     operationSupport = new OperationSupport(context);
   }
 
@@ -168,6 +173,19 @@ class OperationSupportTest {
     assertThrows(KubernetesClientException.class, () -> {
       operationSupport.getResourceUrl("default", null, true);
     }, "status requires name");
+  }
+
+  @Test
+  void getRequestConfigReturnsFromGlobalConfigByDefault() {
+    assertThat(operationSupport.getRequestConfig())
+        .hasFieldOrPropertyWithValue("requestTimeout", 313373);
+  }
+
+  @Test
+  void getRequestConfigReturnsFromContextIfPresent() {
+    assertThat(operationSupport.getOperationContext()
+        .withRequestConfig(new RequestConfigBuilder().withRequestTimeout(1337).build()).getRequestConfig())
+            .hasFieldOrPropertyWithValue("requestTimeout", 1337);
   }
 
 }
