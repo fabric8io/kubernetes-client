@@ -121,6 +121,10 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * The resource version observed when last synced with the underlying store.
    * The value returned is not synchronized with access to the underlying store
    * and is not thread-safe.
+   * <p>
+   * Since the store processes events asynchronously this value should not be
+   * used as an indication of the last resourceVersion seen. Also after an
+   * informer is stopped any pending event processing may not happen.
    *
    * @return string value or null if never synced
    */
