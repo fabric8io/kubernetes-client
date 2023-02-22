@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +45,7 @@ class ExponentialBackoffIntervalCalculatorTest {
   @DisplayName("nextReconnectInterval, from config, should use Config-provided values")
   void nextReconnectIntervalFromConfig() {
     // Given
-    final Config requestConfig = new ConfigBuilder(Config.empty())
+    final RequestConfig requestConfig = new RequestConfigBuilder()
         .withRequestRetryBackoffInterval(1)
         .build();
     final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(requestConfig);
@@ -85,7 +85,7 @@ class ExponentialBackoffIntervalCalculatorTest {
   @DisplayName("shouldRetry, from config within limit, returns true")
   void shouldRetryFromConfigReturnsTrue() {
     // Given
-    final Config requestConfig = new ConfigBuilder(Config.empty())
+    final RequestConfig requestConfig = new RequestConfigBuilder()
         .withRequestRetryBackoffLimit(5)
         .build();
     final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(requestConfig);
@@ -99,7 +99,7 @@ class ExponentialBackoffIntervalCalculatorTest {
   @DisplayName("shouldRetry, from config outside limit, returns false")
   void shouldRetryFromConfigReturnsFalse() {
     // Given
-    final Config requestConfig = new ConfigBuilder(Config.empty())
+    final RequestConfig requestConfig = new RequestConfigBuilder()
         .withRequestRetryBackoffLimit(5)
         .build();
     final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(requestConfig);
@@ -113,7 +113,7 @@ class ExponentialBackoffIntervalCalculatorTest {
   @DisplayName("resetReconnectAttempts, from config outside limit, allows for more retries")
   void resetReconnectAttemptsFromConfigAllowsForMoreRetries() {
     // Given
-    final Config requestConfig = new ConfigBuilder(Config.empty())
+    final RequestConfig requestConfig = new RequestConfigBuilder()
         .withRequestRetryBackoffLimit(5)
         .build();
     final ExponentialBackoffIntervalCalculator calculator = ExponentialBackoffIntervalCalculator.from(requestConfig);

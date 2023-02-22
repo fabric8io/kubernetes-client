@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import lombok.Getter;
 
@@ -46,11 +46,11 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   protected TlsVersion[] tlsVersions;
   protected boolean forStreaming;
   protected boolean authenticatorNone;
-  protected Config requestConfig;
   protected C client;
   protected F clientFactory;
   protected TrustManager[] trustManagers;
   protected KeyManager[] keyManagers;
+  protected LinkedHashMap<Class<?>, Object> tags = new LinkedHashMap<>();
 
   protected StandardHttpClientBuilder(F clientFactory) {
     this.clientFactory = clientFactory;
@@ -129,12 +129,6 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   }
 
   @Override
-  public T requestConfig(Config requestConfig) {
-    this.requestConfig = requestConfig;
-    return (T) this;
-  }
-
-  @Override
   public T preferHttp11() {
     this.preferHttp11 = true;
     return (T) this;
@@ -143,6 +137,14 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   public T clientFactory(F clientFactory) {
     this.clientFactory = clientFactory;
     return (T) this;
+  }
+
+  @Override
+  public DerivedClientBuilder tag(Object value) {
+    if (value != null) {
+      this.tags.put(value.getClass(), value);
+    }
+    return this;
   }
 
   protected abstract T newInstance(F clientFactory);
@@ -162,8 +164,8 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     copy.followRedirects = this.followRedirects;
     copy.authenticatorNone = this.authenticatorNone;
     copy.writeTimeout = this.writeTimeout;
-    copy.requestConfig = this.requestConfig;
     copy.client = client;
+    copy.tags = new LinkedHashMap<>(this.tags);
     return copy;
   }
 

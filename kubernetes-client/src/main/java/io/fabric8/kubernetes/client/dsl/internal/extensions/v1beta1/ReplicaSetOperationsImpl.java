@@ -79,7 +79,7 @@ public class ReplicaSetOperationsImpl
   @Override
   public RollingUpdater<ReplicaSet, ReplicaSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return new ReplicaSetRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
-        config.getLoggingInterval());
+        getRequestConfig().getLoggingInterval());
   }
 
   @Override

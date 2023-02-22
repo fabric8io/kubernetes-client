@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -68,6 +69,7 @@ public class OperationContext {
   protected String selectorAsString;
 
   protected Client client;
+  protected RequestConfig requestConfig;
 
   private long timeout;
   private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
@@ -80,7 +82,7 @@ public class OperationContext {
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
-        other.forceConflicts, other.timeout, other.timeoutUnit);
+        other.forceConflicts, other.timeout, other.timeoutUnit, other.requestConfig);
   }
 
   @SuppressWarnings("java:S107")
@@ -90,7 +92,7 @@ public class OperationContext {
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
       boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation,
-      String fieldManager, Boolean forceConflicts, long timeout, TimeUnit timeoutUnit) {
+      String fieldManager, Boolean forceConflicts, long timeout, TimeUnit timeoutUnit, RequestConfig requestConfig) {
     this.client = client;
     this.item = item;
     this.plural = plural;
@@ -115,6 +117,7 @@ public class OperationContext {
     this.forceConflicts = forceConflicts;
     this.timeout = timeout;
     this.timeoutUnit = timeoutUnit;
+    this.requestConfig = requestConfig;
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
@@ -176,6 +179,10 @@ public class OperationContext {
       return null;
     }
     return client.getConfiguration();
+  }
+
+  public RequestConfig getRequestConfig() {
+    return requestConfig;
   }
 
   public String getPlural() {
@@ -508,7 +515,7 @@ public class OperationContext {
       newContext = newContext.withNamespace(getNamespace());
     }
 
-    return getClient().adapt(BaseClient.class).newClient(newContext).adapt(clazz);
+    return getClient().adapt(BaseClient.class).newClient(newContext, clazz);
   }
 
   public Executor getExecutor() {
@@ -546,6 +553,15 @@ public class OperationContext {
     final OperationContext context = new OperationContext(this);
     context.timeout = timeout;
     context.timeoutUnit = timeUnit == null ? TimeUnit.MILLISECONDS : timeUnit;
+    return context;
+  }
+
+  public OperationContext withRequestConfig(RequestConfig requestConfig) {
+    if (requestConfig == this.requestConfig) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.requestConfig = requestConfig;
     return context;
   }
 

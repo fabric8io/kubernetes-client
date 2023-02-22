@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -84,7 +84,7 @@ class KubernetesClientImplTest {
 
     BasicBuilder basicBuilder = Mockito.mock(BasicBuilder.class);
     HttpClientUtils.createApplicableInterceptors(configWithCustomerHeaders, null).get("HEADER")
-        .before(basicBuilder, Mockito.mock(HttpHeaders.class));
+        .before(basicBuilder, Mockito.mock(HttpRequest.class), null);
     Mockito.verify(basicBuilder, Mockito.times(1)).header("user-id", "test-user");
   }
 
@@ -94,7 +94,7 @@ class KubernetesClientImplTest {
 
     BasicBuilder basicBuilder = Mockito.mock(BasicBuilder.class);
     HttpClientUtils.createApplicableInterceptors(defaultEmptyConfig, null).get("HEADER")
-        .before(basicBuilder, Mockito.mock(HttpHeaders.class));
+        .before(basicBuilder, Mockito.mock(HttpRequest.class), null);
 
     Mockito.verify(basicBuilder, Mockito.never()).header("user-id", "test-user");
   }

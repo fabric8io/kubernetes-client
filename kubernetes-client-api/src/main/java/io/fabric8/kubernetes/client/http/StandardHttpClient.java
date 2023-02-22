@@ -16,7 +16,9 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
+import io.fabric8.kubernetes.client.http.Interceptor.RequestTags;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -36,7 +38,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
-    implements HttpClient {
+    implements HttpClient, RequestTags {
 
   private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
 
@@ -84,7 +86,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
     StandardHttpRequest.Builder copy = standardHttpRequest.newBuilder();
     for (Interceptor interceptor : builder.getInterceptors().values()) {
-      Interceptor.useConfig(builder.requestConfig).apply(interceptor).before(copy, standardHttpRequest);
+      interceptor.before(copy, standardHttpRequest, this);
       standardHttpRequest = copy.build();
     }
 
@@ -93,8 +95,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (!HttpResponse.isSuccessful(response.code())) {
-          return Interceptor.useConfig(builder.requestConfig).apply(interceptor)
-              .afterFailure(copy, response)
+          return interceptor.afterFailure(copy, response, this)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
                   // before starting another request, make sure the old one is cancelled / closed
@@ -163,7 +164,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
       java.util.function.Consumer<V> cancel) {
     retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel,
-        ExponentialBackoffIntervalCalculator.from(builder.getRequestConfig()));
+        ExponentialBackoffIntervalCalculator.from(getTag(RequestConfig.class)));
   }
 
   @Override
@@ -203,25 +204,28 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   private CompletableFuture<WebSocketResponse> buildWebSocketOnce(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
     final StandardWebSocketBuilder copy = standardWebSocketBuilder.newBuilder();
-    builder.getInterceptors().values().stream().map(Interceptor.useConfig(builder.requestConfig))
-        .forEach(i -> i.before(copy, copy.asHttpRequest()));
+    builder.getInterceptors().values().stream().forEach(i -> i.before(copy, copy.asHttpRequest(), this));
 
     CompletableFuture<WebSocketResponse> cf = buildWebSocketDirect(copy, listener);
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null) {
-          return Interceptor.useConfig(builder.requestConfig).apply(interceptor)
-              .afterFailure(copy, response.wshse.getResponse()).thenCompose(b -> {
-                if (Boolean.TRUE.equals(b)) {
-                  return this.buildWebSocketDirect(copy, listener);
-                }
-                return CompletableFuture.completedFuture(response);
-              });
+          return interceptor.afterFailure(copy, response.wshse.getResponse(), this).thenCompose(b -> {
+            if (Boolean.TRUE.equals(b)) {
+              return this.buildWebSocketDirect(copy, listener);
+            }
+            return CompletableFuture.completedFuture(response);
+          });
         }
         return CompletableFuture.completedFuture(response);
       });
     }
     return cf;
+  }
+
+  @Override
+  public <V> V getTag(Class<V> type) {
+    return type.cast(builder.tags.get(type));
   }
 
 }

@@ -207,12 +207,17 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   }
 
   OpenShiftClientImpl(Client client) {
-    super(client.getConfiguration(), client.adapt(BaseClient.class));
+    super(client.adapt(BaseClient.class));
   }
 
-  OpenShiftClientImpl(Config config, OpenShiftClientImpl client) {
-    super(config, client);
+  OpenShiftClientImpl(OpenShiftClientImpl client) {
+    super(client);
     this.openShiftUrl = client.openShiftUrl;
+  }
+
+  @Override
+  protected OpenShiftClientImpl copy() {
+    return new OpenShiftClientImpl(this);
   }
 
   @Override
@@ -495,12 +500,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
 
   @Override
   public NamespacedOpenShiftClient inNamespace(String namespace) {
-    return new OpenShiftClientImpl(createInNamespaceConfig(namespace, false), this);
-  }
-
-  @Override
-  protected Config configCopy() {
-    return new OpenShiftConfigBuilder(getConfiguration()).build();
+    return super.inNamespace(namespace).adapt(NamespacedOpenShiftClient.class);
   }
 
   @Override
@@ -714,7 +714,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
 
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
-    return new OpenShiftClientImpl(createInNamespaceConfig(null, true), this);
+    return super.inAnyNamespace().adapt(NamespacedOpenShiftClient.class);
   }
 
   /**
@@ -739,11 +739,6 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
     return hasCustomOpenShiftUrl(oConfig)
         || oConfig.isDisableApiGroupCheck()
         || hasApiGroup(BASE_API_GROUP, false);
-  }
-
-  @Override
-  protected OpenShiftClientImpl newInstance(Config config) {
-    return new OpenShiftClientImpl(config, this);
   }
 
 }
