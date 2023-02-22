@@ -30,6 +30,8 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
@@ -515,8 +517,8 @@ public class OperationSupport {
     try {
       // since readTimeout may not be enforced in a timely manner at the httpclient, we'll
       // enforce a higher level timeout with a small amount of padding to account for possible queuing
-      if (config.getRequestTimeout() > 0) {
-        return future.get(config.getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
+      if (getRequestConfig().getRequestTimeout() > 0) {
+        return future.get(getRequestConfig().getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
       }
       return future.get();
     } catch (InterruptedException e) {
@@ -726,6 +728,18 @@ public class OperationSupport {
 
   public Config getConfig() {
     return config;
+  }
+
+  public OperationContext getOperationContext() {
+    return context;
+  }
+
+  public RequestConfig getRequestConfig() {
+    RequestConfig result = context.getRequestConfig();
+    if (result == null && config != null) {
+      return config.getRequestConfig();
+    }
+    return new RequestConfigBuilder().build();
   }
 
   private String getContentTypeFromPatchContextOrDefault(PatchContext patchContext) {

@@ -15,11 +15,13 @@
  */
 package io.fabric8.openshift.client.dsl;
 
+import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.impl.OpenShiftClientImpl;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,5 +66,15 @@ class AdaptTest {
     assertNotNull(client.storage());
     assertNotNull(client.templates());
     assertNotNull(client.users());
+  }
+
+  @Test
+  void testNamespacePreservation() {
+    // Given
+    KubernetesClientImpl client = new KubernetesClientImpl();
+    OpenShiftClient client1 = client.inNamespace("x").adapt(OpenShiftClient.class);
+
+    // When + Then
+    assertEquals("x", client1.getNamespace());
   }
 }

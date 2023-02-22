@@ -152,13 +152,13 @@ public class DeploymentConfigOperationsImpl
             deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(),
             deploymentConfig.getMetadata().getName(), namespace);
         return false;
-      }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+      }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       LOG.debug("{}/{} pod(s) ready for DeploymentConfig: {} in namespace: {}.",
           replicasRef.get(), count, name, namespace);
     } catch (KubernetesClientTimeoutException e) {
       LOG.error("{}/{} pod(s) ready for DeploymentConfig: {} in namespace: {}  after waiting for {} seconds so giving up",
           replicasRef.get(), count, name, namespace,
-          TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
+          TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout()));
     }
   }
 

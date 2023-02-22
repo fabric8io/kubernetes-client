@@ -17,7 +17,6 @@ package io.fabric8.openshift.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
@@ -47,7 +46,7 @@ class OpenShiftOAuthInterceptorTest {
     StandardHttpRequest.Builder builder = new StandardHttpRequest.Builder();
     builder.uri("http://localhost");
 
-    interceptor.before(builder, new StandardHttpHeaders());
+    interceptor.before(builder, builder.build(), null);
 
     assertTrue(builder.build().headers(TokenRefreshInterceptor.AUTHORIZATION).isEmpty());
   }
@@ -66,7 +65,7 @@ class OpenShiftOAuthInterceptorTest {
     StandardHttpRequest.Builder builder = new StandardHttpRequest.Builder();
     builder.uri("http://localhost");
 
-    interceptor.before(builder, new StandardHttpHeaders());
+    interceptor.before(builder, builder.build(), null);
 
     assertEquals(Collections.singletonList("Bearer token"), builder.build().headers(TokenRefreshInterceptor.AUTHORIZATION));
   }
@@ -84,7 +83,7 @@ class OpenShiftOAuthInterceptorTest {
     builder.uri("http://localhost");
 
     interceptor.afterFailure(builder, TestHttpResponse.from(HttpURLConnection.HTTP_UNAUTHORIZED, "not for you")
-        .withRequest(new StandardHttpRequest(null, URI.create("http://localhost"), "GET", null)));
+        .withRequest(new StandardHttpRequest(null, URI.create("http://localhost"), "GET", null)), null);
 
     assertEquals(Collections.singletonList("Bearer token"), builder.build().headers(TokenRefreshInterceptor.AUTHORIZATION));
     Mockito.verify(config).setOauthToken("token");

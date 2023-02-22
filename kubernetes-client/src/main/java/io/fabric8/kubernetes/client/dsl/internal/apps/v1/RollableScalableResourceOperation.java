@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
-import io.fabric8.kubernetes.client.dsl.base.PatchContext;
-import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
@@ -124,44 +122,25 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
         Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
             currentReplicas, desiredReplicas, t.getKind(), t.getMetadata().getName(), namespace);
         return false;
-      }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+      }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
     } catch (KubernetesClientTimeoutException e) {
       throw new KubernetesClientException(
           String.format("%s/%s pod(s) ready for %s: %s in namespace: %s  after waiting for %s seconds so giving up",
               replicasRef.get(), count, getType().getSimpleName(), name, namespace,
-              TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout())),
+              TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout())),
           e);
     }
   }
 
   @Override
   public T edit(UnaryOperator<T> function) {
-    if (!rollingOperationContext.isRolling()) {
+    RollingUpdater<T, L> rollingUpdater = getRollingUpdater(context.getTimeout(), context.getTimeoutUnit());
+    if (!rollingOperationContext.isRolling() || rollingUpdater == null) {
       return super.edit(function);
     }
-    try {
-      T oldObj = getItemOrRequireFromServer();
-      T newObj = function.apply(Serialization.clone(oldObj));
-      return getRollingUpdater(context.getTimeout(), context.getTimeoutUnit()).rollUpdate(oldObj, newObj);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  @Override
-  public T replace(T t) {
-    if (!rollingOperationContext.isRolling()) {
-      return super.replace(t);
-    }
-    return getRollingUpdater(context.getTimeout(), context.getTimeoutUnit()).rollUpdate(getItemOrRequireFromServer(), t);
-  }
-
-  @Override
-  public T patch(PatchContext patchContext, T item) {
-    if (!rollingOperationContext.isRolling() || patchContext == null || patchContext.getPatchType() != PatchType.JSON) {
-      return super.patch(patchContext, item);
-    }
-    return getRollingUpdater(context.getTimeout(), context.getTimeoutUnit()).rollUpdate(getItemOrRequireFromServer(), item);
+    T oldObj = getItemOrRequireFromServer();
+    T newObj = function.apply(Serialization.clone(oldObj));
+    return rollingUpdater.rollUpdate(oldObj, newObj);
   }
 
   public abstract RollableScalableResourceOperation<T, L, R> newInstance(PodOperationContext context,
@@ -256,6 +235,26 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   @Override
   public RollableScalableResourceOperation<T, L, R> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public T pause() {
+    throw new KubernetesClientException(context.getPlural() + " pausing is not supported");
+  }
+
+  @Override
+  public T resume() {
+    throw new KubernetesClientException(context.getPlural() + " resuming is not supported");
+  }
+
+  @Override
+  public T restart() {
+    throw new KubernetesClientException(context.getPlural() + " restarting is not supported");
+  }
+
+  @Override
+  public T undo() {
+    throw new KubernetesClientException(context.getPlural() + " undo is not supported");
   }
 
 }

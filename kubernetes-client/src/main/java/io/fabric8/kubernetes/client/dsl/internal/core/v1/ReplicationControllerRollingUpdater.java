@@ -29,10 +29,6 @@ import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 
 class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationController, ReplicationControllerList> {
 
-  ReplicationControllerRollingUpdater(Client client, String namespace) {
-    super(client, namespace);
-  }
-
   ReplicationControllerRollingUpdater(Client client, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     super(client, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }

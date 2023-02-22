@@ -16,30 +16,34 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
-public interface ImageEditReplacePatchable<T> extends EditReplacePatchable<T> {
-
-  /**
-   * Update existing container image(s) of resources
-   *
-   * @param containerToImageMap Map with keys as container name and value as image
-   * @return updated resource
-   */
-  T updateImage(Map<String, String> containerToImageMap);
+/**
+ * @deprecated will be removed in future versions
+ */
+@Deprecated
+public interface ImageEditReplacePatchable<T> extends ImageUpdateable<T> {
 
   /**
-   * Update existing container image of single container resource
+   * Edit the context or current item and apply the result to trigger a rollout. It is resource dependent how the
+   * new resource is applied.
    *
-   * @param image image to be updated
-   * @return updated resource
+   * @param function
+   * @return
+   *
+   * @deprecated client managed rollouts will be removed in future versions
    */
-  T updateImage(String image);
+  @Deprecated
+  T edit(UnaryOperator<T> function);
 
   /**
    * Mark the provided resource as paused
    *
    * @return updated resource
+   *
+   * @deprecated should be called prior to the timeout method
    */
+  @Deprecated
   T pause();
 
   /**
@@ -47,21 +51,44 @@ public interface ImageEditReplacePatchable<T> extends EditReplacePatchable<T> {
    * By resuming a resource, we allow it to be reconciled again.
    *
    * @return updated resource
+   *
+   * @deprecated should be called prior to the timeout method
    */
+  @Deprecated
   T resume();
 
   /**
    * Restart a resource. Resource will be rollout restarted.
    *
    * @return updated resource
+   *
+   * @deprecated should be called prior to the timeout method
    */
+  @Deprecated
   T restart();
 
   /**
    * Rollback to previous rollout.
    *
    * @return updated resource
+   *
+   * @deprecated should be called prior to the timeout method
    */
+  @Deprecated
   T undo();
+
+  /**
+   * @deprecated should be called prior to the rolling method
+   */
+  @Deprecated
+  @Override
+  T updateImage(Map<String, String> containerToImageMap);
+
+  /**
+   * @deprecated should be called prior to the rolling method
+   */
+  @Deprecated
+  @Override
+  T updateImage(String image);
 
 }

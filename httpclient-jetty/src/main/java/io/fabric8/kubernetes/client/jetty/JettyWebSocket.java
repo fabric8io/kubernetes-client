@@ -126,7 +126,6 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   @Override
   public void onWebSocketClose(int statusCode, String reason) {
     closed.set(true);
-    backPressure();
     listener.onClose(this, statusCode, reason);
   }
 

@@ -213,6 +213,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void close() {
+    if (closed.get()) {
+      return;
+    }
     // simply sends a close, which will shut down the output
     // it's expected that the server will respond with a close, but if not the input will be shutdown implicitly
     closeWebSocketOnce(1000, "Closing...");
@@ -229,10 +232,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   }
 
   private void closeWebSocketOnce(int code, String reason) {
-    if (closed.get()) {
-      return;
-    }
-
     try {
       WebSocket ws = webSocketRef.get();
       if (ws != null) {
@@ -263,6 +262,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onError(WebSocket webSocket, Throwable t) {
+    closed.set(true);
     HttpResponse<?> response = null;
 
     try {
@@ -369,23 +369,25 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
-    if (exitCode.complete(null)) {
-      // this is expected for processes that don't terminate - uploads for example
-      LOGGER.debug("Exec Web Socket: completed with a null exit code - no status was received prior to onClose");
-    }
-    closeWebSocketOnce(code, reason);
     //If we already called onClosed() or onFailed() before, we need to abort.
     if (!closed.compareAndSet(false, true)) {
       return;
     }
+    closeWebSocketOnce(code, reason);
     LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
-    try {
-      cleanUpOnce();
-    } finally {
-      if (listener != null) {
-        listener.onClose(code, reason);
+    serialExecutor.execute(() -> {
+      try {
+        if (exitCode.complete(null)) {
+          // this is expected for processes that don't terminate - uploads for example
+          LOGGER.debug("Exec Web Socket: completed with a null exit code - no status was received prior to onClose");
+        }
+        cleanUpOnce();
+      } finally {
+        if (listener != null) {
+          listener.onClose(code, reason);
+        }
       }
-    }
+    });
   }
 
   @Override

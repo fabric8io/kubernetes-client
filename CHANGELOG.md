@@ -15,10 +15,14 @@
 * Fix #4823: (java-generator) handle special characters in field names
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
 * Fix #4885: addresses a potential hang in the jdk client with exec stream reading
+* Fix #4891: address vertx not completely reading exec streams
 
 #### Improvements
+* Fix #4675: adding a fully client side timeout for informer watches
 * Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
 * Fix #4644: generate CRDs in parallel and optimize code
+* Fix #4659: added a generic support(apiversion, kind) method in addition to the class based check
+* Fix #4724: Private configuration classes cause trouble with Java native (reflection)
 * Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
 * Fix #4747: migrate to SnakeYAML Engine
 * Fix #4788: moved retry logic into the standard client so that it applies to all requests, including websockets
@@ -39,6 +43,10 @@
 * Fix #4758: added support for pod ephemeral container operations
 
 #### _**Note**_: Breaking changes
+* Fix #4708: The signature of the Interceptor methods changed to pass the full HttpRequest, rather than just the headers, and explicitly pass request tags - in particular the RequestConfig.  To simplify authentication concerns the following fields have been removed from RequestConfig: username, password, oauthToken, and oauthTokenProvider.  Not all HttpClient implementation support setting the connectionTimeout at a request level, thus it was removed from the RequestConfig as well.
+* Fix #4659: The SupportTestingClient interface has been deprecated.  Please use one of the supports methods or getApiGroup to determine what is available on the api server.
+* Fix #4825: removed or deprecated/moved methods that are unrelated to the rolling timeout from ImageEditReplacePatchable.  Deprecated rollout methods for timeout and edit - future versions will not support
+* Fix #4826: removed RequestConfig upload connection and rolling timeouts.  Both were no longer used with no plans to re-introduce their usage.
 
 ### 6.4.1 (2023-01-31)
 

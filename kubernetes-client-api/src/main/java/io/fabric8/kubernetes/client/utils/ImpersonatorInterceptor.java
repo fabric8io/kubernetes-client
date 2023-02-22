@@ -15,48 +15,45 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.Interceptor;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 public class ImpersonatorInterceptor implements Interceptor {
 
+  public static final String IMPERSONATE_USER = "Impersonate-User";
+
   public static final String NAME = "IMPERSONATOR";
 
-  private final Config config;
+  private final RequestConfig requestConfig;
 
-  public ImpersonatorInterceptor(Config config) {
-    this.config = config;
+  public ImpersonatorInterceptor(RequestConfig requestConfig) {
+    this.requestConfig = requestConfig;
   }
 
   @Override
-  public Interceptor withConfig(Config config) {
-    return new ImpersonatorInterceptor(config);
-  }
+  public void before(BasicBuilder builder, HttpRequest request, RequestTags tags) {
+    RequestConfig config = Optional.ofNullable(tags.getTag(RequestConfig.class)).orElse(requestConfig);
+    if (isNotNullOrEmpty(config.getImpersonateUsername())) {
 
-  @Override
-  public void before(BasicBuilder builder, HttpHeaders headers) {
-    RequestConfig requestConfig = config.getRequestConfig();
-    if (isNotNullOrEmpty(requestConfig.getImpersonateUsername())) {
+      builder.header(IMPERSONATE_USER, config.getImpersonateUsername());
 
-      builder.header("Impersonate-User", requestConfig.getImpersonateUsername());
-
-      String[] impersonateGroups = requestConfig.getImpersonateGroups();
+      String[] impersonateGroups = config.getImpersonateGroups();
       if (isNotNullOrEmpty(impersonateGroups)) {
         for (String group : impersonateGroups) {
           builder.header("Impersonate-Group", group);
         }
       }
 
-      Map<String, List<String>> impersonateExtras = requestConfig.getImpersonateExtras();
+      Map<String, List<String>> impersonateExtras = config.getImpersonateExtras();
       if (isNotNullOrEmpty(impersonateExtras)) {
         Collection<?> keys = impersonateExtras.keySet();
         for (Object key : keys) {

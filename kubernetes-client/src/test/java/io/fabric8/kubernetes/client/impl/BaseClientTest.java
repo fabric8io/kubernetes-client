@@ -46,8 +46,9 @@ class BaseClientTest {
   void setUp() {
     httpClient = mock(HttpClient.class, RETURNS_DEEP_STUBS);
     baseClient = new BaseClient(httpClient, Config.empty(), () -> Runnable::run) {
+
       @Override
-      BaseClient newInstance(Config config) {
+      BaseClient copy() {
         return baseClient;
       }
 
@@ -121,6 +122,18 @@ class BaseClientTest {
             .thenReturn(new APIResourceListBuilder().addNewResource().withKind("Ingress").endResource().build()))) {
       // When
       final boolean result = baseClient.supports(Ingress.class);
+      // Then
+      assertThat(result).isTrue();
+    }
+  }
+
+  @Test
+  void supportsGeneric() {
+    try (MockedConstruction<OperationSupport> ignore = mockConstruction(OperationSupport.class,
+        (mock, ctx) -> when(mock.restCall(APIResourceList.class, "/apis", "networking.k8s.io/v1"))
+            .thenReturn(new APIResourceListBuilder().addNewResource().withKind("Ingress").endResource().build()))) {
+      // When
+      final boolean result = baseClient.supports("networking.k8s.io/v1", "Ingress");
       // Then
       assertThat(result).isTrue();
     }

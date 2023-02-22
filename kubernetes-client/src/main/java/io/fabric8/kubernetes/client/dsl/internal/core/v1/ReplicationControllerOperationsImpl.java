@@ -79,7 +79,7 @@ public class ReplicationControllerOperationsImpl extends
   public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout,
       TimeUnit rollingTimeUnit) {
     return new ReplicationControllerRollingUpdater(context.getClient(), namespace, rollingTimeUnit.toMillis(rollingTimeout),
-        config.getLoggingInterval());
+        getRequestConfig().getLoggingInterval());
   }
 
   @Override
@@ -141,26 +141,6 @@ public class ReplicationControllerOperationsImpl extends
   @Override
   public LogWatch watchLog(OutputStream out) {
     return PodOperationUtil.watchLog(doGetLog(), out);
-  }
-
-  @Override
-  public ReplicationController pause() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" pausing is not supported");
-  }
-
-  @Override
-  public ReplicationController resume() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" resuming is not supported");
-  }
-
-  @Override
-  public ReplicationController restart() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" restarting is not supported");
-  }
-
-  @Override
-  public ReplicationController undo() {
-    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() + "\"");
   }
 
   static Map<String, String> getReplicationControllerPodLabels(ReplicationController replicationController) {

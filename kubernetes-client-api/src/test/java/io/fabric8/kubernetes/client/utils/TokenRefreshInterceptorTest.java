@@ -59,7 +59,7 @@ class TokenRefreshInterceptorTest {
 
       // Call
       boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null, Instant.now())
-          .afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
+          .afterFailure(builder, new TestHttpResponse<>().withCode(401), null).get();
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
     } finally {
@@ -87,7 +87,7 @@ class TokenRefreshInterceptorTest {
       // Replace kubeconfig file
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/token-refresh-interceptor/kubeconfig.new")),
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
-      tokenRefreshInterceptor.before(builder, null);
+      tokenRefreshInterceptor.before(builder, null, null);
       Mockito.verify(builder).setHeader("Authorization", "Bearer new token");
     } finally {
       // Remove any side effect
@@ -110,7 +110,7 @@ class TokenRefreshInterceptorTest {
         originalConfig, null, Instant.now().minusSeconds(61));
     // When
     final boolean result = tokenRefreshInterceptor
-        .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401)).get();
+        .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401), null).get();
     // Then
     assertThat(result).isFalse();
     assertThat(originalConfig).hasFieldOrPropertyWithValue("oauthToken", "existing-token");
@@ -131,7 +131,7 @@ class TokenRefreshInterceptorTest {
         originalConfig, null, Instant.now().minusSeconds(61));
     // When
     final boolean result = tokenRefreshInterceptor
-        .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401)).get();
+        .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401), null).get();
     // Then
     assertThat(result).isTrue();
     assertThat(originalConfig).hasFieldOrPropertyWithValue("oauthToken", "new-token");
@@ -154,7 +154,7 @@ class TokenRefreshInterceptorTest {
 
       // Write new value to token file to simulate renewal.
       Files.write(tokenFile.toPath(), "renewed".getBytes());
-      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
+      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401), null).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
@@ -192,7 +192,7 @@ class TokenRefreshInterceptorTest {
 
       TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class),
           Instant.now());
-      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401)).get();
+      boolean reissue = interceptor.afterFailure(builder, new TestHttpResponse<>().withCode(401), null).get();
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
       Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");

@@ -70,7 +70,7 @@ public class PodUpload {
       exitFuture = execWatch.exitCode();
     }
     // TODO: should this timeout be from the start of the upload?
-    if (!Utils.waitUntilReady(exitFuture, operation.getConfig().getRequestConfig().getUploadRequestTimeout(),
+    if (!Utils.waitUntilReady(exitFuture, operation.getRequestConfig().getUploadRequestTimeout(),
         TimeUnit.MILLISECONDS)) {
       return false;
     }

@@ -191,12 +191,12 @@ public class DeploymentOperationsImpl
             deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(),
             namespace);
         return false;
-      }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+      }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
           replicasRef.get(), count, name, namespace);
     } catch (KubernetesClientTimeoutException e) {
       LOG.error("{}/{} pod(s) ready for Deployment: {} in namespace: {}  after waiting for {} seconds so giving up",
-          replicasRef.get(), count, name, namespace, TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
+          replicasRef.get(), count, name, namespace, TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout()));
     }
   }
 

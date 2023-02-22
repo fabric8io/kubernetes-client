@@ -32,4 +32,9 @@ public class TestStandardHttpClientBuilder
     return new TestStandardHttpClientBuilder(clientFactory);
   }
 
+  @Override
+  public TestStandardHttpClientBuilder tag(Object value) {
+    return (TestStandardHttpClientBuilder) super.tag(value);
+  }
+
 }

@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
 
@@ -51,12 +51,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   @Override
-  public Interceptor withConfig(Config config) {
-    return new TokenRefreshInterceptor(config, factory, latestRefreshTimestamp);
-  }
-
-  @Override
-  public void before(BasicBuilder headerBuilder, HttpHeaders headers) {
+  public void before(BasicBuilder headerBuilder, HttpRequest request, RequestTags tags) {
     if (isBasicAuth()) {
       headerBuilder.header(AUTHORIZATION, HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword()));
       return;
@@ -78,7 +73,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   @Override
-  public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response, RequestTags tags) {
     if (isBasicAuth()) {
       return CompletableFuture.completedFuture(false);
     }

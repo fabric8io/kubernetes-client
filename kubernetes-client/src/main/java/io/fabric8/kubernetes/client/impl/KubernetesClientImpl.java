@@ -142,7 +142,9 @@ import io.fabric8.kubernetes.client.dsl.V1beta2FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta3FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
@@ -270,27 +272,20 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
         io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1.CertificateSigningRequestOperationsImpl::new);
   }
 
-  protected KubernetesClientImpl(Config config, BaseClient client) {
-    super(config, client);
+  protected KubernetesClientImpl(BaseClient client) {
+    super(client);
   }
 
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
-    return newInstance(createInNamespaceConfig(name, false));
+    return newClient(createInNamespaceContext(name, false), NamespacedKubernetesClient.class);
   }
 
-  protected Config createInNamespaceConfig(String name, boolean any) {
+  protected OperationContext createInNamespaceContext(String name, boolean any) {
     if (!any && name == null) {
       throw new KubernetesClientException("namespace cannot be null");
     }
-    Config copy = configCopy();
-    copy.setNamespace(name);
-    copy.setDefaultNamespace(false);
-    return copy;
-  }
-
-  protected Config configCopy() {
-    return new ConfigBuilder(getConfiguration()).build();
+    return HasMetadataOperationsImpl.defaultContext(this).withNamespace(name);
   }
 
   @Override
@@ -589,12 +584,12 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
 
   @Override
   public NamespacedKubernetesClient inAnyNamespace() {
-    return newInstance(createInNamespaceConfig(null, true));
+    return newClient(createInNamespaceContext(null, true), NamespacedKubernetesClient.class);
   }
 
   @Override
-  protected KubernetesClientImpl newInstance(Config config) {
-    return new KubernetesClientImpl(config, this);
+  protected KubernetesClientImpl copy() {
+    return new KubernetesClientImpl(this);
   }
 
   /**
@@ -737,9 +732,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
 
   @Override
   public Client newClient(RequestConfig requestConfig) {
-    Config copyConfig = configCopy();
-    Config.setRequestConfig(copyConfig, requestConfig);
-    return newInstance(copyConfig);
+    return newClient(HasMetadataOperationsImpl.defaultContext(this).withRequestConfig(requestConfig), Client.class);
   }
 
   @Override

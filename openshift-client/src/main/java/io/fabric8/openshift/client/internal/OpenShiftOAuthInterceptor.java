@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -89,17 +88,12 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
   }
 
   @Override
-  public OpenShiftOAuthInterceptor withConfig(Config config) {
-    return new OpenShiftOAuthInterceptor(client, config);
-  }
-
-  @Override
-  public void before(BasicBuilder builder, HttpHeaders headers) {
+  public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
     setAuthHeader(builder, config.getOauthToken());
   }
 
   @Override
-  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response, RequestTags tags) {
     if (shouldProceed(response.request(), response)) {
       return CompletableFuture.completedFuture(false);
     }

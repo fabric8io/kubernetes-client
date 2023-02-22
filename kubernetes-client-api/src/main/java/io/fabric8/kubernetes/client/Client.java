@@ -56,6 +56,19 @@ public interface Client extends Closeable {
   <R extends KubernetesResource> boolean supports(Class<R> type);
 
   /**
+   * Checks the Kubernetes server for support for the given type.
+   *
+   * <p>
+   * The response is not cached, a new check will be performed for each method invocation. In case custom resource
+   * definition is installed in between invocations, this method might return different values.
+   *
+   * @param apiVersion the api/version. This should be fully qualified - that is for openshift, please include the api.
+   * @param kind the resource kind
+   * @return boolean value indicating whether this type is supported
+   */
+  boolean supports(String apiVersion, String kind);
+
+  /**
    * Checks for the api group. exact = false will scan all groups
    * for a suffix match. exact = true will look only for that apiGroup.
    *
@@ -164,8 +177,8 @@ public interface Client extends Closeable {
 
   /**
    * Creates a new client based upon the current except with a different
-   * {@link RequestConfig}. This client will use independent resources,
-   * and should be closed appropriately
+   * {@link RequestConfig}. It uses the same resources as the current client, thus
+   * closing it will close the original client.
    *
    * @param requestConfig
    * @return a new client

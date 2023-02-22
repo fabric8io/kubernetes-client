@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.RequestConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,13 +26,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ExponentialBackoffIntervalCalculator {
 
   private static final Logger logger = LoggerFactory.getLogger(ExponentialBackoffIntervalCalculator.class);
-
+  //we were using the same default in multiple places, so it has been moved here for now
   private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
 
   public static final int UNLIMITED_RETRIES = -1;
 
   private final int initialInterval;
-  // we were using the same default in multiple places, so it has been moved here for now
   // other calculators express this as max wait
   private final int maxRetryIntervalExponent;
   private final int maxRetries;
@@ -70,12 +70,12 @@ public class ExponentialBackoffIntervalCalculator {
     return maxRetries < 0 || currentReconnectAttempt.get() < maxRetries;
   }
 
-  public static ExponentialBackoffIntervalCalculator from(Config requestConfig) {
+  public static ExponentialBackoffIntervalCalculator from(RequestConfig requestConfig) {
     final int requestRetryBackoffInterval = Optional.ofNullable(requestConfig)
-        .map(Config::getRequestRetryBackoffInterval)
+        .map(RequestConfig::getRequestRetryBackoffInterval)
         .orElse(Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL);
     final int requestRetryBackoffLimit = Optional.ofNullable(requestConfig)
-        .map(Config::getRequestRetryBackoffLimit)
+        .map(RequestConfig::getRequestRetryBackoffLimit)
         .orElse(Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT);
     return new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, requestRetryBackoffLimit);
   }

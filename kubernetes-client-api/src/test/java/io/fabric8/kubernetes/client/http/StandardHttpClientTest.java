@@ -15,8 +15,7 @@
  */
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,7 +108,7 @@ class StandardHttpClientTest {
 
   @Test
   void testHttpRetryWithMoreFailuresThanRetries() throws Exception {
-    client = client.newBuilder().requestConfig(new ConfigBuilder(Config.empty())
+    client = client.newBuilder().tag(new RequestConfigBuilder()
         .withRequestRetryBackoffLimit(3)
         .withRequestRetryBackoffInterval(50).build())
         .build();
@@ -139,7 +138,7 @@ class StandardHttpClientTest {
 
   @Test
   void testHttpRetryWithLessFailuresThanRetries() throws Exception {
-    client = client.newBuilder().requestConfig(new ConfigBuilder(Config.empty())
+    client = client.newBuilder().tag(new RequestConfigBuilder()
         .withRequestRetryBackoffLimit(3)
         .withRequestRetryBackoffInterval(50).build())
         .build();
@@ -164,7 +163,7 @@ class StandardHttpClientTest {
 
   @Test
   void testWebSocketWithLessFailuresThanRetries() throws Exception {
-    client = client.newBuilder().requestConfig(new ConfigBuilder(Config.empty())
+    client = client.newBuilder().tag(new RequestConfigBuilder()
         .withRequestRetryBackoffLimit(3)
         .withRequestRetryBackoffInterval(50).build())
         .build();

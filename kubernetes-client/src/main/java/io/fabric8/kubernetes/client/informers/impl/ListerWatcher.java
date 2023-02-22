@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.client.informers.impl;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,8 +29,8 @@ import java.util.concurrent.CompletableFuture;
  * @param <T> type
  * @param <L> list for that type
  */
-public interface ListerWatcher<T, L> {
-  CompletableFuture<Watch> submitWatch(ListOptions params, Watcher<T> watcher);
+public interface ListerWatcher<T extends HasMetadata, L> {
+  CompletableFuture<AbstractWatchManager<T>> submitWatch(ListOptions params, Watcher<T> watcher);
 
   CompletableFuture<L> submitList(ListOptions listOptions);
 
