@@ -46,7 +46,7 @@ public class NamespaceQuotaExample {
         // Creating namespace
         Namespace ns = new NamespaceBuilder().withNewMetadata().withName(namespace).addToLabels("hello", "world").endMetadata()
             .build();
-        logger.info("Created namespace: {}", client.namespaces().create(ns).getMetadata().getName());
+        logger.info("Created namespace: {}", client.namespaces().resource(ns).create().getMetadata().getName());
 
         // Get namespace by name
         logger.info("Get namespace by name: {}", client.namespaces().withName(namespace).get());
@@ -55,11 +55,12 @@ public class NamespaceQuotaExample {
         client.namespaces().withLabel("hello", "world").list().getItems()
             .forEach(n -> logger.info(" - {}", n.getMetadata().getName()));
 
-        final ResourceQuota quota = client.resourceQuotas().inNamespace(namespace).createOrReplace(
+        final ResourceQuota quota = client.resourceQuotas().inNamespace(namespace).resource(
             new ResourceQuotaBuilder()
                 .withNewMetadata().withName("quota-example").endMetadata()
                 .withNewSpec().addToHard("pods", new Quantity("5")).endSpec()
-                .build());
+                .build())
+            .createOrReplace();
         logger.info("Create resource quota: {}", quota.getMetadata().getName());
 
         logger.info("Listing jobs in namespace");

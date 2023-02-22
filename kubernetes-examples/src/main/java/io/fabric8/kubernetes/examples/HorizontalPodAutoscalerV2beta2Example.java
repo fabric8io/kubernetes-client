@@ -72,7 +72,8 @@ public class HorizontalPodAutoscalerV2beta2Example {
           .endSpec()
           .build();
 
-      client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("default").create(horizontalPodAutoscaler);
+      client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("default").resource(horizontalPodAutoscaler)
+          .create();
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

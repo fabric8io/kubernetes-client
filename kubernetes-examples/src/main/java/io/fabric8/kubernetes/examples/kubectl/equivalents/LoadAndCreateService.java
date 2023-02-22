@@ -29,9 +29,9 @@ public class LoadAndCreateService {
       // Load Service YAML Manifest into Java object
       Service svc = k8s.services()
           .load(LoadAndCreateService.class.getResourceAsStream("/test-svc.yaml"))
-          .get();
+          .item();
       // Apply it to Kubernetes Cluster
-      k8s.services().inNamespace("default").create(svc);
+      k8s.services().inNamespace("default").resource(svc).create();
     }
   }
 }

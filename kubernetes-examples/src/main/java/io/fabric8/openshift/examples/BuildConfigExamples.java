@@ -48,16 +48,18 @@ public class BuildConfigExamples {
         namespace = client.getNamespace();
         logger.info("Using configured namespace: {}", namespace);
       } else {
-        final Namespace ns = client.namespaces().create(
-            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build());
+        final Namespace ns = client.namespaces().resource(
+            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build())
+            .create();
         namespace = ns.getMetadata().getName();
         logger.info("Created namespace: {}", namespace);
       }
 
-      client.serviceAccounts().inNamespace(namespace).create(
-          new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build());
+      client.serviceAccounts().inNamespace(namespace).resource(
+          new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build())
+          .create();
 
-      final ImageStream is = client.imageStreams().inNamespace(namespace).create(new ImageStreamBuilder()
+      final ImageStream is = client.imageStreams().inNamespace(namespace).resource(new ImageStreamBuilder()
           .withNewMetadata()
           .withName("example-camel-cdi")
           .endMetadata()
@@ -68,11 +70,12 @@ public class BuildConfigExamples {
           .withDockerImageRepository("fabric8/example-camel-cdi")
           .endSpec()
           .withNewStatus().withDockerImageRepository("").endStatus()
-          .build());
+          .build())
+          .create();
       logger.info("Created image stream: {}", is.getMetadata().getName());
 
       final String buildConfigName = "custom-build-config";
-      final BuildConfig buildConfig = client.buildConfigs().inNamespace(namespace).create(new BuildConfigBuilder()
+      final BuildConfig buildConfig = client.buildConfigs().inNamespace(namespace).resource(new BuildConfigBuilder()
           .withNewMetadata()
           .withName(buildConfigName)
           .endMetadata()
@@ -104,7 +107,8 @@ public class BuildConfigExamples {
           .endGithub()
           .endTrigger()
           .endSpec()
-          .build());
+          .build())
+          .create();
       logger.info("Created Build Config: {}", buildConfig.getMetadata().getName());
 
       final Build build = client.buildConfigs().inNamespace(namespace).withName("custom-build-config")

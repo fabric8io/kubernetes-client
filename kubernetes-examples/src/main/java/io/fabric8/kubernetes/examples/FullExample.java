@@ -64,7 +64,7 @@ public class FullExample {
         // Create a namespace for all our stuff
         Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks")
             .endMetadata().build();
-        log("Created namespace", client.namespaces().create(ns));
+        log("Created namespace", client.namespaces().resource(ns).create());
 
         // Get the namespace by name
         log("Get namespace by name", client.namespaces().withName("thisisatest").get());
@@ -73,7 +73,7 @@ public class FullExample {
 
         ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec()
             .addToHard("pods", new Quantity("10")).endSpec().build();
-        log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
+        log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").resource(quota).create());
 
         log("Get jobs in namespace", client.batch().v1().jobs().inNamespace("thisisatest").list());
 
@@ -91,10 +91,10 @@ public class FullExample {
             .endTemplate()
             .endSpec().build();
 
-        log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
+        log("Created RC", client.replicationControllers().inNamespace("thisisatest").resource(rc).create());
 
         log("Created RC with inline DSL",
-            client.replicationControllers().inNamespace("thisisatest").create(new ReplicationControllerBuilder()
+            client.replicationControllers().inNamespace("thisisatest").resource(new ReplicationControllerBuilder()
                 .withNewMetadata().withName("nginx2-controller").addToLabels("server", "nginx").endMetadata()
                 .withNewSpec().withReplicas(0)
                 .withNewTemplate()
@@ -105,7 +105,8 @@ public class FullExample {
                 .endContainer()
                 .endSpec()
                 .endTemplate()
-                .endSpec().build()));
+                .endSpec().build())
+                .create());
 
         // Get the RC by name in namespace
         ReplicationController gotRc = client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller")
@@ -146,13 +147,13 @@ public class FullExample {
         Thread.sleep(1000);
 
         // Update the RC - change the image back to nginx using a rolling update
-        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").rolling().updateImage("nginx");
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").updateImage("nginx");
 
         Thread.sleep(1000);
 
         // Update the RC via rolling update with inline builder
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller")
-            .rolling().updateImage("nginx:stable-alpine");
+            .updateImage("nginx:stable-alpine");
 
         Thread.sleep(1000);
 
@@ -172,7 +173,7 @@ public class FullExample {
 
         //Create another RC inline
         client.replicationControllers().inNamespace("thisisatest")
-            .create(new ReplicationControllerBuilder().withNewMetadata().withName("nginx-controller")
+            .resource(new ReplicationControllerBuilder().withNewMetadata().withName("nginx-controller")
                 .addToLabels("server", "nginx").endMetadata()
                 .withNewSpec().withReplicas(3)
                 .withNewTemplate()
@@ -183,7 +184,8 @@ public class FullExample {
                 .endContainer()
                 .endSpec()
                 .endTemplate()
-                .endSpec().build());
+                .endSpec().build())
+            .create();
         log("Created inline RC");
 
         Thread.sleep(1000);
@@ -191,21 +193,22 @@ public class FullExample {
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();
         log("Deleted RC");
 
-        log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
+        log("Created RC", client.replicationControllers().inNamespace("thisisatest").resource(rc).create());
         client.replicationControllers().inAnyNamespace().withLabel("server", "nginx").delete();
         log("Deleted RC by label");
 
-        log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
+        log("Created RC", client.replicationControllers().inNamespace("thisisatest").resource(rc).create());
         client.replicationControllers().inNamespace("thisisatest").withField("metadata.name", "nginx-controller").delete();
         log("Deleted RC by field");
 
         log("Created service",
-            client.services().inNamespace("thisisatest").create(new ServiceBuilder()
+            client.services().inNamespace("thisisatest").resource(new ServiceBuilder()
                 .withNewMetadata().withName("testservice").endMetadata()
                 .withNewSpec()
                 .addNewPort().withPort(80).withNewTargetPort(80).endPort()
                 .endSpec()
-                .build()));
+                .build())
+                .create());
         log("Updated service", client.services().inNamespace("thisisatest").withName("testservice")
             .edit(s -> new ServiceBuilder(s).editMetadata().addToLabels("test", "label").endMetadata().build()));
         client.replicationControllers().inNamespace("thisisatest").withField("metadata.name", "testservice").delete();

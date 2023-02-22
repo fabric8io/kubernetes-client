@@ -76,7 +76,7 @@ public class SharedInformerExample {
           .endSpec()
           .build();
 
-      client.pods().inNamespace("default").create(testPod);
+      client.pods().inNamespace("default").resource(testPod).create();
       logger.info("Pod created");
       Thread.sleep(3000L);
 
@@ -91,6 +91,7 @@ public class SharedInformerExample {
       // Wait for some time now
       TimeUnit.MINUTES.sleep(3);
 
+      podInformer.close();
       sharedInformerFactory.stopAllRegisteredInformers();
     }
   }

@@ -48,9 +48,9 @@ public class PersistentVolumeClaimExample {
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       try {
 
-        StorageClass storageClass = client.storage().storageClasses()
-            .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-storage.yml")).get();
-        client.storage().storageClasses().create(storageClass);
+        StorageClass storageClass = client.storage().v1().storageClasses()
+            .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-storage.yml")).item();
+        client.storage().v1().storageClasses().resource(storageClass).create();
 
         logger.info("Creating PersistentVolume object");
         PersistentVolume pv = new PersistentVolumeBuilder()
@@ -77,7 +77,7 @@ public class PersistentVolumeClaimExample {
             .endSpec()
             .build();
 
-        client.persistentVolumes().create(pv);
+        client.persistentVolumes().resource(pv).create();
 
         logger.info("Successfully created PersistentVolume object");
 
@@ -93,19 +93,19 @@ public class PersistentVolumeClaimExample {
             .endSpec()
             .build();
 
-        client.persistentVolumeClaims().create(persistentVolumeClaim);
+        client.persistentVolumeClaims().resource(persistentVolumeClaim).create();
         logger.info("Successfully created PersistentVolumeClaim object");
 
         logger.info("Creating pod");
         Pod pod = client.pods().inNamespace(namespace)
-            .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).get();
-        client.pods().inNamespace(namespace).create(pod);
+            .load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).item();
+        client.pods().inNamespace(namespace).resource(pod).create();
         logger.info("Successfully created pod");
       } finally {
         client.persistentVolumeClaims().inNamespace(namespace).withName("test-pv-claim").delete();
         client.persistentVolumes().withName("test-local-pv").delete();
         client.pods().inNamespace("default").withName("test-pv-pod").delete();
-        client.storage().storageClasses().withName(storageClassName).delete();
+        client.storage().v1().storageClasses().withName(storageClassName).delete();
       }
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);

@@ -35,11 +35,12 @@ public class ImageStreamTagExample {
     try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       final String isTagName = "bar1:1.0.12";
-      final ImageStreamTag isTag = client.imageStreamTags().inNamespace(project).createOrReplace(
+      final ImageStreamTag isTag = client.imageStreamTags().inNamespace(project).resource(
           new ImageStreamTagBuilder().withNewMetadata().withName(isTagName).endMetadata()
               .withNewTag().withNewFrom().withKind("DockerImage").withName("openshift/wildfly-81-centos7:latest").endFrom()
               .endTag()
-              .build());
+              .build())
+          .createOrReplace();
       logger.info("Created ImageStreamTag: {}", isTag.getMetadata().getName());
       int limit = 0;
       while (client.imageStreamTags().inNamespace(project).withName(isTagName).get() == null && limit++ < 10) {

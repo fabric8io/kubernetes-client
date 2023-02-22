@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
-import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassBuilder;
+import io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass;
+import io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClassBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
@@ -45,16 +45,17 @@ public class PodPriorityExample {
           .withGlobalDefault(false)
           .withDescription("This priority class should be used for XYZ service pods only.")
           .build();
-      client.scheduling().v1beta1().priorityClasses().create(priorityClass);
+      client.scheduling().v1().priorityClasses().resource(priorityClass).create();
 
-      client.pods().inNamespace("default").create(new PodBuilder()
+      client.pods().inNamespace("default").resource(new PodBuilder()
           .withNewMetadata().withName("nginx").withLabels(Collections.singletonMap("env", "test")).endMetadata()
           .withNewSpec()
           .addToContainers(
               new ContainerBuilder().withName("nginx").withImage("nginx").withImagePullPolicy("IfNotPresent").build())
           .withPriorityClassName("high-priority")
           .endSpec()
-          .build());
+          .build())
+          .create();
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);
     }

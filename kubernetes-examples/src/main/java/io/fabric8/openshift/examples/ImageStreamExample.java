@@ -34,7 +34,7 @@ public class ImageStreamExample {
     try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
       final String imageStreamName = "slave-jenkins";
-      final ImageStream imageStream = client.imageStreams().inNamespace(project).create(
+      final ImageStream imageStream = client.imageStreams().inNamespace(project).resource(
           new ImageStreamBuilder()
               .withNewMetadata()
               .withName(imageStreamName)
@@ -57,7 +57,8 @@ public class ImageStreamExample {
                       .build())
                   .build())
               .endSpec()
-              .build());
+              .build())
+          .create();
       logger.info("Created ImageStream: {}/{}", project, imageStream.getMetadata().getName());
       final ImageStream isFromServer = client.imageStreams().inNamespace(project).withName(imageStreamName).get();
       logger.info("Tags in ImageStream are:");

@@ -43,7 +43,7 @@ public class StorageClassExamples {
           .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));
 
       logger.info("Creating new Storage class");
-      final StorageClass storageClass = client.storage().v1().storageClasses().create(
+      final StorageClass storageClass = client.storage().v1().storageClasses().resource(
           new StorageClassBuilder()
               .withNewMetadata().withName(storageClassName).endMetadata()
               .addToParameters("resturl", "http://localhost:8080")
@@ -52,7 +52,8 @@ public class StorageClassExamples {
               .addToParameters("secretName", "")
               .addToParameters("key", "value1")
               .withProvisioner("k8s.io/minikube-hostpath")
-              .build());
+              .build())
+          .create();
       logger.info("Newly created storage class details:\n{}", storageClass);
 
       logger.info("Updated list of existent storage classes:");

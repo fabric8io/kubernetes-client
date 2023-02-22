@@ -53,7 +53,7 @@ public class ServiceExample {
           .endSpec()
           .build();
 
-      service = client.services().inNamespace(namespace).create(service);
+      service = client.services().inNamespace(namespace).resource(service).create();
       logger.info("Created service with name {}", service.getMetadata().getName());
 
       String serviceURL = client.services().inNamespace(namespace).withName(service.getMetadata().getName())
