@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.ConfigMapLock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaseLock;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
-import org.slf4j.impl.SimpleLogger;
 
 import java.time.Duration;
 import java.util.Map;
@@ -80,9 +79,6 @@ public class LeaderElectionExamples {
     private static final long WAIT_TO_KILL_TIME = 2500L;
     private static final long TASK_SLEEP = 50L;
     private static final int TASK_THREADS = 2;
-    static {
-      System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "off");
-    }
 
     private final KubernetesClient kubernetesClient;
     private final Function<String, Lock> lockSupplier;
