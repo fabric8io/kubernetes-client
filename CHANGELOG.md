@@ -10,6 +10,7 @@
 * Fix #4794: improving the semantics of manually calling informer stop
 * Fix #4798: fix leader election release on cancel
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
+* Fix #4846: allowed for pod read / copy operations to distinguish when the target doesn't exist
 * Fix #4818: [java-generator] Escape `*/` in generated JavaDocs
 * Fix #4823: (java-generator) handle special characters in field names
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs

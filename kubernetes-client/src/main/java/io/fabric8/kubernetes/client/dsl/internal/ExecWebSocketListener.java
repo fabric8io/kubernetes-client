@@ -108,6 +108,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
     private void handle(ByteBuffer byteString, WebSocket webSocket) throws IOException {
       if (handler != null) {
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("exec message received {} bytes on channel {}", byteString.remaining(), name);
+        }
         handler.handle(byteString);
       } else {
         if (LOGGER.isDebugEnabled()) {
@@ -265,10 +268,12 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     try {
       if (t instanceof WebSocketHandshakeException) {
         response = ((WebSocketHandshakeException) t).getResponse();
+        if (response != null) {
+          Status status = OperationSupport.createStatus(response);
+          status.setMessage(t.getMessage());
+          t = new KubernetesClientException(status).initCause(t);
+        }
       }
-      Status status = OperationSupport.createStatus(response);
-      status.setMessage(t.getMessage());
-      t = new KubernetesClientException(status);
       cleanUpOnce();
     } finally {
       if (exitCode.isDone()) {
@@ -289,6 +294,12 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         }
       }
     }
+  }
+
+  @Override
+  public void onMessage(WebSocket webSocket, String text) {
+    LOGGER.debug("Exec Web Socket: onMessage(String)");
+    onMessage(webSocket, ByteBuffer.wrap(text.getBytes(StandardCharsets.UTF_8)));
   }
 
   @Override
@@ -366,8 +377,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
     serialExecutor.execute(() -> {
       try {
-        if (!exitCode.isDone()) {
-          exitCode.complete(null);
+        if (exitCode.complete(null)) {
+          // this is expected for processes that don't terminate - uploads for example
+          LOGGER.debug("Exec Web Socket: completed with a null exit code - no status was received prior to onClose");
         }
         cleanUpOnce();
       } finally {

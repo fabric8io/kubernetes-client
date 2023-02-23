@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestBuilder;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.utils.internal.Base64;
 import org.assertj.core.groups.Tuple;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.ContentSigner;
@@ -36,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Security;
+import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -106,7 +106,7 @@ class CertificateSigningRequestIT {
     return new CertificateSigningRequestBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .withRequest(Base64.encodeBytes(generateCSR().getBytes(StandardCharsets.UTF_8)))
+        .withRequest(Base64.getEncoder().encodeToString(generateCSR().getBytes(StandardCharsets.UTF_8)))
         .withSignerName("kubernetes.io/kube-apiserver-client") // https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers
         .addToGroups("system:authenticated")
         .addToUsages("client auth")
