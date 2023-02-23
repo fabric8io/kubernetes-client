@@ -154,7 +154,7 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
       options.putHeader(io.vertx.core.http.HttpHeaders.EXPECT, io.vertx.core.http.HttpHeaders.CONTINUE);
     }
 
-    return new VertxHttpRequest(vertx, options, request.body()).consumeBytes(this.client, consumer);
+    return new VertxHttpRequest(vertx, options, request).consumeBytes(this.client, consumer);
   }
 
   void addDerivedClient(VertxHttpClient<F> client) {
