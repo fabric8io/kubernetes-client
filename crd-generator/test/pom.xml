@@ -30,7 +30,7 @@
   <name>Fabric8 :: CRD generator :: Tests</name>
 
   <properties>
-    <keycloak-version>20.0.5</keycloak-version>
+    <keycloak-version>21.0.0</keycloak-version>
   </properties>
 
   <dependencies>
