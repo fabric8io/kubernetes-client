@@ -8,6 +8,7 @@
 * Fix #4832: NO_PROXY can match cidr with bit suffix <10
 * Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
 * Fix #4794: improving the semantics of manually calling informer stop
+* Fix #4797: OkHttpClientFactory.additionalConfig can be used to override the default OkHttp Dispatcher
 * Fix #4798: fix leader election release on cancel
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
 * Fix #4846: allowed for pod read / copy operations to distinguish when the target doesn't exist
