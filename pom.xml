@@ -89,7 +89,7 @@
     <jetty.version>11.0.13</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.8.7</maven-core.version>
-    <maven-plugin-annotations.version>3.7.1</maven-plugin-annotations.version>
+    <maven-plugin-annotations.version>3.8.1</maven-plugin-annotations.version>
     <vertx.version>4.3.8</vertx.version>
 
     <!-- API versions -->
