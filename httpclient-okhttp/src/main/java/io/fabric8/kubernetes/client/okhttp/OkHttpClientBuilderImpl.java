@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
-import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -36,7 +35,7 @@ import static okhttp3.ConnectionSpec.CLEARTEXT;
 class OkHttpClientBuilderImpl
     extends StandardHttpClientBuilder<OkHttpClientImpl, OkHttpClientFactory, OkHttpClientBuilderImpl> {
 
-  private okhttp3.OkHttpClient.Builder builder;
+  private final okhttp3.OkHttpClient.Builder builder;
 
   public OkHttpClientBuilderImpl(OkHttpClientFactory clientFactory, okhttp3.OkHttpClient.Builder builder) {
     super(clientFactory);
@@ -81,8 +80,7 @@ class OkHttpClientBuilderImpl
     }
     if (tlsVersions != null) {
       ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-          .tlsVersions(Arrays.asList(tlsVersions)
-              .stream()
+          .tlsVersions(Arrays.stream(tlsVersions)
               .map(tls -> okhttp3.TlsVersion.valueOf(tls.name()))
               .toArray(okhttp3.TlsVersion[]::new))
           .build();
@@ -91,14 +89,6 @@ class OkHttpClientBuilderImpl
     if (preferHttp11) {
       builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
     }
-    Dispatcher dispatcher = new Dispatcher();
-    // websockets and long running http requests count against this and eventually starve
-    // the work that can be done
-    dispatcher.setMaxRequests(Integer.MAX_VALUE);
-    // long running http requests count against this and eventually exhaust
-    // the work that can be done
-    dispatcher.setMaxRequestsPerHost(Integer.MAX_VALUE);
-    builder.dispatcher(dispatcher);
     return derivedBuild(builder);
   }
 

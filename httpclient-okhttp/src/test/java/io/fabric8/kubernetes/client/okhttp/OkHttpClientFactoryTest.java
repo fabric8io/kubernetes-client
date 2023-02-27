@@ -18,19 +18,22 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import okhttp3.Dispatcher;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OkHttpClientFactoryTest {
 
   @Test
   void shouldNotRespectMaxRequests() {
-    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(new ConfigBuilder().build()).build();
+    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(Config.empty()).build();
 
     assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequests());
 
-    Config config = new ConfigBuilder()
+    Config config = new ConfigBuilder(Config.empty())
         .withMaxConcurrentRequests(120)
         .build();
 
@@ -40,17 +43,50 @@ class OkHttpClientFactoryTest {
 
   @Test
   void shouldNotRespectMaxRequestsPerHost() {
-    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(new ConfigBuilder().build()).build();
+    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(Config.empty()).build();
 
     assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
 
-    Config config = new ConfigBuilder()
+    Config config = new ConfigBuilder(Config.empty())
         .withMaxConcurrentRequestsPerHost(20)
         .build();
 
     client = new OkHttpClientFactory().newBuilder(config).build();
 
     assertEquals(Integer.MAX_VALUE, client.getOkHttpClient().dispatcher().getMaxRequestsPerHost());
+  }
+
+  @Test
+  void additionalConfigCanOverrideDispatcher() {
+    final Dispatcher dispatcher = new Dispatcher();
+    OkHttpClientImpl client = new OkHttpClientFactory() {
+      @Override
+      protected void additionalConfig(OkHttpClient.Builder builder) {
+        dispatcher.setMaxRequests(1337);
+        builder.dispatcher(dispatcher);
+      }
+    }
+        .newBuilder(Config.empty())
+        .build();
+    assertThat(client.getOkHttpClient().dispatcher())
+        .isSameAs(dispatcher)
+        .hasFieldOrPropertyWithValue("maxRequests", 1337);
+  }
+
+  @Test
+  void initDispatcherCanOverrideDispatcher() {
+    OkHttpClientImpl client = new OkHttpClientFactory() {
+      @Override
+      protected Dispatcher initDispatcher() {
+        final Dispatcher dispatcher = super.initDispatcher();
+        dispatcher.setMaxRequests(1337);
+        return dispatcher;
+      }
+    }
+        .newBuilder(Config.empty())
+        .build();
+    assertThat(client.getOkHttpClient().dispatcher())
+        .hasFieldOrPropertyWithValue("maxRequests", 1337);
   }
 
 }
