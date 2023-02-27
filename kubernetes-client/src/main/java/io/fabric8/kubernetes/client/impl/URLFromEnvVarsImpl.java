@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.utils.internal.URLFromServiceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getOrCreateAnnotations;
+
 public class URLFromEnvVarsImpl implements ServiceToURLProvider {
   public static final Logger logger = LoggerFactory.getLogger(URLFromEnvVarsImpl.class);
 
@@ -38,7 +40,7 @@ public class URLFromEnvVarsImpl implements ServiceToURLProvider {
     if (!serviceHost.isEmpty() && !servicePort.isEmpty() && !serviceProtocol.isEmpty()) {
       return serviceProtocol + "://" + serviceHost + ":" + servicePort;
     } else {
-      String answer = URLFromServiceUtil.getOrCreateAnnotations(service).get(ANNOTATION_EXPOSE_URL);
+      String answer = getOrCreateAnnotations(service).get(ANNOTATION_EXPOSE_URL);
       if (answer != null && !answer.isEmpty()) {
         return answer;
       }

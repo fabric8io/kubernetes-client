@@ -38,6 +38,7 @@
 * Fix #4863: default HttpClient retry logic to 10 attempts
 * Fix #4865: (java-generator) performance improvements
 * Fix #4873: Update all samples in `kubernetes-examples/` module to use up to date code
+* Fix #4906: URLFromIngressImpl considers Ingress in `networking.k8s.io` apiGroup while resolving Ingress
 
 #### Dependency Upgrade
 * Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0

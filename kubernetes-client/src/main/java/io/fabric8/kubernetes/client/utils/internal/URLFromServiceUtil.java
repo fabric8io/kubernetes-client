@@ -16,17 +16,18 @@
 
 package io.fabric8.kubernetes.client.utils.internal;
 
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.extensions.*;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
+
+import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getNamespace;
 
 public class URLFromServiceUtil {
   public static final Logger logger = LoggerFactory.getLogger(URLFromServiceUtil.class);
@@ -36,7 +37,6 @@ public class URLFromServiceUtil {
   private static final String PROTO_SUFFIX = "_TCP_PROTO";
 
   private URLFromServiceUtil() {
-    throw new IllegalStateException("Utility class");
   }
 
   public static String resolveHostFromEnvVarOrSystemProperty(String serviceName) {
@@ -65,33 +65,13 @@ public class URLFromServiceUtil {
         DEFAULT_PROTO);
   }
 
-  public static Map<String, String> getOrCreateAnnotations(HasMetadata entity) {
-    ObjectMeta metadata = getOrCreateMetadata(entity);
-    Map<String, String> answer = metadata.getAnnotations();
-    if (answer == null) {
-      // use linked so the annotations can be in the FIFO order
-      answer = new LinkedHashMap<>();
-      metadata.setAnnotations(answer);
-    }
-    return answer;
-  }
-
-  public static ObjectMeta getOrCreateMetadata(HasMetadata entity) {
-    ObjectMeta metadata = entity.getMetadata();
-    if (metadata == null) {
-      metadata = new ObjectMeta();
-      entity.setMetadata(metadata);
-    }
-    return metadata;
-  }
-
   public static String resolvePortFromEnvVarOrSystemProperty(String serviceName, String portName) {
     String envVarName = toServicePortEnvironmentVariable(serviceName, portName);
     return getEnvVarOrSystemProperty(envVarName, "");
   }
 
   public static String toServicePortEnvironmentVariable(String serviceName, String portName) {
-    String name = serviceName + PORT_SUFFIX + (portName.isEmpty() ? "_" + portName : "");
+    String name = serviceName + PORT_SUFFIX + (!portName.isEmpty() ? "_" + portName : "");
     return toEnvVariable(name);
   }
 
@@ -103,22 +83,73 @@ public class URLFromServiceUtil {
     return serviceName.toUpperCase(Locale.ROOT).replaceAll("-", "_");
   }
 
-  public static String getURLFromIngressList(List<Ingress> ingressList, String namespace, String serviceName,
+  public static String getURLFromExtensionsV1beta1IngressList(
+      List<io.fabric8.kubernetes.api.model.extensions.Ingress> ingressList, String namespace, String serviceName,
       ServicePort port) {
-    for (Ingress item : ingressList) {
+    for (io.fabric8.kubernetes.api.model.extensions.Ingress item : ingressList) {
       String ns = getNamespace(item);
       if (Objects.equals(ns, namespace) && item.getSpec() != null) {
-        return getURLFromIngressSpec(item.getSpec(), serviceName, port);
+        String url = getURLFromIngressSpec(item.getSpec(), serviceName, port);
+        if (url != null) {
+          return url;
+        }
       }
     }
     return null;
   }
 
-  public static String getURLFromIngressSpec(IngressSpec spec, String serviceName, ServicePort port) {
-    List<IngressRule> ingressRules = spec.getRules();
+  public static String getURLFromNetworkingV1IngressList(
+      List<io.fabric8.kubernetes.api.model.networking.v1.Ingress> ingressList, String namespace, String serviceName,
+      ServicePort port) {
+    for (io.fabric8.kubernetes.api.model.networking.v1.Ingress item : ingressList) {
+      String ns = getNamespace(item);
+      if (Objects.equals(ns, namespace) && item.getSpec() != null) {
+        String url = getURLFromNetworkV1IngressSpec(item.getSpec(), serviceName, port);
+        if (url != null) {
+          return url;
+        }
+      }
+    }
+    return null;
+  }
+
+  public static String getURLFromNetworkV1IngressSpec(io.fabric8.kubernetes.api.model.networking.v1.IngressSpec spec,
+      String serviceName, ServicePort port) {
+    List<io.fabric8.kubernetes.api.model.networking.v1.IngressRule> ingressRules = spec.getRules();
     if (ingressRules != null && !ingressRules.isEmpty()) {
-      for (IngressRule rule : ingressRules) {
-        HTTPIngressRuleValue http = rule.getHttp();
+      for (io.fabric8.kubernetes.api.model.networking.v1.IngressRule rule : ingressRules) {
+        io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValue http = rule.getHttp();
+        if (http != null && http.getPaths() != null) {
+          return getURLFromNetworkV1IngressRules(http.getPaths(), spec, serviceName, port, rule);
+        }
+      }
+    }
+    return null;
+  }
+
+  public static String getURLFromNetworkV1IngressRules(
+      List<io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPath> paths,
+      io.fabric8.kubernetes.api.model.networking.v1.IngressSpec spec, String serviceName,
+      ServicePort port, io.fabric8.kubernetes.api.model.networking.v1.IngressRule rule) {
+    for (io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPath path : paths) {
+      io.fabric8.kubernetes.api.model.networking.v1.IngressBackend backend = path.getBackend();
+      if (backend != null) {
+        String backendServiceName = backend.getService().getName();
+        if (serviceName.equals(backendServiceName)
+            && portsMatch(port, new IntOrString(backend.getService().getPort().getNumber()))) {
+          return getURLFromIngressBackend(spec.getTls() != null && !spec.getTls().isEmpty(), path.getPath(), rule.getHost());
+        }
+      }
+    }
+    return null;
+  }
+
+  public static String getURLFromIngressSpec(io.fabric8.kubernetes.api.model.extensions.IngressSpec spec, String serviceName,
+      ServicePort port) {
+    List<io.fabric8.kubernetes.api.model.extensions.IngressRule> ingressRules = spec.getRules();
+    if (ingressRules != null && !ingressRules.isEmpty()) {
+      for (io.fabric8.kubernetes.api.model.extensions.IngressRule rule : ingressRules) {
+        io.fabric8.kubernetes.api.model.extensions.HTTPIngressRuleValue http = rule.getHttp();
         if (http != null && http.getPaths() != null) {
           return getURLFromIngressRules(http.getPaths(), spec, serviceName, port, rule);
         }
@@ -127,30 +158,33 @@ public class URLFromServiceUtil {
     return null;
   }
 
-  public static String getURLFromIngressRules(List<HTTPIngressPath> paths, IngressSpec spec, String serviceName,
-      ServicePort port, IngressRule rule) {
-    for (HTTPIngressPath path : paths) {
-      IngressBackend backend = path.getBackend();
+  public static String getURLFromIngressRules(List<io.fabric8.kubernetes.api.model.extensions.HTTPIngressPath> paths,
+      io.fabric8.kubernetes.api.model.extensions.IngressSpec spec, String serviceName,
+      ServicePort port, io.fabric8.kubernetes.api.model.extensions.IngressRule rule) {
+    for (io.fabric8.kubernetes.api.model.extensions.HTTPIngressPath path : paths) {
+      io.fabric8.kubernetes.api.model.extensions.IngressBackend backend = path.getBackend();
       if (backend != null) {
         String backendServiceName = backend.getServiceName();
         if (serviceName.equals(backendServiceName) && portsMatch(port, backend.getServicePort())) {
-          String pathPostFix = path.getPath();
-          if (spec.getTls() != null) {
-            return getURLFromTLSHost(rule, pathPostFix);
-          }
-          String answer = rule.getHost();
-          if (answer != null && !answer.isEmpty()) {
-            pathPostFix = fixPathPostFixIfEmpty(pathPostFix);
-            return "http://" + URLUtils.pathJoin(answer, pathPostFix);
-          }
+          return getURLFromIngressBackend(spec.getTls() != null && !spec.getTls().isEmpty(), path.getPath(), rule.getHost());
         }
       }
     }
     return null;
   }
 
-  public static String getURLFromTLSHost(IngressRule rule, String pathPostFix) {
-    String host = rule.getHost();
+  private static String getURLFromIngressBackend(boolean tlsProvided, String pathPostFix, String host) {
+    if (tlsProvided) {
+      return getURLFromTLSHost(host, pathPostFix);
+    }
+    if (host != null && !host.isEmpty()) {
+      pathPostFix = fixPathPostFixIfEmpty(pathPostFix);
+      return "http://" + URLUtils.pathJoin(host, pathPostFix);
+    }
+    return null;
+  }
+
+  public static String getURLFromTLSHost(String host, String pathPostFix) {
     if (!host.isEmpty()) {
       pathPostFix = fixPathPostFixIfEmpty(pathPostFix);
       return "https://" + URLUtils.pathJoin(host, pathPostFix);
@@ -178,14 +212,6 @@ public class URLFromServiceUtil {
       }
     }
     return false;
-  }
-
-  public static String getNamespace(HasMetadata entity) {
-    if (entity != null) {
-      return entity.getMetadata() != null ? entity.getMetadata().getNamespace() : null;
-    } else {
-      return null;
-    }
   }
 
   public static ServicePort getServicePortByName(Service service, String portName) {
