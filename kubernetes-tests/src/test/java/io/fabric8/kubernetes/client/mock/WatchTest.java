@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.WatchEventBuilder;
@@ -27,6 +28,8 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -48,6 +51,7 @@ import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -432,13 +436,37 @@ class WatchTest {
   }
 
   @Test
+  void testUnknownResponse() throws InterruptedException {
+    // Given
+
+    // trigger the usage of the http watch
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andReturn(404, "null")
+        .times(2);
+
+    MixedOperation<Pod, PodList, PodResource> pods = client.pods();
+
+    assertThrows(KubernetesClientException.class, () -> pods.watch(new Watcher<Pod>() {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }
+    }));
+  }
+
+  @Test
   void testHttpWatch() throws InterruptedException {
     // Given
 
     // trigger the usage of the http watch
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
-        .andReturn(200, null)
+        .andReturn(200, "")
         .once();
 
     String dummyEvent = Serialization.asJson(new WatchEventBuilder().withType("MODIFIED")

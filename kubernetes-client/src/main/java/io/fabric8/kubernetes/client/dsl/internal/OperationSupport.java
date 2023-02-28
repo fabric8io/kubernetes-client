@@ -651,10 +651,12 @@ public class OperationSupport {
         String bodyString = response.bodyString();
         if (Utils.isNotNullOrEmpty(bodyString)) {
           Status status = JSON_MAPPER.readValue(bodyString, Status.class);
-          if (status.getCode() == null) {
-            status = new StatusBuilder(status).withCode(statusCode).build();
+          if (status != null) {
+            if (status.getCode() == null) {
+              status = new StatusBuilder(status).withCode(statusCode).build();
+            }
+            return status;
           }
-          return status;
         }
       } catch (IOException e) {
         // ignored
