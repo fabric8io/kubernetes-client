@@ -20,6 +20,7 @@
 * Fix #4899: BuildConfigs.instantiateBinary().fromFile() does not time out
 * Fix #4908: using the response headers in the vertx response
 * Fix #4947: typo in HttpClient.Factory scoring system logic
+* Fix #4928: allows non-okhttp clients to handle invalid status
 
 #### Improvements
 * Fix #4675: adding a fully client side timeout for informer watches

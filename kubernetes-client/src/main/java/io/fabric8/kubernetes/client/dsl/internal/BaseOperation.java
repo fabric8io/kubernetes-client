@@ -642,28 +642,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           if (t instanceof KubernetesClientException) {
             KubernetesClientException ke = (KubernetesClientException) t;
             List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
-            if (!furtherProcessedCodes.contains(ke.getCode())) {
-              throw ke;
-            }
+            if (furtherProcessedCodes.contains(ke.getCode())) {
+              //release the watch after disabling the watcher (to avoid premature call to onClose)
+              watcherToggle.disable();
 
-            //release the watch after disabling the watcher (to avoid premature call to onClose)
-            watcherToggle.disable();
-
-            // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
-            // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
-            // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
-            try {
-              return new WatchHTTPManager<>(
-                  httpClient,
-                  this,
-                  optionsToUse,
-                  watcher,
-                  getRequestConfig().getWatchReconnectInterval(),
-                  getRequestConfig().getWatchReconnectLimit());
-            } catch (MalformedURLException e) {
-              throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
+              // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
+              // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+              // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
+              try {
+                return new WatchHTTPManager<>(
+                    httpClient,
+                    this,
+                    optionsToUse,
+                    watcher,
+                    getRequestConfig().getWatchReconnectInterval(),
+                    getRequestConfig().getWatchReconnectLimit());
+              } catch (MalformedURLException e) {
+                throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
+              }
             }
           }
+          throw KubernetesClientException.launderThrowable(t);
         } finally {
           watch.close();
         }
