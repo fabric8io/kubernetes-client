@@ -14,11 +14,14 @@
 # limitations under the License.
 #
 
-apiVersion: test.fabric8.io/v1alpha1
-kind: Hello
-metadata:
-  name: custom-resource-example
-spec:
-  field: value
-status:
-  reconciled: true
+SHELL := /bin/bash
+
+all: build
+
+build: gobuild
+	mvn -Pgenerate clean install -DskipTests
+
+gobuild:
+	CGO_ENABLED=0 GO15VENDOREXPERIMENT=1 go build -a ./cmd/generate/generate.go
+	./generate > src/main/resources/schema/kube-schema.json
+	./generate validation > src/main/resources/schema/validation-schema.json

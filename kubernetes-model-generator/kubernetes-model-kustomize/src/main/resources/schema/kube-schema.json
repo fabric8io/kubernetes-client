@@ -1,0 +1,1080 @@
+{
+  "id": "http://fabric8.io/fabric8/v2/Schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$module": "kustomize",
+  "definitions": {
+    "kubernetes_kustomize_v1beta1ConfigMapArgs": {
+      "type": "object",
+      "properties": {
+        "behavior": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string"
+        },
+        "envs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "literals": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1GeneratorOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.GeneratorOptions"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.ConfigMapArgs",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1FieldOptions": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "boolean"
+        },
+        "delimiter": {
+          "type": "string"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "index": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1FieldSelector": {
+      "type": "object",
+      "properties": {
+        "fieldPath": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1FieldSpec": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "boolean"
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "FieldSpec",
+          "required": true
+        },
+        "path": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1GeneratorArgs": {
+      "type": "object",
+      "properties": {
+        "behavior": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string"
+        },
+        "envs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "literals": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1GeneratorOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.GeneratorOptions"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.GeneratorArgs",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1GeneratorOptions": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "disableNameSuffixHash": {
+          "type": "boolean"
+        },
+        "immutable": {
+          "type": "boolean"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.GeneratorOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1HelmChart": {
+      "type": "object",
+      "properties": {
+        "additionalValuesFiles": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "apiVersions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "includeCRDs": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameTemplate": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "releaseName": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "skipHooks": {
+          "type": "boolean"
+        },
+        "skipTests": {
+          "type": "boolean"
+        },
+        "valuesFile": {
+          "type": "string"
+        },
+        "valuesInline": {
+          "type": "object",
+          "additionalProperties": {},
+          "existingJavaType": "java.util.Map\u003cString, java.lang.Object\u003e"
+        },
+        "valuesMerge": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.HelmChart",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1HelmChartArgs": {
+      "type": "object",
+      "properties": {
+        "chartHome": {
+          "type": "string"
+        },
+        "chartName": {
+          "type": "string"
+        },
+        "chartRepoName": {
+          "type": "string"
+        },
+        "chartRepoUrl": {
+          "type": "string"
+        },
+        "chartVersion": {
+          "type": "string"
+        },
+        "extraArgs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "helmBin": {
+          "type": "string"
+        },
+        "helmHome": {
+          "type": "string"
+        },
+        "releaseName": {
+          "type": "string"
+        },
+        "releaseNamespace": {
+          "type": "string"
+        },
+        "values": {
+          "type": "string"
+        },
+        "valuesLocal": {
+          "type": "object",
+          "additionalProperties": {},
+          "existingJavaType": "java.util.Map\u003cString, java.lang.Object\u003e"
+        },
+        "valuesMerge": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.HelmChartArgs",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1HelmGlobals": {
+      "type": "object",
+      "properties": {
+        "chartHome": {
+          "type": "string"
+        },
+        "configHome": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.HelmGlobals",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Image": {
+      "type": "object",
+      "properties": {
+        "digest": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "newName": {
+          "type": "string"
+        },
+        "newTag": {
+          "type": "string"
+        },
+        "tagSuffix": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Image",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Kustomization": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "required": true
+        },
+        "bases": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "buildMetadata": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "commonAnnotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "commonLabels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "components": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "configMapGenerator": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1ConfigMapArgs",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.ConfigMapArgs"
+          }
+        },
+        "configurations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "crds": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "generatorOptions": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1GeneratorOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.GeneratorOptions"
+        },
+        "generators": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "helmChartInflationGenerator": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1HelmChartArgs",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.HelmChartArgs"
+          }
+        },
+        "helmCharts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1HelmChart",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.HelmChart"
+          }
+        },
+        "helmGlobals": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1HelmGlobals",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.HelmGlobals"
+        },
+        "imageTags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Image",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Image"
+          }
+        },
+        "images": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Image",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Image"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "Kustomization",
+          "required": true
+        },
+        "labels": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Label",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Label"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.ObjectMeta"
+        },
+        "namePrefix": {
+          "type": "string"
+        },
+        "nameSuffix": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "openapi": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "patches": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Patch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Patch"
+          }
+        },
+        "patchesJson6902": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Patch",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Patch"
+          }
+        },
+        "patchesStrategicMerge": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "replacements": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1ReplacementField",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.ReplacementField"
+          }
+        },
+        "replicas": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Replica",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Replica"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "secretGenerator": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1SecretArgs",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SecretArgs"
+          }
+        },
+        "sortOptions": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1SortOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SortOptions"
+        },
+        "transformers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "validators": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "vars": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Var",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Var"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Kustomization",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1KvPairSources": {
+      "type": "object",
+      "properties": {
+        "env": {
+          "type": "string"
+        },
+        "envs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "literals": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.KvPairSources",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Label": {
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1FieldSpec",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldSpec"
+          }
+        },
+        "includeSelectors": {
+          "type": "boolean"
+        },
+        "includeTemplates": {
+          "type": "boolean"
+        },
+        "pairs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Label",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1LegacySortOptions": {
+      "type": "object",
+      "properties": {
+        "orderFirst": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "orderLast": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.LegacySortOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1ObjectMeta": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string",
+          "maxLength": 253,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.ObjectMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Patch": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "existingJavaType": "java.util.Map\u003cString, Boolean\u003e"
+        },
+        "patch": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1Selector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Selector"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Patch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Replacement": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1SourceSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SourceSelector"
+        },
+        "targets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1TargetSelector",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.TargetSelector"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Replacement",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1ReplacementField": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1SourceSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SourceSelector"
+        },
+        "targets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1TargetSelector",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.TargetSelector"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.ReplacementField",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Replica": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Replica",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1SecretArgs": {
+      "type": "object",
+      "properties": {
+        "behavior": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string"
+        },
+        "envs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "literals": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1GeneratorOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.GeneratorOptions"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SecretArgs",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Selector": {
+      "type": "object",
+      "properties": {
+        "annotationSelector": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "Selector",
+          "required": true
+        },
+        "labelSelector": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Selector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1SortOptions": {
+      "type": "object",
+      "properties": {
+        "legacySortOptions": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1LegacySortOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.LegacySortOptions"
+        },
+        "order": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SortOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1SourceSelector": {
+      "type": "object",
+      "properties": {
+        "fieldPath": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "SourceSelector",
+          "required": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1FieldOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldOptions"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.SourceSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Target": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "Target",
+          "required": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Target",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1TargetSelector": {
+      "type": "object",
+      "properties": {
+        "fieldPaths": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "options": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1FieldOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldOptions"
+        },
+        "reject": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_kustomize_v1beta1Selector",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Selector"
+          }
+        },
+        "select": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1Selector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Selector"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.TargetSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1TypeMeta": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.TypeMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_kustomize_v1beta1Var": {
+      "type": "object",
+      "properties": {
+        "fieldref": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1FieldSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.FieldSelector"
+        },
+        "name": {
+          "type": "string"
+        },
+        "objref": {
+          "$ref": "#/definitions/kubernetes_kustomize_v1beta1Target",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Target"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Var",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_kustomize_kyaml_resid_Gvk": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "Gvk",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_kustomize_kyaml_resid_ResId": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "ResId",
+          "required": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "ResId",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "Kustomization": {
+      "$ref": "#/definitions/kubernetes_kustomize_v1beta1Kustomization",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.kustomize.v1beta1.Kustomization"
+    }
+  },
+  "additionalProperties": true
+}

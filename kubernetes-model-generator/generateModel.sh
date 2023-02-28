@@ -43,6 +43,7 @@ declare -a modules=(
     "kubernetes-model-scheduling"
     "kubernetes-model-storageclass"
     "kubernetes-model-resource"
+    "kubernetes-model-kustomize"
     "openshift-model-config"
     "openshift-model"
     "openshift-model-operator"
