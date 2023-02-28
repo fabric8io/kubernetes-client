@@ -55,6 +55,7 @@
     <module>kubernetes-model-resource</module>
     <module>kubernetes-model-scheduling</module>
     <module>kubernetes-model-storageclass</module>
+    <module>kubernetes-model-kustomize</module>
     <module>openshift-model</module>
     <module>openshift-model-clusterautoscaling</module>
     <module>openshift-model-config</module>
