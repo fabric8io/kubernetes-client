@@ -15,15 +15,19 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
+import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * This sample code is Java equivalent to `kubectl create -f resources.yaml --namespace=default`.
+ * This sample code is Java equivalent to `kubectl create -f quota.yaml --namespace=default`.
  * It loads YAML manifest with specified name and creates it.
  */
-
 public class CreateResourceQuotaInNamespaceYamlEquivalent {
+  private static final Logger logger = LoggerFactory.getLogger(CreateResourceQuotaInNamespaceYamlEquivalent.class.getName());
+
   public static void main(String[] args) {
 
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
@@ -32,9 +36,11 @@ public class CreateResourceQuotaInNamespaceYamlEquivalent {
        * otherwise you would need to specify it in operation context like being done
        * here.
        */
-      client.load(CreateResourceQuotaInNamespaceYamlEquivalent.class.getResourceAsStream("/resources.yaml"))
-          .inNamespace("default")
-          .createOrReplace();
+      ResourceQuota resourceQuota = client.resourceQuotas().inNamespace("default")
+          .load(CreateResourceQuotaInNamespaceYamlEquivalent.class.getResourceAsStream("/quota.yaml"))
+          .create();
+      logger.info("Successfully created ResourceQuota {} in {} namespace", resourceQuota.getMetadata().getName(),
+          resourceQuota.getMetadata().getNamespace());
     }
   }
 }
