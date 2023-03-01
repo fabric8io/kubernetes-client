@@ -129,6 +129,7 @@ class RoleIT {
   void update() {
 
     Role role = client.rbac().roles().withName("role-update").edit(r -> new RoleBuilder(r)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(role);

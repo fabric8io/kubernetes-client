@@ -59,9 +59,8 @@ class CronJobIT {
   void update() {
     CronJob cronJob1 = client.batch().v1beta1().cronjobs().withName("hello-update")
         .edit(c -> new CronJobBuilder(c)
-            .editSpec()
-            .withSchedule("*/1 * * * *")
-            .endSpec()
+            .editMetadata().withResourceVersion(null).endMetadata()
+            .editSpec().withSchedule("*/1 * * * *").endSpec()
             .build());
     assertEquals("*/1 * * * *", cronJob1.getSpec().getSchedule());
   }

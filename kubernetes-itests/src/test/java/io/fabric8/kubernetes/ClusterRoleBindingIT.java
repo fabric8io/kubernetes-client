@@ -111,6 +111,7 @@ class ClusterRoleBindingIT {
 
     ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update")
         .edit(c -> new ClusterRoleBindingBuilder(c)
+            .editMetadata().withResourceVersion(null).endMetadata()
             .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(clusterRoleBinding);

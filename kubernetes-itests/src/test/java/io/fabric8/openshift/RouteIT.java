@@ -62,6 +62,7 @@ class RouteIT {
   @Test
   void update() {
     final Route route = client.routes().withName("route-update").edit(r -> new RouteBuilder(r)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSpec().withPath("/test").endSpec().build());
     assertThat(route).isNotNull();
     assertEquals("/test", route.getSpec().getPath());

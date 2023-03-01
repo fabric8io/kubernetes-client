@@ -55,7 +55,8 @@ class StorageClassIT {
   @Test
   void update() {
     StorageClass storageClass = client.storage().storageClasses().withName("storageclass-update")
-        .edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
+        .edit(s -> new StorageClassBuilder(s)
+            .editMetadata().withResourceVersion(null).addToLabels("testLabel", "testLabelValue").endMetadata().build());
     assertNotNull(storageClass);
     assertEquals("testLabelValue", storageClass.getMetadata().getLabels().get("testLabel"));
   }

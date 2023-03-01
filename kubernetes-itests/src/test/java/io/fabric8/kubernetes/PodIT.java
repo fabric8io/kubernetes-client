@@ -105,7 +105,7 @@ class PodIT {
   @Test
   void update() {
     Pod pod1 = client.pods().withName("pod-standard").edit(p -> new PodBuilder(p)
-        .editMetadata().addToLabels("foo", "bar").endMetadata().build());
+        .editMetadata().withResourceVersion(null).addToLabels("foo", "bar").endMetadata().build());
     assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
   }
 

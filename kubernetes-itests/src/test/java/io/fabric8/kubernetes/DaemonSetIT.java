@@ -50,6 +50,7 @@ class DaemonSetIT {
   @Test
   void update() {
     DaemonSet daemonSet = client.apps().daemonSets().withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
         .endContainer().endSpec().endTemplate().endSpec()

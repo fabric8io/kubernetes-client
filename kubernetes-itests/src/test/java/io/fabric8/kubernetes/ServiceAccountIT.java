@@ -60,6 +60,7 @@ class ServiceAccountIT {
   @Test
   void update() {
     ServiceAccount serviceAccount1 = client.serviceAccounts().withName("sa-update").edit(s -> new ServiceAccountBuilder(s)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .addNewSecret().withName("default-token-uudp").endSecret()
         .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
         .build());

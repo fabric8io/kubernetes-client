@@ -108,6 +108,7 @@ class RoleBindingIT {
   void update() {
 
     RoleBinding roleBinding = client.rbac().roleBindings().withName("rb-update").edit(r -> new RoleBindingBuilder(r)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);

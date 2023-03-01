@@ -63,7 +63,7 @@ class APIServiceIT {
   void update() {
     APIService result = client.apiServices().withName("v1.tests.example.com")
         .edit(c -> new APIServiceBuilder(c)
-            .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
+            .editOrNewMetadata().withResourceVersion(null).addToAnnotations("foo", "bar").endMetadata()
             .build());
     assertThat(result)
         .hasFieldOrPropertyWithValue("metadata.annotations.foo", "bar")

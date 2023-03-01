@@ -93,7 +93,7 @@ class NetworkPolicyIT {
   void update() {
     NetworkPolicy networkPolicy = client.network().v1().networkPolicies()
         .withName("networkpolicy-update").edit(n -> new NetworkPolicyBuilder(n)
-            .editMetadata().addToLabels("bar", "foo").endMetadata()
+            .editMetadata().withResourceVersion(null).addToLabels("bar", "foo").endMetadata()
             .build());
 
     assertNotNull(networkPolicy);

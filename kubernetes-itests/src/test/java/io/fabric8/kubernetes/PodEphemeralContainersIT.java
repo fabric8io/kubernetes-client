@@ -43,6 +43,7 @@ class PodEphemeralContainersIT {
     Pod pod = client.pods().withName("pod-standard")
         .ephemeralContainers()
         .edit(p -> new PodBuilder(p)
+            .editMetadata().withResourceVersion(null).endMetadata()
             .editSpec()
             .addNewEphemeralContainer()
             .withName("debugger-1")
@@ -83,6 +84,7 @@ class PodEphemeralContainersIT {
     PodResource resource = client.pods().withName("pod-standard");
     resource.ephemeralContainers()
         .edit(p -> new PodBuilder(p)
+            .editMetadata().withResourceVersion(null).endMetadata()
             .editSpec()
             .addNewEphemeralContainer()
             .withName("debugger-3")
