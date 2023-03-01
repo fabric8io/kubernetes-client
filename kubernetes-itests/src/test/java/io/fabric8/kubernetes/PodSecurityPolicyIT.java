@@ -79,6 +79,7 @@ class PodSecurityPolicyIT {
 
     PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("psp-update")
         .edit(p -> new PodSecurityPolicyBuilder(p)
+            .editMetadata().withResourceVersion(null).endMetadata()
             .editSpec().withPrivileged(true).endSpec()
             .build());
 

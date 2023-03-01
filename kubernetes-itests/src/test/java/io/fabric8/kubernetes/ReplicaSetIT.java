@@ -62,6 +62,7 @@ class ReplicaSetIT {
     client.apps().replicaSets().withName("replicaset-update")
         .waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     ReplicaSet replicaset1 = client.apps().replicaSets().withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSpec().withReplicas(2).endSpec().build());
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());

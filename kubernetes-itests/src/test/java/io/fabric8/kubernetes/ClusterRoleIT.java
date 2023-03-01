@@ -123,6 +123,7 @@ class ClusterRoleIT {
   void update() {
 
     ClusterRole clusterRole = client.rbac().clusterRoles().withName("node-reader-update").edit(c -> new ClusterRoleBuilder(c)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(clusterRole);

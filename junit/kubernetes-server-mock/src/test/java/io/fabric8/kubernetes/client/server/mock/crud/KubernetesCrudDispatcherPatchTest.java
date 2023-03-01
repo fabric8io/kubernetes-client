@@ -324,8 +324,7 @@ class KubernetesCrudDispatcherPatchTest {
   class ResourceVersion {
 
     @Test
-    @DisplayName("JSON patch, with different resource version, should patch the resource ---->" +
-        "Invalid Client behavior which removes the resource version from the list of operations")
+    @DisplayName("JSON patch, with different resource version, should throw conflict exception")
     void differentResourceVersionConflictEdit() {
       // Given
       client.resource(new ConfigMapBuilder()
@@ -339,7 +338,7 @@ class KubernetesCrudDispatcherPatchTest {
           .addToData("key", "changed")
           .build());
       // Then
-      assertThatThrownBy(() -> patchedCmOp.patch())
+      assertThatThrownBy(patchedCmOp::patch)
           .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
           .hasFieldOrPropertyWithValue("code", 409)
           .extracting(KubernetesClientException::getMessage).asString()
@@ -347,7 +346,7 @@ class KubernetesCrudDispatcherPatchTest {
     }
 
     @Test
-    @DisplayName("JSON patch, with different resource version, should throw conflict exception")
+    @DisplayName("JSON patch (list of operations), with different resource version, should throw conflict exception")
     void differentResourceVersionConflict() {
       // Given
       client.resource(new ConfigMapBuilder()

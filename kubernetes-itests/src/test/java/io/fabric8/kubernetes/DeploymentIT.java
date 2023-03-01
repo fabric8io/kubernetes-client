@@ -65,7 +65,8 @@ class DeploymentIT {
   @Test
   void update() {
     Deployment deployment1 = client.apps().deployments().withName("deployment-standard")
-        .edit(d -> new DeploymentBuilder(d).editMetadata().addToAnnotations("updated", "true").endMetadata().build());
+        .edit(d -> new DeploymentBuilder(d)
+            .editMetadata().withResourceVersion(null).addToAnnotations("updated", "true").endMetadata().build());
     assertThat(deployment1).isNotNull();
     assertEquals("true", deployment1.getMetadata().getAnnotations().get("updated"));
   }

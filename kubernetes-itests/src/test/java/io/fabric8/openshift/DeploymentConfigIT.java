@@ -61,7 +61,9 @@ class DeploymentConfigIT {
   @Test
   void update() {
     DeploymentConfig deploymentConfig1 = client.deploymentConfigs().withName("dc-update")
-        .edit(d -> new DeploymentConfigBuilder(d).editSpec().withReplicas(3).endSpec().build());
+        .edit(d -> new DeploymentConfigBuilder(d)
+            .editMetadata().withResourceVersion(null).endMetadata()
+            .editSpec().withReplicas(3).endSpec().build());
     assertThat(deploymentConfig1).isNotNull();
     assertEquals(3, deploymentConfig1.getSpec().getReplicas().intValue());
   }
