@@ -63,6 +63,9 @@
   - JSON patch methods using an item for the diff generation such as edit or patch will no longer omit the resourceVersion in the patch.  If you want the patch to be unlocked, then set the resourceVersion to null on the item to be patched.
   - internal logic to mimic an apply that modify an item prior to a JSON patch is deprecated - you should instead build the item to be patched off of base version, such as with the edit method.
 
+#### _**Note**_: Deprecations
+* Fix #4875: Deprecated all the java-generator options identified for deletion in a following release
+
 ### 6.4.1 (2023-01-31)
 
 #### Bugs

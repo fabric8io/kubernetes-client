@@ -55,13 +55,17 @@ public class GenerateJavaSources implements Runnable {
   @Option(names = { "-enum-uppercase", "--enum-uppercase" }, description = "Uppercase the enum values", required = false)
   Boolean uppercaseEnum = null;
 
+  @Deprecated
   @Option(names = { "-prefix-strategy",
       "--prefix-strategy" }, description = "The prefix strategy to be used", required = false, hidden = true)
   String prefixStrategy = null;
 
-  @Option(names = { "-suffix-strategy", "--suffix-strategy" }, description = "The suffix strategy to be used", required = false)
+  @Deprecated
+  @Option(names = { "-suffix-strategy",
+      "--suffix-strategy" }, description = "The suffix strategy to be used", required = false, hidden = true)
   String suffixStrategy = null;
 
+  @Deprecated
   @Option(names = { "-always-preserve-unknown",
       "--always-preserve-unknown" }, description = "Always preserve unknown fields in the generated classes", required = false, hidden = true)
   Boolean alwaysPreserveUnkownFields = null;
@@ -70,6 +74,7 @@ public class GenerateJavaSources implements Runnable {
       "--add-extra-annotations" }, description = "Add extra lombok and sundrio annotation to the generated classes", required = false)
   Boolean addExtraAnnotations = null;
 
+  @Deprecated
   @Option(names = { "-code-structure",
       "--code-structure" }, description = "Generate classes using a specific layout", required = false, hidden = true)
   String codeStructure = null;
