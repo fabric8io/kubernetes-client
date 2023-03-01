@@ -50,6 +50,9 @@
 * Fix #4825: removed or deprecated/moved methods that are unrelated to the rolling timeout from ImageEditReplacePatchable.  Deprecated rollout methods for timeout and edit - future versions will not support
 * Fix #4826: removed RequestConfig upload connection and rolling timeouts.  Both were no longer used with no plans to re-introduce their usage.
 
+#### _**Note**_: Deprecations
+* Fix #4875: Deprecated all the java-generator options identified for deletion in a following release
+
 ### 6.4.1 (2023-01-31)
 
 #### Bugs

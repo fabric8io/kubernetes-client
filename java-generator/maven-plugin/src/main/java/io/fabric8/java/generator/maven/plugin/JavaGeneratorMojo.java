@@ -74,23 +74,26 @@ public class JavaGeneratorMojo extends AbstractMojo {
   Boolean enumUppercase = null;
 
   /**
-   * *advanced* The prefix strategy for name mangling
+   * *DEPRECATED* The prefix strategy for name mangling
    *
    */
+  @Deprecated
   @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false)
   Config.Prefix prefixStrategy = null;
 
   /**
-   * *advanced* The suffix strategy for name mangling
+   * *DEPRECATED* The suffix strategy for name mangling
    *
    */
+  @Deprecated
   @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
   Config.Suffix suffixStrategy = null;
 
   /**
-   * *advanced* Always inject additional properties in the generated classes
+   * *DEPRECATED* Always inject additional properties in the generated classes
    *
    */
+  @Deprecated
   @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false)
   Boolean alwaysPreserveUnknown = null;
 
@@ -102,9 +105,10 @@ public class JavaGeneratorMojo extends AbstractMojo {
   Boolean extraAnnotations = null;
 
   /**
-   * *advanced* The code structure to be used when generating java sources
+   * *DEPRECATED* The code structure to be used when generating java sources
    *
    */
+  @Deprecated
   @Parameter(property = "fabric8.java-generator.code-structure", required = false)
   protected Config.CodeStructure codeStructure = null;
 

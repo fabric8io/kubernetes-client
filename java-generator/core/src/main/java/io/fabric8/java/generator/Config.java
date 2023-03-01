@@ -51,10 +51,14 @@ public class Config {
   private static final Map<String, String> DEFAULT_PACKAGE_OVERRIDES = new HashMap<>();
 
   private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;
+  @Deprecated
   private Prefix prefixStrategy = DEFAULT_PREFIX_STRATEGY;
+  @Deprecated
   private Suffix suffixStrategy = DEFAULT_SUFFIX_STRATEGY;
+  @Deprecated
   private Boolean alwaysPreserveUnknownFields = DEFAULT_ALWAYS_PRESERVE_FIELDS;
   private Boolean objectExtraAnnotations = DEFAULT_ADD_EXTRA_ANNOTATIONS;
+  @Deprecated
   private CodeStructure structure = DEFAULT_CODE_STRUCTURE;
   private Boolean generatedAnnotations = DEFAULT_ADD_GENERATED_ANNOTATIONS;
   private Map<String, String> packageOverrides = DEFAULT_PACKAGE_OVERRIDES;
