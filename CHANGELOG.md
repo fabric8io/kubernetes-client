@@ -11,6 +11,7 @@
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
 * Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
+* Fix #4935: improve HTTP client implementation selection messages
 * Fix #4975: exposing scale operations for all Resources
 * Fix #4992: Optimize Quantity parsing to avoid regex overhead
 * Fix #4998: removing the internal usage of the Serialization yaml mapper
