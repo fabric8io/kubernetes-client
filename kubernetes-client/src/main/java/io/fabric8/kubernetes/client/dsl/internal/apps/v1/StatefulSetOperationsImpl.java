@@ -74,11 +74,6 @@ public class StatefulSetOperationsImpl
   }
 
   @Override
-  public StatefulSet withReplicas(int count) {
-    return accept(s -> s.getSpec().setReplicas(count));
-  }
-
-  @Override
   public RollingUpdater<StatefulSet, StatefulSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return null;
   }

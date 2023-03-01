@@ -103,11 +103,6 @@ public class DeploymentOperationsImpl
   }
 
   @Override
-  public Deployment withReplicas(int count) {
-    return accept(d -> d.getSpec().setReplicas(count));
-  }
-
-  @Override
   public int getCurrentReplicas(Deployment current) {
     return current.getStatus().getReplicas();
   }

@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
@@ -57,7 +59,10 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     this.rollingOperationContext = context;
   }
 
-  protected abstract T withReplicas(int count);
+  protected final T withReplicas(int count) {
+    return patch(PatchContext.of(PatchType.JSON),
+        "[{\"op\": \"replace\", \"path\":\"/spec/replicas\", \"value\":" + count + "}]");
+  }
 
   protected abstract RollingUpdater<T, L> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit);
 
