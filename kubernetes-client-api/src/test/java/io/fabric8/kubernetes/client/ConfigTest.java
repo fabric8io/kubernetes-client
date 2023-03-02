@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -49,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
-public class ConfigTest {
+class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig"));
   private static final String TEST_EC_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-ec-kubeconfig"));
@@ -578,30 +579,30 @@ public class ConfigTest {
     emptyConfig = Config.empty();
 
     // Then
-    assertNotNull(emptyConfig);
-    assertEquals("https://kubernetes.default.svc", emptyConfig.getMasterUrl());
-    assertTrue(emptyConfig.getContexts().isEmpty());
-    assertNull(emptyConfig.getCurrentContext());
-    assertEquals(64, emptyConfig.getMaxConcurrentRequests());
-    assertEquals(5, emptyConfig.getMaxConcurrentRequestsPerHost());
-    assertFalse(emptyConfig.isTrustCerts());
-    assertFalse(emptyConfig.isDisableHostnameVerification());
-    assertEquals("RSA", emptyConfig.getClientKeyAlgo());
-    assertEquals("changeit", emptyConfig.getClientKeyPassphrase());
-    assertEquals(1000, emptyConfig.getWatchReconnectInterval());
-    assertEquals(-1, emptyConfig.getWatchReconnectLimit());
-    assertEquals(10000, emptyConfig.getConnectionTimeout());
-    assertEquals(10000, emptyConfig.getRequestTimeout());
-    assertEquals(600000, emptyConfig.getScaleTimeout());
-    assertEquals(20000, emptyConfig.getLoggingInterval());
-    assertEquals(30000, emptyConfig.getWebsocketPingInterval());
-    assertEquals(120000, emptyConfig.getUploadRequestTimeout());
-    assertTrue(emptyConfig.getImpersonateExtras().isEmpty());
-    assertEquals(0, emptyConfig.getImpersonateGroups().length);
-    assertFalse(emptyConfig.isHttp2Disable());
-    assertEquals(2, emptyConfig.getTlsVersions().length);
-    assertTrue(emptyConfig.getErrorMessages().isEmpty());
-    assertNotNull(emptyConfig.getUserAgent());
+    assertThat(emptyConfig)
+        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc")
+        .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
+        .hasFieldOrPropertyWithValue("maxConcurrentRequests", 64)
+        .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 5)
+        .hasFieldOrPropertyWithValue("trustCerts", false)
+        .hasFieldOrPropertyWithValue("disableHostnameVerification", false)
+        .hasFieldOrPropertyWithValue("clientKeyAlgo", "RSA")
+        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "changeit")
+        .hasFieldOrPropertyWithValue("watchReconnectInterval", 1000)
+        .hasFieldOrPropertyWithValue("watchReconnectLimit", -1)
+        .hasFieldOrPropertyWithValue("connectionTimeout", 10000)
+        .hasFieldOrPropertyWithValue("requestTimeout", 10000)
+        .hasFieldOrPropertyWithValue("scaleTimeout", 600000L)
+        .hasFieldOrPropertyWithValue("loggingInterval", 20000)
+        .hasFieldOrPropertyWithValue("websocketPingInterval", 30000L)
+        .hasFieldOrPropertyWithValue("uploadRequestTimeout", 120000)
+        .hasFieldOrPropertyWithValue("impersonateExtras", Collections.emptyMap())
+        .hasFieldOrPropertyWithValue("http2Disable", false)
+        .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 })
+        .hasFieldOrPropertyWithValue("errorMessages", Collections.emptyMap())
+        .satisfies(e -> assertThat(e.getCurrentContext()).isNull())
+        .satisfies(e -> assertThat(e.getImpersonateGroups()).isEmpty())
+        .satisfies(e -> assertThat(e.getUserAgent()).isNotNull());
   }
 
   private void assertConfig(Config config) {
@@ -800,5 +801,21 @@ public class ConfigTest {
     } finally {
       System.setProperty("user.home", userHomePropToRestore);
     }
+  }
+
+  @Test
+  void refresh_whenOAuthTokenSourceSetToUser_thenConfigUnchanged() {
+    // Given
+    Config config = new ConfigBuilder()
+        .withOauthToken("token-from-user")
+        .build();
+
+    // When
+    Config updatedConfig = config.refresh();
+
+    // Then
+    assertThat(updatedConfig)
+        .isSameAs(config)
+        .hasFieldOrPropertyWithValue("oauthToken", "token-from-user");
   }
 }

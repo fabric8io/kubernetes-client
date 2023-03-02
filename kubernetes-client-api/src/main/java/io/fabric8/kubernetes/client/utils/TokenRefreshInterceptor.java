@@ -84,6 +84,16 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   private CompletableFuture<Boolean> refreshToken(BasicBuilder headerBuilder) {
+    if (config.getOauthTokenProvider() != null) {
+      String tokenFromProvider = config.getOauthTokenProvider().getToken();
+      if (tokenFromProvider != null && !tokenFromProvider.isEmpty()) {
+        return CompletableFuture.completedFuture(overrideNewAccessTokenToConfig(tokenFromProvider, headerBuilder, config));
+      }
+    }
+    if (config.getUserConfiguredOauthToken() != null && !config.getUserConfiguredOauthToken().isEmpty()) {
+      return CompletableFuture
+          .completedFuture(overrideNewAccessTokenToConfig(config.getUserConfiguredOauthToken(), headerBuilder, config));
+    }
     Config newestConfig = config.refresh();
     final CompletableFuture<String> newAccessToken = extractNewAccessTokenFrom(newestConfig);
 
@@ -91,7 +101,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   private CompletableFuture<String> extractNewAccessTokenFrom(Config newestConfig) {
-    if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
+    if (isAuthProviderOidc(newestConfig) && OpenIDConnectionUtils.idTokenExpired(newestConfig)) {
       return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, newestConfig.getAuthProvider().getConfig(),
           factory.newBuilder());
     }
@@ -102,7 +112,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder, Config existConfig) {
     if (Utils.isNotNullOrEmpty(newAccessToken)) {
       headerBuilder.setHeader(AUTHORIZATION, "Bearer " + newAccessToken);
-      existConfig.setOauthToken(newAccessToken);
+      existConfig.setAutoOAuthToken(newAccessToken);
 
       updateLatestRefreshTimestamp();
 
@@ -116,4 +126,7 @@ public class TokenRefreshInterceptor implements Interceptor {
     latestRefreshTimestamp = Instant.now();
   }
 
+  private static boolean isAuthProviderOidc(Config newestConfig) {
+    return newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc");
+  }
 }

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.AuthProviderConfigBuilder;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -34,6 +35,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -46,6 +49,7 @@ import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ISSUER_KU
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -239,6 +243,42 @@ class OpenIDConnectionUtilsTest {
     assertEquals("", OpenIDConnectionUtils.getParametersFromDiscoveryResponse(discoveryDocument, "userinfo_endpoint"));
   }
 
+  @Test
+  void idTokenExpired_whenEmptyFormatProvided_thenReturnTrue() {
+    assertThat(OpenIDConnectionUtils.idTokenExpired(createNewConfigWithAuthProviderIdToken(""))).isTrue();
+  }
+
+  @Test
+  void idTokenExpired_whenInvalidJwtTokenFormatProvided_thenReturnTrue() {
+    assertThat(OpenIDConnectionUtils.idTokenExpired(createNewConfigWithAuthProviderIdToken("invalid-jwt-token"))).isTrue();
+  }
+
+  @Test
+  void idTokenExpired_whenInvalidJwtPayloadProvided_thenReturnTrue() {
+    assertThat(OpenIDConnectionUtils.idTokenExpired(createNewConfigWithAuthProviderIdToken("header.payload.signature")))
+        .isTrue();
+  }
+
+  @Test
+  void idTokenExpired_whenOldTokenProvided_thenReturnTrue() {
+    // Given
+    String token = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL21sYi50cmVtb2xvLmxhbjo4MDQzL2F1dGgvaWRwL29pZGMiLCJhdWQiOiJrdWJlcm5ldGVzIiwiZXhwIjoxNDc0NTk2NjY5LCJqdGkiOiI2RDUzNXoxUEpFNjJOR3QxaWVyYm9RIiwiaWF0IjoxNDc0NTk2MzY5LCJuYmYiOjE0NzQ1OTYyNDksInN1YiI6Im13aW5kdSIsInVzZXJfcm9sZSI6WyJ1c2VycyIsIm5ldy1uYW1lc3BhY2Utdmlld2VyIl0sImVtYWlsIjoibXdpbmR1QG5vbW9yZWplZGkuY29tIn0.f2As579n9VNoaKzoF-dOQGmXkFKf1FMyNV0-va_B63jn-_n9LGSCca_6IVMP8pO-Zb4KvRqGyTP0r3HkHxYy5c81AnIh8ijarruczl-TK_yF5akjSTHFZD-0gRzlevBDiH8Q79NAr-ky0P4iIXS8lY9Vnjch5MF74Zx0c3alKJHJUnnpjIACByfF2SCaYzbWFMUNat-K1PaUk5-ujMBG7yYnr95xD-63n8CO8teGUAAEMx6zRjzfhnhbzX-ajwZLGwGUBT4WqjMs70-6a7_8gZmLZb2az1cZynkFRj2BaCkVT3A2RrjeEwZEtGXlMqKJ1_I2ulrOVsYx01_yD35-rw";
+
+    // When + Then
+    assertThat(OpenIDConnectionUtils.idTokenExpired(createNewConfigWithAuthProviderIdToken(token))).isTrue();
+  }
+
+  @Test
+  void idTokenExpired_whenTokenStillNotExpired_thenReturnFalse() {
+    // Given
+    Instant tokenExp = Instant.now().plusSeconds(30);
+    String payload = "{\"exp\": " + tokenExp.getEpochSecond() + "}";
+    String token = "header." + Base64.getEncoder().encodeToString(payload.getBytes()) + ".signature";
+
+    // When + Then
+    assertThat(OpenIDConnectionUtils.idTokenExpired(createNewConfigWithAuthProviderIdToken(token))).isFalse();
+  }
+
   private void mockHttpClient(int responseCode, String responseAsStr) throws IOException {
     HttpResponse<String> mockSuccessResponse = mockResponse(responseCode, responseAsStr);
     when(mockClient.sendAsync(any(), eq(String.class)))
@@ -250,5 +290,13 @@ class OpenIDConnectionUtilsTest {
     Mockito.when(response.code()).thenReturn(responseCode);
     Mockito.when(response.body()).thenReturn(responseBody);
     return response;
+  }
+
+  private Config createNewConfigWithAuthProviderIdToken(String idToken) {
+    return new ConfigBuilder(Config.empty())
+        .withAuthProvider(new AuthProviderConfigBuilder()
+            .addToConfig(ID_TOKEN_KUBECONFIG, idToken)
+            .build())
+        .build();
   }
 }
