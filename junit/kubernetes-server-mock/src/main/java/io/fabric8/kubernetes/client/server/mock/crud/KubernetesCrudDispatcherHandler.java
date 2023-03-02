@@ -113,14 +113,6 @@ public interface KubernetesCrudDispatcherHandler {
     return resource;
   }
 
-  static MockResponse process(RecordedRequest request, KubernetesCrudDispatcherHandler handler) {
-    try {
-      return handler.handle(request);
-    } catch (KubernetesCrudDispatcherException e) {
-      return new MockResponse().setResponseCode(e.getCode()).setBody(e.toStatusBody());
-    }
-  }
-
   static boolean isStatusPath(String path) {
     return path.endsWith("/" + STATUS);
   }

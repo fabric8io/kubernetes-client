@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.server.mock;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudDispatcherException;
 import io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudDispatcherHandler;
 import io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudPersistence;
 import io.fabric8.kubernetes.client.server.mock.crud.PatchHandler;
@@ -47,8 +48,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicLong;
-
-import static io.fabric8.kubernetes.client.server.mock.crud.KubernetesCrudDispatcherHandler.process;
 
 public class KubernetesCrudDispatcher extends CrudDispatcher implements KubernetesCrudPersistence, CustomResourceAware {
 
@@ -81,6 +80,16 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     crdContexts.stream().forEach(this::expectCustomResource);
   }
 
+  MockResponse process(RecordedRequest request, KubernetesCrudDispatcherHandler handler) {
+    synchronized (map) {
+      try {
+        return handler.handle(request);
+      } catch (KubernetesCrudDispatcherException e) {
+        return new MockResponse().setResponseCode(e.getCode()).setBody(e.toStatusBody());
+      }
+    }
+  }
+
   /**
    * Adds the specified object to the in-memory db.
    *
@@ -111,10 +120,12 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
    */
   @Override
   public MockResponse handleGet(String path) {
-    if (detectWatchMode(path)) {
-      return handleWatch(path);
+    synchronized (map) {
+      if (detectWatchMode(path)) {
+        return handleWatch(path);
+      }
+      return handle(path, null);
     }
-    return handle(path, null);
   }
 
   private interface EventProcessor {
@@ -126,17 +137,15 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     List<String> items = new ArrayList<>();
     AttributeSet query = attributeExtractor.fromPath(path);
 
-    synchronized (map) {
-      new ArrayList<>(map.entrySet()).stream()
-          .filter(entry -> entry.getKey().matches(query))
-          .forEach(entry -> {
-            LOGGER.debug("Entry found for query {} : {}", query, entry);
-            items.add(entry.getValue());
-            if (eventProcessor != null) {
-              eventProcessor.processEvent(path, query, entry.getKey());
-            }
-          });
-    }
+    new ArrayList<>(map.entrySet()).stream()
+        .filter(entry -> entry.getKey().matches(query))
+        .forEach(entry -> {
+          LOGGER.debug("Entry found for query {} : {}", query, entry);
+          items.add(entry.getValue());
+          if (eventProcessor != null) {
+            eventProcessor.processEvent(path, query, entry.getKey());
+          }
+        });
 
     if (query.containsKey(KubernetesAttributesExtractor.NAME)) {
       if (!items.isEmpty()) {
@@ -179,26 +188,30 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
    */
   @Override
   public MockResponse handleDelete(String path) {
-    return handle(path, (p, pathAttributes, oldAttributes) -> {
-      String jsonStringOfResource = map.get(oldAttributes);
-      /*
-       * Potential performance improvement: The resource is unmarshalled and marshalled in other places (e.g., when creating a
-       * WatchEvent later).
-       * This could be avoided by storing the unmarshalled object (instead of a String) in the map.
-       */
-      final GenericKubernetesResource resource = Serialization.unmarshal(jsonStringOfResource, GenericKubernetesResource.class);
-      if (resource.getFinalizers().isEmpty()) {
-        // No finalizers left, actually remove the resource.
-        processEvent(path, pathAttributes, oldAttributes, null);
-        return;
-      } else if (!resource.isMarkedForDeletion()) {
-        // Mark the resource as deleted, but don't remove it yet (wait for finalizer-removal).
-        resource.getMetadata().setDeletionTimestamp(LocalDateTime.now().toString());
-        String updatedResource = Serialization.asJson(resource);
-        processEvent(path, pathAttributes, oldAttributes, updatedResource);
-      }
-      // else: if the resource is already marked for deletion and still has finalizers, do nothing.
-    });
+    synchronized (map) {
+      return handle(path, this::processDelete);
+    }
+  }
+
+  private void processDelete(String path, AttributeSet pathAttributes, AttributeSet oldAttributes) {
+    String jsonStringOfResource = map.get(oldAttributes);
+    /*
+     * Potential performance improvement: The resource is unmarshalled and marshalled in other places (e.g., when creating a
+     * WatchEvent later).
+     * This could be avoided by storing the unmarshalled object (instead of a String) in the map.
+     */
+    final GenericKubernetesResource resource = Serialization.unmarshal(jsonStringOfResource, GenericKubernetesResource.class);
+    if (resource.getFinalizers().isEmpty()) {
+      // No finalizers left, actually remove the resource.
+      processEvent(path, pathAttributes, oldAttributes, null);
+      return;
+    } else if (!resource.isMarkedForDeletion()) {
+      // Mark the resource as deleted, but don't remove it yet (wait for finalizer-removal).
+      resource.getMetadata().setDeletionTimestamp(LocalDateTime.now().toString());
+      String updatedResource = Serialization.asJson(resource);
+      processEvent(path, pathAttributes, oldAttributes, updatedResource);
+    }
+    // else: if the resource is already marked for deletion and still has finalizers, do nothing.
   }
 
   @Override
