@@ -250,7 +250,7 @@ public class StatefulSetTest {
 
     // list for waiting
     server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/statefulsets?fieldSelector=metadata.name%3Drepl1&resourceVersion=0")
+        .withPath("/apis/apps/v1/namespaces/test/statefulsets?fieldSelector=metadata.name%3Drepl1")
         .andReturn(200,
             new StatefulSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
         .always();

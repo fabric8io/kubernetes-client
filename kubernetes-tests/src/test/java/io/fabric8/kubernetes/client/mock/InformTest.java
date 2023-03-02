@@ -253,7 +253,7 @@ class InformTest {
         .build();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=0")
+        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
         .once();
@@ -320,7 +320,7 @@ class InformTest {
         .build();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?limit=1&resourceVersion=0")
+        .withPath("/api/v1/namespaces/test/pods?limit=1")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata()
                 .withResourceVersion("2")
@@ -337,7 +337,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?resourceVersion=2&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/api/v1/namespaces/test/pods?resourceVersion=2&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .done()
@@ -387,7 +388,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/api/v1/namespaces/test/pods?resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .done()
@@ -453,7 +455,8 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
+        .withPath(
+            "/api/v1/namespaces/test/pods?resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .done()

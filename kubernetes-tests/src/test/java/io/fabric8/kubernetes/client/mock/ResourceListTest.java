@@ -159,12 +159,12 @@ public class ResourceListTest {
   void testCreateOrReplaceWithDeleteExisting() throws Exception {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK, service).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, configMap).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dmy-service&resourceVersion=0")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dmy-service")
         .andReturn(HTTP_OK,
             new KubernetesListBuilder().withNewMetadata().endMetadata().build())
         .once();
     server.expect().get()
-        .withPath("/api/v1/namespaces/ns1/configmaps?fieldSelector=metadata.name%3Dmy-configmap&resourceVersion=0")
+        .withPath("/api/v1/namespaces/ns1/configmaps?fieldSelector=metadata.name%3Dmy-configmap")
         .andReturn(HTTP_OK,
             new KubernetesListBuilder().withNewMetadata().endMetadata().build())
         .once();
@@ -202,8 +202,8 @@ public class ResourceListTest {
         .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
-    ResourceTest.list(server, noReady1, "0");
-    ResourceTest.list(server, noReady2, "0");
+    ResourceTest.list(server, noReady1, null);
+    ResourceTest.list(server, noReady2, null);
 
     server.expect().get().withPath(
         "/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
@@ -247,8 +247,8 @@ public class ResourceListTest {
         .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
-    ResourceTest.list(server, noReady1, "0");
-    ResourceTest.list(server, noReady2, "0");
+    ResourceTest.list(server, noReady1, null);
+    ResourceTest.list(server, noReady2, null);
 
     Status gone = new StatusBuilder()
         .withCode(HTTP_GONE)

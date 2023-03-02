@@ -406,7 +406,7 @@ class DeploymentConfigTest {
         .endStatus().build();
     server.expect().get()
         .withPath(
-            "/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs?fieldSelector=metadata.name%3Ddc1&resourceVersion=0")
+            "/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs?fieldSelector=metadata.name%3Ddc1")
         .andReturn(HttpURLConnection.HTTP_OK,
             new DeploymentConfigListBuilder().withItems(deploymentConfig).withMetadata(new ListMeta()).build())
         .always();

@@ -60,6 +60,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private CompletableFuture<Void> timeoutFuture;
 
+  private boolean cachedListing = true;
+
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.listerWatcher = listerWatcher;
     this.store = store;
@@ -167,10 +169,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     CompletableFuture<L> futureResult = listerWatcher
         .submitList(
             new ListOptionsBuilder()
-                // start with 0 - meaning any cached version is fine for the initial listing
-                // but if we've already synced, then we have to get the latest as the version we're on
-                // is no longer valid
-                .withResourceVersion(lastSyncResourceVersion == null && continueVal == null ? "0" : null)
+                // if caching is allowed, start with 0 - meaning any cached version is fine for the initial listing
+                .withResourceVersion(isCachedListing(continueVal) ? "0" : null)
                 .withLimit(listerWatcher.getLimit()).withContinue(continueVal)
                 .build());
 
@@ -186,6 +186,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       }
       return CompletableFuture.completedFuture(result);
     });
+  }
+
+  private boolean isCachedListing(String continueVal) {
+    // allow an initial cached listing only if there's no initial state, no limit, we haven't already sync'd, and this isn't a continue request
+    return cachedListing && listerWatcher.getLimit() == null && lastSyncResourceVersion == null && continueVal == null;
   }
 
   private void stopWatch(Watch w) {
@@ -318,6 +323,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void setExceptionHandler(ExceptionHandler handler) {
     this.handler = handler;
+  }
+
+  public void usingInitialState() {
+    this.cachedListing = false;
   }
 
 }
