@@ -173,6 +173,8 @@ public class Config {
   private String username;
   private String password;
   private volatile String oauthToken;
+  @JsonIgnore
+  private volatile String autoOAuthToken;
   private OAuthTokenProvider oauthTokenProvider;
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private int connectionTimeout = 10 * 1000;
@@ -315,7 +317,8 @@ public class Config {
   public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification,
       String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
       String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
-      String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout,
+      String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
+      int requestTimeout,
       long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost,
       String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent,
       TlsVersion[] tlsVersions, long websocketPingInterval, String proxyUsername, String proxyPassword,
@@ -323,6 +326,7 @@ public class Config {
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras) {
     this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile,
         clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken,
+        autoOAuthToken,
         watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, scaleTimeout,
         loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, false, httpProxy, httpsProxy, noProxy,
         errorMessages, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
@@ -335,7 +339,8 @@ public class Config {
   public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification,
       String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
       String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
-      String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout,
+      String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
+      int requestTimeout,
       long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost,
       boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages,
       String userAgent, TlsVersion[] tlsVersions, long websocketPingInterval, String proxyUsername,
@@ -423,7 +428,8 @@ public class Config {
         Utils.getSystemPropertyOrEnvVar(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, config.getKeyStorePassphrase()));
     config.setKeyStoreFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_KEYSTORE_FILE_PROPERTY, config.getKeyStoreFile()));
 
-    config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
+    config
+        .setAutoOAuthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getAutoOAuthToken()));
     config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
     config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
 
@@ -542,7 +548,7 @@ public class Config {
         try {
           String serviceTokenCandidate = new String(Files.readAllBytes(saTokenPathFile.toPath()));
           LOGGER.debug("Found service account token at: [{}].", saTokenPathLocation);
-          config.setOauthToken(serviceTokenCandidate);
+          config.setAutoOAuthToken(serviceTokenCandidate);
           String txt = "Configured service account doesn't have access. Service account may have been revoked.";
           config.getErrorMessages().put(401, "Unauthorized! " + txt);
           config.getErrorMessages().put(403, "Forbidden!" + txt);
@@ -624,6 +630,9 @@ public class Config {
    */
   public Config refresh() {
     final String currentContextName = this.getCurrentContext() != null ? this.getCurrentContext().getName() : null;
+    if (this.oauthToken != null && !this.oauthToken.isEmpty()) {
+      return this;
+    }
     if (this.autoConfigure) {
       return Config.autoConfigure(currentContextName);
     }
@@ -721,19 +730,19 @@ public class Config {
           config.setClientKeyFile(clientKeyFile);
           config.setClientKeyData(currentAuthInfo.getClientKeyData());
           config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
-          config.setOauthToken(currentAuthInfo.getToken());
+          config.setAutoOAuthToken(currentAuthInfo.getToken());
           config.setUsername(currentAuthInfo.getUsername());
           config.setPassword(currentAuthInfo.getPassword());
 
-          if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null) {
+          if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && currentAuthInfo.getAuthProvider() != null) {
             if (currentAuthInfo.getAuthProvider().getConfig() != null) {
               config.setAuthProvider(currentAuthInfo.getAuthProvider());
               if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
                 // GKE token
-                config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+                config.setAutoOAuthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
               } else if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN))) {
                 // OpenID Connect token
-                config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
+                config.setAutoOAuthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
               }
             }
           } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
@@ -741,7 +750,7 @@ public class Config {
             if (exec != null) {
               ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
               if (ec != null && ec.status != null && ec.status.token != null) {
-                config.setOauthToken(ec.status.token);
+                config.setAutoOAuthToken(ec.status.token);
               } else {
                 LOGGER.warn("No token returned");
               }
@@ -957,12 +966,19 @@ public class Config {
     return null;
   }
 
+  public String getUserConfiguredOauthToken() {
+    return oauthToken;
+  }
+
   @JsonProperty("oauthToken")
   public String getOauthToken() {
     if (this.oauthTokenProvider != null) {
       return this.oauthTokenProvider.getToken();
     }
-    return oauthToken;
+    if (this.oauthToken != null) {
+      return oauthToken;
+    }
+    return autoOAuthToken;
   }
 
   public void setOauthToken(String oauthToken) {
@@ -1464,6 +1480,14 @@ public class Config {
 
   public void setAutoConfigure(boolean autoConfigure) {
     this.autoConfigure = autoConfigure;
+  }
+
+  public String getAutoOAuthToken() {
+    return autoOAuthToken;
+  }
+
+  public void setAutoOAuthToken(String autoOAuthToken) {
+    this.autoOAuthToken = autoOAuthToken;
   }
 
 }

@@ -99,33 +99,27 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     // use the original config, not the refreshed, as the username / password could be programmatically set on the Config or RequestConfig
     if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
       // TODO: we could make all concurrent refresh requests return the same future
-      return authorize().thenApply(t -> {
-        if (t != null) {
-          config.setOauthToken(t);
-          try {
-            // TODO: we may need some protection here or in the persistKubeConfigWithUpdatedAuthInfo
-            // if the user has modified the username via the requestconfig are we writing a valid value?
-            OpenIDConnectionUtils.persistKubeConfigWithUpdatedAuthInfo(config, a -> a.setToken(t));
-          } catch (IOException e) {
-            LOGGER.warn("failure while persisting new token into KUBECONFIG", e);
-          }
-          // If token was obtained, then retry request using the obtained token.
-          return setAuthHeader(builder, t);
-        }
-
-        return refreshFromConfig(builder);
-      });
+      return authorize().thenApply(t -> persistNewOAuthTokenIntoKubeConfig(builder, t));
     }
     return CompletableFuture.completedFuture(refreshFromConfig(builder));
   }
 
   private boolean refreshFromConfig(BasicBuilder builder) {
-    Config newestConfig = config.refresh(); // does some i/o work, but for now we'll consider this non-blocking
-    String oauthToken = newestConfig.getOauthToken();
-    if (oauthToken != null) {
-      config.setOauthToken(oauthToken);
+    if (config.getOauthTokenProvider() != null) {
+      String tokenFromProvider = config.getOauthTokenProvider().getToken();
+      if (tokenFromProvider != null && !tokenFromProvider.isEmpty()) {
+        setAuthHeader(builder, tokenFromProvider);
+      }
     }
-    return setAuthHeader(builder, oauthToken);
+    if (config.getUserConfiguredOauthToken() != null && !config.getUserConfiguredOauthToken().isEmpty()) {
+      setAuthHeader(builder, config.getUserConfiguredOauthToken());
+    }
+    Config newestConfig = config.refresh(); // does some i/o work, but for now we'll consider this non-blocking
+    String oauthToken = newestConfig.getAutoOAuthToken();
+    if (oauthToken != null) {
+      config.setAutoOAuthToken(oauthToken);
+    }
+    return setAuthHeader(builder, config.getOauthToken());
   }
 
   private boolean setAuthHeader(BasicBuilder builder, String token) {
@@ -194,6 +188,23 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       return false;
     }
     return response.code() != HTTP_UNAUTHORIZED;
+  }
+
+  private boolean persistNewOAuthTokenIntoKubeConfig(BasicBuilder builder, String token) {
+    if (token != null) {
+      config.setAutoOAuthToken(token);
+      try {
+        // TODO: we may need some protection here or in the persistKubeConfigWithUpdatedAuthInfo
+        // if the user has modified the username via the requestconfig are we writing a valid value?
+        OpenIDConnectionUtils.persistKubeConfigWithUpdatedAuthInfo(config, a -> a.setToken(token));
+      } catch (IOException e) {
+        LOGGER.warn("failure while persisting new token into KUBECONFIG", e);
+      }
+      // If token was obtained, then retry request using the obtained token.
+      return setAuthHeader(builder, token);
+    }
+
+    return refreshFromConfig(builder);
   }
 
 }
