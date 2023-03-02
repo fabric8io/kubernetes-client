@@ -327,7 +327,7 @@ class ResourceTest {
    * @param pod
    */
   private void list(Pod pod) {
-    list(server, pod, "0");
+    list(server, pod, null);
   }
 
   static void list(KubernetesMockServer server, Pod pod, String resourceVersion) {
@@ -355,7 +355,7 @@ class ResourceTest {
     // and again so that "periodicWatchUntilReady" successfully begins
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=0")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
         .andReturn(200, noReady)
         .times(2);
 
@@ -715,7 +715,7 @@ class ResourceTest {
   void testWaitNullDoesntExist() throws InterruptedException {
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=0")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
         .andReturn(200,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build())
         .once();

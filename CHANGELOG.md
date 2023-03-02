@@ -16,6 +16,7 @@
 * Fix #4823: (java-generator) handle special characters in field names
 * Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
 * Fix #4885: addresses a potential hang in the jdk client with exec stream reading
+* Fix #4888: narrowing where the 0 initial list resourceVersion is used for informers - in particular if a limit is set or initialState is used, then we should not use 0.  Additionally for the informOnCondition / wait methods we'll also not use 0 - it's not expected that the user should test any state prior to the latest.
 * Fix #4891: address vertx not completely reading exec streams
 * Fix #4899: BuildConfigs.instantiateBinary().fromFile() does not time out
 * Fix #4908: using the response headers in the vertx response

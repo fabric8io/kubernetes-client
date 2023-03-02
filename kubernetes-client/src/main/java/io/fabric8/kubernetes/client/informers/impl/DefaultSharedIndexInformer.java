@@ -155,6 +155,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
       if (initialState != null) {
         initialState.forEach(indexer::put);
+        reflector.usingInitialState();
       }
     }
 

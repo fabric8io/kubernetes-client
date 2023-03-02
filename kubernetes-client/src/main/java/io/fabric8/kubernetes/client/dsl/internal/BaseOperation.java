@@ -902,6 +902,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     // create an informer that supplies the tester with events and empty list handling
     SharedIndexInformer<T> informer = this.createInformer(0, Runnable::run);
 
+    informer.initialState(Stream.empty());
+
     // prevent unnecessary watches and handle closure
     future.whenComplete((r, t) -> informer.stop());
 
