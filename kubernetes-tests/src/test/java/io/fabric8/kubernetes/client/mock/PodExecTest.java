@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodStatus;
+import io.fabric8.kubernetes.api.model.PodStatusBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -41,6 +43,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @EnableKubernetesMockClient(crud = true)
 class PodExecTest {
 
+  private static PodStatus READY = new PodStatusBuilder().addNewCondition().withType("Ready").withStatus("True").endCondition()
+      .build();
+
   private KubernetesMockServer server;
   private KubernetesClient client;
 
@@ -52,7 +57,7 @@ class PodExecTest {
   @Test
   @DisplayName("With no containers, should throw exception")
   void withNoContainers() {
-    client.pods().resource(new PodBuilder().withNewMetadata().withName("no-containers").endMetadata().build())
+    client.pods().resource(new PodBuilder().withNewMetadata().withName("no-containers").endMetadata().withStatus(READY).build())
         .createOrReplace();
     final PodResource pr = client.pods().withName("no-containers");
     assertThatThrownBy(() -> pr.exec("sh", "-c", "echo Greetings Professor Falken"))
@@ -68,7 +73,7 @@ class PodExecTest {
         .addNewContainer()
         .withName("the-single-container")
         .endContainer()
-        .endSpec()
+        .endSpec().withStatus(READY)
         .build())
         .createOrReplace();
     server.expect()
@@ -92,7 +97,7 @@ class PodExecTest {
         .addNewContainer()
         .withName("the-single-container")
         .endContainer()
-        .endSpec()
+        .endSpec().withStatus(READY)
         .build())
         .createOrReplace();
     final ContainerResource cr = client.pods().withName("single-container").inContainer("non-existent");
@@ -108,7 +113,7 @@ class PodExecTest {
         .addNewContainer()
         .withName("the-first-container")
         .endContainer()
-        .endSpec()
+        .endSpec().withStatus(READY)
         .build())
         .createOrReplace();
     PodResource op = client.pods().withName("name");
@@ -126,7 +131,7 @@ class PodExecTest {
         .addNewContainer()
         .withName("the-second-container")
         .endContainer()
-        .endSpec()
+        .endSpec().withStatus(READY)
         .build())
         .createOrReplace();
     server.expect()
@@ -153,7 +158,7 @@ class PodExecTest {
         .addNewContainer()
         .withName("the-second-container")
         .endContainer()
-        .endSpec()
+        .endSpec().withStatus(READY)
         .build())
         .createOrReplace();
     server.expect()
