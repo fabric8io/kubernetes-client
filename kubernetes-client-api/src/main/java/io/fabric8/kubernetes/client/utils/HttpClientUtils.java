@@ -157,7 +157,7 @@ public class HttpClientUtils {
             + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.");
       }
       if (factory == null || (factory.isDefault() && !possible.isDefault())
-          || (!factory.isDefault()) && factory.priority() < possible.priority()) {
+          || (!factory.isDefault() && factory.priority() < possible.priority())) {
         factory = possible;
       }
     }
