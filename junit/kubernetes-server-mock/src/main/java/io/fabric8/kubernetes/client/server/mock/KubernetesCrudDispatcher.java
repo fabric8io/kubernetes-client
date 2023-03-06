@@ -48,6 +48,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class KubernetesCrudDispatcher extends CrudDispatcher implements KubernetesCrudPersistence, CustomResourceAware {
 
@@ -60,6 +62,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   private final KubernetesCrudDispatcherHandler postHandler;
   private final KubernetesCrudDispatcherHandler putHandler;
   private final KubernetesCrudDispatcherHandler patchHandler;
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
   public KubernetesCrudDispatcher() {
     this(Collections.emptyList());
@@ -81,12 +84,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   }
 
   MockResponse process(RecordedRequest request, KubernetesCrudDispatcherHandler handler) {
-    synchronized (map) {
-      try {
-        return handler.handle(request);
-      } catch (KubernetesCrudDispatcherException e) {
-        return new MockResponse().setResponseCode(e.getCode()).setBody(e.toStatusBody());
-      }
+    lock.writeLock().lock();
+    try {
+      return handler.handle(request);
+    } catch (KubernetesCrudDispatcherException e) {
+      return new MockResponse().setResponseCode(e.getCode()).setBody(e.toStatusBody());
+    } finally {
+      lock.writeLock().unlock();
     }
   }
 
@@ -120,11 +124,14 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
    */
   @Override
   public MockResponse handleGet(String path) {
-    synchronized (map) {
+    lock.readLock().lock();
+    try {
       if (detectWatchMode(path)) {
         return handleWatch(path);
       }
       return handle(path, null);
+    } finally {
+      lock.readLock().unlock();
     }
   }
 
@@ -188,28 +195,26 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
    */
   @Override
   public MockResponse handleDelete(String path) {
-    synchronized (map) {
+    lock.writeLock().lock();
+    try {
       return handle(path, this::processDelete);
+    } finally {
+      lock.writeLock().unlock();
     }
   }
 
   private void processDelete(String path, AttributeSet pathAttributes, AttributeSet oldAttributes) {
     String jsonStringOfResource = map.get(oldAttributes);
-    /*
-     * Potential performance improvement: The resource is unmarshalled and marshalled in other places (e.g., when creating a
-     * WatchEvent later).
-     * This could be avoided by storing the unmarshalled object (instead of a String) in the map.
-     */
     final GenericKubernetesResource resource = Serialization.unmarshal(jsonStringOfResource, GenericKubernetesResource.class);
     if (resource.getFinalizers().isEmpty()) {
       // No finalizers left, actually remove the resource.
-      processEvent(path, pathAttributes, oldAttributes, null);
+      processEvent(path, pathAttributes, oldAttributes, null, null);
       return;
     } else if (!resource.isMarkedForDeletion()) {
       // Mark the resource as deleted, but don't remove it yet (wait for finalizer-removal).
       resource.getMetadata().setDeletionTimestamp(LocalDateTime.now().toString());
       String updatedResource = Serialization.asJson(resource);
-      processEvent(path, pathAttributes, oldAttributes, updatedResource);
+      processEvent(path, pathAttributes, oldAttributes, resource, updatedResource);
     }
     // else: if the resource is already marked for deletion and still has finalizers, do nothing.
   }
@@ -226,11 +231,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
 
   @Override
   public Map.Entry<AttributeSet, String> findResource(AttributeSet attributes) {
-    synchronized (map) {
-      return map.entrySet().stream()
-          .filter(entry -> entry.getKey().matches(attributes))
-          .findFirst().orElse(null);
-    }
+    return map.entrySet().stream()
+        .filter(entry -> entry.getKey().matches(attributes))
+        .findFirst().orElse(null);
   }
 
   @Override
@@ -239,11 +242,16 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   }
 
   @Override
-  public void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes, String newState) {
+  public void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes,
+      GenericKubernetesResource resource, String newState) {
     String existing = map.remove(oldAttributes);
     AttributeSet newAttributes = null;
     if (newState != null) {
-      newAttributes = kubernetesAttributesExtractor.fromResource(newState);
+      if (resource != null) {
+        newAttributes = kubernetesAttributesExtractor.extract(resource);
+      } else {
+        newAttributes = kubernetesAttributesExtractor.fromResource(newState);
+      }
       // corner case - we need to get the plural from the path
       if (!newAttributes.containsKey(KubernetesAttributesExtractor.PLURAL)) {
         newAttributes = AttributeSet.merge(pathAttributes, newAttributes);
@@ -283,11 +291,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     }
     WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER,
         watch -> {
-          synchronized (map) {
-            map.entrySet().stream()
-                .filter(entry -> watch.attributeMatches(entry.getKey()))
-                .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
-          }
+          map.entrySet().stream()
+              .filter(entry -> watch.attributeMatches(entry.getKey()))
+              .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
         });
     watchEventListeners.add(watchEventListener);
     mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);

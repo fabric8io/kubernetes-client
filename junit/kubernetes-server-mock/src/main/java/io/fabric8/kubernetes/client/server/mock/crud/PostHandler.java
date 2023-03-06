@@ -62,7 +62,7 @@ public class PostHandler implements KubernetesCrudDispatcherHandler {
       resource.getAdditionalProperties().remove(STATUS);
     }
     final String response = Serialization.asJson(resource);
-    persistence.processEvent(path, attributes, null, response);
+    persistence.processEvent(path, attributes, null, resource, response);
     return new MockResponse().setResponseCode(HttpURLConnection.HTTP_CREATED).setBody(response);
   }
 
