@@ -32,7 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
       <scope>compile</scope>
     </dependency>
 
