@@ -19,7 +19,8 @@
 * Fix #4891: address vertx not completely reading exec streams
 * Fix #4899: BuildConfigs.instantiateBinary().fromFile() does not time out
 * Fix #4908: using the response headers in the vertx response
-* Fix #4931: using course grain locking for all mock server operations
+* Fix #4931: using coarse grain locking for all mock server operations
+* Fix #4947: typo in HttpClient.Factory scoring system logic
 
 #### Improvements
 * Fix #4675: adding a fully client side timeout for informer watches
@@ -39,6 +40,7 @@
 * Fix #4863: default HttpClient retry logic to 10 attempts
 * Fix #4865: (java-generator) performance improvements
 * Fix #4873: Update all samples in `kubernetes-examples/` module to use up to date code
+* Fix #4906: URLFromIngressImpl considers Ingress in `networking.k8s.io` apiGroup while resolving Ingress
 
 #### Dependency Upgrade
 * Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0
@@ -51,6 +53,7 @@
 #### _**Note**_: Breaking changes
 * Fix #4708: The signature of the Interceptor methods changed to pass the full HttpRequest, rather than just the headers, and explicitly pass request tags - in particular the RequestConfig.  To simplify authentication concerns the following fields have been removed from RequestConfig: username, password, oauthToken, and oauthTokenProvider.  Not all HttpClient implementation support setting the connectionTimeout at a request level, thus it was removed from the RequestConfig as well.
 * Fix #4659: The SupportTestingClient interface has been deprecated.  Please use one of the supports methods or getApiGroup to determine what is available on the api server.
+* Fix #4802: to ease developer burden, and potentially bad behavior with the vertx client, the callbacks for Watcher and ResourceEventHandler will no longer be made by an HttpClient thread, but rather from the thread pool associated with the KubernetesClient.  Please ensure that if you are customizing the Executor supplied to the client that it has sufficient threads to handle these callbacks.
 * Fix #4825: removed or deprecated/moved methods that are unrelated to the rolling timeout from ImageEditReplacePatchable.  Deprecated rollout methods for timeout and edit - future versions will not support
 * Fix #4826: removed RequestConfig upload connection and rolling timeouts.  Both were no longer used with no plans to re-introduce their usage.
 * Fix #4861: several breaking changes related to resourceVersion handling and the replace operation:

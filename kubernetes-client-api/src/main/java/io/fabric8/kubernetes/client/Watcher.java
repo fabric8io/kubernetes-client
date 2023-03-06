@@ -21,7 +21,9 @@ public interface Watcher<T> {
 
   /**
    * If the Watcher can reconnect itself after an error
-   * 
+   * <p>
+   * Currently only used to indicate if the Watch should ignore the watch reconnect limit
+   *
    * @return
    */
   default boolean reconnecting() {
@@ -31,8 +33,7 @@ public interface Watcher<T> {
   /**
    * Handle the given event.
    * <p>
-   * Should not be implemented with long-running logic as this method is called directly from
-   * an IO thread.
+   * Should not be implemented with long-running logic as that may lead to memory issues.
    */
   void eventReceived(Action action, T resource);
 
@@ -46,9 +47,8 @@ public interface Watcher<T> {
   /**
    * Invoked when the watcher closes due to an Exception.
    * <p>
-   * Should not be implemented with long-running logic as this method is called directly from
-   * an IO thread.
-   * 
+   * Should not be implemented with long-running logic as that may lead to memory issues.
+   *
    * @param cause What caused the watcher to be closed.
    */
   void onClose(WatcherException cause);

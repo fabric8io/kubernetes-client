@@ -239,13 +239,19 @@ class AbstractWatchManagerTest {
     }
   }
 
+  static BaseOperation mockOperation() {
+    BaseOperation operation = mock(BaseOperation.class, Mockito.RETURNS_DEEP_STUBS);
+    Mockito.when(operation.getOperationContext().getExecutor()).thenReturn(Runnable::run);
+    return operation;
+  }
+
   private static class WatchManager<T extends HasMetadata> extends AbstractWatchManager<T> {
 
     private final AtomicInteger closeCount = new AtomicInteger(0);
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
         throws MalformedURLException {
-      super(watcher, mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval,
+      super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval,
           () -> null);
     }
 

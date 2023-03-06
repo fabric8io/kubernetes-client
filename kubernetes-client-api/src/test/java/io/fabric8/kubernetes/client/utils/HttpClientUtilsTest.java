@@ -247,18 +247,55 @@ class HttpClientUtilsTest {
     @Test
     @DisplayName("With default and other implementation, should return other")
     void withDefaultAndOther() {
-      factories.add(new OtherHttpClientFactory());
+      factories.add(new ScoredHttpClientFactory("other", 0));
       factories.add(new DefaultHttpClientFactory());
-      assertEquals(OtherHttpClientFactory.class, HttpClientUtils.getHttpClientFactory().getClass());
+      assertEquals(ScoredHttpClientFactory.class, HttpClientUtils.getHttpClientFactory().getClass());
     }
 
     @Test
-    @DisplayName("With default and other implementation, should return Priority")
+    @DisplayName("With default, other, and priority implementations; should return Priority")
     void withDefaultAndPriorityAndOther() {
-      factories.add(new OtherHttpClientFactory());
-      factories.add(new PriorityHttpClientFactory());
+      factories.add(new ScoredHttpClientFactory("other", 0));
+      factories.add(new ScoredHttpClientFactory("priority", Integer.MAX_VALUE));
       factories.add(new DefaultHttpClientFactory());
-      assertEquals(PriorityHttpClientFactory.class, HttpClientUtils.getHttpClientFactory().getClass());
+      final HttpClient.Factory result = HttpClientUtils.getHttpClientFactory();
+      assertEquals(ScoredHttpClientFactory.class, result.getClass());
+      assertEquals(Integer.MAX_VALUE, result.priority());
+      assertEquals("priority", ((ScoredHttpClientFactory) result).id);
+    }
+
+    @Test
+    @DisplayName("With multiple implementations and several with max priority, should return first of max priority")
+    void withMultipleAndCollision() {
+      factories.add(new DefaultHttpClientFactory());
+      factories.add(new ScoredHttpClientFactory("other", 0));
+      factories.add(new ScoredHttpClientFactory("priority-1", Integer.MAX_VALUE));
+      factories.add(new ScoredHttpClientFactory("priority-2", Integer.MAX_VALUE));
+      factories.add(new DefaultHttpClientFactory());
+      final HttpClient.Factory result = HttpClientUtils.getHttpClientFactory();
+      assertEquals(ScoredHttpClientFactory.class, result.getClass());
+      assertEquals(Integer.MAX_VALUE, result.priority());
+      assertEquals("priority-1", ((ScoredHttpClientFactory) result).id);
+    }
+
+    private final class ScoredHttpClientFactory implements HttpClient.Factory {
+      private final String id;
+      private final int priority;
+
+      public ScoredHttpClientFactory(String id, int priority) {
+        this.id = id;
+        this.priority = priority;
+      }
+
+      @Override
+      public HttpClient.Builder newBuilder() {
+        return null;
+      }
+
+      @Override
+      public int priority() {
+        return priority;
+      }
     }
 
     private final class DefaultHttpClientFactory implements HttpClient.Factory {
@@ -274,25 +311,5 @@ class HttpClientUtilsTest {
       }
     }
 
-    private final class OtherHttpClientFactory implements HttpClient.Factory {
-
-      @Override
-      public HttpClient.Builder newBuilder() {
-        return null;
-      }
-    }
-
-    private final class PriorityHttpClientFactory implements HttpClient.Factory {
-
-      @Override
-      public HttpClient.Builder newBuilder() {
-        return null;
-      }
-
-      @Override
-      public int priority() {
-        return Integer.MAX_VALUE;
-      }
-    }
   }
 }

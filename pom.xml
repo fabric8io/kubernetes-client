@@ -86,11 +86,11 @@
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.14.2</jackson.version>
-    <jetty.version>11.0.13</jetty.version>
+    <jetty.version>11.0.14</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.9.0</maven-core.version>
     <maven-plugin-annotations.version>3.8.1</maven-plugin-annotations.version>
-    <vertx.version>4.3.8</vertx.version>
+    <vertx.version>4.4.0</vertx.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
