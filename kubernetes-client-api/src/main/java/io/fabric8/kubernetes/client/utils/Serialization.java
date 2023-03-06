@@ -228,41 +228,50 @@ public class Serialization {
       } while (intch > -1 && Character.isWhitespace(intch));
       bis.reset();
 
-      T result = null;
-      List<KubernetesResource> listResult = null;
+      final T result;
       if (intch != '{' && intch != '[') {
-        final Load yaml = new Load(LoadSettings.builder().build());
-        // if multiple docs exist, only non-null resources will be kept
-        final Iterable<Object> objs = yaml.loadAllFromInputStream(bis);
-        for (Object obj : objs) {
-          Object value = null;
-          if (obj instanceof Map) {
-            value = mapper.convertValue(obj, type);
-          } else if (obj != null) {
-            value = mapper.convertValue(new RawExtension(obj), type);
-          }
-          if (value != null) {
-            if (result == null) {
-              result = (T) value;
-            } else {
-              if (listResult == null) {
-                listResult = new ArrayList<>();
-                accumulateResult(result, listResult);
-              }
-              accumulateResult(value, listResult);
-            }
-          }
-        }
+        result = parseYaml(bis, mapper, type);
       } else {
         result = mapper.readerFor(type).readValue(bis);
-      }
-      if (listResult != null) {
-        return (T) listResult;
       }
       return result;
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  /**
+   * If multiple docs exist, only non-null resources will be kept. Results spanning multiple docs
+   * will be returned as a List of KubernetesResource
+   */
+  private static <T> T parseYaml(BufferedInputStream bis, ObjectMapper mapper, TypeReference<T> type) {
+    T result = null;
+    List<KubernetesResource> listResult = null;
+    final Load yaml = new Load(LoadSettings.builder().build());
+    final Iterable<Object> objs = yaml.loadAllFromInputStream(bis);
+    for (Object obj : objs) {
+      Object value = null;
+      if (obj instanceof Map) {
+        value = mapper.convertValue(obj, type);
+      } else if (obj != null) {
+        value = mapper.convertValue(new RawExtension(obj), type);
+      }
+      if (value != null) {
+        if (result == null) {
+          result = (T) value;
+        } else {
+          if (listResult == null) {
+            listResult = new ArrayList<>();
+            accumulateResult(result, listResult);
+          }
+          accumulateResult(value, listResult);
+        }
+      }
+    }
+    if (listResult != null) {
+      return (T) listResult;
+    }
+    return result;
   }
 
   private static <T> void accumulateResult(T result, List<KubernetesResource> listResult) {
