@@ -23,6 +23,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
@@ -39,9 +40,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Serialization {
   private Serialization() {
@@ -56,8 +54,6 @@ public class Serialization {
   }
 
   private static volatile ObjectMapper YAML_MAPPER;
-
-  private static final String DOCUMENT_DELIMITER = "---";
 
   /**
    * {@link ObjectMapper} singleton instance used internally by the Kubernetes client.
@@ -213,22 +209,7 @@ public class Serialization {
    */
   @Deprecated
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
-    // it's not well documented which Serialization methods are aware of input that can contain
-    // multiple docs
-    String specFile;
-    try {
-      specFile = IOHelpers.readFully(is);
-    } catch (IOException e1) {
-      throw new RuntimeException("Could not read stream");
-    }
-    if (containsMultipleDocuments(specFile)) {
-      return (T) getKubernetesResourceList(Collections.emptyMap(), specFile);
-    } else if (specFile.contains(DOCUMENT_DELIMITER)) {
-      specFile = specFile.replaceAll("^---([ \\t].*?)?\\r?\\n", "");
-      specFile = specFile.replaceAll("\\n---([ \\t].*?)?\\r?\\n?$", "\n");
-    }
-
-    return unmarshal(new ByteArrayInputStream(specFile.getBytes(StandardCharsets.UTF_8)), mapper, new TypeReference<T>() {
+    return unmarshal(is, mapper, new TypeReference<T>() {
       @Override
       public Type getType() {
         return KubernetesResource.class;
@@ -247,21 +228,48 @@ public class Serialization {
       } while (intch > -1 && Character.isWhitespace(intch));
       bis.reset();
 
-      final T result;
+      T result = null;
+      List<KubernetesResource> listResult = null;
       if (intch != '{' && intch != '[') {
         final Load yaml = new Load(LoadSettings.builder().build());
-        final Object obj = yaml.loadFromInputStream(bis);
-        if (obj instanceof Map) {
-          result = mapper.convertValue(obj, type);
-        } else {
-          result = mapper.convertValue(new RawExtension(obj), type);
+        // if multiple docs exist, only non-null resources will be kept
+        final Iterable<Object> objs = yaml.loadAllFromInputStream(bis);
+        for (Object obj : objs) {
+          Object value = null;
+          if (obj instanceof Map) {
+            value = mapper.convertValue(obj, type);
+          } else if (obj != null) {
+            value = mapper.convertValue(new RawExtension(obj), type);
+          }
+          if (value != null) {
+            if (result == null) {
+              result = (T) value;
+            } else {
+              if (listResult == null) {
+                listResult = new ArrayList<>();
+                accumulateResult(result, listResult);
+              }
+              accumulateResult(value, listResult);
+            }
+          }
         }
       } else {
         result = mapper.readerFor(type).readValue(bis);
       }
+      if (listResult != null) {
+        return (T) listResult;
+      }
       return result;
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  private static <T> void accumulateResult(T result, List<KubernetesResource> listResult) {
+    if (result instanceof KubernetesResourceList) {
+      listResult.addAll(((KubernetesResourceList) result).getItems());
+    } else {
+      listResult.add((KubernetesResource) result);
     }
   }
 
@@ -380,42 +388,6 @@ public class Serialization {
   @Deprecated
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {
     return unmarshal(is, JSON_MAPPER, type, parameters);
-  }
-
-  private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
-    return splitSpecFile(specFile).stream().filter(Serialization::validate)
-        .map(
-            document -> (KubernetesResource) Serialization.unmarshal(new ByteArrayInputStream(document.getBytes()), parameters))
-        .filter(o -> o != null)
-        .collect(Collectors.toList());
-  }
-
-  static boolean containsMultipleDocuments(String specFile) {
-    final long validDocumentCount = splitSpecFile(specFile).stream().filter(Serialization::validate)
-        .count();
-    return validDocumentCount > 1;
-  }
-
-  private static List<String> splitSpecFile(String aSpecFile) {
-    final List<String> documents = new ArrayList<>();
-    final StringBuilder documentBuilder = new StringBuilder();
-    for (String line : aSpecFile.split("\r?\n")) {
-      if (line.startsWith(DOCUMENT_DELIMITER)) {
-        documents.add(documentBuilder.toString());
-        documentBuilder.setLength(0);
-      } else {
-        documentBuilder.append(line).append(System.lineSeparator());
-      }
-    }
-    if (documentBuilder.length() > 0) {
-      documents.add(documentBuilder.toString());
-    }
-    return documents;
-  }
-
-  private static boolean validate(String document) {
-    Matcher keyValueMatcher = Pattern.compile("(\\S+):\\s(\\S*)(?:\\b(?!:)|$)").matcher(document);
-    return !document.isEmpty() && keyValueMatcher.find();
   }
 
   /**
