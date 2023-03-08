@@ -21,6 +21,7 @@
 * Fix #4908: using the response headers in the vertx response
 * Fix #4947: typo in HttpClient.Factory scoring system logic
 * Fix #4928: allows non-okhttp clients to handle invalid status
+* Fix #4954: disabling expect continue support by default in the jdk client
 
 #### Improvements
 * Fix #4675: adding a fully client side timeout for informer watches

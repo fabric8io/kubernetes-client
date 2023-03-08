@@ -296,7 +296,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     }
 
     requestBuilder.uri(request.uri());
-    if (request.isExpectContinue()) {
+    if (request.isExpectContinue() && this.builder.getClientFactory().useExpectContinue()) {
       requestBuilder.expectContinue(true);
     }
     return requestBuilder;
