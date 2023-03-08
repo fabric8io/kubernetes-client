@@ -24,9 +24,9 @@ require (
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/kube-aggregator v0.26.0
 	k8s.io/metrics v0.26.0
+	sigs.k8s.io/gateway-api v0.6.1
 	sigs.k8s.io/kube-storage-version-migrator v0.0.5
 	sigs.k8s.io/kustomize/api v0.13.1
-    sigs.k8s.io/gateway-api v0.6.1
 )
 
 require (
