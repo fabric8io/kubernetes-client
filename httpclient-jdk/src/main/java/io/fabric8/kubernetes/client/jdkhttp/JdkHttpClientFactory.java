@@ -80,4 +80,16 @@ public class JdkHttpClientFactory implements HttpClient.Factory {
         .map(ShutdownableExecutor.class::cast).ifPresent(ShutdownableExecutor::shutdownNow);
   }
 
+  /**
+   * Due to go/kubernetes bug https://github.com/golang/go/issues/57824
+   * expect continue is not supported for jdk. Override this method if you are using a
+   * kubernetes version with the fix and require this support (currently only used for
+   * submitting openshift builds)
+   *
+   * @return
+   */
+  protected boolean useExpectContinue() {
+    return false;
+  }
+
 }
