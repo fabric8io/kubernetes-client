@@ -85,7 +85,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
@@ -480,7 +479,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
 
     try (OutputStream out = new BufferedOutputStream(new FileOutputStream(destination))) {
-      readTo(out, readFileCommand(source)).get();
+      ExecWatch w = writingOutput(out).exec(readFileCommand(source));
+      w.exitCode().get();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -493,20 +493,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   private InputStream read(String... command) {
     ExecWatch watch = redirectingOutput().exec(command);
     return watch.getOutput();
-  }
-
-  private Future<?> readTo(OutputStream out, String... cmd) {
-    ExecWatch w = writingOutput(out).exec(cmd);
-    CompletableFuture<Integer> result = w.exitCode();
-    result.whenComplete((i, t) -> {
-      try {
-        out.close();
-      } catch (Exception e) {
-        result.obtrudeException(e);
-      }
-      w.close();
-    });
-    return result;
   }
 
   private void copyDir(String source, File target) throws Exception {

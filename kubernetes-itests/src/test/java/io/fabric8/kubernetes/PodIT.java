@@ -295,7 +295,7 @@ class PodIT {
     try (InputStream checkIs = podResource.file(uploadPath).read();
         BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
-      assertEquals("I'm uploaded", result);
+      assertEquals("I'm uploaded", result, () -> checkFile(podResource, null, uploadPath));
     }
   }
 
@@ -315,7 +315,7 @@ class PodIT {
     try (InputStream checkIs = podResource.file("/tmp/binfile").read();) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       InputStreamPumper.transferTo(checkIs, baos::write);
-      assertArrayEquals(bytes, baos.toByteArray());
+      assertArrayEquals(bytes, baos.toByteArray(), () -> checkFile(podResource, null, "/tmp/binfile"));
     }
   }
 
@@ -348,7 +348,7 @@ class PodIT {
     PodResource podResource = client.pods().withName("pod-standard");
     podResource.dir("/etc").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).copy(tmpDir);
 
-    Path msg = tmpDir.resolve("/etc/hosts");
+    Path msg = tmpDir.resolve("etc/hosts");
     assertTrue(Files.exists(msg));
   }
 
@@ -367,7 +367,23 @@ class PodIT {
     try (InputStream is = Files.newInputStream(msg);
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
-      assertEquals("hello", result);
+      assertEquals("hello", result, () -> checkFile(podResource, msg, "/msg.txt"));
+    }
+  }
+
+  private String checkFile(PodResource podResource, Path msg, String remoteFile) {
+    try {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      podResource.writingOutput(baos).withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).exec("sh", "-c",
+          String.format("ls -al %s", remoteFile)).exitCode().get();
+      String ls = new String(baos.toByteArray());
+      if (msg != null) {
+        byte[] bytes = Files.readAllBytes(msg);
+        return String.format("%s local bytes %s", ls, bytes.length);
+      }
+      return ls;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
