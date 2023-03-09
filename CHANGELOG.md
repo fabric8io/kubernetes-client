@@ -20,6 +20,8 @@
 * Fix #4891: address vertx not completely reading exec streams
 * Fix #4899: BuildConfigs.instantiateBinary().fromFile() does not time out
 * Fix #4908: using the response headers in the vertx response
+* Fix #4910: addressing inconsistent behavior with pod exec operations
+* Fix #4923: addressing inconsistent behavior with pod exec operations
 * Fix #4931: using coarse grain locking for all mock server operations
 * Fix #4947: typo in HttpClient.Factory scoring system logic
 * Fix #4928: allows non-okhttp clients to handle invalid status

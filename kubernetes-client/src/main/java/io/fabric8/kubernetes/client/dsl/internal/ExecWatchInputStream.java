@@ -66,6 +66,7 @@ public class ExecWatchInputStream extends InputStream {
         request.run();
         return;
       }
+      assert !complete || failed == null;
       buffers.addAll(value);
       buffers.notifyAll();
     }
