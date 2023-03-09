@@ -17,10 +17,13 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -39,6 +42,7 @@ import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_PARAM;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ISSUER_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
@@ -47,10 +51,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 class OpenIDConnectionUtilsTest {
-  HttpClient mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+  HttpClient mockClient = mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
 
   @Test
   void testLoadTokenURL() throws Exception {
@@ -190,6 +200,32 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
+  void resolveOIDCTokenFromAuthConfig_whenIDPCertNotPresentInAuthConfig_thenUseCertFromConfig() throws Exception {
+    try (MockedStatic<SSLUtils> sslUtilsMockedStatic = mockStatic(SSLUtils.class)) {
+      // Given
+      Map<String, String> currentAuthProviderConfig = new HashMap<>();
+      currentAuthProviderConfig.put(CLIENT_ID_KUBECONFIG, "client-id");
+      currentAuthProviderConfig.put(CLIENT_SECRET_KUBECONFIG, "client-secret");
+      currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
+      currentAuthProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, "refresh-token");
+      currentAuthProviderConfig.put(ISSUER_KUBECONFIG, "https://iam.cloud.example.com/identity");
+      Config config = new ConfigBuilder(Config.empty()).withCaCertData("cert").build();
+      HttpClient.Builder builder = mock(HttpClient.Builder.class);
+      HttpClient httpClient = mock(HttpClient.class, RETURNS_DEEP_STUBS);
+      when(builder.build()).thenReturn(httpClient);
+
+      // When
+      OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, currentAuthProviderConfig, builder).get();
+
+      // Then
+      String decodedCert = new String(java.util.Base64.getDecoder().decode("cert"));
+      sslUtilsMockedStatic.verify(() -> SSLUtils.trustManagers(eq(decodedCert), isNull(), anyBoolean(), isNull(), isNull()));
+      sslUtilsMockedStatic.verify(
+          () -> SSLUtils.keyManagers(eq(decodedCert), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull()));
+    }
+  }
+
+  @Test
   void testgetParametersFromDiscoveryResponse() {
     // Given
     Map<String, Object> discoveryDocument = new HashMap<>();
@@ -205,12 +241,12 @@ class OpenIDConnectionUtilsTest {
 
   private void mockHttpClient(int responseCode, String responseAsStr) throws IOException {
     HttpResponse<String> mockSuccessResponse = mockResponse(responseCode, responseAsStr);
-    when(mockClient.sendAsync(any(), Mockito.eq(String.class)))
+    when(mockClient.sendAsync(any(), eq(String.class)))
         .thenReturn(CompletableFuture.completedFuture(mockSuccessResponse));
   }
 
   private HttpResponse<String> mockResponse(int responseCode, String responseBody) {
-    HttpResponse<String> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+    HttpResponse<String> response = mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
     Mockito.when(response.code()).thenReturn(responseCode);
     Mockito.when(response.body()).thenReturn(responseBody);
     return response;

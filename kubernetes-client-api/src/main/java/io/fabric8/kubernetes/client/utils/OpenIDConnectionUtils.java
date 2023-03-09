@@ -85,7 +85,7 @@ public class OpenIDConnectionUtils {
     String clientId = currentAuthProviderConfig.get(CLIENT_ID_KUBECONFIG);
     String refreshToken = currentAuthProviderConfig.get(REFRESH_TOKEN_KUBECONFIG);
     String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
-    String idpCert = currentAuthProviderConfig.get(IDP_CERT_DATA);
+    String idpCert = currentAuthProviderConfig.getOrDefault(IDP_CERT_DATA, currentConfig.getCaCertData());
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
       return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, idpCert, clientBuilder)
           .thenApply(map -> {

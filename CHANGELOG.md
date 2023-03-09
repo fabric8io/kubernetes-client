@@ -3,6 +3,7 @@
 ### 6.6-SNAPSHOT
 
 #### Bugs
+* Fix #4960: NPE in OpenIDConnectionUtils if `idp-certificate-authority-data` absent in auth-provider config
 
 #### Improvements
 
