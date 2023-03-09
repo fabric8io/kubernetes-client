@@ -89,9 +89,10 @@ public class PatchHandler implements KubernetesCrudDispatcherHandler {
     if (deserializedResource.isMarkedForDeletion() && deserializedResource.getFinalizers().isEmpty()) {
       // Delete the resource.
       updatedAsString = null;
+      deserializedResource = null;
     }
 
-    persistence.processEvent(path, query, currentResourceEntry.getKey(), updatedAsString);
+    persistence.processEvent(path, query, currentResourceEntry.getKey(), deserializedResource, updatedAsString);
     return new MockResponse().setResponseCode(HTTP_ACCEPTED).setBody(Utils.getNonNullOrElse(updatedAsString, ""));
   }
 

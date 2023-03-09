@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.client.server.mock.Resetable;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.crud.AttributeSet;
@@ -47,7 +48,8 @@ public interface KubernetesCrudPersistence extends Resetable {
 
   boolean isStatusSubresourceEnabledForResource(String path);
 
-  void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes, String newState);
+  void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes, GenericKubernetesResource resource,
+      String newState);
 
   default JsonNode asNode(Map.Entry<AttributeSet, String> resource) throws KubernetesCrudDispatcherException {
     return asNode(resource.getValue());

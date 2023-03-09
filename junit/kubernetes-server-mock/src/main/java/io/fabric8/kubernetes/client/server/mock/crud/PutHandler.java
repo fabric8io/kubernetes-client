@@ -47,7 +47,7 @@ public class PutHandler implements KubernetesCrudDispatcherHandler {
 
     // Delete the resource if it is marked for deletion and has no finalizers.
     if (resource.isMarkedForDeletion() && resource.getFinalizers().isEmpty()) {
-      persistence.processEvent(path, attributes, currentResourceEntry.getKey(), null);
+      persistence.processEvent(path, attributes, currentResourceEntry.getKey(), null, null);
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK);
     }
 
@@ -72,7 +72,7 @@ public class PutHandler implements KubernetesCrudDispatcherHandler {
     }
     persistence.touchResourceVersion(currentResource, updatedResource);
     final String response = Serialization.asJson(updatedResource);
-    persistence.processEvent(path, attributes, currentResourceEntry.getKey(), response);
+    persistence.processEvent(path, attributes, currentResourceEntry.getKey(), null, response);
     return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(response);
   }
 }
