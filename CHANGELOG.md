@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.5-SNAPSHOT
+### 6.5.0 (2023-03-10)
 
 #### Bugs
 * Fix #4723: (java-generator) Fix a race in the use of JavaParser hitting large CRDs
