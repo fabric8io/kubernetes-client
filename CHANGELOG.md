@@ -3,18 +3,19 @@
 ### 6.5-SNAPSHOT
 
 #### Bugs
+* Fix #4723: (java-generator) Fix a race in the use of JavaParser hitting large CRDs
 * Fix #4784: json-schema draft-05 is a (404). Updating to draft-07 (`http://json-schema.org/draft-07/schema#`)
 * Fix #4791: handle the `NullPointerException` in `Thread.currentThread().getContextClassLoader()`
-* Fix #4832: NO_PROXY can match cidr with bit suffix <10
-* Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
 * Fix #4794: improving the semantics of manually calling informer stop
 * Fix #4797: OkHttpClientFactory.additionalConfig can be used to override the default OkHttp Dispatcher
 * Fix #4798: fix leader election release on cancel
+* Fix #4803: Windows .kube/config file with spaces in command can be deserialized
 * Fix #4815: (java-generator) create target download directory if it doesn't exist
-* Fix #4846: allowed for pod read / copy operations to distinguish when the target doesn't exist
-* Fix #4818: [java-generator] Escape `*/` in generated JavaDocs
+* Fix #4818: (java-generator) Escape `*/` in generated JavaDocs
 * Fix #4823: (java-generator) handle special characters in field names
-* Fix #4723: [java-generator] Fix a race in the use of JavaParser hitting large CRDs
+* Fix #4832: NO_PROXY can match cidr with bit suffix <10
+* Fix #4846: allowed for pod read / copy operations to distinguish when the target doesn't exist
+* Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
 * Fix #4885: addresses a potential hang in the jdk client with exec stream reading
 * Fix #4888: narrowing where the 0 initial list resourceVersion is used for informers - in particular if a limit is set or initialState is used, then we should not use 0.  Additionally for the informOnCondition / wait methods we'll also not use 0 - it's not expected that the user should test any state prior to the latest.
 * Fix #4891: address vertx not completely reading exec streams
@@ -22,9 +23,9 @@
 * Fix #4908: using the response headers in the vertx response
 * Fix #4910: addressing inconsistent behavior with pod exec operations
 * Fix #4923: addressing inconsistent behavior with pod exec operations
+* Fix #4928: allows non-okhttp clients to handle invalid status
 * Fix #4931: using coarse grain locking for all mock server operations
 * Fix #4947: typo in HttpClient.Factory scoring system logic
-* Fix #4928: allows non-okhttp clients to handle invalid status
 * Fix #4954: disabling expect continue support by default in the jdk client
 
 #### Improvements
