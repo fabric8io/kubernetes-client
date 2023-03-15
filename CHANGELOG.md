@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4970: OpenShiftOAuthInterceptor should not refresh on `403` response code
 
 #### Dependency Upgrade
 
