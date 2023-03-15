@@ -17,6 +17,8 @@ package io.fabric8.openshift.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
@@ -26,10 +28,13 @@ import org.mockito.Mockito;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 class OpenShiftOAuthInterceptorTest {
 
@@ -72,8 +77,7 @@ class OpenShiftOAuthInterceptorTest {
 
   @Test
   void testTokenRefreshedFromConfig() {
-    Config config = Mockito.mock(Config.class, RETURNS_DEEP_STUBS);
-    Mockito.when(config.refresh().getOauthToken()).thenReturn("token");
+    Config config = mockConfigRefresh();
 
     HttpClient client = Mockito.mock(HttpClient.class);
 
@@ -87,6 +91,56 @@ class OpenShiftOAuthInterceptorTest {
 
     assertEquals(Collections.singletonList("Bearer token"), builder.build().headers(TokenRefreshInterceptor.AUTHORIZATION));
     Mockito.verify(config).setOauthToken("token");
+  }
+
+  @Test
+  void afterFailure_whenResponseCode403_thenShouldNotRefresh() {
+    // Given
+    HttpClient client = Mockito.mock(HttpClient.class);
+    Config config = mockConfigRefresh();
+    HttpResponse<?> httpResponse = mockHttpResponse(HTTP_FORBIDDEN);
+    HttpRequest.Builder httpRequestBuilder = Mockito.mock(HttpRequest.Builder.class);
+    OpenShiftOAuthInterceptor interceptor = new OpenShiftOAuthInterceptor(client, config);
+
+    // When
+    CompletableFuture<Boolean> result = interceptor.afterFailure(httpRequestBuilder, httpResponse, null);
+
+    // Then
+    assertThat(result).isCompletedWithValue(false);
+  }
+
+  @Test
+  void afterFailure_whenResponseCode401_thenShouldRefresh() {
+    // Given
+    HttpClient client = Mockito.mock(HttpClient.class);
+    Config config = mockConfigRefresh();
+    HttpRequest.Builder httpRequestBuilder = Mockito.mock(HttpRequest.Builder.class);
+    HttpResponse<?> httpResponse = mockHttpResponse(HTTP_UNAUTHORIZED);
+    OpenShiftOAuthInterceptor interceptor = new OpenShiftOAuthInterceptor(client, config);
+
+    // When
+    CompletableFuture<Boolean> result = interceptor.afterFailure(httpRequestBuilder, httpResponse, null);
+
+    // Then
+    assertThat(result).isCompletedWithValue(true);
+  }
+
+  private Config mockConfigRefresh() {
+    Config config = Mockito.mock(Config.class);
+    Mockito.when(config.refresh()).thenReturn(config);
+    Mockito.when(config.getOauthToken()).thenReturn("token");
+    return config;
+  }
+
+  private HttpResponse<?> mockHttpResponse(int responseCode) {
+    HttpRequest httpRequest = Mockito.mock(HttpRequest.class);
+    HttpResponse<?> httpResponse = Mockito.mock(HttpResponse.class);
+    Mockito.when(httpRequest.method()).thenReturn("GET");
+    Mockito.when(httpRequest.uri())
+        .thenReturn(URI.create("http://www.example.com/apis/routes.openshift.io/namespaces/foo/routes"));
+    Mockito.when(httpResponse.request()).thenReturn(httpRequest);
+    Mockito.when(httpResponse.code()).thenReturn(responseCode);
+    return httpResponse;
   }
 
 }

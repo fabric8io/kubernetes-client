@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
 /**
@@ -195,7 +194,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     if (method.equals("POST") && RETRIABLE_RESOURCES.stream().anyMatch(url::endsWith)) {
       return false;
     }
-    return response.code() != HTTP_UNAUTHORIZED && response.code() != HTTP_FORBIDDEN;
+    return response.code() != HTTP_UNAUTHORIZED;
   }
 
 }
