@@ -133,4 +133,50 @@ public class HttpBodyStreamTest {
       assertEquals(StreamResetException.class, cause.getClass());
     }
   }
+
+  @Test
+  public void testStackOverflow() throws Exception {
+
+    requestHandler = req -> {
+      AtomicInteger size = new AtomicInteger();
+      req.handler(buff -> size.addAndGet(buff.length()));
+      req.endHandler(v -> {
+        req.response().end("" + size);
+      });
+    };
+    HttpClient.Builder builder = clientFactory.newBuilder();
+    HttpClient client = builder.build();
+
+    int contentLength = 128_000;
+    InputStream is = new InputStream() {
+      int remaining = contentLength;
+
+      @Override
+      public int read() {
+        if (remaining == 0) {
+          return -1;
+        }
+        return 'A';
+      }
+
+      @Override
+      public int read(byte[] b, int off, int len) {
+        if (remaining > 0) {
+          int size = Math.min(len, remaining);
+          remaining -= size;
+          for (int i = 0; i < size; i++) {
+            b[off++] = 'A';
+          }
+          return size;
+        } else {
+          return -1;
+        }
+      }
+    };
+
+    HttpRequest request = client.newHttpRequestBuilder().uri("http://localhost:8080").post("text/plain", is, -1).build();
+    HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+    int val = Integer.parseInt(resp.body());
+    assertEquals(contentLength, val);
+  }
 }
