@@ -15,10 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal.apps;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -36,8 +34,6 @@ import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -47,9 +43,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
@@ -57,7 +50,6 @@ public class DeploymentConfigOperationsImpl
     extends HasMetadataOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>>
     implements DeployableScalableResource<DeploymentConfig> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
   private final PodOperationContext rollingOperationContext;
@@ -91,75 +83,10 @@ public class DeploymentConfigOperationsImpl
     final Long latestVersion = currentVersion + 1;
     DeploymentConfig deployment = accept(d -> d.getStatus().setLatestVersion(latestVersion));
     if (wait) {
-      waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
+      waitUntilScaled(deployment.getSpec().getReplicas());
       deployment = getItemOrRequireFromServer();
     }
     return deployment;
-  }
-
-  @Override
-  public DeploymentConfig scale(int count) {
-    return scale(count, false);
-  }
-
-  @Override
-  public DeploymentConfig scale(int count, boolean wait) {
-    DeploymentConfig deployment = accept(d -> d.getSpec().setReplicas(count));
-    if (wait) {
-      waitUntilDeploymentConfigIsScaled(count);
-      deployment = getItemOrRequireFromServer();
-    }
-    return deployment;
-  }
-
-  @Override
-  public Scale scale() {
-    return handleScale(null);
-  }
-
-  @Override
-  public Scale scale(Scale scale) {
-    return handleScale(scale);
-  }
-
-  /**
-   * Lets wait until there are enough Ready pods of the given Deployment
-   */
-  private void waitUntilDeploymentConfigIsScaled(final int count) {
-    final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
-
-    final String name = checkName(getItem());
-    final String namespace = checkNamespace(getItem());
-
-    try {
-      waitUntilCondition(deploymentConfig -> {
-        //If the rs is gone, we shouldn't wait.
-        if (deploymentConfig == null) {
-          if (count == 0) {
-            return true;
-          }
-          throw new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: "
-              + checkName(getItem()) + " to scale. Resource is no longer available.");
-        }
-        replicasRef.set(deploymentConfig.getStatus().getReplicas());
-        int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas()
-            : 0;
-        if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration()
-            && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
-          return true;
-        }
-        LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
-            deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(),
-            deploymentConfig.getMetadata().getName(), namespace);
-        return false;
-      }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
-      LOG.debug("{}/{} pod(s) ready for DeploymentConfig: {} in namespace: {}.",
-          replicasRef.get(), count, name, namespace);
-    } catch (KubernetesClientTimeoutException e) {
-      LOG.error("{}/{} pod(s) ready for DeploymentConfig: {} in namespace: {}  after waiting for {} seconds so giving up",
-          replicasRef.get(), count, name, namespace,
-          TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout()));
-    }
   }
 
   @Override

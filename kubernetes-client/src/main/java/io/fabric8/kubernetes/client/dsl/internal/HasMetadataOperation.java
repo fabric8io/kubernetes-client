@@ -21,15 +21,23 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -38,6 +46,9 @@ import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends BaseOperation<T, L, R> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(HasMetadataOperation.class);
+
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
@@ -265,6 +276,63 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public HasMetadataOperation<T, L, R> newInstance(OperationContext context) {
     return new HasMetadataOperation<>(context, type, listType);
+  }
+
+  @Override
+  public T scale(int count) {
+    return scale(count, false);
+  }
+
+  @Override
+  public T scale(int count, boolean wait) {
+    // TODO: this could be a simple patch, rather than an edit
+    // we're also not giving the user the option here of doing this as a locked operation
+    // kubectl does support specifying the resourceVersion
+    scale(new ScaleBuilder(scale()).editOrNewMetadata().withResourceVersion(null).endMetadata().editOrNewSpec()
+        .withReplicas(count)
+        .endSpec().build());
+    if (wait) {
+      waitUntilScaled(count);
+    }
+    return get();
+  }
+
+  @Override
+  public Scale scale(Scale scaleParam) {
+    return handleScale(scaleParam, Scale.class);
+  }
+
+  /**
+   * Let's wait until there are enough Ready pods.
+   */
+  protected void waitUntilScaled(final Integer count) {
+    final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
+
+    final String name = checkName(getItem());
+    final String namespace = checkNamespace(getItem());
+
+    CompletableFuture<Void> completion = new CompletableFuture<>();
+    Utils.scheduleWithVariableRate(completion, getOperationContext().getExecutor(), () -> {
+      try {
+        Scale scale = scale();
+        if (Objects.equals(count, scale.getStatus().getReplicas()) && Objects.equals(count, scale.getSpec().getReplicas())) {
+          completion.complete(null);
+        } else {
+          LOGGER.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
+              scale.getSpec().getReplicas(), count, getKind(), getName(), namespace);
+        }
+      } catch (KubernetesClientException e) {
+        completion.completeExceptionally(e);
+      }
+    }, 0, () -> 1, TimeUnit.SECONDS);
+
+    if (!Utils.waitUntilReady(completion, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+      completion.complete(null);
+      throw new KubernetesClientException(
+          String.format("%s/%s pod(s) ready for %s: %s in namespace: %s  after waiting for %s seconds so giving up",
+              replicasRef.get(), count, getType().getSimpleName(), name, namespace,
+              TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout())));
+    }
   }
 
 }

@@ -717,9 +717,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handlePatch(context, current, updated, getType(), status);
   }
 
-  protected Scale handleScale(Scale scaleParam) {
+  protected <S> S handleScale(S scaleParam, Class<S> scaleType) {
     try {
-      return handleScale(getCompleteResourceUrl().toString(), scaleParam);
+      return handleScale(getCompleteResourceUrl().toString(), scaleParam, scaleType);
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
@@ -1148,6 +1148,21 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T update() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T scale(int count) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T scale(int count, boolean wait) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public Scale scale(Scale scale) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
