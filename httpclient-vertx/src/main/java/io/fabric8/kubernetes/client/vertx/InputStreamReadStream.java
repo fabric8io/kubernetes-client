@@ -26,10 +26,12 @@ import io.vertx.core.streams.impl.InboundBuffer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class InputStreamReadStream implements ReadStream<Buffer> {
 
   private static final int CHUNK_SIZE = 2048;
+  private static final int MAX_DEPTH = 8;
 
   private final VertxHttpRequest vertxHttpRequest;
   private final InputStream is;
@@ -50,6 +52,13 @@ class InputStreamReadStream implements ReadStream<Buffer> {
     exceptionHandler = handler;
     return this;
   }
+
+  final ThreadLocal<AtomicInteger> counter = new ThreadLocal<AtomicInteger>() {
+    @Override
+    protected AtomicInteger initialValue() {
+      return new AtomicInteger();
+    }
+  };
 
   @Override
   public ReadStream<Buffer> handler(Handler<Buffer> handler) {
@@ -80,6 +89,20 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void readChunk() {
+    AtomicInteger atomicInteger = counter.get();
+    try {
+      int depth = atomicInteger.getAndIncrement();
+      if (depth < MAX_DEPTH) {
+        readChunk2();
+        return;
+      }
+    } finally {
+      atomicInteger.decrementAndGet();
+    }
+    vertxHttpRequest.vertx.runOnContext(v -> readChunk());
+  }
+
+  private void readChunk2() {
     Future<Buffer> fut = vertxHttpRequest.vertx.executeBlocking(p -> {
       if (bytes == null) {
         bytes = new byte[CHUNK_SIZE];
