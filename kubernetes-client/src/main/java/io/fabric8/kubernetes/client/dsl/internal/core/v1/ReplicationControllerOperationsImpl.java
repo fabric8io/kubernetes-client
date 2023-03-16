@@ -78,22 +78,6 @@ public class ReplicationControllerOperationsImpl extends
   }
 
   @Override
-  public int getCurrentReplicas(ReplicationController current) {
-    return current.getStatus().getReplicas();
-  }
-
-  @Override
-  public int getDesiredReplicas(ReplicationController item) {
-    return item.getSpec().getReplicas();
-  }
-
-  @Override
-  public long getObservedGeneration(ReplicationController current) {
-    return (current != null && current.getStatus() != null
-        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
-  }
-
-  @Override
   public Status rollback(DeploymentRollback deploymentRollback) {
     throw new KubernetesClientException("rollback not supported in case of ReplicationControllers");
   }

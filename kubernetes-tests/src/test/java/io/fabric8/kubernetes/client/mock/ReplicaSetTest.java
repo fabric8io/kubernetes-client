@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.ListMetaBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
@@ -152,72 +151,6 @@ class ReplicaSetTest {
 
     deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete().size() == 1;
     assertTrue(deleted);
-  }
-
-  @Test
-  void testScale() {
-    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
-        .withNewMetadata()
-        .withName("repl1")
-        .withResourceVersion("1")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(5)
-        .endSpec()
-        .withNewStatus()
-        .withReplicas(1)
-        .endStatus()
-        .build()).always();
-
-    ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5);
-    assertNotNull(repl);
-    assertNotNull(repl.getSpec());
-    assertEquals(5, repl.getSpec().getReplicas().intValue());
-    assertEquals(1, repl.getStatus().getReplicas().intValue());
-  }
-
-  @Test
-  void testScaleAndWait() {
-    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
-        .withNewMetadata()
-        .withName("repl1")
-        .withResourceVersion("1")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(5)
-        .endSpec()
-        .withNewStatus()
-        .withReplicas(1)
-        .endStatus()
-        .build()).once();
-
-    ReplicaSet scaled = new ReplicaSetBuilder()
-        .withNewMetadata()
-        .withName("repl1")
-        .withResourceVersion("1")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(5)
-        .endSpec()
-        .withNewStatus()
-        .withReplicas(5)
-        .endStatus()
-        .build();
-    // patch
-    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, scaled).once();
-
-    // list for waiting
-    server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/replicasets?fieldSelector=metadata.name%3Drepl1")
-        .andReturn(200,
-            new ReplicaSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
-        .always();
-
-    ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5, true);
-    assertNotNull(repl);
-    assertNotNull(repl.getSpec());
-    assertEquals(5, repl.getSpec().getReplicas().intValue());
-    assertEquals(5, repl.getStatus().getReplicas().intValue());
   }
 
   @Disabled

@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
  * @param <T> The resource type.
  */
 public interface Resource<T> extends
+    Scalable<T>,
     FromServerGettable<T>,
     WatchAndWaitable<T>,
     WritableOperation<T>,

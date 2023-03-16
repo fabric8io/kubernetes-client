@@ -76,22 +76,6 @@ public class ReplicaSetOperationsImpl
   }
 
   @Override
-  public int getCurrentReplicas(ReplicaSet current) {
-    return current.getStatus().getReplicas();
-  }
-
-  @Override
-  public int getDesiredReplicas(ReplicaSet item) {
-    return item.getSpec().getReplicas();
-  }
-
-  @Override
-  public long getObservedGeneration(ReplicaSet current) {
-    return (current != null && current.getStatus() != null
-        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
-  }
-
-  @Override
   public Status rollback(DeploymentRollback deploymentRollback) {
     throw new KubernetesClientException("rollback not supported in case of ReplicaSets");
   }

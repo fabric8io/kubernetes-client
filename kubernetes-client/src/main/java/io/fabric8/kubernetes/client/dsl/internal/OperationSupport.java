@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
@@ -452,12 +451,12 @@ public class OperationSupport {
    * @throws InterruptedException in case thread is interrupted
    * @throws IOException in some other I/O problem
    */
-  protected Scale handleScale(String resourceUrl, Scale scale) throws InterruptedException, IOException {
+  protected <T> T handleScale(String resourceUrl, T scale, Class<T> scaleType) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/scale");
     if (scale != null) {
       requestBuilder.put(JSON, JSON_MAPPER.writeValueAsString(scale));
     }
-    return handleResponse(requestBuilder, Scale.class);
+    return handleResponse(requestBuilder, scaleType);
   }
 
   /**
