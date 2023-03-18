@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(crud = true)
 public class LeaderElectionTest {
 
   KubernetesMockServer server;
@@ -82,6 +82,11 @@ public class LeaderElectionTest {
         .andReturn(200, null)
         .once();
     // When - Then
+    testAndAssertSingleLeader("lead-config-map",
+        new ConfigMapLock("namespace", "name", "lead-config-map"));
+
+    // verify crud mock behavior
+    server.clearExpectations();
     testAndAssertSingleLeader("lead-config-map",
         new ConfigMapLock("namespace", "name", "lead-config-map"));
   }

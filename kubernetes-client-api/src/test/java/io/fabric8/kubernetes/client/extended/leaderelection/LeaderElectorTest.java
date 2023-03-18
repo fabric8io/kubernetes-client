@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
+import org.mockito.Mockito;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -55,8 +56,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class LeaderElectorTest {
-
-  final static AtomicReference<LeaderElectionRecord> activeLer = new AtomicReference<>(null);
 
   @Test
   void runShouldAbortAfterRenewDeadlineExpired() throws Exception {
@@ -114,17 +113,14 @@ class LeaderElectorTest {
   @Test
   void shouldReleaseWhenCanceled() throws Exception {
     // Given
-    final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
+    AtomicReference<LeaderElectionRecord> activeLer = new AtomicReference<>();
+    final LeaderElectionConfig lec = mockLeaderElectionConfiguration(activeLer);
     final CountDownLatch signal = new CountDownLatch(1);
     final Lock mockedLock = lec.getLock();
     when(lec.isReleaseOnCancel()).thenReturn(true);
     doAnswer(invocation -> {
       LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
-      if (!activeLer.get().getVersion().equals(leaderRecord.getVersion())) {
-        throw new KubernetesClientException("Wrong");
-      }
-      activeLer.set(leaderRecord.toBuilder()
-          .version(String.valueOf(Integer.parseInt(String.valueOf(leaderRecord.getVersion())) + 1)).build());
+      activeLer.set(leaderRecord);
       signal.countDown();
       return null;
     }).when(mockedLock).update(any(), any());
@@ -138,7 +134,6 @@ class LeaderElectorTest {
     // Then
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
     assertEquals(0, activeLer.get().getLeaderTransitions());
-    assertEquals("3", activeLer.get().getVersion());
 
     // create a new elector, they are no good after a single use
     leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
@@ -147,6 +142,44 @@ class LeaderElectorTest {
 
     // there should be a transition
     assertEquals(1, activeLer.get().getLeaderTransitions());
+  }
+
+  @Test
+  void shouldRelease() throws Exception {
+    // Given
+    AtomicReference<LeaderElectionRecord> activeLer = new AtomicReference<>();
+    final LeaderElectionConfig lec = mockLeaderElectionConfiguration(activeLer);
+    final CountDownLatch signal = new CountDownLatch(1);
+    final Lock mockedLock = lec.getLock();
+    doAnswer(invocation -> {
+      LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
+      activeLer.set(leaderRecord);
+      signal.countDown();
+      return null;
+    }).when(mockedLock).update(any(), any());
+
+    // When
+    LeaderElector leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    CompletableFuture<?> started = leaderElector.start();
+    assertTrue(signal.await(10, TimeUnit.SECONDS));
+
+    Mockito.verify(lec.getLeaderCallbacks(), times(1)).onStartLeading();
+
+    leaderElector.release();
+
+    // ensure that release cause us to stop leading
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+      Mockito.verify(lec.getLeaderCallbacks()).onStopLeading();
+      return true;
+    });
+
+    // we haven't stopped, so we'll re-acquire
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+      Mockito.verify(lec.getLeaderCallbacks(), times(2)).onStartLeading();
+      return true;
+    });
+
+    started.cancel(true);
   }
 
   @Test
@@ -231,9 +264,7 @@ class LeaderElectorTest {
   void loopCancel() throws Exception {
     // Given
     AtomicInteger count = new AtomicInteger();
-    CompletableFuture<?> cf = loop(completion -> {
-      count.getAndIncrement();
-    }, () -> 10L, CommonThreadPool.get());
+    CompletableFuture<?> cf = loop(completion -> count.getAndIncrement(), () -> 10L, CommonThreadPool.get());
     // When
     Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
 
@@ -281,7 +312,12 @@ class LeaderElectorTest {
     assertTrue(result.toMillis() > 1000L);
   }
 
-  private static LeaderElectionConfig mockLeaderElectionConfiguration() throws Exception {
+  private LeaderElectionConfig mockLeaderElectionConfiguration() throws Exception {
+    return mockLeaderElectionConfiguration(new AtomicReference<>());
+  }
+
+  private LeaderElectionConfig mockLeaderElectionConfiguration(AtomicReference<LeaderElectionRecord> activeLer)
+      throws Exception {
     final LeaderElectionConfig lec = mock(LeaderElectionConfig.class, Answers.RETURNS_DEEP_STUBS);
     when(lec.getLeaseDuration()).thenReturn(Duration.ofSeconds(2L));
     when(lec.getRenewDeadline()).thenReturn(Duration.ofSeconds(1L));
@@ -291,7 +327,7 @@ class LeaderElectorTest {
     when(mockedLock.get(any())).thenReturn(null).thenAnswer(invocation -> activeLer.get());
     doAnswer(invocation -> {
       LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
-      activeLer.set(leaderRecord.toBuilder().version("1").build());
+      activeLer.set(leaderRecord);
       return null;
     }).when(mockedLock).create(any(), any());
     return lec;

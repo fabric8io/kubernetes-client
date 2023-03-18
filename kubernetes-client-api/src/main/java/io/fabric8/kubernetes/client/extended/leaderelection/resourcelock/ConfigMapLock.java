@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
@@ -58,10 +59,10 @@ public class ConfigMapLock extends ResourceLock<ConfigMap> {
   }
 
   @Override
-  protected ConfigMap toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta) {
-    return new ConfigMapBuilder().withMetadata(meta).editMetadata()
-        .addToAnnotations(LEADER_ELECTION_RECORD_ANNOTATION_KEY, Serialization.asJson(leaderElectionRecord))
-        .endMetadata()
+  protected ConfigMap toResource(LeaderElectionRecord leaderElectionRecord, ObjectMetaBuilder meta) {
+    return new ConfigMapBuilder()
+        .withMetadata(
+            meta.addToAnnotations(LEADER_ELECTION_RECORD_ANNOTATION_KEY, Serialization.asJson(leaderElectionRecord)).build())
         .build();
   }
 

@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseBuilder;
 
@@ -39,8 +40,8 @@ public class LeaseLock extends ResourceLock<Lease> {
   }
 
   @Override
-  protected Lease toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta) {
-    return new LeaseBuilder().withMetadata(meta)
+  protected Lease toResource(LeaderElectionRecord leaderElectionRecord, ObjectMetaBuilder meta) {
+    return new LeaseBuilder().withMetadata(meta.build())
         .withNewSpec()
         .withHolderIdentity(leaderElectionRecord.getHolderIdentity())
         .withLeaseDurationSeconds((int) leaderElectionRecord.getLeaseDuration().get(ChronoUnit.SECONDS))

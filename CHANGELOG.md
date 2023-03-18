@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
 
 #### Dependency Upgrade
 
