@@ -80,10 +80,9 @@ class ConfigMapLockTest {
         .withResourceVersion("313373").build());
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
     // When
-    final LeaderElectionRecord result = lock.toRecordInternal(cm);
+    final LeaderElectionRecord result = lock.toRecord(cm);
     // Then
     assertNotNull(result);
-    assertEquals("313373", result.getVersion());
     assertEquals("1337", result.getHolderIdentity());
     assertEquals(15, result.getLeaseDuration().getSeconds());
     assertEquals(ZonedDateTime.of(2015, 10, 21, 4, 29, 0, 0, ZoneId.of("UTC")), result.getAcquireTime());
@@ -106,10 +105,11 @@ class ConfigMapLockTest {
     // Given
     final LeaderElectionRecord record = new LeaderElectionRecord(
         "1337", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
-    record.setVersion("313373");
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
+    ConfigMap configMap = lock.toResource(record, lock.getObjectMeta("313373"));
+    lock.setResource(configMap);
     // When
-    lock.update(kc, record);
+    lock.update(kc, record.toBuilder().leaseDuration(Duration.ofSeconds(2)).build());
     // Then
     verify(kc.resource(any(ConfigMap.class))).patch(any(PatchContext.class));
   }

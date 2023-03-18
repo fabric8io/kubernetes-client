@@ -23,14 +23,13 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 
-import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 
 public abstract class ResourceLock<T extends HasMetadata> implements Lock {
 
   private final ObjectMeta meta;
   private final String identity;
+  private T resource;
 
   public ResourceLock(String namespace, String name, String identity) {
     this(new ObjectMetaBuilder().withNamespace(namespace).withName(name).build(), identity);
@@ -46,23 +45,24 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
   protected abstract Class<T> getKind();
 
   @Override
-  public LeaderElectionRecord get(KubernetesClient client) {
-    return getResource(client).map(this::toRecordInternal).orElse(null);
-  }
-
-  private Optional<T> getResource(KubernetesClient client) {
-    return Optional.ofNullable(client.resources(getKind()).inNamespace(meta.getNamespace()).withName(meta.getName()).get());
-  }
-
-  @Override
-  public void create(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
-    client.resource(toResource(leaderElectionRecord, getObjectMeta(leaderElectionRecord.getVersion()))).create();
+  public synchronized LeaderElectionRecord get(KubernetesClient client) {
+    resource = client.resources(getKind()).inNamespace(meta.getNamespace()).withName(meta.getName()).get();
+    if (resource != null) {
+      return toRecord(resource);
+    }
+    return null;
   }
 
   @Override
-  public void update(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
-    client.resource(toResource(leaderElectionRecord, getObjectMeta(leaderElectionRecord.getVersion())))
-        .patch(PatchContext.of(PatchType.STRATEGIC_MERGE));
+  public synchronized void create(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
+    resource = client.resource(toResource(leaderElectionRecord, getObjectMeta(null))).create();
+  }
+
+  @Override
+  public synchronized void update(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
+    Objects.requireNonNull(resource, "get or create must be called first");
+    client.resource(toResource(leaderElectionRecord, getObjectMeta(resource.getMetadata().getResourceVersion())))
+        .patch(PatchContext.of(PatchType.JSON_MERGE));
   }
 
   /**
@@ -72,18 +72,12 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
    * @param meta not null
    * @return
    */
-  protected abstract T toResource(LeaderElectionRecord leaderElectionRecord, ObjectMeta meta);
-
-  protected LeaderElectionRecord toRecordInternal(T resource) {
-    LeaderElectionRecord result = toRecord(resource);
-    result.setVersion(resource.getMetadata().getResourceVersion());
-    return result;
-  }
+  protected abstract T toResource(LeaderElectionRecord leaderElectionRecord, ObjectMetaBuilder meta);
 
   protected abstract LeaderElectionRecord toRecord(T resource);
 
-  protected ObjectMeta getObjectMeta(Serializable version) {
-    return new ObjectMetaBuilder(meta).withResourceVersion((String) version).build();
+  protected ObjectMetaBuilder getObjectMeta(String version) {
+    return new ObjectMetaBuilder(meta).withResourceVersion((String) version);
   }
 
   /**
@@ -100,6 +94,10 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
   @Override
   public String describe() {
     return String.format("%sLock: %s - %s (%s)", getKind().getSimpleName(), meta.getNamespace(), meta.getName(), identity);
+  }
+
+  void setResource(T resource) {
+    this.resource = resource;
   }
 
 }

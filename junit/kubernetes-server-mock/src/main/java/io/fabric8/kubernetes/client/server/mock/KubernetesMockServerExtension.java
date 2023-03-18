@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.server.mock;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
@@ -98,7 +99,8 @@ public class KubernetesMockServerExtension
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = a.crud()
-        ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses),
+        ? new KubernetesMockServer(new Context(Serialization.jsonMapper()), new MockWebServer(), responses,
+            new KubernetesMixedDispatcher(responses),
             a.https())
         : new KubernetesMockServer(a.https());
     mock.init();

@@ -120,22 +120,22 @@ public class LeaderElector {
     if (current == null || !isLeader(current)) {
       return; // not leading
     }
-    try {
-      // update current from latest
-      current = leaderElectionConfig.getLock().get(kubernetesClient);
-      if (current == null || !isLeader(current)) {
-        return; // lost leadership already
-      }
-      if (leaderElectionConfig.isReleaseOnCancel()) {
-        release(current);
-      }
-    } finally {
-      // called regardless of isReleaseOnCancel
+    if (leaderElectionConfig.isReleaseOnCancel()) {
+      release();
+    } else {
       leaderElectionConfig.getLeaderCallbacks().onStopLeading();
     }
   }
 
-  private void release(LeaderElectionRecord current) {
+  /**
+   * Release the leadership if currently held. If not cancelled, the elector will
+   * continue to try and re-acquire the lock.
+   */
+  public synchronized void release() {
+    LeaderElectionRecord current = leaderElectionConfig.getLock().get(kubernetesClient);
+    if (current == null || !isLeader(current)) {
+      return; // lost leadership already
+    }
     try {
       ZonedDateTime now = now();
       final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
@@ -144,9 +144,9 @@ public class LeaderElector {
           now,
           now,
           current.getLeaderTransitions());
-      newLeaderElectionRecord.setVersion(current.getVersion());
 
       leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+      updateObserved(newLeaderElectionRecord);
     } catch (KubernetesClientException e) {
       final String lockDescription = leaderElectionConfig.getLock().describe();
       LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
@@ -218,8 +218,7 @@ public class LeaderElector {
         isLeader ? oldLeaderElectionRecord.getAcquireTime() : now,
         now,
         oldLeaderElectionRecord.getLeaderTransitions() + (isLeader ? 0 : 1));
-    newLeaderElectionRecord.setVersion(oldLeaderElectionRecord.getVersion());
-    leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+    lock.update(kubernetesClient, newLeaderElectionRecord);
     updateObserved(newLeaderElectionRecord);
     return true;
   }
@@ -232,6 +231,8 @@ public class LeaderElector {
       final String newLeader = leaderElectionRecord.getHolderIdentity();
       if (!Objects.equals(newLeader, currentLeader)) {
         LOGGER.debug("Leader changed from {} to {}", currentLeader, newLeader);
+        // this will notify even if the newLeader is null or empty, which is the same behavior as the go client
+        // but does not seem entirely correct
         leaderElectionConfig.getLeaderCallbacks().onNewLeader(newLeader);
         if (Objects.equals(currentLeader, leaderElectionConfig.getLock().identity())) {
           leaderElectionConfig.getLeaderCallbacks().onStopLeading();
