@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #4960: NPE in OpenIDConnectionUtils if `idp-certificate-authority-data` absent in auth-provider config
+* Fix #4981: Prevent StackOverflowError in Vert.x HttpClient caused by fast InputStream buffer extraction
 
 #### Improvements
 * Fix #4970: OpenShiftOAuthInterceptor should not refresh on `403` response code
