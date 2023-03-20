@@ -1,19 +1,11 @@
 ## CHANGELOG
 
-### 6.6-SNAPSHOT
+### 6.5.1 (2023-03-20)
 
 #### Bugs
 * Fix #4960: NPE in OpenIDConnectionUtils if `idp-certificate-authority-data` absent in auth-provider config
-* Fix #4981: Prevent StackOverflowError in Vert.x HttpClient caused by fast InputStream buffer extraction
-
-#### Improvements
 * Fix #4970: OpenShiftOAuthInterceptor should not refresh on `403` response code
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes
+* Fix #4981: Prevent StackOverflowError in Vert.x HttpClient caused by fast InputStream buffer extraction
 
 ### 6.5.0 (2023-03-10)
 

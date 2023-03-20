@@ -21,7 +21,7 @@
   <parent>
     <artifactId>platforms</artifactId>
     <groupId>io.fabric8.kubernetes</groupId>
-    <version>6.6-SNAPSHOT</version>
+    <version>6.5.1</version>
   </parent>
 
   <artifactId>karaf</artifactId>
