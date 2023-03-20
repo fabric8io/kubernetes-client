@@ -62,7 +62,9 @@ class ImageStreamTagIT {
 
   @Test
   void list() {
-
+    client.imageStreams().withName("list").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+        is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
+        30, TimeUnit.SECONDS);
     ImageStreamTagList istagList = client.imageStreamTags().list();
 
     assertNotNull(istagList);
