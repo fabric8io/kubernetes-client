@@ -3,7 +3,7 @@
 ### 6.6-SNAPSHOT
 
 #### Bugs
-
+* Fix #4963: Openshift Client return 403 when use websocket
 #### Improvements
 
 #### Dependency Upgrade

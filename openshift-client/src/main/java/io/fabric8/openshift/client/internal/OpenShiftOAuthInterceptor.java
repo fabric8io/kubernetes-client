@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -93,7 +92,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
   }
 
   @Override
-  public CompletableFuture<Boolean> afterFailure(Builder builder, HttpResponse<?> response, RequestTags tags) {
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response, RequestTags tags) {
     if (shouldProceed(response.request(), response)) {
       return CompletableFuture.completedFuture(false);
     }
@@ -121,7 +120,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     return CompletableFuture.completedFuture(refreshFromConfig(builder));
   }
 
-  private boolean refreshFromConfig(Builder builder) {
+  private boolean refreshFromConfig(BasicBuilder builder) {
     Config newestConfig = config.refresh(); // does some i/o work, but for now we'll consider this non-blocking
     String oauthToken = newestConfig.getOauthToken();
     if (oauthToken != null) {
