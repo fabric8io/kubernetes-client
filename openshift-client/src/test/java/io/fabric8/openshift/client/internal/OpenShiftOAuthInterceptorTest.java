@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -90,6 +91,23 @@ class OpenShiftOAuthInterceptorTest {
         .withRequest(new StandardHttpRequest(null, URI.create("http://localhost"), "GET", null)), null);
 
     assertEquals(Collections.singletonList("Bearer token"), builder.build().headers(TokenRefreshInterceptor.AUTHORIZATION));
+    Mockito.verify(config).setOauthToken("token");
+  }
+
+  @Test
+  void testTokenRefreshedFromConfigForWebSocketBuilder() {
+    Config config = mockConfigRefresh();
+    Mockito.when(config.refresh().getOauthToken()).thenReturn("token");
+
+    HttpClient client = Mockito.mock(HttpClient.class);
+    OpenShiftOAuthInterceptor interceptor = new OpenShiftOAuthInterceptor(client, config);
+
+    WebSocket.Builder builder = Mockito.mock(WebSocket.Builder.class, Mockito.RETURNS_DEEP_STUBS);
+
+    interceptor.afterFailure(builder, TestHttpResponse.from(HttpURLConnection.HTTP_UNAUTHORIZED, "not for you")
+        .withRequest(new StandardHttpRequest(null, URI.create("http://localhost"), "GET", null)), null);
+
+    Mockito.verify(builder).setHeader(TokenRefreshInterceptor.AUTHORIZATION, "Bearer token");
     Mockito.verify(config).setOauthToken("token");
   }
 
