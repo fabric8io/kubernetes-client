@@ -42,6 +42,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.internal.Internal;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -56,6 +57,7 @@ import java.io.InterruptedIOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -257,6 +259,7 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
       LOG.debug("Shutting down dispatcher {} at the following call stack: {}", this.httpClient.dispatcher(), stack);
     }
     ConnectionPool connectionPool = httpClient.connectionPool();
+
     Dispatcher dispatcher = httpClient.dispatcher();
     ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
 
@@ -266,6 +269,21 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
     if (connectionPool != null) {
       connectionPool.evictAll();
+
+      // begin hack to terminate the idle task, which is not necessary after 4.3.0 - https://github.com/square/okhttp/commit/bc3ad111ad01100a77846f7dc433b0c0f5b58dba
+      // to immediately clean it up, we need to notify the thread waiting on the ConnectionPool / RealConnectionPool
+      Object realConnectionPool = connectionPool;
+
+      try {
+        // 3.14+ holds a delegate to the real pool
+        Method method = Internal.class.getMethod("realConnectionPool", ConnectionPool.class);
+        realConnectionPool = method.invoke(Internal.instance, connectionPool);
+      } catch (Exception e) {
+        // could be 3.12
+      }
+      synchronized (realConnectionPool) {
+        realConnectionPool.notifyAll();
+      }
     }
 
     if (executorService != null) {
