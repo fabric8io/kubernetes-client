@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
+import io.fabric8.tekton.pipeline.v1beta1.CustomRun;
+import io.fabric8.tekton.pipeline.v1beta1.CustomRunList;
 import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineList;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
@@ -30,6 +32,8 @@ import io.fabric8.tekton.pipeline.v1beta1.Task;
 import io.fabric8.tekton.pipeline.v1beta1.TaskList;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
+import io.fabric8.tekton.resolution.v1beta1.ResolutionRequest;
+import io.fabric8.tekton.resolution.v1beta1.ResolutionRequestList;
 import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding;
 import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBindingList;
 import io.fabric8.tekton.triggers.v1beta1.EventListener;
@@ -69,6 +73,11 @@ public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> 
   }
 
   @Override
+  public MixedOperation<CustomRun, CustomRunList, Resource<CustomRun>> customRuns() {
+    return resources(CustomRun.class, CustomRunList.class);
+  }
+
+  @Override
   public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
     return resources(ClusterTask.class, ClusterTaskList.class);
   }
@@ -96,5 +105,10 @@ public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> 
   @Override
   public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings() {
     return resources(ClusterTriggerBinding.class, ClusterTriggerBindingList.class);
+  }
+
+  @Override
+  public MixedOperation<ResolutionRequest, ResolutionRequestList, Resource<ResolutionRequest>> resolutionRequests() {
+    return resources(ResolutionRequest.class, ResolutionRequestList.class);
   }
 }

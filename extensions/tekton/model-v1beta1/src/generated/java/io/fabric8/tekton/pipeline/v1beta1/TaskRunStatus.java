@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.tekton.v1beta1.internal.pipeline.pkg.result.RunResult;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -47,9 +48,11 @@ import lombok.experimental.Accessors;
     "conditions",
     "observedGeneration",
     "podName",
+    "provenance",
     "resourcesResult",
     "retriesStatus",
     "sidecars",
+    "spanContext",
     "startTime",
     "steps",
     "taskResults",
@@ -95,15 +98,20 @@ public class TaskRunStatus implements KubernetesResource
     private Long observedGeneration;
     @JsonProperty("podName")
     private java.lang.String podName;
+    @JsonProperty("provenance")
+    private Provenance provenance;
     @JsonProperty("resourcesResult")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineResourceResult> resourcesResult = new ArrayList<PipelineResourceResult>();
+    private List<RunResult> resourcesResult = new ArrayList<RunResult>();
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TaskRunStatus> retriesStatus = new ArrayList<TaskRunStatus>();
     @JsonProperty("sidecars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SidecarState> sidecars = new ArrayList<SidecarState>();
+    @JsonProperty("spanContext")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> spanContext = new LinkedHashMap<String, String>();
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonProperty("steps")
@@ -133,14 +141,16 @@ public class TaskRunStatus implements KubernetesResource
      * @param taskSpec
      * @param cloudEvents
      * @param completionTime
+     * @param provenance
      * @param retriesStatus
      * @param podName
+     * @param spanContext
      * @param startTime
      * @param conditions
      * @param resourcesResult
      * @param observedGeneration
      */
-    public TaskRunStatus(Map<String, String> annotations, List<CloudEventDelivery> cloudEvents, java.lang.String completionTime, List<Condition> conditions, Long observedGeneration, java.lang.String podName, List<PipelineResourceResult> resourcesResult, List<TaskRunStatus> retriesStatus, List<SidecarState> sidecars, java.lang.String startTime, List<StepState> steps, List<TaskRunResult> taskResults, TaskSpec taskSpec) {
+    public TaskRunStatus(Map<String, String> annotations, List<CloudEventDelivery> cloudEvents, java.lang.String completionTime, List<Condition> conditions, Long observedGeneration, java.lang.String podName, Provenance provenance, List<RunResult> resourcesResult, List<TaskRunStatus> retriesStatus, List<SidecarState> sidecars, Map<String, String> spanContext, java.lang.String startTime, List<StepState> steps, List<TaskRunResult> taskResults, TaskSpec taskSpec) {
         super();
         this.annotations = annotations;
         this.cloudEvents = cloudEvents;
@@ -148,9 +158,11 @@ public class TaskRunStatus implements KubernetesResource
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
         this.podName = podName;
+        this.provenance = provenance;
         this.resourcesResult = resourcesResult;
         this.retriesStatus = retriesStatus;
         this.sidecars = sidecars;
+        this.spanContext = spanContext;
         this.startTime = startTime;
         this.steps = steps;
         this.taskResults = taskResults;
@@ -217,13 +229,23 @@ public class TaskRunStatus implements KubernetesResource
         this.podName = podName;
     }
 
+    @JsonProperty("provenance")
+    public Provenance getProvenance() {
+        return provenance;
+    }
+
+    @JsonProperty("provenance")
+    public void setProvenance(Provenance provenance) {
+        this.provenance = provenance;
+    }
+
     @JsonProperty("resourcesResult")
-    public List<PipelineResourceResult> getResourcesResult() {
+    public List<RunResult> getResourcesResult() {
         return resourcesResult;
     }
 
     @JsonProperty("resourcesResult")
-    public void setResourcesResult(List<PipelineResourceResult> resourcesResult) {
+    public void setResourcesResult(List<RunResult> resourcesResult) {
         this.resourcesResult = resourcesResult;
     }
 
@@ -245,6 +267,16 @@ public class TaskRunStatus implements KubernetesResource
     @JsonProperty("sidecars")
     public void setSidecars(List<SidecarState> sidecars) {
         this.sidecars = sidecars;
+    }
+
+    @JsonProperty("spanContext")
+    public Map<String, String> getSpanContext() {
+        return spanContext;
+    }
+
+    @JsonProperty("spanContext")
+    public void setSpanContext(Map<String, String> spanContext) {
+        this.spanContext = spanContext;
     }
 
     @JsonProperty("startTime")

@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "description",
+    "displayName",
     "params",
     "resources",
     "results",
@@ -75,6 +76,8 @@ public class TaskSpec implements KubernetesResource
 
     @JsonProperty("description")
     private String description;
+    @JsonProperty("displayName")
+    private String displayName;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParamSpec> params = new ArrayList<ParamSpec>();
@@ -110,6 +113,7 @@ public class TaskSpec implements KubernetesResource
     /**
      * 
      * @param sidecars
+     * @param displayName
      * @param volumes
      * @param description
      * @param resources
@@ -119,9 +123,10 @@ public class TaskSpec implements KubernetesResource
      * @param results
      * @param steps
      */
-    public TaskSpec(String description, List<ParamSpec> params, TaskResources resources, List<TaskResult> results, List<Sidecar> sidecars, StepTemplate stepTemplate, List<Step> steps, List<io.fabric8.kubernetes.api.model.Volume> volumes, List<WorkspaceDeclaration> workspaces) {
+    public TaskSpec(String description, String displayName, List<ParamSpec> params, TaskResources resources, List<TaskResult> results, List<Sidecar> sidecars, StepTemplate stepTemplate, List<Step> steps, List<io.fabric8.kubernetes.api.model.Volume> volumes, List<WorkspaceDeclaration> workspaces) {
         super();
         this.description = description;
+        this.displayName = displayName;
         this.params = params;
         this.resources = resources;
         this.results = results;
@@ -140,6 +145,16 @@ public class TaskSpec implements KubernetesResource
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonProperty("displayName")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @JsonProperty("displayName")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonProperty("params")

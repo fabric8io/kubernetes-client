@@ -41,8 +41,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "bundle",
     "name",
-    "resolver",
-    "resource"
+    "params",
+    "resolver"
 })
 @ToString
 @EqualsAndHashCode
@@ -77,11 +77,11 @@ public class TaskRef implements KubernetesResource
     private String kind;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Param> params = new ArrayList<Param>();
     @JsonProperty("resolver")
     private String resolver;
-    @JsonProperty("resource")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResolverParam> resource = new ArrayList<ResolverParam>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -96,19 +96,19 @@ public class TaskRef implements KubernetesResource
      * 
      * @param resolver
      * @param apiVersion
-     * @param resource
      * @param kind
      * @param name
+     * @param params
      * @param bundle
      */
-    public TaskRef(String apiVersion, String bundle, String kind, String name, String resolver, List<ResolverParam> resource) {
+    public TaskRef(String apiVersion, String bundle, String kind, String name, List<Param> params, String resolver) {
         super();
         this.apiVersion = apiVersion;
         this.bundle = bundle;
         this.kind = kind;
         this.name = name;
+        this.params = params;
         this.resolver = resolver;
-        this.resource = resource;
     }
 
     @JsonProperty("apiVersion")
@@ -151,6 +151,16 @@ public class TaskRef implements KubernetesResource
         this.name = name;
     }
 
+    @JsonProperty("params")
+    public List<Param> getParams() {
+        return params;
+    }
+
+    @JsonProperty("params")
+    public void setParams(List<Param> params) {
+        this.params = params;
+    }
+
     @JsonProperty("resolver")
     public String getResolver() {
         return resolver;
@@ -159,16 +169,6 @@ public class TaskRef implements KubernetesResource
     @JsonProperty("resolver")
     public void setResolver(String resolver) {
         this.resolver = resolver;
-    }
-
-    @JsonProperty("resource")
-    public List<ResolverParam> getResource() {
-        return resource;
-    }
-
-    @JsonProperty("resource")
-    public void setResource(List<ResolverParam> resource) {
-        this.resource = resource;
     }
 
     @JsonAnyGetter

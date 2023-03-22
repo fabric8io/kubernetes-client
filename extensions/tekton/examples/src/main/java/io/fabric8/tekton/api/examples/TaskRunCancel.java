@@ -18,7 +18,7 @@ package io.fabric8.tekton.api.examples;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
+import io.fabric8.tekton.pipeline.v1.TaskRun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class TaskRunCancel {
     try (TektonClient tektonClient = new DefaultTektonClient()) {
 
       String namespace = "default";
-      TaskRun taskRun = tektonClient.v1beta1().taskRuns().inNamespace(namespace).list().getItems().get(0);
+      TaskRun taskRun = tektonClient.v1().taskRuns().inNamespace(namespace).list().getItems().get(0);
 
       List<Condition> taskRunConditions = new ArrayList<>();
       Condition taskRunCancelCondition = new Condition();
@@ -45,7 +45,7 @@ public class TaskRunCancel {
        */
       taskRun.getStatus().setConditions(taskRunConditions);
 
-      tektonClient.v1beta1().taskRuns().inNamespace(namespace).updateStatus(taskRun);
+      tektonClient.v1().taskRuns().inNamespace(namespace).updateStatus(taskRun);
     }
   }
 }

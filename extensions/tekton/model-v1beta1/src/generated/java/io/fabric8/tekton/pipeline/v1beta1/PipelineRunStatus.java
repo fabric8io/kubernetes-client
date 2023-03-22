@@ -45,11 +45,14 @@ import lombok.experimental.Accessors;
     "childReferences",
     "completionTime",
     "conditions",
+    "finallyStartTime",
     "observedGeneration",
     "pipelineResults",
     "pipelineSpec",
+    "provenance",
     "runs",
     "skippedTasks",
+    "spanContext",
     "startTime",
     "taskRuns"
 })
@@ -89,6 +92,8 @@ public class PipelineRunStatus implements KubernetesResource
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("finallyStartTime")
+    private java.lang.String finallyStartTime;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("pipelineResults")
@@ -96,12 +101,17 @@ public class PipelineRunStatus implements KubernetesResource
     private List<PipelineRunResult> pipelineResults = new ArrayList<PipelineRunResult>();
     @JsonProperty("pipelineSpec")
     private PipelineSpec pipelineSpec;
+    @JsonProperty("provenance")
+    private Provenance provenance;
     @JsonProperty("runs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, PipelineRunRunStatus> runs = new LinkedHashMap<String, PipelineRunRunStatus>();
     @JsonProperty("skippedTasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SkippedTask> skippedTasks = new ArrayList<SkippedTask>();
+    @JsonProperty("spanContext")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> spanContext = new LinkedHashMap<String, String>();
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonProperty("taskRuns")
@@ -119,29 +129,35 @@ public class PipelineRunStatus implements KubernetesResource
 
     /**
      * 
-     * @param completionTime
      * @param skippedTasks
      * @param taskRuns
      * @param pipelineSpec
-     * @param childReferences
      * @param pipelineResults
      * @param annotations
+     * @param completionTime
+     * @param childReferences
+     * @param provenance
+     * @param finallyStartTime
+     * @param spanContext
      * @param startTime
      * @param conditions
      * @param runs
      * @param observedGeneration
      */
-    public PipelineRunStatus(Map<String, String> annotations, List<ChildStatusReference> childReferences, java.lang.String completionTime, List<Condition> conditions, Long observedGeneration, List<PipelineRunResult> pipelineResults, PipelineSpec pipelineSpec, Map<String, PipelineRunRunStatus> runs, List<SkippedTask> skippedTasks, java.lang.String startTime, Map<String, PipelineRunTaskRunStatus> taskRuns) {
+    public PipelineRunStatus(Map<String, String> annotations, List<ChildStatusReference> childReferences, java.lang.String completionTime, List<Condition> conditions, java.lang.String finallyStartTime, Long observedGeneration, List<PipelineRunResult> pipelineResults, PipelineSpec pipelineSpec, Provenance provenance, Map<String, PipelineRunRunStatus> runs, List<SkippedTask> skippedTasks, Map<String, String> spanContext, java.lang.String startTime, Map<String, PipelineRunTaskRunStatus> taskRuns) {
         super();
         this.annotations = annotations;
         this.childReferences = childReferences;
         this.completionTime = completionTime;
         this.conditions = conditions;
+        this.finallyStartTime = finallyStartTime;
         this.observedGeneration = observedGeneration;
         this.pipelineResults = pipelineResults;
         this.pipelineSpec = pipelineSpec;
+        this.provenance = provenance;
         this.runs = runs;
         this.skippedTasks = skippedTasks;
+        this.spanContext = spanContext;
         this.startTime = startTime;
         this.taskRuns = taskRuns;
     }
@@ -186,6 +202,16 @@ public class PipelineRunStatus implements KubernetesResource
         this.conditions = conditions;
     }
 
+    @JsonProperty("finallyStartTime")
+    public java.lang.String getFinallyStartTime() {
+        return finallyStartTime;
+    }
+
+    @JsonProperty("finallyStartTime")
+    public void setFinallyStartTime(java.lang.String finallyStartTime) {
+        this.finallyStartTime = finallyStartTime;
+    }
+
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
@@ -216,6 +242,16 @@ public class PipelineRunStatus implements KubernetesResource
         this.pipelineSpec = pipelineSpec;
     }
 
+    @JsonProperty("provenance")
+    public Provenance getProvenance() {
+        return provenance;
+    }
+
+    @JsonProperty("provenance")
+    public void setProvenance(Provenance provenance) {
+        this.provenance = provenance;
+    }
+
     @JsonProperty("runs")
     public Map<String, PipelineRunRunStatus> getRuns() {
         return runs;
@@ -234,6 +270,16 @@ public class PipelineRunStatus implements KubernetesResource
     @JsonProperty("skippedTasks")
     public void setSkippedTasks(List<SkippedTask> skippedTasks) {
         this.skippedTasks = skippedTasks;
+    }
+
+    @JsonProperty("spanContext")
+    public Map<String, String> getSpanContext() {
+        return spanContext;
+    }
+
+    @JsonProperty("spanContext")
+    public void setSpanContext(Map<String, String> spanContext) {
+        this.spanContext = spanContext;
     }
 
     @JsonProperty("startTime")

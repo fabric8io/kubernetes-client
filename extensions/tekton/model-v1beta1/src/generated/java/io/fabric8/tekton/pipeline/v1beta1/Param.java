@@ -68,7 +68,7 @@ public class Param implements KubernetesResource
     @JsonProperty("name")
     private String name;
     @JsonProperty("value")
-    private ArrayOrString value;
+    private ParamValue value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -84,7 +84,7 @@ public class Param implements KubernetesResource
      * @param name
      * @param value
      */
-    public Param(String name, ArrayOrString value) {
+    public Param(String name, ParamValue value) {
         super();
         this.name = name;
         this.value = value;
@@ -101,12 +101,12 @@ public class Param implements KubernetesResource
     }
 
     @JsonProperty("value")
-    public ArrayOrString getValue() {
+    public ParamValue getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(ArrayOrString value) {
+    public void setValue(ParamValue value) {
         this.value = value;
     }
 

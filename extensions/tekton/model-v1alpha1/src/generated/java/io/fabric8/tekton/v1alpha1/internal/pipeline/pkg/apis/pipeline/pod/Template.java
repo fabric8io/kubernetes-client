@@ -16,11 +16,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.HostAlias;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -29,6 +28,7 @@ import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Toleration;
+import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -48,11 +48,17 @@ import lombok.experimental.Accessors;
     "dnsConfig",
     "dnsPolicy",
     "enableServiceLinks",
+    "env",
+    "hostAliases",
+    "hostNetwork",
+    "imagePullSecrets",
     "nodeSelector",
     "priorityClassName",
     "runtimeClassName",
+    "schedulerName",
     "securityContext",
     "tolerations",
+    "topologySpreadConstraints",
     "volumes"
 })
 @ToString
@@ -70,9 +76,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
     @BuildableReference(ContainerPort.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @BuildableReference(VolumeMount.class)
@@ -90,6 +96,17 @@ public class Template implements KubernetesResource
     private String dnsPolicy;
     @JsonProperty("enableServiceLinks")
     private Boolean enableServiceLinks;
+    @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.EnvVar> env = new ArrayList<io.fabric8.kubernetes.api.model.EnvVar>();
+    @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
+    @JsonProperty("hostNetwork")
+    private java.lang.Boolean hostNetwork;
+    @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
@@ -97,11 +114,16 @@ public class Template implements KubernetesResource
     private String priorityClassName;
     @JsonProperty("runtimeClassName")
     private String runtimeClassName;
+    @JsonProperty("schedulerName")
+    private java.lang.String schedulerName;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
+    @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
@@ -118,29 +140,41 @@ public class Template implements KubernetesResource
     /**
      * 
      * @param dnsPolicy
+     * @param enableServiceLinks
+     * @param dnsConfig
+     * @param hostNetwork
+     * @param imagePullSecrets
+     * @param priorityClassName
+     * @param topologySpreadConstraints
+     * @param volumes
+     * @param hostAliases
+     * @param securityContext
+     * @param env
+     * @param nodeSelector
      * @param runtimeClassName
      * @param tolerations
-     * @param enableServiceLinks
      * @param automountServiceAccountToken
-     * @param dnsConfig
-     * @param priorityClassName
-     * @param volumes
-     * @param securityContext
+     * @param schedulerName
      * @param affinity
-     * @param nodeSelector
      */
-    public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, PodSecurityContext securityContext, List<Toleration> tolerations, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<HostAlias> hostAliases, java.lang.Boolean hostNetwork, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.affinity = affinity;
         this.automountServiceAccountToken = automountServiceAccountToken;
         this.dnsConfig = dnsConfig;
         this.dnsPolicy = dnsPolicy;
         this.enableServiceLinks = enableServiceLinks;
+        this.env = env;
+        this.hostAliases = hostAliases;
+        this.hostNetwork = hostNetwork;
+        this.imagePullSecrets = imagePullSecrets;
         this.nodeSelector = nodeSelector;
         this.priorityClassName = priorityClassName;
         this.runtimeClassName = runtimeClassName;
+        this.schedulerName = schedulerName;
         this.securityContext = securityContext;
         this.tolerations = tolerations;
+        this.topologySpreadConstraints = topologySpreadConstraints;
         this.volumes = volumes;
     }
 
@@ -194,6 +228,46 @@ public class Template implements KubernetesResource
         this.enableServiceLinks = enableServiceLinks;
     }
 
+    @JsonProperty("env")
+    public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
+        return env;
+    }
+
+    @JsonProperty("env")
+    public void setEnv(List<io.fabric8.kubernetes.api.model.EnvVar> env) {
+        this.env = env;
+    }
+
+    @JsonProperty("hostAliases")
+    public List<HostAlias> getHostAliases() {
+        return hostAliases;
+    }
+
+    @JsonProperty("hostAliases")
+    public void setHostAliases(List<HostAlias> hostAliases) {
+        this.hostAliases = hostAliases;
+    }
+
+    @JsonProperty("hostNetwork")
+    public java.lang.Boolean getHostNetwork() {
+        return hostNetwork;
+    }
+
+    @JsonProperty("hostNetwork")
+    public void setHostNetwork(java.lang.Boolean hostNetwork) {
+        this.hostNetwork = hostNetwork;
+    }
+
+    @JsonProperty("imagePullSecrets")
+    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+        return imagePullSecrets;
+    }
+
+    @JsonProperty("imagePullSecrets")
+    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+        this.imagePullSecrets = imagePullSecrets;
+    }
+
     @JsonProperty("nodeSelector")
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
@@ -224,6 +298,16 @@ public class Template implements KubernetesResource
         this.runtimeClassName = runtimeClassName;
     }
 
+    @JsonProperty("schedulerName")
+    public java.lang.String getSchedulerName() {
+        return schedulerName;
+    }
+
+    @JsonProperty("schedulerName")
+    public void setSchedulerName(java.lang.String schedulerName) {
+        this.schedulerName = schedulerName;
+    }
+
     @JsonProperty("securityContext")
     public PodSecurityContext getSecurityContext() {
         return securityContext;
@@ -242,6 +326,16 @@ public class Template implements KubernetesResource
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
+    }
+
+    @JsonProperty("topologySpreadConstraints")
+    public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
+        return topologySpreadConstraints;
+    }
+
+    @JsonProperty("topologySpreadConstraints")
+    public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
+        this.topologySpreadConstraints = topologySpreadConstraints;
     }
 
     @JsonProperty("volumes")
