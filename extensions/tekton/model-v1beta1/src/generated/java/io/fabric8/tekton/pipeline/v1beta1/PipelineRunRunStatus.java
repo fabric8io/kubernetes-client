@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.run.v1alpha1.RunStatus;
+import io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.run.v1beta1.CustomRunStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -72,7 +72,7 @@ public class PipelineRunRunStatus implements KubernetesResource
     @JsonProperty("pipelineTaskName")
     private String pipelineTaskName;
     @JsonProperty("status")
-    private RunStatus status;
+    private CustomRunStatus status;
     @JsonProperty("whenExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WhenExpression> whenExpressions = new ArrayList<WhenExpression>();
@@ -92,7 +92,7 @@ public class PipelineRunRunStatus implements KubernetesResource
      * @param whenExpressions
      * @param status
      */
-    public PipelineRunRunStatus(String pipelineTaskName, RunStatus status, List<WhenExpression> whenExpressions) {
+    public PipelineRunRunStatus(String pipelineTaskName, CustomRunStatus status, List<WhenExpression> whenExpressions) {
         super();
         this.pipelineTaskName = pipelineTaskName;
         this.status = status;
@@ -110,12 +110,12 @@ public class PipelineRunRunStatus implements KubernetesResource
     }
 
     @JsonProperty("status")
-    public RunStatus getStatus() {
+    public CustomRunStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(RunStatus status) {
+    public void setStatus(CustomRunStatus status) {
         this.status = status;
     }
 

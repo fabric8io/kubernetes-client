@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
 import io.fabric8.kubernetes.client.extension.SupportTestingClient;
+import io.fabric8.tekton.client.dsl.V1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
@@ -48,6 +49,11 @@ public class DefaultTektonClient extends ExtensionRootClientAdapter<DefaultTekto
   @Override
   public FunctionCallable<NamespacedTektonClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<>(this, requestConfig);
+  }
+
+  @Override
+  public V1APIGroupDSL v1() {
+    return adapt(V1APIGroupClient.class);
   }
 
   @Override

@@ -28,7 +28,7 @@ class TaskTest {
 
   @Test
   void testTaskFromJSON() throws IOException {
-    InputStream is = TaskTest.class.getResourceAsStream("/task.json");
+    InputStream is = TaskTest.class.getResourceAsStream("/task-v1beta1.json");
     ObjectMapper mapper = new ObjectMapper();
     Task task = mapper.readValue(is, Task.class);
     assertEquals("Task", task.getKind());

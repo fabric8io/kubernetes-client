@@ -22,7 +22,7 @@ public class PipelineList {
   public static void main(String[] args) {
     try (TektonClient client = ClientFactory.newClient(args)) {
       System.out.println("Pipelines:");
-      client.v1beta1().pipelines().list().getItems().forEach(System.out::println);
+      client.v1().pipelines().list().getItems().forEach(System.out::println);
       System.out.println("done.");
     }
     System.exit(0);

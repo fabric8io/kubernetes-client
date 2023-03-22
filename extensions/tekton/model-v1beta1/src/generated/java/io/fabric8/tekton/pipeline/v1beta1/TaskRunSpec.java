@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "params",
     "podTemplate",
     "resources",
+    "retries",
     "serviceAccountName",
     "sidecarOverrides",
     "status",
@@ -91,6 +92,8 @@ public class TaskRunSpec implements KubernetesResource
     private Template podTemplate;
     @JsonProperty("resources")
     private TaskRunResources resources;
+    @JsonProperty("retries")
+    private Integer retries;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonProperty("sidecarOverrides")
@@ -134,18 +137,20 @@ public class TaskRunSpec implements KubernetesResource
      * @param statusMessage
      * @param stepOverrides
      * @param timeout
+     * @param retries
      * @param taskRef
      * @param computeResources
      * @param workspaces
      * @param status
      */
-    public TaskRunSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, TaskRunDebug debug, List<Param> params, Template podTemplate, TaskRunResources resources, String serviceAccountName, List<TaskRunSidecarOverride> sidecarOverrides, String status, String statusMessage, List<TaskRunStepOverride> stepOverrides, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
+    public TaskRunSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, TaskRunDebug debug, List<Param> params, Template podTemplate, TaskRunResources resources, Integer retries, String serviceAccountName, List<TaskRunSidecarOverride> sidecarOverrides, String status, String statusMessage, List<TaskRunStepOverride> stepOverrides, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
         super();
         this.computeResources = computeResources;
         this.debug = debug;
         this.params = params;
         this.podTemplate = podTemplate;
         this.resources = resources;
+        this.retries = retries;
         this.serviceAccountName = serviceAccountName;
         this.sidecarOverrides = sidecarOverrides;
         this.status = status;
@@ -205,6 +210,16 @@ public class TaskRunSpec implements KubernetesResource
     @JsonProperty("resources")
     public void setResources(TaskRunResources resources) {
         this.resources = resources;
+    }
+
+    @JsonProperty("retries")
+    public Integer getRetries() {
+        return retries;
+    }
+
+    @JsonProperty("retries")
+    public void setRetries(Integer retries) {
+        this.retries = retries;
     }
 
     @JsonProperty("serviceAccountName")

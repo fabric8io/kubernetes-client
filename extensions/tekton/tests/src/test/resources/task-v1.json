@@ -1,0 +1,21 @@
+{
+  "apiVersion": "tekton.dev/v1",
+  "kind": "Task",
+  "metadata": {
+    "name": "echo-hello-world1"
+  },
+  "spec": {
+    "steps": [
+      {
+        "name": "echo",
+        "image": "ubuntu",
+        "command": [
+          "echo"
+        ],
+        "args": [
+          "hello world"
+        ]
+      }
+    ]
+  }
+}

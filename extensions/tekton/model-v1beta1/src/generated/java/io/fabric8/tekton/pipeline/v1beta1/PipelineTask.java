@@ -40,6 +40,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "description",
+    "displayName",
     "matrix",
     "name",
     "params",
@@ -77,9 +79,12 @@ import lombok.experimental.Accessors;
 public class PipelineTask implements KubernetesResource
 {
 
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("displayName")
+    private String displayName;
     @JsonProperty("matrix")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> matrix = new ArrayList<Param>();
+    private Matrix matrix;
     @JsonProperty("name")
     private String name;
     @JsonProperty("params")
@@ -116,20 +121,24 @@ public class PipelineTask implements KubernetesResource
 
     /**
      * 
-     * @param retries
-     * @param taskRef
-     * @param name
+     * @param displayName
+     * @param description
      * @param resources
      * @param runAfter
-     * @param workspaces
      * @param matrix
      * @param params
      * @param taskSpec
      * @param when
      * @param timeout
+     * @param retries
+     * @param taskRef
+     * @param name
+     * @param workspaces
      */
-    public PipelineTask(List<Param> matrix, String name, List<Param> params, PipelineTaskResources resources, Integer retries, List<String> runAfter, TaskRef taskRef, EmbeddedTask taskSpec, Duration timeout, List<WhenExpression> when, List<WorkspacePipelineTaskBinding> workspaces) {
+    public PipelineTask(String description, String displayName, Matrix matrix, String name, List<Param> params, PipelineTaskResources resources, Integer retries, List<String> runAfter, TaskRef taskRef, EmbeddedTask taskSpec, Duration timeout, List<WhenExpression> when, List<WorkspacePipelineTaskBinding> workspaces) {
         super();
+        this.description = description;
+        this.displayName = displayName;
         this.matrix = matrix;
         this.name = name;
         this.params = params;
@@ -143,13 +152,33 @@ public class PipelineTask implements KubernetesResource
         this.workspaces = workspaces;
     }
 
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @JsonProperty("displayName")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @JsonProperty("displayName")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     @JsonProperty("matrix")
-    public List<Param> getMatrix() {
+    public Matrix getMatrix() {
         return matrix;
     }
 
     @JsonProperty("matrix")
-    public void setMatrix(List<Param> matrix) {
+    public void setMatrix(Matrix matrix) {
         this.matrix = matrix;
     }
 

@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
+import io.fabric8.tekton.pipeline.v1beta1.CustomRun;
+import io.fabric8.tekton.pipeline.v1beta1.CustomRunList;
 import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineList;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
@@ -29,6 +31,8 @@ import io.fabric8.tekton.pipeline.v1beta1.Task;
 import io.fabric8.tekton.pipeline.v1beta1.TaskList;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
+import io.fabric8.tekton.resolution.v1beta1.ResolutionRequest;
+import io.fabric8.tekton.resolution.v1beta1.ResolutionRequestList;
 import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding;
 import io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBindingList;
 import io.fabric8.tekton.triggers.v1beta1.EventListener;
@@ -68,6 +72,13 @@ public interface V1beta1APIGroupDSL extends Client {
    * @return MixedOperation for TaskRun class
    */
   MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns();
+
+  /**
+   * API entrypoint for CustomRun(tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for CustomRun class
+   */
+  MixedOperation<CustomRun, CustomRunList, Resource<CustomRun>> customRuns();
 
   /**
    * API entrypoint for ClusterTask(tekton.dev/v1beta1)
@@ -110,4 +121,11 @@ public interface V1beta1APIGroupDSL extends Client {
    * @return MixedOperation for ClusterTriggerBinding class
    */
   NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings();
+
+  /**
+   * API entrypoint for ResolutionRequest(resolution.tekton.dev/v1beta1)
+   *
+   * @return MixedOperation for ResolutionRequest class
+   */
+  MixedOperation<ResolutionRequest, ResolutionRequestList, Resource<ResolutionRequest>> resolutionRequests();
 }

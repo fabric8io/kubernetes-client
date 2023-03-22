@@ -17,6 +17,7 @@ package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+import io.fabric8.tekton.client.dsl.V1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
@@ -34,6 +35,7 @@ public class TektonExtensionAdapter implements ExtensionAdapter<TektonClient> {
 
   @Override
   public void registerClients(ClientFactory factory) {
+    factory.register(V1APIGroupDSL.class, new V1APIGroupClient());
     factory.register(V1beta1APIGroupDSL.class, new V1beta1APIGroupClient());
     factory.register(V1alpha1APIGroupDSL.class, new V1alpha1APIGroupClient());
   }

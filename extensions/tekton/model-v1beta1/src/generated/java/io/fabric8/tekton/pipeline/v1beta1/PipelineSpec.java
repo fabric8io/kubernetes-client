@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "description",
+    "displayName",
     "finally",
     "params",
     "resources",
@@ -74,6 +75,8 @@ public class PipelineSpec implements KubernetesResource
 
     @JsonProperty("description")
     private String description;
+    @JsonProperty("displayName")
+    private String displayName;
     @JsonProperty("finally")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PipelineTask> _finally = new ArrayList<PipelineTask>();
@@ -104,6 +107,7 @@ public class PipelineSpec implements KubernetesResource
 
     /**
      * 
+     * @param displayName
      * @param _finally
      * @param description
      * @param resources
@@ -112,9 +116,10 @@ public class PipelineSpec implements KubernetesResource
      * @param results
      * @param tasks
      */
-    public PipelineSpec(String description, List<PipelineTask> _finally, List<ParamSpec> params, List<PipelineDeclaredResource> resources, List<PipelineResult> results, List<PipelineTask> tasks, List<PipelineWorkspaceDeclaration> workspaces) {
+    public PipelineSpec(String description, String displayName, List<PipelineTask> _finally, List<ParamSpec> params, List<PipelineDeclaredResource> resources, List<PipelineResult> results, List<PipelineTask> tasks, List<PipelineWorkspaceDeclaration> workspaces) {
         super();
         this.description = description;
+        this.displayName = displayName;
         this._finally = _finally;
         this.params = params;
         this.resources = resources;
@@ -131,6 +136,16 @@ public class PipelineSpec implements KubernetesResource
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonProperty("displayName")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @JsonProperty("displayName")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonProperty("finally")
