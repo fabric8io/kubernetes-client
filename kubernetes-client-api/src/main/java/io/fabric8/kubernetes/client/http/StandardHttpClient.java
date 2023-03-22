@@ -145,6 +145,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
                 LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
                     uri, code, retryInterval);
                 retry = true;
+                cancel.accept(response);
               }
             } else if (throwable instanceof IOException) {
               LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",

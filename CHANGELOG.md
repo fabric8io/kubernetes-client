@@ -7,6 +7,7 @@
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
+* Fix #4988: Ensuring that previous requests are closed before retry
 * fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymophic types
 

@@ -143,7 +143,8 @@ class StandardHttpClientTest {
         .withRequestRetryBackoffInterval(50).build())
         .build();
 
-    final HttpResponse<AsyncBody> error = new TestHttpResponse<AsyncBody>().withCode(500);
+    final HttpResponse<AsyncBody> error = new TestHttpResponse<AsyncBody>().withBody(Mockito.mock(AsyncBody.class))
+        .withCode(500);
     client.getRespFutures().add(CompletableFuture.completedFuture(error));
     client.getRespFutures().add(CompletableFuture.completedFuture(error));
     client.getRespFutures().add(CompletableFuture.completedFuture(error));
@@ -155,7 +156,7 @@ class StandardHttpClientTest {
         });
 
     // should ultimately succeed with the final 200
-    assertEquals(200, consumeFuture.get().code());
+    assertEquals(200, consumeFuture.get(2, TimeUnit.MINUTES).code());
 
     // only 4 requests issued
     assertEquals(4, client.getRespFutures().size());
@@ -179,9 +180,35 @@ class StandardHttpClientTest {
     client.getWsFutures().add(client.getWsFutures().get(0));
     client.getWsFutures().add(CompletableFuture.completedFuture((new WebSocketResponse(ws, null))));
 
-    future.get();
+    future.get(2, TimeUnit.MINUTES);
 
     assertEquals(3, client.getWsFutures().size());
+  }
+
+  @Test
+  void testClosePreviousBeforeRetry() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(1)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    final HttpResponse<AsyncBody> error = new TestHttpResponse<AsyncBody>().withBody(Mockito.mock(AsyncBody.class))
+        .withCode(503);
+    client.getRespFutures().add(CompletableFuture.completedFuture(error));
+    client.getRespFutures().add(CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(200)));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    Mockito.verify(error.body()).cancel();
+
+    // should ultimately succeed with the final 200
+    assertEquals(200, consumeFuture.get(2, TimeUnit.MINUTES).code());
+
+    // only 2 requests issued
+    assertEquals(2, client.getRespFutures().size());
   }
 
 }
