@@ -77,7 +77,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
   protected abstract LeaderElectionRecord toRecord(T resource);
 
   protected ObjectMetaBuilder getObjectMeta(String version) {
-    return new ObjectMetaBuilder(meta).withResourceVersion((String) version);
+    return new ObjectMetaBuilder(meta).withResourceVersion(version);
   }
 
   /**

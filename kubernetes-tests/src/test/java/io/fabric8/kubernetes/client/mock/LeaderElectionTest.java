@@ -42,14 +42,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient(crud = true)
-public class LeaderElectionTest {
+@EnableKubernetesMockClient
+class LeaderElectionTest {
 
   KubernetesMockServer server;
   KubernetesClient client;
 
   @Test
-  public void singleLeaderConfigMapLockCreateTest() throws Exception {
+  void singleLeaderConfigMapLockCreateTest() throws Exception {
     // Given
     server.expect()
         .post()
@@ -57,12 +57,12 @@ public class LeaderElectionTest {
         .andReturn(200, null)
         .once();
     // When - Then
-    testAndAssertSingleLeader("lead-config-map",
+    testAndAssertSingleLeader(client, "lead-config-map",
         new ConfigMapLock("namespace", "name", "lead-config-map"));
   }
 
   @Test
-  public void singleLeaderConfigMapLockUpdateTest() throws Exception {
+  void singleLeaderConfigMapLockUpdateTest() throws Exception {
     // Given
     server.expect()
         .get()
@@ -82,17 +82,12 @@ public class LeaderElectionTest {
         .andReturn(200, null)
         .once();
     // When - Then
-    testAndAssertSingleLeader("lead-config-map",
-        new ConfigMapLock("namespace", "name", "lead-config-map"));
-
-    // verify crud mock behavior
-    server.clearExpectations();
-    testAndAssertSingleLeader("lead-config-map",
+    testAndAssertSingleLeader(client, "lead-config-map",
         new ConfigMapLock("namespace", "name", "lead-config-map"));
   }
 
   @Test
-  public void singleLeaderLeaseLockCreateTest() throws Exception {
+  void singleLeaderLeaseLockCreateTest() throws Exception {
     // Given
     server.expect()
         .post()
@@ -100,12 +95,12 @@ public class LeaderElectionTest {
         .andReturn(200, null)
         .once();
     // When - Then
-    testAndAssertSingleLeader("lead-lease",
+    testAndAssertSingleLeader(client, "lead-lease",
         new LeaseLock("namespace", "name", "lead-lease"));
   }
 
   @Test
-  public void singleLeaderLeaseLockUpdateTest() throws Exception {
+  void singleLeaderLeaseLockUpdateTest() throws Exception {
     // Given
     server.expect()
         .get()
@@ -129,11 +124,11 @@ public class LeaderElectionTest {
         .andReturn(200, null)
         .once();
     // When - Then
-    testAndAssertSingleLeader("lead-lease",
+    testAndAssertSingleLeader(client, "lead-lease",
         new LeaseLock("namespace", "name", "lead-lease"));
   }
 
-  private void testAndAssertSingleLeader(String id, Lock lock) throws Exception {
+  static void testAndAssertSingleLeader(KubernetesClient client, String id, Lock lock) throws Exception {
     // Given
     final CountDownLatch leaderLatch = new CountDownLatch(1);
     final AtomicReference<String> newLeaderRecord = new AtomicReference<>();
@@ -161,7 +156,7 @@ public class LeaderElectionTest {
     assertEquals(0, leaderLatch.getCount());
     leaderElectorTask.cancel(true);
     executorService.shutdownNow();
-    executorService.awaitTermination(10, TimeUnit.SECONDS);
+    assertTrue(executorService.awaitTermination(10, TimeUnit.SECONDS));
     assertTrue(stoppedLeading.await(10, TimeUnit.SECONDS));
   }
 }
