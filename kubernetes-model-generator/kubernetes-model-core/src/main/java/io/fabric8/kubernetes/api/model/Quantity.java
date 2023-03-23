@@ -55,8 +55,6 @@ import java.util.Map;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class Quantity implements Serializable {
-
-  private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";
   private String amount;
   private String format = "";
   private Map<String, Object> additionalProperties = new HashMap<>();
@@ -148,7 +146,7 @@ public class Quantity implements Serializable {
     Quantity amountFormatPair = parse(value);
     String formatStr = amountFormatPair.getFormat();
     // Handle Decimal exponent case
-    if ((formatStr.matches(AT_LEAST_ONE_DIGIT_REGEX)) && formatStr.length() > 1) {
+    if (containsAtLeastOneDigit(formatStr) && formatStr.length() > 1) {
       int exponent = Integer.parseInt(formatStr.substring(1));
       return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64).multiply(new BigDecimal(amountFormatPair.getAmount()));
     }
@@ -213,6 +211,19 @@ public class Quantity implements Serializable {
     return digit.multiply(multiple);
   }
 
+  /**
+   * @param value
+   * @return true if the specified value contains at least one digit, otherwise false
+   */
+  static boolean containsAtLeastOneDigit(String value) {
+    for (int i = 0; i < value.length(); i++) {
+      if (Character.isDigit(value.charAt(i))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -249,15 +260,42 @@ public class Quantity implements Serializable {
     if (quantityAsString == null || quantityAsString.isEmpty()) {
       throw new IllegalArgumentException("Invalid quantity string format passed.");
     }
-    String[] quantityComponents = quantityAsString.split("[eEinumkKMGTP]+");
-    String amountStr = quantityComponents[0];
-    String formatStr = quantityAsString.substring(quantityComponents[0].length());
+
+    int unitIndex = indexOfUnit(quantityAsString);
+    String amountStr = quantityAsString.substring(0, unitIndex);
+    String formatStr = quantityAsString.substring(unitIndex);
     // For cases like 4e9 or 129e-6, formatStr would be e9 and e-6 respectively
     // we need to check whether this is valid too. It must not end with character.
-    if (formatStr.matches(AT_LEAST_ONE_DIGIT_REGEX) && Character.isAlphabetic(formatStr.charAt(formatStr.length() - 1))) {
+    if (containsAtLeastOneDigit(formatStr) && Character.isAlphabetic(formatStr.charAt(formatStr.length() - 1))) {
       throw new IllegalArgumentException("Invalid quantity string format passed");
     }
     return new Quantity(amountStr, formatStr);
+  }
+
+  /**
+   * @param quantityAsString quantity as a string
+   * @return the first index containing a unit character, or the length of the string if no element provided
+   */
+  static int indexOfUnit(String quantityAsString) {
+    for (int i = 0; i < quantityAsString.length(); i++) {
+      char ch = quantityAsString.charAt(i);
+      switch (ch) {
+        case 'e':
+        case 'E':
+        case 'i':
+        case 'n':
+        case 'u':
+        case 'm':
+        case 'k':
+        case 'K':
+        case 'M':
+        case 'G':
+        case 'T':
+        case 'P':
+          return i;
+      }
+    }
+    return quantityAsString.length();
   }
 
   @JsonAnyGetter

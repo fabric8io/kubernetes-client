@@ -23,8 +23,10 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuantityTest {
   private final ObjectMapper mapper = new ObjectMapper();
@@ -163,5 +165,32 @@ public class QuantityTest {
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity()));
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4MiB")));
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4megabyte")));
+  }
+
+  @Test
+  @DisplayName("Test containsAtLeastOneDigit method")
+  public void testContainsAtLeastOneDigit() {
+    assertTrue(Quantity.containsAtLeastOneDigit("0"));
+    assertTrue(Quantity.containsAtLeastOneDigit(".1"));
+    assertTrue(Quantity.containsAtLeastOneDigit(".1e2"));
+    assertTrue(Quantity.containsAtLeastOneDigit("1.2e3"));
+    assertTrue(Quantity.containsAtLeastOneDigit("-1K"));
+
+    assertFalse(Quantity.containsAtLeastOneDigit(""));
+    assertFalse(Quantity.containsAtLeastOneDigit("e"));
+    assertFalse(Quantity.containsAtLeastOneDigit("Mi"));
+  }
+
+  @Test
+  @DisplayName("Test indexOfUnit method")
+  public void testIndexOfUnit() {
+    assertEquals(0, Quantity.indexOfUnit(""));
+    assertEquals(1, Quantity.indexOfUnit("0"));
+    assertEquals(1, Quantity.indexOfUnit("1"));
+    assertEquals(3, Quantity.indexOfUnit("123"));
+    assertEquals(2, Quantity.indexOfUnit("12Mi"));
+    assertEquals(3, Quantity.indexOfUnit("123K"));
+    assertEquals(1, Quantity.indexOfUnit("1e3"));
+    assertEquals(4, Quantity.indexOfUnit("123 K"));
   }
 }
