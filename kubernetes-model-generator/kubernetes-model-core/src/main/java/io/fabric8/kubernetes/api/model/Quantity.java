@@ -293,6 +293,9 @@ public class Quantity implements Serializable {
         case 'T':
         case 'P':
           return i;
+        default:
+          //noinspection UnnecessaryContinue - satisfy Sonar
+          continue;
       }
     }
     return quantityAsString.length();
