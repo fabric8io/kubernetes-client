@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +55,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -289,13 +291,33 @@ class PodIT {
     final PodResource podResource = client.pods().withName("pod-standard");
     podResource.waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
     // When
-    final boolean uploadResult = podResource.file(uploadPath).upload(tempFile);
-    // Then
-    assertThat(uploadResult).isTrue();
+    retryUpload(() -> podResource.file(uploadPath).upload(tempFile));
+
     try (InputStream checkIs = podResource.file(uploadPath).read();
         BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
       assertEquals("I'm uploaded", result, () -> checkFile(podResource, null, uploadPath));
+    }
+  }
+
+  void retryUpload(BooleanSupplier operation) {
+    Awaitility.await().atMost(60, TimeUnit.SECONDS).until(operation::getAsBoolean);
+  }
+
+  @Test
+  void uploadBinaryStream() throws Exception {
+    byte[] bytes = new byte[16385];
+    for (int i = 0; i < bytes.length; i++) {
+      bytes[i] = (byte) i;
+    }
+    final PodResource podResource = client.pods().withName("pod-standard");
+    // When
+    retryUpload(() -> podResource.file("/tmp/binstream").upload(new ByteArrayInputStream(bytes)));
+    // Then
+    try (InputStream checkIs = podResource.file("/tmp/binstream").read();) {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      InputStreamPumper.transferTo(checkIs, baos::write);
+      assertArrayEquals(bytes, baos.toByteArray(), () -> checkFile(podResource, null, "/tmp/binstream"));
     }
   }
 
@@ -309,9 +331,8 @@ class PodIT {
     final Path tempFile = Files.write(tempDir.resolve("file.toBeUploaded"), bytes);
     final PodResource podResource = client.pods().withName("pod-standard");
     // When
-    final boolean uploadResult = podResource.file("/tmp/binfile").upload(tempFile);
+    retryUpload(() -> podResource.file("/tmp/binfile").upload(tempFile));
     // Then
-    assertThat(uploadResult).isTrue();
     try (InputStream checkIs = podResource.file("/tmp/binfile").read();) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       InputStreamPumper.transferTo(checkIs, baos::write);
@@ -330,7 +351,7 @@ class PodIT {
 
     PodResource podResource = client.pods().withName("pod-standard");
 
-    podResource.dir("/tmp/uploadDir").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(tmpDir);
+    retryUpload(() -> podResource.dir("/tmp/uploadDir").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(tmpDir));
 
     for (String fileName : files) {
       try (InputStream checkIs = podResource.file("/tmp/uploadDir/" + fileName).read();
