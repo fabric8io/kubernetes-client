@@ -3,6 +3,7 @@
 ### 6.6-SNAPSHOT
 
 #### Bugs
+* Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * fix #5002: Jetty response completion accounts for header processing
@@ -21,9 +22,9 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
-* Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
-
 * Fix #4875: Removed unused options from the java-generator
+* Fix #4910: all Pod file uploads not require commons-compress
+* Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
 
 ### 6.5.1 (2023-03-20)
 

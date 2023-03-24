@@ -15,61 +15,37 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodConditionBuilder;
-import io.fabric8.kubernetes.api.model.WatchEventBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
-import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.TestHttpResponse;
-import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.impl.BaseClient;
-import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.nio.ByteBuffer;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PodUploadTest {
 
-  private HttpClient mockClient;
-  private WebSocket mockWebSocket;
   private PodOperationsImpl operation;
-  private Pod item;
 
   @FunctionalInterface
   public interface PodUploadTester<R> {
@@ -78,29 +54,7 @@ class PodUploadTest {
 
   @BeforeEach
   void setUp() {
-    mockClient = mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    mockWebSocket = mock(WebSocket.class, Mockito.RETURNS_DEEP_STUBS);
-    when(mockWebSocket.send(any())).thenReturn(true);
-    when(mockClient.newBuilder().readTimeout(anyLong(), any(TimeUnit.class)).build()).thenReturn(mockClient);
-
-    BaseClient client = mock(BaseClient.class, Mockito.RETURNS_SELF);
-    Mockito.when(client.adapt(BaseClient.class).getExecutor()).thenReturn(CommonThreadPool.get());
-    Config config = mock(Config.class, Mockito.RETURNS_DEEP_STUBS);
-    when(config.getRequestConfig().getUploadRequestTimeout()).thenReturn(10);
-    when(config.getMasterUrl()).thenReturn("https://openshift.com:8443");
-    when(config.getNamespace()).thenReturn("default");
-    when(client.getConfiguration()).thenReturn(config);
-    when(client.getHttpClient()).thenReturn(mockClient);
-    item = new PodBuilder()
-        .withNewMetadata().withName("pod").endMetadata()
-        .withNewSpec().addNewContainer().withName("container").endContainer().endSpec()
-        .withNewStatus().withConditions(new PodConditionBuilder().withType("Ready").withStatus("True").build()).endStatus()
-        .build();
-
-    this.operation = (PodOperationsImpl) new PodOperationsImpl(
-        new PodOperationContext(), new OperationContext().withClient(client)).resource(item);
-    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class)))
-        .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, Serialization.asJson(item))));
+    this.operation = Mockito.mock(PodOperationsImpl.class, Mockito.RETURNS_DEEP_STUBS);
   }
 
   @Test
@@ -116,27 +70,27 @@ class PodUploadTest {
   void upload_withFile_shouldUploadFile() throws IOException, InterruptedException {
     final Path toUpload = new File(PodUpload.class.getResource("/upload/upload-sample.txt").getFile())
         .toPath();
-    uploadFileAndVerify(() -> PodUpload.upload(operation, toUpload));
+    uploadFileAndVerify(() -> PodUpload.upload(operation, toUpload), false, 2560);
   }
 
   @Test
   void uploadFileData_whenByteArrayInputStreamProvided_shouldUploadFile() throws IOException, InterruptedException {
     InputStream inputStream = new ByteArrayInputStream("test data".getBytes());
-    uploadFileAndVerify(() -> PodUpload.uploadFileData(operation, inputStream));
+    uploadFileAndVerify(() -> PodUpload.uploadFileData(operation, inputStream), true, 9);
   }
 
   @Test
   void upload_withDirectory_shouldUploadDirectory() throws Exception {
     final Path toUpload = new File(PodUpload.class.getResource("/upload").getFile())
         .toPath();
-    uploadDirectoryAndVerify(() -> PodUpload.upload(operation, toUpload));
+    uploadDirectoryAndVerify(() -> PodUpload.upload(operation, toUpload), 2560);
   }
 
   @Test
   void upload_withDirectoryAndLongFileNames_shouldUploadDirectory() throws Exception {
     final Path toUpload = new File(PodUpload.class.getResource("/upload_long").getFile())
         .toPath();
-    uploadDirectoryAndVerify(() -> PodUpload.upload(operation, toUpload));
+    uploadDirectoryAndVerify(() -> PodUpload.upload(operation, toUpload), 4096);
   }
 
   @Test
@@ -183,75 +137,66 @@ class PodUploadTest {
     assertThat(result).isEqualTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o' && cat - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log'");
   }
 
-  void uploadFileAndVerify(PodUploadTester<Boolean> fileUploadMethodToTest) throws IOException, InterruptedException {
-    operation = operation.file("/mock/dir/file");
-    WebSocket.Builder builder = mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
-    when(builder.buildAsync(any())).thenAnswer(newWebSocket -> {
-      final WebSocket.Listener wsl = newWebSocket.getArgument(0, WebSocket.Listener.class);
-      // Set ready status
-      wsl.onOpen(mockWebSocket);
-      if (wsl instanceof ExecWebSocketListener) {
-        wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] { (byte) 0 }));
-      } else {
-        wsl.onMessage(mockWebSocket, Serialization.asJson(new WatchEventBuilder().withType("ADDED").withObject(item).build()));
+  void uploadFileAndVerify(PodUploadTester<Boolean> fileUploadMethodToTest, boolean stream, long size)
+      throws IOException, InterruptedException {
+    Mockito.when(this.operation.getContext().getFile()).thenReturn("/mock/file");
+    if (!stream) {
+      verifyTar(fileUploadMethodToTest, size, "/mock");
+      return;
+    }
+    Mockito.when(this.operation.writingOutput(Mockito.any())).then(new Answer<TtyExecErrorable>() {
+      @Override
+      public TtyExecErrorable answer(InvocationOnMock invocation) throws Throwable {
+        OutputStream out = (OutputStream) invocation.getArgument(0);
+        out.write((size + "\n").getBytes(StandardCharsets.UTF_8));
+        return operation;
       }
-      // Set complete status
-      Mockito.doAnswer(close -> {
-        wsl.onClose(mockWebSocket, close.getArgument(0), close.getArgument(1));
-        return null;
-      }).when(mockWebSocket).sendClose(anyInt(), anyString());
-      return CompletableFuture.completedFuture(mockWebSocket);
     });
-    when(mockClient.newWebSocketBuilder()).thenReturn(builder);
-
-    final boolean result = fileUploadMethodToTest.apply();
-
+    boolean result = fileUploadMethodToTest.apply();
     assertThat(result).isTrue();
-    ArgumentCaptor<URI> captor = ArgumentCaptor.forClass(URI.class);
-    verify(builder, times(2)).uri(captor.capture());
-    assertEquals(
-        "https://openshift.com:8443/api/v1/namespaces/default/pods?fieldSelector=metadata.name%3Dpod&timeoutSeconds=600&allowWatchBookmarks=true&watch=true",
-        captor.getAllValues().get(0).toString());
-    assertEquals(
-        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20cat%20-%20%3E%20%27%2Fmock%2Fdir%2Ffile%27&container=container&stdin=true&stderr=true",
-        captor.getAllValues().get(1).toString());
-    verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
+
+    ArgumentCaptor<String[]> captorUpload = ArgumentCaptor.forClass(String[].class);
+    Mockito.verify(operation.redirectingInput().terminateOnError(), Mockito.times(1)).exec(captorUpload.capture());
+    assertEquals("mkdir -p '/mock' && cat - > '/mock/file'", captorUpload.getValue()[2]);
+
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    Mockito.verify(operation, Mockito.times(1)).exec(captor.capture());
+    assertEquals("wc -c < '/mock/file'", captor.getValue()[2]);
   }
 
-  private void uploadDirectoryAndVerify(PodUploadTester<Boolean> directoryUpload)
+  private void uploadDirectoryAndVerify(PodUploadTester<Boolean> directoryUpload, long size)
       throws IOException, InterruptedException {
-    this.operation = operation.dir("/mock/dir");
-    WebSocket.Builder builder = mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
-    when(builder.buildAsync(any())).thenAnswer(newWebSocket -> {
-      final WebSocket.Listener wsl = newWebSocket.getArgument(0, WebSocket.Listener.class);
-      // Set ready status
-      wsl.onOpen(mockWebSocket);
-      if (wsl instanceof ExecWebSocketListener) {
-        wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] { (byte) 0 }));
-      } else {
-        wsl.onMessage(mockWebSocket, Serialization.asJson(new WatchEventBuilder().withType("ADDED").withObject(item).build()));
+    Mockito.when(this.operation.getContext().getDir()).thenReturn("/mock/dir");
+    verifyTar(directoryUpload, size, "/mock/dir");
+  }
+
+  private void verifyTar(PodUploadTester<Boolean> directoryUpload, long size, String dir)
+      throws IOException, InterruptedException {
+    Mockito.when(this.operation.writingOutput(Mockito.any())).then(new Answer<TtyExecErrorable>() {
+      @Override
+      public TtyExecErrorable answer(InvocationOnMock invocation) throws Throwable {
+        OutputStream out = (OutputStream) invocation.getArgument(0);
+        out.write((size + "\n").getBytes(StandardCharsets.UTF_8));
+        return operation;
       }
-      // Set complete status
-      Mockito.doAnswer(close -> {
-        wsl.onClose(mockWebSocket, close.getArgument(0), close.getArgument(1));
-        return null;
-      }).when(mockWebSocket).sendClose(anyInt(), anyString());
-      return CompletableFuture.completedFuture(mockWebSocket);
     });
-    when(mockClient.newWebSocketBuilder()).thenReturn(builder);
-
-    final boolean result = directoryUpload.apply();
-
+    boolean result = directoryUpload.apply();
     assertThat(result).isTrue();
-    ArgumentCaptor<URI> captor = ArgumentCaptor.forClass(URI.class);
-    verify(builder, times(2)).uri(captor.capture());
-    assertEquals(
-        "https://openshift.com:8443/api/v1/namespaces/default/pods?fieldSelector=metadata.name%3Dpod&timeoutSeconds=600&allowWatchBookmarks=true&watch=true",
-        captor.getAllValues().get(0).toString());
-    assertEquals(
-        "https://openshift.com:8443/api/v1/namespaces/default/pods/pod/exec?command=sh&command=-c&command=mkdir%20-p%20%27%2Fmock%2Fdir%27%20%26%26%20tar%20-C%20%27%2Fmock%2Fdir%27%20-xzf%20-&container=container&stdin=true&stderr=true",
-        captor.getAllValues().get(1).toString());
-    verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
+
+    ArgumentCaptor<String[]> captorUpload = ArgumentCaptor.forClass(String[].class);
+    Mockito.verify(operation.redirectingInput().terminateOnError(), Mockito.times(1)).exec(captorUpload.capture());
+    assertTrue(captorUpload.getValue()[2].startsWith("mkdir -p '/tmp' && cat - > '/tmp/fabric8-"));
+
+    ArgumentCaptor<String[]> captorCount = ArgumentCaptor.forClass(String[].class);
+    Mockito.verify(operation, Mockito.times(1)).exec(captorCount.capture());
+    assertTrue(captorCount.getValue()[2].startsWith("wc -c < '/tmp/fabric8-"));
+
+    ArgumentCaptor<String[]> captorExtract = ArgumentCaptor.forClass(String[].class);
+    Mockito.verify(operation.redirectingInput()).exec(captorExtract.capture());
+
+    String extractCommand = captorExtract.getValue()[2];
+    assertTrue(extractCommand.startsWith(String.format("mkdir -p '%1$s'; tar -C '%1$s' -xmf /tmp/fabric8-", dir)),
+        extractCommand);
   }
 
 }
