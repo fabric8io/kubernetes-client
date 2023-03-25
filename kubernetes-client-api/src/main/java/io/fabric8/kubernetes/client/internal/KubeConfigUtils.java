@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
@@ -26,6 +25,8 @@ import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,13 +40,11 @@ public class KubeConfigUtils {
   }
 
   public static Config parseConfig(File file) throws IOException {
-    ObjectMapper mapper = Serialization.yamlMapper();
-    return mapper.readValue(file, Config.class);
+    return Serialization.unmarshal(new FileInputStream(file), Config.class);
   }
 
-  public static Config parseConfigFromString(String contents) throws IOException {
-    ObjectMapper mapper = Serialization.yamlMapper();
-    return mapper.readValue(contents, Config.class);
+  public static Config parseConfigFromString(String contents) {
+    return Serialization.unmarshal(contents, Config.class);
   }
 
   /**
@@ -158,6 +157,8 @@ public class KubeConfigUtils {
    * @throws IOException in case of failure while writing to file
    */
   public static void persistKubeConfigIntoFile(Config kubeConfig, String kubeConfigPath) throws IOException {
-    Serialization.yamlMapper().writeValue(new File(kubeConfigPath), kubeConfig);
+    try (FileWriter writer = new FileWriter(kubeConfigPath)) {
+      writer.write(Serialization.asYaml(kubeConfig));
+    }
   }
 }

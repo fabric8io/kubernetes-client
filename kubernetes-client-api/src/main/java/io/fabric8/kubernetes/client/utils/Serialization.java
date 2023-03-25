@@ -27,8 +27,16 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
+import org.snakeyaml.engine.v2.api.Dump;
+import org.snakeyaml.engine.v2.api.DumpSettings;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.snakeyaml.engine.v2.common.FlowStyle;
+import org.snakeyaml.engine.v2.common.ScalarStyle;
+import org.snakeyaml.engine.v2.nodes.NodeTuple;
+import org.snakeyaml.engine.v2.nodes.ScalarNode;
+import org.snakeyaml.engine.v2.nodes.Tag;
+import org.snakeyaml.engine.v2.representer.StandardRepresenter;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -84,7 +92,10 @@ public class Serialization {
    * n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
    * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
    * one from the additionalProperties Map will be serialized.
+   *
+   * @deprecated use {@link #asYaml(Object)} or one of the unmarshal methods
    */
+  @Deprecated
   public static ObjectMapper yamlMapper() {
     if (YAML_MAPPER == null) {
       synchronized (Serialization.class) {
@@ -103,7 +114,10 @@ public class Serialization {
    * This is useful because in a lot of cases the YAML mapper is only need at application startup
    * when the client is created, so there is no reason to keep the very heavy (in terms of memory) mapper
    * around indefinitely.
+   *
+   * @deprecated to be removed in later versions
    */
+  @Deprecated
   public static void clearYamlMapper() {
     YAML_MAPPER = null;
   }
@@ -141,11 +155,38 @@ public class Serialization {
    * @return a String containing a JSON representation of the provided object.
    */
   public static <T> String asYaml(T object) {
-    try {
-      return yamlMapper().writeValueAsString(object);
-    } catch (JsonProcessingException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    DumpSettings settings = DumpSettings.builder()
+        .setExplicitStart(true).setDefaultFlowStyle(FlowStyle.BLOCK).build();
+    final Dump yaml = new Dump(settings, new StandardRepresenter(settings) {
+      private boolean quote = true;
+
+      @Override
+      protected NodeTuple representMappingEntry(java.util.Map.Entry<?, ?> entry) {
+        Object key = entry.getKey();
+        if (key instanceof String) {
+          // to match the previous format, don't quote keys
+          quote = false;
+          String str = (String) key;
+          // the abbreviations y/n are not part of the snakeyaml core schema
+          if (str.length() == 1) {
+            char start = str.charAt(0);
+            quote = (start == 'y' || start == 'Y' || start == 'n' || start == 'N');
+          }
+        }
+        org.snakeyaml.engine.v2.nodes.Node nodeKey = representData(key);
+        quote = true;
+        return new NodeTuple(nodeKey, representData(entry.getValue()));
+      }
+
+      @Override
+      protected org.snakeyaml.engine.v2.nodes.Node representScalar(Tag tag, String value, ScalarStyle style) {
+        if (style == ScalarStyle.PLAIN) {
+          style = quote && tag == Tag.STR ? ScalarStyle.DOUBLE_QUOTED : this.defaultScalarStyle;
+        }
+        return new ScalarNode(tag, value, style);
+      }
+    });
+    return yaml.dumpToString(JSON_MAPPER.convertValue(object, Object.class));
   }
 
   /**
