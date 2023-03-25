@@ -15,17 +15,16 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.zjsonpatch.JsonDiff;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 public class PatchUtils {
 
@@ -48,12 +47,8 @@ public class PatchUtils {
   }
 
   public static String withoutRuntimeState(Object object, Format format, boolean omitStatus) {
-    ObjectMapper mapper = format == Format.JSON ? Serialization.jsonMapper() : Serialization.yamlMapper();
-    try {
-      return mapper.writeValueAsString(withoutRuntimeState(object, omitStatus));
-    } catch (JsonProcessingException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    Function<Object, String> mapper = format == Format.JSON ? Serialization::asJson : Serialization::asYaml;
+    return mapper.apply(withoutRuntimeState(object, omitStatus));
   }
 
   /**
@@ -75,12 +70,8 @@ public class PatchUtils {
   }
 
   public static String jsonDiff(Object current, Object updated, boolean omitStatus) {
-    try {
-      return Serialization.jsonMapper().writeValueAsString(
-          JsonDiff.asJson(withoutRuntimeState(current, omitStatus), withoutRuntimeState(updated, omitStatus)));
-    } catch (JsonProcessingException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return Serialization
+        .asJson(JsonDiff.asJson(withoutRuntimeState(current, omitStatus), withoutRuntimeState(updated, omitStatus)));
   }
 
 }

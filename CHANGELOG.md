@@ -10,12 +10,14 @@
 #### Improvements
 * Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
 * Fix #4992: Optimize Quantity parsing to avoid regex overhead
+* Fix #4998: removing the internal usage of the Serialization yaml mapper
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
 
 ### 6.5.1 (2023-03-20)
 

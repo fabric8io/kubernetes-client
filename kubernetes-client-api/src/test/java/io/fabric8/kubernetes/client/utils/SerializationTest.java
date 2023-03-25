@@ -467,6 +467,20 @@ class SerializationTest {
   }
 
   @Test
+  void testArrayAsYaml() {
+    // Given
+    String[] value = new String[] { "x", "y" };
+
+    // When
+    String yaml = Serialization.asYaml(value);
+
+    // Then
+    assertThat(yaml).isEqualTo("---\n"
+        + "- \"x\"\n"
+        + "- \"y\"\n");
+  }
+
+  @Test
   void testAnyTypeSerialization() {
     // Given
     AnyType value = new AnyType("x");
