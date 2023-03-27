@@ -1,4 +1,4 @@
-package io.cert_manager.v1;
+package io.cert_manager.v1.issuerspec.vault;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"appRole","kubernetes","tokenSecretRef"})
@@ -28,13 +28,13 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
     @com.fasterxml.jackson.annotation.JsonProperty("appRole")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("AppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private io.cert_manager.v1.AppRole appRole;
+    private io.cert_manager.v1.issuerspec.vault.auth.AppRole appRole;
 
-    public io.cert_manager.v1.AppRole getAppRole() {
+    public io.cert_manager.v1.issuerspec.vault.auth.AppRole getAppRole() {
         return appRole;
     }
 
-    public void setAppRole(io.cert_manager.v1.AppRole appRole) {
+    public void setAppRole(io.cert_manager.v1.issuerspec.vault.auth.AppRole appRole) {
         this.appRole = appRole;
     }
 
@@ -44,13 +44,13 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
     @com.fasterxml.jackson.annotation.JsonProperty("kubernetes")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Kubernetes authenticates with Vault by passing the ServiceAccount token stored in the named Secret resource to the Vault server.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private io.cert_manager.v1.Kubernetes kubernetes;
+    private io.cert_manager.v1.issuerspec.vault.auth.Kubernetes kubernetes;
 
-    public io.cert_manager.v1.Kubernetes getKubernetes() {
+    public io.cert_manager.v1.issuerspec.vault.auth.Kubernetes getKubernetes() {
         return kubernetes;
     }
 
-    public void setKubernetes(io.cert_manager.v1.Kubernetes kubernetes) {
+    public void setKubernetes(io.cert_manager.v1.issuerspec.vault.auth.Kubernetes kubernetes) {
         this.kubernetes = kubernetes;
     }
 
@@ -60,31 +60,13 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
     @com.fasterxml.jackson.annotation.JsonProperty("tokenSecretRef")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("TokenSecretRef authenticates with Vault by presenting a token.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private io.cert_manager.v1.TokenSecretRef tokenSecretRef;
+    private io.cert_manager.v1.issuerspec.vault.auth.TokenSecretRef tokenSecretRef;
 
-    public io.cert_manager.v1.TokenSecretRef getTokenSecretRef() {
+    public io.cert_manager.v1.issuerspec.vault.auth.TokenSecretRef getTokenSecretRef() {
         return tokenSecretRef;
     }
 
-    public void setTokenSecretRef(io.cert_manager.v1.TokenSecretRef tokenSecretRef) {
+    public void setTokenSecretRef(io.cert_manager.v1.issuerspec.vault.auth.TokenSecretRef tokenSecretRef) {
         this.tokenSecretRef = tokenSecretRef;
-    }
-
-    @com.fasterxml.jackson.annotation.JsonIgnore()
-    private java.util.Map<String, Object> additionalProperties = new java.util.HashMap<>();
-
-    @com.fasterxml.jackson.annotation.JsonAnyGetter()
-    public java.util.Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
-    }
-
-    @com.fasterxml.jackson.annotation.JsonAnySetter()
-    public void setAdditionalProperties(java.util.Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-    }
-
-    @com.fasterxml.jackson.annotation.JsonAnySetter()
-    public void setAdditionalProperty(java.lang.String key, java.lang.Object value) {
-        this.additionalProperties.put(key, value);
     }
 }

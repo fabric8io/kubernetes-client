@@ -60,24 +60,17 @@ public class CRGeneratorRunner {
 
       AbstractJSONSchema2Pojo specGenerator = null;
 
-      String prefix = crName;
-      if (config.getPrefixStrategy() == Config.Prefix.NEVER) {
-        prefix = "";
-      }
-
       JSONSchemaProps spec = crdv.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
       if (spec != null) {
-        String suffix = (config.getSuffixStrategy() != Config.Suffix.NEVER) ? "Spec" : "";
         specGenerator = AbstractJSONSchema2Pojo.fromJsonSchema(
-            "spec", spec, pkg, prefix, suffix, config);
+            crName + "Spec", spec, pkg, config);
       }
 
       AbstractJSONSchema2Pojo statusGenerator = null;
       JSONSchemaProps status = crdv.getSchema().getOpenAPIV3Schema().getProperties().get("status");
       if (status != null) {
-        String suffix = (config.getSuffixStrategy() != Config.Suffix.NEVER) ? "Status" : "";
         statusGenerator = AbstractJSONSchema2Pojo.fromJsonSchema(
-            "status", status, pkg, prefix, suffix, config);
+            crName + "Status", status, pkg, config);
       }
 
       AbstractJSONSchema2Pojo crGenerator = new JCRObject(
@@ -86,8 +79,8 @@ public class CRGeneratorRunner {
           group,
           version,
           scope,
-          prefix + "Spec",
-          prefix + "Status",
+          crName + "Spec",
+          crName + "Status",
           specGenerator != null,
           statusGenerator != null,
           crdv.getStorage(),

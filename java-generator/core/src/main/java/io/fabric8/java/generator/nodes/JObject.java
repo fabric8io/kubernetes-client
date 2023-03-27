@@ -55,11 +55,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       Map<String, JSONSchemaProps> fields,
       List<String> required,
       boolean preserveUnknownFields,
-      String classPrefix,
-      String classSuffix,
       Config config,
       String description,
-      final boolean isNullable, JsonNode defaultValue) {
+      final boolean isNullable,
+      JsonNode defaultValue) {
     super(config, description, isNullable, defaultValue, null);
     this.required = new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
     this.fields = new HashMap<>();
@@ -67,41 +66,22 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
     this.pkg = (pkg == null) ? "" : pkg.trim();
     String pkgPrefix = (this.pkg.isEmpty()) ? this.pkg : this.pkg + ".";
-    String clazzPrefix = (classPrefix == null) ? "" : classPrefix.trim();
-    String clazzSuffix = (classSuffix == null
-        || type.toLowerCase(Locale.ROOT)
-            .endsWith(classSuffix.toLowerCase(Locale.ROOT)))
-                ? ""
-                : classSuffix.trim();
     String upperCasedClassName = type.substring(0, 1).toUpperCase() + type.substring(1);
-    this.className = AbstractJSONSchema2Pojo.sanitizeString(
-        clazzPrefix + upperCasedClassName + clazzSuffix);
+    this.className = AbstractJSONSchema2Pojo.sanitizeString(upperCasedClassName);
     this.type = pkgPrefix + this.className;
 
     if (fields == null) {
       // no fields
     } else {
-      String nextPackagePath = null;
-      switch (config.getCodeStructure()) {
-        case FLAT:
-          nextPackagePath = this.pkg;
-          break;
-        case PACKAGE_NESTED:
-          nextPackagePath = pkgPrefix + AbstractJSONSchema2Pojo.packageName(this.className);
-          break;
-      }
+      String nextPackagePath = pkgPrefix + AbstractJSONSchema2Pojo.packageName(this.className);
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
-        String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
-        String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
         this.fields.put(
             field.getKey(),
             AbstractJSONSchema2Pojo.fromJsonSchema(
                 field.getKey(),
                 field.getValue(),
                 nextPackagePath,
-                nextPrefix,
-                nextSuffix,
                 config));
       }
     }
@@ -270,7 +250,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
     }
 
-    if (this.preserveUnknownFields || config.isAlwaysPreserveUnknownFields()) {
+    if (this.preserveUnknownFields) {
       ClassOrInterfaceType mapType = new ClassOrInterfaceType()
           .setName(Keywords.JAVA_UTIL_MAP)
           .setTypeArguments(
