@@ -15,6 +15,8 @@
 
 #### _**Note**_: Breaking changes
 
+* Fix #4875: Removed unused options from the java-generator
+
 ### 6.5.1 (2023-03-20)
 
 #### Bugs
