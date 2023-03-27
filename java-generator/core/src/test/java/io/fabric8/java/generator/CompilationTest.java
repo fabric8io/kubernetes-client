@@ -50,7 +50,6 @@ class CompilationTest {
   @BeforeEach
   void setUp() {
     config = Config.builder()
-        .structure(Config.CodeStructure.PACKAGE_NESTED)
         .generatedAnnotations(false)
         .build();
   }
@@ -89,30 +88,11 @@ class CompilationTest {
   }
 
   @Test
-  void crontabCRDCompilesWithFlatPackage() throws Exception {
-    // Arrange
-    File crd = getCRD("crontab-crd.yml");
-    config = config.toBuilder()
-        .structure(Config.CodeStructure.FLAT)
-        .build();
-
-    // Act
-    new FileJavaGenerator(config, crd).run(tempDir);
-    Compilation compilation = javac().compile(getSources(tempDir));
-
-    // Assert
-    assertTrue(compilation.errors().isEmpty());
-    assertEquals(3, compilation.sourceFiles().size());
-    assertEquals(Compilation.Status.SUCCESS, compilation.status());
-  }
-
-  @Test
-  void testCrontabCRDCompilesWithExtraAnnotationsAndUnknownFields() throws Exception {
+  void testCrontabCRDCompilesWithExtraAnnotations() throws Exception {
     // Arrange
     File crd = getCRD("crontab-crd.yml");
     config = config.toBuilder()
         .objectExtraAnnotations(true)
-        .alwaysPreserveUnknownFields(true)
         .build();
 
     // Act

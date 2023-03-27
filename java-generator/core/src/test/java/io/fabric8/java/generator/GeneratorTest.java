@@ -294,8 +294,7 @@ class GeneratorTest {
         null,
         null,
         false,
-        "",
-        "", defaultConfig,
+        defaultConfig,
         null,
         Boolean.FALSE,
         null);
@@ -310,32 +309,6 @@ class GeneratorTest {
   }
 
   @Test
-  void testEmptyObjectWithSuffix() {
-    // Arrange
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, true, new HashMap<>());
-    JObject obj = new JObject(
-        "v1alpha1",
-        "t",
-        null,
-        null,
-        false,
-        "",
-        "MySuffix",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals("v1alpha1.TMySuffix", obj.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("TMySuffix", res.getTopLevelClasses().get(0).getName());
-  }
-
-  @Test
   void testEmptyObjectWithoutNamespace() {
     // Arrange
     JObject obj = new JObject(
@@ -344,8 +317,6 @@ class GeneratorTest {
         null,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -373,8 +344,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -409,8 +378,6 @@ class GeneratorTest {
         props,
         req,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -433,21 +400,17 @@ class GeneratorTest {
         new HashMap<>(),
         new ArrayList<>(),
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, false, new HashMap<>());
+    Config config = new Config(null, null, false, new HashMap<>());
     JObject obj2 = new JObject(
         "v1alpha1",
         "t",
         new HashMap<>(),
         new ArrayList<>(),
         false,
-        "",
-        "",
         config,
         null,
         Boolean.FALSE,
@@ -516,7 +479,7 @@ class GeneratorTest {
     JEnum enu = new JEnum(
         "t",
         enumValues,
-        new Config(false, null, null, null, null, null, true, new HashMap<>()),
+        new Config(false, null, null, new HashMap<>()),
         null,
         Boolean.FALSE,
         null);
@@ -547,8 +510,6 @@ class GeneratorTest {
             null,
             null,
             false,
-            "",
-            "",
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -577,8 +538,6 @@ class GeneratorTest {
             null,
             null,
             false,
-            "",
-            "",
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -610,8 +569,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -634,66 +591,6 @@ class GeneratorTest {
   }
 
   @Test
-  void testObjectOfObjectsWithTopLevelPrefix() {
-    // Arrange
-    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null, true, new HashMap<>());
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
-    newObj.setType("object");
-    props.put("o1", newObj);
-    JObject obj = new JObject(
-        null,
-        "t",
-        props,
-        null,
-        false,
-        "My",
-        "",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("MyT", res.getTopLevelClasses().get(1).getName());
-  }
-
-  @Test
-  void testObjectOfObjectsWithAlwaysPrefix() {
-    // Arrange
-    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null, true, new HashMap<>());
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
-    newObj.setType("object");
-    props.put("o1", newObj);
-    JObject obj = new JObject(
-        null,
-        "t",
-        props,
-        null,
-        false,
-        "My",
-        "",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("MyO1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("MyT", res.getTopLevelClasses().get(1).getName());
-  }
-
-  @Test
   void testObjectWithPreservedFields() {
     // Arrange
     JObject obj = new JObject(
@@ -702,8 +599,6 @@ class GeneratorTest {
         null,
         null,
         true,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -735,8 +630,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -768,7 +661,7 @@ class GeneratorTest {
     nonNullableObj.setNullable(Boolean.FALSE);
     props.put("o2", nonNullableObj);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -823,7 +716,7 @@ class GeneratorTest {
     newObj2.setProperties(obj2Props);
     props.put("o1", newObj1);
     props.put("o2", newObj2);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -878,7 +771,7 @@ class GeneratorTest {
     objWithoutDefaultValues.setType("object");
     props.put("o2", objWithoutDefaultValues);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
