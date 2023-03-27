@@ -46,10 +46,6 @@ public class SourceCodeGenerationBenchmark {
     final Config config = new Config(
         null,
         null,
-        null,
-        null,
-        null,
-        null,
         true,
         null);
 
