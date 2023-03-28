@@ -707,14 +707,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handleCreate(resource, getType());
   }
 
-  protected T handleUpdate(T updated, boolean status) throws InterruptedException, IOException {
+  protected T handleUpdate(T updated) throws InterruptedException, IOException {
     updateApiVersion(updated);
-    return handleUpdate(updated, getType(), status);
+    return handleUpdate(updated, getType());
   }
 
-  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws InterruptedException, IOException {
+  protected T handlePatch(PatchContext context, T current, T updated) throws InterruptedException, IOException {
     updateApiVersion(updated);
-    return handlePatch(context, current, updated, getType(), status);
+    return handlePatch(context, current, updated, getType());
   }
 
   protected Scale handleScale(Scale scaleParam) {

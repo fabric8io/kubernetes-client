@@ -229,7 +229,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   }
 
   protected T sendPatchedObject(T oldObject, T updatedObject) {
-    return this.patch(null, oldObject, updatedObject, false);
+    return this.patch(null, oldObject, updatedObject);
   }
 
   @Override
