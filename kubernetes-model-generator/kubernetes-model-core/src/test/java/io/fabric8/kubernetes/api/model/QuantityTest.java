@@ -23,8 +23,10 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuantityTest {
   private final ObjectMapper mapper = new ObjectMapper();
@@ -86,6 +88,7 @@ public class QuantityTest {
   public void testExponents() {
     assertEquals("129000000", Quantity.getAmountInBytes(new Quantity("129e6")).toString());
     assertEquals("129000000", Quantity.getAmountInBytes(new Quantity("129e+6")).toString());
+    assertEquals("1234567890", Quantity.getAmountInBytes(new Quantity("1234567890")).toString());
     assertEquals("8192", Quantity.getAmountInBytes(new Quantity("8Ki")).toString());
     assertEquals("7340032", Quantity.getAmountInBytes(new Quantity("7Mi")).toString());
     assertEquals("6442450944", Quantity.getAmountInBytes(new Quantity("6Gi")).toString());
@@ -129,6 +132,7 @@ public class QuantityTest {
   public void testExponent() {
     assertEquals("10000", Quantity.getAmountInBytes(new Quantity("1e4")).toString());
     assertEquals("2000000000", Quantity.getAmountInBytes(new Quantity("2E9")).toString());
+    assertEquals("2000000000000", Quantity.getAmountInBytes(new Quantity("2E12")).toString());
   }
 
   @Test
@@ -148,6 +152,7 @@ public class QuantityTest {
     assertEquals("1Ki", new Quantity("1Ki").toString());
     assertEquals("32Mi", new Quantity("32Mi").toString());
     assertEquals("1e3", new Quantity("1e3").toString());
+    assertEquals("1e10", new Quantity("1e10").toString());
     assertEquals("1e-3", new Quantity("1e-3").toString());
     assertEquals("100k", new Quantity("100k").toString());
     assertEquals("100001m", new Quantity("100001m").toString());
@@ -163,5 +168,34 @@ public class QuantityTest {
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity()));
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4MiB")));
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4megabyte")));
+    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4c")));
+  }
+
+  @Test
+  @DisplayName("Test containsAtLeastOneDigit method")
+  public void testContainsAtLeastOneDigit() {
+    assertTrue(Quantity.containsAtLeastOneDigit("0"));
+    assertTrue(Quantity.containsAtLeastOneDigit(".1"));
+    assertTrue(Quantity.containsAtLeastOneDigit(".1e2"));
+    assertTrue(Quantity.containsAtLeastOneDigit("1.2e3"));
+    assertTrue(Quantity.containsAtLeastOneDigit("-1K"));
+
+    assertFalse(Quantity.containsAtLeastOneDigit(""));
+    assertFalse(Quantity.containsAtLeastOneDigit("e"));
+    assertFalse(Quantity.containsAtLeastOneDigit("Mi"));
+  }
+
+  @Test
+  @DisplayName("Test indexOfUnit method")
+  public void testIndexOfUnit() {
+    assertEquals(0, Quantity.indexOfUnit(""));
+    assertEquals(1, Quantity.indexOfUnit("0"));
+    assertEquals(1, Quantity.indexOfUnit("1"));
+    assertEquals(3, Quantity.indexOfUnit("123"));
+    assertEquals(2, Quantity.indexOfUnit("12Mi"));
+    assertEquals(3, Quantity.indexOfUnit("123K"));
+    assertEquals(1, Quantity.indexOfUnit("1e3"));
+    assertEquals(4, Quantity.indexOfUnit("123 K"));
+    assertEquals(4, Quantity.indexOfUnit("123c"));
   }
 }
