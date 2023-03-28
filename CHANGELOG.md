@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
+* fix #5002: Jetty response completion accounts for header processing
 
 #### Improvements
 * Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
