@@ -13,6 +13,7 @@
 * Fix #4998: removing the internal usage of the Serialization yaml mapper
 
 #### Dependency Upgrade
+* Fix #5006: Bump BouncyCastle to 1.72
 
 #### New Features
 
