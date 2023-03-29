@@ -17,6 +17,7 @@ package io.fabric8.java.generator;
 
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -37,8 +38,7 @@ import java.util.stream.Stream;
 import javax.tools.JavaFileObject;
 
 import static com.google.testing.compile.Compiler.javac;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CompilationTest {
 
@@ -68,7 +68,8 @@ class CompilationTest {
         Arguments.of("cert-manager-crd.yml", 5),
         Arguments.of("camel-integrationplatforms-crd.yaml", 192),
         Arguments.of("two-crds.yml", 6),
-        Arguments.of("folder", 6));
+        Arguments.of("folder", 6),
+        Arguments.of("calico-ippool-crd.yml", 3));
   }
 
   @ParameterizedTest(name = "{0} should generate {1} source files and compile OK")
@@ -103,6 +104,24 @@ class CompilationTest {
     assertTrue(compilation.errors().isEmpty());
     assertEquals(3, compilation.sourceFiles().size());
     assertEquals(Compilation.Status.SUCCESS, compilation.status());
+  }
+
+  @Test
+  void testCalicoIPPoolCRDDoesNotCompileWhenDuplicatesAreNotDeprecated() throws Exception {
+    // Arrange
+    File crd = getCRD("calico-ippool-broken-crd.yml");
+    config = config.toBuilder()
+        .objectExtraAnnotations(true)
+        .alwaysPreserveUnknownFields(true)
+        .build();
+
+    // Assert
+    assertThrows(JavaGeneratorException.class, () -> {
+      // Act
+      new FileJavaGenerator(config, crd).run(tempDir);
+      javac().compile(getSources(tempDir));
+    },
+        "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
   }
 
   static List<JavaFileObject> getSources(File basePath) throws IOException {

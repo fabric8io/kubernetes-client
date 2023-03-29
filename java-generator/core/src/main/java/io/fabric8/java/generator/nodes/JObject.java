@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
+  public static final String DEPRECATED_FIELD_MARKER = "Deprecated:";
   private final String type;
   private final String className;
   private final String pkg;
@@ -76,10 +77,41 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       String nextPackagePath = pkgPrefix + AbstractJSONSchema2Pojo.packageName(this.className);
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
+        String fieldKey = field.getKey();
+        // let's handle duplicates
+        final Map<String, Map<String, JSONSchemaProps>> duplicates = new HashMap<>();
+        // counting the current field duplicates
+        final List<Map.Entry<String, JSONSchemaProps>> fieldDuplicates = fields.entrySet().stream()
+            .filter(f -> sanitizeString(field.getKey()).equals(sanitizeString(f.getKey())))
+            .collect(Collectors.toList());
+        final Long duplicatesCount = fieldDuplicates.stream().count();
+        final Boolean duplicatesExist = duplicatesCount > 1;
+        if (duplicatesExist) {
+          // we want to throw an exception on some duplicates missing requirements. At the moment, the only one we
+          // enforce is for a (duplicatesCount - 1) number of duplicates to be marked as deprecated
+          final Long deprecatedDuplicates = fieldDuplicates.stream()
+              .filter(d -> d.getValue().getDescription().startsWith(DEPRECATED_FIELD_MARKER)).count();
+          if (deprecatedDuplicates != (duplicatesCount - 1)) {
+            throw new JavaGeneratorException(
+                String.format("The %s field has %d duplicates while only %d of them are deprecated", field.getKey(),
+                    duplicatesCount, deprecatedDuplicates));
+          }
+          final String fieldName = sanitizeString(field.getKey());
+          Map<String, JSONSchemaProps> existingDuplicates = duplicates.get(fieldName);
+          if (existingDuplicates == null) {
+            existingDuplicates = new HashMap<>();
+            duplicates.put(fieldName, existingDuplicates);
+          }
+          if (field.getValue().getDescription().startsWith(DEPRECATED_FIELD_MARKER)) {
+            fieldKey += String.format("-deprecated%d", existingDuplicates.keySet().size());
+          }
+          existingDuplicates.put(fieldKey, field.getValue());
+        }
+        // and finally add the field definition
         this.fields.put(
-            field.getKey(),
+            fieldKey,
             AbstractJSONSchema2Pojo.fromJsonSchema(
-                field.getKey(),
+                fieldKey,
                 field.getValue(),
                 nextPackagePath,
                 config));
