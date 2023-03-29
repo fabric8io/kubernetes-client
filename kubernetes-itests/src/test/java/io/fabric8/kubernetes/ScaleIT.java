@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -37,6 +38,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ScaleIT {
 
   KubernetesClient client;
+
+  @BeforeEach
+  void setUp() {
+    client.apiextensions().v1().customResourceDefinitions().withName("crontabs.stable.example.com")
+        .waitUntilCondition(crd -> crd != null && crd.getStatus() != null && crd.getStatus().getConditions() != null &&
+            crd.getStatus().getConditions().stream()
+                .filter(c -> c.getType() != null)
+                .filter(c -> c.getStatus() != null)
+                .anyMatch(c -> c.getType().equals("Established") && c.getStatus().equals("True")),
+            10, TimeUnit.SECONDS);
+  }
 
   @Test
   void scale() {
