@@ -42,13 +42,11 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
 
   private static final Logger logger = LoggerFactory.getLogger(BeanPropertyWriterDelegate.class);
 
-  private final BeanPropertyWriter delegate;
   private final AnnotatedMember anyGetter;
   private final transient Supplier<Boolean> logDuplicateWarning;
 
   BeanPropertyWriterDelegate(BeanPropertyWriter delegate, AnnotatedMember anyGetter, Supplier<Boolean> logDuplicateWarning) {
     super(delegate);
-    this.delegate = delegate;
     this.anyGetter = anyGetter;
     this.logDuplicateWarning = logDuplicateWarning;
   }
@@ -56,17 +54,15 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
   @Override
   public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov) throws Exception {
     Object valueInAnyGetter = null;
-    if (anyGetter != null) {
-      Object anyGetterValue = anyGetter.getValue(bean);
-      if (anyGetterValue != null) {
-        valueInAnyGetter = ((Map<?, ?>) anyGetterValue).get(delegate.getName());
-      }
+    Object anyGetterValue = anyGetter.getValue(bean);
+    if (anyGetterValue != null) {
+      valueInAnyGetter = ((Map<?, ?>) anyGetterValue).get(getName());
     }
     if (valueInAnyGetter == null) {
-      delegate.serializeAsField(bean, gen, prov);
+      super.serializeAsField(bean, gen, prov);
     } else if (Boolean.TRUE.equals(logDuplicateWarning.get())) {
       logger.warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
-          delegate.getName(), valueInAnyGetter, bean.getClass().getName());
+          getName(), valueInAnyGetter, bean.getClass().getName());
     }
   }
 }

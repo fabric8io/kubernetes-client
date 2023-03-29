@@ -54,6 +54,9 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
       @Override
       public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc,
           BeanDeserializerBuilder builder) {
+        if (builder.getAnySetter() == null) {
+          return builder;
+        }
         builder.getProperties().forEachRemaining(p -> builder.addOrReplaceProperty(
             new SettableBeanPropertyDelegate(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::useAnySetter) {
             }, true));
@@ -64,6 +67,9 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
       @Override
       public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc,
           BeanSerializerBuilder builder) {
+        if (builder.getBeanDescription().findAnyGetter() == null) {
+          return builder;
+        }
         builder.setProperties(builder.getProperties().stream()
             .map(p -> new BeanPropertyWriterDelegate(p, builder.getBeanDescription().findAnyGetter(),
                 UnmatchedFieldTypeModule.this::isLogWarnings))

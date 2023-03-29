@@ -7,6 +7,7 @@
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * fix #5002: Jetty response completion accounts for header processing
+* Fix #5009: addressing issue with serialization of wrapped polymophic types
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead

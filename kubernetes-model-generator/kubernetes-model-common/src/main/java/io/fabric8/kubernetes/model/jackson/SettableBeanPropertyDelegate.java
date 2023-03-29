@@ -171,9 +171,6 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
   }
 
   private boolean shouldUseAnySetter() {
-    if (anySetter == null) {
-      return false;
-    }
     return useAnySetter.getAsBoolean();
   }
 }
