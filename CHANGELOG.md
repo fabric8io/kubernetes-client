@@ -14,6 +14,7 @@
 
 #### Dependency Upgrade
 * Fix #5006: Bump BouncyCastle to 1.72
+* Fix #5006: Use BouncyCastle JDK 1.8 compatible jars
 
 #### New Features
 

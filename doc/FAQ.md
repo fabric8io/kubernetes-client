@@ -23,7 +23,7 @@ If you wish to use another HttpClient implementation typically you will exclude 
 ```xml
 <dependency>
     <groupId>org.bouncycastle</groupId>
-    <artifactId>bcpkix-jdk15on</artifactId>
+    <artifactId>bcpkix-jdk18on</artifactId>
     <version>${bouncycastle.version}</version>
 </dependency>
 ```
