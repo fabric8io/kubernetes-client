@@ -47,6 +47,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   private final String pkg;
   private final Map<String, AbstractJSONSchema2Pojo> fields;
   private final Set<String> required;
+  private final Set<String> deprecated = new HashSet<>();
 
   private final boolean preserveUnknownFields;
 
@@ -80,7 +81,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       // 1(fieldName) -> n(fieldDefinition(key, props))
       final Map<String, Map<String, JSONSchemaProps>> groupedFieldDefinitions = fields.entrySet().stream()
           .collect(Collectors.groupingBy(
-              JObject::sanitizeFieldNameFromDefinition,
+              (f) -> AbstractJSONSchema2Pojo.sanitizeString(f.getKey()),
               Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
       int deprecatedFieldCounter = 0;
 
@@ -93,10 +94,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
             .findFirst().get();
         if (fieldDuplicatesDefinition.getValue().entrySet().size() > 1) {
           Set<Map.Entry<String, JSONSchemaProps>> fieldDuplicates = fieldDuplicatesDefinition.getValue().entrySet();
-          final Long duplicatesCount = fieldDuplicates.stream().count();
+          final long duplicatesCount = fieldDuplicates.size();
           // we want to throw an exception on some duplicates missing requirements. At the moment, the only one we
           // enforce is for a (duplicatesCount - 1) number of duplicates to be marked as deprecated
-          final Long deprecatedDuplicates = fieldDuplicates.stream()
+          final long deprecatedDuplicates = fieldDuplicates.stream()
               .filter(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)).count();
           if (deprecatedDuplicates != (duplicatesCount - 1)) {
             throw new JavaGeneratorException(
@@ -105,6 +106,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
           }
           if (field.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)) {
             fieldKey += duplicatesCount == 2 ? "-deprecated" : String.format("-deprecated%d", deprecatedFieldCounter++);
+            this.deprecated.add(fieldKey);
           }
         }
         // and finally add the field definition
@@ -179,6 +181,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     for (String k : sortedKeys) {
       AbstractJSONSchema2Pojo prop = this.fields.get(k);
       boolean isRequired = this.required.contains(k);
+      boolean isDeprecated = this.deprecated.contains(k);
 
       GeneratorResult gr = prop.generateJava();
 
@@ -276,7 +279,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
           }
         }
 
-        if (k.matches(".*-deprecated(\\d$)?$")) {
+        if (isDeprecated) {
           objField.addAnnotation("java.lang.Deprecated");
         }
       } catch (Exception cause) {
@@ -349,9 +352,5 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     String withoutDollars = className.replace("$", "."); // nested class in Java cannot be used in casts
     return withoutDollars.indexOf('<') >= 0 ? StaticJavaParser.parseClassOrInterfaceType(withoutDollars)
         : new ClassOrInterfaceType(null, withoutDollars);
-  }
-
-  private static String sanitizeFieldNameFromDefinition(Map.Entry<String, JSONSchemaProps> fieldDefinition) {
-    return AbstractJSONSchema2Pojo.sanitizeString(fieldDefinition.getKey());
   }
 }
