@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
-  public static final String DEPRECATED_FIELD_MARKER = "Deprecated:";
+  public static final String DEPRECATED_FIELD_MARKER = "deprecated";
   private final String type;
   private final String className;
   private final String pkg;
@@ -76,36 +76,36 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     } else {
       String nextPackagePath = pkgPrefix + AbstractJSONSchema2Pojo.packageName(this.className);
 
+      // in order to handle duplicated fields, first let's build a map of fields grouped by their sanitized names, i.e.:
+      // 1(fieldName) -> n(fieldDefinition(key, props))
+      final Map<String, Map<String, JSONSchemaProps>> groupedFieldDefinitions = fields.entrySet().stream()
+          .collect(Collectors.groupingBy(
+              JObject::sanitizeFieldNameFromDefinition,
+              Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+      int deprecatedFieldCounter = 0;
+
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
         String fieldKey = field.getKey();
-        // let's handle duplicates
-        final Map<String, Map<String, JSONSchemaProps>> duplicates = new HashMap<>();
-        // counting the current field duplicates
-        final List<Map.Entry<String, JSONSchemaProps>> fieldDuplicates = fields.entrySet().stream()
-            .filter(f -> sanitizeString(field.getKey()).equals(sanitizeString(f.getKey())))
-            .collect(Collectors.toList());
-        final Long duplicatesCount = fieldDuplicates.stream().count();
-        final Boolean duplicatesExist = duplicatesCount > 1;
-        if (duplicatesExist) {
+        // lookup the duplicated field properties map
+        final Map.Entry<String, Map<String, JSONSchemaProps>> fieldDuplicatesDefinition = groupedFieldDefinitions.entrySet()
+            .stream()
+            .filter(d -> d.getValue().containsKey(field.getKey()))
+            .findFirst().get();
+        if (fieldDuplicatesDefinition.getValue().entrySet().size() > 1) {
+          Set<Map.Entry<String, JSONSchemaProps>> fieldDuplicates = fieldDuplicatesDefinition.getValue().entrySet();
+          final Long duplicatesCount = fieldDuplicates.stream().count();
           // we want to throw an exception on some duplicates missing requirements. At the moment, the only one we
           // enforce is for a (duplicatesCount - 1) number of duplicates to be marked as deprecated
           final Long deprecatedDuplicates = fieldDuplicates.stream()
-              .filter(d -> d.getValue().getDescription().startsWith(DEPRECATED_FIELD_MARKER)).count();
+              .filter(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)).count();
           if (deprecatedDuplicates != (duplicatesCount - 1)) {
             throw new JavaGeneratorException(
                 String.format("The %s field has %d duplicates while only %d of them are deprecated", field.getKey(),
                     duplicatesCount, deprecatedDuplicates));
           }
-          final String fieldName = sanitizeString(field.getKey());
-          Map<String, JSONSchemaProps> existingDuplicates = duplicates.get(fieldName);
-          if (existingDuplicates == null) {
-            existingDuplicates = new HashMap<>();
-            duplicates.put(fieldName, existingDuplicates);
+          if (field.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)) {
+            fieldKey += duplicatesCount == 2 ? "-deprecated" : String.format("-deprecated%d", deprecatedFieldCounter++);
           }
-          if (field.getValue().getDescription().startsWith(DEPRECATED_FIELD_MARKER)) {
-            fieldKey += String.format("-deprecated%d", existingDuplicates.keySet().size());
-          }
-          existingDuplicates.put(fieldKey, field.getValue());
         }
         // and finally add the field definition
         this.fields.put(
@@ -345,5 +345,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     String withoutDollars = className.replace("$", "."); // nested class in Java cannot be used in casts
     return withoutDollars.indexOf('<') >= 0 ? StaticJavaParser.parseClassOrInterfaceType(withoutDollars)
         : new ClassOrInterfaceType(null, withoutDollars);
+  }
+
+  private static String sanitizeFieldNameFromDefinition(Map.Entry<String, JSONSchemaProps> fieldDefinition) {
+    return AbstractJSONSchema2Pojo.sanitizeString(fieldDefinition.getKey());
   }
 }

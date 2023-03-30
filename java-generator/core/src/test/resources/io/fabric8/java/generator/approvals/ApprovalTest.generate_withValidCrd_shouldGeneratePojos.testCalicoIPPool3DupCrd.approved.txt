@@ -1,4 +1,4 @@
-CalicoIPPoolCr[0] = package org.test.v1;
+CalicoIPPool3DupCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("crd.projectcalico.org")
@@ -8,10 +8,10 @@ CalicoIPPoolCr[0] = package org.test.v1;
 public class IPPool extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.IPPoolSpec, java.lang.Void> {
 }
 
-CalicoIPPoolCr[1] = package org.test.v1;
+CalicoIPPool3DupCr[1] = package org.test.v1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
-@com.fasterxml.jackson.annotation.JsonPropertyOrder({"allowedUses","blockSize","cidr","disableBGPExport","disabled","ipip","ipipMode","nat-outgoing-deprecated","natOutgoing","nodeSelector","vxlanMode"})
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"allowedUses","blockSize","cidr","disableBGPExport","disabled","ipip","ipipMode","nat-outgoing-deprecated","natOutgoing","nodeSelector","test Dup-deprecated0","test.Dup-deprecated1","test_Dup","vxlanMode"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class IPPoolSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
@@ -175,6 +175,54 @@ public class IPPoolSpec implements io.fabric8.kubernetes.api.model.KubernetesRes
 
     public void setNodeSelector(String nodeSelector) {
         this.nodeSelector = nodeSelector;
+    }
+
+    /**
+     * Deprecated: This field is JUST FOR testing purposes.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("test Dup-deprecated0")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: This field is JUST FOR testing purposes.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Boolean test_DupDeprecated0;
+
+    public Boolean getTest_DupDeprecated0() {
+        return test_DupDeprecated0;
+    }
+
+    public void setTest_DupDeprecated0(Boolean test_DupDeprecated0) {
+        this.test_DupDeprecated0 = test_DupDeprecated0;
+    }
+
+    /**
+     * Deprecated: This field is JUST FOR testing purposes.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("test.Dup-deprecated1")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: This field is JUST FOR testing purposes.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Boolean test_DupDeprecated1;
+
+    public Boolean getTest_DupDeprecated1() {
+        return test_DupDeprecated1;
+    }
+
+    public void setTest_DupDeprecated1(Boolean test_DupDeprecated1) {
+        this.test_DupDeprecated1 = test_DupDeprecated1;
+    }
+
+    /**
+     * This field is JUST FOR testing purposes.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("test_Dup")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("This field is JUST FOR testing purposes.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Boolean test_Dup;
+
+    public Boolean getTest_Dup() {
+        return test_Dup;
+    }
+
+    public void setTest_Dup(Boolean test_Dup) {
+        this.test_Dup = test_Dup;
     }
 
     /**
