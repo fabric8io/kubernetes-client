@@ -113,7 +113,6 @@ class CompilationTest {
     File crd = getCRD("calico-ippool-broken-crd.yml");
     config = config.toBuilder()
         .objectExtraAnnotations(true)
-        .alwaysPreserveUnknownFields(true)
         .build();
 
     // Assert
