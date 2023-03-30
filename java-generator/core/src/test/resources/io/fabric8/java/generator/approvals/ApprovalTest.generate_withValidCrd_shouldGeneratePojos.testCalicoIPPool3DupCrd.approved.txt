@@ -135,6 +135,7 @@ public class IPPoolSpec implements io.fabric8.kubernetes.api.model.KubernetesRes
     @com.fasterxml.jackson.annotation.JsonProperty("nat-outgoing-deprecated")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    @java.lang.Deprecated()
     private Boolean natOutgoingDeprecated;
 
     public Boolean getNatOutgoingDeprecated() {
@@ -183,6 +184,7 @@ public class IPPoolSpec implements io.fabric8.kubernetes.api.model.KubernetesRes
     @com.fasterxml.jackson.annotation.JsonProperty("test Dup-deprecated0")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: This field is JUST FOR testing purposes.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    @java.lang.Deprecated()
     private Boolean test_DupDeprecated0;
 
     public Boolean getTest_DupDeprecated0() {
@@ -199,6 +201,7 @@ public class IPPoolSpec implements io.fabric8.kubernetes.api.model.KubernetesRes
     @com.fasterxml.jackson.annotation.JsonProperty("test.Dup-deprecated1")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: This field is JUST FOR testing purposes.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    @java.lang.Deprecated()
     private Boolean test_DupDeprecated1;
 
     public Boolean getTest_DupDeprecated1() {

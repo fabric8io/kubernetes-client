@@ -275,6 +275,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                         + ")"));
           }
         }
+
+        if (k.matches(".*-deprecated(\\d$)?$")) {
+          objField.addAnnotation("java.lang.Deprecated");
+        }
       } catch (Exception cause) {
         throw new JavaGeneratorException(
             "Error generating field " + fieldName + " with type " + prop.getType(),
