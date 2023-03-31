@@ -130,8 +130,11 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
 
   @Override
   public void resync() {
-    this.cache.list()
-        .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<>(i, i), true));
+    // lock to ensure the ordering wrt other events
+    synchronized (cache.getLockObject()) {
+      this.cache.list()
+          .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<>(i, i), true));
+    }
   }
 
 }

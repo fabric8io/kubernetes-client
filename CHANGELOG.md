@@ -11,6 +11,7 @@
 * Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymorphic types
+* Fix #5015: executing resync as a locking operation to ensure resync event ordering
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
 * Fix #5044: disable Vert.x instance file caching
