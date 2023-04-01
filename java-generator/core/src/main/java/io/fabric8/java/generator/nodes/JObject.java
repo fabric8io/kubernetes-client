@@ -83,7 +83,6 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
           .collect(Collectors.groupingBy(
               (f) -> AbstractJSONSchema2Pojo.sanitizeString(f.getKey()),
               Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-      int deprecatedFieldCounter = 0;
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
         String fieldKey = field.getKey();
@@ -92,20 +91,31 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
             .stream()
             .filter(d -> d.getValue().containsKey(field.getKey()))
             .findFirst().get();
-        if (fieldDuplicatesDefinition.getValue().entrySet().size() > 1) {
+        final int duplicatesCount = fieldDuplicatesDefinition.getValue().entrySet().size();
+        if (duplicatesCount > 1) {
+          // ok, duplicates exist...
           Set<Map.Entry<String, JSONSchemaProps>> fieldDuplicates = fieldDuplicatesDefinition.getValue().entrySet();
-          final long duplicatesCount = fieldDuplicates.size();
-          // we want to throw an exception on some duplicates missing requirements. At the moment, the only one we
-          // enforce is for a (duplicatesCount - 1) number of duplicates to be marked as deprecated
+          // we want to throw an exception on some duplicates missing requirements. the first one that we enforce is
+          // for exactly 1 field duplicate to exist
+          if (duplicatesCount > 2) {
+            throw new JavaGeneratorException(
+                String.format("The %s field has %d duplicates, which is not a supported configuration",
+                    field.getKey(),
+                    duplicatesCount - 1));
+          }
+          // another requirement that we enforce is that if one field duplicate exists, then it's because it has
+          // been marked as deprecated
           final long deprecatedDuplicates = fieldDuplicates.stream()
               .filter(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)).count();
-          if (deprecatedDuplicates != (duplicatesCount - 1)) {
+          if (deprecatedDuplicates == 0) {
             throw new JavaGeneratorException(
-                String.format("The %s field has %d duplicates while only %d of them are deprecated", field.getKey(),
-                    duplicatesCount, deprecatedDuplicates));
+                String.format(
+                    "The %s field has a duplicate, but it's not marked as deprecated, which is not a supported configuration",
+                    field.getKey()));
           }
+          // let's mangle the deprecated duplicated field name
           if (field.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)) {
-            fieldKey += duplicatesCount == 2 ? "-deprecated" : String.format("-deprecated%d", deprecatedFieldCounter++);
+            fieldKey += "-deprecated";
             this.deprecated.add(fieldKey);
           }
         }

@@ -96,7 +96,7 @@ spec:
                   description: 'this field is only used for APIv1 backwards
                   compatibility. Setting this field is not allowed, this field is
                   for internal use only. 
-                  (SHOULD BE DEPRECATED - USED JUST for testing purposes)'
+                  (SHOULD BE marked as "DEPRECATED" - USED JUST for testing purposes!)'
                   type: boolean
                 natOutgoing:
                   description: When natOutgoing is true, packets sent from Calico networked
