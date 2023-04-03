@@ -22,8 +22,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -259,6 +261,89 @@ public abstract class AbstractInterceptorTest {
     // Then
     assertThat(server.getRequestCount()).isEqualTo(2);
     assertThat(server.getLastRequest().getPath()).isEqualTo("/valid-url");
+  }
+
+  @Test
+  @DisplayName("after, called after HTTP successful response")
+  public void afterHttpSuccess() throws Exception {
+    // Given
+    server.expect().withPath("/success").andReturn(200, "This works").once();
+    final CompletableFuture<HttpResponse<?>> responseFuture = new CompletableFuture<>();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("after", new Interceptor() {
+          @Override
+          public void after(HttpResponse<?> response) {
+            responseFuture.complete(response);
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      client.consumeBytes(
+          client.newHttpRequestBuilder().uri(server.url("/success")).build(),
+          (s, ab) -> ab.consume())
+          .get(10, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(responseFuture)
+        .succeedsWithin(1, TimeUnit.SECONDS)
+        .extracting(HttpResponse::code)
+        .isEqualTo(200);
+  }
+
+  @Test
+  @DisplayName("after, called after HTTP error response")
+  public void afterHttpError() throws Exception {
+    // Given
+    server.expect().withPath("/client-error").andReturn(400, "Client problems").once();
+    final CompletableFuture<HttpResponse<?>> responseFuture = new CompletableFuture<>();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("after", new Interceptor() {
+          @Override
+          public void after(HttpResponse<?> response) {
+            responseFuture.complete(response);
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      client.consumeBytes(
+          client.newHttpRequestBuilder().uri(server.url("/client-error")).build(),
+          (s, ab) -> ab.consume())
+          .get(10, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(responseFuture)
+        .succeedsWithin(1, TimeUnit.SECONDS)
+        .extracting(HttpResponse::code)
+        .isEqualTo(400);
+  }
+
+  @Test
+  @DisplayName("consumer, can encapsulate the original consumer to log response body")
+  public void consumerForLogging() throws Exception {
+    // Given
+    server.expect().withPath("/look-at-my-body").andReturn(200, "I\nHave\r\nNice Body\r").once();
+    final StringBuilder sb = new StringBuilder();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .addOrReplaceInterceptor("consumer", new Interceptor() {
+          @Override
+          public AsyncBody.Consumer<List<ByteBuffer>> consumer(AsyncBody.Consumer<List<ByteBuffer>> consumer,
+              HttpRequest request) {
+            return (value, asyncBody) -> {
+              value.stream().map(BufferUtil::copy).forEach(bb -> sb.append(StandardCharsets.UTF_8.decode(bb)));
+              consumer.consume(value, asyncBody);
+            };
+          }
+        });
+    String receivedResponse;
+    // When
+    try (HttpClient client = builder.build()) {
+      receivedResponse = client.sendAsync(
+          client.newHttpRequestBuilder().uri(server.url("/look-at-my-body")).build(),
+          String.class)
+          .get(10, TimeUnit.SECONDS).body();
+    }
+    // Then
+    assertThat(sb).hasToString("I\nHave\r\nNice Body\r").hasToString(receivedResponse);
   }
 
   @Test
