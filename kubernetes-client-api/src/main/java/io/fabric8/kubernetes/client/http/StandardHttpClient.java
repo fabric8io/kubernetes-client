@@ -88,19 +88,22 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       interceptor.before(copy, standardHttpRequest, this);
       standardHttpRequest = copy.build();
+      consumer = interceptor.consumer(consumer, standardHttpRequest);
     }
+    final Consumer<List<ByteBuffer>> effectiveConsumer = consumer;
 
-    CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(standardHttpRequest, consumer);
+    CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(standardHttpRequest, effectiveConsumer);
 
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
+        interceptor.after(response);
         if (!HttpResponse.isSuccessful(response.code())) {
           return interceptor.afterFailure(copy, response, this)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
                   // before starting another request, make sure the old one is cancelled / closed
                   response.body().cancel();
-                  return consumeBytesDirect(copy.build(), consumer);
+                  return consumeBytesDirect(copy.build(), effectiveConsumer);
                 }
                 return CompletableFuture.completedFuture(response);
               });
