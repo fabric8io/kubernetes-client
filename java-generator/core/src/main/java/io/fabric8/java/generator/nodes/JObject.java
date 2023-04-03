@@ -87,14 +87,11 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
         String fieldKey = field.getKey();
         // lookup the duplicated field properties map
-        final Map.Entry<String, Map<String, JSONSchemaProps>> fieldDuplicatesDefinition = groupedFieldDefinitions.entrySet()
-            .stream()
-            .filter(d -> d.getValue().containsKey(field.getKey()))
-            .findFirst().get();
-        final int duplicatesCount = fieldDuplicatesDefinition.getValue().entrySet().size();
+        final Map<String, JSONSchemaProps> fieldDuplicatesDefinition = groupedFieldDefinitions
+            .get(AbstractJSONSchema2Pojo.sanitizeString(field.getKey()));
+        final int duplicatesCount = fieldDuplicatesDefinition.entrySet().size();
         if (duplicatesCount > 1) {
           // ok, duplicates exist...
-          Set<Map.Entry<String, JSONSchemaProps>> fieldDuplicates = fieldDuplicatesDefinition.getValue().entrySet();
           // we want to throw an exception on some duplicates missing requirements. the first one that we enforce is
           // for exactly 1 field duplicate to exist
           if (duplicatesCount > 2) {
@@ -105,7 +102,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
           }
           // another requirement that we enforce is that if one field duplicate exists, then it's because it has
           // been marked as deprecated
-          final long deprecatedDuplicates = fieldDuplicates.stream()
+          final long deprecatedDuplicates = fieldDuplicatesDefinition.entrySet().stream()
               .filter(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)).count();
           if (deprecatedDuplicates == 0) {
             throw new JavaGeneratorException(
