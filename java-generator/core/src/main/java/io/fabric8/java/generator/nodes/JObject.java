@@ -81,7 +81,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       // 1(fieldName) -> n(fieldDefinition(key, props))
       final Map<String, Map<String, JSONSchemaProps>> groupedFieldDefinitions = fields.entrySet().stream()
           .collect(Collectors.groupingBy(
-              (f) -> AbstractJSONSchema2Pojo.sanitizeString(f.getKey()),
+              f -> AbstractJSONSchema2Pojo.sanitizeString(f.getKey()),
               Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
@@ -102,9 +102,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
           }
           // another requirement that we enforce is that if one field duplicate exists, then it's because it has
           // been marked as deprecated
-          final Boolean noDeprecatedDuplicatesExist = fieldDuplicatesDefinition.entrySet().stream()
-              .noneMatch(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER));
-          if (noDeprecatedDuplicatesExist) {
+          final boolean deprecatedDuplicatesExist = fieldDuplicatesDefinition.entrySet().stream()
+              .anyMatch(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER));
+          if (!deprecatedDuplicatesExist) {
             throw new JavaGeneratorException(
                 String.format(
                     "The %s field has a duplicate, but it's not marked as deprecated, which is not a supported configuration",
