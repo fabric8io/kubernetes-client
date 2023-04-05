@@ -16,8 +16,10 @@
 package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,5 +70,20 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
       logger.warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
           delegate.getName(), valueInAnyGetter, bean.getClass().getName());
     }
+  }
+
+  @Override
+  public void assignNullSerializer(JsonSerializer<Object> nullSer) {
+    delegate.assignNullSerializer(nullSer);
+  }
+
+  @Override
+  public void assignSerializer(JsonSerializer<Object> ser) {
+    delegate.assignSerializer(ser);
+  }
+
+  @Override
+  public void assignTypeSerializer(TypeSerializer typeSer) {
+    delegate.assignTypeSerializer(typeSer);
   }
 }

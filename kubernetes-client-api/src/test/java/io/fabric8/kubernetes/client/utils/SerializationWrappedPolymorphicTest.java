@@ -51,7 +51,7 @@ class SerializationWrappedPolymorphicTest {
     static class TestCRSpec implements KubernetesResource {
 
       @JsonIgnore
-      private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+      private final Map<String, Object> additionalProperties = new HashMap<>();
 
       private List<Child> children = new ArrayList<>();
 
