@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Standard representation of a request. HttpClient implementations need to handle the special fields,
@@ -84,6 +85,7 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
 
   }
 
+  private final UUID id;
   private final URI uri;
   private final String method;
   private final String contentType;
@@ -100,24 +102,24 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
    * @param bodyString
    */
   public StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString) {
-    super(headers);
-    this.uri = uri;
-    this.method = method;
-    this.bodyString = bodyString;
-    expectContinue = false;
-    this.body = null;
-    this.contentType = null;
+    this(headers, uri, method, bodyString, null, false, null);
   }
 
   StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString,
       BodyContent body, boolean expectContinue, String contentType) {
     super(headers);
+    this.id = UUID.randomUUID();
     this.uri = uri;
     this.method = method;
     this.bodyString = bodyString;
     this.body = body;
     this.expectContinue = expectContinue;
     this.contentType = contentType;
+  }
+
+  @Override
+  public UUID id() {
+    return id;
   }
 
   @Override

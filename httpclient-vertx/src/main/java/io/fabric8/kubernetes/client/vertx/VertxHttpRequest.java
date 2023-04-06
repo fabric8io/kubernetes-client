@@ -150,7 +150,7 @@ class VertxHttpRequest {
 
   static Map<String, List<String>> toHeadersMap(MultiMap multiMap) {
     Map<String, List<String>> headers = new LinkedHashMap<>();
-    multiMap.names().stream().forEach(k -> headers.put(k, multiMap.getAll(k)));
+    multiMap.names().forEach(k -> headers.put(k, multiMap.getAll(k)));
     return headers;
   }
 

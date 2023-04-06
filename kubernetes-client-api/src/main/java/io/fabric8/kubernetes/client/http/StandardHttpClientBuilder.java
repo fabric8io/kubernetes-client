@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.http;
 import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import lombok.Getter;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -54,6 +55,10 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
 
   protected StandardHttpClientBuilder(F clientFactory) {
     this.clientFactory = clientFactory;
+    // TODO: Find better place or solution
+    if (LoggerFactory.getLogger(HttpLoggingInterceptor.class).isTraceEnabled()) {
+      interceptors.put("HttpLogging", new HttpLoggingInterceptor());
+    }
   }
 
   @Override

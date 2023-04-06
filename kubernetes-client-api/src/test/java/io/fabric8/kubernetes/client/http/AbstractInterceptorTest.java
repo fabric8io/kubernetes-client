@@ -272,7 +272,7 @@ public abstract class AbstractInterceptorTest {
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("after", new Interceptor() {
           @Override
-          public void after(HttpResponse<?> response) {
+          public void after(HttpRequest request, HttpResponse<?> response) {
             responseFuture.complete(response);
           }
         });
@@ -299,7 +299,7 @@ public abstract class AbstractInterceptorTest {
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("after", new Interceptor() {
           @Override
-          public void after(HttpResponse<?> response) {
+          public void after(HttpRequest request, HttpResponse<?> response) {
             responseFuture.complete(response);
           }
         });

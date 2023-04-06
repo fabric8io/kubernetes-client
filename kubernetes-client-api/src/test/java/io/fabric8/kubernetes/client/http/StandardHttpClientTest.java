@@ -54,7 +54,7 @@ class StandardHttpClientTest {
 
     // cancel the future before the websocket response
     future.cancel(true);
-    client.getWsFutures().get(0).complete(new WebSocketResponse(ws, null));
+    client.getWsFutures().get(0).complete(new WebSocketResponse(new WebSocketUpgradeResponse(null, 101, ws), null));
 
     // ensure that the ws has been closed
     Mockito.verify(ws).sendClose(1000, null);
@@ -176,9 +176,10 @@ class StandardHttpClientTest {
         });
 
     client.getWsFutures().get(0)
-        .completeExceptionally(new WebSocketHandshakeException(new TestHttpResponse<AsyncBody>().withCode(500)));
+        .completeExceptionally(new WebSocketHandshakeException(new WebSocketUpgradeResponse(null, 500, null)));
     client.getWsFutures().add(client.getWsFutures().get(0));
-    client.getWsFutures().add(CompletableFuture.completedFuture((new WebSocketResponse(ws, null))));
+    client.getWsFutures()
+        .add(CompletableFuture.completedFuture((new WebSocketResponse(new WebSocketUpgradeResponse(null, ws), null))));
 
     future.get(2, TimeUnit.MINUTES);
 
