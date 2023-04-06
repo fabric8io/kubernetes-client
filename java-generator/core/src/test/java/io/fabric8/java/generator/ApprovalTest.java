@@ -43,7 +43,8 @@ class ApprovalTest {
         Arguments.of("testKeycloakCrd", "keycloak-crd.yml", "Keycloak", "KeycloakJavaCr", new Config()),
         Arguments.of("testJokeCrd", "jokerequests-crd.yml", "JokeRequest", "JokeRequestJavaCr", new Config()),
         Arguments.of("testAkkaMicroservicesCrd", "akka-microservices-crd.yml", "AkkaMicroservice", "AkkaMicroserviceJavaCr",
-            new Config()));
+            new Config()),
+        Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()));
   }
 
   @ParameterizedTest
@@ -67,8 +68,11 @@ class ApprovalTest {
       List<GeneratorResult.ClassResult> crl = writable.getClassResults();
       underTest.add(getJavaClass(crl, customResourceName));
       underTest.add(getJavaClass(crl, customResourceName + "Spec"));
-      underTest.add(getJavaClass(crl, customResourceName + "Status"));
-
+      // not all the tested CRDs have a status definition, e.g. see calico-ippool-crd.yml
+      final String statusCrlName = customResourceName + "Status";
+      if (crl.stream().anyMatch(c -> c.getName().equals(statusCrlName))) {
+        underTest.add(getJavaClass(crl, statusCrlName));
+      }
       Approvals.verifyAll(approvalLabel, underTest);
     }
   }
