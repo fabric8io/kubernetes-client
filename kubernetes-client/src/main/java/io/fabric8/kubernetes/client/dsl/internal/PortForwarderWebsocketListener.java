@@ -117,9 +117,8 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
       closeBothWays(webSocket, 1002, PROTOCOL_ERROR);
     } else if (channel == 1) {
       // Error channel
-      // TODO: read the error
       KubernetesClientException e = new KubernetesClientException(
-          String.format("Received an error from the remote socket"));
+          String.format("Received an error from the remote socket %s", ExecWebSocketListener.toString(buffer)));
       serverThrowables.add(e);
       logger.debug("Server error", e);
       closeForwarder();
