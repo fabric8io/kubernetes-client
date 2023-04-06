@@ -19,10 +19,8 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.net.Proxy;
 import java.util.Arrays;
@@ -106,16 +104,6 @@ class OkHttpClientBuilderImpl
       builder.cache(null);
     }
     OkHttpClient client = builder.build();
-    if (this.forStreaming) {
-      // If we set the HttpLoggingInterceptor's logging level to Body (as it is by default), it does
-      // not let us stream responses from the server.
-      for (Interceptor i : client.networkInterceptors()) {
-        if (i instanceof HttpLoggingInterceptor) {
-          HttpLoggingInterceptor interceptor = (HttpLoggingInterceptor) i;
-          interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        }
-      }
-    }
 
     return new OkHttpClientImpl(client, this);
   }
