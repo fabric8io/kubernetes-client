@@ -11,6 +11,7 @@
 * fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymophic types
 * Fix #5020: updating the resourceVersion on a delete with finalizers
+* Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead

@@ -173,6 +173,7 @@ public class PortForwarderWebsocket implements PortForwarder {
     CompletableFuture<WebSocket> socket = client
         .newWebSocketBuilder()
         .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))
+        .subprotocol("v4.channel.k8s.io")
         .buildAsync(listener);
 
     socket.whenComplete((w, t) -> {

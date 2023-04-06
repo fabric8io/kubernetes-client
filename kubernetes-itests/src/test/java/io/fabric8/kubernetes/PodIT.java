@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -31,6 +32,7 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,6 +46,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.SocketException;
+import java.net.URL;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -442,6 +448,42 @@ class PodIT {
     assertEquals(pod1.getKind(), fromServerPod.getKind());
     assertEquals(namespace.getMetadata().getName(), fromServerPod.getMetadata().getNamespace());
     assertEquals(pod1.getMetadata().getName(), fromServerPod.getMetadata().getName());
+  }
+
+  @Test
+  void portForward() throws IOException, InterruptedException {
+    client.pods().withName("nginx").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
+    LocalPortForward portForward = client.pods().withName("nginx").portForward(80);
+    boolean failed = false;
+    try (SocketChannel channel = SocketChannel.open()) {
+
+      int localPort = portForward.getLocalPort();
+
+      URL url = new URL("http://localhost:" + localPort);
+
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+      InputStream content = (InputStream) conn.getContent();
+
+      // make sure we got data, should be the welcome page
+      assertTrue(content.read() != -1);
+
+      content.close();
+    } catch (SocketException e) {
+      failed = true;
+    } finally {
+      portForward.close();
+    }
+
+    if (failed) {
+      // not all kube versions nor runtimes can to port forwarding - the nodes need socat installed
+      portForward.getServerThrowables().stream()
+          .filter(t -> !t.getMessage().contains("unable to do port forwarding: socat not found")).findFirst()
+          .ifPresent(Assertions::fail);
+    } else {
+      assertThat(portForward.getServerThrowables()).isEmpty();
+    }
+    assertThat(portForward.getClientThrowables()).isEmpty();
   }
 
 }
