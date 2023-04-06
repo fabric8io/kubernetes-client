@@ -22,9 +22,6 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -71,13 +68,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
       if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
         httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
-      }
-
-      Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
-      if (reqLogger.isTraceEnabled()) {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        httpClientBuilder.addNetworkInterceptor(loggingInterceptor);
       }
 
       if (config.getWebsocketPingInterval() > 0) {
