@@ -214,6 +214,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     if (!resource.isMarkedForDeletion()) {
       // Mark the resource as deleted, but don't remove it yet (wait for finalizer-removal).
       resource.getMetadata().setDeletionTimestamp(LocalDateTime.now().toString());
+      resource.getMetadata().setResourceVersion(String.valueOf(requestResourceVersion()));
       String updatedResource = Serialization.asJson(resource);
       processEvent(path, pathAttributes, oldAttributes, resource, updatedResource);
       return;

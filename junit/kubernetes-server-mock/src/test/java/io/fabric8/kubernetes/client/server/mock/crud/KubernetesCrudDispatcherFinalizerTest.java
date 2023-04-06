@@ -60,8 +60,7 @@ class KubernetesCrudDispatcherFinalizerTest {
   private Owl createOwlWithFinalizer(String owlName) {
     final Owl owl = new Owl();
     owl.setMetadata(new ObjectMetaBuilder().withName(owlName).withFinalizers("test-finalizer").build());
-    client.resources(Owl.class).resource(owl).create();
-    return owl;
+    return client.resources(Owl.class).resource(owl).create();
   }
 
   @Test
@@ -96,6 +95,7 @@ class KubernetesCrudDispatcherFinalizerTest {
     String deletionTimestamp1 = owl1.getMetadata().getDeletionTimestamp();
     assertNotNull(deletionTimestamp1);
     assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE_TIME.parse(deletionTimestamp1));
+    assertNotEquals(initialOwl.getMetadata().getResourceVersion(), owl1.getMetadata().getResourceVersion());
 
     // When the owl is deleted a second time:
     client.resources(Owl.class).resource(owl1).delete();
