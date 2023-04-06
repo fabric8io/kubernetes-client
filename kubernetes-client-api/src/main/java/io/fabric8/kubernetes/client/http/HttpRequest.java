@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public interface HttpRequest extends HttpHeaders {
@@ -97,6 +98,13 @@ public interface HttpRequest extends HttpHeaders {
       throw new RuntimeException(e);
     }
   }
+
+  /**
+   * The unique id for this HTTP request, used for logging and debugging
+   * 
+   * @return a UUID.
+   */
+  UUID id();
 
   URI uri();
 

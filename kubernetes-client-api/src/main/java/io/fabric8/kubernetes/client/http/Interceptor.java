@@ -42,9 +42,10 @@ public interface Interceptor {
    * <p>
    * Should be used to analyze response codes and headers, original response shouldn't be altered.
    *
+   * @param request the original request sent to the server.
    * @param response the response received from the server.
    */
-  default void after(HttpResponse<?> response) {
+  default void after(HttpRequest request, HttpResponse<?> response) {
 
   }
 

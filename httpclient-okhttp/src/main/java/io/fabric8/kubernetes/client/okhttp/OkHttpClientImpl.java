@@ -411,11 +411,12 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
   @Override
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
-    Request.Builder requestBuilder = requestBuilder(standardWebSocketBuilder.asHttpRequest());
+    final StandardHttpRequest fabric8Request = standardWebSocketBuilder.asHttpRequest();
+    Request.Builder requestBuilder = requestBuilder(fabric8Request);
     if (standardWebSocketBuilder.getSubprotocol() != null) {
       requestBuilder.header("Sec-WebSocket-Protocol", standardWebSocketBuilder.getSubprotocol());
     }
-    return OkHttpWebSocketImpl.buildAsync(httpClient, requestBuilder.build(), listener);
+    return OkHttpWebSocketImpl.buildAsync(httpClient, fabric8Request, requestBuilder.build(), listener);
   }
 
 }

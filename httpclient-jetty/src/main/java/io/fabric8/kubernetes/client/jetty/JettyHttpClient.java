@@ -136,7 +136,7 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
       Listener listener) {
     try {
       jettyWs.start();
-      HttpRequest request = standardWebSocketBuilder.asHttpRequest();
+      final HttpRequest request = standardWebSocketBuilder.asHttpRequest();
       final ClientUpgradeRequest cur = new ClientUpgradeRequest();
       if (Utils.isNotNullOrEmpty(standardWebSocketBuilder.getSubprotocol())) {
         cur.setSubProtocols(standardWebSocketBuilder.getSubprotocol());
@@ -152,15 +152,14 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
           .whenComplete((s, ex) -> {
             if (ex != null) {
               if (ex instanceof CompletionException && ex.getCause() instanceof UpgradeException) {
-                future.complete(
-                    new WebSocketResponse(webSocket, JettyWebSocket.toHandshakeException((UpgradeException) ex.getCause())));
+                future.complete(JettyWebSocket.toWebSocketResponse(request, webSocket, (UpgradeException) ex.getCause()));
               } else if (ex instanceof UpgradeException) {
-                future.complete(new WebSocketResponse(webSocket, JettyWebSocket.toHandshakeException((UpgradeException) ex)));
+                future.complete(JettyWebSocket.toWebSocketResponse(request, webSocket, (UpgradeException) ex));
               } else {
                 future.completeExceptionally(ex);
               }
             } else {
-              future.complete(new WebSocketResponse(webSocket, null));
+              future.complete(JettyWebSocket.toWebSocketResponse(request, webSocket, s));
             }
           });
       return future;

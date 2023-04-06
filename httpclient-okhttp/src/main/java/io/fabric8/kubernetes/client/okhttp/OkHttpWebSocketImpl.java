@@ -17,18 +17,20 @@
 package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
-import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
+import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -36,8 +38,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class OkHttpWebSocketImpl implements WebSocket {
 
-  private okhttp3.WebSocket webSocket;
-  private Runnable requestMethod;
+  private final okhttp3.WebSocket webSocket;
+  private final Runnable requestMethod;
 
   public OkHttpWebSocketImpl(okhttp3.WebSocket webSocket, Runnable requestMethod) {
     this.webSocket = webSocket;
@@ -64,7 +66,8 @@ class OkHttpWebSocketImpl implements WebSocket {
     requestMethod.run();
   }
 
-  public static CompletableFuture<WebSocketResponse> buildAsync(OkHttpClient httpClient, Request request, Listener listener) {
+  public static CompletableFuture<WebSocketResponse> buildAsync(OkHttpClient httpClient, StandardHttpRequest fabric8Request,
+      Request request, Listener listener) {
     CompletableFuture<WebSocketResponse> future = new CompletableFuture<>();
     httpClient.newWebSocket(request, new WebSocketListener() {
       private volatile boolean opened;
@@ -79,13 +82,12 @@ class OkHttpWebSocketImpl implements WebSocket {
         }
         if (!opened) {
           if (response != null) {
-            try {
-              future.complete(new WebSocketResponse(null,
-                  // passing null as the type ensures that the response body is closed
-                  new WebSocketHandshakeException(new OkHttpResponseImpl<>(response, null)).initCause(t)));
-            } catch (IOException e) {
-              // can't happen
-            }
+            // Ensure response body is always closed (leak)
+            Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
+            final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
+                fabric8Request, response.code(), response.headers().toMultimap(), null);
+            future.complete(new WebSocketResponse(upgradeResponse,
+                new WebSocketHandshakeException(upgradeResponse).initCause(t)));
           } else {
             future.completeExceptionally(t);
           }
@@ -100,9 +102,11 @@ class OkHttpWebSocketImpl implements WebSocket {
         if (response != null) {
           response.close();
         }
-        OkHttpWebSocketImpl value = new OkHttpWebSocketImpl(webSocket, this::request);
-        listener.onOpen(value);
-        future.complete(new WebSocketResponse(value, null));
+        OkHttpWebSocketImpl fabric8WebSocket = new OkHttpWebSocketImpl(webSocket, this::request);
+        listener.onOpen(fabric8WebSocket);
+        future.complete(new WebSocketResponse(
+            new WebSocketUpgradeResponse(fabric8Request, response.code(), response.headers().toMultimap(), fabric8WebSocket),
+            null));
       }
 
       @Override

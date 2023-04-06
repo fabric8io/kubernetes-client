@@ -88,15 +88,19 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       interceptor.before(copy, standardHttpRequest, this);
       standardHttpRequest = copy.build();
-      consumer = interceptor.consumer(consumer, standardHttpRequest);
+    }
+    final StandardHttpRequest effectiveRequest = standardHttpRequest;
+
+    for (Interceptor interceptor : builder.getInterceptors().values()) {
+      consumer = interceptor.consumer(consumer, effectiveRequest);
     }
     final Consumer<List<ByteBuffer>> effectiveConsumer = consumer;
 
-    CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(standardHttpRequest, effectiveConsumer);
+    CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(effectiveRequest, effectiveConsumer);
 
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
-        interceptor.after(response);
+        interceptor.after(effectiveRequest, response);
         if (!HttpResponse.isSuccessful(response.code())) {
           return interceptor.afterFailure(copy, response, this)
               .thenCompose(b -> {
@@ -190,7 +194,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
         standardWebSocketBuilder.asHttpRequest().uri(),
         r -> Optional.ofNullable(r.wshse).map(WebSocketHandshakeException::getResponse).map(HttpResponse::code).orElse(null),
-        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)));
+        r -> Optional.ofNullable(r.webSocketUpgradeResponse.getWebSocket()).ifPresent(w -> w.sendClose(1000, null)));
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
@@ -199,7 +203,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       if (t != null) {
         result.completeExceptionally(t);
       } else {
-        completeOrCancel(w -> w.sendClose(1000, null), result).accept(r.webSocket, r.wshse);
+        completeOrCancel(w -> w.sendClose(1000, null), result)
+            .accept(r.webSocketUpgradeResponse.getWebSocket(), r.wshse);
       }
     });
     return result;
@@ -208,11 +213,12 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   private CompletableFuture<WebSocketResponse> buildWebSocketOnce(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
     final StandardWebSocketBuilder copy = standardWebSocketBuilder.newBuilder();
-    builder.getInterceptors().values().stream().forEach(i -> i.before(copy, copy.asHttpRequest(), this));
+    builder.getInterceptors().values().forEach(i -> i.before(copy, copy.asHttpRequest(), this));
 
     CompletableFuture<WebSocketResponse> cf = buildWebSocketDirect(copy, listener);
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
+        interceptor.after(response.webSocketUpgradeResponse.request(), response.webSocketUpgradeResponse);
         if (response.wshse != null && response.wshse.getResponse() != null) {
           return interceptor.afterFailure(copy, response.wshse.getResponse(), this).thenCompose(b -> {
             if (Boolean.TRUE.equals(b)) {

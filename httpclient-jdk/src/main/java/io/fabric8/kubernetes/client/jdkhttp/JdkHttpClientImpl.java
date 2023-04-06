@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
+import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -305,7 +306,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   @Override
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(
       StandardWebSocketBuilder standardWebSocketBuilder, Listener listener) {
-    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
+    final StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
     java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();
     request.headers().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
     if (standardWebSocketBuilder.getSubprotocol() != null) {
@@ -324,21 +325,21 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
     URI uri = WebSocket.toWebSocketUri(request.uri());
-    newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((w, t) -> {
+    newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((jdkWebSocket, t) -> {
       if (t instanceof CompletionException && t.getCause() != null) {
         t = t.getCause();
       }
+      final JdkWebSocketImpl fabric8WebSocket = new JdkWebSocketImpl(queueSize, jdkWebSocket);
       if (t instanceof java.net.http.WebSocketHandshakeException) {
-        response
-            .complete(
-                new WebSocketResponse(new JdkWebSocketImpl(queueSize, w),
-                    new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(
-                        new JdkHttpResponseImpl<>(((java.net.http.WebSocketHandshakeException) t).getResponse()))
-                            .initCause(t)));
+        final java.net.http.HttpResponse<?> jdkResponse = ((java.net.http.WebSocketHandshakeException) t).getResponse();
+        final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
+            request, jdkResponse.statusCode(), jdkResponse.headers().map(), fabric8WebSocket);
+        response.complete(new WebSocketResponse(upgradeResponse,
+            new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(upgradeResponse).initCause(t)));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {
-        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), null));
+        response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request, fabric8WebSocket), null));
       }
     });
 
