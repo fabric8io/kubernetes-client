@@ -13,6 +13,7 @@
 * Fix #5009: addressing issue with serialization of wrapped polymophic types
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
+* Fix #5044: disable Vert.x instance file caching
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
