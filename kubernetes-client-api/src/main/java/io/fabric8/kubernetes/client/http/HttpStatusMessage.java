@@ -31,7 +31,7 @@ public class HttpStatusMessage {
   static {
     // informational
     entry(100, "Continue");
-    entry(101, "Switching Protocol");
+    entry(101, "Switching Protocols");
     entry(102, "Processing");
     entry(103, "Early Hints");
 
