@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.vertx;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
+import io.vertx.core.file.FileSystemOptions;
 
 import static io.vertx.core.spi.resolver.ResolverProvider.DISABLE_DNS_RESOLVER_PROP_NAME;
 
@@ -43,7 +44,8 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
     Vertx vertx;
     try {
       System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, "true");
-      vertx = Vertx.vertx(new VertxOptions());
+      vertx = Vertx.vertx(new VertxOptions()
+          .setFileSystemOptions(new FileSystemOptions().setFileCachingEnabled(false).setClassPathResolvingEnabled(false)));
     } finally {
       // Restore the original value
       if (originalValue == null) {
