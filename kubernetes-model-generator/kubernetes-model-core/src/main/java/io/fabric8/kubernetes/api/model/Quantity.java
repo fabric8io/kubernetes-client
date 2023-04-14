@@ -110,7 +110,7 @@ public class Quantity implements Serializable {
    * If this is a memory Quantity, the result will represent bytes.<br>
    * If this is a cpu Quantity, the result will represent cores.
    *
-   * @return the formated amount as a number
+   * @return the formatted amount as a number
    * @throws ArithmeticException
    */
   @JsonIgnore
@@ -162,7 +162,8 @@ public class Quantity implements Serializable {
    * to a value with the unit provided in desiredFormat.
    * @param amountInBytes
    * @param desiredFormat
-   * @return
+   * @see #getNumericalAmount()
+   * @return a new Quantity with the value of amountInBytes with units desiredFormat
    */
   public static Quantity fromNumericalAmount(BigDecimal amountInBytes, String desiredFormat) {
     if (desiredFormat == null || desiredFormat.isEmpty()) {
