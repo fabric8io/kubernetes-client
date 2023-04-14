@@ -76,8 +76,10 @@ func main() {
 	//  - replace <key> with <value> aka "package prefix"
 	//  - replace '/' with '.' for a valid java package name
 	mappingSchema := map[string]string{
-		"istio.io/api":                   "io.fabric8.istio.api",
 		"github.com/gogo/protobuf/types": "io.fabric8.istio.api.internal.protobuf.types",
+		"istio.io/api/analysis/v1alpha1": "io.fabric8.istio.api.analysis.v1alpha1",
+		"istio.io/api/meta/v1alpha1": "io.fabric8.istio.api.meta.v1alpha1",
+		"istio.io/api/networking/v1alpha3": "io.fabric8.istio.api.networking.v1alpha3",
 	}
 
 	// overwriting some times
