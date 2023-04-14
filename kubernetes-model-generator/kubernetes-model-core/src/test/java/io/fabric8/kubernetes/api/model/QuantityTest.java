@@ -198,4 +198,40 @@ public class QuantityTest {
     assertEquals(4, Quantity.indexOfUnit("123 K"));
     assertEquals(4, Quantity.indexOfUnit("123c"));
   }
+
+  @Test
+  @DisplayName("Test fromAmountInBytes method")
+  public void testFromAmountInBytes() {
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("129e6"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("129e+6"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("1234567890"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("8Ki"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("7Mi"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("6Gi"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("5Ti"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("4Pi"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("3Ei"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("5n"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("4u"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("3m"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("9"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("8k"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("50k"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("7M"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("6G"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("5T"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("40T"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("300T"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("2P"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("1E"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity(".5Mi"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity(".5", "Mi"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity(".5Mi", null));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("0.5e-1"));
+    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("1.1E-5"));
+  }
+
+  private static void testGetNumericalAmountFromNumericalAmountIdentity(Quantity quantity) {
+    assertEquals(quantity, Quantity.fromNumericalAmount(quantity.getNumericalAmount(), quantity.getFormat()));
+  }
 }
