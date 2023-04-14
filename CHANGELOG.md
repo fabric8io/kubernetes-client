@@ -9,6 +9,7 @@
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * Fix #4988: Ensuring that previous requests are closed before retry
 * Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
+* Fix #5000: Remove clashing `v1alpha` apigroup packages in `istio-model-v1beta1`
 * fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymorphic types
 * Fix #5020: updating the resourceVersion on a delete with finalizers
