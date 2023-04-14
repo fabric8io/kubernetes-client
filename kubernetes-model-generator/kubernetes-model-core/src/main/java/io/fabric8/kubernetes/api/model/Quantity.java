@@ -145,11 +145,6 @@ public class Quantity implements Serializable {
 
     Quantity amountFormatPair = parse(value);
     String formatStr = amountFormatPair.getFormat();
-    // Handle Decimal exponent case
-    if (containsAtLeastOneDigit(formatStr) && formatStr.length() > 1) {
-      int exponent = Integer.parseInt(formatStr.substring(1));
-      return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64).multiply(new BigDecimal(amountFormatPair.getAmount()));
-    }
 
     BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
     BigDecimal multiple = getMultiple(formatStr);
@@ -170,14 +165,7 @@ public class Quantity implements Serializable {
       return new Quantity(amountInBytes.toPlainString());
     }
 
-    BigDecimal scaledToDesiredFormat;
-    // Handle Decimal exponent case
-    if (containsAtLeastOneDigit(desiredFormat) && desiredFormat.length() > 1) {
-      int exponent = Integer.parseInt(desiredFormat.substring(1));
-      scaledToDesiredFormat = new BigDecimal("10").pow(-exponent, MathContext.DECIMAL64).multiply(amountInBytes);
-    } else {
-      scaledToDesiredFormat = amountInBytes.divide(getMultiple(desiredFormat), MathContext.DECIMAL64);
-    }
+    BigDecimal scaledToDesiredFormat = amountInBytes.divide(getMultiple(desiredFormat), MathContext.DECIMAL64);
 
     return new Quantity(scaledToDesiredFormat.stripTrailingZeros().toPlainString(), desiredFormat);
   }
@@ -185,6 +173,12 @@ public class Quantity implements Serializable {
 
 
   private static BigDecimal getMultiple(String formatStr) {
+    // Handle Decimal exponent case
+    if (containsAtLeastOneDigit(formatStr) && formatStr.length() > 1) {
+      int exponent = Integer.parseInt(formatStr.substring(1));
+      return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64);
+    }
+
     BigDecimal multiple = new BigDecimal("1");
     BigDecimal binaryFactor = new BigDecimal("2");
     BigDecimal decimalFactor = new BigDecimal("10");
