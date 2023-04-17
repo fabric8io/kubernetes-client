@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 Red Hat, Inc.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
@@ -199,39 +201,13 @@ public class QuantityTest {
     assertEquals(4, Quantity.indexOfUnit("123c"));
   }
 
-  @Test
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "129e6", "129e+6", "1234567890", "8Ki", "7Mi", "6Gi", "5Ti", "4Pi", "3Ei", "5n", "4u", "3m",
+    "9", "8k", "50k", "7M", "6G", "5T", "40T", "300T", "2P", "1E", ".5Mi", "0.5e-1", "1.1E-5"})
   @DisplayName("Test fromAmountInBytes method")
-  public void testFromAmountInBytes() {
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("129e6"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("129e+6"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("1234567890"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("8Ki"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("7Mi"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("6Gi"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("5Ti"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("4Pi"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("3Ei"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("5n"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("4u"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("3m"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("9"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("8k"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("50k"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("7M"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("6G"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("5T"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("40T"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("300T"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("2P"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("1E"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity(".5Mi"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity(".5", "Mi"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity(".5Mi", null));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("0.5e-1"));
-    testGetNumericalAmountFromNumericalAmountIdentity(new Quantity("1.1E-5"));
-  }
-
-  private static void testGetNumericalAmountFromNumericalAmountIdentity(Quantity quantity) {
+  public void testFromAmountInBytes(String amount) {
+    Quantity quantity = new Quantity(amount);
     assertEquals(quantity, Quantity.fromNumericalAmount(quantity.getNumericalAmount(), quantity.getFormat()));
   }
 }
