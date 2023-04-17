@@ -162,7 +162,7 @@ public class Quantity implements Serializable {
    */
   public static Quantity fromNumericalAmount(BigDecimal amountInBytes, String desiredFormat) {
     if (desiredFormat == null || desiredFormat.isEmpty()) {
-      return new Quantity(amountInBytes.toPlainString());
+      return new Quantity(amountInBytes.stripTrailingZeros().toPlainString());
     }
 
     BigDecimal scaledToDesiredFormat = amountInBytes.divide(getMultiple(desiredFormat), MathContext.DECIMAL64);
