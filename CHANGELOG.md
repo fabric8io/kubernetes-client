@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
+* Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * Fix #4988: Ensuring that previous requests are closed before retry
