@@ -3,7 +3,7 @@ token=`echo $PART1 $1 | tr '[a-z]' '[A-Z]'`
 cat <<EOF
 {
   "kind": "ExecCredential",
-  "apiVersion": "client.authentication.k8s.io/v1alpha1",
+  "apiVersion": "client.authentication.k8s.io/v1",
   "spec": {},
   "status": {
     "token": "$token"
