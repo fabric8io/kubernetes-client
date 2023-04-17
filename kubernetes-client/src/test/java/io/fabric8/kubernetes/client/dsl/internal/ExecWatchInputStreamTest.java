@@ -72,7 +72,7 @@ public class ExecWatchInputStreamTest {
   @Test
   void testConsume() throws IOException {
     AtomicInteger count = new AtomicInteger();
-    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement());
+    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement(), 0);
     is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
 
     assertEquals(0, is.read());
@@ -92,6 +92,21 @@ public class ExecWatchInputStreamTest {
 
     is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
     readFuture.join();
+  }
+
+  @Test
+  void testConsumeBuffering() throws IOException {
+    AtomicInteger count = new AtomicInteger();
+    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement(), 2);
+    is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
+
+    // should keep going as the amount is less than the buffer size
+    assertEquals(1, count.get());
+
+    is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
+
+    // should not request as we're at the buffer limit
+    assertEquals(1, count.get());
   }
 
   @Test

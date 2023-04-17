@@ -31,16 +31,24 @@ import java.util.List;
  */
 public class ExecWatchInputStream extends InputStream {
 
+  private static final int BUFFER_SIZE = 1 << 15;
+
   private final LinkedList<ByteBuffer> buffers = new LinkedList<>();
   private boolean complete;
   private boolean closed;
   private Throwable failed;
   private ByteBuffer currentBuffer;
 
-  private Runnable request;
+  private final Runnable request;
+  private final int bufferSize;
 
   public ExecWatchInputStream(Runnable request) {
+    this(request, BUFFER_SIZE);
+  }
+
+  public ExecWatchInputStream(Runnable request, int bufferSize) {
     this.request = request;
+    this.bufferSize = bufferSize;
   }
 
   void onExit(Integer exitCode, Throwable t) {
@@ -69,6 +77,10 @@ public class ExecWatchInputStream extends InputStream {
       assert !complete || failed == null;
       buffers.addAll(value);
       buffers.notifyAll();
+      if ((currentBuffer != null ? currentBuffer.remaining() : 0)
+          + buffers.stream().mapToInt(ByteBuffer::remaining).sum() < bufferSize) {
+        request.run();
+      }
     }
   }
 
