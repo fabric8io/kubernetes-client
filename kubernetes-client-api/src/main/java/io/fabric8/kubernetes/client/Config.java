@@ -773,33 +773,28 @@ public class Config {
   protected static ExecCredential getExecCredentialFromExecConfig(ExecConfig exec, File configFile)
       throws IOException, InterruptedException {
     String apiVersion = exec.getApiVersion();
-    if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)
-        || "client.authentication.k8s.io/v1beta1".equals(apiVersion)) {
-      List<ExecEnvVar> env = exec.getEnv();
-      // TODO check behavior of tty & stdin
-      ProcessBuilder pb = new ProcessBuilder(
-          getAuthenticatorCommandFromExecConfig(exec, configFile, Utils.getSystemPathVariable()));
-      pb.redirectErrorStream(true);
-      if (env != null) {
-        Map<String, String> environment = pb.environment();
-        env.forEach(var -> environment.put(var.getName(), var.getValue()));
-      }
-      Process p = pb.start();
-      String output;
-      try (InputStream is = p.getInputStream()) {
-        output = IOHelpers.readFully(is);
-      }
-      if (p.waitFor() != 0) {
-        LOGGER.warn(output);
-      }
-      ExecCredential ec = Serialization.unmarshal(output, ExecCredential.class);
-      if (!apiVersion.equals(ec.apiVersion)) {
-        LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
-      } else {
-        return ec;
-      }
-    } else { // TODO v1beta1?
-      LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
+    List<ExecEnvVar> env = exec.getEnv();
+    // TODO check behavior of tty & stdin
+    ProcessBuilder pb = new ProcessBuilder(
+        getAuthenticatorCommandFromExecConfig(exec, configFile, Utils.getSystemPathVariable()));
+    pb.redirectErrorStream(true);
+    if (env != null) {
+      Map<String, String> environment = pb.environment();
+      env.forEach(var -> environment.put(var.getName(), var.getValue()));
+    }
+    Process p = pb.start();
+    String output;
+    try (InputStream is = p.getInputStream()) {
+      output = IOHelpers.readFully(is);
+    }
+    if (p.waitFor() != 0) {
+      LOGGER.warn(output);
+    }
+    ExecCredential ec = Serialization.unmarshal(output, ExecCredential.class);
+    if (!apiVersion.equals(ec.apiVersion)) {
+      LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+    } else {
+      return ec;
     }
     return null;
   }
