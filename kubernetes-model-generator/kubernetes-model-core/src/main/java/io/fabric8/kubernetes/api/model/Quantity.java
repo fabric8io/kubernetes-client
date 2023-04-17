@@ -155,6 +155,7 @@ public class Quantity implements Serializable {
   /**
    * Constructs a new Quantity from the provided amountInBytes. This amount is converted
    * to a value with the unit provided in desiredFormat.
+   * 
    * @param amountInBytes
    * @param desiredFormat
    * @see #getNumericalAmount()
@@ -169,8 +170,6 @@ public class Quantity implements Serializable {
 
     return new Quantity(scaledToDesiredFormat.stripTrailingZeros().toPlainString(), desiredFormat);
   }
-
-
 
   private static BigDecimal getMultiple(String formatStr) {
     // Handle Decimal exponent case
