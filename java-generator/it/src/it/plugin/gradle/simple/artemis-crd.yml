@@ -1,0 +1,2941 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.7.0
+  name: activemqartemises.broker.amq.io
+spec:
+  group: broker.amq.io
+  names:
+    kind: ActiveMQArtemis
+    listKind: ActiveMQArtemisList
+    plural: activemqartemises
+    singular: activemqartemis
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
+            properties:
+              acceptors:
+                description: Acceptor configuration
+                items:
+                  properties:
+                    amqpMinLargeMessageSize:
+                      description: AMQP Minimum Large Message Size
+                      type: integer
+                    anycastPrefix:
+                      description: To indicate which kind of routing type to use.
+                      type: string
+                    bindToAllInterfaces:
+                      description: Whether to let the acceptor to bind to all interfaces (0.0.0.0)
+                      type: boolean
+                    connectionsAllowed:
+                      description: Max number of connections allowed to make
+                      type: integer
+                    enabledCipherSuites:
+                      description: Comma separated list of cipher suites used for SSL communication.
+                      type: string
+                    enabledProtocols:
+                      description: Comma separated list of protocols used for SSL communication.
+                      type: string
+                    expose:
+                      description: Whether or not to expose this acceptor
+                      type: boolean
+                    keyStoreProvider:
+                      description: Provider used for the keystore; "SUN", "SunJCE", etc. Default is null
+                      type: string
+                    multicastPrefix:
+                      description: To indicate which kind of routing type to use
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      description: Tells a client connecting to this acceptor that 2-way SSL is required. This property takes precedence over wantClientAuth.
+                      type: boolean
+                    port:
+                      description: Port number
+                      format: int32
+                      type: integer
+                    protocols:
+                      description: The protocols to enable for this acceptor
+                      type: string
+                    sniHost:
+                      description: A regular expression used to match the server_name extension on incoming SSL connections. If the name doesn't match then the connection to the acceptor will be rejected.
+                      type: string
+                    sslEnabled:
+                      description: Whether or not to enable SSL on this port
+                      type: boolean
+                    sslProvider:
+                      description: Used to change the SSL Provider between JDK and OPENSSL. The default is JDK.
+                      type: string
+                    sslSecret:
+                      description: Name of the secret to use for ssl information
+                      type: string
+                    supportAdvisory:
+                      description: For openwire protocol if advisory topics are enabled, default false
+                      type: boolean
+                    suppressInternalManagementObjects:
+                      description: If prevents advisory addresses/queues to be registered to management service, default false
+                      type: boolean
+                    trustStoreProvider:
+                      description: Provider used for the truststore; "SUN", "SunJCE", etc. Default in broker is null
+                      type: string
+                    trustStoreType:
+                      description: Type of truststore being used; "JKS", "JCEKS", "PKCS12", etc. Default in broker is "JKS"
+                      type: string
+                    verifyHost:
+                      description: The CN of the connecting client's SSL certificate will be compared to its hostname to verify they match. This is useful only for 2-way SSL.
+                      type: boolean
+                    wantClientAuth:
+                      description: Tells a client connecting to this acceptor that 2-way SSL is requested but not required. Overridden by needClientAuth.
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              addressSettings:
+                properties:
+                  addressSetting:
+                    items:
+                      properties:
+                        addressFullPolicy:
+                          description: what happens when an address where maxSizeBytes is specified becomes full
+                          type: string
+                        autoCreateAddresses:
+                          description: whether or not to automatically create addresses when a client sends a message to or attempts to consume a message from a queue mapped to an address that doesnt exist
+                          type: boolean
+                        autoCreateDeadLetterResources:
+                          description: whether or not to automatically create the dead-letter-address and/or a corresponding queue on that address when a message found to be undeliverable
+                          type: boolean
+                        autoCreateExpiryResources:
+                          description: whether or not to automatically create the expiry-address and/or a corresponding queue on that address when a message is sent to a matching queue
+                          type: boolean
+                        autoCreateJmsQueues:
+                          description: DEPRECATED. whether or not to automatically create JMS queues when a producer sends or a consumer connects to a queue
+                          type: boolean
+                        autoCreateJmsTopics:
+                          description: DEPRECATED. whether or not to automatically create JMS topics when a producer sends or a consumer subscribes to a topic
+                          type: boolean
+                        autoCreateQueues:
+                          description: whether or not to automatically create a queue when a client sends a message to or attempts to consume a message from a queue
+                          type: boolean
+                        autoDeleteAddresses:
+                          description: whether or not to delete auto-created addresses when it no longer has any queues
+                          type: boolean
+                        autoDeleteAddressesDelay:
+                          description: how long to wait (in milliseconds) before deleting auto-created addresses after they no longer have any queues
+                          format: int32
+                          type: integer
+                        autoDeleteCreatedQueues:
+                          description: whether or not to delete created queues when the queue has 0 consumers and 0 messages
+                          type: boolean
+                        autoDeleteJmsQueues:
+                          description: DEPRECATED. whether or not to delete auto-created JMS queues when the queue has 0 consumers and 0 messages
+                          type: boolean
+                        autoDeleteJmsTopics:
+                          description: DEPRECATED. whether or not to delete auto-created JMS topics when the last subscription is closed
+                          type: boolean
+                        autoDeleteQueues:
+                          description: whether or not to delete auto-created queues when the queue has 0 consumers and 0 messages
+                          type: boolean
+                        autoDeleteQueuesDelay:
+                          description: how long to wait (in milliseconds) before deleting auto-created queues after the queue has 0 consumers.
+                          format: int32
+                          type: integer
+                        autoDeleteQueuesMessageCount:
+                          description: the message count the queue must be at or below before it can be evaluated to be auto deleted, 0 waits until empty queue (default) and -1 disables this check.
+                          format: int32
+                          type: integer
+                        configDeleteAddresses:
+                          description: What to do when an address is no longer in broker.xml.  OFF = will do nothing addresses will remain, FORCE = delete address and its queues even if messages remaining.
+                          type: string
+                        configDeleteDiverts:
+                          description: What to do when a divert is no longer in broker.xml.  OFF = will do nothing and divert will remain(default), FORCE = delete divert.
+                          type: string
+                        configDeleteQueues:
+                          description: What to do when a queue is no longer in broker.xml.  OFF = will do nothing queues will remain, FORCE = delete queues even if messages remaining.
+                          type: string
+                        deadLetterAddress:
+                          description: the address to send dead messages to
+                          type: string
+                        deadLetterQueuePrefix:
+                          description: the prefix to use for auto-created dead letter queues
+                          type: string
+                        deadLetterQueueSuffix:
+                          description: the suffix to use for auto-created dead letter queues
+                          type: string
+                        defaultAddressRoutingType:
+                          description: the routing-type used on auto-created addresses
+                          type: string
+                        defaultConsumerWindowSize:
+                          description: the default window size for a consumer
+                          format: int32
+                          type: integer
+                        defaultConsumersBeforeDispatch:
+                          description: the default number of consumers needed before dispatch can start for queues under the address.
+                          format: int32
+                          type: integer
+                        defaultDelayBeforeDispatch:
+                          description: the default delay (in milliseconds) to wait before dispatching if number of consumers before dispatch is not met for queues under the address.
+                          format: int32
+                          type: integer
+                        defaultExclusiveQueue:
+                          description: whether to treat the queues under the address as exclusive queues by default
+                          type: boolean
+                        defaultGroupBuckets:
+                          description: number of buckets to use for grouping, -1 (default) is unlimited and uses the raw group, 0 disables message groups.
+                          format: int32
+                          type: integer
+                        defaultGroupFirstKey:
+                          description: key used to mark a message is first in a group for a consumer
+                          type: string
+                        defaultGroupRebalance:
+                          description: whether to rebalance groups when a consumer is added
+                          type: boolean
+                        defaultGroupRebalancePauseDispatch:
+                          description: whether to pause dispatch when rebalancing groups
+                          type: boolean
+                        defaultLastValueKey:
+                          description: the property to use as the key for a last value queue by default
+                          type: string
+                        defaultLastValueQueue:
+                          description: whether to treat the queues under the address as a last value queues by default
+                          type: boolean
+                        defaultMaxConsumers:
+                          description: the maximum number of consumers allowed on this queue at any one time
+                          format: int32
+                          type: integer
+                        defaultNonDestructive:
+                          description: whether the queue should be non-destructive by default
+                          type: boolean
+                        defaultPurgeOnNoConsumers:
+                          description: purge the contents of the queue once there are no consumers
+                          type: boolean
+                        defaultQueueRoutingType:
+                          description: the routing-type used on auto-created queues
+                          type: string
+                        defaultRingSize:
+                          description: the default ring-size value for any matching queue which doesnt have ring-size explicitly defined
+                          format: int32
+                          type: integer
+                        enableIngressTimestamp:
+                          description: Whether or not set the timestamp of arrival on messages. default false
+                          type: boolean
+                        enableMetrics:
+                          description: whether or not to enable metrics for metrics plugins on the matching address
+                          type: boolean
+                        expiryAddress:
+                          description: the address to send expired messages to
+                          type: string
+                        expiryDelay:
+                          description: Overrides the expiration time for messages using the default value for expiration time. "-1" disables this setting.
+                          format: int32
+                          type: integer
+                        expiryQueuePrefix:
+                          description: the prefix to use for auto-created expiry queues
+                          type: string
+                        expiryQueueSuffix:
+                          description: the suffix to use for auto-created expiry queues
+                          type: string
+                        lastValueQueue:
+                          description: This is deprecated please use default-last-value-queue instead.
+                          type: boolean
+                        managementBrowsePageSize:
+                          description: how many message a management resource can browse
+                          format: int32
+                          type: integer
+                        managementMessageAttributeSizeLimit:
+                          description: max size of the message returned from management API, default 256
+                          format: int32
+                          type: integer
+                        match:
+                          description: pattern for matching settings against addresses; can use wildards
+                          type: string
+                        maxDeliveryAttempts:
+                          description: how many times to attempt to deliver a message before sending to dead letter address
+                          format: int32
+                          type: integer
+                        maxExpiryDelay:
+                          description: Overrides the expiration time for messages using a higher value. "-1" disables this setting.
+                          format: int32
+                          type: integer
+                        maxRedeliveryDelay:
+                          description: Maximum value for the redelivery-delay
+                          format: int32
+                          type: integer
+                        maxSizeBytes:
+                          description: the maximum size in bytes for an address. -1 means no limits. This is used in PAGING, BLOCK and FAIL policies. Supports byte notation like K, Mb, GB, etc.
+                          type: string
+                        maxSizeBytesRejectThreshold:
+                          description: used with the address full BLOCK policy, the maximum size in bytes an address can reach before messages start getting rejected. Works in combination with max-size-bytes for AMQP protocol only.  Default = -1 (no limit).
+                          format: int32
+                          type: integer
+                        maxSizeMessages:
+                          description: the maximum number of messages allowed on the address (default -1).  This is used in PAGING, BLOCK and FAIL policies. It does not support notations and it is a simple number of messages allowed.
+                          format: int64
+                          type: integer
+                        messageCounterHistoryDayLimit:
+                          description: how many days to keep message counter history for this address
+                          format: int32
+                          type: integer
+                        minExpiryDelay:
+                          description: Overrides the expiration time for messages using a lower value. "-1" disables this setting.
+                          format: int32
+                          type: integer
+                        pageMaxCacheSize:
+                          description: Number of paging files to cache in memory to avoid IO during paging navigation
+                          format: int32
+                          type: integer
+                        pageSizeBytes:
+                          description: The page size in bytes to use for an address. Supports byte notation like K, Mb, GB, etc.
+                          type: string
+                        redeliveryDelay:
+                          description: the time (in ms) to wait before redelivering a cancelled message.
+                          format: int32
+                          type: integer
+                        redistributionDelay:
+                          description: how long (in ms) to wait after the last consumer is closed on a queue before redistributing messages.
+                          format: int32
+                          type: integer
+                        retroactiveMessageCount:
+                          description: the number of messages to preserve for future queues created on the matching address
+                          format: int32
+                          type: integer
+                        sendToDlaOnNoRoute:
+                          description: if there are no queues matching this address, whether to forward message to DLA (if it exists for this address)
+                          type: boolean
+                        slowConsumerCheckPeriod:
+                          description: How often to check for slow consumers on a particular queue. Measured in seconds.
+                          format: int32
+                          type: integer
+                        slowConsumerPolicy:
+                          description: what happens when a slow consumer is identified
+                          type: string
+                        slowConsumerThreshold:
+                          description: The minimum rate of message consumption allowed before a consumer is considered "slow." Measured in messages-per-second.
+                          format: int32
+                          type: integer
+                        slowConsumerThresholdMeasurementUnit:
+                          description: Unit used in specifying slow consumer threshold, default is MESSAGE_PER_SECOND
+                          type: string
+                      type: object
+                    type: array
+                  applyRule:
+                    description: How to merge the address settings to broker configuration
+                    type: string
+                type: object
+              adminPassword:
+                description: Password for standard broker user. It is required for connecting to the broker and the web console. If left empty, it will be generated.
+                type: string
+              adminUser:
+                description: User name for standard broker user. It is required for connecting to the broker and the web console. If left empty, it will be generated.
+                type: string
+              brokerProperties:
+                description: Optional list of key=value properties that are applied to the broker configuration bean.
+                items:
+                  type: string
+                type: array
+              connectors:
+                items:
+                  properties:
+                    enabledCipherSuites:
+                      description: Comma separated list of cipher suites used for SSL communication.
+                      type: string
+                    enabledProtocols:
+                      description: Comma separated list of protocols used for SSL communication.
+                      type: string
+                    expose:
+                      description: Whether or not to expose this connector
+                      type: boolean
+                    host:
+                      description: Hostname or IP to connect to
+                      type: string
+                    keyStoreProvider:
+                      description: Provider used for the keystore; "SUN", "SunJCE", etc. Default is null
+                      type: string
+                    name:
+                      description: The name of the connector
+                      type: string
+                    needClientAuth:
+                      description: Tells a client connecting to this connector that 2-way SSL is required. This property takes precedence over wantClientAuth.
+                      type: boolean
+                    port:
+                      description: Port number
+                      format: int32
+                      type: integer
+                    sniHost:
+                      description: A regular expression used to match the server_name extension on incoming SSL connections. If the name doesn't match then the connection to the acceptor will be rejected.
+                      type: string
+                    sslEnabled:
+                      description: ' Whether or not to enable SSL on this port'
+                      type: boolean
+                    sslProvider:
+                      description: Used to change the SSL Provider between JDK and OPENSSL. The default is JDK.
+                      type: string
+                    sslSecret:
+                      description: Name of the secret to use for ssl information
+                      type: string
+                    trustStoreProvider:
+                      description: Provider used for the truststore; "SUN", "SunJCE", etc. Default in broker is null
+                      type: string
+                    trustStoreType:
+                      description: Type of truststore being used; "JKS", "JCEKS", "PKCS12", etc. Default in broker is "JKS"
+                      type: string
+                    type:
+                      description: The type either tcp or vm
+                      type: string
+                    verifyHost:
+                      description: The CN of the connecting client's SSL certificate will be compared to its hostname to verify they match. This is useful only for 2-way SSL.
+                      type: boolean
+                    wantClientAuth:
+                      description: Tells a client connecting to this connector that 2-way SSL is requested but not required. Overridden by needClientAuth.
+                      type: boolean
+                  required:
+                  - host
+                  - name
+                  - port
+                  type: object
+                type: array
+              console:
+                properties:
+                  expose:
+                    description: Whether or not to expose this port
+                    type: boolean
+                  sslEnabled:
+                    description: Whether or not to enable SSL on this port
+                    type: boolean
+                  sslSecret:
+                    description: Name of the secret to use for ssl information
+                    type: string
+                  useClientAuth:
+                    description: If the embedded server requires client authentication
+                    type: boolean
+                type: object
+              deploymentPlan:
+                properties:
+                  affinity:
+                    description: custom Affinity
+                    properties:
+                      nodeAffinity:
+                        description: Describes node affinity scheduling rules for the pod.
+                        properties:
+                          preferredDuringSchedulingIgnoredDuringExecution:
+                            description: The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node matches the corresponding matchExpressions; the node(s) with the highest sum are the most preferred.
+                            items:
+                              description: An empty preferred scheduling term matches all objects with implicit weight 0 (i.e. it's a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op).
+                              properties:
+                                preference:
+                                  description: A node selector term, associated with the corresponding weight.
+                                  properties:
+                                    matchExpressions:
+                                      description: A list of node selector requirements by node's labels.
+                                      items:
+                                        description: A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchFields:
+                                      description: A list of node selector requirements by node's fields.
+                                      items:
+                                        description: A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                  type: object
+                                weight:
+                                  description: Weight associated with matching the corresponding nodeSelectorTerm, in the range 1-100.
+                                  format: int32
+                                  type: integer
+                              required:
+                              - preference
+                              - weight
+                              type: object
+                            type: array
+                          requiredDuringSchedulingIgnoredDuringExecution:
+                            description: If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to an update), the system may or may not try to eventually evict the pod from its node.
+                            properties:
+                              nodeSelectorTerms:
+                                description: Required. A list of node selector terms. The terms are ORed.
+                                items:
+                                  description: A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
+                                  properties:
+                                    matchExpressions:
+                                      description: A list of node selector requirements by node's labels.
+                                      items:
+                                        description: A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchFields:
+                                      description: A list of node selector requirements by node's fields.
+                                      items:
+                                        description: A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: The label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                            type: string
+                                          values:
+                                            description: An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                            required:
+                            - nodeSelectorTerms
+                            type: object
+                        type: object
+                      podAffinity:
+                        description: Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s)).
+                        properties:
+                          preferredDuringSchedulingIgnoredDuringExecution:
+                            description: The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred.
+                            items:
+                              description: The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
+                              properties:
+                                podAffinityTerm:
+                                  description: Required. A pod affinity term, associated with the corresponding weight.
+                                  properties:
+                                    labelSelector:
+                                      description: A label query over a set of resources, in this case pods.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                          items:
+                                            description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
+                                    namespaceSelector:
+                                      description: A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod's namespace". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                          items:
+                                            description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
+                                    namespaces:
+                                      description: namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod's namespace"
+                                      items:
+                                        type: string
+                                      type: array
+                                    topologyKey:
+                                      description: This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.
+                                      type: string
+                                  required:
+                                  - topologyKey
+                                  type: object
+                                weight:
+                                  description: weight associated with matching the corresponding podAffinityTerm, in the range 1-100.
+                                  format: int32
+                                  type: integer
+                              required:
+                              - podAffinityTerm
+                              - weight
+                              type: object
+                            type: array
+                          requiredDuringSchedulingIgnoredDuringExecution:
+                            description: If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                            items:
+                              description: Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running
+                              properties:
+                                labelSelector:
+                                  description: A label query over a set of resources, in this case pods.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                      items:
+                                        description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                      type: object
+                                  type: object
+                                namespaceSelector:
+                                  description: A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod's namespace". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                      items:
+                                        description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                      type: object
+                                  type: object
+                                namespaces:
+                                  description: namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod's namespace"
+                                  items:
+                                    type: string
+                                  type: array
+                                topologyKey:
+                                  description: This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.
+                                  type: string
+                              required:
+                              - topologyKey
+                              type: object
+                            type: array
+                        type: object
+                      podAntiAffinity:
+                        description: Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the same node, zone, etc. as some other pod(s)).
+                        properties:
+                          preferredDuringSchedulingIgnoredDuringExecution:
+                            description: The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred.
+                            items:
+                              description: The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
+                              properties:
+                                podAffinityTerm:
+                                  description: Required. A pod affinity term, associated with the corresponding weight.
+                                  properties:
+                                    labelSelector:
+                                      description: A label query over a set of resources, in this case pods.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                          items:
+                                            description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
+                                    namespaceSelector:
+                                      description: A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod's namespace". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled.
+                                      properties:
+                                        matchExpressions:
+                                          description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                          items:
+                                            description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                            properties:
+                                              key:
+                                                description: key is the label key that the selector applies to.
+                                                type: string
+                                              operator:
+                                                description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                type: string
+                                              values:
+                                                description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                                items:
+                                                  type: string
+                                                type: array
+                                            required:
+                                            - key
+                                            - operator
+                                            type: object
+                                          type: array
+                                        matchLabels:
+                                          additionalProperties:
+                                            type: string
+                                          description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                          type: object
+                                      type: object
+                                    namespaces:
+                                      description: namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod's namespace"
+                                      items:
+                                        type: string
+                                      type: array
+                                    topologyKey:
+                                      description: This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.
+                                      type: string
+                                  required:
+                                  - topologyKey
+                                  type: object
+                                weight:
+                                  description: weight associated with matching the corresponding podAffinityTerm, in the range 1-100.
+                                  format: int32
+                                  type: integer
+                              required:
+                              - podAffinityTerm
+                              - weight
+                              type: object
+                            type: array
+                          requiredDuringSchedulingIgnoredDuringExecution:
+                            description: If the anti-affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the anti-affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                            items:
+                              description: Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running
+                              properties:
+                                labelSelector:
+                                  description: A label query over a set of resources, in this case pods.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                      items:
+                                        description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                      type: object
+                                  type: object
+                                namespaceSelector:
+                                  description: A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means "this pod's namespace". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled.
+                                  properties:
+                                    matchExpressions:
+                                      description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                      items:
+                                        description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                                        properties:
+                                          key:
+                                            description: key is the label key that the selector applies to.
+                                            type: string
+                                          operator:
+                                            description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                            type: string
+                                          values:
+                                            description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - key
+                                        - operator
+                                        type: object
+                                      type: array
+                                    matchLabels:
+                                      additionalProperties:
+                                        type: string
+                                      description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                      type: object
+                                  type: object
+                                namespaces:
+                                  description: namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means "this pod's namespace"
+                                  items:
+                                    type: string
+                                  type: array
+                                topologyKey:
+                                  description: This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.
+                                  type: string
+                              required:
+                              - topologyKey
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  clustered:
+                    description: Whether broker is clustered
+                    type: boolean
+                  enableMetricsPlugin:
+                    description: Whether or not to install the artemis metrics plugin
+                    type: boolean
+                  extraMounts:
+                    properties:
+                      configMaps:
+                        description: Name of ConfigMap
+                        items:
+                          type: string
+                        type: array
+                      secrets:
+                        description: Name of Secret
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  image:
+                    description: The image used for the broker deployment
+                    type: string
+                  initImage:
+                    description: The init container image used to configure broker
+                    type: string
+                  jolokiaAgentEnabled:
+                    description: If true enable the Jolokia JVM Agent
+                    type: boolean
+                  journalType:
+                    description: If aio use ASYNCIO, if nio use NIO for journal IO
+                    type: string
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: Assign labels to a broker pod, the keys `ActiveMQArtemis` and `application` are not allowed
+                    type: object
+                  livenessProbe:
+                    description: Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.
+                    properties:
+                      exec:
+                        description: Exec specifies the action to take.
+                        properties:
+                          command:
+                            description: Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      failureThreshold:
+                        description: Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+                        format: int32
+                        type: integer
+                      grpc:
+                        description: GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate.
+                        properties:
+                          port:
+                            description: Port number of the gRPC service. Number must be in the range 1 to 65535.
+                            format: int32
+                            type: integer
+                          service:
+                            description: "Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). \n If this is not specified, the default behavior is defined by gRPC."
+                            type: string
+                        required:
+                        - port
+                        type: object
+                      httpGet:
+                        description: HTTPGet specifies the http request to perform.
+                        properties:
+                          host:
+                            description: Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
+                            type: string
+                          httpHeaders:
+                            description: Custom headers to set in the request. HTTP allows repeated headers.
+                            items:
+                              description: HTTPHeader describes a custom header to be used in HTTP probes
+                              properties:
+                                name:
+                                  description: The header field name
+                                  type: string
+                                value:
+                                  description: The header field value
+                                  type: string
+                              required:
+                              - name
+                              - value
+                              type: object
+                            type: array
+                          path:
+                            description: Path to access on the HTTP server.
+                            type: string
+                          port:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            description: Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME.
+                            x-kubernetes-int-or-string: true
+                          scheme:
+                            description: Scheme to use for connecting to the host. Defaults to HTTP.
+                            type: string
+                        required:
+                        - port
+                        type: object
+                      initialDelaySeconds:
+                        description: 'Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                        format: int32
+                        type: integer
+                      periodSeconds:
+                        description: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+                        format: int32
+                        type: integer
+                      successThreshold:
+                        description: Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                        format: int32
+                        type: integer
+                      tcpSocket:
+                        description: TCPSocket specifies an action involving a TCP port.
+                        properties:
+                          host:
+                            description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                            type: string
+                          port:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            description: Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME.
+                            x-kubernetes-int-or-string: true
+                        required:
+                        - port
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                        format: int64
+                        type: integer
+                      timeoutSeconds:
+                        description: 'Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                        format: int32
+                        type: integer
+                    type: object
+                  managementRBACEnabled:
+                    description: If true enable the management role based access control
+                    type: boolean
+                  messageMigration:
+                    description: If true migrate messages on scaledown
+                    type: boolean
+                  nodeSelector:
+                    additionalProperties:
+                      type: string
+                    description: custom node selector
+                    type: object
+                  persistenceEnabled:
+                    description: If true use persistent volume via persistent volume claim for journal storage
+                    type: boolean
+                  podSecurity:
+                    properties:
+                      runAsUser:
+                        description: runAsUser as defined in PodSecurityContext for the pod
+                        format: int64
+                        type: integer
+                      serviceAccountName:
+                        description: ServiceAccount Name of the pod
+                        type: string
+                    type: object
+                  podSecurityContext:
+                    description: PodSecurityContext holds pod-level security attributes and common container settings. Some fields are also present in container.securityContext.  Field values of container.securityContext take precedence over field values of PodSecurityContext.
+                    properties:
+                      fsGroup:
+                        description: "A special supplemental group that applies to all containers in a pod. Some volume types allow the Kubelet to change the ownership of that volume to be owned by the pod: \n 1. The owning GID will be the FSGroup 2. The setgid bit is set (new files created in the volume will be owned by FSGroup) 3. The permission bits are OR'd with rw-rw---- \n If unset, the Kubelet will not modify the ownership and permissions of any volume. Note that this field cannot be set when spec.os.name is windows."
+                        format: int64
+                        type: integer
+                      fsGroupChangePolicy:
+                        description: 'fsGroupChangePolicy defines behavior of changing ownership and permission of the volume before being exposed inside Pod. This field will only apply to volume types which support fsGroup based ownership(and permissions). It will have no effect on ephemeral volume types such as: secret, configmaps and emptydir. Valid values are "OnRootMismatch" and "Always". If not specified, "Always" is used. Note that this field cannot be set when spec.os.name is windows.'
+                        type: string
+                      runAsGroup:
+                        description: The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.
+                        format: int64
+                        type: integer
+                      runAsNonRoot:
+                        description: Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+                        type: boolean
+                      runAsUser:
+                        description: The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.
+                        format: int64
+                        type: integer
+                      seLinuxOptions:
+                        description: The SELinux context to be applied to all containers. If unspecified, the container runtime will allocate a random SELinux context for each container.  May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.
+                        properties:
+                          level:
+                            description: Level is SELinux level label that applies to the container.
+                            type: string
+                          role:
+                            description: Role is a SELinux role label that applies to the container.
+                            type: string
+                          type:
+                            description: Type is a SELinux type label that applies to the container.
+                            type: string
+                          user:
+                            description: User is a SELinux user label that applies to the container.
+                            type: string
+                        type: object
+                      seccompProfile:
+                        description: The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows.
+                        properties:
+                          localhostProfile:
+                            description: localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is "Localhost".
+                            type: string
+                          type:
+                            description: "type indicates which kind of seccomp profile will be applied. Valid options are: \n Localhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied."
+                            type: string
+                        required:
+                        - type
+                        type: object
+                      supplementalGroups:
+                        description: A list of groups applied to the first process run in each container, in addition to the container's primary GID.  If unspecified, no groups will be added to any container. Note that this field cannot be set when spec.os.name is windows.
+                        items:
+                          format: int64
+                          type: integer
+                        type: array
+                      sysctls:
+                        description: Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported sysctls (by the container runtime) might fail to launch. Note that this field cannot be set when spec.os.name is windows.
+                        items:
+                          description: Sysctl defines a kernel parameter to be set
+                          properties:
+                            name:
+                              description: Name of a property to set
+                              type: string
+                            value:
+                              description: Value of a property to set
+                              type: string
+                          required:
+                          - name
+                          - value
+                          type: object
+                        type: array
+                      windowsOptions:
+                        description: The Windows specific settings applied to all containers. If unspecified, the options within a container's SecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux.
+                        properties:
+                          gmsaCredentialSpec:
+                            description: GMSACredentialSpec is where the GMSA admission webhook (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field.
+                            type: string
+                          gmsaCredentialSpecName:
+                            description: GMSACredentialSpecName is the name of the GMSA credential spec to use.
+                            type: string
+                          hostProcess:
+                            description: HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true.
+                            type: boolean
+                          runAsUserName:
+                            description: The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+                            type: string
+                        type: object
+                    type: object
+                  readinessProbe:
+                    description: Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.
+                    properties:
+                      exec:
+                        description: Exec specifies the action to take.
+                        properties:
+                          command:
+                            description: Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      failureThreshold:
+                        description: Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.
+                        format: int32
+                        type: integer
+                      grpc:
+                        description: GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate.
+                        properties:
+                          port:
+                            description: Port number of the gRPC service. Number must be in the range 1 to 65535.
+                            format: int32
+                            type: integer
+                          service:
+                            description: "Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). \n If this is not specified, the default behavior is defined by gRPC."
+                            type: string
+                        required:
+                        - port
+                        type: object
+                      httpGet:
+                        description: HTTPGet specifies the http request to perform.
+                        properties:
+                          host:
+                            description: Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
+                            type: string
+                          httpHeaders:
+                            description: Custom headers to set in the request. HTTP allows repeated headers.
+                            items:
+                              description: HTTPHeader describes a custom header to be used in HTTP probes
+                              properties:
+                                name:
+                                  description: The header field name
+                                  type: string
+                                value:
+                                  description: The header field value
+                                  type: string
+                              required:
+                              - name
+                              - value
+                              type: object
+                            type: array
+                          path:
+                            description: Path to access on the HTTP server.
+                            type: string
+                          port:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            description: Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME.
+                            x-kubernetes-int-or-string: true
+                          scheme:
+                            description: Scheme to use for connecting to the host. Defaults to HTTP.
+                            type: string
+                        required:
+                        - port
+                        type: object
+                      initialDelaySeconds:
+                        description: 'Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                        format: int32
+                        type: integer
+                      periodSeconds:
+                        description: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1.
+                        format: int32
+                        type: integer
+                      successThreshold:
+                        description: Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                        format: int32
+                        type: integer
+                      tcpSocket:
+                        description: TCPSocket specifies an action involving a TCP port.
+                        properties:
+                          host:
+                            description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                            type: string
+                          port:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            description: Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME.
+                            x-kubernetes-int-or-string: true
+                        required:
+                        - port
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                        format: int64
+                        type: integer
+                      timeoutSeconds:
+                        description: 'Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
+                        format: int32
+                        type: integer
+                    type: object
+                  requireLogin:
+                    description: If true require user password login credentials for broker protocol ports
+                    type: boolean
+                  resources:
+                    description: ResourceRequirements describes the compute resource requirements.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                  size:
+                    description: The number of broker pods to deploy
+                    format: int32
+                    type: integer
+                  storage:
+                    properties:
+                      size:
+                        type: string
+                      storageClassName:
+                        description: The storageClassName to be used in PVC
+                        type: string
+                    type: object
+                  tolerations:
+                    items:
+                      description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
+                      properties:
+                        effect:
+                          description: Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                          type: string
+                        key:
+                          description: Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                          type: string
+                        operator:
+                          description: Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+                          type: string
+                        tolerationSeconds:
+                          description: TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.
+                          format: int64
+                          type: integer
+                        value:
+                          description: Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              env:
+                description: Optional list of environment variables to apply to the container(s), not exclusive
+                items:
+                  description: EnvVar represents an environment variable present in a Container.
+                  properties:
+                    name:
+                      description: Name of the environment variable. Must be a C_IDENTIFIER.
+                      type: string
+                    value:
+                      description: 'Variable references $(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "".'
+                      type: string
+                    valueFrom:
+                      description: Source for the environment variable's value. Cannot be used if value is not empty.
+                      properties:
+                        configMapKeyRef:
+                          description: Selects a key of a ConfigMap.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                              type: string
+                            optional:
+                              description: Specify whether the ConfigMap or its key must be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                        fieldRef:
+                          description: 'Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels[''<KEY>'']`, `metadata.annotations[''<KEY>'']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.'
+                          properties:
+                            apiVersion:
+                              description: Version of the schema the FieldPath is written in terms of, defaults to "v1".
+                              type: string
+                            fieldPath:
+                              description: Path of the field to select in the specified API version.
+                              type: string
+                          required:
+                          - fieldPath
+                          type: object
+                        resourceFieldRef:
+                          description: 'Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.'
+                          properties:
+                            containerName:
+                              description: 'Container name: required for volumes, optional for env vars'
+                              type: string
+                            divisor:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              description: Specifies the output format of the exposed resources, defaults to "1"
+                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                              x-kubernetes-int-or-string: true
+                            resource:
+                              description: 'Required: resource to select'
+                              type: string
+                          required:
+                          - resource
+                          type: object
+                        secretKeyRef:
+                          description: Selects a key of a secret in the pod's namespace
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must be a valid secret key.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  type: object
+                type: array
+              upgrades:
+                description: ActiveMQArtemis App product upgrade flags, this is deprecated in v1beta1, specifying the Version is sufficient
+                properties:
+                  enabled:
+                    description: Set to true to enable automatic micro version product upgrades, disabled by default.
+                    type: boolean
+                  minor:
+                    description: Set to true to enable automatic micro version product upgrades, disabled by default. Requires spec.upgrades.enabled true.
+                    type: boolean
+                required:
+                - enabled
+                - minor
+                type: object
+              version:
+                description: The version of the broker deployment.
+                type: string
+            type: object
+          status:
+            description: ActiveMQArtemisStatus defines the observed state of ActiveMQArtemis
+            properties:
+              conditions:
+                description: Current state of the resource Conditions represent the latest available observations of an object's state
+                items:
+                  description: "Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, type FooStatus struct{     // Represents the observations of a foo's current state.     // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"     // +patchMergeKey=type     // +patchStrategy=merge     // +listType=map     // +listMapKey=type     Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` \n     // other fields }"
+                  properties:
+                    lastTransitionTime:
+                      description: lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: message is a human readable message indicating details about the transition. This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              podStatus:
+                description: Pod Status
+                properties:
+                  ready:
+                    description: Deployments are ready to serve requests
+                    items:
+                      type: string
+                    type: array
+                  starting:
+                    description: Deployments are starting, may or may not succeed
+                    items:
+                      type: string
+                    type: array
+                  stopped:
+                    description: Deployments are not starting, unclear what next step will be
+                    items:
+                      type: string
+                    type: array
+                type: object
+            required:
+            - podStatus
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - name: v2alpha1
+    schema:
+      openAPIV3Schema:
+        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
+            properties:
+              acceptors:
+                items:
+                  properties:
+                    anycastPrefix:
+                      type: string
+                    connectionsAllowed:
+                      type: integer
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    multicastPrefix:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    protocols:
+                      type: string
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              adminPassword:
+                type: string
+              adminUser:
+                type: string
+              connectors:
+                items:
+                  properties:
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    type:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - host
+                  - name
+                  - port
+                  type: object
+                type: array
+              console:
+                properties:
+                  expose:
+                    type: boolean
+                  sslEnabled:
+                    type: boolean
+                  sslSecret:
+                    type: string
+                  useClientAuth:
+                    type: boolean
+                type: object
+              deploymentPlan:
+                properties:
+                  image:
+                    type: string
+                  journalType:
+                    type: string
+                  messageMigration:
+                    type: boolean
+                  persistenceEnabled:
+                    type: boolean
+                  requireLogin:
+                    type: boolean
+                  size:
+                    format: int32
+                    type: integer
+                type: object
+            type: object
+          status:
+            description: ActiveMQArtemisStatus defines the observed state of ActiveMQArtemis
+            properties:
+              podStatus:
+                properties:
+                  ready:
+                    description: Deployments are ready to serve requests
+                    items:
+                      type: string
+                    type: array
+                  starting:
+                    description: Deployments are starting, may or may not succeed
+                    items:
+                      type: string
+                    type: array
+                  stopped:
+                    description: Deployments are not starting, unclear what next step will be
+                    items:
+                      type: string
+                    type: array
+                type: object
+            required:
+            - podStatus
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2alpha2
+    schema:
+      openAPIV3Schema:
+        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
+            properties:
+              acceptors:
+                items:
+                  properties:
+                    anycastPrefix:
+                      type: string
+                    connectionsAllowed:
+                      type: integer
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    multicastPrefix:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    protocols:
+                      type: string
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              adminPassword:
+                type: string
+              adminUser:
+                type: string
+              connectors:
+                items:
+                  properties:
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    type:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - host
+                  - name
+                  - port
+                  type: object
+                type: array
+              console:
+                properties:
+                  expose:
+                    type: boolean
+                  sslEnabled:
+                    type: boolean
+                  sslSecret:
+                    type: string
+                  useClientAuth:
+                    type: boolean
+                type: object
+              deploymentPlan:
+                properties:
+                  image:
+                    type: string
+                  journalType:
+                    type: string
+                  messageMigration:
+                    type: boolean
+                  persistenceEnabled:
+                    type: boolean
+                  requireLogin:
+                    type: boolean
+                  size:
+                    format: int32
+                    type: integer
+                type: object
+              upgrades:
+                description: ActiveMQArtemis App product upgrade flags
+                properties:
+                  enabled:
+                    type: boolean
+                  minor:
+                    type: boolean
+                required:
+                - enabled
+                - minor
+                type: object
+              version:
+                type: string
+            type: object
+          status:
+            description: ActiveMQArtemisStatus defines the observed state of ActiveMQArtemis
+            properties:
+              podStatus:
+                properties:
+                  ready:
+                    description: Deployments are ready to serve requests
+                    items:
+                      type: string
+                    type: array
+                  starting:
+                    description: Deployments are starting, may or may not succeed
+                    items:
+                      type: string
+                    type: array
+                  stopped:
+                    description: Deployments are not starting, unclear what next step will be
+                    items:
+                      type: string
+                    type: array
+                type: object
+            required:
+            - podStatus
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2alpha3
+    schema:
+      openAPIV3Schema:
+        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
+            properties:
+              acceptors:
+                items:
+                  properties:
+                    amqpMinLargeMessageSize:
+                      type: integer
+                    anycastPrefix:
+                      type: string
+                    connectionsAllowed:
+                      type: integer
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    multicastPrefix:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    protocols:
+                      type: string
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              addressSettings:
+                properties:
+                  addressSetting:
+                    items:
+                      properties:
+                        addressFullPolicy:
+                          type: string
+                        autoCreateAddresses:
+                          type: boolean
+                        autoCreateDeadLetterResources:
+                          type: boolean
+                        autoCreateExpiryResources:
+                          type: boolean
+                        autoCreateJmsQueues:
+                          type: boolean
+                        autoCreateJmsTopics:
+                          type: boolean
+                        autoCreateQueues:
+                          type: boolean
+                        autoDeleteAddresses:
+                          type: boolean
+                        autoDeleteAddressesDelay:
+                          format: int32
+                          type: integer
+                        autoDeleteCreatedQueues:
+                          type: boolean
+                        autoDeleteJmsQueues:
+                          type: boolean
+                        autoDeleteJmsTopics:
+                          type: boolean
+                        autoDeleteQueues:
+                          type: boolean
+                        autoDeleteQueuesDelay:
+                          format: int32
+                          type: integer
+                        autoDeleteQueuesMessageCount:
+                          format: int32
+                          type: integer
+                        configDeleteAddresses:
+                          type: string
+                        configDeleteQueues:
+                          type: string
+                        deadLetterAddress:
+                          type: string
+                        deadLetterQueuePrefix:
+                          type: string
+                        deadLetterQueueSuffix:
+                          type: string
+                        defaultAddressRoutingType:
+                          type: string
+                        defaultConsumerWindowSize:
+                          format: int32
+                          type: integer
+                        defaultConsumersBeforeDispatch:
+                          format: int32
+                          type: integer
+                        defaultDelayBeforeDispatch:
+                          format: int32
+                          type: integer
+                        defaultExclusiveQueue:
+                          type: boolean
+                        defaultGroupBuckets:
+                          format: int32
+                          type: integer
+                        defaultGroupFirstKey:
+                          type: string
+                        defaultGroupRebalance:
+                          type: boolean
+                        defaultGroupRebalancePauseDispatch:
+                          type: boolean
+                        defaultLastValueKey:
+                          type: string
+                        defaultLastValueQueue:
+                          type: boolean
+                        defaultMaxConsumers:
+                          format: int32
+                          type: integer
+                        defaultNonDestructive:
+                          type: boolean
+                        defaultPurgeOnNoConsumers:
+                          type: boolean
+                        defaultQueueRoutingType:
+                          type: string
+                        defaultRingSize:
+                          format: int32
+                          type: integer
+                        enableMetrics:
+                          type: boolean
+                        expiryAddress:
+                          type: string
+                        expiryDelay:
+                          format: int32
+                          type: integer
+                        expiryQueuePrefix:
+                          type: string
+                        expiryQueueSuffix:
+                          type: string
+                        lastValueQueue:
+                          type: boolean
+                        managementBrowsePageSize:
+                          format: int32
+                          type: integer
+                        match:
+                          type: string
+                        maxDeliveryAttempts:
+                          format: int32
+                          type: integer
+                        maxExpiryDelay:
+                          format: int32
+                          type: integer
+                        maxRedeliveryDelay:
+                          format: int32
+                          type: integer
+                        maxSizeBytes:
+                          type: string
+                        maxSizeBytesRejectThreshold:
+                          format: int32
+                          type: integer
+                        messageCounterHistoryDayLimit:
+                          format: int32
+                          type: integer
+                        minExpiryDelay:
+                          format: int32
+                          type: integer
+                        pageMaxCacheSize:
+                          format: int32
+                          type: integer
+                        pageSizeBytes:
+                          type: string
+                        redeliveryCollisionAvoidanceFactor:
+                          type: number
+                        redeliveryDelay:
+                          format: int32
+                          type: integer
+                        redeliveryDelayMultiplier:
+                          format: int32
+                          type: integer
+                        redistributionDelay:
+                          format: int32
+                          type: integer
+                        retroactiveMessageCount:
+                          format: int32
+                          type: integer
+                        sendToDlaOnNoRoute:
+                          type: boolean
+                        slowConsumerCheckPeriod:
+                          format: int32
+                          type: integer
+                        slowConsumerPolicy:
+                          type: string
+                        slowConsumerThreshold:
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  applyRule:
+                    type: string
+                type: object
+              adminPassword:
+                type: string
+              adminUser:
+                type: string
+              connectors:
+                items:
+                  properties:
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    type:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - host
+                  - name
+                  - port
+                  type: object
+                type: array
+              console:
+                properties:
+                  expose:
+                    type: boolean
+                  sslEnabled:
+                    type: boolean
+                  sslSecret:
+                    type: string
+                  useClientAuth:
+                    type: boolean
+                type: object
+              deploymentPlan:
+                properties:
+                  image:
+                    type: string
+                  journalType:
+                    type: string
+                  messageMigration:
+                    type: boolean
+                  persistenceEnabled:
+                    type: boolean
+                  requireLogin:
+                    type: boolean
+                  resources:
+                    description: ResourceRequirements describes the compute resource requirements.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                  size:
+                    format: int32
+                    type: integer
+                  storage:
+                    properties:
+                      size:
+                        type: string
+                    type: object
+                type: object
+              upgrades:
+                description: ActiveMQArtemis App product upgrade flags
+                properties:
+                  enabled:
+                    type: boolean
+                  minor:
+                    type: boolean
+                required:
+                - enabled
+                - minor
+                type: object
+              version:
+                type: string
+            type: object
+          status:
+            description: ActiveMQArtemisStatus defines the observed state of ActiveMQArtemis
+            properties:
+              podStatus:
+                properties:
+                  ready:
+                    description: Deployments are ready to serve requests
+                    items:
+                      type: string
+                    type: array
+                  starting:
+                    description: Deployments are starting, may or may not succeed
+                    items:
+                      type: string
+                    type: array
+                  stopped:
+                    description: Deployments are not starting, unclear what next step will be
+                    items:
+                      type: string
+                    type: array
+                type: object
+            required:
+            - podStatus
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2alpha4
+    schema:
+      openAPIV3Schema:
+        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
+            properties:
+              acceptors:
+                items:
+                  properties:
+                    amqpMinLargeMessageSize:
+                      type: integer
+                    anycastPrefix:
+                      type: string
+                    connectionsAllowed:
+                      type: integer
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    multicastPrefix:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    protocols:
+                      type: string
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              addressSettings:
+                properties:
+                  addressSetting:
+                    items:
+                      properties:
+                        addressFullPolicy:
+                          type: string
+                        autoCreateAddresses:
+                          type: boolean
+                        autoCreateDeadLetterResources:
+                          type: boolean
+                        autoCreateExpiryResources:
+                          type: boolean
+                        autoCreateJmsQueues:
+                          type: boolean
+                        autoCreateJmsTopics:
+                          type: boolean
+                        autoCreateQueues:
+                          type: boolean
+                        autoDeleteAddresses:
+                          type: boolean
+                        autoDeleteAddressesDelay:
+                          format: int32
+                          type: integer
+                        autoDeleteCreatedQueues:
+                          type: boolean
+                        autoDeleteJmsQueues:
+                          type: boolean
+                        autoDeleteJmsTopics:
+                          type: boolean
+                        autoDeleteQueues:
+                          type: boolean
+                        autoDeleteQueuesDelay:
+                          format: int32
+                          type: integer
+                        autoDeleteQueuesMessageCount:
+                          format: int32
+                          type: integer
+                        configDeleteAddresses:
+                          type: string
+                        configDeleteQueues:
+                          type: string
+                        deadLetterAddress:
+                          type: string
+                        deadLetterQueuePrefix:
+                          type: string
+                        deadLetterQueueSuffix:
+                          type: string
+                        defaultAddressRoutingType:
+                          type: string
+                        defaultConsumerWindowSize:
+                          format: int32
+                          type: integer
+                        defaultConsumersBeforeDispatch:
+                          format: int32
+                          type: integer
+                        defaultDelayBeforeDispatch:
+                          format: int32
+                          type: integer
+                        defaultExclusiveQueue:
+                          type: boolean
+                        defaultGroupBuckets:
+                          format: int32
+                          type: integer
+                        defaultGroupFirstKey:
+                          type: string
+                        defaultGroupRebalance:
+                          type: boolean
+                        defaultGroupRebalancePauseDispatch:
+                          type: boolean
+                        defaultLastValueKey:
+                          type: string
+                        defaultLastValueQueue:
+                          type: boolean
+                        defaultMaxConsumers:
+                          format: int32
+                          type: integer
+                        defaultNonDestructive:
+                          type: boolean
+                        defaultPurgeOnNoConsumers:
+                          type: boolean
+                        defaultQueueRoutingType:
+                          type: string
+                        defaultRingSize:
+                          format: int32
+                          type: integer
+                        enableMetrics:
+                          type: boolean
+                        expiryAddress:
+                          type: string
+                        expiryDelay:
+                          format: int32
+                          type: integer
+                        expiryQueuePrefix:
+                          type: string
+                        expiryQueueSuffix:
+                          type: string
+                        lastValueQueue:
+                          type: boolean
+                        managementBrowsePageSize:
+                          format: int32
+                          type: integer
+                        match:
+                          type: string
+                        maxDeliveryAttempts:
+                          format: int32
+                          type: integer
+                        maxExpiryDelay:
+                          format: int32
+                          type: integer
+                        maxRedeliveryDelay:
+                          format: int32
+                          type: integer
+                        maxSizeBytes:
+                          type: string
+                        maxSizeBytesRejectThreshold:
+                          format: int32
+                          type: integer
+                        messageCounterHistoryDayLimit:
+                          format: int32
+                          type: integer
+                        minExpiryDelay:
+                          format: int32
+                          type: integer
+                        pageMaxCacheSize:
+                          format: int32
+                          type: integer
+                        pageSizeBytes:
+                          type: string
+                        redeliveryCollisionAvoidanceFactor:
+                          type: number
+                        redeliveryDelay:
+                          format: int32
+                          type: integer
+                        redeliveryDelayMultiplier:
+                          format: int32
+                          type: integer
+                        redistributionDelay:
+                          format: int32
+                          type: integer
+                        retroactiveMessageCount:
+                          format: int32
+                          type: integer
+                        sendToDlaOnNoRoute:
+                          type: boolean
+                        slowConsumerCheckPeriod:
+                          format: int32
+                          type: integer
+                        slowConsumerPolicy:
+                          type: string
+                        slowConsumerThreshold:
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  applyRule:
+                    type: string
+                type: object
+              adminPassword:
+                type: string
+              adminUser:
+                type: string
+              connectors:
+                items:
+                  properties:
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    type:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - host
+                  - name
+                  - port
+                  type: object
+                type: array
+              console:
+                properties:
+                  expose:
+                    type: boolean
+                  sslEnabled:
+                    type: boolean
+                  sslSecret:
+                    type: string
+                  useClientAuth:
+                    type: boolean
+                type: object
+              deploymentPlan:
+                properties:
+                  image:
+                    type: string
+                  initImage:
+                    type: string
+                  jolokiaAgentEnabled:
+                    type: boolean
+                  journalType:
+                    type: string
+                  managementRBACEnabled:
+                    type: boolean
+                  messageMigration:
+                    type: boolean
+                  persistenceEnabled:
+                    type: boolean
+                  requireLogin:
+                    type: boolean
+                  resources:
+                    description: ResourceRequirements describes the compute resource requirements.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                  size:
+                    format: int32
+                    type: integer
+                  storage:
+                    properties:
+                      size:
+                        type: string
+                    type: object
+                type: object
+              upgrades:
+                description: ActiveMQArtemis App product upgrade flags
+                properties:
+                  enabled:
+                    type: boolean
+                  minor:
+                    type: boolean
+                required:
+                - enabled
+                - minor
+                type: object
+              version:
+                type: string
+            type: object
+          status:
+            description: ActiveMQArtemisStatus defines the observed state of ActiveMQArtemis
+            properties:
+              podStatus:
+                properties:
+                  ready:
+                    description: Deployments are ready to serve requests
+                    items:
+                      type: string
+                    type: array
+                  starting:
+                    description: Deployments are starting, may or may not succeed
+                    items:
+                      type: string
+                    type: array
+                  stopped:
+                    description: Deployments are not starting, unclear what next step will be
+                    items:
+                      type: string
+                    type: array
+                type: object
+            required:
+            - podStatus
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2alpha5
+    schema:
+      openAPIV3Schema:
+        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
+            properties:
+              acceptors:
+                items:
+                  properties:
+                    amqpMinLargeMessageSize:
+                      type: integer
+                    anycastPrefix:
+                      type: string
+                    connectionsAllowed:
+                      type: integer
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    multicastPrefix:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    protocols:
+                      type: string
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    supportAdvisory:
+                      type: boolean
+                    suppressInternalManagementObjects:
+                      type: boolean
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - name
+                  type: object
+                type: array
+              addressSettings:
+                properties:
+                  addressSetting:
+                    items:
+                      properties:
+                        addressFullPolicy:
+                          type: string
+                        autoCreateAddresses:
+                          type: boolean
+                        autoCreateDeadLetterResources:
+                          type: boolean
+                        autoCreateExpiryResources:
+                          type: boolean
+                        autoCreateJmsQueues:
+                          type: boolean
+                        autoCreateJmsTopics:
+                          type: boolean
+                        autoCreateQueues:
+                          type: boolean
+                        autoDeleteAddresses:
+                          type: boolean
+                        autoDeleteAddressesDelay:
+                          format: int32
+                          type: integer
+                        autoDeleteCreatedQueues:
+                          type: boolean
+                        autoDeleteJmsQueues:
+                          type: boolean
+                        autoDeleteJmsTopics:
+                          type: boolean
+                        autoDeleteQueues:
+                          type: boolean
+                        autoDeleteQueuesDelay:
+                          format: int32
+                          type: integer
+                        autoDeleteQueuesMessageCount:
+                          format: int32
+                          type: integer
+                        configDeleteAddresses:
+                          type: string
+                        configDeleteQueues:
+                          type: string
+                        deadLetterAddress:
+                          type: string
+                        deadLetterQueuePrefix:
+                          type: string
+                        deadLetterQueueSuffix:
+                          type: string
+                        defaultAddressRoutingType:
+                          type: string
+                        defaultConsumerWindowSize:
+                          format: int32
+                          type: integer
+                        defaultConsumersBeforeDispatch:
+                          format: int32
+                          type: integer
+                        defaultDelayBeforeDispatch:
+                          format: int32
+                          type: integer
+                        defaultExclusiveQueue:
+                          type: boolean
+                        defaultGroupBuckets:
+                          format: int32
+                          type: integer
+                        defaultGroupFirstKey:
+                          type: string
+                        defaultGroupRebalance:
+                          type: boolean
+                        defaultGroupRebalancePauseDispatch:
+                          type: boolean
+                        defaultLastValueKey:
+                          type: string
+                        defaultLastValueQueue:
+                          type: boolean
+                        defaultMaxConsumers:
+                          format: int32
+                          type: integer
+                        defaultNonDestructive:
+                          type: boolean
+                        defaultPurgeOnNoConsumers:
+                          type: boolean
+                        defaultQueueRoutingType:
+                          type: string
+                        defaultRingSize:
+                          format: int32
+                          type: integer
+                        enableIngressTimestamp:
+                          type: boolean
+                        enableMetrics:
+                          type: boolean
+                        expiryAddress:
+                          type: string
+                        expiryDelay:
+                          format: int32
+                          type: integer
+                        expiryQueuePrefix:
+                          type: string
+                        expiryQueueSuffix:
+                          type: string
+                        lastValueQueue:
+                          type: boolean
+                        managementBrowsePageSize:
+                          format: int32
+                          type: integer
+                        managementMessageAttributeSizeLimit:
+                          format: int32
+                          type: integer
+                        match:
+                          type: string
+                        maxDeliveryAttempts:
+                          format: int32
+                          type: integer
+                        maxExpiryDelay:
+                          format: int32
+                          type: integer
+                        maxRedeliveryDelay:
+                          format: int32
+                          type: integer
+                        maxSizeBytes:
+                          type: string
+                        maxSizeBytesRejectThreshold:
+                          format: int32
+                          type: integer
+                        messageCounterHistoryDayLimit:
+                          format: int32
+                          type: integer
+                        minExpiryDelay:
+                          format: int32
+                          type: integer
+                        pageMaxCacheSize:
+                          format: int32
+                          type: integer
+                        pageSizeBytes:
+                          type: string
+                        redeliveryCollisionAvoidanceFactor:
+                          type: number
+                        redeliveryDelay:
+                          format: int32
+                          type: integer
+                        redeliveryDelayMultiplier:
+                          type: number
+                        redistributionDelay:
+                          format: int32
+                          type: integer
+                        retroactiveMessageCount:
+                          format: int32
+                          type: integer
+                        sendToDlaOnNoRoute:
+                          type: boolean
+                        slowConsumerCheckPeriod:
+                          format: int32
+                          type: integer
+                        slowConsumerPolicy:
+                          type: string
+                        slowConsumerThreshold:
+                          format: int32
+                          type: integer
+                        slowConsumerThresholdMeasurementUnit:
+                          type: string
+                      type: object
+                    type: array
+                  applyRule:
+                    type: string
+                type: object
+              adminPassword:
+                type: string
+              adminUser:
+                type: string
+              connectors:
+                items:
+                  properties:
+                    enabledCipherSuites:
+                      type: string
+                    enabledProtocols:
+                      type: string
+                    expose:
+                      type: boolean
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    needClientAuth:
+                      type: boolean
+                    port:
+                      format: int32
+                      type: integer
+                    sniHost:
+                      type: string
+                    sslEnabled:
+                      type: boolean
+                    sslProvider:
+                      type: string
+                    sslSecret:
+                      type: string
+                    type:
+                      type: string
+                    verifyHost:
+                      type: boolean
+                    wantClientAuth:
+                      type: boolean
+                  required:
+                  - host
+                  - name
+                  - port
+                  type: object
+                type: array
+              console:
+                properties:
+                  expose:
+                    type: boolean
+                  sslEnabled:
+                    type: boolean
+                  sslSecret:
+                    type: string
+                  useClientAuth:
+                    type: boolean
+                type: object
+              deploymentPlan:
+                properties:
+                  clustered:
+                    type: boolean
+                  enableMetricsPlugin:
+                    type: boolean
+                  extraMounts:
+                    properties:
+                      configMaps:
+                        items:
+                          type: string
+                        type: array
+                      secrets:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  image:
+                    type: string
+                  initImage:
+                    type: string
+                  jolokiaAgentEnabled:
+                    type: boolean
+                  journalType:
+                    type: string
+                  livenessProbe:
+                    properties:
+                      timeoutSeconds:
+                        format: int32
+                        type: integer
+                    type: object
+                  managementRBACEnabled:
+                    type: boolean
+                  messageMigration:
+                    type: boolean
+                  persistenceEnabled:
+                    type: boolean
+                  podSecurity:
+                    properties:
+                      runAsUser:
+                        format: int64
+                        type: integer
+                      serviceAccountName:
+                        type: string
+                    type: object
+                  readinessProbe:
+                    properties:
+                      timeoutSeconds:
+                        format: int32
+                        type: integer
+                    type: object
+                  requireLogin:
+                    type: boolean
+                  resources:
+                    description: ResourceRequirements describes the compute resource requirements.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                  size:
+                    format: int32
+                    type: integer
+                  storage:
+                    properties:
+                      size:
+                        type: string
+                    type: object
+                type: object
+              upgrades:
+                description: ActiveMQArtemis App product upgrade flags
+                properties:
+                  enabled:
+                    type: boolean
+                  minor:
+                    type: boolean
+                required:
+                - enabled
+                - minor
+                type: object
+              version:
+                type: string
+            type: object
+          status:
+            description: ActiveMQArtemisStatus defines the observed state of ActiveMQArtemis
+            properties:
+              podStatus:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file'
+                properties:
+                  ready:
+                    description: Deployments are ready to serve requests
+                    items:
+                      type: string
+                    type: array
+                  starting:
+                    description: Deployments are starting, may or may not succeed
+                    items:
+                      type: string
+                    type: array
+                  stopped:
+                    description: Deployments are not starting, unclear what next step will be
+                    items:
+                      type: string
+                    type: array
+                type: object
+            required:
+            - podStatus
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
