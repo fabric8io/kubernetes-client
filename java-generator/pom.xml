@@ -33,9 +33,124 @@
   <modules>
     <module>core</module>
     <module>cli</module>
+    <module>gradle-plugin</module>
     <module>maven-plugin</module>
     <module>it</module>
     <module>benchmark</module>
   </modules>
+
+  <properties>
+    <version.gradle>6.1.1</version.gradle>
+    <version.groovy>2.4.21</version.groovy>
+    <version.javax.inject>1</version.javax.inject>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>maven-central</id>
+      <url>https://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>repo.gradle.org</id>
+      <url>https://repo.gradle.org/gradle/libs-releases-local/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>ext.repo.gradle.org</id>
+      <url>https://repo.gradle.org/gradle/ext-releases-local/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>${version.groovy}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-base-services</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-core</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-core-api</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-logging</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-plugins</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-model-core</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>java-generator-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-base-services-groovy</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-messaging</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-native</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-platform-jvm</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-process-services</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-test-kit</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.gradle</groupId>
+        <artifactId>gradle-tooling-api</artifactId>
+        <version>${version.gradle}</version>
+      </dependency>
+      <!-- Gradle plugin implementation -->
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>${version.javax.inject}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 </project>
