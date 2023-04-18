@@ -19,6 +19,7 @@
 * Fix #4975: exposing scale operations for all Resources
 * Fix #4992: Optimize Quantity parsing to avoid regex overhead
 * Fix #4998: removing the internal usage of the Serialization yaml mapper
+* Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount
 
 #### Dependency Upgrade
 * Fix #5006: Bump BouncyCastle to 1.72
