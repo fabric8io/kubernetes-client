@@ -208,6 +208,6 @@ class QuantityTest {
   @DisplayName("Test fromAmountInBytes method")
   void testFromAmountInBytes(String amount) {
     Quantity quantity = new Quantity(amount);
-    assertEquals(quantity, Quantity.fromNumericalAmount(quantity.getNumericalAmount(), quantity.getFormat()));
+    assertThat(quantity).isEqualTo(Quantity.fromNumericalAmount(quantity.getNumericalAmount(), quantity.getFormat()));
   }
 }
