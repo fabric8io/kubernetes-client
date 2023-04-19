@@ -24,7 +24,7 @@ public interface WebSocket {
 
   /**
    * Callback methods for websocket events. The methods are
-   * guaranteed to be called serially - except for {@link #onError(WebSocket, Throwable)}
+   * guaranteed to be called serially - except for {@link Listener#onError(WebSocket, Throwable, boolean)}
    */
   interface Listener {
 
@@ -59,7 +59,7 @@ public interface WebSocket {
      * Called when an error has occurred. It's a terminal event, calls to {@link WebSocket#request()}
      * do nothing after this.
      */
-    default void onError(WebSocket webSocket, Throwable error) {
+    default void onError(WebSocket webSocket, Throwable error, boolean connectionError) {
     }
 
   }

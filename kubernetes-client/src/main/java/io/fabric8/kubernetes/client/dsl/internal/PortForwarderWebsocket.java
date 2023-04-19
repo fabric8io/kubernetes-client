@@ -178,7 +178,7 @@ public class PortForwarderWebsocket implements PortForwarder {
 
     socket.whenComplete((w, t) -> {
       if (t != null) {
-        listener.onError(w, t);
+        listener.onError(w, t, true);
       }
     });
 

@@ -15,6 +15,7 @@
 * Fix #5015: executing resync as a locking operation to ensure resync event ordering
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
+* fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
 * Fix #5044: disable Vert.x instance file caching
 * Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
 

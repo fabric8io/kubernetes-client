@@ -258,8 +258,8 @@ class JettyWebSocketTest {
     }
 
     @Override
-    public void onError(WebSocket webSocket, Throwable error) {
-      events.put("onError", new Object[] { error });
+    public void onError(WebSocket webSocket, Throwable error, boolean connectionError) {
+      events.put("onError", new Object[] { error, connectionError });
     }
   }
 }
