@@ -5,18 +5,22 @@
 #### Bugs
 * Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
+* Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * Fix #4988: Ensuring that previous requests are closed before retry
 * fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymophic types
 * Fix #5020: updating the resourceVersion on a delete with finalizers
+* Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
+* Fix #5044: disable Vert.x instance file caching
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
 * Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
 * Fix #4935: improve HTTP client implementation selection messages
 * Fix #4975: exposing scale operations for all Resources
+* Fix #5022: adding additional buffering to ExecWatchInputStream
 * Fix #4992: Optimize Quantity parsing to avoid regex overhead
 * Fix #4998: removing the internal usage of the Serialization yaml mapper
 * Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount

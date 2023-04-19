@@ -20,185 +20,185 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-public class QuantityTest {
+class QuantityTest {
   private final ObjectMapper mapper = new ObjectMapper();
 
   @Test
   @DisplayName("Test Serialization and Deserialization")
-  public void testAmountUnitSeparately() throws JsonProcessingException {
+  void testAmountUnitSeparately() throws JsonProcessingException {
     Quantity quantity = new Quantity("256", "Mi");
     String serializedObj = mapper.writeValueAsString(quantity);
-    assertEquals("\"256Mi\"", serializedObj);
+    assertThat(serializedObj).isEqualTo("\"256Mi\"");
 
     Quantity deserializedObj = mapper.readValue("{\"amount\":256,\"format\":\"Mi\"}", Quantity.class);
-    assertEquals("256", deserializedObj.getAmount());
-    assertEquals("Mi", deserializedObj.getFormat());
+    assertThat(deserializedObj)
+        .hasFieldOrPropertyWithValue("amount", "256")
+        .hasFieldOrPropertyWithValue("format", "Mi");
   }
 
   @Test
   @DisplayName("Test Serialized value with single argument constructor")
-  public void testAmount() throws JsonProcessingException {
+  void testAmount() throws JsonProcessingException {
     Quantity quantity = new Quantity("256Mi");
     String serializedObj = mapper.writeValueAsString(quantity);
-    assertEquals("\"256Mi\"", serializedObj);
+    assertThat(serializedObj).isEqualTo("\"256Mi\"");
+  }
+
+  @Test
+  void quantity_whenSerialized_thenAdditionalPropertiesNotPresentInSerializedForm() throws JsonProcessingException {
+    // Given
+    Quantity quantity = new Quantity("8Mi");
+    quantity.setAdditionalProperties(Collections.singletonMap("unwantedKey", "unwantedValue"));
+    // When
+    String result = mapper.writeValueAsString(quantity);
+    // Then
+    assertThat(result).isEqualTo("\"8Mi\"").doesNotContain("additionalProperties");
+  }
+
+  @Test
+  void quantity_whenDeserialized_thenAdditionalPropertiesNotPresentInObject() throws JsonProcessingException {
+    // Given
+    String serializedForm = "{\"amount\":256,\"format\":\"Mi\",\"additionalProperties\":{\"unwantedKey\":\"unwantedValue\"}}";
+    // When
+    Quantity result = mapper.readValue(serializedForm, Quantity.class);
+    // Then
+    assertThat(result)
+        .hasFieldOrPropertyWithValue("amount", "256")
+        .hasFieldOrPropertyWithValue("format", "Mi")
+        .hasFieldOrPropertyWithValue("additionalProperties", Collections.emptyMap());
   }
 
   @Test
   @DisplayName("Test getters and setters")
-  public void testQuantityObj() {
+  void testQuantityObj() {
     Quantity quantity = new Quantity("32Mi");
-    assertEquals("32", quantity.getAmount());
-    assertEquals("Mi", quantity.getFormat());
+    assertThat(quantity)
+        .hasFieldOrPropertyWithValue("amount", "32")
+        .hasFieldOrPropertyWithValue("format", "Mi");
     quantity.setAmount("16");
     quantity.setFormat("Ei");
-    assertEquals("16", quantity.getAmount());
-    assertEquals("Ei", quantity.getFormat());
+    assertThat(quantity)
+        .hasFieldOrPropertyWithValue("amount", "16")
+        .hasFieldOrPropertyWithValue("format", "Ei");
   }
 
   @Test
-
-  public void testNormalization() {
+  void testNormalization() {
     Quantity quantity = new Quantity(".5Mi");
-    assertEquals(new BigDecimal("524288.0"), Quantity.getAmountInBytes(quantity));
+    assertThat(Quantity.getAmountInBytes(quantity)).isEqualTo(new BigDecimal("524288.0"));
 
     Quantity quantity1 = new Quantity("512Ki");
-    assertEquals(Quantity.getAmountInBytes(quantity1).toBigInteger(), Quantity.getAmountInBytes(quantity).toBigInteger());
+    assertThat(Quantity.getAmountInBytes(quantity).toBigInteger())
+        .isEqualTo(Quantity.getAmountInBytes(quantity1).toBigInteger());
   }
 
   @Test
   @DisplayName("Should be able to process negative exponents")
-  public void testNegativeExponents() {
+  void testNegativeExponents() {
     Quantity quantity1 = new Quantity("100001m");
     Quantity quantity2 = new Quantity("1n");
 
-    assertEquals("100.001", Quantity.getAmountInBytes(quantity1).toString());
-    assertEquals("1E-9", Quantity.getAmountInBytes(quantity2).toString());
+    assertThat(Quantity.getAmountInBytes(quantity1)).hasToString("100.001");
+    assertThat(Quantity.getAmountInBytes(quantity2)).hasToString("1E-9");
   }
 
-  @Test
-  @DisplayName("Should be able to get correct amount in bytes")
-  public void testExponents() {
-    assertEquals("129000000", Quantity.getAmountInBytes(new Quantity("129e6")).toString());
-    assertEquals("129000000", Quantity.getAmountInBytes(new Quantity("129e+6")).toString());
-    assertEquals("1234567890", Quantity.getAmountInBytes(new Quantity("1234567890")).toString());
-    assertEquals("8192", Quantity.getAmountInBytes(new Quantity("8Ki")).toString());
-    assertEquals("7340032", Quantity.getAmountInBytes(new Quantity("7Mi")).toString());
-    assertEquals("6442450944", Quantity.getAmountInBytes(new Quantity("6Gi")).toString());
-    assertEquals("5497558138880", Quantity.getAmountInBytes(new Quantity("5Ti")).toString());
-    assertEquals("4503599627370496", Quantity.getAmountInBytes(new Quantity("4Pi")).toString());
-    assertEquals("3.458764513820541E+18", Quantity.getAmountInBytes(new Quantity("3Ei")).toString());
-    assertEquals("5E-9", Quantity.getAmountInBytes(new Quantity("5n")).toString());
-    assertEquals("0.000004", Quantity.getAmountInBytes(new Quantity("4u")).toString());
-    assertEquals("0.003", Quantity.getAmountInBytes(new Quantity("3m")).toString());
-    assertEquals("9", Quantity.getAmountInBytes(new Quantity("9")).toString());
-    assertEquals("8000", Quantity.getAmountInBytes(new Quantity("8k")).toString());
-    assertEquals("50000", Quantity.getAmountInBytes(new Quantity("50k")).toString());
-    assertEquals("7000000", Quantity.getAmountInBytes(new Quantity("7M")).toString());
-    assertEquals("6000000000", Quantity.getAmountInBytes(new Quantity("6G")).toString());
-    assertEquals("5000000000000", Quantity.getAmountInBytes(new Quantity("5T")).toString());
-    assertEquals("40000000000000", Quantity.getAmountInBytes(new Quantity("40T")).toString());
-    assertEquals("300000000000000", Quantity.getAmountInBytes(new Quantity("300T")).toString());
-    assertEquals("2000000000000000", Quantity.getAmountInBytes(new Quantity("2P")).toString());
-    assertEquals("1.000000000000000E+18", Quantity.getAmountInBytes(new Quantity("1E")).toString());
-    assertEquals("524288.0", Quantity.getAmountInBytes(new Quantity(".5Mi")).toString());
-    assertEquals("524288.0", Quantity.getAmountInBytes(new Quantity(".5", "Mi")).toString());
-    assertEquals("524288.0", Quantity.getAmountInBytes(new Quantity(".5Mi", null)).toString());
-    assertEquals("0.05", Quantity.getAmountInBytes(new Quantity("0.5e-1")).toString());
-    assertEquals("0.000011", Quantity.getAmountInBytes(new Quantity("1.1E-5")).toString());
+  @ParameterizedTest
+  @DisplayName("Should be able to get correct amount in bytes using Quantity string constructor")
+  @CsvSource({
+      "129e6,129000000", "129e+6,129000000", "1234567890,1234567890", "8Ki,8192", "7Mi,7340032", "6Gi,6442450944",
+      "5Ti,5497558138880", "4Pi,4503599627370496", "3Ei,3.458764513820541E+18", "5n,5E-9", "4u,0.000004", "3m,0.003", "9,9",
+      "8k,8000", "50k,50000", "7M,7000000", "6G,6000000000", "5T,5000000000000", "40T,40000000000000", "300T,300000000000000",
+      "2P,2000000000000000", "1E,1.000000000000000E+18", ".5Mi,524288.0", "0.5e-1,0.05", "1.1E-5,0.000011", "1e4,10000",
+      "2E9,2000000000",
+      "2E12,2000000000000"
+  })
+  void getAmountInBytes_whenQuantityConstructedViaStringProvided_thenConvertsAmountIntoBytes(String input,
+      String expectedOutput) {
+    assertThat(Quantity.getAmountInBytes(new Quantity(input))).hasToString(expectedOutput);
+  }
+
+  @ParameterizedTest
+  @DisplayName("Should be able to get correct amount in bytes using Quantity amount and format constructor")
+  @CsvSource({ ".5Mi,,524288.0", ".5,Mi,524288.0" })
+  void getAmountInBytes_whenQuantityConstructedViaAmountAndFormatProvided_thenConvertsAmountIntoBytes(String amount,
+      String format, String expectedBytes) {
+    assertThat(Quantity.getAmountInBytes(new Quantity(amount, format))).hasToString(expectedBytes);
   }
 
   @Test
   @DisplayName("Test equals operation")
-  public void testEquality() {
-    assertEquals(new Quantity(".5Mi"), new Quantity("512Ki"));
-    assertEquals(new Quantity("1Gi"), new Quantity("1024Mi"));
-    assertNotEquals(new Quantity("2P"), "2P");
+  void testEquality() {
+    assertThat(new Quantity(".5Mi")).isEqualTo(new Quantity("512Ki"));
+    assertThat(new Quantity("1Gi")).isEqualTo(new Quantity("1024Mi"));
+    assertThat(new Quantity("2P")).isNotEqualTo("2P");
 
     Quantity quantity = new Quantity("100.035k");
-    assertEquals(quantity, quantity);
-    assertEquals(100035, quantity.hashCode());
-  }
-
-  @Test
-  @DisplayName("Test exponential formats")
-  public void testExponent() {
-    assertEquals("10000", Quantity.getAmountInBytes(new Quantity("1e4")).toString());
-    assertEquals("2000000000", Quantity.getAmountInBytes(new Quantity("2E9")).toString());
-    assertEquals("2000000000000", Quantity.getAmountInBytes(new Quantity("2E12")).toString());
+    assertThat(quantity).isEqualTo(quantity);
+    assertThat(quantity.hashCode()).isEqualTo(100035);
   }
 
   @Test
   @DisplayName("Fractional values should be handled properly, checks removed cast of BigDecimal to BigInteger")
-  public void testFractions() {
-    assertNotEquals(new Quantity("100m"), new Quantity("200m"));
-    assertEquals(new Quantity("100m"), new Quantity("100m"));
+  void testFractions() {
+    assertThat(new Quantity("100m")).isNotEqualTo(new Quantity("200m"));
+    assertThat(new Quantity("100m")).isEqualTo(new Quantity("100m"));
   }
 
-  @Test
+  @ParameterizedTest
   @DisplayName("Test toString() method")
-  public void testStringConversion() {
-    assertEquals(".5Mi", new Quantity(".5Mi").toString());
-    assertEquals("1", new Quantity("1").toString());
-    assertEquals("129e6", new Quantity("129e6").toString());
-    assertEquals("0.001m", new Quantity("0.001m").toString());
-    assertEquals("1Ki", new Quantity("1Ki").toString());
-    assertEquals("32Mi", new Quantity("32Mi").toString());
-    assertEquals("1e3", new Quantity("1e3").toString());
-    assertEquals("1e10", new Quantity("1e10").toString());
-    assertEquals("1e-3", new Quantity("1e-3").toString());
-    assertEquals("100k", new Quantity("100k").toString());
-    assertEquals("100001m", new Quantity("100001m").toString());
-    assertEquals("1Mi", new Quantity("1Mi").toString());
+  @CsvSource({
+      ".5Mi,.5Mi", "1,1", "129e6,129e6", "0.001m,0.001m", "1Ki,1Ki", "32Mi,32Mi", "1e3,1e3", "1e10,1e10", "1e-3,1e-3",
+      "100k,100k", "100001m,100001m", "1Mi,1Mi"
+  })
+  void testStringConversion(String input, String expectedToString) {
+    assertThat(new Quantity(input)).hasToString(expectedToString);
   }
 
   @Test
   @DisplayName("Invalid formats should fail during parsing")
-  public void testParseFailure() {
-    assertThrows(IllegalArgumentException.class, () -> new Quantity("4e9e"));
-    assertThrows(IllegalArgumentException.class, () -> new Quantity(""));
-    assertThrows(IllegalArgumentException.class, () -> new Quantity(null));
-    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity()));
-    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4MiB")));
-    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4megabyte")));
-    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4c")));
+  void testParseFailure() {
+    assertThatIllegalArgumentException().isThrownBy(() -> new Quantity("4e9e"));
+    assertThatIllegalArgumentException().isThrownBy(() -> new Quantity(""));
+    assertThatIllegalArgumentException().isThrownBy(() -> new Quantity(null));
+    assertThatIllegalArgumentException().isThrownBy(() -> Quantity.getAmountInBytes(new Quantity()));
+    assertThatIllegalArgumentException().isThrownBy(() -> Quantity.getAmountInBytes(new Quantity("4MiB")));
+    assertThatIllegalArgumentException().isThrownBy(() -> Quantity.getAmountInBytes(new Quantity("4megabyte")));
+    assertThatIllegalArgumentException().isThrownBy(() -> Quantity.getAmountInBytes(new Quantity("4c")));
   }
 
-  @Test
+  @ParameterizedTest
   @DisplayName("Test containsAtLeastOneDigit method")
-  public void testContainsAtLeastOneDigit() {
-    assertTrue(Quantity.containsAtLeastOneDigit("0"));
-    assertTrue(Quantity.containsAtLeastOneDigit(".1"));
-    assertTrue(Quantity.containsAtLeastOneDigit(".1e2"));
-    assertTrue(Quantity.containsAtLeastOneDigit("1.2e3"));
-    assertTrue(Quantity.containsAtLeastOneDigit("-1K"));
-
-    assertFalse(Quantity.containsAtLeastOneDigit(""));
-    assertFalse(Quantity.containsAtLeastOneDigit("e"));
-    assertFalse(Quantity.containsAtLeastOneDigit("Mi"));
+  @CsvSource({
+      "0,true", ".1,true", ".1e2,true", "1.2e3,true", "-1K,true", "e,false", "Mi,false"
+  })
+  void containsAtLeastOneDigit_whenStandardValuesProvided_thenReturnExpectedOutput(String input, boolean result) {
+    assertThat(Quantity.containsAtLeastOneDigit(input)).isEqualTo(result);
   }
 
   @Test
+  void containsAtLeastOneDigit_whenBlankValueProvided_thenReturnFalse() {
+    assertThat(Quantity.containsAtLeastOneDigit("")).isFalse();
+  }
+
+  @ParameterizedTest
   @DisplayName("Test indexOfUnit method")
-  public void testIndexOfUnit() {
-    assertEquals(0, Quantity.indexOfUnit(""));
-    assertEquals(1, Quantity.indexOfUnit("0"));
-    assertEquals(1, Quantity.indexOfUnit("1"));
-    assertEquals(3, Quantity.indexOfUnit("123"));
-    assertEquals(2, Quantity.indexOfUnit("12Mi"));
-    assertEquals(3, Quantity.indexOfUnit("123K"));
-    assertEquals(1, Quantity.indexOfUnit("1e3"));
-    assertEquals(4, Quantity.indexOfUnit("123 K"));
-    assertEquals(4, Quantity.indexOfUnit("123c"));
+  @CsvSource({ "0,1", "1,1", "123,3", "12Mi,2", "123K,3", "1e3,1", "123 K,4", "123c,4" })
+  void testIndexOfUnit(String input, int result) {
+    assertThat(Quantity.indexOfUnit(input)).isEqualTo(result);
+  }
+
+  @Test
+  void indexOfUnit_whenBlankValueProvided_thenReturnsZero() {
+    assertThat(Quantity.indexOfUnit("")).isZero();
   }
 
   @ParameterizedTest

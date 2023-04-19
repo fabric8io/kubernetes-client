@@ -57,6 +57,7 @@ import java.util.Map;
 public class Quantity implements Serializable {
   private String amount;
   private String format = "";
+  @JsonIgnore
   private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
