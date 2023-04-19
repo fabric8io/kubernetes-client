@@ -36,6 +36,8 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
 
   private static final int MAX_CONNECTIONS = 8192;
+  // the default for etcd seems to be 3 MB, but we'll default to unlimited to have the same behavior across clients
+  private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
 
   final Vertx vertx;
 
@@ -51,6 +53,9 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     options.setMaxPoolSize(MAX_CONNECTIONS);
     options.setMaxWebSockets(MAX_CONNECTIONS);
     options.setIdleTimeoutUnit(TimeUnit.SECONDS);
+    // the api-server does not seem to fragment messages, so the frames can be very large
+    options.setMaxWebSocketFrameSize(MAX_WS_MESSAGE_SIZE);
+    options.setMaxWebSocketMessageSize(MAX_WS_MESSAGE_SIZE);
 
     if (this.connectTimeout != null) {
       options.setConnectTimeout((int) this.connectTimeout.toMillis());

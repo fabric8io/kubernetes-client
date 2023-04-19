@@ -108,7 +108,7 @@ class PortForwarderWebsocketListenerTest {
   @Test
   void onError_shouldStoreExceptionAndCloseChannels() {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-    listener.onError(webSocket, new RuntimeException("Server error"));
+    listener.onError(webSocket, new RuntimeException("Server error"), true);
     // Then
     assertThat(listener.getServerThrowables())
         .singleElement()

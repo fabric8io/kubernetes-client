@@ -95,7 +95,7 @@ class ExecWebSocketListenerTest {
   void testCheckErrorHasErrorFromFailureShouldThrowException() {
     ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext());
 
-    listener.onError(null, new IOException("here"));
+    listener.onError(null, new IOException("here"), true);
 
     assertThrows(KubernetesClientException.class, () -> listener.checkError());
   }

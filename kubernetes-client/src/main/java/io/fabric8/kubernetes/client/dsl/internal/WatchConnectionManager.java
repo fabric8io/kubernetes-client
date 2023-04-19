@@ -119,7 +119,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         if (ready) {
           // if we're not ready yet, that means we're waiting on the future and there's
           // no need to invoke the reconnect logic
-          listener.onError(w, t);
+          listener.onError(w, t, true);
         }
         throw KubernetesClientException.launderThrowable(t);
       }

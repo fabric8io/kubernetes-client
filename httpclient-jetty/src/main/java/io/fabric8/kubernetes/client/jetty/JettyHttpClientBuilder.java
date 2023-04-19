@@ -39,6 +39,8 @@ public class JettyHttpClientBuilder
     extends StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
 
   private static final int MAX_CONNECTIONS = Integer.MAX_VALUE;
+  // the default for etcd seems to be 3 MB, but we'll default to unlimited to have the same behavior across clients
+  private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
 
   public JettyHttpClientBuilder(JettyHttpClientFactory clientFactory) {
     super(clientFactory);
@@ -62,6 +64,10 @@ public class JettyHttpClientBuilder
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
     WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
+    sharedWebSocketClient.setMaxBinaryMessageSize(MAX_WS_MESSAGE_SIZE);
+    // the api-server does not seem to fragment messages, so the frames can be very large
+    sharedWebSocketClient.setMaxFrameSize(MAX_WS_MESSAGE_SIZE);
+    sharedWebSocketClient.setMaxTextMessageSize(MAX_WS_MESSAGE_SIZE);
     sharedWebSocketClient.setIdleTimeout(Duration.ZERO);
     if (connectTimeout != null) {
       sharedHttpClient.setConnectTimeout(connectTimeout.toMillis());

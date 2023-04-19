@@ -261,7 +261,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   }
 
   @Override
-  public void onError(WebSocket webSocket, Throwable t) {
+  public void onError(WebSocket webSocket, Throwable t, boolean connectionError) {
     closed.set(true);
     HttpResponse<?> response = null;
 

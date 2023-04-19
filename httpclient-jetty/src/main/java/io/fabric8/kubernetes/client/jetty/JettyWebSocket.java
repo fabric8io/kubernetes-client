@@ -26,6 +26,7 @@ import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.util.Collections;
@@ -147,7 +148,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       // - Jetty throws a ClosedChannelException
       return;
     }
-    listener.onError(this, cause);
+    listener.onError(this, cause, cause instanceof IOException);
   }
 
   private void backPressure() {

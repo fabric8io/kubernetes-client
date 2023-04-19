@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClosedException;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,7 +53,16 @@ class VertxWebSocket implements WebSocket {
     ws.pongHandler(b -> ws.fetch(1));
     // use end, not close, because close is processed immediately vs. end is in frame order
     ws.endHandler(v -> listener.onClose(this, ws.closeStatusCode(), ws.closeReason()));
-    ws.exceptionHandler(err -> listener.onError(this, err));
+    ws.exceptionHandler(err -> {
+      try {
+        listener.onError(this, err, err instanceof HttpClosedException);
+      } finally {
+        // onError should be terminal
+        if (!ws.isClosed()) {
+          ws.close();
+        }
+      }
+    });
     listener.onOpen(this);
   }
 

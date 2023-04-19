@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import org.slf4j.Logger;
@@ -42,9 +43,13 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
   }
 
   @Override
-  public void onError(WebSocket webSocket, Throwable t) {
-    logger.debug("WebSocket error received", t);
-    manager.scheduleReconnect(state);
+  public void onError(WebSocket webSocket, Throwable t, boolean connectionError) {
+    if (connectionError) {
+      logger.debug("WebSocket error received", t);
+      manager.scheduleReconnect(state);
+    } else {
+      manager.close(new WatcherException("Could not process websocket message", t));
+    }
   }
 
   @Override
