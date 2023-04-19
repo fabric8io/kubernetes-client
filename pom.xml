@@ -75,6 +75,16 @@
     </repository>
   </distributionManagement>
 
+  <repositories>
+    <repository>
+      <id>sonatype-maven-org</id>
+      <name>Sonatype Maven Repository (maven.org)</name>
+      <url>https://repo1.maven.org/maven2/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
