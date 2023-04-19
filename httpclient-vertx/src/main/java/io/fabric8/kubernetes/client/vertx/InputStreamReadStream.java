@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class InputStreamReadStream implements ReadStream<Buffer> {
 
+  private static final Buffer END_SENTINEL = Buffer.buffer();
   private static final int CHUNK_SIZE = 2048;
   private static final int MAX_DEPTH = 8;
 
@@ -71,7 +72,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
     }
     if (handler != null) {
       inboundBuffer.handler(buff -> {
-        if (buff == null) {
+        if (buff == END_SENTINEL) {
           if (endHandler != null) {
             endHandler.handle(null);
           }
@@ -132,7 +133,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
             // Full
           }
         } else {
-          inboundBuffer.write((Buffer) null);
+          inboundBuffer.write(END_SENTINEL);
         }
       } else {
         if (exceptionHandler != null) {
