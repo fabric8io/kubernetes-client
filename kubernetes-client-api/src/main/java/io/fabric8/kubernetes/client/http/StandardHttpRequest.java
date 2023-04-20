@@ -218,7 +218,9 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
       this.method = method;
       this.contentType = contentType;
       this.bodyAsString = body;
-      this.body = new StringBodyContent(body);
+      if (body != null) {
+        this.body = new StringBodyContent(body);
+      }
       return this;
     }
 

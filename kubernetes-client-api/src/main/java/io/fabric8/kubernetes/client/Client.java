@@ -189,4 +189,23 @@ public interface Client extends Closeable {
 
   Config getConfiguration();
 
+  /**
+   * GET the response from the given uri as a String
+   *
+   * @param uri must start with / if relative
+   * @return the response, or null if a 404 code
+   */
+  default String raw(String uri) {
+    return raw(uri, "GET", null);
+  }
+
+  /**
+   * The response from the given uri as a String
+   *
+   * @param uri must start with / if relative
+   * @param method an http method verb such as GET, DELETE, PUT, POST
+   * @param payload a non-String value will be converted to json
+   * @return the response
+   */
+  String raw(String uri, String method, Object payload);
 }

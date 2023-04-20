@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -82,7 +84,8 @@ public class TestHttpResponse<T> extends StandardHttpHeaders implements HttpResp
     return this;
   }
 
-  public static TestHttpResponse<byte[]> from(int code, String body) {
-    return new TestHttpResponse<byte[]>().withCode(code).withBody(body.getBytes(StandardCharsets.UTF_8));
+  public static TestHttpResponse<InputStream> from(int code, String body) {
+    return new TestHttpResponse<InputStream>().withCode(code)
+        .withBody(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
   }
 }
