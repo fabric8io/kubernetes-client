@@ -44,7 +44,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -488,11 +487,7 @@ public class OperationSupport {
    * Send a raw get - where the type should be one of String, Reader, InputStream
    */
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
-    HttpRequest request = requestBuilder.build();
-    HttpResponse<T> response = waitForResult(httpClient.sendAsync(request, type));
-    assertResponseCode(request, response);
-    return response.body();
+    return handleRaw(type, resourceUrl.toString(), "GET", null);
   }
 
   /**
@@ -569,11 +564,11 @@ public class OperationSupport {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
 
-    return client.sendAsync(request, byte[].class).thenApply(response -> {
+    return client.sendAsync(request, InputStream.class).thenApply(response -> {
       try {
         assertResponseCode(request, response);
         if (type != null && type.getType() != null) {
-          return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type);
+          return Serialization.unmarshal(response.body(), type);
         } else {
           return null;
         }
@@ -755,6 +750,30 @@ public class OperationSupport {
         throw e;
       }
       return null;
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  /**
+   * Send a raw request - where the type should be one of String, Reader, InputStream
+   */
+  public <R1> R1 handleRaw(Class<R1> result, String uri, String method, Object payload) {
+    try {
+      if (uri.startsWith("/")) {
+        // master ends with slash
+        uri = config.getMasterUrl() + uri.substring(1, uri.length());
+      }
+      String body = null;
+      if (payload instanceof String) {
+        body = (String) payload;
+      } else if (payload != null) {
+        body = Serialization.asJson(payload);
+      }
+      HttpRequest request = httpClient.newHttpRequestBuilder().uri(uri).method(method, JSON, body).build();
+      HttpResponse<R1> response = waitForResult(httpClient.sendAsync(request, result));
+      assertResponseCode(request, response);
+      return response.body();
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

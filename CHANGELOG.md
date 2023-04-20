@@ -36,6 +36,7 @@
 
 #### New Features
 * Fix #5037: OkHttp-specific logging interceptor replacement. Introducing a generic HTTP interceptor to log HTTP and WS requests.
+* Fix #5041: exposed Client.raw methods for arbitrary calls
 
 #### _**Note**_: Breaking changes
 * Fix #4875: Removed unused options from the java-generator

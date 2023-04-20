@@ -420,4 +420,9 @@ public class NamespacedKubernetesClientAdapter<N extends NamespacedKubernetesCli
     getClient().visitResources(visitor);
   }
 
+  @Override
+  public String raw(String uri, String method, Object payload) {
+    return getClient().raw(uri, method, payload);
+  }
+
 }
