@@ -121,7 +121,7 @@ class CertificateSigningRequestTest {
 
   private CertificateSigningRequestBuilder createCertificateSigningRequest() {
     return new CertificateSigningRequestBuilder()
-        .withNewMetadata().withName("my-cert").endMetadata()
+        .withNewMetadata().withName("my-cert").withResourceVersion("1").endMetadata()
         .withNewSpec()
         .withSignerName("fabric8io.com/kubernetes-java-client")
         .addToGroups("system:authenticated")

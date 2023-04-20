@@ -484,17 +484,8 @@ public class OperationSupport {
     return handleResponse(requestBuilder, type);
   }
 
-  protected <T extends HasMetadata> T handleApproveOrDeny(T csr, Class<T> type) throws IOException, InterruptedException {
-    String uri = URLUtils.join(getResourceUrl(null, csr.getMetadata().getName()).toString(), "approval");
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .put(JSON, JSON_MAPPER.writeValueAsString(csr)).uri(uri);
-    return handleResponse(requestBuilder, type);
-  }
-
   /**
    * Send a raw get - where the type should be one of String, Reader, InputStream
-   * <br>
-   * NOTE: Currently does not utilize the retry logic
    */
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
