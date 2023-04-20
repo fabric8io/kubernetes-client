@@ -3,17 +3,18 @@
 ### 6.6-SNAPSHOT
 
 #### Bugs
-* Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
-* Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
+* Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * Fix #4988: Ensuring that previous requests are closed before retry
+* Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * fix #5002: Jetty response completion accounts for header processing
-* Fix #5009: addressing issue with serialization of wrapped polymophic types
+* Fix #5009: addressing issue with serialization of wrapped polymorphic types
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
 * Fix #5044: disable Vert.x instance file caching
+* Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
