@@ -147,16 +147,12 @@ public abstract class AbstractJSONSchema2Pojo {
       String key,
       JSONSchemaProps prop,
       String parentPkg,
-      String classPrefix,
-      String classSuffix,
       Config config) {
     Function<JavaNameAndType, AbstractJSONSchema2Pojo> fromJsonSchema = javaNameAndType -> fromJsonSchema(
         key,
         javaNameAndType,
         prop,
         parentPkg,
-        classPrefix,
-        classSuffix,
         config);
     String type = prop.getType();
     if (Boolean.TRUE.equals(prop.getXKubernetesIntOrString())) {
@@ -220,8 +216,6 @@ public abstract class AbstractJSONSchema2Pojo {
       JavaNameAndType nt,
       JSONSchemaProps prop,
       String parentPkg,
-      String classPrefix,
-      String classSuffix,
       Config config) {
     final boolean isNullable = Boolean.TRUE.equals(prop.getNullable());
     switch (nt.getType()) {
@@ -243,8 +237,6 @@ public abstract class AbstractJSONSchema2Pojo {
                 key,
                 prop.getItems().getSchema(),
                 parentPkg,
-                classPrefix,
-                classSuffix,
                 config),
             config,
             prop.getDescription(),
@@ -256,8 +248,6 @@ public abstract class AbstractJSONSchema2Pojo {
                 key,
                 prop.getAdditionalProperties().getSchema(),
                 parentPkg,
-                classPrefix,
-                classSuffix,
                 config),
             config,
             prop.getDescription(),
@@ -271,8 +261,6 @@ public abstract class AbstractJSONSchema2Pojo {
             prop.getProperties(),
             prop.getRequired(),
             preserveUnknownFields,
-            classPrefix,
-            classSuffix,
             config,
             prop.getDescription(),
             isNullable,

@@ -21,7 +21,7 @@ assertEquals(
     .getText("UTF-8")
     .replace("\r\n", "\n")
     .trim(),
-  new File(basedir, "/target/generated-sources/java/io/cert_manager/v1/Auth.java")
+  new File(basedir, "/target/generated-sources/java/io/cert_manager/v1/issuerspec/vault/Auth.java")
     .getText("UTF-8")
     .replace("\r\n", "\n")
     .trim()

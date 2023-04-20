@@ -74,22 +74,6 @@ public class JavaGeneratorMojo extends AbstractMojo {
   Boolean enumUppercase = null;
 
   /**
-   * *DEPRECATED* The prefix strategy for name mangling
-   *
-   */
-  @Deprecated
-  @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false)
-  Config.Prefix prefixStrategy = null;
-
-  /**
-   * *DEPRECATED* The suffix strategy for name mangling
-   *
-   */
-  @Deprecated
-  @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
-  Config.Suffix suffixStrategy = null;
-
-  /**
    * *DEPRECATED* Always inject additional properties in the generated classes
    *
    */
@@ -103,14 +87,6 @@ public class JavaGeneratorMojo extends AbstractMojo {
    */
   @Parameter(property = "fabric8.java-generator.extra-annotations", required = false)
   Boolean extraAnnotations = null;
-
-  /**
-   * *DEPRECATED* The code structure to be used when generating java sources
-   *
-   */
-  @Deprecated
-  @Parameter(property = "fabric8.java-generator.code-structure", required = false)
-  protected Config.CodeStructure codeStructure = null;
 
   /**
    * *advanced* Emit the @javax.annotation.processing.Generated annotation on the generated sources
@@ -130,11 +106,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
         .uppercaseEnums(enumUppercase)
-        .prefixStrategy(prefixStrategy)
-        .suffixStrategy(suffixStrategy)
-        .alwaysPreserveUnknownFields(alwaysPreserveUnknown)
         .objectExtraAnnotations(extraAnnotations)
-        .structure(codeStructure)
         .generatedAnnotations(generatedAnnotations)
         .packageOverrides(packageOverrides)
         .build();

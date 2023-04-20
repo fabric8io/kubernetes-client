@@ -16,11 +16,13 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface Interceptor {
 
-  public interface RequestTags {
+  interface RequestTags {
 
     <T> T getTag(Class<T> type);
 
@@ -33,6 +35,31 @@ public interface Interceptor {
    * @param request the current request
    */
   default void before(BasicBuilder builder, HttpRequest request, RequestTags tags) {
+  }
+
+  /**
+   * Called after a non-WebSocket HTTP response is received. The body might or might not be already consumed.
+   * <p>
+   * Should be used to analyze response codes and headers, original response shouldn't be altered.
+   *
+   * @param response the response received from the server.
+   */
+  default void after(HttpResponse<?> response) {
+
+  }
+
+  // In case we want to encapsulate to spy the responses from the server
+
+  /**
+   * Called before a request to allow the encapsulation of the provided consumer.
+   * <p>
+   *
+   * @param consumer the original consumer.
+   * @param request the HTTP request.
+   * @return the consumer to use.
+   */
+  default AsyncBody.Consumer<List<ByteBuffer>> consumer(AsyncBody.Consumer<List<ByteBuffer>> consumer, HttpRequest request) {
+    return consumer;
   }
 
   /**

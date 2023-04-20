@@ -396,4 +396,8 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     return items.isFullState();
   }
 
+  public Object getLockObject() {
+    return this;
+  }
+
 }

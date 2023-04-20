@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -36,7 +35,6 @@ import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
@@ -49,13 +47,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DeploymentOperationsImpl
-    extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
+    extends LegacyRollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
     implements TimeoutImageEditReplacePatchable<Deployment> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
@@ -83,16 +79,6 @@ public class DeploymentOperationsImpl
   }
 
   @Override
-  public Deployment scale(int count, boolean wait) {
-    Deployment res = accept(d -> d.getSpec().setReplicas(count));
-    if (wait) {
-      waitUntilDeploymentIsScaled(count);
-      res = getItemOrRequireFromServer();
-    }
-    return res;
-  }
-
-  @Override
   public Status rollback(DeploymentRollback rollback) {
     return handleDeploymentRollback(rollback);
   }
@@ -100,22 +86,6 @@ public class DeploymentOperationsImpl
   @Override
   public RollingUpdater<Deployment, DeploymentList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return null;
-  }
-
-  @Override
-  public int getCurrentReplicas(Deployment current) {
-    return current.getStatus().getReplicas();
-  }
-
-  @Override
-  public int getDesiredReplicas(Deployment item) {
-    return item.getSpec().getReplicas();
-  }
-
-  @Override
-  public long getObservedGeneration(Deployment current) {
-    return (current != null && current.getStatus() != null
-        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
   }
 
   @Override
@@ -151,48 +121,6 @@ public class DeploymentOperationsImpl
     deployment.getSpec().setTemplate(previousRevisionReplicaSet.getSpec().getTemplate());
 
     return sendPatchedObject(get(), deployment);
-  }
-
-  /**
-   * Lets wait until there are enough Ready pods of the given Deployment
-   */
-  private void waitUntilDeploymentIsScaled(final int count) {
-    final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
-
-    final String name = checkName(getItem());
-    final String namespace = checkNamespace(getItem());
-
-    try {
-      waitUntilCondition(deployment -> {
-        // If the deployment is gone, we shouldn't wait.
-        if (deployment == null) {
-          if (count == 0) {
-            return true;
-          }
-          throw new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: "
-              + checkName(getItem()) + " to scale. Resource is no longer available.");
-        }
-
-        replicasRef.set(deployment.getStatus().getReplicas());
-        int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
-        long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
-        long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null
-            ? deployment.getStatus().getObservedGeneration()
-            : -1;
-        if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
-          return true;
-        }
-        LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
-            deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(),
-            namespace);
-        return false;
-      }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
-      LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
-          replicasRef.get(), count, name, namespace);
-    } catch (KubernetesClientTimeoutException e) {
-      LOG.error("{}/{} pod(s) ready for Deployment: {} in namespace: {}  after waiting for {} seconds so giving up",
-          replicasRef.get(), count, name, namespace, TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout()));
-    }
   }
 
   @Override

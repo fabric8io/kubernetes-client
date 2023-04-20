@@ -74,15 +74,11 @@ public class IOHelpers {
     return true;
   }
 
-  public static String convertYamlToJson(String yaml) throws IOException {
-    ObjectMapper yamlReader = Serialization.yamlMapper();
-    Object obj = yamlReader.readValue(yaml, Object.class);
-
-    ObjectMapper jsonWriter = Serialization.jsonMapper();
-    return jsonWriter.writeValueAsString(obj);
+  public static String convertYamlToJson(String yaml) {
+    return Serialization.asJson(Serialization.unmarshal(yaml, Object.class));
   }
 
-  public static String convertToJson(String jsonOrYaml) throws IOException {
+  public static String convertToJson(String jsonOrYaml) {
     if (isJSONValid(jsonOrYaml)) {
       return jsonOrYaml;
     }

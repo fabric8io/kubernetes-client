@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.ListMetaBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -189,77 +188,6 @@ public class StatefulSetTest {
 
     Deletable items = client.load(getClass().getResourceAsStream("/test-statefulset.yml"));
     assertTrue(items.delete().size() == 1);
-  }
-
-  @Test
-  public void testScale() {
-    server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1")
-        .andReturn(200, new StatefulSetBuilder()
-            .withNewMetadata()
-            .withName("repl1")
-            .withResourceVersion("1")
-            .endMetadata()
-            .withNewSpec()
-            .withReplicas(5)
-            .endSpec()
-            .withNewStatus()
-            .withReplicas(1)
-            .endStatus()
-            .build())
-        .always();
-
-    StatefulSet repl = client.apps().statefulSets().withName("repl1").scale(5);
-    assertNotNull(repl);
-    assertNotNull(repl.getSpec());
-    assertEquals(5, repl.getSpec().getReplicas().intValue());
-    assertEquals(1, repl.getStatus().getReplicas().intValue());
-  }
-
-  @Test
-  public void testScaleAndWait() {
-    server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1")
-        .andReturn(200, new StatefulSetBuilder()
-            .withNewMetadata()
-            .withName("repl1")
-            .withResourceVersion("1")
-            .endMetadata()
-            .withNewSpec()
-            .withReplicas(5)
-            .endSpec()
-            .withNewStatus()
-            .withReplicas(1)
-            .endStatus()
-            .build())
-        .once();
-
-    StatefulSet scaled = new StatefulSetBuilder()
-        .withNewMetadata()
-        .withName("repl1")
-        .withResourceVersion("1")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(5)
-        .endSpec()
-        .withNewStatus()
-        .withReplicas(5)
-        .endStatus()
-        .build();
-    server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, scaled).once();
-
-    // list for waiting
-    server.expect()
-        .withPath("/apis/apps/v1/namespaces/test/statefulsets?fieldSelector=metadata.name%3Drepl1")
-        .andReturn(200,
-            new StatefulSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
-        .always();
-
-    StatefulSet repl = client.apps().statefulSets().withName("repl1").scale(5, true);
-    assertNotNull(repl);
-    assertNotNull(repl.getSpec());
-    assertEquals(5, repl.getSpec().getReplicas().intValue());
-    assertEquals(5, repl.getStatus().getReplicas().intValue());
   }
 
   @Disabled

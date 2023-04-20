@@ -1,0 +1,197 @@
+CalicoIPPoolCr[0] = package org.test.v1;
+
+@io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
+@io.fabric8.kubernetes.model.annotation.Group("crd.projectcalico.org")
+@io.fabric8.kubernetes.model.annotation.Singular("ippool")
+@io.fabric8.kubernetes.model.annotation.Plural("ippools")
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
+public class IPPool extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.IPPoolSpec, java.lang.Void> {
+}
+
+CalicoIPPoolCr[1] = package org.test.v1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"allowedUses","blockSize","cidr","disableBGPExport","disabled","ipip","ipipMode","nat-outgoing-deprecated","natOutgoing","nodeSelector","vxlanMode"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
+public class IPPoolSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    /**
+     * AllowedUse controls what the IP pool will be used for.  If not specified or empty, defaults to ["Tunnel", "Workload"] for back-compatibility
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("allowedUses")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("AllowedUse controls what the IP pool will be used for.  If not specified or empty, defaults to [\"Tunnel\", \"Workload\"] for back-compatibility")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.util.List<String> allowedUses;
+
+    public java.util.List<String> getAllowedUses() {
+        return allowedUses;
+    }
+
+    public void setAllowedUses(java.util.List<String> allowedUses) {
+        this.allowedUses = allowedUses;
+    }
+
+    /**
+     * The block size to use for IP address assignments from this pool. Defaults to 26 for IPv4 and 122 for IPv6.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("blockSize")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The block size to use for IP address assignments from this pool. Defaults to 26 for IPv4 and 122 for IPv6.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Long blockSize;
+
+    public Long getBlockSize() {
+        return blockSize;
+    }
+
+    public void setBlockSize(Long blockSize) {
+        this.blockSize = blockSize;
+    }
+
+    /**
+     * The pool CIDR.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("cidr")
+    @io.fabric8.generator.annotation.Required()
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("The pool CIDR.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String cidr;
+
+    public String getCidr() {
+        return cidr;
+    }
+
+    public void setCidr(String cidr) {
+        this.cidr = cidr;
+    }
+
+    /**
+     * Disable exporting routes from this IP Pool's CIDR over BGP. [Default: false]
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("disableBGPExport")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Disable exporting routes from this IP Pool's CIDR over BGP. [Default: false]")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Boolean disableBGPExport;
+
+    public Boolean getDisableBGPExport() {
+        return disableBGPExport;
+    }
+
+    public void setDisableBGPExport(Boolean disableBGPExport) {
+        this.disableBGPExport = disableBGPExport;
+    }
+
+    /**
+     * When disabled is true, Calico IPAM will not assign addresses from this pool.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("disabled")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("When disabled is true, Calico IPAM will not assign addresses from this pool.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Boolean disabled;
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    /**
+     * Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("ipip")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private org.test.v1.ippoolspec.Ipip ipip;
+
+    public org.test.v1.ippoolspec.Ipip getIpip() {
+        return ipip;
+    }
+
+    public void setIpip(org.test.v1.ippoolspec.Ipip ipip) {
+        this.ipip = ipip;
+    }
+
+    /**
+     * Contains configuration for IPIP tunneling for this pool. If not specified, then this is defaulted to "Never" (i.e. IPIP tunneling is disabled).
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("ipipMode")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Contains configuration for IPIP tunneling for this pool. If not specified, then this is defaulted to \"Never\" (i.e. IPIP tunneling is disabled).")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String ipipMode;
+
+    public String getIpipMode() {
+        return ipipMode;
+    }
+
+    public void setIpipMode(String ipipMode) {
+        this.ipipMode = ipipMode;
+    }
+
+    /**
+     * Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("nat-outgoing-deprecated")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    @java.lang.Deprecated()
+    private Boolean natOutgoingDeprecated;
+
+    public Boolean getNatOutgoingDeprecated() {
+        return natOutgoingDeprecated;
+    }
+
+    public void setNatOutgoingDeprecated(Boolean natOutgoingDeprecated) {
+        this.natOutgoingDeprecated = natOutgoingDeprecated;
+    }
+
+    /**
+     * When natOutgoing is true, packets sent from Calico networked containers in this pool to destinations outside of this pool will be masqueraded.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("natOutgoing")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("When natOutgoing is true, packets sent from Calico networked containers in this pool to destinations outside of this pool will be masqueraded.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private Boolean natOutgoing;
+
+    public Boolean getNatOutgoing() {
+        return natOutgoing;
+    }
+
+    public void setNatOutgoing(Boolean natOutgoing) {
+        this.natOutgoing = natOutgoing;
+    }
+
+    /**
+     * Allows IPPool to allocate for a specific node by label selector.
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("nodeSelector")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Allows IPPool to allocate for a specific node by label selector.")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String nodeSelector;
+
+    public String getNodeSelector() {
+        return nodeSelector;
+    }
+
+    public void setNodeSelector(String nodeSelector) {
+        this.nodeSelector = nodeSelector;
+    }
+
+    /**
+     * Contains configuration for VXLAN tunneling for this pool. If not specified, then this is defaulted to "Never" (i.e. VXLAN tunneling is disabled).
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("vxlanMode")
+    @com.fasterxml.jackson.annotation.JsonPropertyDescription("Contains configuration for VXLAN tunneling for this pool. If not specified, then this is defaulted to \"Never\" (i.e. VXLAN tunneling is disabled).")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private String vxlanMode;
+
+    public String getVxlanMode() {
+        return vxlanMode;
+    }
+
+    public void setVxlanMode(String vxlanMode) {
+        this.vxlanMode = vxlanMode;
+    }
+}
+

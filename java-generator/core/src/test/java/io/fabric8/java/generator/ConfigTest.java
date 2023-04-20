@@ -25,14 +25,10 @@ class ConfigTest {
 
   @Test
   void defaultValuesWithAllArgsConstructor() {
-    final Config result = new Config(null, null, null, null, null, null, null, null);
+    final Config result = new Config(null, null, null, null);
     assertThat(result)
         .returns(true, Config::isUppercaseEnums)
-        .returns(Config.Prefix.TOP_LEVEL, Config::getPrefixStrategy)
-        .returns(Config.Suffix.TOP_LEVEL, Config::getSuffixStrategy)
-        .returns(false, Config::isAlwaysPreserveUnknownFields)
         .returns(false, Config::isObjectExtraAnnotations)
-        .returns(Config.CodeStructure.PACKAGE_NESTED, Config::getCodeStructure)
         .returns(true, Config::isGeneratedAnnotations)
         .returns(new HashMap<>(), Config::getPackageOverrides);
   }
@@ -42,11 +38,7 @@ class ConfigTest {
     final Config result = new Config();
     assertThat(result)
         .returns(true, Config::isUppercaseEnums)
-        .returns(Config.Prefix.TOP_LEVEL, Config::getPrefixStrategy)
-        .returns(Config.Suffix.TOP_LEVEL, Config::getSuffixStrategy)
-        .returns(false, Config::isAlwaysPreserveUnknownFields)
         .returns(false, Config::isObjectExtraAnnotations)
-        .returns(Config.CodeStructure.PACKAGE_NESTED, Config::getCodeStructure)
         .returns(true, Config::isGeneratedAnnotations)
         .returns(new HashMap<>(), Config::getPackageOverrides);
   }
@@ -56,11 +48,7 @@ class ConfigTest {
     final Config result = Config.builder().build();
     assertThat(result)
         .returns(true, Config::isUppercaseEnums)
-        .returns(Config.Prefix.TOP_LEVEL, Config::getPrefixStrategy)
-        .returns(Config.Suffix.TOP_LEVEL, Config::getSuffixStrategy)
-        .returns(false, Config::isAlwaysPreserveUnknownFields)
         .returns(false, Config::isObjectExtraAnnotations)
-        .returns(Config.CodeStructure.PACKAGE_NESTED, Config::getCodeStructure)
         .returns(true, Config::isGeneratedAnnotations)
         .returns(new HashMap<>(), Config::getPackageOverrides);
   }

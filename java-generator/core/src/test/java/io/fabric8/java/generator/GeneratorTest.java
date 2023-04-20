@@ -25,6 +25,7 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -33,12 +34,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GeneratorTest {
 
@@ -294,8 +290,7 @@ class GeneratorTest {
         null,
         null,
         false,
-        "",
-        "", defaultConfig,
+        defaultConfig,
         null,
         Boolean.FALSE,
         null);
@@ -310,32 +305,6 @@ class GeneratorTest {
   }
 
   @Test
-  void testEmptyObjectWithSuffix() {
-    // Arrange
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, true, new HashMap<>());
-    JObject obj = new JObject(
-        "v1alpha1",
-        "t",
-        null,
-        null,
-        false,
-        "",
-        "MySuffix",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals("v1alpha1.TMySuffix", obj.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("TMySuffix", res.getTopLevelClasses().get(0).getName());
-  }
-
-  @Test
   void testEmptyObjectWithoutNamespace() {
     // Arrange
     JObject obj = new JObject(
@@ -344,8 +313,6 @@ class GeneratorTest {
         null,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -373,8 +340,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -409,8 +374,6 @@ class GeneratorTest {
         props,
         req,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -433,21 +396,17 @@ class GeneratorTest {
         new HashMap<>(),
         new ArrayList<>(),
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, false, new HashMap<>());
+    Config config = new Config(null, null, false, new HashMap<>());
     JObject obj2 = new JObject(
         "v1alpha1",
         "t",
         new HashMap<>(),
         new ArrayList<>(),
         false,
-        "",
-        "",
         config,
         null,
         Boolean.FALSE,
@@ -516,7 +475,7 @@ class GeneratorTest {
     JEnum enu = new JEnum(
         "t",
         enumValues,
-        new Config(false, null, null, null, null, null, true, new HashMap<>()),
+        new Config(false, null, null, new HashMap<>()),
         null,
         Boolean.FALSE,
         null);
@@ -547,8 +506,6 @@ class GeneratorTest {
             null,
             null,
             false,
-            "",
-            "",
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -577,8 +534,6 @@ class GeneratorTest {
             null,
             null,
             false,
-            "",
-            "",
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -610,8 +565,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -634,66 +587,6 @@ class GeneratorTest {
   }
 
   @Test
-  void testObjectOfObjectsWithTopLevelPrefix() {
-    // Arrange
-    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null, true, new HashMap<>());
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
-    newObj.setType("object");
-    props.put("o1", newObj);
-    JObject obj = new JObject(
-        null,
-        "t",
-        props,
-        null,
-        false,
-        "My",
-        "",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("MyT", res.getTopLevelClasses().get(1).getName());
-  }
-
-  @Test
-  void testObjectOfObjectsWithAlwaysPrefix() {
-    // Arrange
-    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null, true, new HashMap<>());
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
-    newObj.setType("object");
-    props.put("o1", newObj);
-    JObject obj = new JObject(
-        null,
-        "t",
-        props,
-        null,
-        false,
-        "My",
-        "",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("MyO1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("MyT", res.getTopLevelClasses().get(1).getName());
-  }
-
-  @Test
   void testObjectWithPreservedFields() {
     // Arrange
     JObject obj = new JObject(
@@ -702,8 +595,6 @@ class GeneratorTest {
         null,
         null,
         true,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -735,8 +626,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -768,7 +657,7 @@ class GeneratorTest {
     nonNullableObj.setNullable(Boolean.FALSE);
     props.put("o2", nonNullableObj);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -823,7 +712,7 @@ class GeneratorTest {
     newObj2.setProperties(obj2Props);
     props.put("o1", newObj1);
     props.put("o2", newObj2);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -878,7 +767,7 @@ class GeneratorTest {
     objWithoutDefaultValues.setType("object");
     props.put("o2", objWithoutDefaultValues);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -914,5 +803,45 @@ class GeneratorTest {
 
     Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getClassByName("O2");
     assertTrue(clzO2.isPresent());
+  }
+
+  @Test
+  void testExactlyMoreThanOneDuplicatedFieldFailsWithException() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+
+    JSONSchemaProps duplicatedFieldObject = new JSONSchemaProps();
+    duplicatedFieldObject.setType("boolean");
+    duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
+    props.put("test_Dup", duplicatedFieldObject);
+    duplicatedFieldObject.setDescription("Deprecated: This field is JUST FOR testing purposes.");
+    props.put("test Dup", duplicatedFieldObject);
+    props.put("test.Dup", duplicatedFieldObject);
+
+    // Assert
+    assertThrows(JavaGeneratorException.class, () -> {
+      // Act
+      JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    },
+        "An exception is expected to be thrown when an object contains more that one duplicated field");
+  }
+
+  @Test
+  void testExactlyDuplicatedFieldNotMarkedAsDeprecatedFailsWithException() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+
+    JSONSchemaProps duplicatedFieldObject = new JSONSchemaProps();
+    duplicatedFieldObject.setType("boolean");
+    duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
+    props.put("testDup", duplicatedFieldObject);
+    props.put("test-Dup", duplicatedFieldObject);
+
+    // Assert
+    assertThrows(JavaGeneratorException.class, () -> {
+      // Act
+      JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    },
+        "An exception is expected to be thrown when an object contains one duplicated field that is not marked as deprecated");
   }
 }

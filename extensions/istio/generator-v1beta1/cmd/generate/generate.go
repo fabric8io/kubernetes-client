@@ -69,6 +69,8 @@ func main() {
 	providedPackages := map[string]string{
 		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
 		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
+		"istio.io/api/analysis/v1alpha1":       "io.fabric8.istio.api.analysis.v1alpha1",
+		"istio.io/api/meta/v1alpha1":           "io.fabric8.istio.api.meta.v1alpha1",
 	}
 
 	// mapping of go packages of this module to the resulting java package
@@ -83,7 +85,9 @@ func main() {
 	//  - replace <key> with <value> aka "package prefix"
 	//  - replace '/' with '.' for a valid java package name
 	mappingSchema := map[string]string{
-		"istio.io/api": "io.fabric8.istio.api",
+	  "istio.io/api/networking/v1beta1": "io.fabric8.istio.api.networking.v1beta1",
+		"istio.io/api/type/v1beta1": "io.fabric8.istio.api.type.v1beta1",
+		"istio.io/api/security/v1beta1": "io.fabric8.istio.api.security.v1beta1",
 	}
 
 	// overwriting some times

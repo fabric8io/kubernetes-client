@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
 import io.fabric8.kubernetes.client.Client;
@@ -71,16 +70,6 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   @Override
   public Job scale(int count) {
     return scale(count, false);
-  }
-
-  @Override
-  public Scale scale() {
-    return handleScale(null);
-  }
-
-  @Override
-  public Scale scale(Scale scale) {
-    return handleScale(scale);
   }
 
   @Override
