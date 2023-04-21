@@ -193,11 +193,7 @@ public class OperationSupport {
     return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), path));
   }
 
-  public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
-    if (status) {
-      return getResourceUrl(namespace, name, "status");
-    }
-
+  public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
     return getResourceUrl(namespace, name, subresource);
   }
 
@@ -354,17 +350,16 @@ public class OperationSupport {
    *
    * @param updated updated object
    * @param type type of the object provided
-   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
    * @throws IOException IOException
    */
-  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type) throws IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
-        .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
+        .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
     return handleResponse(requestBuilder, type);
   }
 
@@ -378,14 +373,13 @@ public class OperationSupport {
    * @param current current object
    * @param updated updated object
    * @param type type of object
-   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status)
+  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type)
       throws InterruptedException, IOException {
     String patchForUpdate;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
@@ -416,7 +410,7 @@ public class OperationSupport {
       patchForUpdate = Serialization.asJson(updated);
       current = updated; // use the updated to determine the path
     }
-    return handlePatch(patchContext, current, patchForUpdate, type, status);
+    return handlePatch(patchContext, current, patchForUpdate, type);
   }
 
   /**
@@ -426,18 +420,17 @@ public class OperationSupport {
    * @param current current object
    * @param patchForUpdate Patch string
    * @param type type of object
-   * @param status if this is only the status subresource
    * @param <T> template argument provided
    * @return returns de-serialized version of api server response
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException in case of network errors
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status)
+  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type)
       throws InterruptedException, IOException {
     String bodyContentType = getContentTypeFromPatchContextOrDefault(patchContext);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .patch(bodyContentType, patchForUpdate)
-        .url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status),
+        .url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current)),
             patchContext));
     return handleResponse(requestBuilder, type);
   }
@@ -491,17 +484,8 @@ public class OperationSupport {
     return handleResponse(requestBuilder, type);
   }
 
-  protected <T extends HasMetadata> T handleApproveOrDeny(T csr, Class<T> type) throws IOException, InterruptedException {
-    String uri = URLUtils.join(getResourceUrl(null, csr.getMetadata().getName(), false).toString(), "approval");
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .put(JSON, JSON_MAPPER.writeValueAsString(csr)).uri(uri);
-    return handleResponse(requestBuilder, type);
-  }
-
   /**
    * Send a raw get - where the type should be one of String, Reader, InputStream
-   * <br>
-   * NOTE: Currently does not utilize the retry logic
    */
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);

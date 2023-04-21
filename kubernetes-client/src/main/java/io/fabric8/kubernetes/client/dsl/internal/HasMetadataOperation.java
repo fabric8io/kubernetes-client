@@ -65,7 +65,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T edit(UnaryOperator<T> function) {
     T item = getItemOrRequireFromServer();
     T clone = clone(item);
-    return patch(null, clone, function.apply(item), false);
+    return patch(null, clone, function.apply(item));
   }
 
   private T clone(T item) {
@@ -76,7 +76,11 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T editStatus(UnaryOperator<T> function) {
     T item = getItemOrRequireFromServer();
     T clone = clone(item);
-    return patch(null, clone, function.apply(item), true);
+    return statusSubresource().patch(null, clone, function.apply(item));
+  }
+
+  private HasMetadataOperation<T, L, R> statusSubresource() {
+    return newInstance(context.withSubresource("status"));
   }
 
   @Override
@@ -84,24 +88,24 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     T item = getItemOrRequireFromServer();
     T clone = clone(item);
     consumer.accept(item);
-    return patch(null, clone, item, false);
+    return patch(null, clone, item);
   }
 
   @Override
   public T edit(Visitor... visitors) {
     T item = getItemOrRequireFromServer();
     T clone = clone(item);
-    return patch(null, clone, context.getHandler(item).edit(item).accept(visitors).build(), false);
+    return patch(null, clone, context.getHandler(item).edit(item).accept(visitors).build());
   }
 
   @Override
   public T replace() {
-    return replace(getItem(), false);
+    return handleReplace(getItem());
   }
 
   @Override
   public T replaceStatus() {
-    return replace(getItem(), true);
+    return statusSubresource().replace();
   }
 
   /**
@@ -117,15 +121,15 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public T update() {
-    return this.update(getItem(), false);
+    return this.update(getItem());
   }
 
   @Override
   public T updateStatus() {
-    return this.update(getItem(), true);
+    return statusSubresource().update();
   }
 
-  protected T update(T item, boolean status) {
+  protected T update(T item) {
     String existingResourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     try {
       if (existingResourceVersion == null) {
@@ -134,7 +138,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         item = clone(item);
         item.getMetadata().setResourceVersion(resourceVersion);
       }
-      return handleUpdate(item, status);
+      return handleUpdate(item);
     } catch (KubernetesClientException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(UPDATE_OPERATION), e);
     } catch (InterruptedException e) {
@@ -148,7 +152,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   /**
    * base replace operation, which is effectively a forced update with retries
    */
-  protected T replace(T item, boolean status) {
+  protected T handleReplace(T item) {
     String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
@@ -156,7 +160,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     if (item.getMetadata() == null) {
       item.setMetadata(new ObjectMeta());
     }
-    if (!status) {
+    if (context.getSubresource() == null) {
       try {
         item = modifyItemForReplaceOrPatch(this::requireFromServer, item);
       } catch (Exception e) {
@@ -180,7 +184,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         final UnaryOperator<T> visitor = resource -> {
           try {
             resource.getMetadata().setResourceVersion(resourceVersion);
-            return handleUpdate(resource, status);
+            return handleUpdate(resource);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
           }
@@ -212,7 +216,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
    * Perform a patch. If the base is not provided and one is required, it will
    * be fetched from the server.
    */
-  protected T patch(PatchContext context, T base, T item, boolean status) {
+  protected T patch(PatchContext context, T base, T item) {
     if ((context == null || context.getPatchType() == PatchType.JSON) && base == null) {
       if (base == null) {
         base = requireFromServer();
@@ -227,7 +231,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     final T theBase = base;
     final UnaryOperator<T> visitor = resource -> {
       try {
-        return handlePatch(context, theBase, resource, status);
+        return handlePatch(context, theBase, resource);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
       }
@@ -237,34 +241,34 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public T patchStatus() {
-    return patch(PatchContext.of(PatchType.JSON_MERGE), null, getNonNullItem(), true);
+    return statusSubresource().patch(PatchContext.of(PatchType.JSON_MERGE), null, getNonNullItem());
   }
 
   @Override
   public T patch() {
-    return patch(null, null, getNonNullItem(), false);
+    return patch(null, null, getNonNullItem());
   }
 
   @Override
   public T patch(PatchContext patchContext) {
-    return patch(patchContext, null, getNonNullItem(), false);
+    return patch(patchContext, null, getNonNullItem());
   }
 
   @Override
   public T patchStatus(T item) {
-    return patch(PatchContext.of(PatchType.JSON_MERGE), getItem(), clone(item), true);
+    return statusSubresource().patch(PatchContext.of(PatchType.JSON_MERGE), getItem(), clone(item));
   }
 
   @Override
   public T patch(PatchContext patchContext, T item) {
-    return patch(patchContext, getItem(), clone(item), false);
+    return patch(patchContext, getItem(), clone(item));
   }
 
   @Override
   public T patch(PatchContext patchContext, String patch) {
     try {
       final T got = getItemOrRequireFromServer();
-      return handlePatch(patchContext, got, convertToJson(patch), getType(), false);
+      return handlePatch(patchContext, got, convertToJson(patch), getType());
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), interruptedException);

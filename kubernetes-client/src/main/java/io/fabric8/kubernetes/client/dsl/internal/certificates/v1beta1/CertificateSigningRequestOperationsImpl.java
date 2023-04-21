@@ -22,13 +22,10 @@ import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRe
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatusBuilder;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.V1beta1CertificateSigningRequestResource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-
-import java.io.IOException;
 
 public class CertificateSigningRequestOperationsImpl extends
     HasMetadataOperation<CertificateSigningRequest, CertificateSigningRequestList, V1beta1CertificateSigningRequestResource<CertificateSigningRequest>>
@@ -67,15 +64,8 @@ public class CertificateSigningRequestOperationsImpl extends
 
   private CertificateSigningRequest addStatusToCSRAndSubmit(
       CertificateSigningRequestCondition certificateSigningRequestCondition) {
-    try {
-      CertificateSigningRequest fromServerCsr = get();
-      fromServerCsr.setStatus(createCertificateSigningRequestStatus(certificateSigningRequestCondition));
-      return handleApproveOrDeny(fromServerCsr, CertificateSigningRequest.class);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("approval " + type), ie);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("approval " + type), e);
-    }
+    CertificateSigningRequest fromServerCsr = get();
+    fromServerCsr.setStatus(createCertificateSigningRequestStatus(certificateSigningRequestCondition));
+    return newInstance(context.withSubresource("approval")).update(fromServerCsr);
   }
 }
