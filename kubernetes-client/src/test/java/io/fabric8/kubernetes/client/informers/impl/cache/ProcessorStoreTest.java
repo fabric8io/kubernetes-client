@@ -118,4 +118,25 @@ class ProcessorStoreTest {
     assertTrue(syncCaptor.getAllValues().subList(4, 6).stream().allMatch(s -> !s.booleanValue()));
   }
 
+  @Test
+  void testResyncLock() throws InterruptedException {
+    CacheImpl<Pod> podCache = new CacheImpl<>();
+    SharedProcessor<Pod> processor = Mockito.mock(SharedProcessor.class);
+
+    ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
+
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod1").withResourceVersion("1").endMetadata().build();
+
+    List<Pod> pods = Arrays.asList(pod);
+    processorStore.update(pods);
+
+    Mockito.doAnswer(invocation -> {
+      assertTrue(Thread.holdsLock(podCache.getLockObject()));
+      return null;
+    }).when(processor).distribute(Mockito.any(ProcessorListener.Notification.class), Mockito.anyBoolean());
+    processorStore.resync();
+
+    Mockito.verify(processor).distribute(Mockito.any(ProcessorListener.Notification.class), Mockito.anyBoolean());
+  }
+
 }

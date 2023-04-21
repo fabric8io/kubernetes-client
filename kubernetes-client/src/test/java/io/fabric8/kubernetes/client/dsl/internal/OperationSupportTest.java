@@ -159,19 +159,18 @@ class OperationSupportTest {
   @Test
   void getResourceURLStatus() throws MalformedURLException {
     OperationSupport pods = new OperationSupport(operationSupport.context.withPlural("pods"));
-    assertThat(pods.getResourceUrl("default", "pod-1", true))
+    OperationSupport podsStatus = new OperationSupport(operationSupport.context.withPlural("pods").withSubresource("status"));
+    assertThat(podsStatus.getResourceUrl("default", "pod-1"))
         .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/status");
-    assertThat(pods.getResourceUrl("default", "pod-1", false))
+    assertThat(pods.getResourceUrl("default", "pod-1"))
         .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1");
 
     OperationSupport podsSubresource = new OperationSupport(pods.context.withSubresource("ephemeralcontainers"));
-    assertThat(podsSubresource.getResourceUrl("default", "pod-1", true))
-        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/status");
-    assertThat(podsSubresource.getResourceUrl("default", "pod-1", false))
+    assertThat(podsSubresource.getResourceUrl("default", "pod-1"))
         .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/ephemeralcontainers");
 
     assertThrows(KubernetesClientException.class, () -> {
-      operationSupport.getResourceUrl("default", null, true);
+      podsStatus.getResourceUrl("default", null);
     }, "status requires name");
   }
 
