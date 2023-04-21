@@ -275,6 +275,13 @@ public class Utils {
     return str == null || str.isEmpty();
   }
 
+  public static boolean isBlank(String str){
+    return str == null || str.trim().isEmpty();
+  }
+  public static boolean isNotBlank(String str){
+    return !isBlank(str);
+  }
+
   public static boolean isNotNullOrEmpty(Map map) {
     return !(map == null || map.isEmpty());
   }

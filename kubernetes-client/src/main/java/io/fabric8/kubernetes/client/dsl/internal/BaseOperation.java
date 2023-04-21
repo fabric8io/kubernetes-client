@@ -229,7 +229,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R withName(String name) {
-    if (name == null || name.length() == 0) {
+    if (Utils.isBlank(name)) {
       throw new IllegalArgumentException("Name must be provided.");
     }
     return newResource(context.withName(name));
