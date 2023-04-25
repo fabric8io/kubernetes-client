@@ -23,7 +23,7 @@ public interface CreateOrReplaceable<T> extends Replaceable<T> {
    *
    * @return created item returned in kubernetes api response
    *
-   * @deprecated please user {@link ServerSideApplicable#serverSideApply()} or attempt a create and edit/patch operation.
+   * @deprecated please use {@link ServerSideApplicable#serverSideApply()} or attempt a create and edit/patch operation.
    */
   @Deprecated
   T createOrReplace();
