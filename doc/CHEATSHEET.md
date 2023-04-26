@@ -1620,6 +1620,7 @@ ClusterRoleBindingList clusterRoleBindingList = client.rbac().clusterRoleBinding
 ```
 - Delete `ClusterRoleBinding` objects:
 ```
+client.rbac().clusterRoleBindings().withName("clusterrolebindingname").delete();
 ```
 
 ### Role
