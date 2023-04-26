@@ -17,15 +17,12 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExponentialBackoffIntervalCalculator {
 
-  private static final Logger logger = LoggerFactory.getLogger(ExponentialBackoffIntervalCalculator.class);
   //we were using the same default in multiple places, so it has been moved here for now
   private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
 
@@ -57,9 +54,7 @@ public class ExponentialBackoffIntervalCalculator {
 
   public final long nextReconnectInterval() {
     int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
-    long ret = getInterval(exponentOfTwo);
-    logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
-    return ret;
+    return getInterval(exponentOfTwo);
   }
 
   public int getCurrentReconnectAttempt() {
