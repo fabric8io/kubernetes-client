@@ -332,4 +332,18 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     return performOperation(Resource::update);
   }
 
+  @Override
+  public List<HasMetadata> serverSideApply() {
+    return performOperation(Resource::serverSideApply);
+  }
+
+  @Override
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> fieldManager(String manager) {
+    return newInstance(context.withFieldManager(manager));
+  }
+
+  @Override
+  public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> forceConflicts() {
+    return newInstance(context.withForceConflicts());
+  }
 }
