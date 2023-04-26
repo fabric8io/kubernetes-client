@@ -652,6 +652,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Syndesis](https://syndesis.io/)
   - [StackGres](https://stackgres.io/)
   - [Boomerang Flow](https://github.com/boomerang-io)
+  - [Apache Kyuubi](https://github.com/apache/kyuubi)
 
   Proprietary Platforms:
   - [vCommander](https://www.embotics.com/hybrid-cloud-management-platform)
