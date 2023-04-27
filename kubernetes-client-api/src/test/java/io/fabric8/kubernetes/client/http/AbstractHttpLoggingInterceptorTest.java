@@ -15,8 +15,16 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.internal.SimpleRequest;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import okio.Buffer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +35,11 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 import java.net.URI;
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -36,18 +48,21 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 public abstract class AbstractHttpLoggingInterceptorTest {
 
   private static DefaultMockServer server;
+  private static Map<ServerRequest, Queue<ServerResponse>> responses;
   private Logger logger;
   private InOrder inOrder;
   private HttpClient httpClient;
 
   @BeforeAll
   static void beforeAll() {
-    server = new DefaultMockServer(false);
+    responses = new HashMap<>();
+    server = new DefaultMockServer(new Context(), new MockWebServer(), responses, false);
     server.start();
   }
 
@@ -155,6 +170,33 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
     inOrder.verify(logger).trace("This is the response body");
     inOrder.verify(logger).trace("-HTTP END-");
+  }
+
+  @Test
+  @DisplayName("HTTP binary response body is skipped")
+  public void httpResponseBodySkipped() throws Exception {
+    final MockResponse binaryResponse = new MockResponse()
+        .setResponseCode(200)
+        .setBody(new Buffer().write(new byte[] { (byte) 0xFF, (byte) 0xD8, (byte) 0x00, (byte) 0x12, (byte) 0x34 }));
+    responses.computeIfAbsent(new SimpleRequest("/binary-response-body"), k -> new ArrayDeque<>()).add(
+        new ServerResponse() {
+          @Override
+          public boolean isRepeatable() {
+            return true;
+          }
+
+          @Override
+          public MockResponse toMockResponse(RecordedRequest recordedRequest) {
+            return binaryResponse;
+          }
+        });
+    httpClient.sendAsync(httpClient.newHttpRequestBuilder()
+        .uri(server.url("/binary-response-body"))
+        .build(), String.class).get(10, TimeUnit.SECONDS);
+    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
+    inOrder.verify(logger, times(1)).trace(anyString()); // only -HTTP END- was logged
+    inOrder.verifyNoMoreInteractions();
   }
 
   @Test

@@ -95,8 +95,9 @@ public class HttpLoggingInterceptor implements Interceptor {
 
     @Override
     public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
-      // TODO: Should try to detect if the body is text or not? (HttpLoggingInterceptor.isPlainText)
-      value.stream().map(BufferUtil::copy).forEach(responseBody::add); // Potential leak
+      if (!value.isEmpty() && BufferUtil.isPlainText(value.iterator().next())) {
+        value.stream().map(BufferUtil::copy).forEach(responseBody::add); // Potential leak
+      }
       originalConsumer.consume(value, asyncBody);
     }
 
@@ -115,7 +116,7 @@ public class HttpLoggingInterceptor implements Interceptor {
 
     /**
      * Registers the asyncBody.done() callback.
-     * 
+     *
      * @param asyncBody the AsyncBody instance to register the callback on the done() future.
      */
     private void processAsyncBody(AsyncBody asyncBody) {
@@ -150,7 +151,7 @@ public class HttpLoggingInterceptor implements Interceptor {
     }
 
     void logResponseBody(Queue<ByteBuffer> responseBody) {
-      if (logger.isTraceEnabled() && responseBody != null) {
+      if (logger.isTraceEnabled() && responseBody != null && !responseBody.isEmpty()) {
         final StringBuilder bodyString = new StringBuilder();
         while (!responseBody.isEmpty()) {
           bodyString.append(StandardCharsets.UTF_8.decode(responseBody.poll()));
