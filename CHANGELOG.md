@@ -34,6 +34,7 @@
 * Fix #5006: Use BouncyCastle JDK 1.8 compatible jars
 
 #### New Features
+* Fix #5037: OkHttp-specific logging interceptor replacement. Introducing a generic HTTP interceptor to log HTTP and WS requests.
 
 #### _**Note**_: Breaking changes
 * Fix #4875: Removed unused options from the java-generator
