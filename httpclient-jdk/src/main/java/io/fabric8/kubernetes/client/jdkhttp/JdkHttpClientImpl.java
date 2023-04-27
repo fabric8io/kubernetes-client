@@ -235,7 +235,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
       return;
     }
     builder.getClientFactory().closeHttpClient(this);
-    // help with default cleanup, which is based upon garbarge collection
+    // help with default cleanup, which is based upon garbage collection
     this.httpClient = null;
   }
 
@@ -252,7 +252,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
 
     return this.getHttpClient().sendAsync(requestBuilder(request).build(), handlerAdapter)
-        .thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, r.body()));
+        .thenApply(r -> new JdkHttpResponseImpl<>(r, r.body()));
   }
 
   java.net.http.HttpRequest.Builder requestBuilder(StandardHttpRequest request) {
