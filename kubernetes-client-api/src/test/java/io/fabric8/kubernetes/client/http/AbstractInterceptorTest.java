@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -272,7 +273,7 @@ public abstract class AbstractInterceptorTest {
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("after", new Interceptor() {
           @Override
-          public void after(HttpRequest request, HttpResponse<?> response) {
+          public void after(HttpRequest request, HttpResponse<?> response, Consumer<List<ByteBuffer>> consumer) {
             responseFuture.complete(response);
           }
         });
@@ -299,7 +300,7 @@ public abstract class AbstractInterceptorTest {
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .addOrReplaceInterceptor("after", new Interceptor() {
           @Override
-          public void after(HttpRequest request, HttpResponse<?> response) {
+          public void after(HttpRequest request, HttpResponse<?> response, Consumer<List<ByteBuffer>> consumer) {
             responseFuture.complete(response);
           }
         });

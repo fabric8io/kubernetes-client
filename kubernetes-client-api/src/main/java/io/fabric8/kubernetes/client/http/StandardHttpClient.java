@@ -97,17 +97,21 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     final Consumer<List<ByteBuffer>> effectiveConsumer = consumer;
 
     CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(effectiveRequest, effectiveConsumer);
+    cf.thenAccept(
+        response -> builder.getInterceptors().values().forEach(i -> i.after(effectiveRequest, response, effectiveConsumer)));
 
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
-        interceptor.after(effectiveRequest, response);
         if (!HttpResponse.isSuccessful(response.code())) {
           return interceptor.afterFailure(copy, response, this)
               .thenCompose(b -> {
                 if (Boolean.TRUE.equals(b)) {
                   // before starting another request, make sure the old one is cancelled / closed
                   response.body().cancel();
-                  return consumeBytesDirect(copy.build(), effectiveConsumer);
+                  CompletableFuture<HttpResponse<AsyncBody>> result = consumeBytesDirect(copy.build(), effectiveConsumer);
+                  result.thenAccept(
+                      r -> builder.getInterceptors().values().forEach(i -> i.after(effectiveRequest, r, effectiveConsumer)));
+                  return result;
                 }
                 return CompletableFuture.completedFuture(response);
               });
@@ -216,15 +220,20 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     builder.getInterceptors().values().forEach(i -> i.before(copy, copy.asHttpRequest(), this));
 
     CompletableFuture<WebSocketResponse> cf = buildWebSocketDirect(copy, listener);
+    cf.thenAccept(response -> builder.getInterceptors().values()
+        .forEach(i -> i.after(response.webSocketUpgradeResponse.request(), response.webSocketUpgradeResponse, null)));
+
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
-        interceptor.after(response.webSocketUpgradeResponse.request(), response.webSocketUpgradeResponse);
         if (response.wshse != null && response.wshse.getResponse() != null) {
           return interceptor.afterFailure(copy, response.wshse.getResponse(), this).thenCompose(b -> {
             if (Boolean.TRUE.equals(b)) {
               return this.buildWebSocketDirect(copy, listener);
             }
-            return CompletableFuture.completedFuture(response);
+            CompletableFuture<WebSocketResponse> result = CompletableFuture.completedFuture(response);
+            result.thenAccept(r -> builder.getInterceptors().values()
+                .forEach(i -> i.after(r.webSocketUpgradeResponse.request(), r.webSocketUpgradeResponse, null)));
+            return result;
           });
         }
         return CompletableFuture.completedFuture(response);
