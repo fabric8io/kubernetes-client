@@ -49,6 +49,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public abstract class AbstractHttpLoggingInterceptorTest {
@@ -92,7 +93,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     httpClient.sendAsync(httpClient.newHttpRequestBuilder()
         .uri(server.url("/request-uri"))
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger)
         .trace(eq("> {} {}"), eq("GET"), argThat((URI uri) -> uri.toString().endsWith("/request-uri")));
     inOrder.verify(logger).trace("-HTTP END-");
@@ -108,7 +110,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
         .header("test-type", "header-test")
         .uri(server.url("/request-headers"))
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace("> {}: {}", "test-type", "header-test");
     inOrder.verify(logger).trace("-HTTP END-");
   }
@@ -123,7 +126,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
         .uri(server.url("/request-body"))
         .method("POST", "test/plain", "This is the request body")
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace("This is the request body");
     inOrder.verify(logger).trace("-HTTP END-");
   }
@@ -137,7 +141,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     httpClient.sendAsync(httpClient.newHttpRequestBuilder()
         .uri(server.url("/response-status"))
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace("< {} {}", 200, "OK");
     inOrder.verify(logger).trace("-HTTP END-");
   }
@@ -151,7 +156,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     httpClient.sendAsync(httpClient.newHttpRequestBuilder()
         .uri(server.url("/response-headers"))
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
     inOrder.verify(logger).trace("< {}: {}", "test-type", "response-header-test");
     inOrder.verify(logger).trace("-HTTP END-");
@@ -166,7 +172,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     httpClient.sendAsync(httpClient.newHttpRequestBuilder()
         .uri(server.url("/response-body"))
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
     inOrder.verify(logger).trace("This is the response body");
     inOrder.verify(logger).trace("-HTTP END-");
@@ -193,7 +200,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     httpClient.sendAsync(httpClient.newHttpRequestBuilder()
         .uri(server.url("/binary-response-body"))
         .build(), String.class).get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-HTTP START-");
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
     inOrder.verify(logger, times(1)).trace(anyString()); // only -HTTP END- was logged
     inOrder.verifyNoMoreInteractions();
