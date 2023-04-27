@@ -27,6 +27,7 @@
 * Fix #4998: removing the internal usage of the Serialization yaml mapper
 * Fix #5005: status operations use the context `subresource` setting
 * Fix #5022: adding additional buffering to ExecWatchInputStream
+* Fix #5080: minimizing debug logs related to the backoff interval 
 
 #### Dependency Upgrade
 * Fix #5006: Bump BouncyCastle to 1.72
