@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class HttpLoggingInterceptor implements Interceptor {
 
@@ -67,9 +69,13 @@ public class HttpLoggingInterceptor implements Interceptor {
   private static final class DeferredLoggingConsumer
       implements AsyncBody.Consumer<List<ByteBuffer>> {
 
+    private static final long MAX_BODY_SIZE = 2097152L; // 2MiB
+
     private final HttpLogger httpLogger;
     private final HttpRequest originalRequest;
     private final AsyncBody.Consumer<List<ByteBuffer>> originalConsumer;
+    private final AtomicBoolean logResponseBody;
+    private final AtomicLong responseBodySize;
     private final Queue<ByteBuffer> responseBody;
 
     public DeferredLoggingConsumer(HttpLogger httpLogger, HttpRequest originalRequest,
@@ -77,13 +83,27 @@ public class HttpLoggingInterceptor implements Interceptor {
       this.httpLogger = httpLogger;
       this.originalRequest = originalRequest;
       this.originalConsumer = originalConsumer;
+      logResponseBody = new AtomicBoolean(true);
+      responseBodySize = new AtomicLong(0);
       responseBody = new ConcurrentLinkedQueue<>();
     }
 
     @Override
     public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
-      if (!value.isEmpty() && BufferUtil.isPlainText(value.iterator().next())) {
-        value.stream().map(BufferUtil::copy).forEach(responseBody::add); // Potential leak
+      if (!logResponseBody.get() || responseBodySize.get() > MAX_BODY_SIZE) {
+        return;
+      }
+      if (!value.isEmpty()) {
+        if (BufferUtil.isPlainText(value.iterator().next())) {
+          value.stream().map(BufferUtil::copy).forEach(bb -> {
+            if (responseBodySize.addAndGet(bb.remaining()) < MAX_BODY_SIZE) {
+              responseBody.add(bb);
+            }
+
+          });
+        } else {
+          logResponseBody.set(false);
+        }
       }
       originalConsumer.consume(value, asyncBody);
     }
