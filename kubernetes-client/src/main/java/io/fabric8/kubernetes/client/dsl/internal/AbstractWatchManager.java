@@ -195,9 +195,9 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       return;
     }
 
-    logger.debug("Scheduling reconnect task");
-
     long delay = nextReconnectInterval();
+
+    logger.debug("Scheduling reconnect task in {} ms", delay);
 
     synchronized (this) {
       reconnectAttempt = Utils.schedule(baseOperation.context.getExecutor(), this::reconnect, delay, TimeUnit.MILLISECONDS);

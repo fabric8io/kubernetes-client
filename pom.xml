@@ -99,14 +99,14 @@
     <jetty.version>11.0.15</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.9.1</maven-core.version>
-    <maven-plugin-annotations.version>3.8.1</maven-plugin-annotations.version>
+    <maven-plugin-annotations.version>3.8.2</maven-plugin-annotations.version>
     <vertx.version>4.4.1</vertx.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <junit.version>5.9.2</junit.version>
+    <junit.version>5.9.3</junit.version>
     <assertj.core.version>3.24.2</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>18.6.0</approvaltests.version>
@@ -150,10 +150,10 @@
     <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.5.1</maven.invoker.plugin.version>
-    <maven.plugin.plugin.version>3.8.1</maven.plugin.plugin.version>
+    <maven.plugin.plugin.version>3.8.2</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
     <jandex.version>2.4.3.Final</jandex.version>
-    <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
     <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
