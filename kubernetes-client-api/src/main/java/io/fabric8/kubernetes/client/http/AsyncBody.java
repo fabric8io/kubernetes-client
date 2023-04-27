@@ -45,5 +45,12 @@ public interface AsyncBody {
   interface Consumer<T> {
     void consume(T value, AsyncBody asyncBody) throws Exception;
 
+    default <U> U unwrap(Class<U> target) {
+      if (this.getClass().equals(target)) {
+        return (U) this;
+      }
+      return null;
+    }
+
   }
 }

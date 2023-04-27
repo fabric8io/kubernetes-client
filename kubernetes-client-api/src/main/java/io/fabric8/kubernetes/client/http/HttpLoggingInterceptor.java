@@ -22,19 +22,13 @@ import org.slf4j.LoggerFactory;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
 
 public class HttpLoggingInterceptor implements Interceptor {
 
   private final HttpLogger httpLogger;
-  private final Map<UUID, DeferredLoggingConsumer> activeConsumers;
 
   public HttpLoggingInterceptor() {
     this(LoggerFactory.getLogger(HttpLoggingInterceptor.class));
@@ -42,54 +36,47 @@ public class HttpLoggingInterceptor implements Interceptor {
 
   public HttpLoggingInterceptor(Logger logger) {
     this.httpLogger = new HttpLogger(logger);
-    activeConsumers = new ConcurrentHashMap<>();
   }
 
   @Override
   public AsyncBody.Consumer<List<ByteBuffer>> consumer(AsyncBody.Consumer<List<ByteBuffer>> consumer, HttpRequest request) {
-    final DeferredLoggingConsumer interceptedConsumer = new DeferredLoggingConsumer(httpLogger, request, consumer,
-        () -> activeConsumers.remove(request.id()));
-    activeConsumers.put(request.id(), interceptedConsumer);
-    return interceptedConsumer;
+    return new DeferredLoggingConsumer(httpLogger, request, consumer);
   }
 
   @Override
-  public void after(HttpRequest request, HttpResponse<?> response) {
+  public void after(HttpRequest request, HttpResponse<?> response, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
     if (response instanceof WebSocketUpgradeResponse) {
       httpLogger.logWsStart();
       httpLogger.logRequest(request);
       httpLogger.logResponse(response);
       httpLogger.logWsEnd();
     } else {
-      activeConsumers.computeIfPresent(request.id(), (id, consumer) -> {
-        consumer.originalResponse.set(response);
-        if (response.body() instanceof AsyncBody) {
-          consumer.processAsyncBody((AsyncBody) response.body());
-        }
-        return consumer;
-      });
+      DeferredLoggingConsumer deferredLoggingConsumer = consumer.unwrap(DeferredLoggingConsumer.class);
+      if (response.body() instanceof AsyncBody && deferredLoggingConsumer != null) {
+        deferredLoggingConsumer.processAsyncBody((AsyncBody) response.body(), response);
+      } else {
+        // currently not possible
+        httpLogger.logStart();
+        httpLogger.logRequest(request);
+        httpLogger.logResponse(response);
+        httpLogger.logEnd();
+      }
     }
   }
 
   private static final class DeferredLoggingConsumer
-      implements AsyncBody.Consumer<List<ByteBuffer>>, BiConsumer<Void, Throwable> {
+      implements AsyncBody.Consumer<List<ByteBuffer>> {
 
     private final HttpLogger httpLogger;
     private final HttpRequest originalRequest;
     private final AsyncBody.Consumer<List<ByteBuffer>> originalConsumer;
-    private final Runnable cleanUp;
-    private final AtomicReference<HttpResponse<?>> originalResponse;
-    private final AtomicBoolean asyncBodyDoneProcessed;
     private final Queue<ByteBuffer> responseBody;
 
     public DeferredLoggingConsumer(HttpLogger httpLogger, HttpRequest originalRequest,
-        AsyncBody.Consumer<List<ByteBuffer>> originalConsumer, Runnable cleanUp) {
+        AsyncBody.Consumer<List<ByteBuffer>> originalConsumer) {
       this.httpLogger = httpLogger;
       this.originalRequest = originalRequest;
       this.originalConsumer = originalConsumer;
-      this.cleanUp = cleanUp;
-      originalResponse = new AtomicReference<>();
-      asyncBodyDoneProcessed = new AtomicBoolean(false);
       responseBody = new ConcurrentLinkedQueue<>();
     }
 
@@ -102,27 +89,26 @@ public class HttpLoggingInterceptor implements Interceptor {
     }
 
     @Override
-    public void accept(Void v, Throwable throwable) {
-      httpLogger.logStart();
-      httpLogger.logRequest(originalRequest);
-      if (originalResponse.get() != null) {
-        httpLogger.logResponse(originalResponse.get());
-        httpLogger.logResponseBody(responseBody);
-      }
-      httpLogger.logEnd();
-      responseBody.clear();
-      cleanUp.run();
+    public <U> U unwrap(Class<U> target) {
+      return Optional.ofNullable(AsyncBody.Consumer.super.unwrap(target)).orElse(originalConsumer.unwrap(target));
     }
 
     /**
      * Registers the asyncBody.done() callback.
      *
      * @param asyncBody the AsyncBody instance to register the callback on the done() future.
+     * @param response
      */
-    private void processAsyncBody(AsyncBody asyncBody) {
-      if (asyncBodyDoneProcessed.compareAndSet(false, true)) {
-        asyncBody.done().whenComplete(this);
-      }
+    private void processAsyncBody(AsyncBody asyncBody, HttpResponse<?> response) {
+      asyncBody.done().whenComplete((Void v, Throwable throwable) -> {
+        httpLogger.logStart();
+        // TODO: we also have access to the response.request, which may be different than originalRequest
+        httpLogger.logRequest(originalRequest);
+        httpLogger.logResponse(response);
+        httpLogger.logResponseBody(responseBody);
+        httpLogger.logEnd();
+        responseBody.clear();
+      });
     }
   }
 

@@ -45,7 +45,7 @@ public interface Interceptor {
    * @param request the original request sent to the server.
    * @param response the response received from the server.
    */
-  default void after(HttpRequest request, HttpResponse<?> response) {
+  default void after(HttpRequest request, HttpResponse<?> response, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
 
   }
 
