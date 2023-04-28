@@ -127,8 +127,7 @@ class OpenShiftOAuthInterceptorTest {
         null);
 
     // Then
-    assertThat(result).isCompletedWithValue(true);
-    verify(builder).setHeader("Authorization", "Bearer token-set-by-user");
+    assertThat(result).isCompletedWithValue(false);
   }
 
   @Test
@@ -147,8 +146,8 @@ class OpenShiftOAuthInterceptorTest {
             .withRequest(new StandardHttpRequest(null, URI.create("http://localhost"), "GET", null)),
         null);
 
-    // Then
-    assertThat(result).isCompletedWithValue(false);
+    // Then - could try to detect that it hasn't changed, but for now we'll just proceed with the same
+    assertThat(result).isCompletedWithValue(true);
     verify(builder).setHeader("Authorization", "Bearer token-from-oauthtokenprovider");
   }
 
@@ -157,6 +156,7 @@ class OpenShiftOAuthInterceptorTest {
     try (MockedStatic<KubeConfigUtils> kubeConfigUtilsMockedStatic = mockStatic(KubeConfigUtils.class)) {
       // Given
       Config config = mock(Config.class, RETURNS_DEEP_STUBS);
+      when(config.getOauthTokenProvider()).thenReturn(null);
       io.fabric8.kubernetes.api.model.Config kubeConfigContent = mock(io.fabric8.kubernetes.api.model.Config.class);
       HttpClient client = mock(HttpClient.class);
       HttpRequest.Builder builder = mock(HttpRequest.Builder.class, RETURNS_SELF);
@@ -263,7 +263,6 @@ class OpenShiftOAuthInterceptorTest {
     Config refreshedConfig = mock(Config.class);
     when(refreshedConfig.getAutoOAuthToken()).thenReturn("token");
     when(config.refresh()).thenReturn(refreshedConfig);
-    when(config.getOauthToken()).thenReturn("token");
     return config;
   }
 

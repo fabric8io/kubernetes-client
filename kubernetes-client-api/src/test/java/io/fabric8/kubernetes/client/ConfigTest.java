@@ -162,10 +162,10 @@ class ConfigTest {
     System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
 
     Config config = new Config();
-    assertConfig(config);
+    assertConfig(config, true);
 
     config = new ConfigBuilder().build();
-    assertConfig(config);
+    assertConfig(config, true);
   }
 
   @Test
@@ -201,7 +201,7 @@ class ConfigTest {
         .withKeyStorePassphrase("keystorePassphrase")
         .build();
 
-    assertConfig(config);
+    assertConfig(config, false);
   }
 
   @Test
@@ -244,7 +244,7 @@ class ConfigTest {
         .withNamespace("testns")
         .build();
 
-    assertConfig(config);
+    assertConfig(config, true);
   }
 
   @Test
@@ -292,7 +292,7 @@ class ConfigTest {
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    assertEquals("token", config.getAutoOAuthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
     assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
@@ -306,7 +306,7 @@ class ConfigTest {
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("production", config.getNamespace());
-    assertEquals("supertoken", config.getOauthToken());
+    assertEquals("supertoken", config.getAutoOAuthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
@@ -320,7 +320,7 @@ class ConfigTest {
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("production", config.getNamespace());
-    assertEquals("supertoken", config.getOauthToken());
+    assertEquals("supertoken", config.getAutoOAuthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
@@ -334,7 +334,7 @@ class ConfigTest {
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    assertEquals("token", config.getAutoOAuthToken());
     assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
   }
 
@@ -349,7 +349,7 @@ class ConfigTest {
 
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
-    assertEquals("token", config.getOauthToken());
+    assertEquals("token", config.getAutoOAuthToken());
     assertEquals("testns2", config.getNamespace());
   }
 
@@ -483,7 +483,7 @@ class ConfigTest {
 
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
-    assertEquals("HELLO WORLD", config.getOauthToken());
+    assertEquals("HELLO WORLD", config.getAutoOAuthToken());
   }
 
   @Test
@@ -498,7 +498,7 @@ class ConfigTest {
 
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
-      assertEquals("HELLO", config.getOauthToken());
+      assertEquals("HELLO", config.getAutoOAuthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
@@ -517,7 +517,7 @@ class ConfigTest {
 
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
-      assertEquals("HELLO W O R L D", config.getOauthToken());
+      assertEquals("HELLO W O R L D", config.getAutoOAuthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
@@ -536,7 +536,7 @@ class ConfigTest {
 
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
-      assertEquals("HELLO WORLD", config.getOauthToken());
+      assertEquals("HELLO WORLD", config.getAutoOAuthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
@@ -549,7 +549,9 @@ class ConfigTest {
         .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
         .build();
 
-    assertEquals("PROVIDER_TOKEN", config.getOauthToken());
+    // this is mostly a configuration error, and
+    // the provider does not modify the oauthtoken field
+    assertEquals("oauthToken", config.getOauthToken());
   }
 
   @Test
@@ -567,7 +569,7 @@ class ConfigTest {
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals(
         "eyJraWQiOiJDTj1vaWRjaWRwLnRyZW1vbG8ubGFuLCBPVT1EZW1vLCBPPVRybWVvbG8gU2VjdXJpdHksIEw9QXJsaW5ndG9uLCBTVD1WaXJnaW5pYSwgQz1VUy1DTj1rdWJlLWNhLTEyMDIxNDc5MjEwMzYwNzMyMTUyIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL29pZGNpZHAudHJlbW9sby5sYW46ODQ0My9hdXRoL2lkcC9PaWRjSWRQIiwiYXVkIjoia3ViZXJuZXRlcyIsImV4cCI6MTQ4MzU0OTUxMSwianRpIjoiMm96US15TXdFcHV4WDlHZUhQdy1hZyIsImlhdCI6MTQ4MzU0OTQ1MSwibmJmIjoxNDgzNTQ5MzMxLCJzdWIiOiI0YWViMzdiYS1iNjQ1LTQ4ZmQtYWIzMC0xYTAxZWU0MWUyMTgifQ.w6p4J_6qQ1HzTG9nrEOrubxIMb9K5hzcMPxc9IxPx2K4xO9l-oFiUw93daH3m5pluP6K7eOE6txBuRVfEcpJSwlelsOsW8gb8VJcnzMS9EnZpeA0tW_p-mnkFc3VcfyXuhe5R3G7aa5d8uHv70yJ9Y3-UhjiN9EhpMdfPAoEB9fYKKkJRzF7utTTIPGrSaSU6d2pcpfYKaxIwePzEkT4DfcQthoZdy9ucNvvLoi1DIC-UocFD8HLs8LYKEqSxQvOcvnThbObJ9af71EwmuE21fO5KzMW20KtAeget1gnldOosPtz1G5EwvaQ401-RPQzPGMVBld0_zMCAwZttJ4knw",
-        config.getOauthToken());
+        config.getAutoOAuthToken());
   }
 
   @Test
@@ -605,13 +607,17 @@ class ConfigTest {
         .satisfies(e -> assertThat(e.getUserAgent()).isNotNull());
   }
 
-  private void assertConfig(Config config) {
+  private void assertConfig(Config config, boolean autoToken) {
     assertNotNull(config);
     assertTrue(config.isTrustCerts());
     assertTrue(config.isDisableHostnameVerification());
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    if (autoToken) {
+      assertEquals("token", config.getAutoOAuthToken());
+    } else {
+      assertEquals("token", config.getOauthToken());
+    }
     assertEquals("user", config.getUsername());
     assertEquals("pass", config.getPassword());
     assertEquals("/path/to/cert", config.getCaCertFile());

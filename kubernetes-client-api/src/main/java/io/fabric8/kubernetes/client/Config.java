@@ -395,6 +395,7 @@ public class Config {
     this.masterUrl = ensureEndsWithSlash(ensureHttps(masterUrl, this));
     this.maxConcurrentRequests = maxConcurrentRequests;
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
+    this.autoOAuthToken = autoOAuthToken;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -966,19 +967,9 @@ public class Config {
     return null;
   }
 
-  public String getUserConfiguredOauthToken() {
-    return oauthToken;
-  }
-
   @JsonProperty("oauthToken")
   public String getOauthToken() {
-    if (this.oauthTokenProvider != null) {
-      return this.oauthTokenProvider.getToken();
-    }
-    if (this.oauthToken != null) {
-      return oauthToken;
-    }
-    return autoOAuthToken;
+    return oauthToken;
   }
 
   public void setOauthToken(String oauthToken) {

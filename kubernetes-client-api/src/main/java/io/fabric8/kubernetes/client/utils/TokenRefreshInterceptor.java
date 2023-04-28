@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 /**
  * Interceptor for handling kube authentication. It will either be basic auth, or token based. This class takes responsibility
@@ -37,34 +38,58 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   public static final String NAME = "TOKEN";
 
-  private final Config config;
-  private HttpClient.Factory factory;
+  protected final Config config;
+  private final Function<Config, CompletableFuture<String>> remoteRefresh;
 
   private static final int REFRESH_INTERVAL_MINUTE = 1;
 
-  private Instant latestRefreshTimestamp;
+  private volatile Instant latestRefreshTimestamp;
 
   public TokenRefreshInterceptor(Config config, HttpClient.Factory factory, Instant latestRefreshTimestamp) {
+    this(config, latestRefreshTimestamp,
+        newestConfig -> OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, newestConfig.getAuthProvider().getConfig(),
+            factory.newBuilder()));
+  }
+
+  public TokenRefreshInterceptor(Config config, Instant latestRefreshTimestamp,
+      Function<Config, CompletableFuture<String>> remoteRefresh) {
     this.config = config;
+    this.remoteRefresh = remoteRefresh;
     this.latestRefreshTimestamp = latestRefreshTimestamp;
-    this.factory = factory;
   }
 
   @Override
   public void before(BasicBuilder headerBuilder, HttpRequest request, RequestTags tags) {
-    if (isBasicAuth()) {
+    if (useBasicAuth()) {
       headerBuilder.header(AUTHORIZATION, HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword()));
       return;
     }
-    if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-      headerBuilder.header(AUTHORIZATION, "Bearer " + config.getOauthToken());
+
+    String token = getEffectiveOauthToken(config);
+
+    if (Utils.isNotNullOrEmpty(token)) {
+      headerBuilder.header(AUTHORIZATION, "Bearer " + token);
     }
     if (isTimeToRefresh()) {
       refreshToken(headerBuilder);
     }
   }
 
-  private boolean isBasicAuth() {
+  private static String getEffectiveOauthToken(Config config) {
+    if (config.getOauthTokenProvider() != null) {
+      return config.getOauthTokenProvider().getToken();
+    }
+    if (config.getOauthToken() != null) {
+      return config.getOauthToken();
+    }
+    return config.getAutoOAuthToken();
+  }
+
+  protected boolean useBasicAuth() {
+    return isBasicAuth();
+  }
+
+  final protected boolean isBasicAuth() {
     return Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword());
   }
 
@@ -74,45 +99,48 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   @Override
   public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response, RequestTags tags) {
-    if (isBasicAuth()) {
+    if (shouldFail(response)) {
       return CompletableFuture.completedFuture(false);
     }
-    if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-      return refreshToken(headerBuilder);
-    }
-    return CompletableFuture.completedFuture(false);
+    return refreshToken(headerBuilder);
+  }
+
+  protected boolean shouldFail(HttpResponse<?> response) {
+    return useBasicAuth() || response.code() != HttpURLConnection.HTTP_UNAUTHORIZED;
   }
 
   private CompletableFuture<Boolean> refreshToken(BasicBuilder headerBuilder) {
     if (config.getOauthTokenProvider() != null) {
       String tokenFromProvider = config.getOauthTokenProvider().getToken();
-      if (tokenFromProvider != null && !tokenFromProvider.isEmpty()) {
-        return CompletableFuture.completedFuture(overrideNewAccessTokenToConfig(tokenFromProvider, headerBuilder, config));
-      }
+      return CompletableFuture.completedFuture(overrideNewAccessTokenToConfig(tokenFromProvider, headerBuilder));
     }
-    if (config.getUserConfiguredOauthToken() != null && !config.getUserConfiguredOauthToken().isEmpty()) {
-      return CompletableFuture
-          .completedFuture(overrideNewAccessTokenToConfig(config.getUserConfiguredOauthToken(), headerBuilder, config));
+    if (config.getOauthToken() != null) {
+      return CompletableFuture.completedFuture(false);
     }
     Config newestConfig = config.refresh();
     final CompletableFuture<String> newAccessToken = extractNewAccessTokenFrom(newestConfig);
 
-    return newAccessToken.thenApply(token -> overrideNewAccessTokenToConfig(token, headerBuilder, config));
+    return newAccessToken.thenApply(token -> overrideNewAccessTokenToConfig(token, headerBuilder));
   }
 
   private CompletableFuture<String> extractNewAccessTokenFrom(Config newestConfig) {
-    if (isAuthProviderOidc(newestConfig) && OpenIDConnectionUtils.idTokenExpired(newestConfig)) {
-      return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, newestConfig.getAuthProvider().getConfig(),
-          factory.newBuilder());
+    if (useRemoteRefresh(newestConfig)) {
+      // TODO: determine the appropriate fall-back behavior.  If the result here is null, do we use the non-remote token
+      return remoteRefresh.apply(newestConfig);
     }
 
-    return CompletableFuture.completedFuture(newestConfig.getOauthToken());
+    return CompletableFuture.completedFuture(getEffectiveOauthToken(newestConfig));
   }
 
-  private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder, Config existConfig) {
+  protected boolean useRemoteRefresh(Config newestConfig) {
+    // TODO: in a hard failure scenario, should we skip the expired check
+    return isAuthProviderOidc(newestConfig) && OpenIDConnectionUtils.idTokenExpired(newestConfig);
+  }
+
+  private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder) {
     if (Utils.isNotNullOrEmpty(newAccessToken)) {
       headerBuilder.setHeader(AUTHORIZATION, "Bearer " + newAccessToken);
-      existConfig.setAutoOAuthToken(newAccessToken);
+      config.setAutoOAuthToken(newAccessToken);
 
       updateLatestRefreshTimestamp();
 
