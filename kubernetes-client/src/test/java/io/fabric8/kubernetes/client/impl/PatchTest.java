@@ -200,14 +200,14 @@ class PatchTest {
     Service svc = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
     // When
     kubernetesClient.resourceList(pod, svc).inNamespace("ns1").fieldManager("x")
-      .forceConflicts().serverSideApply();
+        .forceConflicts().serverSideApply();
 
     // Then
     verify(mockClient, times(2)).sendAsync(any(), any());
     assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "fieldManager=x&force=true",
-      PatchType.SERVER_SIDE_APPLY.getContentType());
+        PatchType.SERVER_SIDE_APPLY.getContentType());
     assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/services/svc1", "fieldManager=x&force=true",
-      PatchType.SERVER_SIDE_APPLY.getContentType());
+        PatchType.SERVER_SIDE_APPLY.getContentType());
   }
 
   private void assertRequest(String method, String url, String queryParam) {
