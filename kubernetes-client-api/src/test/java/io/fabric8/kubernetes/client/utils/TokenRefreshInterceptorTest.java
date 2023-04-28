@@ -115,7 +115,7 @@ class TokenRefreshInterceptorTest {
     final boolean result = tokenRefreshInterceptor
         .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401), null).get();
     // Then
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
     assertThat(originalConfig).hasFieldOrPropertyWithValue("oauthToken", "existing-token");
   }
 
@@ -132,7 +132,7 @@ class TokenRefreshInterceptorTest {
     final boolean result = tokenRefreshInterceptor
         .afterFailure(new StandardHttpRequest.Builder(), new TestHttpResponse<>().withCode(401), null).get();
     // Then
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
     assertThat(originalConfig).hasFieldOrPropertyWithValue("oauthToken", "existing-token");
   }
 
