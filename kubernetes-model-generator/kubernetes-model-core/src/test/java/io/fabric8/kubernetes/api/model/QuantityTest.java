@@ -21,6 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -198,5 +199,15 @@ class QuantityTest {
   @Test
   void indexOfUnit_whenBlankValueProvided_thenReturnsZero() {
     assertThat(Quantity.indexOfUnit("")).isZero();
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+      "129e6", "129e+6", "1234567890", "8Ki", "7Mi", "6Gi", "5Ti", "4Pi", "3Ei", "5n", "4u", "3m",
+      "9", "8k", "50k", "7M", "6G", "5T", "40T", "300T", "2P", "1E", ".5Mi", "0.5e-1", "1.1E-5" })
+  @DisplayName("Test fromAmountInBytes method")
+  void testFromAmountInBytes(String amount) {
+    Quantity quantity = new Quantity(amount);
+    assertThat(quantity).isEqualTo(Quantity.fromNumericalAmount(quantity.getNumericalAmount(), quantity.getFormat()));
   }
 }
