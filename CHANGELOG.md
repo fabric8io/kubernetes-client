@@ -18,6 +18,7 @@
 * fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
 * Fix #5044: disable Vert.x instance file caching
 * Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
+* Fix #5085: Vert.x HTTP Client InputStreamReadStream works in Native mode
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
