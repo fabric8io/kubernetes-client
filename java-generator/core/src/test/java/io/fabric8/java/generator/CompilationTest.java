@@ -17,6 +17,7 @@ package io.fabric8.java.generator;
 
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -37,8 +38,7 @@ import java.util.stream.Stream;
 import javax.tools.JavaFileObject;
 
 import static com.google.testing.compile.Compiler.javac;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CompilationTest {
 
@@ -50,13 +50,13 @@ class CompilationTest {
   @BeforeEach
   void setUp() {
     config = Config.builder()
-        .structure(Config.CodeStructure.PACKAGE_NESTED)
         .generatedAnnotations(false)
         .build();
   }
 
   private static Stream<Arguments> compilationTestData() {
     return Stream.of(
+        Arguments.of("dummy-crd.yml", 2),
         Arguments.of("crontab-crd.yml", 3),
         Arguments.of("keycloak-crd.yml", 50),
         Arguments.of("akka-microservices-crd.yml", 28),
@@ -68,7 +68,8 @@ class CompilationTest {
         Arguments.of("cert-manager-crd.yml", 5),
         Arguments.of("camel-integrationplatforms-crd.yaml", 192),
         Arguments.of("two-crds.yml", 6),
-        Arguments.of("folder", 6));
+        Arguments.of("folder", 6),
+        Arguments.of("calico-ippool-crd.yml", 3));
   }
 
   @ParameterizedTest(name = "{0} should generate {1} source files and compile OK")
@@ -88,11 +89,11 @@ class CompilationTest {
   }
 
   @Test
-  void crontabCRDCompilesWithFlatPackage() throws Exception {
+  void testCrontabCRDCompilesWithExtraAnnotations() throws Exception {
     // Arrange
     File crd = getCRD("crontab-crd.yml");
     config = config.toBuilder()
-        .structure(Config.CodeStructure.FLAT)
+        .objectExtraAnnotations(true)
         .build();
 
     // Act
@@ -106,22 +107,20 @@ class CompilationTest {
   }
 
   @Test
-  void testCrontabCRDCompilesWithExtraAnnotationsAndUnknownFields() throws Exception {
+  void testCalicoIPPoolCRDDoesNotCompileWhenDuplicatesAreNotDeprecated() throws Exception {
     // Arrange
-    File crd = getCRD("crontab-crd.yml");
+    File crd = getCRD("calico-ippool-broken-crd.yml");
     config = config.toBuilder()
         .objectExtraAnnotations(true)
-        .alwaysPreserveUnknownFields(true)
         .build();
 
-    // Act
-    new FileJavaGenerator(config, crd).run(tempDir);
-    Compilation compilation = javac().compile(getSources(tempDir));
-
     // Assert
-    assertTrue(compilation.errors().isEmpty());
-    assertEquals(3, compilation.sourceFiles().size());
-    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    assertThrows(JavaGeneratorException.class, () -> {
+      // Act
+      new FileJavaGenerator(config, crd).run(tempDir);
+      javac().compile(getSources(tempDir));
+    },
+        "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
   }
 
   static List<JavaFileObject> getSources(File basePath) throws IOException {

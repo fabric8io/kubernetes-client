@@ -18,9 +18,10 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 
-public interface RollableScalableResource<T> extends ScalableResource<T> {
+public interface RollableScalableResource<T> extends ScalableResource<T>, ImageUpdateable<T> {
 
   TimeoutImageEditReplacePatchable<T> rolling();
 
   Status rollback(DeploymentRollback deploymentRollback);
+
 }

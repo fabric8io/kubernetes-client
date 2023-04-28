@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
+import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClient;
@@ -30,6 +31,7 @@ import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
+import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -51,6 +53,7 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
 
@@ -86,7 +89,9 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
 
         @Override
         public void onNext(List<ByteBuffer> item) {
-          bodySubscriber.onNext(item);
+          // there doesn't seem to be a guarantee that the buffer won't be modified by the caller
+          // after passing it in, so we'll create a copy
+          bodySubscriber.onNext(item.stream().map(BufferUtil::copy).collect(Collectors.toList()));
         }
 
         @Override
@@ -231,7 +236,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
       return;
     }
     builder.getClientFactory().closeHttpClient(this);
-    // help with default cleanup, which is based upon garbarge collection
+    // help with default cleanup, which is based upon garbage collection
     this.httpClient = null;
   }
 
@@ -248,7 +253,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     BodyHandler<AsyncBody> handlerAdapter = new BodyHandlerAdapter(subscriber, handler);
 
     return this.getHttpClient().sendAsync(requestBuilder(request).build(), handlerAdapter)
-        .thenApply(r -> new JdkHttpResponseImpl<AsyncBody>(r, r.body()));
+        .thenApply(r -> new JdkHttpResponseImpl<>(r, r.body()));
   }
 
   java.net.http.HttpRequest.Builder requestBuilder(StandardHttpRequest request) {
@@ -292,7 +297,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     }
 
     requestBuilder.uri(request.uri());
-    if (request.isExpectContinue()) {
+    if (request.isExpectContinue() && this.builder.getClientFactory().useExpectContinue()) {
       requestBuilder.expectContinue(true);
     }
     return requestBuilder;
@@ -301,7 +306,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   @Override
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(
       StandardWebSocketBuilder standardWebSocketBuilder, Listener listener) {
-    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
+    final StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
     java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();
     request.headers().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
     if (standardWebSocketBuilder.getSubprotocol() != null) {
@@ -320,21 +325,21 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
     URI uri = WebSocket.toWebSocketUri(request.uri());
-    newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((w, t) -> {
+    newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((jdkWebSocket, t) -> {
       if (t instanceof CompletionException && t.getCause() != null) {
         t = t.getCause();
       }
+      final JdkWebSocketImpl fabric8WebSocket = new JdkWebSocketImpl(queueSize, jdkWebSocket);
       if (t instanceof java.net.http.WebSocketHandshakeException) {
-        response
-            .complete(
-                new WebSocketResponse(new JdkWebSocketImpl(queueSize, w),
-                    new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(
-                        new JdkHttpResponseImpl<>(((java.net.http.WebSocketHandshakeException) t).getResponse()))
-                            .initCause(t)));
+        final java.net.http.HttpResponse<?> jdkResponse = ((java.net.http.WebSocketHandshakeException) t).getResponse();
+        final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
+            request, jdkResponse.statusCode(), jdkResponse.headers().map(), fabric8WebSocket);
+        response.complete(new WebSocketResponse(upgradeResponse,
+            new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(upgradeResponse).initCause(t)));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {
-        response.complete(new WebSocketResponse(new JdkWebSocketImpl(queueSize, w), null));
+        response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request, fabric8WebSocket), null));
       }
     });
 

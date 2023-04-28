@@ -34,7 +34,6 @@ import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
@@ -47,7 +46,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ReplicaSetOperationsImpl
-    extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
+    extends LegacyRollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
     implements TimeoutImageEditReplacePatchable<ReplicaSet> {
 
   public ReplicaSetOperationsImpl(Client client) {
@@ -72,50 +71,9 @@ public class ReplicaSetOperationsImpl
   }
 
   @Override
-  public ReplicaSet pause() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" pausing is not supported");
-  }
-
-  @Override
-  public ReplicaSet resume() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" resuming is not supported");
-  }
-
-  @Override
-  public ReplicaSet restart() {
-    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" restarting is not supported");
-  }
-
-  @Override
-  public ReplicaSet undo() {
-    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() + "\"");
-  }
-
-  @Override
-  public ReplicaSet withReplicas(int count) {
-    return accept(r -> r.getSpec().setReplicas(count));
-  }
-
-  @Override
   public RollingUpdater<ReplicaSet, ReplicaSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return new ReplicaSetRollingUpdater(context.getClient(), getNamespace(), rollingTimeUnit.toMillis(rollingTimeout),
-        config.getLoggingInterval());
-  }
-
-  @Override
-  public int getCurrentReplicas(ReplicaSet current) {
-    return current.getStatus().getReplicas();
-  }
-
-  @Override
-  public int getDesiredReplicas(ReplicaSet item) {
-    return item.getSpec().getReplicas();
-  }
-
-  @Override
-  public long getObservedGeneration(ReplicaSet current) {
-    return (current != null && current.getStatus() != null
-        && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
+        getRequestConfig().getLoggingInterval());
   }
 
   @Override

@@ -42,9 +42,11 @@ public abstract class AbstractJSONSchema2Pojo {
   static final String OBJECT_CRD_TYPE = "object";
   static final String ARRAY_CRD_TYPE = "array";
 
-  public static final AnnotationExpr GENERATED_ANNOTATION = new SingleMemberAnnotationExpr(
-      new Name("javax.annotation.processing.Generated"),
-      new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
+  public static final AnnotationExpr newGeneratedAnnotation() {
+    return new SingleMemberAnnotationExpr(
+        new Name("javax.annotation.processing.Generated"),
+        new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
+  }
 
   protected final String description;
   protected final Config config;
@@ -129,23 +131,28 @@ public abstract class AbstractJSONSchema2Pojo {
       index = sanitized.indexOf('-');
     }
 
+    sanitized = sanitized.replace('.', '_');
+    sanitized = sanitized.replace(' ', '_');
+    sanitized = sanitized.replace('\'', '_');
+    sanitized = sanitized.replace('\"', '_');
+
     return sanitized;
+  }
+
+  public static String escapeQuotes(String str) {
+    return str.replace("\"", "\\\"").replace("\'", "\\\'");
   }
 
   public static AbstractJSONSchema2Pojo fromJsonSchema(
       String key,
       JSONSchemaProps prop,
       String parentPkg,
-      String classPrefix,
-      String classSuffix,
       Config config) {
     Function<JavaNameAndType, AbstractJSONSchema2Pojo> fromJsonSchema = javaNameAndType -> fromJsonSchema(
         key,
         javaNameAndType,
         prop,
         parentPkg,
-        classPrefix,
-        classSuffix,
         config);
     String type = prop.getType();
     if (Boolean.TRUE.equals(prop.getXKubernetesIntOrString())) {
@@ -209,8 +216,6 @@ public abstract class AbstractJSONSchema2Pojo {
       JavaNameAndType nt,
       JSONSchemaProps prop,
       String parentPkg,
-      String classPrefix,
-      String classSuffix,
       Config config) {
     final boolean isNullable = Boolean.TRUE.equals(prop.getNullable());
     switch (nt.getType()) {
@@ -232,8 +237,6 @@ public abstract class AbstractJSONSchema2Pojo {
                 key,
                 prop.getItems().getSchema(),
                 parentPkg,
-                classPrefix,
-                classSuffix,
                 config),
             config,
             prop.getDescription(),
@@ -245,8 +248,6 @@ public abstract class AbstractJSONSchema2Pojo {
                 key,
                 prop.getAdditionalProperties().getSchema(),
                 parentPkg,
-                classPrefix,
-                classSuffix,
                 config),
             config,
             prop.getDescription(),
@@ -260,8 +261,6 @@ public abstract class AbstractJSONSchema2Pojo {
             prop.getProperties(),
             prop.getRequired(),
             preserveUnknownFields,
-            classPrefix,
-            classSuffix,
             config,
             prop.getDescription(),
             isNullable,

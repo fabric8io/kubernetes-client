@@ -56,6 +56,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -146,9 +147,9 @@ public class Utils {
   }
 
   /**
-   * Wait until an other thread signals the completion of a task.
+   * Wait until another thread signals the completion of a task.
    * If an exception is passed, it will be propagated to the caller.
-   * 
+   *
    * @param future The communication channel.
    * @param amount The amount of time to wait. If less than 0, wait indefinitely
    * @param timeUnit The time unit.
@@ -188,7 +189,7 @@ public class Utils {
 
   /**
    * Closes and flushes the specified {@link Closeable} items.
-   * 
+   *
    * @param closeables An {@link Iterable} of {@link Closeable} items.
    */
   public static void closeQuietly(Iterable<? extends Closeable> closeables) {
@@ -210,7 +211,7 @@ public class Utils {
 
   /**
    * Closes and flushes the specified {@link Closeable} items.
-   * 
+   *
    * @param closeables An array of {@link Closeable} items.
    */
   public static void closeQuietly(Closeable... closeables) {
@@ -495,13 +496,13 @@ public class Utils {
    * Schedule a repeated task to run in the given {@link Executor} - which should run the task in a different thread as to not
    * hold the scheduling thread.
    * <p>
-   * 
+   *
    * @param nextDelay provides the relative next delay - that is the values are applied cumulatively to the initial start
    *        time. Supplying a fixed value produces a fixed rate.
    */
   public static void scheduleWithVariableRate(CompletableFuture<?> completion, Executor executor, Runnable command,
       long initialDelay,
-      Supplier<Long> nextDelay, TimeUnit unit) {
+      LongSupplier nextDelay, TimeUnit unit) {
     AtomicReference<ScheduledFuture<?>> currentScheduledFuture = new AtomicReference<>();
     AtomicLong next = new AtomicLong(unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS) + Math.max(0, initialDelay));
     schedule(() -> CompletableFuture.runAsync(command, executor), initialDelay, unit, completion, nextDelay, next,
@@ -511,7 +512,7 @@ public class Utils {
   }
 
   private static void schedule(Supplier<CompletableFuture<?>> runner, long delay, TimeUnit unit,
-      CompletableFuture<?> completion, Supplier<Long> nextDelay, AtomicLong next,
+      CompletableFuture<?> completion, LongSupplier nextDelay, AtomicLong next,
       AtomicReference<ScheduledFuture<?>> currentScheduledFuture) {
     currentScheduledFuture.set(SHARED_SCHEDULER.schedule(() -> {
       if (completion.isDone()) {
@@ -522,7 +523,7 @@ public class Utils {
         if (t != null) {
           completion.completeExceptionally(t);
         } else if (!completion.isDone()) {
-          schedule(runner, next.addAndGet(nextDelay.get()) - unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS),
+          schedule(runner, next.addAndGet(nextDelay.getAsLong()) - unit.convert(System.nanoTime(), TimeUnit.NANOSECONDS),
               unit, completion, nextDelay, next, currentScheduledFuture);
         }
       });

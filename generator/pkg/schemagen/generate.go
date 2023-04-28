@@ -329,7 +329,7 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 
 	s := JSONSchema{
 		ID:     schemaId,
-		Schema: "http://json-schema.org/draft-05/schema#",
+		Schema: "http://json-schema.org/draft-07/schema#",
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",
 		},

@@ -62,6 +62,7 @@ class ImageStreamIT {
   void update() {
     client.imageStreams().withName("is-update").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     ImageStream imageStream1 = client.imageStreams().withName("is-update").edit(i -> new ImageStreamBuilder(i)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
         .build());
     assertThat(imageStream1).isNotNull();

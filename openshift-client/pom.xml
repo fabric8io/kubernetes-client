@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>openshift-client</artifactId>
@@ -61,13 +61,13 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-client-api</artifactId>
     </dependency>
-   
+
     <dependency>
       <groupId>com.github.mifmif</groupId>
       <artifactId>generex</artifactId>
       <version>${generex.version}</version>
     </dependency>
-    
+
     <!-- Compile Only Dependencies -->
     <dependency>
       <groupId>io.sundr</groupId>
@@ -78,7 +78,7 @@
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -101,6 +101,14 @@
       <scope>test</scope>
     </dependency>
 
+     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>mockwebserver</artifactId>
@@ -110,7 +118,6 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -121,14 +128,13 @@
    </dependency>
 
    <dependency>
-     <groupId>org.junit.jupiter</groupId>
-     <artifactId>junit-jupiter-migrationsupport</artifactId>
-     <scope>test</scope>
-   </dependency>
-
-   <dependency>
      <groupId>org.mockito</groupId>
      <artifactId>mockito-core</artifactId>
+     <scope>test</scope>
+   </dependency>
+   <dependency>
+     <groupId>org.assertj</groupId>
+     <artifactId>assertj-core</artifactId>
      <scope>test</scope>
    </dependency>
  </dependencies>

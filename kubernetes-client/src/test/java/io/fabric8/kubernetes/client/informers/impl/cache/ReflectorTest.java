@@ -20,18 +20,22 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.exceptions.verification.TooFewActualInvocations;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeast;
 
 class ReflectorTest {
 
@@ -41,7 +45,8 @@ class ReflectorTest {
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, Mockito.mock(SyncableStore.class)) {
+    SyncableStore<Pod> mockStore = Mockito.mock(SyncableStore.class);
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
       @Override
       protected void reconnect() {
         // do nothing
@@ -55,7 +60,7 @@ class ReflectorTest {
     // throw an exception, then watch normally
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
         .thenThrow(new KubernetesClientException("error"))
-        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(Watch.class)));
+        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(AbstractWatchManager.class)));
 
     CompletableFuture<Void> future = reflector.start();
 
@@ -110,7 +115,7 @@ class ReflectorTest {
     Reflector<Pod, PodList> reflector = new Reflector<>(mock, Mockito.mock(SyncableStore.class));
 
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
-        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(Watch.class)));
+        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(AbstractWatchManager.class)));
 
     reflector.start();
 
@@ -121,6 +126,34 @@ class ReflectorTest {
 
     assertFalse(reflector.isWatching());
     assertTrue(reflector.isStopped());
+  }
+
+  @Test
+  void testTimeout() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, Mockito.mock(SyncableStore.class));
+    reflector.setMinTimeout(1);
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    reflector.start();
+
+    assertTrue(reflector.isWatching());
+    assertFalse(reflector.isStopped());
+
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+      try {
+        Mockito.verify(manager, atLeast(2)).closeRequest();
+      } catch (TooFewActualInvocations e) {
+        return false;
+      }
+      return true;
+    });
   }
 
 }

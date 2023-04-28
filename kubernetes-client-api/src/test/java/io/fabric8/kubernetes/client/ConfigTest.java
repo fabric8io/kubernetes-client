@@ -57,6 +57,8 @@ public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_EXEC_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec"));
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
+  private static final String TEST_TOKEN_GENERATOR_FILE_WITH_SPACES = Utils
+      .filePath(ConfigTest.class.getResource("/token-generator with spaces"));
 
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
@@ -65,6 +67,18 @@ public class ConfigTest {
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-null-args"));
   private static final String TEST_KUBECONFIG_EXEC_FILE_WIN_NULL_ARGS = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-null-args"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES_WIN = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-with-spaces-windows"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-with-spaces"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES_WIN = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-args-with-spaces-windows"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-args-with-spaces"));
 
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
@@ -144,7 +158,6 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
     System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
 
-    System.setProperty(Config.KUBERNETES_UPLOAD_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, "60000");
     System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
 
     Config config = new Config();
@@ -178,7 +191,6 @@ public class ConfigTest {
         .withWatchReconnectInterval(5000)
         .withWatchReconnectLimit(5)
         .withRequestTimeout(5000)
-        .withUploadConnectionTimeout(60000)
         .withUploadRequestTimeout(600000)
         .withHttpProxy("httpProxy")
         .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1)
@@ -224,7 +236,6 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
     System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
 
-    System.setProperty(Config.KUBERNETES_UPLOAD_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, "60000");
     System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
 
     Config config = new ConfigBuilder()
@@ -493,6 +504,44 @@ public class ConfigTest {
   }
 
   @Test
+  void should_accept_client_authentication_commands_args_with_spaces() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES_WIN);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE_WITH_SPACES),
+            PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_ARGS_WITH_SPACES);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertEquals("HELLO W O R L D", config.getOauthToken());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
+  void should_accept_client_authentication_commands_with_spaces() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES_WIN);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE_WITH_SPACES),
+            PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_WITH_SPACES);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertEquals("HELLO WORLD", config.getOauthToken());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
   void shouldBeUsedTokenSuppliedByProvider() {
 
     Config config = new ConfigBuilder().withOauthToken("oauthToken")
@@ -543,12 +592,10 @@ public class ConfigTest {
     assertEquals(-1, emptyConfig.getWatchReconnectLimit());
     assertEquals(10000, emptyConfig.getConnectionTimeout());
     assertEquals(10000, emptyConfig.getRequestTimeout());
-    assertEquals(900000, emptyConfig.getRollingTimeout());
     assertEquals(600000, emptyConfig.getScaleTimeout());
     assertEquals(20000, emptyConfig.getLoggingInterval());
     assertEquals(5000, emptyConfig.getWebsocketTimeout());
     assertEquals(30000, emptyConfig.getWebsocketPingInterval());
-    assertEquals(10000, emptyConfig.getUploadConnectionTimeout());
     assertEquals(120000, emptyConfig.getUploadRequestTimeout());
     assertTrue(emptyConfig.getImpersonateExtras().isEmpty());
     assertEquals(0, emptyConfig.getImpersonateGroups().length);
@@ -582,7 +629,6 @@ public class ConfigTest {
     assertEquals(5000, config.getWatchReconnectInterval());
     assertEquals(5, config.getWatchReconnectLimit());
     assertEquals(5000, config.getRequestTimeout());
-    assertEquals(60000, config.getRequestConfig().getUploadConnectionTimeout());
     assertEquals(600000, config.getRequestConfig().getUploadRequestTimeout());
 
     assertArrayEquals(new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 }, config.getTlsVersions());

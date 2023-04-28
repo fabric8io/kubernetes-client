@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>istio-extension-pom</artifactId>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>istio-model-v1beta1</artifactId>
@@ -33,7 +33,6 @@
   <properties>
     <osgi.import>
       io.fabric8.kubernetes.api.builder,
-      !io.fabric8.istio.*,
       *
     </osgi.import>
     <osgi.export>
@@ -42,6 +41,10 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>istio-model-v1alpha3</artifactId>
+    </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>

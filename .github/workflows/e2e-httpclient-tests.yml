@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.24.0,v1.23.3]
+        kubernetes: [v1.25.0,v1.24.0]
         httpclient: [jdk,jetty,vertx]
     steps:
       - name: Checkout
@@ -72,7 +72,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup OpenShift
-        uses: manusa/actions-setup-openshift@v1.1.4
+        uses: manusa/actions-setup-openshift@v1.1.5
         with:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}

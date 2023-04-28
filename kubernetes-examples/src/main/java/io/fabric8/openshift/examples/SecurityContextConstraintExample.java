@@ -35,7 +35,7 @@ public class SecurityContextConstraintExample {
     try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
       logger.info("Cluster SecurityContextConstraints:");
       client.securityContextConstraints().list().getItems().forEach(scc -> logger.info(" - {}", scc.getMetadata().getName()));
-      final SecurityContextConstraints scc = client.securityContextConstraints().create(
+      final SecurityContextConstraints scc = client.securityContextConstraints().resource(
           new SecurityContextConstraintsBuilder()
               .withNewMetadata().withName("scc").endMetadata()
               .withAllowPrivilegedContainer(true)
@@ -53,7 +53,8 @@ public class SecurityContextConstraintExample {
               .endSupplementalGroups()
               .addToUsers("admin")
               .addToGroups("admin-group")
-              .build());
+              .build())
+          .create();
       logger.info("Created SecurityContextConstraints {}", scc);
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

@@ -23,15 +23,20 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-import org.yaml.snakeyaml.nodes.Tag;
-import org.yaml.snakeyaml.representer.Representer;
-import org.yaml.snakeyaml.resolver.Resolver;
+import org.snakeyaml.engine.v2.api.Dump;
+import org.snakeyaml.engine.v2.api.DumpSettings;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.snakeyaml.engine.v2.common.FlowStyle;
+import org.snakeyaml.engine.v2.common.ScalarStyle;
+import org.snakeyaml.engine.v2.nodes.NodeTuple;
+import org.snakeyaml.engine.v2.nodes.ScalarNode;
+import org.snakeyaml.engine.v2.nodes.Tag;
+import org.snakeyaml.engine.v2.representer.StandardRepresenter;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -43,9 +48,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Serialization {
   private Serialization() {
@@ -60,8 +62,6 @@ public class Serialization {
   }
 
   private static volatile ObjectMapper YAML_MAPPER;
-
-  private static final String DOCUMENT_DELIMITER = "---";
 
   /**
    * {@link ObjectMapper} singleton instance used internally by the Kubernetes client.
@@ -92,7 +92,10 @@ public class Serialization {
    * n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
    * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
    * one from the additionalProperties Map will be serialized.
+   *
+   * @deprecated use {@link #asYaml(Object)} or one of the unmarshal methods
    */
+  @Deprecated
   public static ObjectMapper yamlMapper() {
     if (YAML_MAPPER == null) {
       synchronized (Serialization.class) {
@@ -111,7 +114,10 @@ public class Serialization {
    * This is useful because in a lot of cases the YAML mapper is only need at application startup
    * when the client is created, so there is no reason to keep the very heavy (in terms of memory) mapper
    * around indefinitely.
+   *
+   * @deprecated to be removed in later versions
    */
+  @Deprecated
   public static void clearYamlMapper() {
     YAML_MAPPER = null;
   }
@@ -149,11 +155,38 @@ public class Serialization {
    * @return a String containing a JSON representation of the provided object.
    */
   public static <T> String asYaml(T object) {
-    try {
-      return yamlMapper().writeValueAsString(object);
-    } catch (JsonProcessingException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    DumpSettings settings = DumpSettings.builder()
+        .setExplicitStart(true).setDefaultFlowStyle(FlowStyle.BLOCK).build();
+    final Dump yaml = new Dump(settings, new StandardRepresenter(settings) {
+      private boolean quote = true;
+
+      @Override
+      protected NodeTuple representMappingEntry(java.util.Map.Entry<?, ?> entry) {
+        Object key = entry.getKey();
+        if (key instanceof String) {
+          // to match the previous format, don't quote keys
+          quote = false;
+          String str = (String) key;
+          // the abbreviations y/n are not part of the snakeyaml core schema
+          if (str.length() == 1) {
+            char start = str.charAt(0);
+            quote = (start == 'y' || start == 'Y' || start == 'n' || start == 'N');
+          }
+        }
+        org.snakeyaml.engine.v2.nodes.Node nodeKey = representData(key);
+        quote = true;
+        return new NodeTuple(nodeKey, representData(entry.getValue()));
+      }
+
+      @Override
+      protected org.snakeyaml.engine.v2.nodes.Node representScalar(Tag tag, String value, ScalarStyle style) {
+        if (style == ScalarStyle.PLAIN) {
+          style = quote && tag == Tag.STR ? ScalarStyle.DOUBLE_QUOTED : this.defaultScalarStyle;
+        }
+        return new ScalarNode(tag, value, style);
+      }
+    });
+    return yaml.dumpToString(JSON_MAPPER.convertValue(object, Object.class));
   }
 
   /**
@@ -217,22 +250,7 @@ public class Serialization {
    */
   @Deprecated
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
-    // it's not well documented which Serialization methods are aware of input that can contain
-    // multiple docs
-    String specFile;
-    try {
-      specFile = IOHelpers.readFully(is);
-    } catch (IOException e1) {
-      throw new RuntimeException("Could not read stream");
-    }
-    if (containsMultipleDocuments(specFile)) {
-      return (T) getKubernetesResourceList(Collections.emptyMap(), specFile);
-    } else if (specFile.contains(DOCUMENT_DELIMITER)) {
-      specFile = specFile.replaceAll("^---([ \\t].*?)?\\r?\\n", "");
-      specFile = specFile.replaceAll("\\n---([ \\t].*?)?\\r?\\n?$", "\n");
-    }
-
-    return unmarshal(new ByteArrayInputStream(specFile.getBytes(StandardCharsets.UTF_8)), mapper, new TypeReference<T>() {
+    return unmarshal(is, mapper, new TypeReference<T>() {
       @Override
       public Type getType() {
         return KubernetesResource.class;
@@ -253,20 +271,55 @@ public class Serialization {
 
       final T result;
       if (intch != '{' && intch != '[') {
-        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(),
-            new CustomYamlTagResolverWithLimit());
-        final Object obj = yaml.load(bis);
-        if (obj instanceof Map) {
-          result = mapper.convertValue(obj, type);
-        } else {
-          result = mapper.convertValue(new RawExtension(obj), type);
-        }
+        result = parseYaml(bis, mapper, type);
       } else {
         result = mapper.readerFor(type).readValue(bis);
       }
       return result;
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  /**
+   * If multiple docs exist, only non-null resources will be kept. Results spanning multiple docs
+   * will be returned as a List of KubernetesResource
+   */
+  private static <T> T parseYaml(BufferedInputStream bis, ObjectMapper mapper, TypeReference<T> type) {
+    T result = null;
+    List<KubernetesResource> listResult = null;
+    final Load yaml = new Load(LoadSettings.builder().build());
+    final Iterable<Object> objs = yaml.loadAllFromInputStream(bis);
+    for (Object obj : objs) {
+      Object value = null;
+      if (obj instanceof Map) {
+        value = mapper.convertValue(obj, type);
+      } else if (obj != null) {
+        value = mapper.convertValue(new RawExtension(obj), type);
+      }
+      if (value != null) {
+        if (result == null) {
+          result = (T) value;
+        } else {
+          if (listResult == null) {
+            listResult = new ArrayList<>();
+            accumulateResult(result, listResult);
+          }
+          accumulateResult(value, listResult);
+        }
+      }
+    }
+    if (listResult != null) {
+      return (T) listResult;
+    }
+    return result;
+  }
+
+  private static <T> void accumulateResult(T result, List<KubernetesResource> listResult) {
+    if (result instanceof KubernetesResourceList) {
+      listResult.addAll(((KubernetesResourceList) result).getItems());
+    } else {
+      listResult.add((KubernetesResource) result);
     }
   }
 
@@ -387,42 +440,6 @@ public class Serialization {
     return unmarshal(is, JSON_MAPPER, type, parameters);
   }
 
-  private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
-    return splitSpecFile(specFile).stream().filter(Serialization::validate)
-        .map(
-            document -> (KubernetesResource) Serialization.unmarshal(new ByteArrayInputStream(document.getBytes()), parameters))
-        .filter(o -> o != null)
-        .collect(Collectors.toList());
-  }
-
-  static boolean containsMultipleDocuments(String specFile) {
-    final long validDocumentCount = splitSpecFile(specFile).stream().filter(Serialization::validate)
-        .count();
-    return validDocumentCount > 1;
-  }
-
-  private static List<String> splitSpecFile(String aSpecFile) {
-    final List<String> documents = new ArrayList<>();
-    final StringBuilder documentBuilder = new StringBuilder();
-    for (String line : aSpecFile.split("\r?\n")) {
-      if (line.startsWith(DOCUMENT_DELIMITER)) {
-        documents.add(documentBuilder.toString());
-        documentBuilder.setLength(0);
-      } else {
-        documentBuilder.append(line).append(System.lineSeparator());
-      }
-    }
-    if (documentBuilder.length() > 0) {
-      documents.add(documentBuilder.toString());
-    }
-    return documents;
-  }
-
-  private static boolean validate(String document) {
-    Matcher keyValueMatcher = Pattern.compile("(\\S+):\\s(\\S*)(?:\\b(?!:)|$)").matcher(document);
-    return !document.isEmpty() && keyValueMatcher.find();
-  }
-
   /**
    * Create a copy of the resource via serialization.
    *
@@ -437,19 +454,6 @@ public class Serialization {
           JSON_MAPPER.writeValueAsString(resource), resource.getClass());
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
-    }
-  }
-
-  private static class CustomYamlTagResolverWithLimit extends Resolver {
-    @Override
-    public void addImplicitResolver(Tag tag, Pattern regexp, String first, int limit) {
-      if (tag == Tag.TIMESTAMP)
-        return;
-      if (tag.equals(Tag.BOOL)) {
-        regexp = Pattern.compile("^(?:true|True|TRUE|false|False|FALSE)$");
-        first = "tTfF";
-      }
-      super.addImplicitResolver(tag, regexp, first, limit);
     }
   }
 }

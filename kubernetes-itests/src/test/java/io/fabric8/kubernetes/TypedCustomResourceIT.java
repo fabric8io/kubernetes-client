@@ -152,6 +152,7 @@ class TypedCustomResourceIT {
     await().atMost(5, TimeUnit.SECONDS)
         .until(() -> petClient.withName("pet-update").get() != null);
     Pet updatedPet = petClient.withName("pet-update").edit(pet1 -> {
+      pet1.getMetadata().setResourceVersion(null);
       pet1.getMetadata().setAnnotations(Collections.singletonMap("first", "1"));
       return pet1;
     });

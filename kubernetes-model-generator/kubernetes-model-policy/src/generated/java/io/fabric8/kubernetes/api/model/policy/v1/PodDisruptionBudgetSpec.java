@@ -33,7 +33,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "maxUnavailable",
     "minAvailable",
-    "selector"
+    "selector",
+    "unhealthyPodEvictionPolicy"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,6 +63,8 @@ public class PodDisruptionBudgetSpec implements KubernetesResource
     private io.fabric8.kubernetes.api.model.IntOrString minAvailable;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    @JsonProperty("unhealthyPodEvictionPolicy")
+    private String unhealthyPodEvictionPolicy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -76,13 +79,15 @@ public class PodDisruptionBudgetSpec implements KubernetesResource
      * 
      * @param minAvailable
      * @param maxUnavailable
+     * @param unhealthyPodEvictionPolicy
      * @param selector
      */
-    public PodDisruptionBudgetSpec(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, io.fabric8.kubernetes.api.model.IntOrString minAvailable, io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public PodDisruptionBudgetSpec(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, io.fabric8.kubernetes.api.model.IntOrString minAvailable, io.fabric8.kubernetes.api.model.LabelSelector selector, String unhealthyPodEvictionPolicy) {
         super();
         this.maxUnavailable = maxUnavailable;
         this.minAvailable = minAvailable;
         this.selector = selector;
+        this.unhealthyPodEvictionPolicy = unhealthyPodEvictionPolicy;
     }
 
     @JsonProperty("maxUnavailable")
@@ -113,6 +118,16 @@ public class PodDisruptionBudgetSpec implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("unhealthyPodEvictionPolicy")
+    public String getUnhealthyPodEvictionPolicy() {
+        return unhealthyPodEvictionPolicy;
+    }
+
+    @JsonProperty("unhealthyPodEvictionPolicy")
+    public void setUnhealthyPodEvictionPolicy(String unhealthyPodEvictionPolicy) {
+        this.unhealthyPodEvictionPolicy = unhealthyPodEvictionPolicy;
     }
 
     @JsonAnyGetter

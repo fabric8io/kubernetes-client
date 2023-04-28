@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -44,9 +45,17 @@ public class ExecWatchInputStreamTest {
   void testNormalExit() throws IOException {
     AtomicInteger count = new AtomicInteger();
     ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement());
-    is.onExit(1, null);
+    is.onExit(0, null);
     assertEquals(-1, is.read());
     assertEquals(0, count.get());
+  }
+
+  @Test
+  void testNonZeroExit() throws IOException {
+    AtomicInteger count = new AtomicInteger();
+    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement());
+    is.onExit(1, null);
+    assertThrows(IOException.class, () -> is.read());
   }
 
   @Test
@@ -63,7 +72,7 @@ public class ExecWatchInputStreamTest {
   @Test
   void testConsume() throws IOException {
     AtomicInteger count = new AtomicInteger();
-    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement());
+    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement(), 0);
     is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
 
     assertEquals(0, is.read());
@@ -83,6 +92,32 @@ public class ExecWatchInputStreamTest {
 
     is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
     readFuture.join();
+  }
+
+  @Test
+  void testConsumeBuffering() throws IOException {
+    AtomicInteger count = new AtomicInteger();
+    ExecWatchInputStream is = new ExecWatchInputStream(() -> count.getAndIncrement(), 2);
+    is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
+
+    // should keep going as the amount is less than the buffer size
+    assertEquals(1, count.get());
+
+    is.consume(Collections.singletonList(ByteBuffer.allocate(1)));
+
+    // should not request as we're at the buffer limit
+    assertEquals(1, count.get());
+  }
+
+  @Test
+  void testCompleteInlineWithRequestMore() throws IOException {
+    AtomicReference<ExecWatchInputStream> is = new AtomicReference<>();
+    ExecWatchInputStream execWatchInputStream = new ExecWatchInputStream(() -> is.get().onExit(0, null));
+    is.set(execWatchInputStream);
+    // the first consume is implicit
+    execWatchInputStream.consume(Collections.singletonList(ByteBuffer.allocate(1)));
+    is.get().read();
+    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> execWatchInputStream.read() == -1);
   }
 
 }

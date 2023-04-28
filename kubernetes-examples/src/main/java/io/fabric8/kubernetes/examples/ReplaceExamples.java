@@ -41,11 +41,12 @@ public class ReplaceExamples {
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
       try {
-        final Namespace namespace = client.namespaces().create(
-            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build());
+        final Namespace namespace = client.namespaces().resource(
+            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build())
+            .create();
         logger.info("Create namespace: {}", NAMESPACE);
 
-        Pod createdPod = client.pods().inNamespace(namespace.getMetadata().getName()).create(new PodBuilder()
+        Pod createdPod = client.pods().inNamespace(namespace.getMetadata().getName()).resource(new PodBuilder()
             .withNewMetadata()
             .withName("test-pod")
             .addToLabels("server", "nginx")
@@ -55,7 +56,8 @@ public class ReplaceExamples {
             .addNewPort().withContainerPort(80).endPort()
             .endContainer()
             .endSpec()
-            .build());
+            .build())
+            .create();
         logger.info("Created Pod: {}", createdPod.getMetadata().getName());
         logger.info(Serialization.asYaml(createdPod));
 

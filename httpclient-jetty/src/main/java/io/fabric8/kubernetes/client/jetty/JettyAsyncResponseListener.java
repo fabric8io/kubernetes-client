@@ -66,7 +66,7 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
   }
 
   @Override
-  public void onBegin(Response response) {
+  public void onHeaders(Response response) {
     asyncResponse.complete(new JettyHttpResponse<>(httpRequest, response, this));
   }
 

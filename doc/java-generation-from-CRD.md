@@ -72,8 +72,6 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
                           Apply the overrides to the package names
   -s, --source=<source>   The source(file or folder) with the
                             CustomResourceDefinition(s) to use
-      -suffix-strategy, --suffix-strategy=<suffixStrategy>
-                          The suffix strategy to be used
   -t, --target=<target>   The folder to write the generated sources
   -u, --urls=<urls>       The source urls with the CustomResourceDefinition(s)
                             to use
@@ -83,13 +81,6 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
 And the corresponding configurations of the Maven plugin are (output of `mvn help:describe -DgroupId=io.fabric8 -DartifactId=java-generator-maven-plugin -Dversion=<version> -Ddetail`):
 
 ```
-    alwaysPreserveUnknown
-      User property: fabric8.java-generator.always-preserve-unknown
-      *advanced* Always inject additional properties in the generated classes
-
-    codeStructure
-      User property: fabric8.java-generator.code-structure
-      *advanced* The code structure to be used when generating java sources
 
     downloadTarget (Default: ${basedir}/target/manifests)
       User property: fabric8.java-generator.download-target
@@ -112,20 +103,12 @@ And the corresponding configurations of the Maven plugin are (output of `mvn hel
       User property: fabric8.java-generator.package-overrides
       Package names to be substituted
 
-    prefixStrategy
-      User property: fabric8.java-generator.prefix-strategy
-      *advanced* The prefix strategy for name mangling
-
     project (Default: ${project})
       (no description available)
 
     source
       User property: fabric8.java-generator.source
       The input file or directory to be used for generating sources
-
-    suffixStrategy
-      User property: fabric8.java-generator.suffix-strategy
-      *advanced* The suffix strategy for name mangling
 
     target (Default: ${basedir}/target/generated-sources/java)
       User property: fabric8.java-generator.target

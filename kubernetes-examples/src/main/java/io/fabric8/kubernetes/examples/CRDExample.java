@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -128,7 +129,7 @@ public class CRDExample {
             .endSpec()
             .build();
 
-        client.apiextensions().v1().customResourceDefinitions().create(dummyCRD);
+        client.apiextensions().v1().customResourceDefinitions().resource(dummyCRD).create();
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }
 
@@ -157,16 +158,16 @@ public class CRDExample {
       dummySpec.setFoo("cheese: " + now);
       dummy.setSpec(dummySpec);
 
-      Dummy created = dummyClient.createOrReplace(dummy);
+      Dummy created = dummyClient.resource(dummy).createOrReplace();
 
       System.out.println("Upserted " + dummy);
 
       created.getSpec().setBar("otherBar");
 
-      dummyClient.createOrReplace(created);
+      dummyClient.resource(created).createOrReplace();
 
       System.out.println("Watching for changes to Dummies");
-      dummyClient.withResourceVersion(created.getMetadata().getResourceVersion()).watch(new Watcher<Dummy>() {
+      Watch watch = dummyClient.withResourceVersion(created.getMetadata().getResourceVersion()).watch(new Watcher<Dummy>() {
         @Override
         public void eventReceived(Action action, Dummy resource) {
           System.out.println("==> " + action + " for " + resource);
@@ -182,6 +183,7 @@ public class CRDExample {
 
       System.in.read();
 
+      watch.close();
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } catch (Exception e) {

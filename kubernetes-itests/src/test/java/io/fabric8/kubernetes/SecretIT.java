@@ -64,7 +64,7 @@ class SecretIT {
   @Test
   void update() {
     Secret secret1 = client.secrets().withName("secret-update").edit(s -> new SecretBuilder(s)
-        .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
+        .editMetadata().withResourceVersion(null).addToLabels("foo", "bar").endMetadata()
         .build());
     client.secrets().withName("secret-update").waitUntilCondition(Objects::nonNull, 30, TimeUnit.SECONDS);
     assertThat(secret1).isNotNull();

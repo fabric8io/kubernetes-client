@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.constructor.ConstructorException;
+import org.snakeyaml.engine.v2.exceptions.ConstructorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

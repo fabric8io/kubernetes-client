@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils.internal;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -125,8 +126,10 @@ public class PodOperationUtil {
       },
           logWaitTimeout,
           TimeUnit.SECONDS);
+    } catch (KubernetesClientTimeoutException timeout) {
+      LOG.debug("Timed out waiting for Pod to become Ready: {}, will still proceed", timeout.getMessage());
     } catch (Exception otherException) {
-      LOG.debug("Error while waiting for Pod to become Ready: {}", otherException.getMessage());
+      LOG.warn("Error while waiting for Pod to become Ready", otherException);
     }
     return podRef.get();
   }

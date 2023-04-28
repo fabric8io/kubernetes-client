@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
 import io.fabric8.kubernetes.client.Client;
@@ -74,16 +73,6 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   @Override
-  public Scale scale() {
-    return handleScale(null);
-  }
-
-  @Override
-  public Scale scale(Scale scale) {
-    return handleScale(scale);
-  }
-
-  @Override
   public Job scale(int count, boolean wait) {
     Job res = accept(b -> b.getSpec().setParallelism(count));
     if (wait) {
@@ -111,7 +100,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
       LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
           job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
       return false;
-    }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+    }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
   }
 
   @Override

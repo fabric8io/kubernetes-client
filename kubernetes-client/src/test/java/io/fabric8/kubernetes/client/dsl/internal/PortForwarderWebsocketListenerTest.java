@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,7 +108,7 @@ class PortForwarderWebsocketListenerTest {
   @Test
   void onError_shouldStoreExceptionAndCloseChannels() {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-    listener.onError(webSocket, new RuntimeException("Server error"));
+    listener.onError(webSocket, new RuntimeException("Server error"), true);
     // Then
     assertThat(listener.getServerThrowables())
         .singleElement()
@@ -122,8 +123,8 @@ class PortForwarderWebsocketListenerTest {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onClose(webSocket, 1337, "Test ended");
     // Then
+    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> !in.isOpen());
     assertThat(listener.getServerThrowables()).isEmpty();
-    assertThat(in.isOpen()).isFalse();
     assertThat(out.isOpen()).isFalse();
   }
 
@@ -159,6 +160,7 @@ class PortForwarderWebsocketListenerTest {
     listener.onMessage(webSocket, "SKIP 1");
     // Then
     verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
+    await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
     assertThat(outputContent.toString()).isEmpty();
     assertThat(listener.errorOccurred()).isTrue();
     assertThat(listener.getServerThrowables()).isNotEmpty();
@@ -208,6 +210,7 @@ class PortForwarderWebsocketListenerTest {
       listener.onMessage(webSocket, "SKIP 1");
       // Then
       verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
+      await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
       assertThat(outputContent.toString()).isEmpty();
       assertThat(listener.errorOccurred()).isTrue();
       assertThat(listener.getServerThrowables().iterator().next().getMessage())

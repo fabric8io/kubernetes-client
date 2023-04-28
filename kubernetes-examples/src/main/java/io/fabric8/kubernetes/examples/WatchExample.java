@@ -41,9 +41,10 @@ public class WatchExample {
         Watch ignored = newConfigMapWatch(client)) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
       final String name = "watch-config-map-test-" + UUID.randomUUID();
-      final ConfigMap cm = client.configMaps().inNamespace(namespace).createOrReplace(new ConfigMapBuilder()
+      final ConfigMap cm = client.configMaps().inNamespace(namespace).resource(new ConfigMapBuilder()
           .withNewMetadata().withName(name).endMetadata()
-          .build());
+          .build())
+          .createOrReplace();
       client.configMaps().inNamespace(namespace).withName(name)
           .patch(new ConfigMapBuilder().withNewMetadata().withName(name).endMetadata().addToData("key", "value").build());
       //noinspection Convert2Lambda
@@ -53,7 +54,7 @@ public class WatchExample {
           omb.addToAnnotations("annotation", "value");
         }
       });
-      client.configMaps().delete(cm);
+      client.configMaps().resource(cm).delete();
     } catch (Exception e) {
       logger.error("Global Error: {}", e.getMessage(), e);
     }

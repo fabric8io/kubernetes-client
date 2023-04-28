@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/OpenClusterManagement#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "open-cluster-management_io_api_cluster_v1_ClientConfig": {
       "type": "object",

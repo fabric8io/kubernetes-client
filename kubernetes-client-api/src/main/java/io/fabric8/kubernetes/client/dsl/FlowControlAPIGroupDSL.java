@@ -21,4 +21,6 @@ public interface FlowControlAPIGroupDSL extends Client {
   V1beta1FlowControlAPIGroupDSL v1beta1();
 
   V1beta2FlowControlAPIGroupDSL v1beta2();
+
+  V1beta3FlowControlAPIGroupDSL v1beta3();
 }

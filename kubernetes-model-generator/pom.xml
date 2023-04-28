@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-model-generator</artifactId>
@@ -52,8 +52,10 @@
     <module>kubernetes-model-node</module>
     <module>kubernetes-model-metrics</module>
     <module>kubernetes-model-policy</module>
+    <module>kubernetes-model-resource</module>
     <module>kubernetes-model-scheduling</module>
     <module>kubernetes-model-storageclass</module>
+    <module>kubernetes-model-kustomize</module>
     <module>openshift-model</module>
     <module>openshift-model-clusterautoscaling</module>
     <module>openshift-model-config</module>

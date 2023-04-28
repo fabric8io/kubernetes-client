@@ -62,8 +62,7 @@ public class ConfigMapOperationsImpl extends HasMetadataOperation<ConfigMap, Con
       } else {
         builder = new ConfigMapBuilder(item);
       }
-      KubernetesResourceUtil.addEntriesFromDirOrFileToConfigMap(builder, key, dirOrFilePath);
-      return builder.build();
+      return KubernetesResourceUtil.addEntriesFromDirOrFileToConfigMap(builder, key, dirOrFilePath).build();
     } catch (IOException ioException) {
       throw new KubernetesClientException("Unable to create ConfigMap entry " + key, ioException);
     }

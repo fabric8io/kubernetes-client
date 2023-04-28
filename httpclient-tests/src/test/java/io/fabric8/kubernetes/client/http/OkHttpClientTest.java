@@ -186,13 +186,15 @@ class OkHttpClientTest {
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })
   void supportedResponseBodyTypes(Class<?> type) throws Exception {
-    String value = new String(new byte[16384]);
+    int length = 16384;
+    String value = new String(new byte[length]);
     server.expect().withPath("/type").andReturn(200, value).always();
     final HttpResponse<?> result = client.getHttpClient()
         .sendAsync(client.getHttpClient().newHttpRequestBuilder()
             .uri(URI.create(client.getConfiguration().getMasterUrl() + "type")).build(), type)
         .get(10, TimeUnit.SECONDS);
     assertThat(result)
+        .satisfies(r -> assertThat(r.headers("Content-Length")).first().isEqualTo(String.valueOf(length)))
         .satisfies(r -> assertThat(r.body()).isInstanceOf(type))
         .satisfies(r -> assertThat(r.bodyString()).isEqualTo(value));
   }

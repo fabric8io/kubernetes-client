@@ -39,11 +39,12 @@ class ApprovalTest {
     return Stream.of(
         Arguments.of("testCrontabCrd", "crontab-crd.yml", "CronTab", "CrontabJavaCr", new Config()),
         Arguments.of("testCrontabExtraAnnotationsCrd", "crontab-crd.yml", "CronTab", "CrontabJavaExtraAnnotationsCr",
-            new Config(null, null, null, null, Boolean.TRUE, null, true, new HashMap<>())),
+            new Config(null, true, null, new HashMap<>())),
         Arguments.of("testKeycloakCrd", "keycloak-crd.yml", "Keycloak", "KeycloakJavaCr", new Config()),
         Arguments.of("testJokeCrd", "jokerequests-crd.yml", "JokeRequest", "JokeRequestJavaCr", new Config()),
         Arguments.of("testAkkaMicroservicesCrd", "akka-microservices-crd.yml", "AkkaMicroservice", "AkkaMicroserviceJavaCr",
-            new Config()));
+            new Config()),
+        Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()));
   }
 
   @ParameterizedTest
@@ -67,8 +68,11 @@ class ApprovalTest {
       List<GeneratorResult.ClassResult> crl = writable.getClassResults();
       underTest.add(getJavaClass(crl, customResourceName));
       underTest.add(getJavaClass(crl, customResourceName + "Spec"));
-      underTest.add(getJavaClass(crl, customResourceName + "Status"));
-
+      // not all the tested CRDs have a status definition, e.g. see calico-ippool-crd.yml
+      final String statusCrlName = customResourceName + "Status";
+      if (crl.stream().anyMatch(c -> c.getName().equals(statusCrlName))) {
+        underTest.add(getJavaClass(crl, statusCrlName));
+      }
       Approvals.verifyAll(approvalLabel, underTest);
     }
   }
@@ -81,6 +85,6 @@ class ApprovalTest {
 
   private String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
     GeneratorResult.ClassResult cr = classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
-    return cr.getCompilationUnit().toString();
+    return cr.getJavaSource();
   }
 }

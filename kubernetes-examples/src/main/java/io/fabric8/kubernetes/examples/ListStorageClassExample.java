@@ -32,7 +32,7 @@ public class ListStorageClassExample {
       configBuilder.withMasterUrl(args[0]);
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
-      client.storage().storageClasses().list().getItems()
+      client.storage().v1().storageClasses().list().getItems()
           .forEach(sc -> logger.info("Storage class: {}", sc.getMetadata().getName()));
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

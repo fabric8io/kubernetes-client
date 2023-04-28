@@ -23,7 +23,7 @@ If you wish to use another HttpClient implementation typically you will exclude 
 ```xml
 <dependency>
     <groupId>org.bouncycastle</groupId>
-    <artifactId>bcpkix-jdk15on</artifactId>
+    <artifactId>bcpkix-jdk18on</artifactId>
     <version>${bouncycastle.version}</version>
 </dependency>
 ```
@@ -51,15 +51,15 @@ That will align all of the transitive Fabric8 Kubernetes Client dependencies to 
 
 There has been a lot of changes under the covers with thread utilization in the Fabric8 client over the 5.x and 6.x releases.  So the exact details of what threads are created / used where will depend on the particular release version.
 
-At the core the thread utilization will depend upon the http client implementation.  Per client OkHttp maintains a pool of threads for task execution.  It will dedicate 2 threads out of that pool per WebSocket connection.  If you have a lot of WebSocket usage (Informer or Watches) with OkHttp, you can expect to see a large number of threads in use - which can potentially exhaust the OkHttp defaults.
+At the core the thread utilization will depend upon the HTTP client implementation.  Per client OkHttp maintains a pool of threads for task execution.  It will dedicate 2 threads out of that pool per WebSocket connection.  If you have a lot of WebSocket usage (Informer or Watches) with OkHttp, you can expect to see a large number of threads in use.
 
-With the JDK http client it will only maintain a selector thread and a small worker pool which will be based upon your available processors per client.  It does not matter how many Informers or Watches you run, the same worker pool is shared.
+With the JDK, Jetty, or Vert.x http clients they will maintain a smaller worker pool for all tasks that is typically sized by default based upon your available processors, and typically a selector / coordinator thread(s).  It does not matter how many Informers or Watches you run, the same threads are shared.
 
-> **Note:** It is recommended with either HTTP client implementation that logic you supply via Watchers, ExecListeners, ResourceEventHandlers, Predicates, etc. does not execute long running tasks. 
+To ease developer burden the callbacks on Watchers and ResourceEventHandlers will not be done directly by an http client thread, but the order of calls will be guaranteed.  This will make the logic you include in those callbacks tolerant to some blocking without compromising the on-going work at the HTTP client level.  However you should avoid truly long running operations as this will cause further events to queue and may eventually case memory issues.    
 
-For non-ResourceEventHandlers call backs long-running operation can be a problem.  When using the OkHttp client and default settings holding a IO thread inhibits websocket processing that can timeout the ping and may prevent additional requests since the okhttp client defaults to only 5 concurrent requests per host.  When using the JDK http client the long running task will inhibit the use of that IO thread for ALL http processing.  Note that calling other KubernetesClient operations, especially those with waits, can be long-running.  We are working towards providing non-blocking mode for many of these operations, but until that is available consider using a separate task queue for such work.
+> **Note:** It is recommended with any HTTP client implementation that logic you supply via Watchers, ExecListeners, ResourceEventHandlers, Predicates, Interceptors, LeaderCallbacks, etc. does not execute long running tasks. 
 
-On top of the http client threads the Fabric8 client maintains a task thread pool for scheduled tasks and for potentially long-running tasks that are called from WebSocket operations, such as handling input and output streams and ResourceEventHandler call backs.  This thread pool defaults to an unlimited number of cached threads, which will be shutdown when the client is closed - that is a sensible default with either http client as the amount of concurrently running async tasks will typically be low.  If you would rather take full control over the threading use KubernetesClientBuilder.withExecutor or KubernetesClientBuilder.withExecutorSupplier - however note that constraining this thread pool too much will result in a build up of event processing queues.
+On top of the http client threads the Fabric8 client maintains a task thread pool for scheduled tasks and for tasks that are called from WebSocket operations, such as handling input and output streams and ResourceEventHandler call backs.  This thread pool defaults to an unlimited number of cached threads, which will be shutdown when the client is closed - that is a sensible default with as the amount of concurrently running async tasks will typically be low.  If you would rather take full control over the threading use KubernetesClientBuilder.withExecutor or KubernetesClientBuilder.withExecutorSupplier - however note that constraining this thread pool too much will result in a build up of event processing queues.
 
 Finally the fabric8 client will use 1 thread per PortForward and an additional thread per socket connection - this may be improved upon in the future.
 

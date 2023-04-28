@@ -72,26 +72,33 @@ public class OpenShiftConfig extends Config {
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {
       @BuildableReference(Config.class) })
   public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace,
-      boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile,
-      String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase,
+      boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData,
+      String clientCertFile,
+      String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo,
+      String clientKeyPassphrase,
       String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit,
-      int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval,
-      int maxConcurrentRequests, int maxConcurrentRequestsPerHost, boolean http2Disable, String httpProxy, String httpsProxy,
-      String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout,
+      int connectionTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
+      int maxConcurrentRequests, int maxConcurrentRequestsPerHost, boolean http2Disable, String httpProxy,
+      String httpsProxy,
+      String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions,
+      long websocketTimeout,
       long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile,
       String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername,
       String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider,
       Map<String, String> customHeaders, int requestRetryBackoffLimit, int requestRetryBackoffInterval,
-      int uploadConnectionTimeout, int uploadRequestTimeout, long buildTimeout,
+      int uploadRequestTimeout, long buildTimeout,
       boolean disableApiGroupCheck) {
-    super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile,
-        clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken,
-        watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout,
-        loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable, httpProxy, httpsProxy, noProxy,
+    super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
+        clientCertFile,
+        clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password,
+        oauthToken,
+        watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, scaleTimeout,
+        loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable, httpProxy, httpsProxy,
+        noProxy,
         errorMessages, userAgent, tlsVersions, websocketTimeout, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadConnectionTimeout, uploadRequestTimeout);
+        uploadRequestTimeout);
     this.setOapiVersion(oapiVersion);
     this.setBuildTimeout(buildTimeout);
     this.setDisableApiGroupCheck(disableApiGroupCheck);
@@ -112,11 +119,12 @@ public class OpenShiftConfig extends Config {
         kubernetesConfig.isDisableHostnameVerification(), kubernetesConfig.getCaCertFile(),
         kubernetesConfig.getCaCertData(), kubernetesConfig.getClientCertFile(),
         kubernetesConfig.getClientCertData(), kubernetesConfig.getClientKeyFile(),
-        kubernetesConfig.getClientKeyData(), kubernetesConfig.getClientKeyAlgo(), kubernetesConfig.getClientKeyPassphrase(),
+        kubernetesConfig.getClientKeyData(), kubernetesConfig.getClientKeyAlgo(),
+        kubernetesConfig.getClientKeyPassphrase(),
         kubernetesConfig.getUsername(), kubernetesConfig.getPassword(), kubernetesConfig.getOauthToken(),
         kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(),
         kubernetesConfig.getConnectionTimeout(), kubernetesConfig.getRequestTimeout(),
-        kubernetesConfig.getRollingTimeout(), kubernetesConfig.getScaleTimeout(),
+        kubernetesConfig.getScaleTimeout(),
         kubernetesConfig.getLoggingInterval(), kubernetesConfig.getMaxConcurrentRequests(),
         kubernetesConfig.getMaxConcurrentRequestsPerHost(), kubernetesConfig.isHttp2Disable(),
         kubernetesConfig.getHttpProxy(), kubernetesConfig.getHttpsProxy(), kubernetesConfig.getNoProxy(),
@@ -129,7 +137,7 @@ public class OpenShiftConfig extends Config {
         kubernetesConfig.getImpersonateGroups(), kubernetesConfig.getImpersonateExtras(),
         kubernetesConfig.getOauthTokenProvider(), kubernetesConfig.getCustomHeaders(),
         kubernetesConfig.getRequestRetryBackoffLimit(), kubernetesConfig.getRequestRetryBackoffInterval(),
-        kubernetesConfig.getUploadConnectionTimeout(), kubernetesConfig.getUploadRequestTimeout(),
+        kubernetesConfig.getUploadRequestTimeout(),
         buildTimeout,
         false);
   }

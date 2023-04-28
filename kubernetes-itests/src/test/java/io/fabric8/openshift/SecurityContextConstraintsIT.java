@@ -97,6 +97,7 @@ class SecurityContextConstraintsIT {
   void update() {
 
     scc = client.securityContextConstraints().withName("scc-update").edit(s -> new SecurityContextConstraintsBuilder(s)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .withAllowPrivilegedContainer(false)
         .build());
 

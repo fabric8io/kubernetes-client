@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 
 import java.net.InetSocketAddress;
@@ -58,6 +57,15 @@ public interface HttpClient extends AutoCloseable {
       return false;
     }
 
+    /**
+     * The priority of the implementation. The higher the priority the more likely it will be used.
+     *
+     * @return the priority.
+     */
+    default int priority() {
+      return 0;
+    }
+
   }
 
   interface DerivedClientBuilder {
@@ -92,12 +100,9 @@ public interface HttpClient extends AutoCloseable {
     DerivedClientBuilder authenticatorNone();
 
     /**
-     * Supply an {@link RequestConfig} via a {@link Config} to {@link Interceptor#withConfig(Config)}
-     *
-     * @param config
-     * @return this Builder instance.
+     * Will be provided to all interceptors
      */
-    DerivedClientBuilder requestConfig(Config config);
+    DerivedClientBuilder tag(Object value);
   }
 
   interface Builder extends DerivedClientBuilder {

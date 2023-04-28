@@ -15,7 +15,7 @@
 #
 
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: hello-get
@@ -34,7 +34,7 @@ spec:
                 - date; echo Hello from the Kubernetes cluster
           restartPolicy: OnFailure
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: hello-list
@@ -53,7 +53,7 @@ spec:
                 - date; echo Hello from the Kubernetes cluster
           restartPolicy: OnFailure
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: hello-update
@@ -72,7 +72,7 @@ spec:
                 - date; echo Hello from the Kubernetes cluster
           restartPolicy: OnFailure
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: hello-delete

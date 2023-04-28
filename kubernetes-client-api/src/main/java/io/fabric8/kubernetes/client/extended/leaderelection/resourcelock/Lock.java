@@ -34,20 +34,16 @@ public interface Lock {
    *
    * @param client used to retrieve the LeaderElectionRecord
    * @param leaderElectionRecord to update
-   * @throws LockException if update was not possible
    */
-  void create(
-      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException;
+  void create(KubernetesClient client, LeaderElectionRecord leaderElectionRecord);
 
   /**
    * Attempts to update the current {@link LeaderElectionRecord}.
    *
    * @param client used to retrieve the LeaderElectionRecord
    * @param leaderElectionRecord to update
-   * @throws LockException if update was not possible
    */
-  void update(
-      KubernetesClient client, LeaderElectionRecord leaderElectionRecord) throws LockException;
+  void update(KubernetesClient client, LeaderElectionRecord leaderElectionRecord);
 
   /**
    * Returns the unique id of the lock holder.

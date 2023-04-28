@@ -1,18 +1,136 @@
 ## CHANGELOG
 
-### 6.5-SNAPSHOT
+### 6.6-SNAPSHOT
 
 #### Bugs
+* Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
+* Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
+* Fix #4963: Openshift Client return 403 when use websocket
+* Fix #4985: triggering the immediate cleanup of the okhttp idle task
+* Fix #4988: Ensuring that previous requests are closed before retry
+* Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
+* Fix #5000: Remove clashing `v1alpha` apigroup packages in `istio-model-v1beta1`
+* fix #5002: Jetty response completion accounts for header processing
+* Fix #5009: addressing issue with serialization of wrapped polymorphic types
+* Fix #5015: executing resync as a locking operation to ensure resync event ordering
+* Fix #5020: updating the resourceVersion on a delete with finalizers
+* Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
+* fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
+* Fix #5044: disable Vert.x instance file caching
+* Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
 
 #### Improvements
-* Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
+* Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
+* Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
+* Fix #4935: improve HTTP client implementation selection messages
+* Fix #4975: exposing scale operations for all Resources
+* Fix #4992: Optimize Quantity parsing to avoid regex overhead
+* Fix #4998: removing the internal usage of the Serialization yaml mapper
+* Fix #5005: status operations use the context `subresource` setting
+* Fix #5022: adding additional buffering to ExecWatchInputStream
+* Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount
+* Fix #5080: minimizing debug logs related to the backoff interval 
 
 #### Dependency Upgrade
+* Fix #5006: Bump BouncyCastle to 1.72
+* Fix #5006: Use BouncyCastle JDK 1.8 compatible jars
 
 #### New Features
+* Fix #5037: OkHttp-specific logging interceptor replacement. Introducing a generic HTTP interceptor to log HTTP and WS requests.
+* Fix #5041: exposed Client.raw methods for arbitrary calls
 * Fix #4184: Add DSL support for creating ConfigMap from file
 
 #### _**Note**_: Breaking changes
+* Fix #4875: Removed unused options from the java-generator
+* Fix #4910: all Pod file uploads not require commons-compress
+* Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
+
+### 6.5.1 (2023-03-20)
+
+#### Bugs
+* Fix #4960: NPE in OpenIDConnectionUtils if `idp-certificate-authority-data` absent in auth-provider config
+* Fix #4970: OpenShiftOAuthInterceptor should not refresh on `403` response code
+* Fix #4981: Prevent StackOverflowError in Vert.x HttpClient caused by fast InputStream buffer extraction
+
+### 6.5.0 (2023-03-10)
+
+#### Bugs
+* Fix #4723: (java-generator) Fix a race in the use of JavaParser hitting large CRDs
+* Fix #4784: json-schema draft-05 is a (404). Updating to draft-07 (`http://json-schema.org/draft-07/schema#`)
+* Fix #4791: handle the `NullPointerException` in `Thread.currentThread().getContextClassLoader()`
+* Fix #4794: improving the semantics of manually calling informer stop
+* Fix #4797: OkHttpClientFactory.additionalConfig can be used to override the default OkHttp Dispatcher
+* Fix #4798: fix leader election release on cancel
+* Fix #4803: Windows .kube/config file with spaces in command can be deserialized
+* Fix #4815: (java-generator) create target download directory if it doesn't exist
+* Fix #4818: (java-generator) Escape `*/` in generated JavaDocs
+* Fix #4823: (java-generator) handle special characters in field names
+* Fix #4832: NO_PROXY can match cidr with bit suffix <10
+* Fix #4846: allowed for pod read / copy operations to distinguish when the target doesn't exist
+* Fix #4851: adding buffer cloning to ensure buffers cannot be modified after sending
+* Fix #4885: addresses a potential hang in the jdk client with exec stream reading
+* Fix #4888: narrowing where the 0 initial list resourceVersion is used for informers - in particular if a limit is set or initialState is used, then we should not use 0.  Additionally for the informOnCondition / wait methods we'll also not use 0 - it's not expected that the user should test any state prior to the latest.
+* Fix #4891: address vertx not completely reading exec streams
+* Fix #4899: BuildConfigs.instantiateBinary().fromFile() does not time out
+* Fix #4908: using the response headers in the vertx response
+* Fix #4910: addressing inconsistent behavior with pod exec operations
+* Fix #4923: addressing inconsistent behavior with pod exec operations
+* Fix #4928: allows non-okhttp clients to handle invalid status
+* Fix #4931: using coarse grain locking for all mock server operations
+* Fix #4947: typo in HttpClient.Factory scoring system logic
+* Fix #4954: disabling expect continue support by default in the jdk client
+
+#### Improvements
+* Fix #4675: adding a fully client side timeout for informer watches
+* Fix #3805: DeletionTimestamp and Finalizer support in Mock server.
+* Fix #4638: adding a way to set the full object meta on a leadership election lock, this can be used to set owner references
+* Fix #4644: generate CRDs in parallel and optimize code
+* Fix #4659: added a generic support(apiversion, kind) method in addition to the class based check
+* Fix #4724: Private configuration classes cause trouble with Java native (reflection)
+* Fix #4739: honor optimistic concurrency control semantics in the mock server for `PUT` and `PATCH` requests.
+* Fix #4747: migrate to SnakeYAML Engine
+* Fix #4788: moved retry logic into the standard client so that it applies to all requests, including websockets
+* Fix #4795: don't print warning message when service account token property is unset
+* Fix #4800: (java-generator) Reflect the `scope` field when implementing the `Namespaced` interface
+* Fix #4853: adding a wait on the pod for log operations
+* Fix #4848: Vert.x async DNS resolver is disabled
+* Fix #4863: default HttpClient retry logic to 100ms interval
+* Fix #4863: default HttpClient retry logic to 10 attempts
+* Fix #4865: (java-generator) performance improvements
+* Fix #4873: Update all samples in `kubernetes-examples/` module to use up to date code
+* Fix #4906: URLFromIngressImpl considers Ingress in `networking.k8s.io` apiGroup while resolving Ingress
+
+#### Dependency Upgrade
+* Fix #4655: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.26.0
+* Fix #4804: Update Kubernetes Model GatewayApi to v0.6.0
+* Fix #4804: Update CertManager Model to v1.11.0
+
+#### New Features
+* Fix #4758: added support for pod ephemeral container operations
+* Fix #4929: added support for kustomize api v1beta1
+
+#### _**Note**_: Breaking changes
+* Fix #4708: The signature of the Interceptor methods changed to pass the full HttpRequest, rather than just the headers, and explicitly pass request tags - in particular the RequestConfig.  To simplify authentication concerns the following fields have been removed from RequestConfig: username, password, oauthToken, and oauthTokenProvider.  Not all HttpClient implementation support setting the connectionTimeout at a request level, thus it was removed from the RequestConfig as well.
+* Fix #4659: The SupportTestingClient interface has been deprecated.  Please use one of the supports methods or getApiGroup to determine what is available on the api server.
+* Fix #4802: to ease developer burden, and potentially bad behavior with the vertx client, the callbacks for Watcher and ResourceEventHandler will no longer be made by an HttpClient thread, but rather from the thread pool associated with the KubernetesClient.  Please ensure that if you are customizing the Executor supplied to the client that it has sufficient threads to handle these callbacks.
+* Fix #4825: removed or deprecated/moved methods that are unrelated to the rolling timeout from ImageEditReplacePatchable.  Deprecated rollout methods for timeout and edit - future versions will not support
+* Fix #4826: removed RequestConfig upload connection and rolling timeouts.  Both were no longer used with no plans to re-introduce their usage.
+* Fix #4861: several breaking changes related to resourceVersion handling and the replace operation:
+  - `replace` is deprecated, you should use `update` instead. If you set the resourceVersion to null it will not be optimistically locked.
+  - `createOrReplace` is deprecated, you should use server side apply instead.
+  - `edit` uses now optimistic locking by default. To disable locking you should change your methods to follow this pattern: `.edit(pod -> new PodBuilder(pod).editMetadata().withResourceVersion(null)//...`
+  - JSON patch methods using an item for the diff generation such as edit or patch will no longer omit the resourceVersion in the patch.  If you want the patch to be unlocked, then set the resourceVersion to null on the item to be patched.
+  - internal logic to mimic an apply that modify an item prior to a JSON patch is deprecated - you should instead build the item to be patched off of base version, such as with the edit method.
+
+#### _**Note**_: Deprecations
+* Fix #4875: Deprecated all the java-generator options identified for deletion in a following release
+
+### 6.4.1 (2023-01-31)
+
+#### Bugs
+* Fix #4795: don't print warning message when service account token property is unset
+* Fix #4809: VertxHttpClientBuilder is public
+* Fix #4811: HttpClient.Factory instances can be prioritized
 
 ### 6.4.0 (2023-01-19)
 
@@ -32,6 +150,7 @@
 * Fix #4654: Fix GatewayClass to not implement Namespaced interface
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
 * Fix #4694: [java-generator] Option to override the package name of the generated code.
+* Fix #4698: changes were made to improve authentication logic.  If a username and password are specified and you are using a base KuberentesClient, then that will always be used as a basic auth header value.  If a username and password are specified and you are using an OpenShiftClient, then a token will still be used if present, but upon an auth failure the username and password will be used to obtain a fresh token.  If a new token is obtained it will be saved in the kubeconfig if one were used to create the Config.
 * Fix #4720: interceptors close any response body if the response is not a 2xx response.
 * Fix #4734: @KubernetesTest annotation can be used in base test classes
 * Fix #4734: @KubernetesTest creates an ephemeral Namespace optionally (can opt-out)
@@ -42,7 +161,7 @@
 #### _**Note**_: Breaking changes
 * Fix #3972: deprecated Parameterizable and methods on Serialization accepting parameters - that was only needed as a workaround for non-string parameters.  You should instead include those parameter values in the map passed to processLocally.
 * Fix #3972: OpenShiftClient.load will no longer implicitly process templates.  Use OpenShiftClient.templates().load instead.
-* Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappersSerialization.
+* Fix #3972: WARNING: future client versions will not provide the static yaml and json ObjectMappers on Serialization.
 * Fix #4574: fromServer has been deprecated - it no longer needs to be called.  All get() operations will fetch the resource(s) from the api server.  If you need the context item that was passed in from a resource, load, or resourceList methods, use the item or items method.
 * Fix #4633: client.run().withRunConfig was deprecated.  Use withNewRunConfig instead.
 * Fix #4663: Config.maxConcurrentRequests and Config.maxConcurrentRequestsPerHost will no longer be used.  Instead they will default to unlimited for all clients.  Due to the ability of the fabric8 client to start long running requests (either websocket or regular http) and how this is treated by the underlying clients you can easily exhaust these values and enter a state where the client is unresponsive without any additional information on what is occurring.

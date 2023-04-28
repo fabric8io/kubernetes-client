@@ -44,7 +44,7 @@ public class BindingExample {
             .orElseThrow(() -> new IllegalStateException("No namespace available")).getMetadata().getName();
       }
 
-      client.pods().inNamespace(namespace).create(new PodBuilder()
+      client.pods().inNamespace(namespace).resource(new PodBuilder()
           .withMetadata(new ObjectMetaBuilder()
               .withName(podName)
               .build())
@@ -55,16 +55,16 @@ public class BindingExample {
               .withImage("nginx:latest")
               .endContainer()
               .build())
-          .build());
+          .build()).create();
       final Node firstNode = client.nodes().list().getItems().stream().findFirst()
           .orElseThrow(() -> new IllegalStateException("No nodes available"));
-      client.bindings().inNamespace(namespace).create(new BindingBuilder()
+      client.bindings().inNamespace(namespace).resource(new BindingBuilder()
           .withNewMetadata().withName(podName).endMetadata()
           .withNewTarget()
           .withKind(firstNode.getKind())
           .withApiVersion(firstNode.getApiVersion())
           .withName(firstNode.getMetadata().getName()).endTarget()
-          .build());
+          .build()).create();
       System.out.printf("Successfully bound Pod %s to Node %s%n",
           podName, firstNode.getMetadata().getName());
     }

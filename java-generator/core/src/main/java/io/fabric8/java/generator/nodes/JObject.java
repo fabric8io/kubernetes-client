@@ -16,9 +16,11 @@
 package io.fabric8.java.generator.nodes;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -39,11 +41,13 @@ import java.util.stream.Collectors;
 
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
+  public static final String DEPRECATED_FIELD_MARKER = "deprecated";
   private final String type;
   private final String className;
   private final String pkg;
   private final Map<String, AbstractJSONSchema2Pojo> fields;
   private final Set<String> required;
+  private final Set<String> deprecated = new HashSet<>();
 
   private final boolean preserveUnknownFields;
 
@@ -53,11 +57,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       Map<String, JSONSchemaProps> fields,
       List<String> required,
       boolean preserveUnknownFields,
-      String classPrefix,
-      String classSuffix,
       Config config,
       String description,
-      final boolean isNullable, JsonNode defaultValue) {
+      final boolean isNullable,
+      JsonNode defaultValue) {
     super(config, description, isNullable, defaultValue, null);
     this.required = new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
     this.fields = new HashMap<>();
@@ -65,41 +68,61 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
     this.pkg = (pkg == null) ? "" : pkg.trim();
     String pkgPrefix = (this.pkg.isEmpty()) ? this.pkg : this.pkg + ".";
-    String clazzPrefix = (classPrefix == null) ? "" : classPrefix.trim();
-    String clazzSuffix = (classSuffix == null
-        || type.toLowerCase(Locale.ROOT)
-            .endsWith(classSuffix.toLowerCase(Locale.ROOT)))
-                ? ""
-                : classSuffix.trim();
     String upperCasedClassName = type.substring(0, 1).toUpperCase() + type.substring(1);
-    this.className = AbstractJSONSchema2Pojo.sanitizeString(
-        clazzPrefix + upperCasedClassName + clazzSuffix);
+    this.className = AbstractJSONSchema2Pojo.sanitizeString(upperCasedClassName);
     this.type = pkgPrefix + this.className;
 
     if (fields == null) {
       // no fields
     } else {
-      String nextPackagePath = null;
-      switch (config.getCodeStructure()) {
-        case FLAT:
-          nextPackagePath = this.pkg;
-          break;
-        case PACKAGE_NESTED:
-          nextPackagePath = pkgPrefix + AbstractJSONSchema2Pojo.packageName(this.className);
-          break;
-      }
+      String nextPackagePath = pkgPrefix + AbstractJSONSchema2Pojo.packageName(this.className);
+
+      // in order to handle duplicated fields, first let's build a map of fields grouped by their sanitized names, i.e.:
+      // 1(fieldName) -> n(fieldDefinition(key, props))
+      final Map<String, Map<String, JSONSchemaProps>> groupedFieldDefinitions = fields.entrySet().stream()
+          .collect(Collectors.groupingBy(
+              f -> AbstractJSONSchema2Pojo.sanitizeString(f.getKey()),
+              Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
       for (Map.Entry<String, JSONSchemaProps> field : fields.entrySet()) {
-        String nextPrefix = (config.getPrefixStrategy() == Config.Prefix.ALWAYS) ? classPrefix : "";
-        String nextSuffix = (config.getSuffixStrategy() == Config.Suffix.ALWAYS) ? classSuffix : "";
+        String fieldKey = field.getKey();
+        // lookup the duplicated field properties map
+        final Map<String, JSONSchemaProps> fieldDuplicatesDefinition = groupedFieldDefinitions
+            .get(AbstractJSONSchema2Pojo.sanitizeString(field.getKey()));
+        final int duplicatesCount = fieldDuplicatesDefinition.size();
+        if (duplicatesCount > 1) {
+          // ok, duplicates exist...
+          // we want to throw an exception on some duplicates missing requirements. the first one that we enforce is
+          // for exactly 1 field duplicate to exist
+          if (duplicatesCount > 2) {
+            throw new JavaGeneratorException(
+                String.format("The %s field has %d duplicates, which is not a supported configuration",
+                    field.getKey(),
+                    duplicatesCount - 1));
+          }
+          // another requirement that we enforce is that if one field duplicate exists, then it's because it has
+          // been marked as deprecated
+          final boolean deprecatedDuplicatesExist = fieldDuplicatesDefinition.entrySet().stream()
+              .anyMatch(d -> d.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER));
+          if (!deprecatedDuplicatesExist) {
+            throw new JavaGeneratorException(
+                String.format(
+                    "The %s field has a duplicate, but it's not marked as deprecated, which is not a supported configuration",
+                    field.getKey()));
+          }
+          // let's mangle the deprecated duplicated field name
+          if (field.getValue().getDescription().trim().toLowerCase().startsWith(DEPRECATED_FIELD_MARKER)) {
+            fieldKey += "-deprecated";
+            this.deprecated.add(fieldKey);
+          }
+        }
+        // and finally add the field definition
         this.fields.put(
-            field.getKey(),
+            fieldKey,
             AbstractJSONSchema2Pojo.fromJsonSchema(
-                field.getKey(),
+                fieldKey,
                 field.getValue(),
                 nextPackagePath,
-                nextPrefix,
-                nextSuffix,
                 config));
       }
     }
@@ -111,7 +134,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   }
 
   private String getSortedFieldsAsParam(Set<String> list) {
-    List<String> sortedFields = list.stream().sorted().collect(Collectors.toList());
+    List<String> sortedFields = list.stream().map(AbstractJSONSchema2Pojo::escapeQuotes).sorted().collect(Collectors.toList());
+
     StringBuilder sb = new StringBuilder();
     sb.append("{");
     while (!sortedFields.isEmpty()) {
@@ -128,7 +152,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   public GeneratorResult generateJava() {
     CompilationUnit cu = new CompilationUnit();
     if (!this.pkg.isEmpty()) {
-      cu.setPackageDeclaration(this.pkg);
+      cu.setPackageDeclaration(new PackageDeclaration(new Name(this.pkg)));
     }
     ClassOrInterfaceDeclaration clz = cu.addClass(this.className);
 
@@ -150,13 +174,13 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                 "using = com.fasterxml.jackson.databind.JsonDeserializer.None.class")));
 
     if (config.isGeneratedAnnotations()) {
-      clz.addAnnotation(GENERATED_ANNOTATION);
+      clz.addAnnotation(newGeneratedAnnotation());
     }
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);
     }
 
-    clz.addImplementedType("io.fabric8.kubernetes.api.model.KubernetesResource");
+    clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource"));
 
     List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
 
@@ -164,6 +188,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     for (String k : sortedKeys) {
       AbstractJSONSchema2Pojo prop = this.fields.get(k);
       boolean isRequired = this.required.contains(k);
+      boolean isDeprecated = this.deprecated.contains(k);
 
       GeneratorResult gr = prop.generateJava();
 
@@ -171,7 +196,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       boolean isEnum = !gr.getInnerClasses().isEmpty();
       if (isEnum) {
         for (GeneratorResult.ClassResult enumCR : gr.getInnerClasses()) {
-          Optional<EnumDeclaration> ed = enumCR.getCompilationUnit().getEnumByName(enumCR.getName());
+          Optional<EnumDeclaration> ed = enumCR.getEnumByName(enumCR.getName());
           if (ed.isPresent()) {
             clz.addMember(ed.get());
           }
@@ -179,12 +204,12 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
       buffer.addAll(gr.getTopLevelClasses());
 
-      String originalFieldName = k;
+      String originalFieldName = AbstractJSONSchema2Pojo.escapeQuotes(k);
       String fieldName = AbstractJSONSchema2Pojo.sanitizeString(k);
       String fieldType = prop.getType();
 
       try {
-        FieldDeclaration objField = clz.addField(fieldType, fieldName, Modifier.Keyword.PRIVATE);
+        FieldDeclaration objField = clz.addField(toClassOrInterfaceType(fieldType), fieldName, Modifier.Keyword.PRIVATE);
         objField.addAnnotation(
             new SingleMemberAnnotationExpr(
                 new Name("com.fasterxml.jackson.annotation.JsonProperty"),
@@ -216,7 +241,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         objField.createSetter();
 
         if (Utils.isNotNullOrEmpty(prop.getDescription())) {
-          objField.setJavadocComment(prop.getDescription());
+          objField.setJavadocComment(prop.getDescription().replace("*/", "&#042;&#047;"));
 
           objField.addAnnotation(
               new SingleMemberAnnotationExpr(
@@ -241,7 +266,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
               new SingleMemberAnnotationExpr(
                   new Name("com.fasterxml.jackson.annotation.JsonSetter"),
                   new NameExpr("nulls = com.fasterxml.jackson.annotation.Nulls.SET")));
-          objField.addAnnotation("io.fabric8.generator.annotation.Nullable");
+          objField
+              .addAnnotation(new NormalAnnotationExpr(new Name("io.fabric8.generator.annotation.Nullable"), new NodeList<>()));
         }
 
         if (prop.getDefaultValue() != null) {
@@ -259,6 +285,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                         + ")"));
           }
         }
+
+        if (isDeprecated) {
+          objField.addAnnotation("java.lang.Deprecated");
+        }
       } catch (Exception cause) {
         throw new JavaGeneratorException(
             "Error generating field " + fieldName + " with type " + prop.getType(),
@@ -266,7 +296,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
     }
 
-    if (this.preserveUnknownFields || config.isAlwaysPreserveUnknownFields()) {
+    if (this.preserveUnknownFields) {
       ClassOrInterfaceType mapType = new ClassOrInterfaceType()
           .setName(Keywords.JAVA_UTIL_MAP)
           .setTypeArguments(
@@ -280,15 +310,19 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   .setType(mapType)
                   .setInitializer("new java.util.HashMap<>()")));
 
-      objField.addAnnotation("com.fasterxml.jackson.annotation.JsonIgnore");
+      objField
+          .addAnnotation(new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonIgnore"), new NodeList<>()));
 
-      objField.createGetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnyGetter");
-      objField.createSetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
+      objField.createGetter().addAnnotation(
+          new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnyGetter"), new NodeList<>()));
+      objField.createSetter().addAnnotation(
+          new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnySetter"), new NodeList<>()));
 
       MethodDeclaration additionalSetter = clz.addMethod("setAdditionalProperty", Modifier.Keyword.PUBLIC);
-      additionalSetter.addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
-      additionalSetter.addParameter("String", "key");
-      additionalSetter.addParameter("Object", "value");
+      additionalSetter.addAnnotation(
+          new NormalAnnotationExpr(new Name("com.fasterxml.jackson.annotation.JsonAnySetter"), new NodeList<>()));
+      additionalSetter.addParameter(new ClassOrInterfaceType(null, "java.lang.String"), "key");
+      additionalSetter.addParameter(new ClassOrInterfaceType(null, "java.lang.Object"), "value");
       additionalSetter
           .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value)")));
     }
@@ -319,5 +353,11 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     } else {
       return null;
     }
+  }
+
+  static ClassOrInterfaceType toClassOrInterfaceType(String className) {
+    String withoutDollars = className.replace("$", "."); // nested class in Java cannot be used in casts
+    return withoutDollars.indexOf('<') >= 0 ? StaticJavaParser.parseClassOrInterfaceType(withoutDollars)
+        : new ClassOrInterfaceType(null, withoutDollars);
   }
 }

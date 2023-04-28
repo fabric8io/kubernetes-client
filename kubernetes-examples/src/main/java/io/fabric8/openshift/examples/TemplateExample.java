@@ -49,7 +49,7 @@ public class TemplateExample {
         logger.info("Created project: {}", NAMESPACE);
 
         final Template loadedTemplate = client.templates()
-            .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).get();
+            .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).item();
         for (Parameter p : loadedTemplate.getParameters()) {
           final String required = Boolean.TRUE.equals(p.getRequired()) ? "*" : "";
           logger.info("Loaded parameter from template: {}{} - '{}' ({})",
@@ -80,7 +80,7 @@ public class TemplateExample {
             processedTemplateWithCustomParameters.getItems().size(),
             processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
 
-        List<HasMetadata> l = client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
+        List<HasMetadata> l = client.load(TemplateExample.class.getResourceAsStream("/test-list.yml")).items();
         logger.info("{}", l.size());
 
         final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete()

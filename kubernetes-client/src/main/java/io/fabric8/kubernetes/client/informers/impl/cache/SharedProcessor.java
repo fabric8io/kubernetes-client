@@ -56,6 +56,10 @@ public class SharedProcessor<T> {
   }
 
   public SharedProcessor(Executor executor, String informerDescription) {
+    // serialexecutors are by default unbounded, we expect this behavior here
+    // because resync may flood the executor with events for large caches
+    // if we ever need to limit the queue size, we have to revisit the
+    // resync locking behavior
     this.executor = new SerialExecutor(executor);
     this.informerDescription = informerDescription;
   }

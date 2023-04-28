@@ -31,8 +31,9 @@ public class DeleteExamples {
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       try {
-        logger.info("Create namespace: {}", client.namespaces().create(
-            new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()));
+        logger.info("Create namespace: {}", client.namespaces()
+            .resource(new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build())
+            .create());
         logger.info("Deleted namespace: {}", client.namespaces().withName(NAMESPACE).delete());
         logger.info("Deleted testPod: {}", client.pods().inNamespace(NAMESPACE).withName("test-pod").delete());
         logger.info("Deleted pod by label: {}", client.pods().withLabel("this", "works").delete());

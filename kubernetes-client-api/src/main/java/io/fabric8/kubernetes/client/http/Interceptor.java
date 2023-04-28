@@ -16,41 +16,51 @@
 
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.RequestConfig;
-
+import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.UnaryOperator;
 
 public interface Interceptor {
 
-  /**
-   * {@link Interceptor}s that rely upon the {@link Config}, in particular the {@link RequestConfig}, must implement
-   * this method to receive the modified configuration
-   *
-   * @param config
-   * @return
-   */
-  default Interceptor withConfig(Config config) {
-    return this;
-  }
+  interface RequestTags {
 
-  static UnaryOperator<Interceptor> useConfig(Config config) {
-    return interceptor -> {
-      if (config == null) {
-        return interceptor;
-      }
-      return interceptor.withConfig(config);
-    };
+    <T> T getTag(Class<T> type);
+
   }
 
   /**
    * Called before a request to allow for the manipulation of the request
    *
    * @param builder used to modify the request
-   * @param headers the current headers
+   * @param request the current request
    */
-  default void before(BasicBuilder builder, HttpHeaders headers) {
+  default void before(BasicBuilder builder, HttpRequest request, RequestTags tags) {
+  }
+
+  /**
+   * Called after a non-WebSocket HTTP response is received. The body might or might not be already consumed.
+   * <p>
+   * Should be used to analyze response codes and headers, original response shouldn't be altered.
+   *
+   * @param request the original request sent to the server.
+   * @param response the response received from the server.
+   */
+  default void after(HttpRequest request, HttpResponse<?> response, AsyncBody.Consumer<List<ByteBuffer>> consumer) {
+
+  }
+
+  // In case we want to encapsulate to spy the responses from the server
+
+  /**
+   * Called before a request to allow the encapsulation of the provided consumer.
+   * <p>
+   *
+   * @param consumer the original consumer.
+   * @param request the HTTP request.
+   * @return the consumer to use.
+   */
+  default AsyncBody.Consumer<List<ByteBuffer>> consumer(AsyncBody.Consumer<List<ByteBuffer>> consumer, HttpRequest request) {
+    return consumer;
   }
 
   /**
@@ -60,7 +70,7 @@ public interface Interceptor {
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
    */
-  default CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+  default CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response, RequestTags tags) {
     return CompletableFuture.completedFuture(false);
   }
 
@@ -71,8 +81,8 @@ public interface Interceptor {
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
    */
-  default CompletableFuture<Boolean> afterFailure(HttpRequest.Builder builder, HttpResponse<?> response) {
-    return afterFailure((BasicBuilder) builder, response);
+  default CompletableFuture<Boolean> afterFailure(HttpRequest.Builder builder, HttpResponse<?> response, RequestTags tags) {
+    return afterFailure((BasicBuilder) builder, response, tags);
   }
 
 }

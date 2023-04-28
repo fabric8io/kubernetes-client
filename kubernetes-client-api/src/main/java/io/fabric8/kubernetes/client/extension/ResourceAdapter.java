@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.StatusDetails;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
@@ -330,6 +331,7 @@ public class ResourceAdapter<T> implements Resource<T> {
     return resource.item();
   }
 
+  @Override
   public DeletableWithOptions withTimeout(long timeout, TimeUnit unit) {
     return resource.withTimeout(timeout, unit);
   }
@@ -337,6 +339,36 @@ public class ResourceAdapter<T> implements Resource<T> {
   @Override
   public DeletableWithOptions withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public T update() {
+    return resource.update();
+  }
+
+  @Override
+  public T updateStatus() {
+    return resource.updateStatus();
+  }
+
+  @Override
+  public Scale scale() {
+    return resource.scale();
+  }
+
+  @Override
+  public T scale(int count) {
+    return resource.scale(count);
+  }
+
+  @Override
+  public T scale(int count, boolean wait) {
+    return resource.scale(count, wait);
+  }
+
+  @Override
+  public Scale scale(Scale scale) {
+    return resource.scale(scale);
   }
 
 }

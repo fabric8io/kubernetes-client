@@ -16,44 +16,46 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Listener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
 
+  protected final WatchRequestState state;
   protected final AbstractWatchManager<T> manager;
 
-  private AtomicBoolean reconnected = new AtomicBoolean();
-  private AtomicBoolean closed = new AtomicBoolean();
-
-  protected WatcherWebSocketListener(AbstractWatchManager<T> manager) {
+  protected WatcherWebSocketListener(AbstractWatchManager<T> manager, WatchRequestState state) {
     this.manager = manager;
+    this.state = state;
   }
 
   @Override
   public void onOpen(final WebSocket webSocket) {
     logger.debug("WebSocket successfully opened");
-    manager.resetReconnectAttempts();
+    manager.resetReconnectAttempts(state);
   }
 
   @Override
-  public void onError(WebSocket webSocket, Throwable t) {
-    logger.debug("WebSocket error received", t);
-    scheduleReconnect();
+  public void onError(WebSocket webSocket, Throwable t, boolean connectionError) {
+    if (connectionError) {
+      logger.debug("WebSocket error received", t);
+      manager.scheduleReconnect(state);
+    } else {
+      manager.close(new WatcherException("Could not process websocket message", t));
+    }
   }
 
   @Override
   public void onMessage(WebSocket webSocket, String text) {
     try {
-      if (!closed.get()) {
-        manager.onMessage(text);
-      }
+      manager.onMessage(text, state);
     } finally {
       webSocket.request();
     }
@@ -68,17 +70,7 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
   public void onClose(WebSocket webSocket, int code, String reason) {
     logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
     webSocket.sendClose(code, reason);
-    scheduleReconnect();
-  }
-
-  private void scheduleReconnect() {
-    if (reconnected.compareAndSet(false, true)) {
-      manager.scheduleReconnect();
-    }
-  }
-
-  public void close() {
-    closed.set(true);
+    manager.scheduleReconnect(state);
   }
 
 }

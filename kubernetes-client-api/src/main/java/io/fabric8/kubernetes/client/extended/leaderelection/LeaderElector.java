@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
-import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LockException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +29,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.LongSupplier;
 
 public class LeaderElector {
 
@@ -100,6 +100,9 @@ public class LeaderElector {
           }
         });
       } else {
+        if (!(t instanceof CancellationException)) {
+          LOGGER.error("Exception during leader election", t);
+        }
         // there's a possibility that we'll obtain the lock, but get cancelled
         // before completing the future
         stopLeading();
@@ -117,29 +120,34 @@ public class LeaderElector {
     if (current == null || !isLeader(current)) {
       return; // not leading
     }
-    try {
-      if (leaderElectionConfig.isReleaseOnCancel()) {
-        release(current);
-      }
-    } finally {
-      // called regardless of isReleaseOnCancel
+    if (leaderElectionConfig.isReleaseOnCancel()) {
+      release();
+    } else {
       leaderElectionConfig.getLeaderCallbacks().onStopLeading();
     }
   }
 
-  private void release(LeaderElectionRecord current) {
+  /**
+   * Release the leadership if currently held. If not cancelled, the elector will
+   * continue to try and re-acquire the lock.
+   */
+  public synchronized void release() {
+    LeaderElectionRecord current = leaderElectionConfig.getLock().get(kubernetesClient);
+    if (current == null || !isLeader(current)) {
+      return; // lost leadership already
+    }
     try {
       ZonedDateTime now = now();
       final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-          null,
+          "",
           Duration.ofSeconds(1),
           now,
           now,
           current.getLeaderTransitions());
-      newLeaderElectionRecord.setVersion(current.getVersion());
 
       leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
-    } catch (LockException | KubernetesClientException e) {
+      updateObserved(newLeaderElectionRecord);
+    } catch (KubernetesClientException e) {
       final String lockDescription = leaderElectionConfig.getLock().describe();
       LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
     }
@@ -154,7 +162,7 @@ public class LeaderElector {
           completion.complete(null);
         }
         LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
-      } catch (LockException | KubernetesClientException exception) {
+      } catch (KubernetesClientException exception) {
         LOGGER.error("Exception occurred while acquiring lock '{}'", lockDescription, exception);
       }
     }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
@@ -178,13 +186,13 @@ public class LeaderElector {
           // renewal failed, exit
           completion.complete(null);
         }
-      } catch (LockException | KubernetesClientException exception) {
+      } catch (KubernetesClientException exception) {
         LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
       }
     }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
 
-  synchronized boolean tryAcquireOrRenew() throws LockException {
+  synchronized boolean tryAcquireOrRenew() {
     if (stopped) {
       return false;
     }
@@ -210,8 +218,7 @@ public class LeaderElector {
         isLeader ? oldLeaderElectionRecord.getAcquireTime() : now,
         now,
         oldLeaderElectionRecord.getLeaderTransitions() + (isLeader ? 0 : 1));
-    newLeaderElectionRecord.setVersion(oldLeaderElectionRecord.getVersion());
-    leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+    lock.update(kubernetesClient, newLeaderElectionRecord);
     updateObserved(newLeaderElectionRecord);
     return true;
   }
@@ -224,6 +231,8 @@ public class LeaderElector {
       final String newLeader = leaderElectionRecord.getHolderIdentity();
       if (!Objects.equals(newLeader, currentLeader)) {
         LOGGER.debug("Leader changed from {} to {}", currentLeader, newLeader);
+        // this will notify even if the newLeader is null or empty, which is the same behavior as the go client
+        // but does not seem entirely correct
         leaderElectionConfig.getLeaderCallbacks().onNewLeader(newLeader);
         if (Objects.equals(currentLeader, leaderElectionConfig.getLock().identity())) {
           leaderElectionConfig.getLeaderCallbacks().onStopLeading();
@@ -252,7 +261,7 @@ public class LeaderElector {
    * @param delaySupplier to schedule the run of the provided consumer
    * @return the future to be completed
    */
-  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, Supplier<Long> delaySupplier,
+  protected static CompletableFuture<Void> loop(Consumer<CompletableFuture<?>> consumer, LongSupplier delaySupplier,
       Executor executor) {
     CompletableFuture<Void> completion = new CompletableFuture<>();
     Utils.scheduleWithVariableRate(completion, executor, () -> consumer.accept(completion), 0,

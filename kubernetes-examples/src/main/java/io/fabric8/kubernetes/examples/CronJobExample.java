@@ -70,12 +70,12 @@ public class CronJobExample {
           .build();
 
       log("Creating cron job from object");
-      cronJob1 = client.batch().v1().cronjobs().inNamespace(namespace).create(cronJob1);
+      cronJob1 = client.batch().v1().cronjobs().inNamespace(namespace).resource(cronJob1).create();
       log("Successfully created cronjob with name ", cronJob1.getMetadata().getName());
 
       log("Watching over pod which would be created during cronjob execution...");
       final CountDownLatch watchLatch = new CountDownLatch(1);
-      try (Watch watch = client.pods().inNamespace(namespace).withLabel("job-name").watch(new Watcher<Pod>() {
+      try (Watch ignored = client.pods().inNamespace(namespace).withLabel("job-name").watch(new Watcher<Pod>() {
         @Override
         public void eventReceived(Action action, Pod aPod) {
           log(aPod.getMetadata().getName(), aPod.getStatus().getPhase());
@@ -91,8 +91,11 @@ public class CronJobExample {
         }
       })) {
         watchLatch.await(2, TimeUnit.MINUTES);
-      } catch (KubernetesClientException | InterruptedException e) {
-        log("Could not watch pod", e);
+      } catch (InterruptedException interruptedException) {
+        Thread.currentThread().interrupt();
+        log("Could not watch pod", interruptedException);
+      } catch (KubernetesClientException kubernetesClientException) {
+        log("Could not watch pod", kubernetesClientException);
       }
     } catch (KubernetesClientException exception) {
       log("An error occured while processing cronjobs:", exception.getMessage());

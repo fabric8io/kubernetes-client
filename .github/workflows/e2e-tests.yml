@@ -89,6 +89,39 @@ jobs:
         run: |
           ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
 
+  k8s-1_26:
+    name: K8S 1.26
+    needs: buildWithoutTests
+    runs-on: ubuntu-latest
+    if: github.repository == 'fabric8io/kubernetes-client'
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Minikube-Kubernetes
+        uses: manusa/actions-setup-minikube@v2.7.2
+        with:
+          minikube version: v1.28.0
+          driver: docker
+          container runtime: containerd
+          kubernetes version: v1.26.0
+          github token: ${{ secrets.GITHUB_TOKEN }}
+          start args: '--force'
+      - name: Cache .m2 registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
+      - name: Setup Java 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Install and Run Integration Tests
+        run: |
+          ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
+
   k8s-legacy:
     name: K8S legacy
     needs: buildWithoutTests
@@ -133,7 +166,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup OpenShift
-        uses: manusa/actions-setup-openshift@v1.1.4
+        uses: manusa/actions-setup-openshift@v1.1.5
         with:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}

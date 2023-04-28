@@ -133,50 +133,6 @@ class SerializationTest {
   }
 
   @Test
-  @DisplayName("containsMultipleDocuments, multiple documents with windows line ends, should return true")
-  void containsMultipleDocumentsWithMultipleDocumentsAndWindowsLineEnds() {
-    // Given
-    final String multiDocument = "---\r\napiVersion: v1\r\nKind: Something\r\n\r\n---\r\napiVersion: v2\r\nKind: Other";
-    // When
-    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
-    // Then
-    assertThat(result).isTrue();
-  }
-
-  @Test
-  @DisplayName("containsMultipleDocuments, single document with windows line ends, should return false")
-  void containsMultipleDocumentsWithSingleDocumentAndWindowsLineEnds() {
-    // Given
-    final String multiDocument = "---\r\napiVersion: v1\r\nKind: Something\r\n\r\n";
-    // When
-    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
-    // Then
-    assertThat(result).isFalse();
-  }
-
-  @Test
-  @DisplayName("containsMultipleDocuments, multiple documents with linux line ends, should return true")
-  void containsMultipleDocumentsWithMultipleDocumentsAndLinuxLineEnds() {
-    // Given
-    final String multiDocument = "---\napiVersion: v1\nKind: Something\n\n---\napiVersion: v2\nKind: Other";
-    // When
-    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
-    // Then
-    assertThat(result).isTrue();
-  }
-
-  @Test
-  @DisplayName("containsMultipleDocuments, single document with linux line ends, should return false")
-  void containsMultipleDocumentsWithSingleDocumentAndLinuxLineEnds() {
-    // Given
-    final String multiDocument = "---\napiVersion: v1\nKind: Something\n\n";
-    // When
-    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
-    // Then
-    assertThat(result).isFalse();
-  }
-
-  @Test
   void testSerializeYamlWithAlias() {
     // Given
     InputStream fileInputStream = getClass().getResourceAsStream("/serialization/test-pod-manifest-with-aliases.yml");
@@ -508,6 +464,20 @@ class SerializationTest {
         .asInstanceOf(InstanceOfAssertFactories.MAP)
         .containsEntry("bool", "NO")
         .containsEntry("date", "2022-07-22");
+  }
+
+  @Test
+  void testArrayAsYaml() {
+    // Given
+    String[] value = new String[] { "x", "y" };
+
+    // When
+    String yaml = Serialization.asYaml(value);
+
+    // Then
+    assertThat(yaml).isEqualTo("---\n"
+        + "- \"x\"\n"
+        + "- \"y\"\n");
   }
 
   @Test

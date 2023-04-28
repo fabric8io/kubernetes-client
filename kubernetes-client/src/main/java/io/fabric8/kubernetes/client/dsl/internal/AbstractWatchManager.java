@@ -29,9 +29,10 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
+import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -48,6 +50,49 @@ import java.util.function.Supplier;
 import static java.net.HttpURLConnection.HTTP_GONE;
 
 public abstract class AbstractWatchManager<T extends HasMetadata> implements Watch {
+
+  private static final class SerialWatcher<T> implements Watcher<T> {
+    private final Watcher<T> watcher;
+    SerialExecutor serialExecutor;
+
+    private SerialWatcher(Watcher<T> watcher, SerialExecutor serialExecutor) {
+      this.watcher = watcher;
+      this.serialExecutor = serialExecutor;
+    }
+
+    @Override
+    public void eventReceived(Action action, T resource) {
+      serialExecutor.execute(() -> watcher.eventReceived(action, resource));
+    }
+
+    @Override
+    public void onClose(WatcherException cause) {
+      serialExecutor.execute(() -> {
+        watcher.onClose(cause);
+        serialExecutor.shutdownNow();
+      });
+    }
+
+    @Override
+    public void onClose() {
+      serialExecutor.execute(() -> {
+        watcher.onClose();
+        serialExecutor.shutdownNow();
+      });
+    }
+
+    @Override
+    public boolean reconnecting() {
+      return watcher.reconnecting();
+    }
+  }
+
+  public static class WatchRequestState {
+
+    private final AtomicBoolean reconnected = new AtomicBoolean();
+    private final AtomicBoolean closed = new AtomicBoolean();
+
+  }
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
 
@@ -66,12 +111,15 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private final boolean receiveBookmarks;
 
+  private volatile WatchRequestState latestRequestState;
+
   AbstractWatchManager(
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
-      int reconnectInterval, int maxIntervalExponent, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
-    this.watcher = watcher;
+      int reconnectInterval, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
+    // prevent the callbacks from happening in the httpclient thread
+    this.watcher = new SerialWatcher<>(watcher, new SerialExecutor(baseOperation.getOperationContext().getExecutor()));
     this.reconnectLimit = reconnectLimit;
-    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
+    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, reconnectLimit);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.forceClosed = new AtomicBoolean();
     this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
@@ -87,9 +135,20 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     startWatch();
   }
 
-  protected abstract void start(URL url, Map<String, String> headers);
+  protected abstract void start(URL url, Map<String, String> headers, WatchRequestState state);
 
-  protected abstract void closeRequest();
+  /**
+   * Attempt to gracefully close the current request.
+   * <p>
+   * If forceClosed has not been set, then it's expected that the watch will
+   * attempt to reconnect
+   */
+  public void closeRequest() {
+    Optional.ofNullable(latestRequestState).ifPresent(state -> state.closed.set(true));
+    closeCurrentRequest();
+  }
+
+  protected abstract void closeCurrentRequest();
 
   final void close(WatcherException cause) {
     if (!forceClosed.compareAndSet(false, true)) {
@@ -122,7 +181,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   /**
    * Called to reestablish the connection. Should only be called once per request.
    */
-  void scheduleReconnect() {
+  void scheduleReconnect(WatchRequestState state) {
+    if (!state.reconnected.compareAndSet(false, true)) {
+      return;
+    }
     if (isForceClosed()) {
       logger.debug("Ignoring already closed/closing connection");
       return;
@@ -133,9 +195,9 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       return;
     }
 
-    logger.debug("Scheduling reconnect task");
-
     long delay = nextReconnectInterval();
+
+    logger.debug("Scheduling reconnect task in {} ms", delay);
 
     synchronized (this) {
       reconnectAttempt = Utils.schedule(baseOperation.context.getExecutor(), this::reconnect, delay, TimeUnit.MILLISECONDS);
@@ -167,7 +229,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     return retryIntervalCalculator.nextReconnectInterval();
   }
 
-  void resetReconnectAttempts() {
+  void resetReconnectAttempts(WatchRequestState state) {
+    if (state.closed.get()) {
+      return;
+    }
     retryIntervalCalculator.resetReconnectAttempts();
   }
 
@@ -218,7 +283,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     logger.debug("Watching {}...", url);
 
     closeRequest(); // only one can be active at a time
-    start(url, headers);
+    latestRequestState = new WatchRequestState();
+    start(url, headers, latestRequestState);
   }
 
   @Override
@@ -248,7 +314,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
-  protected void onMessage(String message) {
+  protected void onMessage(String message, WatchRequestState state) {
+    if (state.closed.get() || forceClosed.get()) {
+      return;
+    }
     try {
       WatchEvent event = contextAwareWatchEventDeserializer(message);
       Object object = event.getObject();
@@ -257,7 +326,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
         if (object instanceof Status) {
           Status status = (Status) object;
 
-          onStatus(status);
+          onStatus(status, state);
         } else {
           logger.error("Error received, but object is not a status - will retry");
           closeRequest();
@@ -282,7 +351,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
-  protected boolean onStatus(Status status) {
+  protected boolean onStatus(Status status, WatchRequestState state) {
+    if (state.closed.get()) {
+      return true;
+    }
     // The resource version no longer exists - this has to be handled by the caller.
     if (status.getCode() == HTTP_GONE) {
       close(new WatcherException(status.getMessage(), new KubernetesClientException(status)));

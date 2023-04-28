@@ -38,10 +38,10 @@ public class CustomResourceCreateDemo {
       dummyClient = k8s.resources(Dummy.class, DummyList.class);
 
       // Get Dummy CustomResource
-      Dummy dummy = dummyClient.load(CustomResourceCreateDemo.class.getResourceAsStream("/test-customresource.yaml")).get();
+      Dummy dummy = dummyClient.load(CustomResourceCreateDemo.class.getResourceAsStream("/test-customresource.yaml")).item();
 
       // Using Dummy Client to create Dummy resource
-      dummyClient.inNamespace("default").create(dummy);
+      dummyClient.inNamespace("default").resource(dummy).create();
     }
 
   }

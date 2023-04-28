@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "networking",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
@@ -843,48 +843,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_core_LoadBalancerIngress": {
-      "type": "object",
-      "properties": {
-        "hostname": {
-          "type": "string"
-        },
-        "ip": {
-          "type": "string"
-        },
-        "ports": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_core_PortStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerIngress",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_core_LoadBalancerStatus": {
-      "type": "object",
-      "properties": {
-        "ingress": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_core_LoadBalancerIngress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerIngress"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_core_NodeSelector": {
       "type": "object",
       "properties": {
@@ -978,25 +936,6 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_core_PortStatus": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer"
-        },
-        "protocol": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1262,6 +1201,67 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.networking.v1.Ingress\u003e"
       ]
     },
+    "kubernetes_networking_v1_IngressLoadBalancerIngress": {
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1_IngressPortStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressPortStatus"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressLoadBalancerIngress",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_networking_v1_IngressLoadBalancerStatus": {
+      "type": "object",
+      "properties": {
+        "ingress": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1_IngressLoadBalancerIngress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressLoadBalancerIngress"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressLoadBalancerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_networking_v1_IngressPortStatus": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressPortStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_networking_v1_IngressRule": {
       "type": "object",
       "properties": {
@@ -1347,8 +1347,8 @@
       "type": "object",
       "properties": {
         "loadBalancer": {
-          "$ref": "#/definitions/kubernetes_core_LoadBalancerStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerStatus"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressLoadBalancerStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressLoadBalancerStatus"
         }
       },
       "additionalProperties": true,
@@ -1916,6 +1916,67 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.networking.v1beta1.Ingress\u003e"
       ]
     },
+    "kubernetes_networking_v1beta1_IngressLoadBalancerIngress": {
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressPortStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressPortStatus"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerIngress",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_networking_v1beta1_IngressLoadBalancerStatus": {
+      "type": "object",
+      "properties": {
+        "ingress": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressLoadBalancerIngress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerIngress"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_networking_v1beta1_IngressPortStatus": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressPortStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_networking_v1beta1_IngressRule": {
       "type": "object",
       "properties": {
@@ -1984,8 +2045,8 @@
       "type": "object",
       "properties": {
         "loadBalancer": {
-          "$ref": "#/definitions/kubernetes_core_LoadBalancerStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerStatus"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressLoadBalancerStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerStatus"
         }
       },
       "additionalProperties": true,
@@ -2390,8 +2451,8 @@
     "httpingresspath": {
       "properties": {
         "backend": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressBackend",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressBackend"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressBackend",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBackend"
         },
         "path": {
           "type": "string"
@@ -2407,8 +2468,8 @@
         "paths": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressPath",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPath"
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressPath",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressPath"
           }
         }
       },
@@ -2490,7 +2551,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "networking.k8s.io/v1",
+          "default": "networking.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2503,8 +2564,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressClassSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassSpec"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClassSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassSpec"
         }
       },
       "additionalProperties": true
@@ -2561,8 +2622,8 @@
           "type": "string"
         },
         "parameters": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClassParametersReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassParametersReference"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressClassParametersReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassParametersReference"
         }
       },
       "additionalProperties": true
@@ -2593,14 +2654,60 @@
       },
       "additionalProperties": true
     },
+    "ingressloadbalanceringress": {
+      "properties": {
+        "hostname": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1_IngressPortStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressPortStatus"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "ingressloadbalancerstatus": {
+      "properties": {
+        "ingress": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressLoadBalancerIngress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerIngress"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "ingressportstatus": {
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "ingressrule": {
       "properties": {
         "host": {
           "type": "string"
         },
         "http": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressRuleValue",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressRuleValue"
+          "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressRuleValue",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValue"
         }
       },
       "additionalProperties": true
@@ -2657,8 +2764,8 @@
     "ingressstatus": {
       "properties": {
         "loadBalancer": {
-          "$ref": "#/definitions/kubernetes_core_LoadBalancerStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerStatus"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressLoadBalancerStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerStatus"
         }
       },
       "additionalProperties": true
@@ -2830,38 +2937,6 @@
         },
         "watch": {
           "type": "boolean"
-        }
-      },
-      "additionalProperties": true
-    },
-    "loadbalanceringress": {
-      "properties": {
-        "hostname": {
-          "type": "string"
-        },
-        "ip": {
-          "type": "string"
-        },
-        "ports": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_core_PortStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus"
-          }
-        }
-      },
-      "additionalProperties": true
-    },
-    "loadbalancerstatus": {
-      "properties": {
-        "ingress": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_core_LoadBalancerIngress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerIngress"
-          }
         }
       },
       "additionalProperties": true
@@ -3274,20 +3349,6 @@
           "type": "string",
           "default": "PatchOptions",
           "required": true
-        }
-      },
-      "additionalProperties": true
-    },
-    "portstatus": {
-      "properties": {
-        "error": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer"
-        },
-        "protocol": {
-          "type": "string"
         }
       },
       "additionalProperties": true

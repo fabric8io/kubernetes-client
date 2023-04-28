@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/camel-k/v1alpha1/CamelKSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_AuthorizationSpec": {
       "type": "object",

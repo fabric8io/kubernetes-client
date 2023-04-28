@@ -25,11 +25,12 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
@@ -40,11 +41,9 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.internal.ExponentialBackoffIntervalCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -74,7 +73,6 @@ public class OperationSupport {
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
-  private static final int MAX_RETRY_INTERVAL_EXPONENT = 5;
 
   protected OperationContext context;
   protected final HttpClient httpClient;
@@ -82,11 +80,10 @@ public class OperationSupport {
   protected final String resourceT;
   protected String namespace;
   protected String name;
+  protected String subresource;
   protected String apiGroupName;
   protected String apiGroupVersion;
   protected boolean dryRun;
-  private final int requestRetryBackoffLimit;
-  private final int requestRetryBackoffInterval;
 
   public OperationSupport(Client client) {
     this(new OperationContext().withClient(client));
@@ -99,6 +96,7 @@ public class OperationSupport {
     this.resourceT = ctx.getPlural();
     this.namespace = ctx.getNamespace();
     this.name = ctx.getName();
+    this.subresource = ctx.getSubresource();
     this.apiGroupName = ctx.getApiGroupName();
     this.dryRun = ctx.getDryRun();
     if (Utils.isNotNullOrEmpty(ctx.getApiGroupVersion())) {
@@ -107,14 +105,6 @@ public class OperationSupport {
       this.apiGroupVersion = ctx.getConfig().getApiVersion();
     } else {
       this.apiGroupVersion = "v1";
-    }
-
-    if (ctx.getConfig() != null) {
-      requestRetryBackoffInterval = ctx.getConfig().getRequestRetryBackoffInterval();
-      this.requestRetryBackoffLimit = ctx.getConfig().getRequestRetryBackoffLimit();
-    } else {
-      requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-      this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
     }
   }
 
@@ -174,35 +164,40 @@ public class OperationSupport {
       parts.add("namespaces");
       parts.add(namespace);
     }
-    parts.add(type);
+
+    if (Utils.isNotNullOrEmpty(type)) {
+      parts.add(type);
+    }
   }
 
   public URL getNamespacedUrl() throws MalformedURLException {
     return getNamespacedUrl(getNamespace());
   }
 
-  public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
-    return getResourceUrl(namespace, name, false);
-  }
-
-  public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
+  public URL getResourceUrl(String namespace, String name, String... subresources) throws MalformedURLException {
+    String subresourcePath = URLUtils.pathJoin(subresources);
     if (name == null) {
-      if (status) {
+      if (Utils.isNotNullOrEmpty(subresourcePath)) {
         throw new KubernetesClientException("name not specified for an operation requiring one.");
       }
+
       return getNamespacedUrl(namespace);
     }
-    if (status) {
-      return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name, "status"));
+
+    String path = name;
+    if (Utils.isNotNullOrEmpty(subresourcePath)) {
+      path = URLUtils.pathJoin(path, subresourcePath);
     }
-    return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name));
+
+    return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), path));
+  }
+
+  public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
+    return getResourceUrl(namespace, name, subresource);
   }
 
   public URL getResourceUrl() throws MalformedURLException {
-    if (name == null) {
-      return getNamespacedUrl();
-    }
-    return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
+    return getResourceUrl(namespace, name, subresource);
   }
 
   public URL getResourceURLForWriteOperation(URL resourceURL) throws MalformedURLException {
@@ -354,17 +349,16 @@ public class OperationSupport {
    *
    * @param updated updated object
    * @param type type of the object provided
-   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
    * @throws IOException IOException
    */
-  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type) throws IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
-        .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
+        .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
     return handleResponse(requestBuilder, type);
   }
 
@@ -378,17 +372,23 @@ public class OperationSupport {
    * @param current current object
    * @param updated updated object
    * @param type type of object
-   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status)
+  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type)
       throws InterruptedException, IOException {
     String patchForUpdate;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
+      if (current instanceof HasMetadata) {
+        ObjectMeta meta = ((HasMetadata) current).getMetadata();
+        if (meta != null) {
+          // include the resourceVersion in the patch if it's specified on the updated
+          meta.setResourceVersion(null);
+        }
+      }
       // we can't omit status unless this is not a status operation and we know this has a status subresource
       patchForUpdate = PatchUtils.jsonDiff(current, updated, false);
       if (patchContext == null) {
@@ -409,7 +409,7 @@ public class OperationSupport {
       patchForUpdate = Serialization.asJson(updated);
       current = updated; // use the updated to determine the path
     }
-    return handlePatch(patchContext, current, patchForUpdate, type, status);
+    return handlePatch(patchContext, current, patchForUpdate, type);
   }
 
   /**
@@ -419,18 +419,17 @@ public class OperationSupport {
    * @param current current object
    * @param patchForUpdate Patch string
    * @param type type of object
-   * @param status if this is only the status subresource
    * @param <T> template argument provided
    * @return returns de-serialized version of api server response
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException in case of network errors
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status)
+  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type)
       throws InterruptedException, IOException {
     String bodyContentType = getContentTypeFromPatchContextOrDefault(patchContext);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .patch(bodyContentType, patchForUpdate)
-        .url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status),
+        .url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current)),
             patchContext));
     return handleResponse(requestBuilder, type);
   }
@@ -444,12 +443,12 @@ public class OperationSupport {
    * @throws InterruptedException in case thread is interrupted
    * @throws IOException in some other I/O problem
    */
-  protected Scale handleScale(String resourceUrl, Scale scale) throws InterruptedException, IOException {
+  protected <T> T handleScale(String resourceUrl, T scale, Class<T> scaleType) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/scale");
     if (scale != null) {
       requestBuilder.put(JSON, JSON_MAPPER.writeValueAsString(scale));
     }
-    return handleResponse(requestBuilder, Scale.class);
+    return handleResponse(requestBuilder, scaleType);
   }
 
   /**
@@ -484,24 +483,11 @@ public class OperationSupport {
     return handleResponse(requestBuilder, type);
   }
 
-  protected <T extends HasMetadata> T handleApproveOrDeny(T csr, Class<T> type) throws IOException, InterruptedException {
-    String uri = URLUtils.join(getResourceUrl(null, csr.getMetadata().getName(), false).toString(), "approval");
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .put(JSON, JSON_MAPPER.writeValueAsString(csr)).uri(uri);
-    return handleResponse(requestBuilder, type);
-  }
-
   /**
    * Send a raw get - where the type should be one of String, Reader, InputStream
-   * <br>
-   * NOTE: Currently does not utilize the retry logic
    */
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
-    HttpRequest request = requestBuilder.build();
-    HttpResponse<T> response = waitForResult(httpClient.sendAsync(request, type));
-    assertResponseCode(request, response);
-    return response.body();
+    return handleRaw(type, resourceUrl.toString(), "GET", null);
   }
 
   /**
@@ -516,8 +502,8 @@ public class OperationSupport {
     try {
       // since readTimeout may not be enforced in a timely manner at the httpclient, we'll
       // enforce a higher level timeout with a small amount of padding to account for possible queuing
-      if (config.getRequestTimeout() > 0) {
-        return future.get(config.getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
+      if (getRequestConfig().getRequestTimeout() > 0) {
+        return future.get(getRequestConfig().getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
       }
       return future.get();
     } catch (InterruptedException e) {
@@ -577,16 +563,12 @@ public class OperationSupport {
       TypeReference<T> type) {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
-    CompletableFuture<HttpResponse<byte[]>> futureResponse = new CompletableFuture<>();
-    retryWithExponentialBackoff(futureResponse,
-        new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, MAX_RETRY_INTERVAL_EXPONENT),
-        Utils.getNonNullOrElse(client, httpClient), request);
 
-    return futureResponse.thenApply(response -> {
+    return client.sendAsync(request, InputStream.class).thenApply(response -> {
       try {
         assertResponseCode(request, response);
         if (type != null && type.getType() != null) {
-          return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type);
+          return Serialization.unmarshal(response.body(), type);
         } else {
           return null;
         }
@@ -596,39 +578,6 @@ public class OperationSupport {
         throw requestException(request, e);
       }
     });
-  }
-
-  protected void retryWithExponentialBackoff(CompletableFuture<HttpResponse<byte[]>> result,
-      ExponentialBackoffIntervalCalculator retryIntervalCalculator,
-      HttpClient client, HttpRequest request) {
-    client.sendAsync(request, byte[].class)
-        .whenComplete((response, throwable) -> {
-          int retries = retryIntervalCalculator.getCurrentReconnectAttempt();
-          if (retries < requestRetryBackoffLimit) {
-            long retryInterval = retryIntervalCalculator.nextReconnectInterval();
-            boolean retry = false;
-            if (response != null && response.code() >= 500) {
-              LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                  request.uri(), response.code(), retryInterval);
-              retry = true;
-            } else if (throwable instanceof IOException) {
-              LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-                  request.uri(), retryInterval), throwable);
-              retry = true;
-            }
-            if (retry) {
-              Utils.schedule(context.getExecutor(),
-                  () -> retryWithExponentialBackoff(result, retryIntervalCalculator, client, request), retryInterval,
-                  TimeUnit.MILLISECONDS);
-              return;
-            }
-          }
-          if (throwable != null) {
-            result.completeExceptionally(throwable);
-          } else {
-            result.complete(response);
-          }
-        });
   }
 
   /**
@@ -680,10 +629,12 @@ public class OperationSupport {
         String bodyString = response.bodyString();
         if (Utils.isNotNullOrEmpty(bodyString)) {
           Status status = JSON_MAPPER.readValue(bodyString, Status.class);
-          if (status.getCode() == null) {
-            status = new StatusBuilder(status).withCode(statusCode).build();
+          if (status != null) {
+            if (status.getCode() == null) {
+              status = new StatusBuilder(status).withCode(statusCode).build();
+            }
+            return status;
           }
-          return status;
         }
       } catch (IOException e) {
         // ignored
@@ -766,6 +717,18 @@ public class OperationSupport {
     return config;
   }
 
+  public OperationContext getOperationContext() {
+    return context;
+  }
+
+  public RequestConfig getRequestConfig() {
+    RequestConfig result = context.getRequestConfig();
+    if (result == null && config != null) {
+      result = config.getRequestConfig();
+    }
+    return new RequestConfigBuilder(result).build();
+  }
+
   private String getContentTypeFromPatchContextOrDefault(PatchContext patchContext) {
     if (patchContext != null && patchContext.getPatchType() != null) {
       return patchContext.getPatchType().getContentType();
@@ -787,6 +750,30 @@ public class OperationSupport {
         throw e;
       }
       return null;
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  /**
+   * Send a raw request - where the type should be one of String, Reader, InputStream
+   */
+  public <R1> R1 handleRaw(Class<R1> result, String uri, String method, Object payload) {
+    try {
+      if (uri.startsWith("/")) {
+        // master ends with slash
+        uri = config.getMasterUrl() + uri.substring(1, uri.length());
+      }
+      String body = null;
+      if (payload instanceof String) {
+        body = (String) payload;
+      } else if (payload != null) {
+        body = Serialization.asJson(payload);
+      }
+      HttpRequest request = httpClient.newHttpRequestBuilder().uri(uri).method(method, JSON, body).build();
+      HttpResponse<R1> response = waitForResult(httpClient.sendAsync(request, result));
+      assertResponseCode(request, response);
+      return response.body();
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

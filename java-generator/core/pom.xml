@@ -22,7 +22,7 @@
   <parent>
     <artifactId>java-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -44,14 +44,7 @@
     <dependency>
       <groupId>com.github.javaparser</groupId>
       <artifactId>javaparser-core</artifactId>
-      <version>3.24.10</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>sundr-adapter-reflect</artifactId>
-      <version>${sundrio.version}</version>
-      <scope>compile</scope>
+      <version>3.25.2</version>
     </dependency>
 
     <dependency>

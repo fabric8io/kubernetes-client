@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.slf4j.Logger;
@@ -30,17 +30,17 @@ public class CRDLoadExample {
     try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       // List all Custom resources.
       logger.info("Listing all current Custom Resource Definitions :");
-      CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customResourceDefinitions().list();
+      CustomResourceDefinitionList crdList = client.apiextensions().v1().customResourceDefinitions().list();
       crdList.getItems().forEach(crd -> logger.info(crd.getMetadata().getName()));
 
       // Creating a custom resource from yaml
-      CustomResourceDefinition aCustomResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions()
-          .load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).get();
+      CustomResourceDefinition aCustomResourceDefinition = client.apiextensions().v1().customResourceDefinitions()
+          .load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).item();
       logger.info("Creating CRD...");
-      client.apiextensions().v1beta1().customResourceDefinitions().create(aCustomResourceDefinition);
+      client.apiextensions().v1().customResourceDefinitions().resource(aCustomResourceDefinition).create();
 
       logger.info("Updated Custom Resource Definitions: ");
-      client.apiextensions().v1beta1().customResourceDefinitions().list().getItems()
+      client.apiextensions().v1().customResourceDefinitions().list().getItems()
           .forEach(crd -> logger.info(crd.getMetadata().getName()));
 
     }

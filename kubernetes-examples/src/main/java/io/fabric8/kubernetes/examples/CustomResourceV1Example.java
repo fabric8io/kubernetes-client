@@ -51,14 +51,14 @@ public class CustomResourceV1Example {
           .endOpenAPIV3Schema().endSchema()
         .endVersion().endSpec().build();
       // @formatter:on
-      kc.apiextensions().v1().customResourceDefinitions().createOrReplace(crd);
+      kc.apiextensions().v1().customResourceDefinitions().resource(crd).createOrReplace();
       System.out.println("Created custom shows.example.com Kubernetes API");
       final NonNamespaceOperation<Show, ShowList, Resource<Show>> shows = kc.resources(Show.class, ShowList.class)
           .inNamespace("default");
       shows.list();
-      shows.createOrReplace(new Show("breaking-bad", new ShowSpec("Breaking Bad", 10)));
-      shows.createOrReplace(new Show("better-call-saul", new ShowSpec("Better call Saul", 8)));
-      shows.createOrReplace(new Show("the-wire", new ShowSpec("The Wire", 10)));
+      shows.resource(new Show("breaking-bad", new ShowSpec("Breaking Bad", 10))).createOrReplace();
+      shows.resource(new Show("better-call-saul", new ShowSpec("Better call Saul", 8))).createOrReplace();
+      shows.resource(new Show("the-wire", new ShowSpec("The Wire", 10))).createOrReplace();
       System.out.println("Added three shows");
       shows.list().getItems()
           .forEach(s -> System.out.printf(" - %s%n", s.getSpec().name));

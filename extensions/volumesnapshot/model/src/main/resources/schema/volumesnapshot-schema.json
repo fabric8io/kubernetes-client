@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/csi/VolumeSnapshotSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshot": {
       "type": "object",

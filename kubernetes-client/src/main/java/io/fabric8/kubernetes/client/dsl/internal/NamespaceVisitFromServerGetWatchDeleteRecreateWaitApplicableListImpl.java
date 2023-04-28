@@ -322,4 +322,14 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     return this.withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
+  @Override
+  public List<HasMetadata> updateStatus() {
+    return performOperation(Resource::updateStatus);
+  }
+
+  @Override
+  public List<HasMetadata> update() {
+    return performOperation(Resource::update);
+  }
+
 }

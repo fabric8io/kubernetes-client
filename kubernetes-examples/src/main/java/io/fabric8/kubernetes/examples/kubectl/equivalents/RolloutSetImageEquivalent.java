@@ -24,7 +24,6 @@ public class RolloutSetImageEquivalent {
   public static void main(String[] args) {
     try (KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       k8s.apps().deployments().inNamespace("default").withName("nginx-deployment")
-          .rolling()
           .updateImage(Collections.singletonMap("nginx", "nginx:alpine"));
     }
   }

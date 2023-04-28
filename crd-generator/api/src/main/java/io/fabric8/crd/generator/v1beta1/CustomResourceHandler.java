@@ -40,8 +40,8 @@ import java.util.Optional;
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
   public static final String VERSION = "v1beta1";
 
-  public CustomResourceHandler(Resources resources) {
-    super(resources);
+  public CustomResourceHandler(Resources resources, boolean parallel) {
+    super(resources, parallel);
   }
 
   @Override

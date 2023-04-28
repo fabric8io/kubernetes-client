@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -111,7 +112,7 @@ class AbstractWatchManagerTest {
   void nextReconnectInterval() throws MalformedURLException {
     // Given
     final WatchManager<HasMetadata> awm = new WatchManager<>(
-        null, mock(ListOptions.class), 0, 10, 5);
+        null, mock(ListOptions.class), 0, 10);
     // When-Then
     assertThat(awm.nextReconnectInterval()).isEqualTo(10);
     assertThat(awm.nextReconnectInterval()).isEqualTo(20);
@@ -148,7 +149,7 @@ class AbstractWatchManagerTest {
     awm.baseOperation.context = Mockito.mock(OperationContext.class);
     Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
 
-    awm.scheduleReconnect();
+    awm.scheduleReconnect(new WatchRequestState());
     // When
     awm.cancelReconnect();
     // Then
@@ -161,7 +162,7 @@ class AbstractWatchManagerTest {
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     CompletableFuture<Void> done = new CompletableFuture<Void>();
     final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
-        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0) {
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
 
       boolean first = true;
 
@@ -170,7 +171,7 @@ class AbstractWatchManagerTest {
         if (first) {
           first = false;
           // simulate failing before the call to startWatch finishes
-          ForkJoinPool.commonPool().execute(this::scheduleReconnect);
+          ForkJoinPool.commonPool().execute(() -> scheduleReconnect(new WatchRequestState()));
           try {
             Thread.sleep(100);
           } catch (InterruptedException e) {
@@ -217,7 +218,7 @@ class AbstractWatchManagerTest {
   private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher)
       throws MalformedURLException {
     return new WatchManager<>(
-        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0);
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0);
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
@@ -238,22 +239,29 @@ class AbstractWatchManagerTest {
     }
   }
 
+  static BaseOperation mockOperation() {
+    BaseOperation operation = mock(BaseOperation.class, Mockito.RETURNS_DEEP_STUBS);
+    Mockito.when(operation.getOperationContext().getExecutor()).thenReturn(Runnable::run);
+    return operation;
+  }
+
   private static class WatchManager<T extends HasMetadata> extends AbstractWatchManager<T> {
 
     private final AtomicInteger closeCount = new AtomicInteger(0);
 
-    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval,
-        int maxIntervalExponent) throws MalformedURLException {
-      super(watcher, Mockito.mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
+        throws MalformedURLException {
+      super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval,
           () -> null);
     }
 
     @Override
-    protected void start(URL url, Map<String, String> headers) {
+    protected void start(URL url, Map<String, String> headers, WatchRequestState state) {
+
     }
 
     @Override
-    protected void closeRequest() {
+    public void closeCurrentRequest() {
       closeCount.addAndGet(1);
     }
 

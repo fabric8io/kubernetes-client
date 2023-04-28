@@ -24,21 +24,32 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.SocketException;
+import java.net.URL;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,12 +61,15 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LoadKubernetesManifests("/pod-it.yml")
@@ -65,6 +79,9 @@ class PodIT {
 
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
+  @TempDir
+  Path tempDir;
+
   KubernetesClient client;
 
   Namespace namespace;
@@ -72,8 +89,10 @@ class PodIT {
   @Test
   void load() {
     Pod aPod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).item();
-    assertThat(aPod).isNotNull();
-    assertEquals("nginx", aPod.getMetadata().getName());
+    assertThat(aPod)
+        .isNotNull()
+        .extracting("metadata.name")
+        .isEqualTo("nginx");
   }
 
   @Test
@@ -85,20 +104,22 @@ class PodIT {
   @Test
   void list() {
     PodList podList = client.pods().list();
-    assertThat(podList).isNotNull();
-    assertTrue(podList.getItems().size() >= 1);
+    assertThat(podList)
+        .isNotNull()
+        .extracting(PodList::getItems)
+        .asList().hasSizeGreaterThanOrEqualTo(1);
   }
 
   @Test
   void update() {
     Pod pod1 = client.pods().withName("pod-standard").edit(p -> new PodBuilder(p)
-        .editMetadata().addToLabels("foo", "bar").endMetadata().build());
+        .editMetadata().withResourceVersion(null).addToLabels("foo", "bar").endMetadata().build());
     assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
   }
 
   @Test
   void delete() {
-    assertTrue(client.pods().withName("pod-delete").delete().size() == 1);
+    assertEquals(1, client.pods().withName("pod-delete").delete().size());
   }
 
   @Test
@@ -153,14 +174,14 @@ class PodIT {
   }
 
   @Test
-  void execExitCode() throws Exception {
+  void execExitCode() {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ExecWatch watch = client.pods().withName("pod-standard")
         .writingOutput(out)
         .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .exec("sh", "-c", "echo 'hello world!'");
     assertEquals(0, watch.exitCode().join());
-    assertNotNull("hello world!", out.toString());
+    assertThat(out.toString()).startsWith("hello world!");
   }
 
   @Test
@@ -179,9 +200,8 @@ class PodIT {
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
 
-    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
-      return new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root");
-    });
+    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+        .until(() -> new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root"));
 
     watch.close();
 
@@ -264,27 +284,65 @@ class PodIT {
     }
   }
 
-  @Test
-  void uploadFile() throws IOException {
-    client.pods().withName("pod-standard").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
-    // Wait for resources to get ready
-    final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
-    Files.write(tmpFile, Collections.singletonList("I'm uploaded"));
+  @ParameterizedTest(name = "upload, with valid file to ''{0}'', should create file with contents")
+  @ValueSource(strings = {
+      "/tmp/toBeUploaded",
+      "/tmp/001_special_!@#\\$^&(.mp4",
+      "/tmp/002'special"
+  })
+  void uploadFile(String uploadPath) throws IOException {
+    // Given
+    final Path tempFile = Files.write(tempDir.resolve("file.toBeUploaded"),
+        Collections.singletonList("I'm uploaded"));
+    final PodResource podResource = client.pods().withName("pod-standard");
+    podResource.waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
+    // When
+    retryUpload(() -> podResource.file(uploadPath).upload(tempFile));
 
-    assertUploaded("pod-standard", tmpFile, "/tmp/toBeUploaded");
-    assertUploaded("pod-standard", tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");
-    assertUploaded("pod-standard", tmpFile, "/tmp/002'special");
-  }
-
-  private void assertUploaded(String podName, final Path tmpFile, String filename) throws IOException {
-    PodResource podResource = client.pods().withName(podName);
-
-    podResource.file(filename).upload(tmpFile);
-
-    try (InputStream checkIs = podResource.file(filename).read();
+    try (InputStream checkIs = podResource.file(uploadPath).read();
         BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
-      assertEquals("I'm uploaded", result);
+      assertEquals("I'm uploaded", result, () -> checkFile(podResource, null, uploadPath));
+    }
+  }
+
+  void retryUpload(BooleanSupplier operation) {
+    Awaitility.await().atMost(60, TimeUnit.SECONDS).until(operation::getAsBoolean);
+  }
+
+  @Test
+  void uploadBinaryStream() throws Exception {
+    byte[] bytes = new byte[16385];
+    for (int i = 0; i < bytes.length; i++) {
+      bytes[i] = (byte) i;
+    }
+    final PodResource podResource = client.pods().withName("pod-standard");
+    // When
+    retryUpload(() -> podResource.file("/tmp/binstream").upload(new ByteArrayInputStream(bytes)));
+    // Then
+    try (InputStream checkIs = podResource.file("/tmp/binstream").read();) {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      InputStreamPumper.transferTo(checkIs, baos::write);
+      assertArrayEquals(bytes, baos.toByteArray(), () -> checkFile(podResource, null, "/tmp/binstream"));
+    }
+  }
+
+  @Test
+  void uploadBinaryFile() throws IOException {
+    // Given
+    byte[] bytes = new byte[16385];
+    for (int i = 0; i < bytes.length; i++) {
+      bytes[i] = (byte) i;
+    }
+    final Path tempFile = Files.write(tempDir.resolve("file.toBeUploaded"), bytes);
+    final PodResource podResource = client.pods().withName("pod-standard");
+    // When
+    retryUpload(() -> podResource.file("/tmp/binfile").upload(tempFile));
+    // Then
+    try (InputStream checkIs = podResource.file("/tmp/binfile").read();) {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      InputStreamPumper.transferTo(checkIs, baos::write);
+      assertArrayEquals(bytes, baos.toByteArray(), () -> checkFile(podResource, null, "/tmp/binfile"));
     }
   }
 
@@ -299,7 +357,7 @@ class PodIT {
 
     PodResource podResource = client.pods().withName("pod-standard");
 
-    podResource.dir("/tmp/uploadDir").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(tmpDir);
+    retryUpload(() -> podResource.dir("/tmp/uploadDir").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(tmpDir));
 
     for (String fileName : files) {
       try (InputStream checkIs = podResource.file("/tmp/uploadDir/" + fileName).read();
@@ -317,7 +375,7 @@ class PodIT {
     PodResource podResource = client.pods().withName("pod-standard");
     podResource.dir("/etc").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).copy(tmpDir);
 
-    Path msg = tmpDir.resolve("/etc/hosts");
+    Path msg = tmpDir.resolve("etc/hosts");
     assertTrue(Files.exists(msg));
   }
 
@@ -336,7 +394,42 @@ class PodIT {
     try (InputStream is = Files.newInputStream(msg);
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
-      assertEquals("hello", result);
+      assertEquals("hello", result, () -> checkFile(podResource, msg, "/msg.txt"));
+    }
+  }
+
+  private String checkFile(PodResource podResource, Path msg, String remoteFile) {
+    try {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      podResource.writingOutput(baos).withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).exec("sh", "-c",
+          String.format("ls -al %s", remoteFile)).exitCode().get();
+      String ls = new String(baos.toByteArray());
+      if (msg != null) {
+        byte[] bytes = Files.readAllBytes(msg);
+        return String.format("%s local bytes %s", ls, bytes.length);
+      }
+      return ls;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Test
+  void readFileMissingException() throws IOException {
+    PodResource podResource = client.pods().withName("pod-standard");
+    try (InputStream is = podResource.file("does not exist").read()) {
+      assertThrows(IOException.class, () -> is.read());
+    }
+  }
+
+  @Test
+  void readDirMissingException() throws IOException {
+    PodResource podResource = client.pods().withName("pod-standard");
+    try (InputStream is = podResource.dir("/nodir").read()) {
+      // this is a little odd, but tar sends some data to stdOut
+      // before deciding to error out, so we have to do more than a
+      // single read - this seems like a usability issue...
+      assertThrows(IOException.class, () -> IOHelpers.readFully(is));
     }
   }
 
@@ -355,6 +448,42 @@ class PodIT {
     assertEquals(pod1.getKind(), fromServerPod.getKind());
     assertEquals(namespace.getMetadata().getName(), fromServerPod.getMetadata().getNamespace());
     assertEquals(pod1.getMetadata().getName(), fromServerPod.getMetadata().getName());
+  }
+
+  @Test
+  void portForward() throws IOException, InterruptedException {
+    client.pods().withName("nginx").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
+    LocalPortForward portForward = client.pods().withName("nginx").portForward(80);
+    boolean failed = false;
+    try (SocketChannel channel = SocketChannel.open()) {
+
+      int localPort = portForward.getLocalPort();
+
+      URL url = new URL("http://localhost:" + localPort);
+
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+      InputStream content = (InputStream) conn.getContent();
+
+      // make sure we got data, should be the welcome page
+      assertTrue(content.read() != -1);
+
+      content.close();
+    } catch (SocketException e) {
+      failed = true;
+    } finally {
+      portForward.close();
+    }
+
+    if (failed) {
+      // not all kube versions nor runtimes can to port forwarding - the nodes need socat installed
+      portForward.getServerThrowables().stream()
+          .filter(t -> !t.getMessage().contains("unable to do port forwarding: socat not found")).findFirst()
+          .ifPresent(Assertions::fail);
+    } else {
+      assertThat(portForward.getServerThrowables()).isEmpty();
+    }
+    assertThat(portForward.getClientThrowables()).isEmpty();
   }
 
 }

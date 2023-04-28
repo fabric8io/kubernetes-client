@@ -17,10 +17,9 @@ package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -33,6 +32,7 @@ import java.util.Objects;
  * @see <a href=
  *      "https://github.com/kubernetes/client-go/blob/1aa326d7304eba6aedc8c89daad615cc7499d1f7/tools/leaderelection/resourcelock/interface.go">leaderelection/resourcelock/interface.go</a>
  */
+@Builder(toBuilder = true)
 public class LeaderElectionRecord {
 
   private final String holderIdentity;
@@ -42,8 +42,6 @@ public class LeaderElectionRecord {
   @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
   private final ZonedDateTime renewTime;
   private final int leaderTransitions;
-  @JsonIgnore
-  private transient Serializable version;
 
   @JsonCreator
   public LeaderElectionRecord(
@@ -78,14 +76,6 @@ public class LeaderElectionRecord {
     return leaderTransitions;
   }
 
-  public Serializable getVersion() {
-    return version;
-  }
-
-  public void setVersion(Serializable version) {
-    this.version = version;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o)
@@ -97,13 +87,12 @@ public class LeaderElectionRecord {
         Objects.equals(holderIdentity, that.holderIdentity) &&
         Objects.equals(leaseDuration, that.leaseDuration) &&
         Objects.equals(acquireTime, that.acquireTime) &&
-        Objects.equals(renewTime, that.renewTime) &&
-        Objects.equals(version, that.version);
+        Objects.equals(renewTime, that.renewTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(holderIdentity, leaseDuration, acquireTime, renewTime, leaderTransitions, version);
+    return Objects.hash(holderIdentity, leaseDuration, acquireTime, renewTime, leaderTransitions);
   }
 
 }

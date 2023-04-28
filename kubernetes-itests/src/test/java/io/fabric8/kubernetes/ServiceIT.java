@@ -64,6 +64,7 @@ class ServiceIT {
   @Test
   void update() {
     Service svc1 = client.services().withName("service-update").edit(s -> new ServiceBuilder(s)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377))
         .endPort().endSpec()
         .build());

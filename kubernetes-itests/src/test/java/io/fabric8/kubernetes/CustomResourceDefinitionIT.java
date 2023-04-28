@@ -99,6 +99,7 @@ class CustomResourceDefinitionIT {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
         .withName(name).edit(c -> new CustomResourceDefinitionBuilder(c)
+            .editMetadata().withResourceVersion(null).endMetadata()
             .editSpec().editOrNewNames().addToShortNames("its").endNames().endSpec().build());
     // Then
     assertThat(result.getSpec().getNames().getShortNames())

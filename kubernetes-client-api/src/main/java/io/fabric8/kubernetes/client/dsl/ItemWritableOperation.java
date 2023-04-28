@@ -62,8 +62,7 @@ public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemRepl
    *
    * @param item kubernetes object
    * @return updated object
-   * @deprecated please use one of patchStatus, editStatus, or replaceStatus, or a locked replace
-   *             {@link Resource#lockResourceVersion(String)}
+   * @deprecated please use resource(item).updateStatus();
    */
   @Deprecated
   T updateStatus(T item);

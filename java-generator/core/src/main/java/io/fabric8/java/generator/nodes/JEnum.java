@@ -100,13 +100,15 @@ public class JEnum extends AbstractJSONSchema2Pojo {
       } catch (Exception e) {
         constantName = sanitizeEnumEntry(sanitizeString(k));
       }
+      String originalName = AbstractJSONSchema2Pojo.escapeQuotes(k);
+
       EnumConstantDeclaration decl = new EnumConstantDeclaration();
       decl.addAnnotation(
           new SingleMemberAnnotationExpr(
               new Name("com.fasterxml.jackson.annotation.JsonProperty"),
-              new StringLiteralExpr(k)));
+              new StringLiteralExpr(originalName)));
       decl.setName(constantName);
-      decl.addArgument(new StringLiteralExpr(k));
+      decl.addArgument(new StringLiteralExpr(originalName));
       en.addEntry(decl);
     }
 

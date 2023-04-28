@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable;
 import io.fabric8.kubernetes.client.dsl.FieldValidateable.Validation;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -49,6 +51,7 @@ public class OperationContext {
   protected String namespace;
   protected boolean defaultNamespace = true;
   protected String name;
+  protected String subresource;
   protected boolean dryRun;
   protected FieldValidateable.Validation fieldValidation;
   protected String fieldManager;
@@ -67,6 +70,7 @@ public class OperationContext {
   protected String selectorAsString;
 
   protected Client client;
+  protected RequestConfig requestConfig;
 
   private long timeout;
   private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
@@ -75,25 +79,27 @@ public class OperationContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.client, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion,
+    this(other.client, other.plural, other.namespace, other.name, other.subresource, other.apiGroupName, other.apiGroupVersion,
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
-        other.forceConflicts, other.timeout, other.timeoutUnit);
+        other.forceConflicts, other.timeout, other.timeoutUnit, other.requestConfig);
   }
 
-  public OperationContext(Client client, String plural, String namespace, String name,
+  @SuppressWarnings("java:S107")
+  public OperationContext(Client client, String plural, String namespace, String name, String subresource,
       String apiGroupName, String apiGroupVersion, Object item, Map<String, String> labels,
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
       boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation,
-      String fieldManager, Boolean forceConflicts, long timeout, TimeUnit timeoutUnit) {
+      String fieldManager, Boolean forceConflicts, long timeout, TimeUnit timeoutUnit, RequestConfig requestConfig) {
     this.client = client;
     this.item = item;
     this.plural = plural;
     setNamespace(namespace, defaultNamespace);
     this.name = name;
+    this.subresource = subresource;
     setApiGroupName(apiGroupName);
     setApiGroupVersion(apiGroupVersion);
     setLabels(labels);
@@ -112,6 +118,7 @@ public class OperationContext {
     this.forceConflicts = forceConflicts;
     this.timeout = timeout;
     this.timeoutUnit = timeoutUnit;
+    this.requestConfig = requestConfig == null ? null : new RequestConfigBuilder(requestConfig).build();
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
@@ -175,6 +182,10 @@ public class OperationContext {
     return client.getConfiguration();
   }
 
+  public RequestConfig getRequestConfig() {
+    return requestConfig;
+  }
+
   public String getPlural() {
     return plural;
   }
@@ -189,6 +200,10 @@ public class OperationContext {
 
   public String getName() {
     return name;
+  }
+
+  public String getSubresource() {
+    return subresource;
   }
 
   public String getApiGroupName() {
@@ -349,6 +364,15 @@ public class OperationContext {
     return context;
   }
 
+  public OperationContext withSubresource(String subresource) {
+    if (Objects.equals(this.subresource, subresource)) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.subresource = subresource;
+    return context;
+  }
+
   public OperationContext withApiGroupName(String apiGroupName) {
     if (Objects.equals(this.apiGroupName, apiGroupName)) {
       return this;
@@ -492,7 +516,7 @@ public class OperationContext {
       newContext = newContext.withNamespace(getNamespace());
     }
 
-    return getClient().adapt(BaseClient.class).newClient(newContext).adapt(clazz);
+    return getClient().adapt(BaseClient.class).newClient(newContext, clazz);
   }
 
   public Executor getExecutor() {
@@ -530,6 +554,15 @@ public class OperationContext {
     final OperationContext context = new OperationContext(this);
     context.timeout = timeout;
     context.timeoutUnit = timeUnit == null ? TimeUnit.MILLISECONDS : timeUnit;
+    return context;
+  }
+
+  public OperationContext withRequestConfig(RequestConfig requestConfig) {
+    if (requestConfig == this.requestConfig) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.requestConfig = requestConfig;
     return context;
   }
 

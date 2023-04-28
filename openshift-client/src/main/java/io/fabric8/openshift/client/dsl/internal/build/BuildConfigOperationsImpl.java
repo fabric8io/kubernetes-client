@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
@@ -66,8 +67,6 @@ public class BuildConfigOperationsImpl
     CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> {
 
   private static final Logger logger = LoggerFactory.getLogger(BuildConfigOperationsImpl.class);
-  public static final String BUILD_CONFIG_LABEL = "openshift.io/build-config.name";
-  public static final String BUILD_CONFIG_ANNOTATION = "openshift.io/build-config.name";
 
   private final BuildConfigOperationContext buildConfigOperationContext;
   private final String secret;
@@ -82,7 +81,8 @@ public class BuildConfigOperationsImpl
   private final String asFile;
 
   public BuildConfigOperationsImpl(Client client) {
-    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
+    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client).withRequestConfig(
+        new RequestConfigBuilder(client.getConfiguration().getRequestConfig()).withRequestTimeout(0).build()));
   }
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
@@ -241,7 +241,11 @@ public class BuildConfigOperationsImpl
 
   @Override
   public BuildConfigOperationsImpl withTimeout(long timeout, TimeUnit unit) {
-    return new BuildConfigOperationsImpl(getContext(), context.withTimeout(timeout, unit));
+    return new BuildConfigOperationsImpl(getContext(), context
+        .withTimeout(timeout, unit)
+        .withRequestConfig(new RequestConfigBuilder(context.getRequestConfig())
+            .withRequestTimeout((int) unit.toMillis(timeout))
+            .build()));
   }
 
   @Override
@@ -257,8 +261,8 @@ public class BuildConfigOperationsImpl
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
       HttpClient newClient = this.httpClient.newBuilder()
-          .readTimeout(this.context.getTimeout(), this.context.getTimeoutUnit())
-          .writeTimeout(this.context.getTimeout(), this.context.getTimeoutUnit())
+          .readTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
+          .writeTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .build();
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)
@@ -270,7 +274,7 @@ public class BuildConfigOperationsImpl
           return Build.class;
         }
       }));
-    } catch (Throwable e) {
+    } catch (Exception e) {
       // TODO: better determine which exception this should occur on
       // otherwise we need to have the httpclient api open up to the notion
       // of a RequestBody/BodyPublisher

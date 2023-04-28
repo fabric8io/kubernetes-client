@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/jetstack/CertManagerSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization": {
       "type": "object",
@@ -147,7 +147,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ParentReference"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
           }
         },
         "serviceType": {
@@ -301,6 +301,10 @@
     "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuer": {
       "type": "object",
       "properties": {
+        "caBundle": {
+          "type": "string",
+          "javaOmitEmpty": true
+        },
         "disableAccountKeyGeneration": {
           "type": "boolean"
         },
@@ -1624,6 +1628,10 @@
         "caBundle": {
           "type": "string",
           "javaOmitEmpty": true
+        },
+        "caBundleSecretRef": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
+          "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
         },
         "namespace": {
           "type": "string"

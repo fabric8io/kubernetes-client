@@ -25,6 +25,7 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -33,12 +34,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GeneratorTest {
 
@@ -61,6 +57,7 @@ class GeneratorTest {
         "t",
         "g",
         "v",
+        "Namespaced",
         "Spec",
         "Status",
         true,
@@ -78,7 +75,60 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("t", res.getTopLevelClasses().get(0).getName());
     assertEquals("v1alpha1",
-        res.getTopLevelClasses().get(0).getCompilationUnit().getPackageDeclaration().get().getNameAsString());
+        res.getTopLevelClasses().get(0).getPackageDeclaration().get().getNameAsString());
+  }
+
+  @Test
+  void testNamespacedCR() {
+    // Arrange
+    JCRObject cro = new JCRObject(
+        null,
+        "t",
+        "g",
+        "v",
+        "Namespaced",
+        "Spec",
+        "Status",
+        true,
+        true,
+        true,
+        true,
+        "t",
+        "ts",
+        defaultConfig);
+
+    // Act
+    GeneratorResult res = cro.generateJava();
+
+    // Assert
+    assertEquals("io.fabric8.kubernetes.api.model.Namespaced", res.getTopLevelClasses().get(0)
+        .getClassByName("t").get().getImplementedTypes().get(0).getNameWithScope());
+  }
+
+  @Test
+  void testClusterScopeCR() {
+    // Arrange
+    JCRObject cro = new JCRObject(
+        null,
+        "t",
+        "g",
+        "v",
+        "Cluster",
+        "Spec",
+        "Status",
+        true,
+        true,
+        true,
+        true,
+        "t",
+        "ts",
+        defaultConfig);
+
+    // Act
+    GeneratorResult res = cro.generateJava();
+
+    // Assert
+    assertTrue(res.getTopLevelClasses().get(0).getClassByName("t").get().getImplementedTypes().isEmpty());
   }
 
   @Test
@@ -89,6 +139,7 @@ class GeneratorTest {
         "t",
         "g",
         "v",
+        "Namespaced",
         "Spec",
         "Status",
         true,
@@ -239,8 +290,7 @@ class GeneratorTest {
         null,
         null,
         false,
-        "",
-        "", defaultConfig,
+        defaultConfig,
         null,
         Boolean.FALSE,
         null);
@@ -255,32 +305,6 @@ class GeneratorTest {
   }
 
   @Test
-  void testEmptyObjectWithSuffix() {
-    // Arrange
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, true, new HashMap<>());
-    JObject obj = new JObject(
-        "v1alpha1",
-        "t",
-        null,
-        null,
-        false,
-        "",
-        "MySuffix",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals("v1alpha1.TMySuffix", obj.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("TMySuffix", res.getTopLevelClasses().get(0).getName());
-  }
-
-  @Test
   void testEmptyObjectWithoutNamespace() {
     // Arrange
     JObject obj = new JObject(
@@ -289,8 +313,6 @@ class GeneratorTest {
         null,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -318,8 +340,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -333,7 +353,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("T", res.getTopLevelClasses().get(0).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clz.isPresent());
     assertEquals(1, clz.get().getFields().size());
     assertTrue(clz.get().getFieldByName("o1").isPresent());
@@ -354,8 +374,6 @@ class GeneratorTest {
         props,
         req,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -365,7 +383,7 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clz.get().getFieldByName("o1").get().getAnnotationByName("Required").isPresent());
   }
 
@@ -378,36 +396,33 @@ class GeneratorTest {
         new HashMap<>(),
         new ArrayList<>(),
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
-    Config config = new Config(null, null, Config.Suffix.ALWAYS, null, null, null, false, new HashMap<>());
+    Config config = new Config(null, null, false, new HashMap<>());
     JObject obj2 = new JObject(
         "v1alpha1",
         "t",
         new HashMap<>(),
         new ArrayList<>(),
         false,
-        "",
-        "",
         config,
         null,
         Boolean.FALSE,
         null);
+    String generatedAnnotationName = AbstractJSONSchema2Pojo.newGeneratedAnnotation().getNameAsString();
 
     // Act
     GeneratorResult res1 = obj1.generateJava();
     GeneratorResult res2 = obj2.generateJava();
 
     // Assert
-    Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
-    assertTrue(clz1.get().getAnnotationByName(AbstractJSONSchema2Pojo.GENERATED_ANNOTATION.getNameAsString()).isPresent());
+    Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getClassByName("T");
+    assertTrue(clz1.get().getAnnotationByName(generatedAnnotationName).isPresent());
 
-    Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
-    assertFalse(clz2.get().getAnnotationByName(AbstractJSONSchema2Pojo.GENERATED_ANNOTATION.getNameAsString()).isPresent());
+    Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getClassByName("T");
+    assertFalse(clz2.get().getAnnotationByName(generatedAnnotationName).isPresent());
   }
 
   @Test
@@ -437,7 +452,7 @@ class GeneratorTest {
     assertEquals(1, res.getInnerClasses().size());
     assertEquals("T", res.getInnerClasses().get(0).getName());
 
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getCompilationUnit().getEnumByName("T");
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
     assertTrue(en.isPresent());
     assertEquals(3, en.get().getEntries().size());
     assertEquals("FOO", en.get().getEntries().get(0).getName().asString());
@@ -460,7 +475,7 @@ class GeneratorTest {
     JEnum enu = new JEnum(
         "t",
         enumValues,
-        new Config(false, null, null, null, null, null, true, new HashMap<>()),
+        new Config(false, null, null, new HashMap<>()),
         null,
         Boolean.FALSE,
         null);
@@ -473,7 +488,7 @@ class GeneratorTest {
     assertEquals(1, res.getInnerClasses().size());
     assertEquals("T", res.getInnerClasses().get(0).getName());
 
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getCompilationUnit().getEnumByName("T");
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
     assertTrue(en.isPresent());
     assertEquals(3, en.get().getEntries().size());
     assertEquals("foo", en.get().getEntries().get(0).getName().asString());
@@ -491,8 +506,6 @@ class GeneratorTest {
             null,
             null,
             false,
-            "",
-            "",
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -521,8 +534,6 @@ class GeneratorTest {
             null,
             null,
             false,
-            "",
-            "",
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -554,8 +565,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -569,72 +578,12 @@ class GeneratorTest {
     assertEquals("O1", res.getTopLevelClasses().get(0).getName());
     assertEquals("T", res.getTopLevelClasses().get(1).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(1).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(1).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(1, clzT.get().getFields().size());
     assertTrue(clzT.get().getFieldByName("o1").isPresent());
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
-  }
-
-  @Test
-  void testObjectOfObjectsWithTopLevelPrefix() {
-    // Arrange
-    Config config = new Config(null, Config.Prefix.TOP_LEVEL, null, null, null, null, true, new HashMap<>());
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
-    newObj.setType("object");
-    props.put("o1", newObj);
-    JObject obj = new JObject(
-        null,
-        "t",
-        props,
-        null,
-        false,
-        "My",
-        "",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("MyT", res.getTopLevelClasses().get(1).getName());
-  }
-
-  @Test
-  void testObjectOfObjectsWithAlwaysPrefix() {
-    // Arrange
-    Config config = new Config(null, Config.Prefix.ALWAYS, null, null, null, null, true, new HashMap<>());
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
-    newObj.setType("object");
-    props.put("o1", newObj);
-    JObject obj = new JObject(
-        null,
-        "t",
-        props,
-        null,
-        false,
-        "My",
-        "",
-        config,
-        null,
-        Boolean.FALSE,
-        null);
-
-    // Act
-    GeneratorResult res = obj.generateJava();
-
-    // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("MyO1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("MyT", res.getTopLevelClasses().get(1).getName());
   }
 
   @Test
@@ -646,8 +595,6 @@ class GeneratorTest {
         null,
         null,
         true,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -660,7 +607,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("T", res.getTopLevelClasses().get(0).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertTrue(clzT.get().getFieldByName("additionalProperties").isPresent());
   }
@@ -679,8 +626,6 @@ class GeneratorTest {
         props,
         null,
         false,
-        "",
-        "",
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -693,7 +638,7 @@ class GeneratorTest {
     assertEquals(1, res.getTopLevelClasses().size());
     assertEquals("T", res.getTopLevelClasses().get(0).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertTrue(clzT.get().getFieldByName("description").isPresent());
   }
@@ -712,7 +657,7 @@ class GeneratorTest {
     nonNullableObj.setNullable(Boolean.FALSE);
     props.put("o2", nonNullableObj);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -723,7 +668,7 @@ class GeneratorTest {
     assertEquals("O2", res.getTopLevelClasses().get(1).getName());
     assertEquals("T", res.getTopLevelClasses().get(2).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(2, clzT.get().getFields().size());
     Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
@@ -735,7 +680,8 @@ class GeneratorTest {
     assertInstanceOf(SingleMemberAnnotationExpr.class, nullableJacksonBasedAnnotation.get());
     SingleMemberAnnotationExpr actualNullableAnnotation = (SingleMemberAnnotationExpr) nullableJacksonBasedAnnotation.get();
     assertEquals("nulls = com.fasterxml.jackson.annotation.Nulls.SET", actualNullableAnnotation.getMemberValue().toString());
-    Optional<AnnotationExpr> nullableFabric8BasedAnnotation = actualO1Field.getAnnotationByName("Nullable");
+    Optional<AnnotationExpr> nullableFabric8BasedAnnotation = actualO1Field
+        .getAnnotationByName("io.fabric8.generator.annotation.Nullable");
     assertTrue(nullableFabric8BasedAnnotation.isPresent());
 
     Optional<FieldDeclaration> o2Field = clzT.get().getFieldByName("o2");
@@ -747,7 +693,7 @@ class GeneratorTest {
     actualNullableAnnotation = (SingleMemberAnnotationExpr) nullableJacksonBasedAnnotation.get();
     assertEquals("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP", actualNullableAnnotation.getMemberValue().toString());
 
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
   }
 
@@ -766,7 +712,7 @@ class GeneratorTest {
     newObj2.setProperties(obj2Props);
     props.put("o1", newObj1);
     props.put("o2", newObj2);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -781,7 +727,7 @@ class GeneratorTest {
     assertEquals("O2", res.getTopLevelClasses().get(4).getName());
     assertEquals("T", res.getTopLevelClasses().get(5).getName());
 
-    CompilationUnit cuT = res.getTopLevelClasses().get(5).getCompilationUnit();
+    GeneratorResult.ClassResult cuT = res.getTopLevelClasses().get(5);
     Optional<ClassOrInterfaceDeclaration> clzT = cuT.getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(2, clzT.get().getFields().size());
@@ -789,11 +735,11 @@ class GeneratorTest {
     assertEquals("v1alpha1", cuT.getPackageDeclaration().get().getNameAsString());
     assertEquals(
         "v1alpha1.t.O1", clzT.get().getFieldByName("o1").get().getElementType().toString());
-    CompilationUnit cuO1 = res.getTopLevelClasses().get(0).getCompilationUnit();
+    GeneratorResult.ClassResult cuO1 = res.getTopLevelClasses().get(0);
     Optional<ClassOrInterfaceDeclaration> clzO1 = cuO1.getClassByName("O1");
     assertTrue(clzO1.isPresent());
     assertEquals("v1alpha1.t", cuO1.getPackageDeclaration().get().getNameAsString());
-    CompilationUnit cuO2 = res.getTopLevelClasses().get(4).getCompilationUnit();
+    GeneratorResult.ClassResult cuO2 = res.getTopLevelClasses().get(4);
     Optional<ClassOrInterfaceDeclaration> clzO2 = cuO2.getClassByName("O2");
     assertTrue(clzO2.isPresent());
     assertTrue(clzO2.get().getFieldByName("o1").isPresent());
@@ -821,7 +767,7 @@ class GeneratorTest {
     objWithoutDefaultValues.setType("object");
     props.put("o2", objWithoutDefaultValues);
 
-    JObject obj = new JObject(null, "t", props, null, false, "", "", defaultConfig, null, Boolean.FALSE, null);
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
     GeneratorResult res = obj.generateJava();
@@ -832,7 +778,7 @@ class GeneratorTest {
     assertEquals("O2", res.getTopLevelClasses().get(1).getName());
     assertEquals("T", res.getTopLevelClasses().get(2).getName());
 
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getCompilationUnit().getClassByName("T");
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getClassByName("T");
     assertTrue(clzT.isPresent());
     assertEquals(2, clzT.get().getFields().size());
 
@@ -852,10 +798,50 @@ class GeneratorTest {
     initializer = variableDeclarator.getInitializer();
     assertFalse(initializer.isPresent());
 
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getCompilationUnit().getClassByName("O1");
+    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
 
-    Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getCompilationUnit().getClassByName("O2");
+    Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getClassByName("O2");
     assertTrue(clzO2.isPresent());
+  }
+
+  @Test
+  void testExactlyMoreThanOneDuplicatedFieldFailsWithException() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+
+    JSONSchemaProps duplicatedFieldObject = new JSONSchemaProps();
+    duplicatedFieldObject.setType("boolean");
+    duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
+    props.put("test_Dup", duplicatedFieldObject);
+    duplicatedFieldObject.setDescription("Deprecated: This field is JUST FOR testing purposes.");
+    props.put("test Dup", duplicatedFieldObject);
+    props.put("test.Dup", duplicatedFieldObject);
+
+    // Assert
+    assertThrows(JavaGeneratorException.class, () -> {
+      // Act
+      JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    },
+        "An exception is expected to be thrown when an object contains more that one duplicated field");
+  }
+
+  @Test
+  void testExactlyDuplicatedFieldNotMarkedAsDeprecatedFailsWithException() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+
+    JSONSchemaProps duplicatedFieldObject = new JSONSchemaProps();
+    duplicatedFieldObject.setType("boolean");
+    duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
+    props.put("testDup", duplicatedFieldObject);
+    props.put("test-Dup", duplicatedFieldObject);
+
+    // Assert
+    assertThrows(JavaGeneratorException.class, () -> {
+      // Act
+      JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    },
+        "An exception is expected to be thrown when an object contains one duplicated field that is not marked as deprecated");
   }
 }

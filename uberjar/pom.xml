@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-openshift-uberjar</artifactId>
@@ -113,6 +113,10 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-node</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-resource</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -291,6 +295,7 @@
                   <include>io.fabric8:kubernetes-model-policy</include>
                   <include>io.fabric8:kubernetes-model-scheduling</include>
                   <include>io.fabric8:kubernetes-model-storageclass</include>
+                  <include>io.fabric8:kubernetes-model-resource</include>
                   <include>io.fabric8:openshift-model</include>
                   <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
@@ -351,6 +356,7 @@
                   <include>io.fabric8:kubernetes-model-policy</include>
                   <include>io.fabric8:kubernetes-model-scheduling</include>
                   <include>io.fabric8:kubernetes-model-storageclass</include>
+                  <include>io.fabric8:kubernetes-model-resource</include>
                   <include>io.fabric8:openshift-model</include>
                   <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -120,9 +121,9 @@ class WatchIT {
           }
           try {
             // introduce a delay to cause the ping to terminate the connection
-            // if this doesn't work reliably, then an alternative would be to
-            // restart the apiserver
-            Thread.sleep(10000);
+            // and that holds the thread for longer than the request timeout
+            Thread.sleep(Config.DEFAULT_REQUEST_TIMEOUT);
+            // TODO: could use withRequestConfig to use a shorter timeout
           } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new AssertionError(e);
@@ -159,7 +160,7 @@ class WatchIT {
             .build());
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
-    assertTrue(modifyLatch.await(15, TimeUnit.SECONDS));
+    assertTrue(modifyLatch.await(30, TimeUnit.SECONDS));
     assertFalse(concurrent.get());
     watch.close();
     assertTrue(closeLatch.await(30, TimeUnit.SECONDS));

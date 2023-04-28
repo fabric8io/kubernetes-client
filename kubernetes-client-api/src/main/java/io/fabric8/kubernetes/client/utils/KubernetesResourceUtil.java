@@ -426,10 +426,10 @@ public class KubernetesResourceUtil {
   private static Class<?> loadRelated(Class<?> type, String suffix, Class<?> defaultClass) {
     try {
       return Thread.currentThread().getContextClassLoader().loadClass(type.getName() + suffix);
-    } catch (ClassNotFoundException | ClassCastException e) {
+    } catch (ClassNotFoundException | ClassCastException | NullPointerException e) {
       try {
         return type.getClassLoader().loadClass(type.getName() + suffix);
-      } catch (ClassNotFoundException | ClassCastException ex) {
+      } catch (ClassNotFoundException | ClassCastException | NullPointerException ex) {
         return defaultClass;
       }
     }
@@ -559,13 +559,14 @@ public class KubernetesResourceUtil {
     }
   }
 
-  public static void addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
+  public static ConfigMapBuilder addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
       final Path dirOrFilePath) throws IOException {
     if (Files.isDirectory(dirOrFilePath, LinkOption.NOFOLLOW_LINKS)) {
       addEntriesFromDirectoryToConfigMap(configMapBuilder, dirOrFilePath);
     } else {
       addEntryFromFileToConfigMap(configMapBuilder, key, dirOrFilePath);
     }
+    return configMapBuilder;
   }
 
   private static Map<String, Object> createDockerRegistryConfigMap(String dockerServer, String username, String password) {

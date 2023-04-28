@@ -412,10 +412,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
       };
       CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference);
-      return futureAnswer.thenApply(l -> {
-        updateApiVersion(l);
-        return l;
-      });
+      return futureAnswer.thenApply(updateApiVersion());
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -614,13 +611,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Watch watch(ListOptions options, final Watcher<T> watcher) {
-    CompletableFuture<Watch> startedFuture = submitWatch(options, watcher);
+    CompletableFuture<? extends Watch> startedFuture = submitWatch(options, watcher);
     Utils.waitUntilReadyOrFail(startedFuture, -1, TimeUnit.SECONDS);
     return startedFuture.join();
   }
 
   @Override
-  public CompletableFuture<Watch> submitWatch(ListOptions options, final Watcher<T> watcher) {
+  public CompletableFuture<AbstractWatchManager<T>> submitWatch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     ListOptions optionsToUse = defaultListOptions(options, true);
     WatchConnectionManager<T, L> watch;
@@ -630,9 +627,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           this,
           optionsToUse,
           watcherToggle,
-          config.getWatchReconnectInterval(),
-          config.getWatchReconnectLimit(),
-          config.getWebsocketTimeout());
+          getRequestConfig().getWatchReconnectInterval(),
+          getRequestConfig().getWatchReconnectLimit(),
+          getRequestConfig().getWebsocketTimeout());
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
     }
@@ -645,28 +642,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           if (t instanceof KubernetesClientException) {
             KubernetesClientException ke = (KubernetesClientException) t;
             List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
-            if (!furtherProcessedCodes.contains(ke.getCode())) {
-              throw ke;
-            }
+            if (furtherProcessedCodes.contains(ke.getCode())) {
+              //release the watch after disabling the watcher (to avoid premature call to onClose)
+              watcherToggle.disable();
 
-            //release the watch after disabling the watcher (to avoid premature call to onClose)
-            watcherToggle.disable();
-
-            // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
-            // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
-            // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
-            try {
-              return new WatchHTTPManager<>(
-                  httpClient,
-                  this,
-                  optionsToUse,
-                  watcher,
-                  config.getWatchReconnectInterval(),
-                  config.getWatchReconnectLimit());
-            } catch (MalformedURLException e) {
-              throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
+              // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
+              // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+              // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
+              try {
+                return new WatchHTTPManager<>(
+                    httpClient,
+                    this,
+                    optionsToUse,
+                    watcher,
+                    getRequestConfig().getWatchReconnectInterval(),
+                    getRequestConfig().getWatchReconnectLimit());
+              } catch (MalformedURLException e) {
+                throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
+              }
             }
           }
+          throw KubernetesClientException.launderThrowable(t);
         } finally {
           watch.close();
         }
@@ -711,19 +707,19 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handleCreate(resource, getType());
   }
 
-  protected T handleUpdate(T updated, boolean status) throws InterruptedException, IOException {
+  protected T handleUpdate(T updated) throws InterruptedException, IOException {
     updateApiVersion(updated);
-    return handleUpdate(updated, getType(), status);
+    return handleUpdate(updated, getType());
   }
 
-  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws InterruptedException, IOException {
+  protected T handlePatch(PatchContext context, T current, T updated) throws InterruptedException, IOException {
     updateApiVersion(updated);
-    return handlePatch(context, current, updated, getType(), status);
+    return handlePatch(context, current, updated, getType());
   }
 
-  protected Scale handleScale(Scale scaleParam) {
+  protected <S> S handleScale(S scaleParam, Class<S> scaleType) {
     try {
-      return handleScale(getCompleteResourceUrl().toString(), scaleParam);
+      return handleScale(getCompleteResourceUrl().toString(), scaleParam, scaleType);
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
@@ -832,14 +828,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   /**
    * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
-   *
-   * @param list Kubernetes resource list
    */
-  protected void updateApiVersion(KubernetesResourceList<T> list) {
-    String version = apiVersion;
-    if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
-      list.getItems().forEach(this::updateApiVersion);
-    }
+  protected UnaryOperator<L> updateApiVersion() {
+    return list -> {
+      String version = apiVersion;
+      if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
+        list.getItems().forEach(this::updateApiVersion);
+      }
+      return list;
+    };
   }
 
   /**
@@ -904,6 +901,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
     // create an informer that supplies the tester with events and empty list handling
     SharedIndexInformer<T> informer = this.createInformer(0, Runnable::run);
+
+    informer.initialState(Stream.empty());
 
     // prevent unnecessary watches and handle closure
     future.whenComplete((r, t) -> informer.stop());
@@ -1105,7 +1104,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T updateStatus(T item) {
-    return resource(item).lockResourceVersion().replaceStatus();
+    return resource(item).updateStatus();
   }
 
   @Override
@@ -1140,6 +1139,31 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit) {
     return newInstance(context.withTimeout(timeout, unit));
+  }
+
+  @Override
+  public T updateStatus() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T update() {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T scale(int count) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T scale(int count, boolean wait) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public Scale scale(Scale scale) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
 }

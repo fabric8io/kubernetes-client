@@ -40,11 +40,12 @@ public class PodSecurityPolicyExample {
       final String localYamlToCreate = "/PodSecurityPolicy.yml";
       logger.info("Creating PodSecurityPolicy from Yaml file: {}", localYamlToCreate);
       try (final InputStream localYamlStream = PodSecurityPolicyExample.class.getResourceAsStream(localYamlToCreate)) {
-        final PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().load(localYamlStream).get();
+        final PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().load(localYamlStream)
+            .item();
         client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName()).delete();
         client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName())
             .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
-        client.policy().v1beta1().podSecurityPolicies().create(podSecurityPolicy);
+        client.policy().v1beta1().podSecurityPolicies().resource(podSecurityPolicy).create();
         logger.info("PodSecurityPolicy created with Name : {}", podSecurityPolicy.getMetadata().getName());
       }
 
@@ -64,7 +65,7 @@ public class PodSecurityPolicyExample {
           .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
           .endSpec()
           .build();
-      client.policy().v1beta1().podSecurityPolicies().create(programmaticPodSecurityPolicy);
+      client.policy().v1beta1().podSecurityPolicies().resource(programmaticPodSecurityPolicy).create();
       logger.info("PodSecurityPolicy created with Name: {}", programmaticPodSecurityPolicy.getMetadata().getName());
     } catch (KubernetesClientException clientException) {
       logger.error("Problem encountered with Kubernetes client!!", clientException);

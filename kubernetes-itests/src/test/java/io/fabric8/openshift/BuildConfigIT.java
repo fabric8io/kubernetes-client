@@ -62,6 +62,7 @@ class BuildConfigIT {
   @Test
   void update() {
     BuildConfig buildConfig1 = client.buildConfigs().withName("bc-update").edit(b -> new BuildConfigBuilder(b)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .editSpec().withFailedBuildsHistoryLimit(5).endSpec().build());
     assertEquals(5, buildConfig1.getSpec().getFailedBuildsHistoryLimit().intValue());
   }

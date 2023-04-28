@@ -39,6 +39,7 @@ public class CRDGenerator {
   private final Resources resources;
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
+  private boolean parallel;
   private Map<String, CustomResourceInfo> infos;
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
@@ -68,6 +69,11 @@ public class CRDGenerator {
     return this;
   }
 
+  public CRDGenerator withParallelGenerationEnabled(boolean parallel) {
+    this.parallel = parallel;
+    return this;
+  }
+
   public CRDGenerator forCRDVersions(List<String> versions) {
     return versions != null && !versions.isEmpty() ? forCRDVersions(versions.toArray(new String[0]))
         : this;
@@ -80,11 +86,11 @@ public class CRDGenerator {
           switch (version) {
             case CustomResourceHandler.VERSION:
               handlers.computeIfAbsent(CustomResourceHandler.VERSION,
-                  s -> new CustomResourceHandler(resources));
+                  s -> new CustomResourceHandler(resources, parallel));
               break;
             case io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION:
               handlers.computeIfAbsent(io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION,
-                  s -> new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(resources));
+                  s -> new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(resources, parallel));
               break;
             default:
               LOGGER.warn("Ignoring unsupported CRD version: {}", version);

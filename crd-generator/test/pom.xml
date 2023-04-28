@@ -22,7 +22,7 @@
   <parent>
     <artifactId>crd-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,7 +30,7 @@
   <name>Fabric8 :: CRD generator :: Tests</name>
 
   <properties>
-    <keycloak-version>20.0.3</keycloak-version>
+    <keycloak-version>21.1.1</keycloak-version>
   </properties>
 
   <dependencies>
@@ -89,6 +89,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerArgs>
+            <arg>-Aio.fabric8.crd.generator.parallel=false</arg>
+          </compilerArgs>
+        </configuration>
       </plugin>
     </plugins>
   </build>

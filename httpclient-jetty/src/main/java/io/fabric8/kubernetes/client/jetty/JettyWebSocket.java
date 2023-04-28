@@ -16,18 +16,21 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.http.StandardHttpRequest;
+import io.fabric8.kubernetes.client.http.BufferUtil;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
-import org.eclipse.jetty.client.HttpResponse;
+import io.fabric8.kubernetes.client.http.WebSocketResponse;
+import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -53,19 +56,12 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     moreMessages = true;
   }
 
-  static WebSocketHandshakeException toHandshakeException(UpgradeException ex) {
-    return new WebSocketHandshakeException(new JettyHttpResponse<>(
-        new StandardHttpRequest.Builder().uri(ex.getRequestURI()).build(),
-        new HttpResponse(null, Collections.emptyList()).status(ex.getResponseStatusCode()),
-        null))
-            .initCause(ex);
-  }
-
   @Override
   public boolean send(ByteBuffer buffer) {
     if (closed.get() || !webSocketSession.isOpen()) {
       return false;
     }
+    buffer = BufferUtil.copy(buffer);
     final int size = buffer.remaining();
     sendQueue.addAndGet(size);
     webSocketSession.getRemote().sendBytes(buffer, new WriteCallback() {
@@ -124,7 +120,6 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   @Override
   public void onWebSocketClose(int statusCode, String reason) {
     closed.set(true);
-    backPressure();
     listener.onClose(this, statusCode, reason);
   }
 
@@ -146,7 +141,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       // - Jetty throws a ClosedChannelException
       return;
     }
-    listener.onError(this, cause);
+    listener.onError(this, cause, cause instanceof IOException);
   }
 
   private void backPressure() {
@@ -169,5 +164,20 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     } finally {
       lock.unlock();
     }
+  }
+
+  static WebSocketResponse toWebSocketResponse(HttpRequest httpRequest, WebSocket ws, UpgradeException ex) {
+    final WebSocketUpgradeResponse webSocketUpgradeResponse = new WebSocketUpgradeResponse(httpRequest,
+        ex.getResponseStatusCode(), ws);
+    final WebSocketHandshakeException handshakeException = new WebSocketHandshakeException(webSocketUpgradeResponse)
+        .initCause(ex);
+    return new WebSocketResponse(webSocketUpgradeResponse, handshakeException);
+  }
+
+  static WebSocketResponse toWebSocketResponse(HttpRequest httpRequest, WebSocket ws, Session session) {
+    final UpgradeResponse jettyUpgradeResponse = session.getUpgradeResponse();
+    final WebSocketUpgradeResponse fabric8UpgradeResponse = new WebSocketUpgradeResponse(
+        httpRequest, jettyUpgradeResponse.getStatusCode(), jettyUpgradeResponse.getHeaders(), ws);
+    return new WebSocketResponse(fabric8UpgradeResponse, null);
   }
 }

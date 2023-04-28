@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/tekton/v1beta1/TektonSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template": {
       "type": "object",

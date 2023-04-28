@@ -72,6 +72,13 @@ public interface EditReplacePatchable<T>
    * concurrent changes (between when you obtained your item and the current state) in an unexpected way.
    * <p>
    * Consider using edit, which allows for a known base, and a builder instead.
+   * <p>
+   * WARNING: For some resource types there is an attempt to make this operation more like
+   * an apply by considering implicit server side state as not being part of the patch. This behavior will be
+   * removed in future versions, you should instead construct the resource to be patched from a resource obtained
+   * from the api server or use patch method that is tolerant to missing state, or
+   * {@link ServerSideApplicable#serverSideApply()}
+   * <p>
    *
    * @param item to be patched with patched values
    * @return returns deserialized version of api server response
@@ -92,6 +99,13 @@ public interface EditReplacePatchable<T>
    * <li>{@link PatchType#SERVER_SIDE_APPLY} - will send the serialization of the item as a SERVER SIDE APPLY patch.
    * You may explicitly set the {@link PatchContext#getFieldManager()} as well to override the default.
    * </ul>
+   *
+   * WARNING: For a JSON patch and some resource types there is an attempt to make this operation more like
+   * an apply by considering implicit server side state as not being part of the patch. This behavior will be
+   * removed in future versions, you should instead construct the resource to be patched from a resource obtained
+   * from the api server or use patch method that is tolerant to missing state, or
+   * {@link ServerSideApplicable#serverSideApply()}
+   * <p>
    *
    * @param item to be patched with patched values
    * @param patchContext {@link PatchContext} for patch request
@@ -149,6 +163,13 @@ public interface EditReplacePatchable<T>
    * <p>
    * Consider using edit instead.
    *
+   * WARNING: For some resource types there is an attempt to make this operation more like
+   * an apply by considering implicit server side state as not being part of the patch. This behavior will be
+   * removed in future versions, you should instead construct the resource to be patched from a resource obtained
+   * from the api server or use patch method that is tolerant to missing state, or
+   * {@link ServerSideApplicable#serverSideApply()}
+   * <p>
+   *
    * @return returns deserialized version of api server response
    */
   T patch();
@@ -168,6 +189,13 @@ public interface EditReplacePatchable<T>
    * <li>{@link PatchType#SERVER_SIDE_APPLY} - will send the serialization of the item as a SERVER SIDE APPLY patch.
    * You may explicitly set the {@link PatchContext#getFieldManager()} as well to override the default.
    * </ul>
+   *
+   * WARNING: For a JSON patch and some resource types there is an attempt to make this operation more like
+   * an apply by considering implicit server side state as not being part of the patch. This behavior will be
+   * removed in future versions, you should instead construct the resource to be patched from a resource obtained
+   * from the api server or use patch method that is tolerant to missing state, or
+   * {@link ServerSideApplicable#serverSideApply()}
+   * <p>
    *
    * @param patchContext {@link PatchContext} for patch request
    * @return returns deserialized version of api server response

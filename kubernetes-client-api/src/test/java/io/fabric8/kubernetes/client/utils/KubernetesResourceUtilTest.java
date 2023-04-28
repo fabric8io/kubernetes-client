@@ -50,6 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.inferListType;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.entry;
@@ -60,6 +61,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KubernetesResourceUtilTest {
   private ConfigMap configMap1;
+
+  /**
+   * To verify null in Thread.currentThread().getContextClassLoader() would be handled in loadRelated()
+   */
+  @Test
+  void testNullContextClassLoader() {
+    ClassLoader currContextClassLoader = Thread.currentThread().getContextClassLoader();
+    try {
+      Thread.currentThread().setContextClassLoader(null);
+      assertEquals(PodList.class, inferListType(Pod.class));
+    } finally {
+      Thread.currentThread().setContextClassLoader(currContextClassLoader);
+    }
+  }
 
   @BeforeEach
   public void createTestResource() {

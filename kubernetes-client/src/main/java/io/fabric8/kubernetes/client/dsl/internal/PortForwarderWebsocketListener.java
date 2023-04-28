@@ -117,9 +117,8 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
       closeBothWays(webSocket, 1002, PROTOCOL_ERROR);
     } else if (channel == 1) {
       // Error channel
-      // TODO: read the error
       KubernetesClientException e = new KubernetesClientException(
-          String.format("Received an error from the remote socket"));
+          String.format("Received an error from the remote socket %s", ExecWebSocketListener.toString(buffer)));
       serverThrowables.add(e);
       logger.debug("Server error", e);
       closeForwarder();
@@ -160,7 +159,7 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
   }
 
   @Override
-  public void onError(WebSocket webSocket, Throwable t) {
+  public void onError(WebSocket webSocket, Throwable t, boolean connectionError) {
     logger.debug("{}: Throwable received from websocket", LOG_PREFIX, t);
     if (alive.get()) {
       serverThrowables.add(t);
@@ -197,15 +196,17 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
   }
 
   private void closeForwarder() {
-    alive.set(false);
-    if (in != null) {
-      Utils.closeQuietly(in);
-    }
-    if (out != null && out != in) {
-      Utils.closeQuietly(out);
-    }
-    pumperService.shutdownNow();
-    serialExecutor.shutdownNow();
+    serialExecutor.execute(() -> {
+      alive.set(false);
+      if (in != null) {
+        Utils.closeQuietly(in);
+      }
+      if (out != null && out != in) {
+        Utils.closeQuietly(out);
+      }
+      pumperService.shutdownNow();
+      serialExecutor.shutdownNow();
+    });
   }
 
   private static void pipe(ReadableByteChannel in, WebSocket webSocket, BooleanSupplier isAlive)

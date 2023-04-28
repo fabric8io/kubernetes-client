@@ -19,7 +19,9 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
@@ -31,6 +33,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.stream.Stream;
 
@@ -49,7 +52,10 @@ class OperationSupportTest {
   @BeforeEach
   void setUp() {
     final OperationContext context = new OperationContext().withClient(mock(Client.class, RETURNS_DEEP_STUBS));
-    when(context.getClient().getConfiguration()).thenReturn(Config.empty());
+    final Config globalConfig = new ConfigBuilder(Config.empty())
+        .withRequestTimeout(313373)
+        .build();
+    when(context.getClient().getConfiguration()).thenReturn(globalConfig);
     operationSupport = new OperationSupport(context);
   }
 
@@ -126,4 +132,59 @@ class OperationSupportTest {
     assertThat(result)
         .hasMessageContaining("Failure executing: GET at: https://example.com. Message: Custom message Bad Request.");
   }
+
+  @Test
+  void getResourceURL() throws MalformedURLException {
+    assertThat(operationSupport.getResourceUrl()).hasToString("https://kubernetes.default.svc/api/v1");
+
+    OperationSupport pods = new OperationSupport(operationSupport.context.withPlural("pods"));
+    assertThat(pods.getResourceUrl().toString()).hasToString("https://kubernetes.default.svc/api/v1/pods");
+
+    pods = new OperationSupport(pods.context.withName("pod-1"));
+    assertThat(pods.getResourceUrl()).hasToString("https://kubernetes.default.svc/api/v1/pods/pod-1");
+
+    pods = new OperationSupport(pods.context.withSubresource("ephemeralcontainers"));
+    assertThat(pods.getResourceUrl())
+        .hasToString("https://kubernetes.default.svc/api/v1/pods/pod-1/ephemeralcontainers");
+
+    pods = new OperationSupport(pods.context.withNamespace("default"));
+    assertThat(pods.getResourceUrl())
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/ephemeralcontainers");
+
+    OperationSupport subresourceWithoutName = new OperationSupport(
+        operationSupport.context.withPlural("Pods").withSubresource("pod-1"));
+    assertThrows(KubernetesClientException.class, () -> subresourceWithoutName.getResourceUrl());
+  }
+
+  @Test
+  void getResourceURLStatus() throws MalformedURLException {
+    OperationSupport pods = new OperationSupport(operationSupport.context.withPlural("pods"));
+    OperationSupport podsStatus = new OperationSupport(operationSupport.context.withPlural("pods").withSubresource("status"));
+    assertThat(podsStatus.getResourceUrl("default", "pod-1"))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/status");
+    assertThat(pods.getResourceUrl("default", "pod-1"))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1");
+
+    OperationSupport podsSubresource = new OperationSupport(pods.context.withSubresource("ephemeralcontainers"));
+    assertThat(podsSubresource.getResourceUrl("default", "pod-1"))
+        .hasToString("https://kubernetes.default.svc/api/v1/namespaces/default/pods/pod-1/ephemeralcontainers");
+
+    assertThrows(KubernetesClientException.class, () -> {
+      podsStatus.getResourceUrl("default", null);
+    }, "status requires name");
+  }
+
+  @Test
+  void getRequestConfigReturnsFromGlobalConfigByDefault() {
+    assertThat(operationSupport.getRequestConfig())
+        .hasFieldOrPropertyWithValue("requestTimeout", 313373);
+  }
+
+  @Test
+  void getRequestConfigReturnsFromContextIfPresent() {
+    assertThat(operationSupport.getOperationContext()
+        .withRequestConfig(new RequestConfigBuilder().withRequestTimeout(1337).build()).getRequestConfig())
+            .hasFieldOrPropertyWithValue("requestTimeout", 1337);
+  }
+
 }

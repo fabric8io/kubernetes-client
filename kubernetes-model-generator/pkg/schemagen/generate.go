@@ -231,7 +231,7 @@ func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	_, hasMeta := t.FieldByName("ObjectMeta")
 
-	if t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate" && t.Name() != "MachineSpec" && t.Name() != "MachineTemplateSpec" && hasMeta {
+	if !g.isSubresourceContainingMetadata(t) && hasMeta {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {
@@ -268,7 +268,7 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 
 	s := JSONSchema{
 		ID:     "http://fabric8.io/fabric8/v2/" + t.Name() + "#",
-		Schema: "http://json-schema.org/draft-05/schema#",
+		Schema: "http://json-schema.org/draft-07/schema#",
 		Module: moduleName,
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",
@@ -556,6 +556,18 @@ func (g *schemaGenerator) isNamespaceScopedResource(t reflect.Type) bool {
 	return Contains(namespaceScopedResourcesList, t.PkgPath()+"/"+t.Name())
 }
 
+func (g *schemaGenerator) isSubresourceContainingMetadata(t reflect.Type) bool {
+  subResourcesContainingMetadataList := []string{
+    "JobTemplateSpec",
+    "PodTemplateSpec",
+    "PersistentVolumeClaimTemplate",
+    "MachineSpec",
+    "MachineTemplateSpec",
+    "ResourceClaimTemplateSpec",
+  }
+	return Contains(subResourcesContainingMetadataList, t.Name())
+}
+
 func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 	clusterScopedResourcesList := []string{
 		"k8s.io/api/core/v1/Namespace",
@@ -564,7 +576,10 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/kube-aggregator/pkg/apis/apiregistration/v1/APIService",
 		"k8s.io/api/core/v1/PersistentVolume",
 		"k8s.io/api/authentication/v1/TokenReview",
+		"k8s.io/api/authentication/v1alpha1/SelfSubjectReview",
 		"k8s.io/api/admissionregistration/v1beta1/MutatingWebhookConfiguration",
+		"k8s.io/api/admissionregistration/v1alpha1/ValidatingAdmissionPolicy",
+		"k8s.io/api/admissionregistration/v1alpha1/ValidatingAdmissionPolicyBinding",
 		"k8s.io/api/authorization/v1/SelfSubjectRulesReview",
 		"k8s.io/api/authorization/v1beta1/SubjectAccessReview",
 		"k8s.io/api/admissionregistration/v1beta1/ValidatingWebhookConfiguration",
@@ -600,6 +615,9 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/flowcontrol/v1beta1/PriorityLevelConfiguration",
 		"k8s.io/api/flowcontrol/v1beta2/FlowSchema",
 		"k8s.io/api/flowcontrol/v1beta2/PriorityLevelConfiguration",
+		"k8s.io/api/flowcontrol/v1beta3/FlowSchema",
+		"k8s.io/api/flowcontrol/v1beta3/PriorityLevelConfiguration",
+		"k8s.io/api/resource/v1alpha1/ResourceClass",
 		"github.com/openshift/api/authorization/v1/ClusterRole",
 		"github.com/openshift/api/authorization/v1/ClusterRoleBinding",
 		"github.com/openshift/api/authorization/v1/ResourceAccessReview",

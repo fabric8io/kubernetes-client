@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import org.junit.jupiter.api.Test;
@@ -65,9 +66,25 @@ class DeploymentIT {
   @Test
   void update() {
     Deployment deployment1 = client.apps().deployments().withName("deployment-standard")
-        .edit(d -> new DeploymentBuilder(d).editMetadata().addToAnnotations("updated", "true").endMetadata().build());
+        .edit(d -> new DeploymentBuilder(d)
+            .editMetadata().withResourceVersion(null).addToAnnotations("updated", "true").endMetadata().build());
     assertThat(deployment1).isNotNull();
     assertEquals("true", deployment1.getMetadata().getAnnotations().get("updated"));
+  }
+
+  @Test
+  void scale() {
+    Deployment deployment1 = client.apps().deployments().withName("deployment-standard").scale(5, true);
+    assertEquals(5, deployment1.getStatus().getReplicas());
+    deployment1 = client.apps().deployments().withName("deployment-standard").scale(1, true);
+    assertEquals(1, deployment1.getStatus().getReplicas());
+
+    // will only work on clusters older than 1.16
+    if (client.supports(io.fabric8.kubernetes.api.model.extensions.Deployment.class)) {
+      client.extensions().deployments().withName("deployment-standard").scale(5, true);
+      Scale scale = client.extensions().deployments().withName("deployment-standard").scale();
+      assertEquals(5, scale.getStatus().getReplicas());
+    }
   }
 
   @Test

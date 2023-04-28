@@ -250,7 +250,7 @@ class BaseOperationTest {
     HttpRequest.Builder mockRequestBuilder = mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
     when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
     when(mockRequestBuilder.build()).thenReturn(new StandardHttpRequest.Builder().uri("https://k8s.example.com").build());
-    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class))).thenAnswer(
+    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(InputStream.class))).thenAnswer(
         invocation -> {
           int count = httpExecutionCounter.getAndIncrement();
           if (count < numFailures) {
@@ -268,75 +268,6 @@ class BaseOperationTest {
               TestHttpResponse.from(200, Serialization.asJson(podNoLabels)));
         });
     return mockClient;
-  }
-
-  @Test
-  void testNoHttpRetryWithDefaultConfig() {
-    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
-    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
-    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withClient(mockClient(mockClient,
-            new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default").build()))
-        .withPlural("pods")
-        .withName("test-pod"));
-    baseOp.setType(Pod.class);
-
-    // When
-    Exception exception = assertThrows(KubernetesClientException.class, () -> {
-      Pod result = baseOp.get();
-    });
-
-    // Then
-    assertTrue(exception.getCause().getMessage().contains("For example java.net.ConnectException"),
-        "As the first failure is an IOException the message of the causedBy expected to contain the given text: 'For example java.net.ConnectException'!");
-    assertEquals(1, httpExecutionCounter.get());
-  }
-
-  @Test
-  void testHttpRetryWithMoreFailuresThanRetries() {
-    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
-    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
-    long start = System.currentTimeMillis();
-    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withClient(mockClient(mockClient,
-            new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
-                .withRequestRetryBackoffLimit(3).withRequestRetryBackoffInterval(100).build()))
-        .withPlural("pods")
-        .withName("test-pod"));
-    baseOp.setType(Pod.class);
-
-    // When
-    Exception exception = assertThrows(KubernetesClientException.class, () -> {
-      Pod result = baseOp.get();
-    });
-
-    long stop = System.currentTimeMillis();
-
-    // Then
-    assertTrue(stop - start >= 700); //100+200+400
-    assertTrue(exception.getMessage().contains("Internal Server Error"),
-        "As the last failure, the 3rd one, is not an IOException the message expected to contain: 'Internal Server Error'!");
-    assertEquals(4, httpExecutionCounter.get(), "Expected 4 calls: one normal try and 3 backoff retries!");
-  }
-
-  @Test
-  void testHttpRetryWithLessFailuresThanRetries() {
-    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
-    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
-    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-        .withClient(mockClient(mockClient,
-            new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withNamespace("default")
-                .withRequestRetryBackoffLimit(3).build()))
-        .withPlural("pods")
-        .withName("test-pod"));
-    baseOp.setType(Pod.class);
-
-    // When
-    Pod result = baseOp.get();
-
-    // Then
-    assertNotNull(result);
-    assertEquals(3, httpExecutionCounter.get(), "Expected 3 calls: 2 failures and 1 success!");
   }
 
   @Test

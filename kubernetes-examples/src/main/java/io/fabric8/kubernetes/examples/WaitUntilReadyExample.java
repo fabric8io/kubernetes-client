@@ -35,7 +35,7 @@ public class WaitUntilReadyExample {
   public static void main(String[] args) throws InterruptedException {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
-      final Pod pod = client.pods().inNamespace(namespace).create(
+      final Pod pod = client.pods().inNamespace(namespace).resource(
           new PodBuilder()
               .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
               .withNewSpec()
@@ -47,10 +47,11 @@ public class WaitUntilReadyExample {
               .addNewInitContainer()
               .withName("init-myservice")
               .withImage("busybox:1.28")
-              .withCommand("sh", "-c", "echo 'inititalizing...'; sleep 5")
+              .withCommand("sh", "-c", "echo 'initializing...'; sleep 5")
               .endInitContainer()
               .endSpec()
-              .build());
+              .build())
+          .create();
       logger.info("Pod created, waiting for it to get ready...");
       client.resource(pod).inNamespace(namespace).waitUntilReady(10, TimeUnit.SECONDS);
       logger.info("Pod is ready now");

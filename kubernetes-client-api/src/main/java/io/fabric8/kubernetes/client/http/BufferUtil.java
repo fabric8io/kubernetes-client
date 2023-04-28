@@ -16,6 +16,9 @@
 package io.fabric8.kubernetes.client.http;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -70,4 +73,24 @@ public class BufferUtil {
     buffer.position(position);
     return clone;
   }
+
+  /**
+   * Very rudimentary method to check if the provided ByteBuffer contains text.
+   * 
+   * @return true if the buffer contains text, false otherwise.
+   */
+  public static boolean isPlainText(ByteBuffer originalBuffer) {
+    if (originalBuffer == null) {
+      return false;
+    }
+    final ByteBuffer buffer = copy(originalBuffer);
+    final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder();
+    try {
+      decoder.decode(buffer);
+      return true;
+    } catch (CharacterCodingException ex) {
+      return false;
+    }
+  }
+
 }

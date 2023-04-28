@@ -45,27 +45,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
       final int reconnectLimit)
       throws MalformedURLException {
-    // Default max 32x slowdown from base interval
-    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, 5);
-  }
-
-  public WatchHTTPManager(final HttpClient client,
-      final BaseOperation<T, L, ?> baseOperation,
-      final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
-      final int reconnectLimit, int maxIntervalExponent)
-      throws MalformedURLException {
-
     super(
-        watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+        watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval,
         () -> client.newBuilder()
             .readTimeout(0, TimeUnit.MILLISECONDS)
             .forStreaming()
             .build());
-
   }
 
   @Override
-  protected synchronized void start(URL url, Map<String, String> headers) {
+  protected synchronized void start(URL url, Map<String, String> headers, WatchRequestState state) {
     HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url);
     headers.forEach(builder::header);
     StringBuffer buffer = new StringBuffer();
@@ -73,7 +62,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       for (ByteBuffer content : b) {
         for (char c : StandardCharsets.UTF_8.decode(content).array()) {
           if (c == '\n') {
-            onMessage(buffer.toString());
+            onMessage(buffer.toString(), state);
             buffer.setLength(0);
           } else {
             buffer.append(c);
@@ -83,30 +72,26 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       a.consume();
     });
     call.whenComplete((response, t) -> {
-      if (!call.isCancelled() && t != null) {
+      if (t != null) {
         logger.info("Watch connection failed. reason: {}", t.getMessage());
-        scheduleReconnect();
+        scheduleReconnect(state);
       }
       if (response != null) {
         body = response.body();
         if (!response.isSuccessful()) {
           body.cancel();
-          if (onStatus(OperationSupport.createStatus(response.code(), response.message()))) {
+          if (onStatus(OperationSupport.createStatus(response.code(), response.message()), state)) {
             return; // terminal state
           }
-          if (!call.isCancelled()) {
-            scheduleReconnect();
-          }
+          scheduleReconnect(state);
         } else {
-          resetReconnectAttempts();
+          resetReconnectAttempts(state);
           body.consume();
           body.done().whenComplete((v, e) -> {
             if (e != null) {
               logger.info("Watch terminated unexpectedly. reason: {}", e.getMessage());
             }
-            if (!call.isCancelled()) {
-              scheduleReconnect();
-            }
+            scheduleReconnect(state);
           });
         }
       }
@@ -114,7 +99,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  protected synchronized void closeRequest() {
+  protected synchronized void closeCurrentRequest() {
     Optional.ofNullable(call).ifPresent(theFuture -> {
       theFuture.cancel(true);
     });

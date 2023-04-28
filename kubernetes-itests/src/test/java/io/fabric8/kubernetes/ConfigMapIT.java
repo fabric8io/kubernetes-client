@@ -65,6 +65,7 @@ class ConfigMapIT {
   @Test
   void update() {
     ConfigMap configMap = client.configMaps().withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
+        .editMetadata().withResourceVersion(null).endMetadata()
         .addToData("MSSQL", "Microsoft Database").build());
 
     assertNotNull(configMap);

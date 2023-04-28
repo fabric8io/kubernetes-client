@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.impl;
 
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServicePort;
-import io.fabric8.kubernetes.api.model.extensions.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ServiceToURLProvider;
 import io.fabric8.kubernetes.client.utils.internal.URLFromServiceUtil;
@@ -33,9 +32,18 @@ public class URLFromIngressImpl implements ServiceToURLProvider {
       throw new RuntimeException("Couldn't find port: " + portName + " for service " + service.getMetadata().getName());
     }
 
-    IngressList ingresses = client.extensions().ingresses().inNamespace(namespace).list();
-    if (ingresses != null && !ingresses.getItems().isEmpty()) {
-      return URLFromServiceUtil.getURLFromIngressList(ingresses.getItems(), namespace, serviceName, port);
+    if (client.supports(io.fabric8.kubernetes.api.model.extensions.Ingress.class)) {
+      io.fabric8.kubernetes.api.model.extensions.IngressList ingresses = client.extensions().ingresses().inNamespace(namespace)
+          .list();
+      if (ingresses != null && !ingresses.getItems().isEmpty()) {
+        return URLFromServiceUtil.getURLFromExtensionsV1beta1IngressList(ingresses.getItems(), namespace, serviceName, port);
+      }
+    } else if (client.supports(io.fabric8.kubernetes.api.model.networking.v1.Ingress.class)) {
+      io.fabric8.kubernetes.api.model.networking.v1.IngressList ingresses = client.network().v1().ingresses()
+          .inNamespace(namespace).list();
+      if (ingresses != null && !ingresses.getItems().isEmpty()) {
+        return URLFromServiceUtil.getURLFromNetworkingV1IngressList(ingresses.getItems(), namespace, serviceName, port);
+      }
     }
     return null;
   }

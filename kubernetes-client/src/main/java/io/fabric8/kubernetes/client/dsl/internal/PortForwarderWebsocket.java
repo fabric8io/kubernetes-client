@@ -173,18 +173,23 @@ public class PortForwarderWebsocket implements PortForwarder {
     CompletableFuture<WebSocket> socket = client
         .newWebSocketBuilder()
         .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))
+        .subprotocol("v4.channel.k8s.io")
         .buildAsync(listener);
 
     socket.whenComplete((w, t) -> {
       if (t != null) {
-        listener.onError(w, t);
+        listener.onError(w, t, true);
       }
     });
 
     return new PortForward() {
+      private final AtomicBoolean closed = new AtomicBoolean();
+
       @Override
       public void close() {
-        socket.cancel(true);
+        if (!closed.compareAndSet(false, true)) {
+          return;
+        }
         socket.whenComplete((w, t) -> {
           if (w != null) {
             listener.closeBothWays(w, 1001, "User closing");

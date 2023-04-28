@@ -24,7 +24,7 @@ public interface WebSocket {
 
   /**
    * Callback methods for websocket events. The methods are
-   * guaranteed to be called serially - except for {@link #onError(WebSocket, Throwable)}
+   * guaranteed to be called serially - except for {@link Listener#onError(WebSocket, Throwable, boolean)}
    */
   interface Listener {
 
@@ -33,7 +33,7 @@ public interface WebSocket {
 
     /**
      * Called once the full text message has been built. {@link WebSocket#request()} must
-     * be called to receive more messages or onClose.
+     * be called to receive more messages.
      */
     default void onMessage(WebSocket webSocket, String text) {
       webSocket.request();
@@ -41,7 +41,7 @@ public interface WebSocket {
 
     /**
      * Called once the full binary message has been built. {@link WebSocket#request()} must
-     * be called to receive more messages or onClose.
+     * be called to receive more messages.
      */
     default void onMessage(WebSocket webSocket, ByteBuffer bytes) {
       webSocket.request();
@@ -49,7 +49,8 @@ public interface WebSocket {
 
     /**
      * Called when the remote input closes. It's a terminal event, calls to {@link WebSocket#request()}
-     * do nothing after this.
+     * do nothing after this. Some {@link HttpClient} implementations will require {@link WebSocket#request()}
+     * to be called to calling onClose.
      */
     default void onClose(WebSocket webSocket, int code, String reason) {
     }
@@ -58,7 +59,7 @@ public interface WebSocket {
      * Called when an error has occurred. It's a terminal event, calls to {@link WebSocket#request()}
      * do nothing after this.
      */
-    default void onError(WebSocket webSocket, Throwable error) {
+    default void onError(WebSocket webSocket, Throwable error, boolean connectionError) {
     }
 
   }
@@ -103,7 +104,8 @@ public interface WebSocket {
   }
 
   /**
-   * Send some data
+   * Send some data. The buffer will be copied if needed by
+   * the implementation to allow for modifications after this call.
    *
    * @return true if the message was successfully enqueued.
    */

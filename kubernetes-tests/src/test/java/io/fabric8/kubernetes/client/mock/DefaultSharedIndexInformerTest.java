@@ -130,7 +130,7 @@ class DefaultSharedIndexInformerTest {
     server.expect()
         .withPath(
             "/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion
-                + "&allowWatchBookmarks=true&watch=true")
+                + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -183,13 +183,14 @@ class DefaultSharedIndexInformerTest {
 
     server.expect()
         .withPath(
-            "/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1") + "&resourceVersion=0")
+            "/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1")
+                + "&resourceVersion=0")
         .andReturn(200, getList(startResourceVersion, Pod.class))
         .once();
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1")
             + "&resourceVersion="
-            + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+            + startResourceVersion + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -253,7 +254,8 @@ class DefaultSharedIndexInformerTest {
             .build())
         .once();
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -315,7 +317,8 @@ class DefaultSharedIndexInformerTest {
             .build())
         .once();
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -345,7 +348,8 @@ class DefaultSharedIndexInformerTest {
                 .build())
         .times(2);
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -401,7 +405,8 @@ class DefaultSharedIndexInformerTest {
             .build())
         .once();
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -468,7 +473,7 @@ class DefaultSharedIndexInformerTest {
     server.expect()
         .withPath(
             "/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion
-                + "&allowWatchBookmarks=true&watch=true")
+                + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -974,7 +979,8 @@ class DefaultSharedIndexInformerTest {
         .endMetadata()
         .build();
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -1003,7 +1009,8 @@ class DefaultSharedIndexInformerTest {
 
     // should pick this up after the termination
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + midResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -1074,7 +1081,8 @@ class DefaultSharedIndexInformerTest {
             .build())
         .once();
     server.expect()
-        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/pods?resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -1264,6 +1272,7 @@ class DefaultSharedIndexInformerTest {
 
     URLBuilder watchBuilder = new URLUtils.URLBuilder(watchUrl);
     watchUrl = watchBuilder.addQueryParameter("resourceVersion", startResourceVersion)
+        .addQueryParameter("timeoutSeconds", "600")
         .addQueryParameter("allowWatchBookmarks", "true")
         .addQueryParameter("watch", "true")
         .toString();

@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -63,6 +64,7 @@ class OperationContextTest {
     // When
     operationContext = operationContext.withNamespace("operation-namespace")
         .withName("operand-name")
+        .withSubresource("subresource")
         .withClient(client)
         .withApiGroupName("batch")
         .withApiGroupVersion("v1")
@@ -76,12 +78,14 @@ class OperationContextTest {
         .withFieldsNot(Collections.singletonMap("test", new String[] { "fieldsNot" }))
         .withResourceVersion("234343")
         .withGracePeriodSeconds(0)
-        .withPropagationPolicy(DeletionPropagation.BACKGROUND);
+        .withPropagationPolicy(DeletionPropagation.BACKGROUND)
+        .withRequestConfig(new RequestConfigBuilder().withLoggingInterval(1).build());
 
     // Then
     assertNotNull(operationContext);
     assertEquals("operation-namespace", operationContext.getNamespace());
     assertEquals("operand-name", operationContext.getName());
+    assertEquals("subresource", operationContext.getSubresource());
     assertEquals("batch", operationContext.getApiGroupName());
     assertEquals("v1", operationContext.getApiGroupVersion());
     assertEquals("jobs", operationContext.getPlural());
@@ -105,5 +109,6 @@ class OperationContextTest {
     operationContext = operationContext.withLabelSelector(selectorAsString);
     assertEquals(selectorAsString, operationContext.getLabelQueryParam());
     assertEquals("metadata.name=operand-name,test=field,test!=fieldsNot", operationContext.getFieldQueryParam());
+    assertEquals(1, operationContext.getRequestConfig().getLoggingInterval());
   }
 }

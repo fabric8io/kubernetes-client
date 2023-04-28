@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
 
@@ -28,9 +28,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Interceptor for handling expired OIDC tokens.
+ * Interceptor for handling kube authentication. It will either be basic auth, or token based. This class takes responsibility
+ * for refreshing expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
+
+  public static final String AUTHORIZATION = "Authorization";
 
   public static final String NAME = "TOKEN";
 
@@ -48,15 +51,21 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   @Override
-  public Interceptor withConfig(Config config) {
-    return new TokenRefreshInterceptor(config, factory, latestRefreshTimestamp);
-  }
-
-  @Override
-  public void before(BasicBuilder headerBuilder, HttpHeaders headers) {
+  public void before(BasicBuilder headerBuilder, HttpRequest request, RequestTags tags) {
+    if (isBasicAuth()) {
+      headerBuilder.header(AUTHORIZATION, HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword()));
+      return;
+    }
+    if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+      headerBuilder.header(AUTHORIZATION, "Bearer " + config.getOauthToken());
+    }
     if (isTimeToRefresh()) {
       refreshToken(headerBuilder);
     }
+  }
+
+  private boolean isBasicAuth() {
+    return Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword());
   }
 
   private boolean isTimeToRefresh() {
@@ -64,7 +73,10 @@ public class TokenRefreshInterceptor implements Interceptor {
   }
 
   @Override
-  public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
+  public CompletableFuture<Boolean> afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response, RequestTags tags) {
+    if (isBasicAuth()) {
+      return CompletableFuture.completedFuture(false);
+    }
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       return refreshToken(headerBuilder);
     }
@@ -80,7 +92,7 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   private CompletableFuture<String> extractNewAccessTokenFrom(Config newestConfig) {
     if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
-      return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(),
+      return OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, newestConfig.getAuthProvider().getConfig(),
           factory.newBuilder());
     }
 
@@ -89,7 +101,7 @@ public class TokenRefreshInterceptor implements Interceptor {
 
   private boolean overrideNewAccessTokenToConfig(String newAccessToken, BasicBuilder headerBuilder, Config existConfig) {
     if (Utils.isNotNullOrEmpty(newAccessToken)) {
-      headerBuilder.setHeader("Authorization", "Bearer " + newAccessToken);
+      headerBuilder.setHeader(AUTHORIZATION, "Bearer " + newAccessToken);
       existConfig.setOauthToken(newAccessToken);
 
       updateLatestRefreshTimestamp();

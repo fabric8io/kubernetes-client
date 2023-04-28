@@ -16,7 +16,7 @@
 
 ---
   kind: "Template"
-  apiVersion: "v1"
+  apiVersion: "template.openshift.io/v1"
   metadata:
     annotations:
       iconClass: "icon-jboss"
@@ -92,7 +92,7 @@
     -
       description: "Required Boolean"
       name: "REQUIRED_BOOLEAN"
-      value: false
+      value: "false"
       required: true
   objects:
     -

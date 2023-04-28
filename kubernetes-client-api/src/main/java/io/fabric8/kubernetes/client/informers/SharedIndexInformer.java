@@ -99,6 +99,9 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
 
   /**
    * Stops the shared informer. The informer cannot be started again.
+   * <p>
+   * Once this call completes the informer will stop processing events, but the underlying watch closure may not yet be
+   * completed
    */
   void stop();
 
@@ -118,6 +121,10 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * The resource version observed when last synced with the underlying store.
    * The value returned is not synchronized with access to the underlying store
    * and is not thread-safe.
+   * <p>
+   * Since the store processes events asynchronously this value should not be
+   * used as an indication of the last resourceVersion seen. Also after an
+   * informer is stopped any pending event processing may not happen.
    *
    * @return string value or null if never synced
    */
@@ -184,7 +191,8 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   SharedIndexInformer<T> exceptionHandler(ExceptionHandler handler);
 
   /**
-   * Return a {@link CompletionStage} that will allow notification of the informer stopping.
+   * Return a {@link CompletionStage} that will allow notification of the informer stopping. This will be completed after
+   * event processing has stopped.
    * <p>
    * If {@link #stop()} is called, the CompletionStage will complete normally.
    * <p>

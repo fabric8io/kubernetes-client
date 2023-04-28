@@ -20,18 +20,18 @@ import java.io.IOException;
 
 public final class WebSocketHandshakeException extends IOException {
 
-  private final transient HttpResponse<?> response;
+  private final transient WebSocketUpgradeResponse response;
 
-  public WebSocketHandshakeException(HttpResponse<?> response) {
+  public WebSocketHandshakeException(WebSocketUpgradeResponse response) {
     this.response = response;
   }
 
   /**
    * Get the response, which includes the code of failure.
-   * 
+   *
    * @return the response, never null
    */
-  public HttpResponse<?> getResponse() {
+  public WebSocketUpgradeResponse getResponse() {
     return response;
   }
 

@@ -25,9 +25,11 @@ import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -130,6 +132,42 @@ class ConfigMapTest {
   }
 
   @Test
+  void testJsonPatchResourceVersionViaEdit() throws IOException, InterruptedException {
+    server.expect()
+        .withPath("/api/v1/namespaces/ns1/configmaps/foo")
+        .andReturn(200,
+            new ConfigMapBuilder()
+                .withNewMetadata()
+                .withName("foo")
+                .withResourceVersion("x")
+                .endMetadata()
+                .build())
+        .once();
+
+    server.expect()
+        .patch()
+        .withPath("/api/v1/namespaces/ns1/configmaps/foo")
+        .andReturn(200,
+            new ConfigMapBuilder()
+                .withNewMetadata()
+                .withName("foo")
+                .withResourceVersion("x")
+                .endMetadata()
+                .build())
+        .once();
+
+    client.configMaps()
+        .inNamespace("ns1")
+        .withName("foo")
+        .edit(p -> new ConfigMapBuilder(p).editMetadata().addToAnnotations("some", "value").endMetadata().build());
+
+    String patch = IOHelpers.readFully(server.getLastRequest().getBody().inputStream());
+    assertEquals(
+        "[{\"op\":\"add\",\"path\":\"/metadata/annotations\",\"value\":{\"some\":\"value\"}},{\"op\":\"add\",\"path\":\"/metadata/resourceVersion\",\"value\":\"x\"}]",
+        patch);
+  }
+
+  @Test
   void fromFile_withValidFilePath_shouldDelegateCallToHelperMethod() {
     // Given
     Path path = new File(getClass().getResource("/test-config-map.yml").getFile()).toPath();
@@ -138,6 +176,7 @@ class ConfigMapTest {
     ConfigMap map = client.configMaps().withName("x").fromFile("game-config", path).item();
 
     // Then
+    assertEquals(new HashSet<>(Arrays.asList("game-config")), map.getData().keySet());
   }
 
   @Test
@@ -163,7 +202,7 @@ class ConfigMapTest {
     // When + Then
     assertThatExceptionOfType(KubernetesClientException.class)
         .isThrownBy(() -> client.configMaps().withName("x").fromFile("game-config", path))
-        .withMessage("Unable to create ConfigMap game-config");
+        .withMessage("Unable to create ConfigMap entry game-config");
   }
 
 }

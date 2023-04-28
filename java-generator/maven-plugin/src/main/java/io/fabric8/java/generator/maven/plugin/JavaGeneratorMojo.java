@@ -74,23 +74,10 @@ public class JavaGeneratorMojo extends AbstractMojo {
   Boolean enumUppercase = null;
 
   /**
-   * *advanced* The prefix strategy for name mangling
+   * *DEPRECATED* Always inject additional properties in the generated classes
    *
    */
-  @Parameter(property = "fabric8.java-generator.prefix-strategy", required = false)
-  Config.Prefix prefixStrategy = null;
-
-  /**
-   * *advanced* The suffix strategy for name mangling
-   *
-   */
-  @Parameter(property = "fabric8.java-generator.suffix-strategy", required = false)
-  Config.Suffix suffixStrategy = null;
-
-  /**
-   * *advanced* Always inject additional properties in the generated classes
-   *
-   */
+  @Deprecated
   @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false)
   Boolean alwaysPreserveUnknown = null;
 
@@ -100,13 +87,6 @@ public class JavaGeneratorMojo extends AbstractMojo {
    */
   @Parameter(property = "fabric8.java-generator.extra-annotations", required = false)
   Boolean extraAnnotations = null;
-
-  /**
-   * *advanced* The code structure to be used when generating java sources
-   *
-   */
-  @Parameter(property = "fabric8.java-generator.code-structure", required = false)
-  protected Config.CodeStructure codeStructure = null;
 
   /**
    * *advanced* Emit the @javax.annotation.processing.Generated annotation on the generated sources
@@ -126,11 +106,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
         .uppercaseEnums(enumUppercase)
-        .prefixStrategy(prefixStrategy)
-        .suffixStrategy(suffixStrategy)
-        .alwaysPreserveUnknownFields(alwaysPreserveUnknown)
         .objectExtraAnnotations(extraAnnotations)
-        .structure(codeStructure)
         .generatedAnnotations(generatedAnnotations)
         .packageOverrides(packageOverrides)
         .build();
@@ -145,6 +121,9 @@ public class JavaGeneratorMojo extends AbstractMojo {
         } catch (MalformedURLException e) {
           throw new MojoExecutionException("URL '" + url + "' is not valid", e);
         }
+      }
+      if (!downloadTarget.isDirectory()) {
+        downloadTarget.mkdirs();
       }
       runners.add(new URLJavaGenerator(config, urlList, downloadTarget));
     }

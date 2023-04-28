@@ -55,27 +55,12 @@ public class GenerateJavaSources implements Runnable {
   @Option(names = { "-enum-uppercase", "--enum-uppercase" }, description = "Uppercase the enum values", required = false)
   Boolean uppercaseEnum = null;
 
-  @Option(names = { "-prefix-strategy",
-      "--prefix-strategy" }, description = "The prefix strategy to be used", required = false, hidden = true)
-  String prefixStrategy = null;
-
-  @Option(names = { "-suffix-strategy", "--suffix-strategy" }, description = "The suffix strategy to be used", required = false)
-  String suffixStrategy = null;
-
-  @Option(names = { "-always-preserve-unknown",
-      "--always-preserve-unknown" }, description = "Always preserve unknown fields in the generated classes", required = false, hidden = true)
-  Boolean alwaysPreserveUnkownFields = null;
-
   @Option(names = { "-add-extra-annotations",
       "--add-extra-annotations" }, description = "Add extra lombok and sundrio annotation to the generated classes", required = false)
   Boolean addExtraAnnotations = null;
 
-  @Option(names = { "-code-structure",
-      "--code-structure" }, description = "Generate classes using a specific layout", required = false, hidden = true)
-  String codeStructure = null;
-
   @Option(names = { "-skip-generated-annotations",
-      "--skip-generated-annotations" }, description = "Add extra lombok and sundrio annotation to the generated classes", required = false, hidden = true)
+      "--skip-generated-annotations" }, description = "Skip emitting the @javax.annotation.processing.Generated annotation on the generated sources", required = false, hidden = true)
   Boolean skipGeneratedAnnotations = null;
 
   @Option(names = { "-package-overrides",
@@ -84,18 +69,11 @@ public class GenerateJavaSources implements Runnable {
 
   @Override
   public void run() {
-    final Config.Prefix pSt = (prefixStrategy != null) ? Config.Prefix.valueOf(prefixStrategy) : null;
-    final Config.Suffix sSt = (suffixStrategy != null) ? Config.Suffix.valueOf(suffixStrategy) : null;
-    final Config.CodeStructure structure = (codeStructure != null) ? Config.CodeStructure.valueOf(codeStructure) : null;
-    final Boolean generatedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : null;
+    final Boolean noGeneratedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : false;
     final Config config = new Config(
         uppercaseEnum,
-        pSt,
-        sSt,
-        alwaysPreserveUnkownFields,
         addExtraAnnotations,
-        structure,
-        generatedAnnotations,
+        !noGeneratedAnnotations,
         packageOverrides);
 
     List<JavaGenerator> runners = new ArrayList<>();

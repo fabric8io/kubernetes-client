@@ -1,122 +1,7 @@
 {
   "id": "http://fabric8.io/istio/IstioSchema#",
-  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "istio_io_api_analysis_v1alpha1_AnalysisMessageBase": {
-      "type": "object",
-      "properties": {
-        "documentationUrl": {
-          "type": "string"
-        },
-        "level": {
-          "$ref": "#/definitions/istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Level",
-          "javaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseLevel"
-        },
-        "type": {
-          "$ref": "#/definitions/istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Type",
-          "existingJavaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseType"
-        }
-      },
-      "javaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBase",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Level": {
-      "type": "integer",
-      "javaEnums": [
-        {
-          "name": "UNKNOWN"
-        },
-        {
-          "name": "ERROR"
-        },
-        {
-          "name": "WARNING"
-        },
-        {
-          "name": "INFO"
-        }
-      ],
-      "enum": [
-        0,
-        3,
-        8,
-        12
-      ],
-      "javaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseLevel"
-    },
-    "istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Type": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "javaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseType",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "istio_io_api_meta_v1alpha1_IstioCondition": {
-      "type": "object",
-      "properties": {
-        "lastProbeTime": {
-          "existingJavaType": "java.lang.String"
-        },
-        "lastTransitionTime": {
-          "existingJavaType": "java.lang.String"
-        },
-        "message": {
-          "type": "string"
-        },
-        "reason": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "javaType": "io.fabric8.istio.api.meta.v1alpha1.IstioCondition",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "istio_io_api_meta_v1alpha1_IstioStatus": {
-      "type": "object",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioCondition",
-            "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioCondition"
-          }
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "validationMessages": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/istio_io_api_analysis_v1alpha1_AnalysisMessageBase",
-            "existingJavaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBase"
-          }
-        }
-      },
-      "javaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "istio_io_api_networking_v1beta1_CaptureMode": {
       "type": "integer",
       "javaEnums": [
@@ -2379,7 +2264,6 @@
           "existingJavaType": "io.fabric8.istio.api.networking.v1beta1.DestinationRuleSpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2440,7 +2324,6 @@
           "existingJavaType": "io.fabric8.istio.api.networking.v1beta1.GatewaySpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2501,7 +2384,6 @@
           "existingJavaType": "io.fabric8.istio.api.networking.v1beta1.ServiceEntrySpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2562,7 +2444,6 @@
           "existingJavaType": "io.fabric8.istio.api.networking.v1beta1.SidecarSpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2623,7 +2504,6 @@
           "existingJavaType": "io.fabric8.istio.api.networking.v1beta1.VirtualServiceSpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2684,7 +2564,6 @@
           "existingJavaType": "io.fabric8.istio.api.networking.v1beta1.WorkloadEntrySpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2745,7 +2624,6 @@
           "existingJavaType": "io.fabric8.istio.api.security.v1beta1.AuthorizationPolicySpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2806,7 +2684,6 @@
           "existingJavaType": "io.fabric8.istio.api.security.v1beta1.PeerAuthenticationSpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2867,7 +2744,6 @@
           "existingJavaType": "io.fabric8.istio.api.security.v1beta1.RequestAuthenticationSpec"
         },
         "status": {
-          "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
           "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
         }
       },
@@ -2910,26 +2786,6 @@
   },
   "type": "object",
   "properties": {
-    "istio_io_api_analysis_v1alpha1_AnalysisMessageBase": {
-      "$ref": "#/definitions/istio_io_api_analysis_v1alpha1_AnalysisMessageBase",
-      "existingJavaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBase"
-    },
-    "istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Level": {
-      "$ref": "#/definitions/istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Level",
-      "javaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseLevel"
-    },
-    "istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Type": {
-      "$ref": "#/definitions/istio_io_api_analysis_v1alpha1_AnalysisMessageBase_Type",
-      "existingJavaType": "io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBaseType"
-    },
-    "istio_io_api_meta_v1alpha1_IstioCondition": {
-      "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioCondition",
-      "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioCondition"
-    },
-    "istio_io_api_meta_v1alpha1_IstioStatus": {
-      "$ref": "#/definitions/istio_io_api_meta_v1alpha1_IstioStatus",
-      "existingJavaType": "io.fabric8.istio.api.meta.v1alpha1.IstioStatus"
-    },
     "istio_io_api_networking_v1beta1_CaptureMode": {
       "$ref": "#/definitions/istio_io_api_networking_v1beta1_CaptureMode",
       "javaType": "io.fabric8.istio.api.networking.v1beta1.CaptureMode"

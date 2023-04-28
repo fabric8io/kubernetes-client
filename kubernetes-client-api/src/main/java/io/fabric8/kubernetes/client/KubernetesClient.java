@@ -60,12 +60,14 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
@@ -169,6 +171,13 @@ public interface KubernetesClient extends Client {
    * @return {@link DiscoveryAPIGroupDSL} with which you can access Discovery API resource objects
    */
   DiscoveryAPIGroupDSL discovery();
+
+  /**
+   * API entrypoint for dynamic resource allocation <code>resource.k8s.io</code>
+   *
+   * @return {@link DynamicResourceAllocationAPIGroupDSL} with which you can access various types provided by this API.
+   */
+  DynamicResourceAllocationAPIGroupDSL dynamicResourceAllocation();
 
   /**
    * Event API entrypoint for APIGroup events.k8s.io
@@ -466,6 +475,13 @@ public interface KubernetesClient extends Client {
    * @return AuthorizationAPIGroupDSL object for dealing with Authorization objects
    */
   AuthorizationAPIGroupDSL authorization();
+
+  /**
+   * Authentication operations (authentication.k8s.io)
+   *
+   * @return {@link AuthenticationAPIGroupDSL} object for dealing with Authentication objects
+   */
+  AuthenticationAPIGroupDSL authentication();
 
   /**
    * API for creating authentication.k8s.io/v1 TokenReviews

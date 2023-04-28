@@ -74,30 +74,8 @@ public class StatefulSetOperationsImpl
   }
 
   @Override
-  public StatefulSet withReplicas(int count) {
-    return accept(s -> s.getSpec().setReplicas(count));
-  }
-
-  @Override
   public RollingUpdater<StatefulSet, StatefulSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return null;
-  }
-
-  @Override
-  public int getCurrentReplicas(StatefulSet current) {
-    return current.getStatus().getReplicas();
-  }
-
-  @Override
-  public int getDesiredReplicas(StatefulSet item) {
-    return item.getSpec().getReplicas();
-  }
-
-  @Override
-  public long getObservedGeneration(StatefulSet current) {
-    return (current != null && current.getStatus() != null && current.getStatus().getObservedGeneration() != null)
-        ? current.getStatus().getObservedGeneration()
-        : -1;
   }
 
   @Override
@@ -142,16 +120,6 @@ public class StatefulSetOperationsImpl
   @Override
   public LogWatch watchLog(OutputStream out) {
     return PodOperationUtil.watchLog(doGetLog(), out);
-  }
-
-  @Override
-  public StatefulSet pause() {
-    throw new KubernetesClientException("not supported");
-  }
-
-  @Override
-  public StatefulSet resume() {
-    throw new KubernetesClientException("not supported");
   }
 
   @Override

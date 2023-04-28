@@ -18,6 +18,7 @@ package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.openshift.api.model.config.v1.Project;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class AdaptClient {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-      if (Boolean.FALSE.equals(client.isAdaptable(OpenShiftClient.class))) {
+      if (Boolean.FALSE.equals(client.supports(Project.class))) {
         logger.warn("Target cluster is not OpenShift compatible");
         return;
       }
