@@ -333,13 +333,12 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
       if (t instanceof java.net.http.WebSocketHandshakeException) {
         final java.net.http.HttpResponse<?> jdkResponse = ((java.net.http.WebSocketHandshakeException) t).getResponse();
         final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
-            request, jdkResponse.statusCode(), jdkResponse.headers().map(), fabric8WebSocket);
-        response.complete(new WebSocketResponse(upgradeResponse,
-            new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(upgradeResponse).initCause(t)));
+            request, jdkResponse.statusCode(), jdkResponse.headers().map());
+        response.complete(new WebSocketResponse(upgradeResponse, t));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {
-        response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request, fabric8WebSocket), null));
+        response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request), fabric8WebSocket));
       }
     });
 

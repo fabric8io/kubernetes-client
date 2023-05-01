@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import org.eclipse.jetty.websocket.api.Session;
@@ -166,18 +165,16 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     }
   }
 
-  static WebSocketResponse toWebSocketResponse(HttpRequest httpRequest, WebSocket ws, UpgradeException ex) {
+  static WebSocketResponse toWebSocketResponse(HttpRequest httpRequest, UpgradeException ex) {
     final WebSocketUpgradeResponse webSocketUpgradeResponse = new WebSocketUpgradeResponse(httpRequest,
-        ex.getResponseStatusCode(), ws);
-    final WebSocketHandshakeException handshakeException = new WebSocketHandshakeException(webSocketUpgradeResponse)
-        .initCause(ex);
-    return new WebSocketResponse(webSocketUpgradeResponse, handshakeException);
+        ex.getResponseStatusCode());
+    return new WebSocketResponse(webSocketUpgradeResponse, ex);
   }
 
   static WebSocketResponse toWebSocketResponse(HttpRequest httpRequest, WebSocket ws, Session session) {
     final UpgradeResponse jettyUpgradeResponse = session.getUpgradeResponse();
     final WebSocketUpgradeResponse fabric8UpgradeResponse = new WebSocketUpgradeResponse(
-        httpRequest, jettyUpgradeResponse.getStatusCode(), jettyUpgradeResponse.getHeaders(), ws);
-    return new WebSocketResponse(fabric8UpgradeResponse, null);
+        httpRequest, jettyUpgradeResponse.getStatusCode(), jettyUpgradeResponse.getHeaders());
+    return new WebSocketResponse(fabric8UpgradeResponse, ws);
   }
 }

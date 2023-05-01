@@ -84,14 +84,13 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
         .onSuccess(ws -> {
           VertxWebSocket ret = new VertxWebSocket(ws, listener);
           ret.init();
-          response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request, ret), null));
+          response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request), ret));
         }).onFailure(t -> {
           if (t instanceof UpgradeRejectedException) {
             UpgradeRejectedException handshake = (UpgradeRejectedException) t;
             final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
-                request, handshake.getStatus(), toHeadersMap(handshake.getHeaders()), null);
-            response.complete(new WebSocketResponse(upgradeResponse,
-                new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(upgradeResponse)));
+                request, handshake.getStatus(), toHeadersMap(handshake.getHeaders()));
+            response.complete(new WebSocketResponse(upgradeResponse, handshake));
           }
           response.completeExceptionally(t);
         });

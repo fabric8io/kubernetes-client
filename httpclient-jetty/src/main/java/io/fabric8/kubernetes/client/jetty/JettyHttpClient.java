@@ -152,9 +152,9 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
           .whenComplete((s, ex) -> {
             if (ex != null) {
               if (ex instanceof CompletionException && ex.getCause() instanceof UpgradeException) {
-                future.complete(JettyWebSocket.toWebSocketResponse(request, webSocket, (UpgradeException) ex.getCause()));
+                future.complete(JettyWebSocket.toWebSocketResponse(request, (UpgradeException) ex.getCause()));
               } else if (ex instanceof UpgradeException) {
-                future.complete(JettyWebSocket.toWebSocketResponse(request, webSocket, (UpgradeException) ex));
+                future.complete(JettyWebSocket.toWebSocketResponse(request, (UpgradeException) ex));
               } else {
                 future.completeExceptionally(ex);
               }
