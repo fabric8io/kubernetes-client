@@ -306,9 +306,10 @@ class HttpClientUtilsTest {
       }
 
       @Override
-      public boolean isDefault() {
-        return true;
+      public int priority() {
+        return -1;
       }
+
     }
 
   }

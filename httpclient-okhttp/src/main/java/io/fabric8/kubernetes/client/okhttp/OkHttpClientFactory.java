@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class OkHttpClientFactory implements HttpClient.Factory {
 
   @Override
-  public boolean isDefault() {
-    return true;
+  public int priority() {
+    return -1;
   }
 
   /**
