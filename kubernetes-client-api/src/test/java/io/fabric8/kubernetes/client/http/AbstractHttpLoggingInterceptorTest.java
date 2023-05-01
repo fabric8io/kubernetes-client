@@ -218,7 +218,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
         .buildAsync(new WebSocket.Listener() {
         })
         .get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-WS START-");
+    verify(logger, timeout(1000L)).trace("-WS END-");
+    inOrder.verify(logger).trace("-WS START-");
     inOrder.verify(logger)
         .trace(eq("> {} {}"), eq("GET"), argThat((URI uri) -> uri.toString().endsWith("/ws-request-uri")));
     inOrder.verify(logger).trace("-WS END-");
@@ -253,7 +254,8 @@ public abstract class AbstractHttpLoggingInterceptorTest {
         .buildAsync(new WebSocket.Listener() {
         })
         .get(10, TimeUnit.SECONDS);
-    inOrder.verify(logger, timeout(1000L)).trace("-WS START-");
+    verify(logger, timeout(1000L)).trace("-WS END-");
+    inOrder.verify(logger).trace("-WS START-");
     inOrder.verify(logger).trace("< {} {}", 101, "Switching Protocols");
     inOrder.verify(logger).trace("-WS END-");
   }

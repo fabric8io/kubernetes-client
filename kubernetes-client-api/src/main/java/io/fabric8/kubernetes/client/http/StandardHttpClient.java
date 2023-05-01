@@ -32,6 +32,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -155,10 +156,15 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
                 retry = true;
                 cancel.accept(response);
               }
-            } else if (throwable instanceof IOException) {
-              LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-                  uri, retryInterval), throwable);
-              retry = true;
+            } else {
+              if (throwable instanceof CompletionException) {
+                throwable = ((CompletionException) throwable).getCause();
+              }
+              if (throwable instanceof IOException) {
+                LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
+                    uri, retryInterval), throwable);
+                retry = true;
+              }
             }
             if (retry) {
               Utils.schedule(Runnable::run,
@@ -197,8 +203,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
     retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
         standardWebSocketBuilder.asHttpRequest().uri(),
-        r -> Optional.ofNullable(r.wshse).map(WebSocketHandshakeException::getResponse).map(HttpResponse::code).orElse(null),
-        r -> Optional.ofNullable(r.webSocketUpgradeResponse.getWebSocket()).ifPresent(w -> w.sendClose(1000, null)));
+        r -> Optional.of(r.webSocketUpgradeResponse).map(HttpResponse::code).orElse(null),
+        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)));
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
@@ -208,7 +214,10 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         result.completeExceptionally(t);
       } else {
         completeOrCancel(w -> w.sendClose(1000, null), result)
-            .accept(r.webSocketUpgradeResponse.getWebSocket(), r.wshse);
+            .accept(r.webSocket,
+                r.throwable != null
+                    ? new WebSocketHandshakeException(r.webSocketUpgradeResponse).initCause(r.throwable)
+                    : null);
       }
     });
     return result;
@@ -225,8 +234,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       cf = cf.thenCompose(response -> {
-        if (response.wshse != null && response.wshse.getResponse() != null) {
-          return interceptor.afterFailure(copy, response.wshse.getResponse(), this).thenCompose(b -> {
+        if (response.throwable != null) {
+          return interceptor.afterFailure(copy, response.webSocketUpgradeResponse, this).thenCompose(b -> {
             if (Boolean.TRUE.equals(b)) {
               return this.buildWebSocketDirect(copy, listener);
             }
