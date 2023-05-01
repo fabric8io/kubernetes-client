@@ -18,7 +18,7 @@
 * fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
 * Fix #5044: disable Vert.x instance file caching
 * Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
-* Fix #5073: `NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl` extends `ServerSideApplicable`
+* Fix #5085: Vert.x HTTP Client InputStreamReadStream works in Native mode
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
@@ -29,7 +29,9 @@
 * Fix #4998: removing the internal usage of the Serialization yaml mapper
 * Fix #5005: status operations use the context `subresource` setting
 * Fix #5022: adding additional buffering to ExecWatchInputStream
+* Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount
 * Fix #5080: minimizing debug logs related to the backoff interval 
+* Fix #5073: `NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl` extends `ServerSideApplicable`
 
 #### Dependency Upgrade
 * Fix #5006: Bump BouncyCastle to 1.72
@@ -37,6 +39,7 @@
 
 #### New Features
 * Fix #5037: OkHttp-specific logging interceptor replacement. Introducing a generic HTTP interceptor to log HTTP and WS requests.
+* Fix #5041: exposed Client.raw methods for arbitrary calls
 
 #### _**Note**_: Breaking changes
 * Fix #4875: Removed unused options from the java-generator

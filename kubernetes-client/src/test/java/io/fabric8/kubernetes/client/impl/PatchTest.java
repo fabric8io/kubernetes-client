@@ -39,6 +39,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ class PatchTest {
     // TODO: fully mocking makes this logic more difficult and basically copied in other tests, we may want to rely on an actual implementation instead
     builders = new ArrayList<>();
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
+    when(mockClient.sendAsync(any(), Mockito.eq(InputStream.class)))
         .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, "{}")));
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
     kubernetesClient = new KubernetesClientImpl(mockClient, config);
@@ -128,8 +129,8 @@ class PatchTest {
   @Test
   void testPatchThrowExceptionWhenResourceNotFound() {
     // Given
-    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
-        .thenReturn(CompletableFuture.completedFuture(new TestHttpResponse<byte[]>().withCode(404)));
+    when(mockClient.sendAsync(any(), Mockito.eq(InputStream.class)))
+        .thenReturn(CompletableFuture.completedFuture(new TestHttpResponse<InputStream>().withCode(404)));
 
     // When
     PodResource podResource = kubernetesClient.pods()

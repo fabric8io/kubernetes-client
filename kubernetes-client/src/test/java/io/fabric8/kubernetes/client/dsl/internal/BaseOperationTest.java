@@ -250,7 +250,7 @@ class BaseOperationTest {
     HttpRequest.Builder mockRequestBuilder = mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
     when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
     when(mockRequestBuilder.build()).thenReturn(new StandardHttpRequest.Builder().uri("https://k8s.example.com").build());
-    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(byte[].class))).thenAnswer(
+    when(mockClient.sendAsync(Mockito.any(), Mockito.eq(InputStream.class))).thenAnswer(
         invocation -> {
           int count = httpExecutionCounter.getAndIncrement();
           if (count < numFailures) {

@@ -153,4 +153,9 @@ public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Clien
 
   public abstract C newInstance();
 
+  @Override
+  public String raw(String uri, String method, Object payload) {
+    return client.raw(uri, method, payload);
+  }
+
 }

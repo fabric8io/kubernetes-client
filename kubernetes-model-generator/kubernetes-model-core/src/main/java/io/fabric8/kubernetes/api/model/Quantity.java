@@ -111,7 +111,7 @@ public class Quantity implements Serializable {
    * If this is a memory Quantity, the result will represent bytes.<br>
    * If this is a cpu Quantity, the result will represent cores.
    *
-   * @return the formated amount as a number
+   * @return the formatted amount as a number
    * @throws ArithmeticException
    */
   @JsonIgnore
@@ -146,13 +146,39 @@ public class Quantity implements Serializable {
 
     Quantity amountFormatPair = parse(value);
     String formatStr = amountFormatPair.getFormat();
+
+    BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
+    BigDecimal multiple = getMultiple(formatStr);
+
+    return digit.multiply(multiple);
+  }
+
+  /**
+   * Constructs a new Quantity from the provided amountInBytes. This amount is converted
+   * to a value with the unit provided in desiredFormat.
+   * 
+   * @param amountInBytes
+   * @param desiredFormat
+   * @see #getNumericalAmount()
+   * @return a new Quantity with the value of amountInBytes with units desiredFormat
+   */
+  public static Quantity fromNumericalAmount(BigDecimal amountInBytes, String desiredFormat) {
+    if (desiredFormat == null || desiredFormat.isEmpty()) {
+      return new Quantity(amountInBytes.stripTrailingZeros().toPlainString());
+    }
+
+    BigDecimal scaledToDesiredFormat = amountInBytes.divide(getMultiple(desiredFormat), MathContext.DECIMAL64);
+
+    return new Quantity(scaledToDesiredFormat.stripTrailingZeros().toPlainString(), desiredFormat);
+  }
+
+  private static BigDecimal getMultiple(String formatStr) {
     // Handle Decimal exponent case
     if (containsAtLeastOneDigit(formatStr) && formatStr.length() > 1) {
       int exponent = Integer.parseInt(formatStr.substring(1));
-      return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64).multiply(new BigDecimal(amountFormatPair.getAmount()));
+      return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64);
     }
 
-    BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
     BigDecimal multiple = new BigDecimal("1");
     BigDecimal binaryFactor = new BigDecimal("2");
     BigDecimal decimalFactor = new BigDecimal("10");
@@ -208,8 +234,7 @@ public class Quantity implements Serializable {
       default:
         throw new IllegalArgumentException("Invalid quantity format passed to parse");
     }
-
-    return digit.multiply(multiple);
+    return multiple;
   }
 
   /**
