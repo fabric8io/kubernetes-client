@@ -48,17 +48,9 @@ public interface HttpClient extends AutoCloseable {
     HttpClient.Builder newBuilder();
 
     /**
-     * If the implementation should be considered default. If default any other implementation in the classpath will
-     * be used instead.
-     *
-     * @return true if default
-     */
-    default boolean isDefault() {
-      return false;
-    }
-
-    /**
      * The priority of the implementation. The higher the priority the more likely it will be used.
+     * <br>
+     * -1 represents the priority of the Fabric8 project default implementation.
      *
      * @return the priority.
      */
