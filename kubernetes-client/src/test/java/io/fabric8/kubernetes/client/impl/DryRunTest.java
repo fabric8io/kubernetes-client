@@ -35,7 +35,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,7 @@ class DryRunTest {
     builders = new ArrayList<>();
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    when(mockClient.sendAsync(any(), Mockito.eq(InputStream.class)))
+    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
         .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200,
             "{\"kind\":\"Pod\", \"apiVersion\":\"v1\"}")));
     kubernetesClient = new KubernetesClientImpl(mockClient, config);
