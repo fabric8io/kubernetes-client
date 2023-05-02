@@ -44,6 +44,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -564,11 +565,11 @@ public class OperationSupport {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
 
-    return client.sendAsync(request, InputStream.class).thenApply(response -> {
+    return client.sendAsync(request, byte[].class).thenApply(response -> {
       try {
         assertResponseCode(request, response);
         if (type != null && type.getType() != null) {
-          return Serialization.unmarshal(response.body(), type);
+          return Serialization.unmarshal(new ByteArrayInputStream(response.body()), type);
         } else {
           return null;
         }

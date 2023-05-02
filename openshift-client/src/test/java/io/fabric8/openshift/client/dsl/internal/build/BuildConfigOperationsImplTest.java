@@ -28,7 +28,6 @@ import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -107,9 +106,9 @@ class BuildConfigOperationsImplTest {
 
     // When
     ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[0]);
-    CompletableFuture<HttpResponse<InputStream>> future = new CompletableFuture<>();
+    CompletableFuture<HttpResponse<byte[]>> future = new CompletableFuture<>();
     future.completeExceptionally(new IOException());
-    when(httpClient.sendAsync(any(), eq(InputStream.class))).thenReturn(future);
+    when(httpClient.sendAsync(any(), eq(byte[].class))).thenReturn(future);
 
     KubernetesClientException exception = assertThrows(KubernetesClientException.class,
         () -> impl.submitToApiServer(inputStream, 0));
@@ -128,11 +127,11 @@ class BuildConfigOperationsImplTest {
       };
     };
 
-    HttpResponse<InputStream> response = mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+    HttpResponse<byte[]> response = mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
     when(response.code()).thenReturn(200);
-    when(response.body()).thenReturn(new ByteArrayInputStream(new byte[0]));
+    when(response.body()).thenReturn(new byte[0]);
 
-    when(httpClient.sendAsync(any(), eq(InputStream.class))).thenReturn(CompletableFuture.completedFuture(response));
+    when(httpClient.sendAsync(any(), eq(byte[].class))).thenReturn(CompletableFuture.completedFuture(response));
     impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0);
 
     Mockito.verify(response, Mockito.times(1)).body();
