@@ -15,7 +15,10 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -29,6 +32,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -69,6 +73,12 @@ class PatchTest {
       builders.add(result);
       return result;
     });
+  }
+
+  @AfterEach
+  public void tearDown() {
+    kubernetesClient.close();
+    kubernetesClient = null;
   }
 
   @Test
@@ -180,6 +190,23 @@ class PatchTest {
     // Then
     verify(mockClient, times(1)).sendAsync(any(), any());
     assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "fieldManager=x&force=true",
+        PatchType.SERVER_SIDE_APPLY.getContentType());
+  }
+
+  @Test
+  void testResourceListServerSideApply() {
+    // Given
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("default").endMetadata().build();
+    Service svc = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
+    // When
+    kubernetesClient.resourceList(pod, svc).inNamespace("ns1").fieldManager("x")
+        .forceConflicts().serverSideApply();
+
+    // Then
+    verify(mockClient, times(2)).sendAsync(any(), any());
+    assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "fieldManager=x&force=true",
+        PatchType.SERVER_SIDE_APPLY.getContentType());
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/services/svc1", "fieldManager=x&force=true",
         PatchType.SERVER_SIDE_APPLY.getContentType());
   }
 

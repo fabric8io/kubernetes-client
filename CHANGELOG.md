@@ -32,6 +32,7 @@
 * Fix #5022: adding additional buffering to ExecWatchInputStream
 * Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount
 * Fix #5080: minimizing debug logs related to the backoff interval 
+* Fix #5073: `NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl` extends `ServerSideApplicable`
 
 #### Dependency Upgrade
 * Fix #5006: Bump BouncyCastle to 1.72
