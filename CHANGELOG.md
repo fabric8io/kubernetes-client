@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.6-SNAPSHOT
+### 6.6.0 (2023-05-03)
 
 #### Bugs
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
@@ -31,8 +31,8 @@
 * Fix #5005: status operations use the context `subresource` setting
 * Fix #5022: adding additional buffering to ExecWatchInputStream
 * Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount
-* Fix #5080: minimizing debug logs related to the backoff interval 
 * Fix #5073: `NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl` extends `ServerSideApplicable`
+* Fix #5080: minimizing debug logs related to the backoff interval 
 
 #### Dependency Upgrade
 * Fix #5006: Bump BouncyCastle to 1.72
