@@ -56,6 +56,7 @@
 
 #### _**Note**_: Breaking changes
 * Fix #4875: Removed unused options from the java-generator
+* Fix #4910: **all** Pod file uploads require commons-compress
 * Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
 
 ### 6.5.1 (2023-03-20)
