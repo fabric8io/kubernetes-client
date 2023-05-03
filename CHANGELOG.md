@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.7-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.6.0 (2023-05-03)
 
 #### Bugs
@@ -23,7 +35,7 @@
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
-* Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
+* Fix #4477: exposing LeaderElector.release to force an elector to give up the lease
 * Fix #4935: improve HTTP client implementation selection messages
 * Fix #4975: exposing scale operations for all Resources
 * Fix #4992: Optimize Quantity parsing to avoid regex overhead
@@ -44,7 +56,6 @@
 
 #### _**Note**_: Breaking changes
 * Fix #4875: Removed unused options from the java-generator
-* Fix #4910: all Pod file uploads not require commons-compress
 * Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
 
 ### 6.5.1 (2023-03-20)
