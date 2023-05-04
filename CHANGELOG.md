@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #5100: lessened the level of the non-conflicting httpclient implementation warning
 
 #### Dependency Upgrade
 

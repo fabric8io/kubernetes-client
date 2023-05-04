@@ -31,6 +31,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -215,6 +216,7 @@ class HttpClientUtilsTest {
       mockedStaticServiceLoader = mockStatic(ServiceLoader.class);
       @SuppressWarnings("unchecked")
       final ServiceLoader<HttpClient.Factory> mockServiceLoader = mock(ServiceLoader.class);
+      Mockito.doCallRealMethod().when(mockServiceLoader).forEach(Mockito.any());
       when(mockServiceLoader.iterator()).thenAnswer(i -> new ArrayList<>(factories).iterator());
       when(ServiceLoader.load(eq(HttpClient.Factory.class), any())).thenReturn(mockServiceLoader);
       mockedStaticServiceLoader.when(() -> ServiceLoader.load(eq(HttpClient.Factory.class)))
