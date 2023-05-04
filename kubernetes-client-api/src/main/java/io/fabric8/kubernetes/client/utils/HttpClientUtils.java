@@ -30,14 +30,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,37 +151,25 @@ public class HttpClientUtils {
   }
 
   private static HttpClient.Factory getFactory(ServiceLoader<HttpClient.Factory> loader) {
-    HttpClient.Factory selected = null;
-    Set<String> detectedFactories = new HashSet<>();
-    Set<String> samePriority = new HashSet<>();
-    for (HttpClient.Factory candidate : loader) {
-      final String candidateClassName = candidate.getClass().getName();
-      detectedFactories.add(candidateClassName);
-      LOGGER.debug("Considering {} httpclient factory", candidateClassName);
-
-      if (selected == null) {
-        selected = candidate;
-        LOGGER.debug("Temporarily selected {} as first candidate httpclient factory", candidateClassName);
-      } else if (selected.priority() < candidate.priority()) {
-        selected = candidate;
-        samePriority.clear();
-        LOGGER.debug("Temporarily selected {} as httpclient factory, replacing one with lower priority",
-            candidateClassName);
-      } else if (selected.priority() == candidate.priority()) {
-        samePriority.add(candidateClassName);
-      } else {
-        LOGGER.debug("Ignoring {} httpclient factory as it doesn't supersede currently selected one", candidateClassName);
+    List<HttpClient.Factory> factories = new ArrayList<>();
+    loader.forEach(factories::add);
+    if (factories.isEmpty()) {
+      return null;
+    }
+    Collections.sort(factories, (f1, f2) -> Integer.compare(f2.priority(), f1.priority()));
+    HttpClient.Factory factory = factories.get(0);
+    if (factories.size() > 1) {
+      if (factories.get(1).priority() == factory.priority()) {
+        LOGGER.warn("The following httpclient factories were detected on your classpath: {}, "
+            + "multiple of which had the same priority ({}) so one was chosen randomly. "
+            + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.",
+            factories.stream().map(f -> f.getClass().getName()).toArray(), factory.priority());
+      } else if (LOGGER.isDebugEnabled()) {
+        LOGGER.debug("The following httpclient factories were detected on your classpath: {}",
+            factories.stream().map(f -> f.getClass().getName()).toArray());
       }
-
     }
-
-    if (detectedFactories.size() > 1) {
-      LOGGER.warn("The following httpclient factories were detected on your classpath: {}, "
-          + (samePriority.isEmpty() ? "" : "{} of which had the same priority ({}) so one was chosen randomly. ")
-          + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.",
-          detectedFactories, samePriority.size(), samePriority);
-    }
-    return selected;
+    return factory;
   }
 
   public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
