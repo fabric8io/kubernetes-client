@@ -3,6 +3,7 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
+* Fix #5095: moving the enforcement to requestTimeout
 * Fix #5102: wait on scale to 0 was not completing
 
 #### Improvements
