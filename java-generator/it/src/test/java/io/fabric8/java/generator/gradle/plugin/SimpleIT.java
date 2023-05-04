@@ -15,32 +15,22 @@
  */
 package io.fabric8.java.generator.gradle.plugin;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.gradle.testkit.runner.BuildResult;
-import org.junit.jupiter.api.AfterAll;
+import org.gradle.testkit.runner.UnexpectedBuildFailure;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleIT {
 
   @RegisterExtension
   private final ITGradleRunnerExtension gradleRunner = new ITGradleRunnerExtension();
 
-  @AfterAll
-  public static void cleanup() throws IOException {
-    FileUtils.deleteDirectory(new File("src/it/plugin/gradle/simple/tmp/"));
-    FileUtils.deleteDirectory(new File("src/it/plugin/gradle/simple/.gradle/"));
-  }
-
+  /**
+   * Verify that the {@code crd2java} Gradle task is available
+   */
   @Test
   void tasks_containsJavaGeneratorTasks() {
     // When
@@ -51,16 +41,31 @@ class SimpleIT {
         .contains("crd2java - ");
   }
 
+  /**
+   * Verify that the {@gradle-simple-example} example library sources actually build.
+   * The only Java class ({@see Hello.java} is creating an instance of ActiveMQArtemis which must be available in the
+   * classpath after the generation task has been executed.
+   */
   @Test
-  void tasks_crd2JavaApproval() throws IOException {
+  void tasks_javaCompilationIsSuccessfulAfterCrd2Java() {
     // When
-    final BuildResult result = gradleRunner.withITProject("simple").withArguments("crd2java", "--stacktrace").build();
+    gradleRunner.withITProject("simple").withArguments("clean", "crd2Java", "--stacktrace").build();
+    BuildResult build = gradleRunner.withITProject("simple").withArguments("build", "--stacktrace").build();
     // Then
-    try (
-        InputStream generated = new FileInputStream(
-            "src/it/plugin/gradle/simple/tmp/generated/io/amq/broker/v1beta1/ActiveMQArtemisSpec.java");
-        InputStream expected = new FileInputStream("src/it/plugin/gradle/simple/expected/ActiveMQArtemisSpec.expected")) {
-      assertTrue(IOUtils.contentEquals(generated, expected));
-    }
+    assertTrue(build.getOutput().contains("SUCCESS"));
+  }
+
+  /**
+   * Verify that the {@gradle-example} example library sources don't build unless the {@code crd2java} task has been
+   * executed.
+   * The only Java class ({@see Hello.java} is creating an instance of ActiveMQArtemis which is not available in the
+   * classpath, since the generation task hasn't been executed.
+   */
+  @Test
+  void tasks_javaCompilationFailsIfCrd2JavaNotExecuted() {
+    // Then
+    assertThrows(UnexpectedBuildFailure.class,
+        // When
+        () -> gradleRunner.withITProject("simple").withArguments("clean", "build", "--stacktrace").build());
   }
 }

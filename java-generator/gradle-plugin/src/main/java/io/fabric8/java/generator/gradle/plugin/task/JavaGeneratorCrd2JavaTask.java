@@ -47,17 +47,12 @@ public class JavaGeneratorCrd2JavaTask extends DefaultTask {
   @TaskAction
   public final void runTask() {
 
-    final Config config = Config.builder()
-        .uppercaseEnums(extensionClass.getEnumUppercaseOrDefault())
-        .objectExtraAnnotations(extensionClass.getExtraAnnotationsOrDefault())
-        .generatedAnnotations(extensionClass.getGeneratedAnnotationsOrDefault())
-        .packageOverrides(extensionClass.getPackageOverridesOrDefault())
-        .build();
+    final Config config = extensionClass.getConfig();
 
     List<JavaGenerator> runners = new ArrayList<>();
 
-    final String[] urls = extensionClass.getUrlsOrDefault();
-    if (urls != null && urls.length > 0) {
+    final List<String> urls = extensionClass.getUrlsOrDefault();
+    if (urls != null && !urls.isEmpty()) {
       final List<URL> urlList = new ArrayList<>();
       for (String url : urls) {
         try {
@@ -78,7 +73,7 @@ public class JavaGeneratorCrd2JavaTask extends DefaultTask {
     }
 
     if (runners.isEmpty()) {
-      throw new GradleException("G: No source or urls specified");
+      throw new GradleException("No source or urls specified");
     }
 
     runners.forEach(r -> r.run(extensionClass.getTargetOrDefault()));

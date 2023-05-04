@@ -23,7 +23,7 @@
   <parent>
     <artifactId>java-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.6-SNAPSHOT</version>
+    <version>6.7-SNAPSHOT</version>
   </parent>
 
   <!--
@@ -72,50 +72,6 @@
     <dependency>
       <groupId>org.gradle</groupId>
       <artifactId>gradle-model-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <!-- test -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-    </dependency>
-    <!-- More Gradle -->
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-base-services-groovy</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-messaging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-native</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-platform-jvm</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-process-services</artifactId>
     </dependency>
   </dependencies>
 
