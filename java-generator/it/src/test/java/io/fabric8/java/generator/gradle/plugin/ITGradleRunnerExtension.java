@@ -15,6 +15,7 @@
  */
 package io.fabric8.java.generator.gradle.plugin;
 
+import io.fabric8.java.generator.testing.GradleProperties;
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -31,12 +32,17 @@ import java.util.stream.Collectors;
  * https://github.com/eclipse/jkube/blob/master/gradle-plugin/it/src/test/java/org/eclipse/jkube/gradle/plugin/tests/ITGradleRunnerExtension.java
  */
 public class ITGradleRunnerExtension implements BeforeEachCallback, AfterEachCallback {
+  public static final String GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION = "kubernetesClientVersion";
+  public static final String GRADLE_PROJECT_PROPERTY_IT_DIR = "itDir";
+  public static final String MAVEN_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION = GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION;
+  public static final String GRADLE_RUNNER_BINARIES_ARCHIVE_URL = "https://services.gradle.org/distributions/gradle-"
+      + GradleProperties.binariesVersion() + "-bin.zip";
   private GradleRunner gradleRunner;
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
     gradleRunner = GradleRunner.create()
-        .withGradleDistribution(new URI("https://services.gradle.org/distributions/gradle-8.1-bin.zip"))
+        .withGradleDistribution(new URI(GRADLE_RUNNER_BINARIES_ARCHIVE_URL))
         .withDebug(true)
         .withPluginClasspath(Arrays.stream(System.getProperty("java.class.path").split(File.pathSeparator))
             .map(File::new).collect(Collectors.toList()));
@@ -48,7 +54,7 @@ public class ITGradleRunnerExtension implements BeforeEachCallback, AfterEachCal
   }
 
   public ITGradleRunnerExtension withITProject(String name) {
-    final String baseDir = System.getProperty("itDir", "");
+    final String baseDir = System.getProperty(GRADLE_PROJECT_PROPERTY_IT_DIR, "");
     gradleRunner = gradleRunner
         .withProjectDir(new File(baseDir).toPath()
             .resolve("src")
@@ -59,9 +65,11 @@ public class ITGradleRunnerExtension implements BeforeEachCallback, AfterEachCal
   }
 
   public ITGradleRunnerExtension withArguments(String... originalArguments) {
-    final String[] arguments = new String[originalArguments.length + 1];
-    arguments[0] = "--console=plain";
-    System.arraycopy(originalArguments, 0, arguments, 1, originalArguments.length);
+    final String[] arguments = new String[originalArguments.length + 2];
+    arguments[0] = String.format("-P%s=%s", GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION,
+        System.getProperty(MAVEN_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION));
+    arguments[1] = "--console=plain";
+    System.arraycopy(originalArguments, 0, arguments, 2, originalArguments.length);
     gradleRunner = gradleRunner.withArguments(arguments);
     return this;
   }

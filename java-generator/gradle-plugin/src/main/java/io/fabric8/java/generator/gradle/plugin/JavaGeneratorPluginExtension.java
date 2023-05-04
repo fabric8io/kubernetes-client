@@ -15,14 +15,15 @@
  */
 package io.fabric8.java.generator.gradle.plugin;
 
+import io.fabric8.java.generator.Config;
 import org.gradle.api.Project;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.provider.MapProperty;
-import org.gradle.api.provider.Property;
+import org.gradle.api.provider.ListProperty;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class JavaGeneratorPluginExtension {
@@ -30,8 +31,14 @@ public abstract class JavaGeneratorPluginExtension {
   public static final String NAME = "javaGen";
   private Project gradleProject;
 
+  private Config javaGeneratorConfig = Config.builder().build();
+
   public JavaGeneratorPluginExtension(Project gradleProject) {
     this.gradleProject = gradleProject;
+  }
+
+  public Config getConfig() {
+    return javaGeneratorConfig;
   }
 
   /**
@@ -47,10 +54,10 @@ public abstract class JavaGeneratorPluginExtension {
   /**
    * The URLs to be used to download CRDs from remote locations
    */
-  public abstract Property<String[]> getUrls();
+  public abstract ListProperty<String> getUrls();
 
-  public String[] getUrlsOrDefault() {
-    return this.getUrls().getOrElse(new String[] {});
+  public List<String> getUrlsOrDefault() {
+    return this.getUrls().getOrElse(new ArrayList<>());
   }
 
   /**
@@ -61,7 +68,10 @@ public abstract class JavaGeneratorPluginExtension {
 
   public File getDownloadTargetOrDefault() {
     return this.getDownloadTarget().getAsFile()
-        .getOrElse(this.gradleProject.getLayout().getProjectDirectory().dir("tmp").dir("input").getAsFile());
+        .getOrElse(this.gradleProject.getLayout().getProjectDirectory()
+            .dir("build")
+            .dir("crds")
+            .getAsFile());
   }
 
   /**
@@ -72,57 +82,69 @@ public abstract class JavaGeneratorPluginExtension {
 
   public File getTargetOrDefault() {
     return this.getTarget().getAsFile()
-        .getOrElse(this.gradleProject.getLayout().getProjectDirectory().dir("tmp").dir("output").getAsFile());
+        .getOrElse(this.gradleProject.getLayout().getProjectDirectory()
+            .dir("build")
+            .dir("generated")
+            .dir("sources").getAsFile());
   }
 
   /**
    * Generate uppercase Enums
    *
    */
-  public abstract Property<Boolean> getEnumUppercase();
-
-  public Boolean getEnumUppercaseOrDefault() {
-    return this.getEnumUppercase().getOrElse(Boolean.FALSE);
+  public Boolean getEnumUppercase() {
+    return javaGeneratorConfig.isUppercaseEnums();
   }
 
-  /**
-   * *DEPRECATED* Always inject additional properties in the generated classes
-   *
-   */
-  @Deprecated
-  public abstract Property<Boolean> getAlwaysPreserveUnknown();
-
-  public Boolean getAlwaysPreserveUnknownOrDefault() {
-    return this.getAlwaysPreserveUnknown().getOrElse(Boolean.FALSE);
+  public void setEnumUppercase(final Boolean isEnumUppercase) {
+    javaGeneratorConfig = new Config(isEnumUppercase,
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.getPackageOverrides());
   }
 
   /**
    * Generate Extra annotation for lombok and sundrio integration
    *
    */
-  public abstract Property<Boolean> getExtraAnnotations();
+  public Boolean getExtraAnnotations() {
+    return javaGeneratorConfig.isObjectExtraAnnotations();
+  }
 
-  public Boolean getExtraAnnotationsOrDefault() {
-    return this.getExtraAnnotations().getOrElse(Boolean.FALSE);
+  public void setExtraAnnotations(final Boolean isExtraAnnotations) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        isExtraAnnotations,
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.getPackageOverrides());
   }
 
   /**
    * *advanced* Emit the @javax.annotation.processing.Generated annotation on the generated sources
    *
    */
-  public abstract Property<Boolean> getGeneratedAnnotations();
+  public Boolean getGeneratedAnnotations() {
+    return javaGeneratorConfig.isUppercaseEnums();
+  }
 
-  public Boolean getGeneratedAnnotationsOrDefault() {
-    return this.getGeneratedAnnotations().getOrElse(Boolean.TRUE);
+  public void setGeneratedAnnotations(final Boolean isGeneratedAnnotations) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        isGeneratedAnnotations,
+        javaGeneratorConfig.getPackageOverrides());
   }
 
   /**
    * Package names to be substituted
    *
    */
-  public abstract MapProperty<String, String> getPackageOverrides();
+  public Map<String, String> getPackageOverrides() {
+    return javaGeneratorConfig.getPackageOverrides();
+  }
 
-  public Map<String, String> getPackageOverridesOrDefault() {
-    return this.getPackageOverrides().getOrElse(Collections.emptyMap());
+  public void setPackageOverrides(final Map<String, String> packageOverrides) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        packageOverrides);
   }
 }

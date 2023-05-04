@@ -9,12 +9,26 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
-    id 'io.fabric8.java-generator' version '6.6-SNAPSHOT'
+    id 'io.fabric8.java-generator' version "${kubernetesClientVersion}"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    mavenLocal()
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs "$buildDir/generated/sources"
+    }
+  }
+}
+
+dependencies {
+  implementation  "io.fabric8:kubernetes-client:${kubernetesClientVersion}"
+  implementation  "io.fabric8:generator-annotations:${kubernetesClientVersion}"
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -25,7 +39,6 @@ java {
 }
 
 javaGen {
-    source = file('artemis-crd.yml')
-    target = file('tmp/generated/')
+    source = file('src/main/resources/broker_activemqartemis_crd.yaml')
 }
 
