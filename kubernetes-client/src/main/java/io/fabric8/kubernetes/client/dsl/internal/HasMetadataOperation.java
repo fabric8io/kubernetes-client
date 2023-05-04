@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -309,7 +309,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   /**
    * Let's wait until there are enough Ready pods.
    */
-  protected void waitUntilScaled(final Integer count) {
+  protected void waitUntilScaled(final int count) {
     final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
 
     final String name = checkName(getItem());
@@ -319,11 +319,13 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     Utils.scheduleWithVariableRate(completion, getOperationContext().getExecutor(), () -> {
       try {
         Scale scale = scale();
-        if (Objects.equals(count, scale.getStatus().getReplicas()) && Objects.equals(count, scale.getSpec().getReplicas())) {
+        int statusReplicas = Optional.ofNullable(scale.getStatus().getReplicas()).orElse(0);
+        int specReplicas = Optional.ofNullable(scale.getSpec().getReplicas()).orElse(0);
+        if (count == statusReplicas && count == specReplicas) {
           completion.complete(null);
         } else {
           LOGGER.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
-              scale.getSpec().getReplicas(), count, getKind(), getName(), namespace);
+              specReplicas, count, getKind(), getName(), namespace);
         }
       } catch (KubernetesClientException e) {
         completion.completeExceptionally(e);
