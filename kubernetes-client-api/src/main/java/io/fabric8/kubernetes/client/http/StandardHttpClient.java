@@ -33,13 +33,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient, RequestTags {
+
+  private static final long ADDITIONAL_REQEUST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
 
   private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
 
@@ -136,14 +140,25 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     };
   }
 
+  public <V> CompletableFuture<V> orTimeout(CompletableFuture<V> future, RequestConfig requestConfig) {
+    int timeout = Optional.ofNullable(requestConfig).map(RequestConfig::getRequestTimeout).orElse(0);
+    if (timeout > 0) {
+      Future<?> scheduled = Utils.schedule(Runnable::run, () -> future.completeExceptionally(new TimeoutException()),
+          timeout + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
+      future.whenComplete((v, t) -> scheduled.cancel(true));
+    }
+    return future;
+  }
+
   /**
    * Will retry the action if needed based upon the retry settings provided by the ExponentialBackoffIntervalCalculator.
    */
   protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
       Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
-      java.util.function.Consumer<V> cancel, ExponentialBackoffIntervalCalculator retryIntervalCalculator) {
+      java.util.function.Consumer<V> cancel, ExponentialBackoffIntervalCalculator retryIntervalCalculator,
+      RequestConfig requestConfig) {
 
-    action.get()
+    orTimeout(action.get(), requestConfig)
         .whenComplete((response, throwable) -> {
           if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
             long retryInterval = retryIntervalCalculator.nextReconnectInterval();
@@ -168,7 +183,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
             }
             if (retry) {
               Utils.schedule(Runnable::run,
-                  () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, retryIntervalCalculator),
+                  () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, retryIntervalCalculator,
+                      requestConfig),
                   retryInterval,
                   TimeUnit.MILLISECONDS);
               return;
@@ -181,8 +197,9 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
       Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
       java.util.function.Consumer<V> cancel) {
+    RequestConfig requestConfig = getTag(RequestConfig.class);
     retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel,
-        ExponentialBackoffIntervalCalculator.from(getTag(RequestConfig.class)));
+        ExponentialBackoffIntervalCalculator.from(requestConfig), requestConfig);
   }
 
   @Override

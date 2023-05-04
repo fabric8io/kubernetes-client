@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -210,6 +211,20 @@ class StandardHttpClientTest {
 
     // only 2 requests issued
     assertEquals(2, client.getRespFutures().size());
+  }
+
+  @Test
+  void testRequestTimeout() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestTimeout(1).build())
+        .build();
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(consumeFuture::isDone);
   }
 
 }
