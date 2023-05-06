@@ -9,6 +9,7 @@
 * Fix #3818: adding missing throws to launderThrowable
 * Fix #3859: refined how a deserialization class is chosen to not confuse types with the same kind
 * Fix #3936: Kubernetes Mock Server .metadata.generation field is an integer
+* Fix #5098: upgraded snakeyaml to version 2.0 to fix security vulnerability
 
 #### Improvements
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
