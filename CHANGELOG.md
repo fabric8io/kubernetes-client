@@ -8,6 +8,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #5098: Upgraded jackson.version
 
 #### New Features
 
