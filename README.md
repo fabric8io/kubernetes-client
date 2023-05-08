@@ -621,6 +621,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
   - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
   - [Open Cluster Management](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/open-cluster-management)
+  - ~~[Camel-k](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/camel-k)~~ deprecated in favor of the [official extension](https://github.com/apache/camel-k/blob/main/docs/modules/ROOT/pages/apis/java.adoc)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

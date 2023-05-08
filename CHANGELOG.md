@@ -8,6 +8,7 @@
 
 #### Dependency Upgrade
 * Fix #4989: Upgrade Tekton Model to v0.47.0
+* Fix #5107: The Camel-k extension has been deprecated in favor of the official release of the generated one
 
 #### New Features
 
