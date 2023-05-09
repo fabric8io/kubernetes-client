@@ -8,6 +8,7 @@
 
 #### Improvements
 * Fix #5100: lessened the level of the non-conflicting httpclient implementation warning
+* Fix #5112: Expose put method with InputStream argument in HttpRequest class
 
 #### Dependency Upgrade
 

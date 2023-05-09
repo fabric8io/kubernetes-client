@@ -55,13 +55,19 @@ public interface HttpRequest extends HttpHeaders {
       return method("PUT", contentType, writeValueAsString);
     }
 
+    default Builder put(String contentType, InputStream stream, long length) {
+      return method("PUT", contentType, stream, length);
+    }
+
     default Builder post(String contentType, String writeValueAsString) {
       return method("POST", contentType, writeValueAsString);
     }
 
     Builder post(String contentType, byte[] writeValueAsBytes);
 
-    Builder post(String contentType, InputStream stream, long length);
+    default Builder post(String contentType, InputStream stream, long length) {
+      return method("POST", contentType, stream, length);
+    }
 
     default Builder delete(String contentType, String writeValueAsString) {
       return method("DELETE", contentType, writeValueAsString);
@@ -72,6 +78,8 @@ public interface HttpRequest extends HttpHeaders {
     }
 
     Builder method(String method, String contentType, String body);
+
+    Builder method(String method, String contentType, InputStream stream, long length);
 
     @Override
     Builder header(String k, String v);
