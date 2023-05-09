@@ -33,6 +33,7 @@ import java.util.UUID;
 public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequest {
 
   public static final String METHOD_POST = "POST";
+  public static final String METHOD_PUT = "PUT";
 
   public interface BodyContent {
 
@@ -206,14 +207,6 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     }
 
     @Override
-    public HttpRequest.Builder post(String contentType, InputStream stream, long length) {
-      method = METHOD_POST;
-      this.contentType = contentType;
-      body = new InputStreamBodyContent(stream, length);
-      return this;
-    }
-
-    @Override
     public HttpRequest.Builder method(String method, String contentType, String body) {
       this.method = method;
       this.contentType = contentType;
@@ -221,6 +214,14 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
       if (body != null) {
         this.body = new StringBodyContent(body);
       }
+      return this;
+    }
+
+    @Override
+    public HttpRequest.Builder method(String method, String contentType, InputStream stream, long length) {
+      this.method = method;
+      this.contentType = contentType;
+      this.body = new InputStreamBodyContent(stream, length);
       return this;
     }
 
