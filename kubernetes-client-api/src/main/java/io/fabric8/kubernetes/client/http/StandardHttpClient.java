@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
 import io.fabric8.kubernetes.client.http.Interceptor.RequestTags;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import io.fabric8.kubernetes.client.utils.AsyncUtils;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -34,18 +35,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient, RequestTags {
 
   // pads the fail-safe timeout to ensure we don't inadvertently timeout a request
-  private static final long ADDITIONAL_REQEUST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
+  private static final long MAX_ADDITIONAL_REQUEST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
 
   private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
 
@@ -81,13 +80,12 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, Consumer<List<ByteBuffer>> consumer) {
-    CompletableFuture<HttpResponse<AsyncBody>> result = new CompletableFuture<>();
-    StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
-
-    retryWithExponentialBackoff(result, () -> consumeBytesOnce(standardHttpRequest, consumer), request.uri(),
-        HttpResponse::code,
-        r -> r.body().cancel(), standardHttpRequest.getTimeout());
-    return result;
+    final StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
+    return retryWithExponentialBackoff(
+        standardHttpRequest,
+        () -> consumeBytesOnce(standardHttpRequest, consumer),
+        r -> r.body().cancel(),
+        HttpResponse::code);
   }
 
   private CompletableFuture<HttpResponse<AsyncBody>> consumeBytesOnce(StandardHttpRequest standardHttpRequest,
@@ -143,67 +141,46 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     };
   }
 
-  public <V> CompletableFuture<V> orTimeout(CompletableFuture<V> future, Duration timeout) {
-    if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
-      long millis = timeout.toMillis();
-      millis += (Math.min(millis, ADDITIONAL_REQEUST_TIMEOUT));
-      Future<?> scheduled = Utils.schedule(Runnable::run, () -> future.completeExceptionally(new TimeoutException()),
-          millis, TimeUnit.MILLISECONDS);
-      future.whenComplete((v, t) -> scheduled.cancel(true));
-    }
-    return future;
-  }
-
   /**
    * Will retry the action if needed based upon the retry settings provided by the ExponentialBackoffIntervalCalculator.
    */
-  protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
-      Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
-      java.util.function.Consumer<V> cancel, ExponentialBackoffIntervalCalculator retryIntervalCalculator,
-      Duration timeout) {
-
-    orTimeout(action.get(), timeout)
-        .whenComplete((response, throwable) -> {
-          if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
-            long retryInterval = retryIntervalCalculator.nextReconnectInterval();
-            boolean retry = false;
-            if (response != null) {
-              Integer code = codeExtractor.apply(response);
-              if (code != null && code >= 500) {
-                LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                    uri, code, retryInterval);
-                retry = true;
-                cancel.accept(response);
-              }
-            } else {
-              if (throwable instanceof CompletionException) {
-                throwable = ((CompletionException) throwable).getCause();
-              }
-              if (throwable instanceof IOException) {
-                LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-                    uri, retryInterval), throwable);
-                retry = true;
-              }
+  private <V> CompletableFuture<V> retryWithExponentialBackoff(
+      StandardHttpRequest request, Supplier<CompletableFuture<V>> action, java.util.function.Consumer<V> onCancel,
+      ToIntFunction<V> codeExtractor) {
+    final URI uri = request.uri();
+    final RequestConfig requestConfig = getTag(RequestConfig.class);
+    final ExponentialBackoffIntervalCalculator retryIntervalCalculator = ExponentialBackoffIntervalCalculator
+        .from(requestConfig);
+    final Duration timeout;
+    if (request.getTimeout() != null && !request.getTimeout().isNegative() && !request.getTimeout().isZero()) {
+      timeout = request.getTimeout().plusMillis(Math.min(request.getTimeout().toMillis(), MAX_ADDITIONAL_REQUEST_TIMEOUT));
+    } else {
+      timeout = null;
+    }
+    return AsyncUtils.retryWithExponentialBackoff(action, onCancel, timeout, retryIntervalCalculator,
+        (response, throwable, retryInterval) -> {
+          if (response != null) {
+            final int code = codeExtractor.applyAsInt(response);
+            if (code >= 500) {
+              LOG.debug(
+                  "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+                  uri, code, retryInterval);
+              return true;
             }
-            if (retry) {
-              Utils.schedule(Runnable::run,
-                  () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, retryIntervalCalculator,
-                      timeout),
-                  retryInterval,
-                  TimeUnit.MILLISECONDS);
-              return;
+          } else {
+            if (throwable instanceof CompletionException) {
+              throwable = throwable.getCause();
+            }
+            if (throwable instanceof IOException) {
+              LOG.debug(
+                  String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
+                      uri, retryInterval),
+                  throwable);
+              return true;
             }
           }
-          completeOrCancel(cancel, result).accept(response, throwable);
+          return false;
         });
-  }
-
-  protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
-      Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
-      java.util.function.Consumer<V> cancel, Duration timeout) {
-    RequestConfig requestConfig = getTag(RequestConfig.class);
-    retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel,
-        ExponentialBackoffIntervalCalculator.from(requestConfig), timeout);
   }
 
   @Override
@@ -220,13 +197,11 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   final CompletableFuture<WebSocket> buildWebSocket(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
 
-    CompletableFuture<WebSocketResponse> intermediate = new CompletableFuture<>();
-    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
-
-    retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
-        request.uri(),
-        r -> Optional.of(r.webSocketUpgradeResponse).map(HttpResponse::code).orElse(null),
-        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)), request.getTimeout());
+    final CompletableFuture<WebSocketResponse> intermediate = retryWithExponentialBackoff(
+        standardWebSocketBuilder.asHttpRequest(),
+        () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
+        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)),
+        r -> Optional.of(r.webSocketUpgradeResponse).map(HttpResponse::code).orElse(null));
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 

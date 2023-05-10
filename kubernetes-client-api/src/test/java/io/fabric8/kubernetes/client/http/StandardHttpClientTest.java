@@ -28,6 +28,7 @@ import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -221,6 +222,8 @@ class StandardHttpClientTest {
         });
 
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(consumeFuture::isDone);
+    assertThatThrownBy(consumeFuture::get)
+        .isInstanceOf(ExecutionException.class).hasCauseInstanceOf(TimeoutException.class);
   }
 
 }
