@@ -48,6 +48,30 @@ The Java generator Maven plugin can be used from your project `pom.xml` adding a
 </plugin>
 ```
 
+## Quick start Gradle
+
+In a similar way with respect to the Maven plugin, the Java generator Gradle plugin can be used from your project 
+`build.gradle` adding a section like:
+
+```groovy
+plugins {
+  // ...
+  id 'io.fabric8.java-generator' version "${kubernetesClientVersion}"
+}
+// ...
+javaGen {
+  source = file('src/main/resources/kubernetes')
+}
+```
+
+The properties that can be used in the `javaGen` closure are the one defined by the plugin extension, i.e.
+`JavaGeneratorPluginExtension`.
+The Gradle plugin defines a `crd2java` task (see `gradle tasks --all`), that can be applied or called directly, e.g.:
+
+```shell
+gradle crd2Java 
+```
+
 ## Usage
 
 Provide a `source` referencing a file or a folder containing your CRDs definitions in `yaml` or `json` format and a `target` directory where the relevant Java code should be generated.

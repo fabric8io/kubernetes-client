@@ -12,6 +12,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #4829: Gradle Plugin for Java Generation from CRD
 
 #### _**Note**_: Breaking changes
 
