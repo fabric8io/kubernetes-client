@@ -146,7 +146,7 @@ public class HttpClientUtils {
             "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
       }
     }
-    LOGGER.info("Using httpclient {} factory", factory.getClass().getName());
+    LOGGER.debug("Using httpclient {} factory", factory.getClass().getName());
     return factory;
   }
 
