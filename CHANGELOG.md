@@ -15,6 +15,7 @@
 * Fix #5107: The Camel-k extension has been deprecated in favor of the official release of the generated one
 
 #### New Features
+* Fix #4829: Gradle Plugin for Java Generation from CRD
 
 #### _**Note**_: Breaking changes
 * Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
