@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.StreamConsumer;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedOutputStream;
@@ -27,7 +29,11 @@ public interface TtyExecOutputErrorable extends
    * <p>
    * In particular do no use a {@link PipedOutputStream} - use {@link #redirectingOutput()} instead
    */
-  TtyExecErrorable writingOutput(OutputStream in);
+  default TtyExecErrorable writingOutput(OutputStream in) {
+    return writingOutput(StreamConsumer.newStreamConsumer(in), true);
+  }
+
+  TtyExecErrorable writingOutput(StreamConsumer consumer, boolean blocking);
 
   /**
    * Will provide an {@link InputStream} via {@link ExecWatch#getOutput()}

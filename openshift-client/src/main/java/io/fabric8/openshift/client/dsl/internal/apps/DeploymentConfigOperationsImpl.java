@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.dsl.internal.apps;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -36,7 +37,6 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -135,12 +135,12 @@ public class DeploymentConfigOperationsImpl
   }
 
   @Override
-  public LogWatch watchLog(OutputStream out) {
+  public LogWatch watchLog(StreamConsumer consumer, boolean blocking) {
     try {
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
       waitUntilDeploymentConfigPodBecomesReady(get());
       URL url = getResourceLogUrl(true);
-      final LogWatchCallback callback = new LogWatchCallback(out, context);
+      final LogWatchCallback callback = new LogWatchCallback(consumer, blocking, context);
       return callback.callAndWait(this.httpClient, url);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);

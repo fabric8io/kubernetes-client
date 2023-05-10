@@ -17,17 +17,17 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.AsyncBody;
+import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -41,8 +41,8 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
-  private final OutputStream out;
-  private WritableByteChannel outChannel;
+  private final StreamConsumer consumer;
+  private final boolean blocking;
   private final OperationContext context;
   private volatile InputStream output;
 
@@ -50,11 +50,9 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private final CompletableFuture<AsyncBody> asyncBody = new CompletableFuture<>();
   private final SerialExecutor serialExecutor;
 
-  public LogWatchCallback(OutputStream out, OperationContext context) {
-    this.out = out;
-    if (out != null) {
-      outChannel = Channels.newChannel(out);
-    }
+  public LogWatchCallback(StreamConsumer consumer, boolean blocking, OperationContext context) {
+    this.consumer = consumer;
+    this.blocking = blocking;
     this.context = context;
     this.serialExecutor = new SerialExecutor(context.getExecutor());
   }
@@ -79,7 +77,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
             .withRequestTimeout(0).build())
         .readTimeout(0, TimeUnit.MILLISECONDS).build();
 
-    if (out == null) {
+    if (consumer == null) {
       // we can pass the input stream directly to the consumer
       clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
         if (e != null) {
@@ -91,43 +89,38 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
       }).join();
     } else {
       // we need to write the bytes to the given output
-      // we don't know if the write will be blocking, so hand it off to another thread
-      clone.consumeBytes(request, (buffers, a) -> CompletableFuture.runAsync(() -> {
-        for (ByteBuffer byteBuffer : buffers) {
-          try {
-            outChannel.write(byteBuffer);
-          } catch (IOException e1) {
-            throw KubernetesClientException.launderThrowable(e1);
-          }
-        }
-      }, serialExecutor).whenComplete((v, t) -> {
-        if (t != null) {
-          a.cancel();
-          onFailure(t);
-        } else if (!closed.get()) {
-          a.consume();
-        } else {
-          a.cancel();
-        }
-      })).whenComplete((a, e) -> {
-        if (e != null) {
-          onFailure(e);
-        }
-        if (a != null) {
-          asyncBody.complete(a.body());
-          a.body().consume();
-          a.body().done().whenComplete((v, t) -> CompletableFuture.runAsync(() -> {
-            if (t != null) {
-              onFailure(t);
-            } else {
-              cleanUp();
+      clone.consumeBytes(request, (buffers, a) -> ExecWebSocketListener.consume(consumer,
+          ByteBuffer.wrap(BufferUtil.toArray(buffers)), blocking ? serialExecutor : Runnable::run, (t) -> postConsume(a, t)))
+          .whenComplete((a, e) -> {
+            if (e != null) {
+              onFailure(e);
             }
-          }, serialExecutor));
-        }
-      });
+            if (a != null) {
+              asyncBody.complete(a.body());
+              a.body().consume();
+              a.body().done().whenComplete((v, t) -> CompletableFuture.runAsync(() -> {
+                if (t != null) {
+                  onFailure(t);
+                } else {
+                  cleanUp();
+                }
+              }, serialExecutor));
+            }
+          });
     }
 
     return this;
+  }
+
+  private void postConsume(AsyncBody a, Throwable t) {
+    if (t != null) {
+      a.cancel();
+      onFailure(t);
+    } else if (!closed.get()) {
+      a.consume();
+    } else {
+      a.cancel();
+    }
   }
 
   @Override

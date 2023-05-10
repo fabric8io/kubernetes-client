@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -34,10 +34,12 @@ public class PodOperationContext {
 
   @Getter
   public static final class StreamContext {
-    private OutputStream outputStream;
+    private StreamConsumer consumer;
+    private boolean blocking;
 
-    public StreamContext(OutputStream outputStream) {
-      this.outputStream = outputStream;
+    public StreamContext(StreamConsumer consumer, boolean blocking) {
+      this.consumer = consumer;
+      this.blocking = blocking;
     }
 
     public StreamContext() {

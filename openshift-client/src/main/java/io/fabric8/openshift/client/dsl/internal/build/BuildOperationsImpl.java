@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.dsl.internal.build;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -38,7 +39,6 @@ import io.fabric8.openshift.client.dsl.BuildResource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
 import java.util.HashMap;
@@ -129,12 +129,12 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   }
 
   @Override
-  public LogWatch watchLog(OutputStream out) {
+  public LogWatch watchLog(StreamConsumer consumer, boolean blocking) {
     try {
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
       waitUntilBuildPodBecomesReady(get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(out, context);
+      final LogWatchCallback callback = new LogWatchCallback(consumer, blocking, context);
       return callback.callAndWait(this.httpClient, url);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);

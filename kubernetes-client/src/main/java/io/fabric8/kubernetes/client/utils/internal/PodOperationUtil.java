@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -31,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,19 +79,19 @@ public class PodOperationUtil {
         selectorLabels);
   }
 
-  public static LogWatch watchLog(List<PodResource> podResources, OutputStream out) {
-    return findFirstPodResource(podResources).map(it -> it.watchLog(out)).orElse(null);
+  public static LogWatch watchLog(List<? extends Loggable> podResources, StreamConsumer consumer, boolean blocking) {
+    return findFirstPodResource(podResources).map(it -> it.watchLog(consumer, blocking)).orElse(null);
   }
 
-  public static Reader getLogReader(List<PodResource> podResources) {
+  public static Reader getLogReader(List<? extends Loggable> podResources) {
     return findFirstPodResource(podResources).map(Loggable::getLogReader).orElse(null);
   }
 
-  public static InputStream getLogInputStream(List<PodResource> podResources) {
+  public static InputStream getLogInputStream(List<? extends Loggable> podResources) {
     return findFirstPodResource(podResources).map(Loggable::getLogInputStream).orElse(null);
   }
 
-  private static Optional<PodResource> findFirstPodResource(List<PodResource> podResources) {
+  private static Optional<Loggable> findFirstPodResource(List<? extends Loggable> podResources) {
     if (!podResources.isEmpty()) {
       if (podResources.size() > 1) {
         LOG.debug("Found {} pods, Using first one to get log", podResources.size());
@@ -101,9 +101,9 @@ public class PodOperationUtil {
     return Optional.empty();
   }
 
-  public static String getLog(List<PodResource> podOperationList, Boolean isPretty) {
+  public static String getLog(List<? extends Loggable> podOperationList, boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    for (PodResource podOperation : podOperationList) {
+    for (Loggable podOperation : podOperationList) {
       stringBuilder.append(podOperation.getLog(isPretty));
     }
     return stringBuilder.toString();

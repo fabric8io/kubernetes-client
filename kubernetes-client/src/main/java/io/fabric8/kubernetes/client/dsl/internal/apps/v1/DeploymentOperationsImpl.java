@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
@@ -39,14 +38,10 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class DeploymentOperationsImpl
@@ -123,16 +118,7 @@ public class DeploymentOperationsImpl
   }
 
   @Override
-  public String getLog(boolean isPretty) {
-    StringBuilder stringBuilder = new StringBuilder();
-    List<RollableScalableResource<ReplicaSet>> rcList = doGetLog();
-    for (RollableScalableResource<ReplicaSet> rcOperation : rcList) {
-      stringBuilder.append(rcOperation.getLog(isPretty));
-    }
-    return stringBuilder.toString();
-  }
-
-  private List<RollableScalableResource<ReplicaSet>> doGetLog() {
+  protected List<RollableScalableResource<ReplicaSet>> doGetLog() {
     List<RollableScalableResource<ReplicaSet>> rcs = new ArrayList<>();
     Deployment deployment = requireFromServer();
     String rcUid = deployment.getMetadata().getUid();
@@ -148,42 +134,6 @@ public class DeploymentOperationsImpl
       }
     }
     return rcs;
-  }
-
-  /**
-   * Returns an unclosed Reader. It's the caller responsibility to close it.
-   *
-   * @return Reader
-   */
-  @Override
-  public Reader getLogReader() {
-    return findFirstPodResource().map(Loggable::getLogReader).orElse(null);
-  }
-
-  /**
-   * Returns an unclosed InputStream. It's the caller responsibility to close it.
-   *
-   * @return InputStream
-   */
-  @Override
-  public InputStream getLogInputStream() {
-    return findFirstPodResource().map(Loggable::getLogInputStream).orElse(null);
-  }
-
-  @Override
-  public LogWatch watchLog(OutputStream out) {
-    return findFirstPodResource().map(it -> it.watchLog(out)).orElse(null);
-  }
-
-  private Optional<RollableScalableResource<ReplicaSet>> findFirstPodResource() {
-    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
-    if (!podResources.isEmpty()) {
-      if (podResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to get log", podResources.size());
-      }
-      return Optional.of(podResources.get(0));
-    }
-    return Optional.empty();
   }
 
   private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {

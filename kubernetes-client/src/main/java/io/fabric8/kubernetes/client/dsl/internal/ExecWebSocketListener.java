@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
@@ -37,8 +38,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +50,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * A {@link WebSocket.Listener} for exec operations.
@@ -106,7 +106,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       this.name = name;
     }
 
-    private void handle(ByteBuffer byteString, WebSocket webSocket) throws IOException {
+    private void handle(ByteBuffer byteString, WebSocket webSocket) throws Exception {
       if (handler != null) {
         if (LOGGER.isDebugEnabled()) {
           LOGGER.debug("exec message received {} bytes on channel {}", byteString.remaining(), name);
@@ -178,37 +178,46 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     if (streamContext == null) {
       return stream;
     }
-    OutputStream os = streamContext.getOutputStream();
-    if (os == null) {
+    StreamConsumer consumer = streamContext.getConsumer();
+    if (consumer == null) {
       // redirecting
       stream.inputStream = new ExecWatchInputStream(() -> this.webSocketRef.get().request());
       this.exitCode.whenComplete(stream.inputStream::onExit);
       stream.handler = b -> stream.inputStream.consume(Arrays.asList(b));
     } else {
-      WritableByteChannel channel = Channels.newChannel(os);
-      stream.handler = b -> asyncWrite(channel, b);
+      stream.handler = b -> consume(consumer, b, streamContext.isBlocking() ? serialExecutor : Runnable::run,
+          this::postConsume);
     }
     return stream;
   }
 
-  private void asyncWrite(WritableByteChannel channel, ByteBuffer b) {
-    CompletableFuture.runAsync(() -> {
+  public static void consume(StreamConsumer consumer, ByteBuffer bytes, Executor executor, Consumer<Throwable> postConsume) {
+    CompletableFuture.supplyAsync(() -> {
       try {
-        channel.write(b);
-      } catch (IOException e) {
+        return consumer.consume(bytes);
+      } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(e);
       }
-    }, serialExecutor).whenComplete((v, t) -> {
-      webSocketRef.get().request();
-      if (t != null) {
-        if (closed.get()) {
-          LOGGER.debug("Stream write failed after close", t);
-        } else {
-          // This could happen if the user simply closes their stream prior to completion
-          LOGGER.warn("Stream write failed", t);
-        }
+    }, executor)
+        .whenComplete((cs, t) -> {
+          if (cs != null) {
+            cs.whenComplete((v, t1) -> postConsume.accept(t1));
+          } else {
+            postConsume.accept(t);
+          }
+        });
+  }
+
+  private void postConsume(Throwable t) {
+    webSocketRef.get().request();
+    if (t != null) {
+      if (closed.get()) {
+        LOGGER.debug("Stream write failed after close", t);
+      } else {
+        // This could happen if the user simply closes their stream prior to completion
+        LOGGER.warn("Stream write failed", t);
       }
-    });
+    }
   }
 
   @Override
@@ -299,6 +308,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   @Override
   public void onMessage(WebSocket webSocket, String text) {
     LOGGER.debug("Exec Web Socket: onMessage(String)");
+    // this is unexpected and will likely just result in an exception
     onMessage(webSocket, ByteBuffer.wrap(text.getBytes(StandardCharsets.UTF_8)));
   }
 
@@ -337,7 +347,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         default:
           throw new IOException("Unknown stream ID " + streamID);
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     } finally {
       if (close) {

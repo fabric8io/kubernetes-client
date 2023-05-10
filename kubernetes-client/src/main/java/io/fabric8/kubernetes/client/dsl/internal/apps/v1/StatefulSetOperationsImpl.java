@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
@@ -41,9 +40,6 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,42 +80,12 @@ public class StatefulSetOperationsImpl
   }
 
   @Override
-  public String getLog(boolean isPretty) {
-    return PodOperationUtil.getLog(
-        new StatefulSetOperationsImpl(rollingOperationContext.withPrettyOutput(isPretty), context).doGetLog(), isPretty);
-  }
-
-  private List<PodResource> doGetLog() {
+  protected List<PodResource> doGetLog() {
     StatefulSet statefulSet = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context,
         rollingOperationContext, statefulSet.getMetadata().getUid(),
         getStatefulSetSelectorLabels(statefulSet));
-  }
-
-  /**
-   * Returns an unclosed Reader. It's the caller responsibility to close it.
-   *
-   * @return Reader
-   */
-  @Override
-  public Reader getLogReader() {
-    return PodOperationUtil.getLogReader(doGetLog());
-  }
-
-  /**
-   * Returns an unclosed InputStream. It's the caller responsibility to close it.
-   *
-   * @return InputStream
-   */
-  @Override
-  public InputStream getLogInputStream() {
-    return PodOperationUtil.getLogInputStream(doGetLog());
-  }
-
-  @Override
-  public LogWatch watchLog(OutputStream out) {
-    return PodOperationUtil.watchLog(doGetLog(), out);
   }
 
   @Override
