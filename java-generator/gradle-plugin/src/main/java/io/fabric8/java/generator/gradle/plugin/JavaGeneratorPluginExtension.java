@@ -29,7 +29,7 @@ import java.util.Map;
 public abstract class JavaGeneratorPluginExtension {
 
   public static final String NAME = "javaGen";
-  private Project gradleProject;
+  protected Project gradleProject;
 
   private Config javaGeneratorConfig = Config.builder().build();
 
