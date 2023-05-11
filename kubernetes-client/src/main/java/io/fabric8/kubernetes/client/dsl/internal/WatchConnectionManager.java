@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -72,6 +73,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
       long websocketTimeout) throws MalformedURLException {
     super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, () -> client.newBuilder()
+        .tag(new RequestConfigBuilder(baseOperation.getRequestConfig()).withRequestTimeout(0).build())
         .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
         .build());
   }

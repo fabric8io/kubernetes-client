@@ -3,6 +3,7 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
+Fix #5121: RequestConfig is propagated to derived HttpClient instances
 
 #### Improvements
 

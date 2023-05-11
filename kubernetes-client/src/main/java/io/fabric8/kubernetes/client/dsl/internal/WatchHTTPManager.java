@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -48,6 +49,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     super(
         watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval,
         () -> client.newBuilder()
+            .tag(new RequestConfigBuilder(baseOperation.getRequestConfig()).withRequestTimeout(0).build())
             .readTimeout(0, TimeUnit.MILLISECONDS)
             .forStreaming()
             .build());

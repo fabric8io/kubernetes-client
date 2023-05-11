@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.EphemeralContainersResource;
@@ -97,7 +98,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
   public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
 
-  static final transient Logger LOG = LoggerFactory.getLogger(PodOperationsImpl.class);
+  static final Logger LOG = LoggerFactory.getLogger(PodOperationsImpl.class);
 
   private final PodOperationContext podOperationContext;
 
@@ -181,7 +182,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
           getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getContext().getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
+      final LogWatchCallback callback = new LogWatchCallback(out, context);
       return callback.callAndWait(httpClient, url);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
@@ -375,7 +376,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private ExecWebSocketListener setupConnectionToPod(URI uri) {
-    HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+    HttpClient clone = httpClient.newBuilder()
+        .tag(new RequestConfigBuilder(getRequestConfig()).withRequestTimeout(0).build())
+        .readTimeout(0, TimeUnit.MILLISECONDS)
+        .build();
     ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor());
     CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
         .subprotocol("v4.channel.k8s.io")
