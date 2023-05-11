@@ -261,6 +261,7 @@ public class BuildConfigOperationsImpl
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
       HttpClient newClient = this.httpClient.newBuilder()
+          .tag(getOperationContext().getRequestConfig())
           .readTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .writeTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .build();

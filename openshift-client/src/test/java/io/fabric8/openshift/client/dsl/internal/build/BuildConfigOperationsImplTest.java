@@ -55,6 +55,7 @@ class BuildConfigOperationsImplTest {
     when(response.uri()).thenReturn(URI.create("https://localhost:8443/"));
 
     when(httpClient.newBuilder()
+        .tag(any())
         .readTimeout(anyLong(), any())
         .writeTimeout(anyLong(), any())
         .build()).thenReturn(httpClient);

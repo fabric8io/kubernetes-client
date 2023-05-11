@@ -699,8 +699,10 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   protected void setDerivedFields() {
     OpenShiftConfig wrapped = OpenShiftConfig.wrap(config);
     this.config = wrapped;
-    HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
+    HttpClient.DerivedClientBuilder builder = httpClient.newBuilder();
     this.httpClient = builder
+        .authenticatorNone()
+        .tag(config.getRequestConfig())
         .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME,
             new OpenShiftOAuthInterceptor(httpClient, wrapped))
         .build();

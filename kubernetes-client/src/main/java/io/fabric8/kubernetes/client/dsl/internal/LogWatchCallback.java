@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -31,8 +32,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -40,20 +41,22 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
-  private OutputStream out;
+  private final OutputStream out;
   private WritableByteChannel outChannel;
+  private final OperationContext context;
   private volatile InputStream output;
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final CompletableFuture<AsyncBody> asyncBody = new CompletableFuture<>();
   private final SerialExecutor serialExecutor;
 
-  public LogWatchCallback(OutputStream out, Executor executor) {
+  public LogWatchCallback(OutputStream out, OperationContext context) {
     this.out = out;
     if (out != null) {
       outChannel = Channels.newChannel(out);
     }
-    this.serialExecutor = new SerialExecutor(executor);
+    this.context = context;
+    this.serialExecutor = new SerialExecutor(context.getExecutor());
   }
 
   @Override
@@ -71,7 +74,10 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   public LogWatchCallback callAndWait(HttpClient client, URL url) {
     HttpRequest request = client.newHttpRequestBuilder().url(url).build();
-    HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+    HttpClient clone = client.newBuilder()
+        .tag(Optional.ofNullable(context.getRequestConfig()).map(RequestConfigBuilder::new).orElse(new RequestConfigBuilder())
+            .withRequestTimeout(0).build())
+        .readTimeout(0, TimeUnit.MILLISECONDS).build();
 
     if (out == null) {
       // we can pass the input stream directly to the consumer
