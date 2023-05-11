@@ -1,20 +1,12 @@
 ## CHANGELOG
 
-### 6.7-SNAPSHOT
+### 6.6.1 (2023-05-11)
 
 #### Bugs
 * Fix #5095: moving the enforcement to requestTimeout
-* Fix #5102: wait on scale to 0 was not completing
-
-#### Improvements
 * Fix #5100: lessened the level of the non-conflicting httpclient implementation warning
+* Fix #5102: wait on scale to 0 was not completing
 * Fix #5112: Expose put method with InputStream argument in HttpRequest class
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes
 
 ### 6.6.0 (2023-05-03)
 
