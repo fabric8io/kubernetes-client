@@ -100,7 +100,7 @@
     <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.9.2</maven-core.version>
     <maven-plugin-annotations.version>3.8.2</maven-plugin-annotations.version>
-    <vertx.version>4.4.1</vertx.version>
+    <vertx.version>4.4.2</vertx.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
